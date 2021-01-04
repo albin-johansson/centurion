@@ -34,12 +34,10 @@ class FontCacheTest : public testing::Test
  protected:
   using id_type = cen::font_cache::id_type;
 
-  using unicode_signature = void(id_type,
-                                 const cen::unicode_string&,
-                                 cen::renderer&);
+  using unicode_signature = void(id_type, const cen::unicode_string&);
   using unicode_store_fn = std::function<unicode_signature>;
 
-  using normal_signature = void(id_type, cen::czstring, cen::renderer&);
+  using normal_signature = void(id_type, cen::czstring);
   using normal_store_fn = std::function<normal_signature>;
 
   FontCacheTest() : testing::Test{}, m_cache{fontPath, 12}
@@ -82,111 +80,95 @@ class FontCacheTest : public testing::Test
   {
     EXPECT_FALSE(m_cache.has_stored(id));
 
-    store(id, str, *m_renderer);
+    store(id, str);
     EXPECT_TRUE(m_cache.has_stored(id));
 
-    EXPECT_NO_THROW(store(id, str, *m_renderer));
+    EXPECT_NO_THROW(store(id, str));
   }
 };
 
 TEST_F(FontCacheTest, StoreBlendedUnicode)
 {
-  test_store_unicode([this](const id_type id,
-                            const cen::unicode_string& str,
-                            cen::renderer& renderer) {
+  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
     m_cache.store_blended_unicode(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedUnicode)
 {
-  test_store_unicode([this](const id_type id,
-                            const cen::unicode_string& str,
-                            cen::renderer& renderer) {
+  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
     m_cache.store_blended_wrapped_unicode(id, str, *m_renderer, 100);
   });
 }
 
 TEST_F(FontCacheTest, StoreSolidUnicode)
 {
-  test_store_unicode([this](const id_type id,
-                            const cen::unicode_string& str,
-                            cen::renderer& renderer) {
+  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
     m_cache.store_solid_unicode(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreShadedUnicode)
 {
-  test_store_unicode([this](const id_type id,
-                            const cen::unicode_string& str,
-                            cen::renderer& renderer) {
+  test_store_unicode([this](const id_type id, const cen::unicode_string& str) {
     m_cache.store_shaded_unicode(id, str, *m_renderer, cen::colors::pink);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedUTF8)
 {
-  test_store_utf_8(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_blended_utf8(id, str, *m_renderer);
-      });
+  test_store_utf_8([this](const id_type id, cen::czstring str) {
+    m_cache.store_blended_utf8(id, str, *m_renderer);
+  });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedUTF8)
 {
-  test_store_utf_8(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_blended_wrapped_utf8(id, str, *m_renderer, 80);
-      });
+  test_store_utf_8([this](const id_type id, cen::czstring str) {
+    m_cache.store_blended_wrapped_utf8(id, str, *m_renderer, 80);
+  });
 }
 
 TEST_F(FontCacheTest, StoreSolidUTF8)
 {
-  test_store_utf_8(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_solid_utf8(id, str, *m_renderer);
-      });
+  test_store_utf_8([this](const id_type id, cen::czstring str) {
+    m_cache.store_solid_utf8(id, str, *m_renderer);
+  });
 }
 
 TEST_F(FontCacheTest, StoreShadedUTF8)
 {
-  test_store_utf_8(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_shaded_utf8(id, str, *m_renderer, cen::colors::cyan);
-      });
+  test_store_utf_8([this](const id_type id, cen::czstring str) {
+    m_cache.store_shaded_utf8(id, str, *m_renderer, cen::colors::cyan);
+  });
 }
 
 TEST_F(FontCacheTest, StoreBlendedLatin1)
 {
-  test_store_latin_1(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_blended_latin1(id, str, *m_renderer);
-      });
+  test_store_latin_1([this](const id_type id, cen::czstring str) {
+    m_cache.store_blended_latin1(id, str, *m_renderer);
+  });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedLatin1)
 {
-  test_store_latin_1(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_blended_wrapped_latin1(id, str, *m_renderer, 120);
-      });
+  test_store_latin_1([this](const id_type id, cen::czstring str) {
+    m_cache.store_blended_wrapped_latin1(id, str, *m_renderer, 120);
+  });
 }
 
 TEST_F(FontCacheTest, StoreSolidLatin1)
 {
-  test_store_latin_1(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_solid_latin1(id, str, *m_renderer);
-      });
+  test_store_latin_1([this](const id_type id, cen::czstring str) {
+    m_cache.store_solid_latin1(id, str, *m_renderer);
+  });
 }
 
 TEST_F(FontCacheTest, StoreShadedLatin1)
 {
-  test_store_latin_1(
-      [this](const id_type id, cen::czstring str, cen::renderer& renderer) {
-        m_cache.store_shaded_latin1(id, str, *m_renderer, cen::colors::aqua);
-      });
+  test_store_latin_1([this](const id_type id, cen::czstring str) {
+    m_cache.store_shaded_latin1(id, str, *m_renderer, cen::colors::aqua);
+  });
 }
 
 TEST_F(FontCacheTest, Has)

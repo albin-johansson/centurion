@@ -6,7 +6,7 @@ that you might have about the Centurion library.
 
 What versions of C++ can I use Centurion with?
 ----------------------------------------------
-Centurion 5 and 6 target C++17 and C++20, respectively. However, earlier versions (the
+Centurion 5 and 6 target C++17 and C++20 respectively. However, earlier versions (the
 latest being version 4.3.0) support C++11, C++14 and C++17.
 
 What is Centurion meant to be used for?

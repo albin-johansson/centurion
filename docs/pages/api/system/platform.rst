@@ -34,7 +34,7 @@ which is a C++20 feature, of course you could fully qualify the enumerators as w
 
   void foo()
   {
-    if (const auto name = cen::platform::name(); name) {
+    if (const auto name = cen::platform::name()) {
       // successfully obtained platform name, e.g. "Windows" or "Linux"
     }
 

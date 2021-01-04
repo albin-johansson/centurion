@@ -13,6 +13,7 @@ set(SOURCE_FILES
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp
     detail/max_test.cpp
+    detail/min_test.cpp
     detail/to_string_test.cpp
 
     event/audio_device_event_test.cpp

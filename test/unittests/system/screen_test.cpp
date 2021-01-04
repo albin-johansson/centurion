@@ -123,7 +123,7 @@ TEST(Screen, Amount)
 
 TEST(Screen, Name)
 {
-  EXPECT_STREQ(SDL_GetDisplayName(0), cen::screen::name());
+  EXPECT_STREQ(SDL_GetDisplayName(0), cen::screen::name(0));
   EXPECT_FALSE(cen::screen::name(cen::screen::amount()));
 }
 

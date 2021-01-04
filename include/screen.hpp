@@ -27,6 +27,7 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 

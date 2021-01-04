@@ -27,15 +27,14 @@
 
 #include <SDL.h>
 
-#include <cmath>
-#include <ostream>
-#include <string>
-#include <type_traits>
-#include <utility>
+#include <cmath>        // sqrt, abs, round
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
 
 #include "cast.hpp"
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "detail/to_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -163,7 +162,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr basic_point(value_type x, value_type y) noexcept
+  constexpr basic_point(const value_type x, const value_type y) noexcept
   {
     m_point.x = x;
     m_point.y = y;
@@ -176,7 +175,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_x(value_type x) noexcept
+  constexpr void set_x(const value_type x) noexcept
   {
     m_point.x = x;
   }
@@ -188,7 +187,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_y(value_type y) noexcept
+  constexpr void set_y(const value_type y) noexcept
   {
     m_point.y = y;
   }
@@ -310,20 +309,6 @@ using ipoint = basic_point<int>;
  * \since 5.0.0
  */
 using fpoint = basic_point<float>;
-
-static_assert(std::is_nothrow_default_constructible_v<ipoint>);
-static_assert(std::is_nothrow_destructible_v<ipoint>);
-static_assert(std::is_nothrow_copy_constructible_v<ipoint>);
-static_assert(std::is_nothrow_copy_assignable_v<ipoint>);
-static_assert(std::is_nothrow_move_constructible_v<ipoint>);
-static_assert(std::is_nothrow_move_assignable_v<ipoint>);
-
-static_assert(std::is_nothrow_default_constructible_v<fpoint>);
-static_assert(std::is_nothrow_destructible_v<fpoint>);
-static_assert(std::is_nothrow_copy_constructible_v<fpoint>);
-static_assert(std::is_nothrow_copy_assignable_v<fpoint>);
-static_assert(std::is_nothrow_move_constructible_v<fpoint>);
-static_assert(std::is_nothrow_move_assignable_v<fpoint>);
 
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
@@ -494,22 +479,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
 {
-  using namespace std::string_literals;
-
-  const auto xStr = std::to_string(point.x());
-  const auto yStr = std::to_string(point.y());
-
-  return "[i_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+  return "[ipoint | X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "]";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
 {
-  using namespace std::string_literals;
-
-  const auto xStr = std::to_string(point.x());
-  const auto yStr = std::to_string(point.y());
-
-  return "[f_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+  return "[fpoint | X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "]";
 }
 
 inline auto operator<<(std::ostream& stream, const ipoint& point)

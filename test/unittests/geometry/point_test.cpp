@@ -4,8 +4,23 @@
 
 #include <cmath>     // abs, sqrt
 #include <iostream>  // cout
+#include <type_traits>
 
 #include "log.hpp"
+
+static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);
+static_assert(std::is_nothrow_destructible_v<cen::ipoint>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::ipoint>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::ipoint>);
+static_assert(std::is_nothrow_move_constructible_v<cen::ipoint>);
+static_assert(std::is_nothrow_move_assignable_v<cen::ipoint>);
+
+static_assert(std::is_nothrow_default_constructible_v<cen::fpoint>);
+static_assert(std::is_nothrow_destructible_v<cen::fpoint>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::fpoint>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::fpoint>);
+static_assert(std::is_nothrow_move_constructible_v<cen::fpoint>);
+static_assert(std::is_nothrow_move_assignable_v<cen::fpoint>);
 
 TEST(Point, DistanceUnitXStep)
 {

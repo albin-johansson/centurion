@@ -25,7 +25,7 @@
 #ifndef CENTURION_SCALE_MODE_HEADER
 #define CENTURION_SCALE_MODE_HEADER
 
-#include <SDL_render.h>
+#include <SDL.h>
 
 #include "centurion_api.hpp"
 
@@ -34,6 +34,9 @@
 #endif
 
 namespace cen {
+
+/// \addtogroup graphics
+/// \{
 
 /**
  * \enum scale_mode
@@ -56,8 +59,6 @@ enum class scale_mode
 /**
  * \brief Indicates whether or not the two scale mode values are the same.
  *
- * \ingroup graphics
- *
  * \param lhs the lhs scale mode value.
  * \param rhs the rhs scale mode value.
  *
@@ -65,27 +66,23 @@ enum class scale_mode
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(scale_mode lhs,
-                                        SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
 /**
  * \copydoc operator==(scale_mode, SDL_ScaleMode)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator==(SDL_ScaleMode lhs,
-                                        scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
 
 /**
  * \brief Indicates whether or not the two scale mode values aren't the same.
- *
- * \ingroup graphics
  *
  * \param lhs the lhs scale mode value.
  * \param rhs the rhs scale mode value.
@@ -94,22 +91,22 @@ enum class scale_mode
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(scale_mode lhs,
-                                        SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \copydoc operator!=(scale_mode, SDL_ScaleMode)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator!=(SDL_ScaleMode lhs,
-                                        scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

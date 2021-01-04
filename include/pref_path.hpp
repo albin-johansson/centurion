@@ -41,10 +41,11 @@
 
 namespace cen {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \class pref_path
- *
- * \ingroup system
  *
  * \brief A wrapper for the preferred path for storing application related
  * files.
@@ -108,8 +109,6 @@ class pref_path final
 /**
  * \brief Returns a textual representation of a pref path.
  *
- * \ingroup system
- *
  * \param path the pref path that will be converted.
  *
  * \return a string that represents a pref path.
@@ -125,8 +124,6 @@ class pref_path final
 /**
  * \brief Prints a textual representation of a pref path.
  *
- * \ingroup system
- *
  * \param stream the stream that will be used.
  * \param path the pref path that will be printed.
  *
@@ -140,6 +137,8 @@ inline auto operator<<(std::ostream& stream, const pref_path& path)
   stream << to_string(path);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

@@ -48,30 +48,6 @@
  *
  * \details The usage of the logging API will be very familiar to most people
  * that have used the `printf` and/or the `SDL_Log` facilities.
- * \code{.cpp}
- *   czstring str = "bar";
- *   int i = 12;
- *   log::info("foo %s: %i", str, i); // logs the string "foo bar: 12"
- * \endcode
- * There are multiple priorities that can be used when logging. All
- * priorities have dedicated logging methods. All of these methods use
- * `category::app`.
- * \code{.cpp}
- *   log::info("General information message");
- *   log::warn("Warning that something is fishy!");
- *   log::debug("This might be useful for debugging");
- *   log::critical("Something has gone very wrong!");
- *   log::error("Information about an error!");
- * \endcode
- * You can also specify the category manually.
- * \code{.cpp}
- *   log::info(log::category::render, "Something about rendering...");
- * \endcode
- * Furthermore, if you really want to, you can manually specify the priority
- * and category with the `log::msg` function.
- * \code{.cpp}
- *   log::msg(log::priority::info, log::category::app, "Hello!");
- * \endcode
  *
  * \since 3.0.0
  *

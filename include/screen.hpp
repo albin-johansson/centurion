@@ -25,6 +25,10 @@
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 
+#include <SDL.h>
+
+#include <optional>  // optional
+
 #include "area.hpp"
 #include "centurion_api.hpp"
 #include "czstring.hpp"

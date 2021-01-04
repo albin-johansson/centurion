@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include <type_traits>  // enable_if_t, is_pointer_t
+#include <type_traits>  // enable_if_t, is_pointer_v
 
 #include "centurion_api.hpp"
 

@@ -44,10 +44,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class font_cache
- *
- * \ingroup graphics
  *
  * \brief Provides an API that enables efficient font rendering.
  *
@@ -716,6 +717,8 @@ class font_cache final
     m_strings.emplace(id, std::move(texture));
   }
 };
+
+/// \}
 
 }  // namespace cen
 

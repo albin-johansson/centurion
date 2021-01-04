@@ -49,10 +49,11 @@
 
 namespace cen {
 
+/// \addtogroup audio
+/// \{
+
 /**
  * \enum fade_status
- *
- * \ingroup audio
  *
  * \brief Mirrors the values of the `Mix_Fading` enum.
  *
@@ -69,8 +70,6 @@ enum class fade_status
 
 /**
  * \enum music_type
- *
- * \ingroup audio
  *
  * \brief Mirrors the values of the `Mix_MusicType` enum.
  *
@@ -93,8 +92,6 @@ enum class music_type
 
 /**
  * \class music
- *
- * \ingroup audio
  *
  * \brief Represents a music file.
  *
@@ -436,8 +433,6 @@ class music final
 /**
  * \brief Returns a textual representation of a `music` instance.
  *
- * \ingroup audio
- *
  * \param music the instance that will be converted.
  *
  * \return a string that represents the `music` instance.
@@ -452,8 +447,6 @@ class music final
 
 /**
  * \brief Prints a textual representation of a `music` instance.
- *
- * \ingroup audio
  *
  * \param stream the stream that will be used.
  * \param music the `music` instance that will be printed.
@@ -473,8 +466,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
  * \brief Indicates whether or not the fading status values represent are the
  * same.
  *
- * \ingroup audio
- *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
  *
@@ -490,8 +481,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \copydoc operator==(fade_status, Mix_Fading)
- *
- * \ingroup audio
  */
 [[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
                                         const fade_status rhs) noexcept -> bool
@@ -502,8 +491,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 /**
  * \brief Indicates whether or not the fading status values represent aren't the
  * same.
- *
- * \ingroup audio
  *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
@@ -521,8 +508,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \copydoc operator!=(fade_status, Mix_Fading)
- *
- * \ingroup audio
  */
 [[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
                                         const Mix_Fading rhs) noexcept -> bool
@@ -532,8 +517,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \brief Indicates whether or not the music type values are the same.
- *
- * \ingroup audio
  *
  * \param lhs the left-hand side music type value.
  * \param rhs the right-hand side music type value.
@@ -551,8 +534,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \copydoc operator==(music_type, Mix_MusicType)
- *
- * \ingroup audio
  */
 [[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
                                         const music_type rhs) noexcept -> bool
@@ -562,8 +543,6 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \brief Indicates whether or not the music type values aren't the same.
- *
- * \ingroup audio
  *
  * \param lhs the left-hand side music type value.
  * \param rhs the right-hand side music type value.
@@ -581,14 +560,14 @@ inline auto operator<<(std::ostream& stream, const music& music)
 
 /**
  * \copydoc operator!=(music_type, Mix_MusicType)
- *
- * \ingroup audio
  */
 [[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
                                         const music_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

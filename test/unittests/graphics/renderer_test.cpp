@@ -73,19 +73,19 @@ TEST_F(RendererTest, TranslationViewport)
   EXPECT_EQ(0, viewport.height());
 }
 
-TEST_F(RendererTest, DrawRectT)
+TEST_F(RendererTest, TranslatedDrawRect)
 {
   EXPECT_NO_THROW(m_renderer->draw_rect_t<int>({{12, 34}, {56, 78}}));
   EXPECT_NO_THROW(m_renderer->draw_rect_t<float>({{12, 34}, {56, 78}}));
 }
 
-TEST_F(RendererTest, FillRectT)
+TEST_F(RendererTest, TranslatedFillRect)
 {
   EXPECT_NO_THROW(m_renderer->fill_rect_t<int>({{12, 34}, {56, 78}}));
   EXPECT_NO_THROW(m_renderer->fill_rect_t<float>({{12, 34}, {56, 78}}));
 }
 
-TEST_F(RendererTest, RenderTWithPoint)
+TEST_F(RendererTest, TranslatedRenderWithPoint)
 {
   {
     const cen::ipoint pos{12, 34};
@@ -98,7 +98,7 @@ TEST_F(RendererTest, RenderTWithPoint)
   }
 }
 
-TEST_F(RendererTest, RenderTWithRectangle)
+TEST_F(RendererTest, TranslatedRenderWithRectangle)
 {
   {
     const cen::irect rect{{12, 34}, {56, 78}};
@@ -111,7 +111,7 @@ TEST_F(RendererTest, RenderTWithRectangle)
   }
 }
 
-TEST_F(RendererTest, RenderTWithSourceDestination)
+TEST_F(RendererTest, TranslatedRenderWithSourceDestination)
 {
   {
     const cen::irect src{{12, 34}, {56, 78}};
@@ -128,7 +128,7 @@ TEST_F(RendererTest, RenderTWithSourceDestination)
   }
 }
 
-TEST_F(RendererTest, RenderTWithSourceDestinationAngle)
+TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngle)
 {
   {
     const cen::irect src{{12, 34}, {56, 78}};
@@ -147,7 +147,7 @@ TEST_F(RendererTest, RenderTWithSourceDestinationAngle)
   }
 }
 
-TEST_F(RendererTest, RenderTWithSourceDestinationAngleCenter)
+TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenter)
 {
   {
     const cen::irect src{{12, 34}, {56, 78}};
@@ -168,7 +168,7 @@ TEST_F(RendererTest, RenderTWithSourceDestinationAngleCenter)
   }
 }
 
-TEST_F(RendererTest, RenderTWithSourceDestinationAngleCenterFlip)
+TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
 {
   {
     const cen::irect src{{12, 34}, {56, 78}};
@@ -322,8 +322,34 @@ TEST_F(RendererTest, LogicalHeight)
   EXPECT_EQ(0, m_renderer->logical_height());
 }
 
-// TODO LogicalSize, XScale, YScale, Scale, Clip, Info, OutputWidth,
-//  OutputHeight, OutputSize, GetBlendMode, Flags, IsVSyncEnabled,
-//  IsAccelerated, IsSoftwareBased, SupportsTargetTextures,
-//  IsUsingIntegerLogicalScaling, IsClippingEnabled, GetColor, Viewport,
-//  Get
+TEST_F(RendererTest, LogicalSize)
+{
+  EXPECT_EQ(0, m_renderer->logical_size().width);
+  EXPECT_EQ(0, m_renderer->logical_size().height);
+}
+
+TEST_F(RendererTest, XScale)
+{
+  EXPECT_EQ(1, m_renderer->x_scale());
+}
+
+TEST_F(RendererTest, YScale)
+{
+  EXPECT_EQ(1, m_renderer->y_scale());
+}
+
+TEST_F(RendererTest, Scale)
+{
+  EXPECT_EQ(1, m_renderer->scale().first);
+  EXPECT_EQ(1, m_renderer->scale().second);
+}
+
+TEST_F(RendererTest, Clip)
+{
+  EXPECT_FALSE(m_renderer->clip().has_value());
+}
+
+TEST_F(RendererTest, Info)
+{
+  EXPECT_TRUE(m_renderer->info().has_value());
+}

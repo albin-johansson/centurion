@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \enum pixel_format
- *
- * \ingroup graphics
  *
  * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
  *
@@ -116,8 +117,6 @@ enum class pixel_format
 /**
  * \brief Indicates whether or not the two pixel format values are the same.
  *
- * \ingroup graphics
- *
  * \param lhs the left-hand side pixel format value.
  * \param rhs the right-hand side pixel format value.
  *
@@ -125,8 +124,8 @@ enum class pixel_format
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(pixel_format lhs,
-                                        SDL_PixelFormatEnum rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
   return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
@@ -134,19 +133,15 @@ enum class pixel_format
 
 /**
  * \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator==(SDL_PixelFormatEnum lhs,
-                                        pixel_format rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
 
 /**
  * \brief Indicates whether or not the two pixel format values aren't the same.
- *
- * \ingroup graphics
  *
  * \param lhs the left-hand side pixel format value.
  * \param rhs the right-hand side pixel format value.
@@ -155,8 +150,8 @@ enum class pixel_format
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(pixel_format lhs,
-                                        SDL_PixelFormatEnum rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -164,14 +159,14 @@ enum class pixel_format
 
 /**
  * \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator!=(SDL_PixelFormatEnum lhs,
-                                        pixel_format rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

@@ -101,7 +101,6 @@ script:
   - cd build
 
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -GNinja
-  - ninja CenturionLibrary
   - ninja CenturionTests
   - ninja CenturionMocks
 

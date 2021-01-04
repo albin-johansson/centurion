@@ -25,14 +25,14 @@
 #ifndef CENTURION_BATTERY_HEADER
 #define CENTURION_BATTERY_HEADER
 
-#include <SDL_power.h>
+#include <SDL.h>
 
 #include <chrono>    // duration_cast
 #include <optional>  // optional
 
 #include "centurion_api.hpp"
 #include "detail/any_eq.hpp"
-#include "types.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -80,10 +80,10 @@ enum class power_state
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft == -1) {
-    return std::nullopt;
-  } else {
+  if (secondsLeft != -1) {
     return seconds<int>{secondsLeft};
+  } else {
+    return std::nullopt;
   }
 }
 
@@ -116,10 +116,10 @@ enum class power_state
 {
   int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft == -1) {
-    return std::nullopt;
-  } else {
+  if (percentageLeft != -1) {
     return percentageLeft;
+  } else {
+    return std::nullopt;
   }
 }
 
@@ -195,8 +195,9 @@ enum class power_state
  */
 [[nodiscard]] inline auto is_available() noexcept -> bool
 {
-  const auto current = state();
-  return current != power_state::no_battery && current != power_state::unknown;
+  return !detail::any_eq(state(),
+                         power_state::no_battery,
+                         power_state::unknown);
 }
 
 /**
@@ -209,8 +210,9 @@ enum class power_state
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(power_state lhs,
-                                        SDL_PowerState rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_PowerState>(lhs) == rhs;
 }
@@ -218,8 +220,8 @@ enum class power_state
 /**
  * \copydoc operator==(power_state, SDL_PowerState)
  */
-[[nodiscard]] constexpr auto operator==(SDL_PowerState lhs,
-                                        power_state rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -234,8 +236,9 @@ enum class power_state
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(power_state lhs,
-                                        SDL_PowerState rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -243,8 +246,8 @@ enum class power_state
 /**
  * \copydoc operator!=(power_state, SDL_PowerState)
  */
-[[nodiscard]] constexpr auto operator!=(SDL_PowerState lhs,
-                                        power_state rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
 {
   return rhs != lhs;
 }

@@ -49,10 +49,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class key_state
- *
- * \ingroup input
  *
  * \brief Provides information about the keyboard state.
  *
@@ -302,6 +303,8 @@ class key_state final
     }
   }
 };
+
+/// \}
 
 }  // namespace cen
 

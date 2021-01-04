@@ -118,6 +118,8 @@ class basic_window final
   explicit basic_window(not_null<czstring> title,
                         const iarea& size = default_size())
   {
+    assert(title);
+
     if ((size.width < 1) || (size.height < 1)) {
       throw exception{"Invalid width or height!"};
     }

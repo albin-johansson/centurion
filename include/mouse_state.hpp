@@ -37,10 +37,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class mouse_state
- *
- * \ingroup input
  *
  * \brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
@@ -289,6 +290,8 @@ class mouse_state final
   bool m_prevLeftPressed{false};
   bool m_prevRightPressed{false};
 };
+
+/// \}
 
 }  // namespace cen
 

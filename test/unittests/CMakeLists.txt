@@ -129,4 +129,6 @@ copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
-cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})
+if (WIN32)
+  cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})
+endif ()

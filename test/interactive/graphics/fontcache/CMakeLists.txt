@@ -12,4 +12,6 @@ copy_directory_post_build(InteractiveFontCache
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
-cen_copy_runtime_binaries(InteractiveFontCache)
+if (WIN32)
+  cen_copy_runtime_binaries(InteractiveFontCache)
+endif ()

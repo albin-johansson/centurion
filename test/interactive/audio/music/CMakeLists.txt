@@ -12,4 +12,6 @@ copy_directory_post_build(InteractiveMusic
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
-cen_copy_runtime_binaries(InteractiveMusic)
+if (WIN32)
+  cen_copy_runtime_binaries(InteractiveMusic)
+endif ()

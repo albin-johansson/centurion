@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \enum key_modifier
- *
- * \ingroup input
  *
  * \brief Mirrors the values of the `SDL_Keymod` enum.
  *
@@ -63,6 +64,8 @@ enum class key_modifier
   caps = KMOD_CAPS,
   mode = KMOD_MODE
 };
+
+/// \}
 
 }  // namespace cen
 

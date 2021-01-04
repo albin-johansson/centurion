@@ -25,12 +25,10 @@
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_keycode.h>
-#include <SDL_scancode.h>
+#include <SDL.h>
 
-#include <ostream>
-#include <string>
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
@@ -42,10 +40,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class scan_code
- *
- * \ingroup input
  *
  * \brief Represents a scan code.
  *
@@ -272,8 +271,6 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \ingroup input
- *
  * \param scanCode the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
@@ -287,8 +284,6 @@ class scan_code final
 
 /**
  * \brief Prints a scan code using a stream.
- *
- * \ingroup input
  *
  * \param stream the stream that will be used.
  * \param scanCode the scan code that will be printed.
@@ -307,8 +302,6 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
 /**
  * \brief Indicates whether or not two scan codes are the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side scan code.
  * \param rhs the right-hand side scan code.
  *
@@ -325,8 +318,6 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
 /**
  * \brief Indicates whether or not two scan codes aren't the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side scan code.
  * \param rhs the right-hand side scan code.
  *
@@ -342,8 +333,6 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
 
 /**
  * \namespace cen::scancodes
- *
- * \ingroup input
  *
  * \brief Provides a collection of `scan_code` constants.
  *
@@ -986,6 +975,9 @@ inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 }  // namespace scancodes
+
+/// \}
+
 }  // namespace cen
 
 #endif  // CENTURION_SCAN_CODE_HEADER

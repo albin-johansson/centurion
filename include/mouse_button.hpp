@@ -25,7 +25,7 @@
 #ifndef CENTURION_MOUSE_BUTTON_HEADER
 #define CENTURION_MOUSE_BUTTON_HEADER
 
-#include <SDL_mouse.h>
+#include <SDL.h>
 
 #include "centurion_api.hpp"
 
@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \enum mouse_button
- *
- * \ingroup input
  *
  * \brief Provides values that represent various mouse buttons.
  *
@@ -54,6 +55,8 @@ enum class mouse_button
   x1 = SDL_BUTTON_X1,
   x2 = SDL_BUTTON_X2
 };
+
+/// \}
 
 }  // namespace cen
 

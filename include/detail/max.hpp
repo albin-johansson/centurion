@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_AT_LEAST_HEADER
-#define CENTURION_DETAIL_AT_LEAST_HEADER
+#ifndef CENTURION_DETAIL_MAX_HEADER
+#define CENTURION_DETAIL_MAX_HEADER
 
 #include "centurion_api.hpp"
 
@@ -48,4 +48,4 @@ template <typename T>
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_AT_LEAST_HEADER
+#endif  // CENTURION_DETAIL_MAX_HEADER

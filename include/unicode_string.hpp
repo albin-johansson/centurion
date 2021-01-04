@@ -25,11 +25,13 @@
 #ifndef CENTURION_UNICODE_STRING_HEADER
 #define CENTURION_UNICODE_STRING_HEADER
 
-#include <cassert>
-#include <initializer_list>
-#include <vector>
+#include <cassert>           // assert
+#include <initializer_list>  // initializer_list
+#include <type_traits>       // is_same_v
+#include <vector>            // vector
 
 #include "centurion_api.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -112,7 +114,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void reserve(size_type n)
+  void reserve(const size_type n)
   {
     m_data.reserve(n);
   }
@@ -124,7 +126,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void append(unicode ch)
+  void append(const unicode ch)
   {
     m_data.insert(m_data.end() - 1, ch);
   }
@@ -291,7 +293,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto at(size_type index) -> reference
+  [[nodiscard]] auto at(const size_type index) -> reference
   {
     return m_data.at(index);
   }
@@ -299,7 +301,7 @@ class unicode_string final
   /**
    * \copydoc at
    */
-  [[nodiscard]] auto at(size_type index) const -> const_reference
+  [[nodiscard]] auto at(const size_type index) const -> const_reference
   {
     return m_data.at(index);
   }
@@ -319,7 +321,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](size_type index) noexcept -> reference
+  [[nodiscard]] auto operator[](const size_type index) noexcept -> reference
   {
     assert(index < m_data.size());
     return m_data[index];
@@ -328,7 +330,7 @@ class unicode_string final
   /**
    * \copydoc operator[]
    */
-  [[nodiscard]] auto operator[](size_type index) const noexcept
+  [[nodiscard]] auto operator[](const size_type index) const noexcept
       -> const_reference
   {
     assert(index < m_data.size());

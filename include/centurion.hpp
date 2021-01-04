@@ -28,8 +28,8 @@
  * \brief Contains entities considered to be fundamental for the library.
  */
 
-#ifndef CENTURION_HEADER
-#define CENTURION_HEADER
+#ifndef CENTURION_CORE_HEADER
+#define CENTURION_CORE_HEADER
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -40,7 +40,7 @@
 
 #include "centurion_api.hpp"
 #include "exception.hpp"
-#include "types.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -146,6 +146,10 @@ class library final
  public:
   /**
    * \brief Initializes the library.
+   *
+   * \note Make sure to have the `library` instance as a local variable that
+   * will outlive the duration of your main program. It's not sufficient to just
+   * call the constructor but not store the result as a variable.
    *
    * \pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
@@ -364,4 +368,4 @@ class library final
 
 }  // namespace cen
 
-#endif  // CENTURION_HEADER
+#endif  // CENTURION_CORE_HEADER

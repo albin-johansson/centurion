@@ -47,10 +47,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \struct glyph_metrics
- *
- * \ingroup Graphics
  *
  * \brief Provides metrics about a glyph in a font.
  *
@@ -69,8 +70,6 @@ struct glyph_metrics final
 
 /**
  * \class font
- *
- * \ingroup graphics
  *
  * \brief Represents a True Type font.
  *
@@ -758,24 +757,19 @@ class font final
 /**
  * \brief Returns a textual representation of a font instance.
  *
- * \ingroup graphics
- *
  * \return a textual representation of the font instance.
  *
  * \since 5.0.0
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-  using detail::to_string;
   return "[font | data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + to_string(font.size()).value() + "]";
+         ", size: " + detail::to_string(font.size()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a font.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param font the font instance that will be printed.
@@ -789,6 +783,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
   stream << to_string(font);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

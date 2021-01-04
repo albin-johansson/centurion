@@ -25,7 +25,7 @@
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
 #include "centurion_api.hpp"
 #include "exception.hpp"

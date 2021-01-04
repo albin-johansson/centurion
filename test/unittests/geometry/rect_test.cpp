@@ -2,7 +2,27 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 #include "log.hpp"
+
+static_assert(std::is_nothrow_default_constructible_v<cen::frect>);
+static_assert(std::is_nothrow_default_constructible_v<cen::irect>);
+
+static_assert(std::is_nothrow_copy_constructible_v<cen::frect>);
+static_assert(std::is_nothrow_copy_constructible_v<cen::irect>);
+
+static_assert(std::is_nothrow_copy_assignable_v<cen::frect>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::irect>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::frect>);
+static_assert(std::is_nothrow_move_constructible_v<cen::irect>);
+
+static_assert(std::is_nothrow_move_assignable_v<cen::frect>);
+static_assert(std::is_nothrow_move_assignable_v<cen::irect>);
+
+static_assert(std::is_nothrow_destructible_v<cen::frect>);
+static_assert(std::is_nothrow_destructible_v<cen::irect>);
 
 TEST(Rect, DefaultConstructor)
 {

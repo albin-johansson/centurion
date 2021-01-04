@@ -25,9 +25,9 @@
 #ifndef CENTURION_MUTEX_HEADER
 #define CENTURION_MUTEX_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
-#include <memory>
+#include <memory>  // unique_ptr
 
 #include "centurion_api.hpp"
 #include "exception.hpp"

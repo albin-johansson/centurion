@@ -27,6 +27,8 @@
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

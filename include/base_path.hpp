@@ -32,7 +32,6 @@
 
 #include "centurion_api.hpp"
 #include "sdl_string.hpp"
-#include "types.hpp"
 
 namespace cen {
 

@@ -27,7 +27,8 @@
 
 #include <SDL.h>
 
-#include <ostream>
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
@@ -39,12 +40,13 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class key_code
  *
- * \ingroup input
- *
- * \brief Represents a key code (virtual key).
+ * \brief Represents a key code (or virtual key).
  *
  * \details Key codes are mapped to the current layout of the keyboard and
  * correlate to a `scan_code`. Whilst scan codes identify the *location* of
@@ -58,33 +60,6 @@ namespace cen {
  * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
  * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
  * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
- *
- * \par Usage
- * \code{.cpp}
- *
- *   #include <key.hpp>
- *
- *   void key_code_demo()
- *   {
- *     cen::key_code none;
- *     cen::key_code a {SDLK_a};
- *     cen::key_code b {SDL_SCANCODE_B}; // converts to SDL_Keycode
- *     cen::key_code c {"C"};
- *
- *     cen::key foo;
- *     foo = SDLK_k;
- *     foo = SDL_SCANCODE_D;
- *
- *     if (none.unknown()) {
- *       // none contains SDLK_UNKNOWN
- *     }
- *
- *     SDL_Keycode code = a.get();
- *
- *     auto scan = static_cast<SDL_Scancode>(a);
- *     auto key = static_cast<SDL_Keycode>(b);
- *   }
- * \endcode
  *
  * \note Key codes are sometimes referred to as "keysyms" in the SDL
  * documentation.
@@ -304,8 +279,6 @@ class key_code final
 /**
  * \brief Returns a textual representation of a key code.
  *
- * \ingroup input
- *
  * \param keyCode the key code that will be converted.
  *
  * \return a textual representation of the key code.
@@ -319,8 +292,6 @@ class key_code final
 
 /**
  * \brief Prints a key code using a stream.
- *
- * \ingroup input
  *
  * \param stream the stream that will be used.
  * \param keyCode the key code that will be printed.
@@ -339,8 +310,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
 /**
  * \brief Indicates whether or not two key codes are the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side key code.
  * \param rhs the right-hand side key code.
  *
@@ -357,8 +326,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
 /**
  * \brief Indicates whether or not two key codes aren't the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side key code.
  * \param rhs the right-hand side key code.
  *
@@ -374,8 +341,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
 
 /**
  * \namespace cen::keycodes
- *
- * \ingroup input
  *
  * \brief Provides a collection of `key_code` constants.
  *
@@ -1018,6 +983,9 @@ inline constexpr key_code left_gui{SDLK_LGUI};
 inline constexpr key_code right_gui{SDLK_RGUI};
 
 }  // namespace keycodes
+
+/// \}
+
 }  // namespace cen
 
 #endif  // CENTURION_KEY_CODE_HEADER

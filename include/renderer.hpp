@@ -25,7 +25,7 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-#include <SDL_video.h>
+#include <SDL.h>
 
 #include <memory>       // unique_ptr
 #include <optional>     // optional
@@ -44,6 +44,7 @@
 #include "detail/owner_handle_api.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"
+#include "integers.hpp"
 #include "not_null.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
@@ -1943,7 +1944,7 @@ class basic_renderer final
 
   struct owning_data final
   {
-    owning_data(SDL_Renderer* r) : ptr{r}
+    /*implicit*/ owning_data(SDL_Renderer* r) : ptr{r}
     {}
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;

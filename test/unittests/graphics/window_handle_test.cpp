@@ -1,49 +1,35 @@
-#include <catch.hpp>
-#include <iostream>
+#include <gtest/gtest.h>
+
+#include <iostream>  // cout
 
 #include "log.hpp"
-#include "renderer.hpp"
 #include "window.hpp"
-#include "window_utils.hpp"
 
-TEST_CASE("window_handle::window_handle(SDL_Window*)", "[window_handle]")
+TEST(WindowHandle, PointerConstructor)
 {
-  SECTION("Null pointer")
-  {
+  {  // From null pointer
     cen::window_handle handle{nullptr};
-    CHECK(!handle);
-    CHECK(!handle.get());
+    EXPECT_FALSE(handle);
+    EXPECT_FALSE(handle.get());
   }
 
-  SECTION("From valid pointer")
-  {
+  {  // From valid pointer
     cen::window window;
     cen::window_handle handle{window.get()};
-    CHECK(handle);
-    CHECK(handle.get());
+    EXPECT_TRUE(handle);
+    EXPECT_TRUE(handle.get());
   }
 }
 
-TEST_CASE("window_handle::window_handle(const window&)", "[window_handle]")
+TEST(WindowHandle, FromWindowRef)
 {
   cen::window window;
   cen::window_handle handle{window};
-  CHECK(handle);
-  CHECK(handle.get());
+  EXPECT_TRUE(handle);
+  EXPECT_TRUE(handle.get());
 }
 
-TEST_CASE("window_handle get renderer", "[window_handle]")
-{
-  cen::window window;
-  cen::window_handle handle{window};
-
-  CHECK(!cen::get_renderer(handle));
-
-  cen::renderer renderer{window};
-  CHECK(cen::get_renderer(handle));
-}
-
-TEST_CASE("window_handle to_string", "[window_handle]")
+TEST(WindowHandle, ToString)
 {
   cen::window window;
   cen::window_handle handle{window};
@@ -51,7 +37,7 @@ TEST_CASE("window_handle to_string", "[window_handle]")
   cen::log::put(cen::to_string(handle));
 }
 
-TEST_CASE("window_handle stream operator", "[window_handle]")
+TEST(WindowHandle, StreamOperator)
 {
   cen::window window;
   cen::window_handle handle{window};

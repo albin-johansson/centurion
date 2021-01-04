@@ -51,10 +51,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class basic_surface
- *
- * \ingroup graphics
  *
  * \brief Represents a non-accelerated image.
  *
@@ -582,8 +583,6 @@ using surface_handle = basic_surface<std::false_type>;
 /**
  * \brief Returns a textual representation of a surface.
  *
- * \ingroup graphics
- *
  * \param surface the surface that will be converted.
  *
  * \return a textual representation of the surface.
@@ -593,17 +592,13 @@ using surface_handle = basic_surface<std::false_type>;
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  using namespace std::string_literals;
-  using detail::to_string;
-  return "[surface | ptr: "s + detail::address_of(surface.get()) +
-         ", width: "s + to_string(surface.width()).value() + ", height: "s +
-         to_string(surface.height()).value() + "]";
+  return "[surface | ptr: " + detail::address_of(surface.get()) +
+         ", width: " + detail::to_string(surface.width()).value() +
+         ", height: " + detail::to_string(surface.height()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a surface.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param surface the surface that will be printed.
@@ -619,6 +614,8 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface)
   stream << to_string(surface);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

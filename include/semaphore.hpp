@@ -25,14 +25,15 @@
 #ifndef CENTURION_SEMAPHORE_HEADER
 #define CENTURION_SEMAPHORE_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
 #include <memory>  // unique_ptr
 
 #include "centurion_api.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
 #include "mutex.hpp"
-#include "types.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

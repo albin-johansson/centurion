@@ -42,10 +42,11 @@
 
 namespace cen {
 
+/// \addtogroup geometry
+/// \{
+
 /**
  * \brief Provides traits used by the `basic_point` class.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -103,8 +104,6 @@ class point_traits final
 
 /**
  * \class basic_point
- *
- * \ingroup geometry
  *
  * \brief Represents a two-dimensional point.
  *
@@ -313,8 +312,6 @@ using fpoint = basic_point<float>;
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \ingroup geometry
- *
  * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `ipoint` instance.
  *
@@ -338,8 +335,6 @@ template <>
  * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `fpoint` instance.
  *
- * \ingroup geometry
- *
  * \param from the point that will be converted.
  *
  * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
@@ -359,8 +354,6 @@ template <>
  *
  * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `SDL_Point` instance.
- *
- * \ingroup geometry
  *
  * \param from the point that will be converted.
  *
@@ -383,8 +376,6 @@ template <>
  * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
  *
- * \ingroup geometry
- *
  * \param from the point that will be converted.
  *
  * \return an `SDL_FPoint` instance that corresponds to the supplied
@@ -402,8 +393,6 @@ template <>
 
 /**
  * \brief Returns the distance between two points.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the points.
  *
@@ -502,6 +491,8 @@ inline auto operator<<(std::ostream& stream, const fpoint& point)
   stream << to_string(point);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

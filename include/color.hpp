@@ -32,7 +32,7 @@
 
 #include "centurion_api.hpp"
 #include "detail/to_string.hpp"
-#include "types.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -40,10 +40,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class color
- *
- * \ingroup graphics
  *
  * \brief An 8-bit accuracy RGBA color.
  *
@@ -77,7 +78,10 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(u8 red, u8 green, u8 blue, u8 alpha = max()) noexcept
+  constexpr color(const u8 red,
+                  const u8 green,
+                  const u8 blue,
+                  const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -112,7 +116,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_red(u8 red) noexcept
+  constexpr void set_red(const u8 red) noexcept
   {
     m_color.r = red;
   }
@@ -124,7 +128,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_green(u8 green) noexcept
+  constexpr void set_green(const u8 green) noexcept
   {
     m_color.g = green;
   }
@@ -136,7 +140,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_blue(u8 blue) noexcept
+  constexpr void set_blue(const u8 blue) noexcept
   {
     m_color.b = blue;
   }
@@ -148,7 +152,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_alpha(u8 alpha) noexcept
+  constexpr void set_alpha(const u8 alpha) noexcept
   {
     m_color.a = alpha;
   }
@@ -163,7 +167,8 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto with_alpha(u8 alpha) const noexcept -> color
+  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept
+      -> color
   {
     return {red(), green(), blue(), alpha};
   }
@@ -311,11 +316,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  using detail::to_string;
-  return "[color | r: " + to_string(color.red()).value() +
-         ", g: " + to_string(color.green()).value() +
-         ", b: " + to_string(color.blue()).value() +
-         ", a: " + to_string(color.alpha()).value() + "]";
+  return "[color | r: " + detail::to_string(color.red()).value() +
+         ", g: " + detail::to_string(color.green()).value() +
+         ", b: " + detail::to_string(color.blue()).value() +
+         ", a: " + detail::to_string(color.alpha()).value() + "]";
 }
 
 /**
@@ -483,6 +487,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

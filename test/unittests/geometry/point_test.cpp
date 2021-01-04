@@ -174,17 +174,17 @@ TEST(Point, Get)
 TEST(Point, ToString)
 {
   const cen::ipoint ip{123, 456};
-  const cen::fpoint fp{12.3f, 45.6f};
-
   cen::log::put(cen::to_string(ip));
+
+  const cen::fpoint fp{12.3f, 45.6f};
   cen::log::put(cen::to_string(fp));
 }
 
 TEST(Point, StreamOperator)
 {
   const cen::ipoint ip{123, 456};
-  const cen::fpoint fp{12.3f, 45.6f};
+  std::cout << "COUT: " << ip << '\n';
 
-  std::cout << "COUT: " << fp << '\n';
+  const cen::fpoint fp{12.3f, 45.6f};
   std::cout << "COUT: " << fp << '\n';
 }

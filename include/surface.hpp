@@ -560,6 +560,11 @@ class basic_surface final
       throw sdl_error{"Failed to duplicate surface"};
     }
   }
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  basic_surface() = default;
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /**

@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
@@ -36,6 +37,7 @@
 #include "centurion_api.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
+#include "detail/clamp.hpp"
 #include "detail/convert_bool.hpp"
 #include "detail/max.hpp"
 #include "detail/owner_handle_api.hpp"
@@ -241,12 +243,8 @@ class basic_window final
    */
   void set_fullscreen(const bool fullscreen) noexcept
   {
-    const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
+    constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
     SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
-
-    if (!fullscreen) {
-      set_brightness(1);
-    }
   }
 
   /**
@@ -359,6 +357,7 @@ class basic_window final
    */
   void set_title(not_null<czstring> title) noexcept
   {
+    assert(title);
     SDL_SetWindowTitle(get(), title);
   }
 
@@ -442,21 +441,20 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \details This operation is only supported if the window is in fullscreen
-   * mode. This property will be reset every time the fullscreen mode is exited.
-   *
    * \note A brightness value outside the legal range will be clamped to the
    * closest valid value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
+   * \return `true` if the brightness was successfully set; `false` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_brightness(const float brightness) noexcept
+  auto set_brightness(const float brightness) noexcept -> bool
   {
-    if (is_fullscreen()) {
-      SDL_SetWindowBrightness(get(), std::clamp(brightness, 0.0f, 1.0f));
-    }
+    const auto res =
+        SDL_SetWindowBrightness(get(), detail::clamp(brightness, 0.0f, 1.0f));
+    return res == 0;
   }
 
   /**
@@ -861,7 +859,8 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept -> bool
+  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept
+      -> bool
   {
     return static_cast<bool>(flags() & flag);
   }

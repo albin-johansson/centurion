@@ -63,6 +63,7 @@ set(SOURCE_FILES
     graphics/texture_test.cpp
     graphics/texture_handle_test.cpp
     graphics/texture_access_test.cpp
+    graphics/window_test.cpp
 
     input/controller_axis_test.cpp
     input/controller_button_test.cpp

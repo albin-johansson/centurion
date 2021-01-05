@@ -2,7 +2,7 @@
 
 #include <array>        // array
 #include <cstddef>      // size_t
-#include <functional>   // function
+#include <functional>   // function, bind
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
@@ -19,19 +19,22 @@ namespace cen::experimental {
  *
  * \details This class is an attempt to simplify handling events in
  * applications, usually you'd check for all of the events that you'd be
- * interested in using `cen::event::try_get()` in a long `if-else` statement. By
- * using this class, it's possible to automatically generate equivalent checks
- * by specifying the events that you want to subscribe to, and subsequently
- * connect lambdas, free functions or member functions to handle the
- * subscribed events. This can often lead to cleaner looking code, since the
+ * interested in using `cen::event::try_get()` in a long `if-else if` statement.
+ * By using this class, it's possible to automatically generate equivalent
+ * checks by specifying the events that you want to subscribe to, and
+ * subsequently connect lambdas, free functions or member functions to handle
+ * the subscribed events. This can often lead to cleaner looking code, since the
  * manual checks will be replaced by a single call to
- * `event_dispatcher::update()`.
+ * `event_dispatcher::poll()`.
  *
  * \details The runtime overhead of using this class compared to typical manual
  * event dispatching is minimal. However, the function objects for the
  * subscribed events are stored internally, so they can take up a bit of space.
  * It might be beneficial to allocate instances of this class on the heap,
  * depending on the amount of subscribed events.
+ *
+ * \details The signature of all event handlers should be `void(const Event&)`,
+ * where `Event` is the subscribed event type.
  *
  * \note It is advisable to always typedef the signature of this class with
  * the events that you want to handle, since the class name quickly grows in
@@ -52,6 +55,15 @@ class event_dispatcher final
   template <typename T>
   using strip_type = std::remove_cv_t<std::remove_reference_t<T>>;
 
+  /**
+   * \brief Returns the index of an event type in the function tuple.
+   *
+   * \tparam Event the event type.
+   *
+   * \return the index of the event type.
+   *
+   * \since 5.1.0
+   */
   template <typename Event>
   [[nodiscard]] constexpr static auto index_of()
   {
@@ -63,6 +75,15 @@ class event_dispatcher final
     return index;
   }
 
+  /**
+   * \brief Checks for the specified event type in the event handler.
+   *
+   * \tparam Event the event to look for.
+   *
+   * \return `true` if there was a match; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
   template <typename Event>
   auto check_for() -> bool
   {
@@ -80,13 +101,36 @@ class event_dispatcher final
   }
 
  public:
-  void update()
+  /**
+   * \brief Polls all events, checking for subscribed events.
+   *
+   * \details This function corresponds to the usual inner event `while`-loop
+   * used to manage events. You should call this function once for every
+   * iteration in your game loop.
+   *
+   * \since 5.1.0
+   */
+  void poll()
   {
     while (m_event.poll()) {
       (check_for<E>() || ...);
     }
   }
 
+  /**
+   * \brief Connects an event to a function object.
+   *
+   * \note This function will overwrite any previously set handler for the
+   * specified event type.
+   *
+   * \tparam Event the event that will be handled by the function object.
+   * \tparam T the type of the function object.
+   *
+   * \param callable the callable that will be invoked when an event of the
+   * specified type is received.
+   *
+   * \since 5.1.0
+   */
   template <typename Event, typename T>
   void on(T&& callable)
   {
@@ -107,6 +151,23 @@ class event_dispatcher final
     std::get<index>(m_functions) = std::function<void(const Event&)>(callable);
   }
 
+  /**
+   * \brief Connects an event to a member function.
+   *
+   * \note The event dispatcher does *not* take ownership of the supplied
+   * pointer.
+   *
+   * \note This function will overwrite any previously set handler for the
+   * specified event type.
+   *
+   * \tparam Event the event that will be handled by the object.
+   * \tparam memFun a pointer to a member function.
+   * \tparam Self the type of the object that owns the function.
+   *
+   * \param self a pointer to the object that will handle the event.
+   *
+   * \since 5.1.0
+   */
   template <typename Event, auto memFun, typename Self>
   void on(Self* self)
   {
@@ -124,10 +185,21 @@ class event_dispatcher final
     on<event_t>(std::bind(memFun, self, std::placeholders::_1));
   }
 
-  template <typename Event, auto fn>
+  /**
+   * \brief Connects an event to a free function.
+   *
+   * \note This function will overwrite any previously set handler for the
+   * specified event type.
+   *
+   * \tparam Event the event that will be handled by the function pointer.
+   * \tparam function a function pointer.
+   *
+   * \since 5.1.0
+   */
+  template <typename Event, auto function>
   void on()
   {
-    on<Event>(fn);
+    on<Event>(function);
   }
 
  private:

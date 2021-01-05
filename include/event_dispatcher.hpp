@@ -135,17 +135,23 @@ class event_dispatcher final
   void on(T&& callable)
   {
     static_assert(!std::is_reference_v<Event>,
-                  "\"Event\" can't be reference type!");
+                  "\"Event\" template parameter can't be reference type!");
 
     static_assert(!std::is_pointer_v<Event>,
-                  "\"Event\" can't be pointer type!");
+                  "\"Event\" template parameter can't be pointer type!");
+
+    static_assert(!std::is_volatile_v<Event>,
+                  "\"Event\" template parameter can't be marked as volatile!");
+
+    static_assert(!std::is_const_v<Event>,
+                  "\"Event\" template parameter can't be marked as const!");
 
     static_assert(((std::is_same_v<Event, E>) || ...),
-                  "Cannot subscribe to unknown event type! Make sure that the "
+                  "Cannot connect to unsubscribed event! Make sure that the "
                   "event is listed as a class template parameter.");
 
     static_assert(std::is_invocable_v<T, const Event&>,
-                  "Function object must be invocable with specified event!");
+                  "Function object must be invocable with subscribed event!");
 
     constexpr auto index = index_of<Event>();
     std::get<index>(m_functions) = std::function<void(const Event&)>(callable);

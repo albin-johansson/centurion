@@ -23,6 +23,7 @@ set(SOURCE_FILES
     event/controller_device_event_test.cpp
     event/dollar_gesture_event_test.cpp
     event/drop_event_test.cpp
+    event/event_dispatcher_test.cpp
     event/event_test.cpp
     event/event_type_test.cpp
     event/joy_axis_event_test.cpp

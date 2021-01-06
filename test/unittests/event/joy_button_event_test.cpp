@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(JoyButtonEvent, Defaults)
+{
+  cen::joy_button_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::joystick_button_down, event.type());
+}
+
 TEST(JoyButtonEvent, SetWhich)
 {
   cen::joy_button_event event;

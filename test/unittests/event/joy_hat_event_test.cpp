@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(JoyHatEvent, Defaults)
+{
+  cen::joy_hat_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::joystick_hat_motion, event.type());
+}
+
 TEST(JoyHatEvent, SetHat)
 {
   cen::joy_hat_event event;

@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(ControllerButtonEvent, Defaults)
+{
+  cen::controller_button_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::controller_button_down, event.type());
+}
+
 TEST(ControllerButtonEvent, Constructors)
 {
   EXPECT_NO_THROW(cen::controller_button_event{});

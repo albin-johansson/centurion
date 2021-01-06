@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(MouseButtonEvent, Defaults)
+{
+  cen::mouse_button_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::mouse_button_down, event.type());
+}
+
 TEST(MouseButtonEvent, SetWindowId)
 {
   cen::mouse_button_event event;

@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(JoyDeviceEvent, Defaults)
+{
+  cen::joy_device_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::joystick_device_added, event.type());
+}
+
 TEST(JoyDeviceEvent, SetWhich)
 {
   cen::joy_device_event event;

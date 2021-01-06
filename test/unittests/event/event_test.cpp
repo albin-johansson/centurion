@@ -6,7 +6,7 @@
 
 namespace {
 
-[[nodiscard]] auto create_event(cen::u32 type) -> cen::event
+[[nodiscard]] auto create_event(const cen::u32 type) -> cen::event
 {
   SDL_Event sdlEvent;
   sdlEvent.type = type;
@@ -79,8 +79,16 @@ TEST(Event, Push)
   }
 
   cen::event event;
-  EXPECT_TRUE(event.poll());
+  ASSERT_TRUE(event.poll());
   EXPECT_EQ(cen::event_type::key_down, event.type());
+
+  {
+    const cen::window_event windowEvent;
+    cen::event::push(windowEvent);
+  }
+
+  ASSERT_TRUE(event.poll());
+  EXPECT_EQ(cen::event_type::window, event.type());
 }
 
 TEST(Event, Flush)

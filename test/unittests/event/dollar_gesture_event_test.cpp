@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(DollarGestureEvent, Defaults)
+{
+  cen::dollar_gesture_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::dollar_gesture, event.type());
+}
+
 TEST(DollarGestureEvent, SetTouchId)
 {
   cen::dollar_gesture_event event;

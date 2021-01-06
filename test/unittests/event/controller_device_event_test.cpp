@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(ControllerDeviceEvent, Defaults)
+{
+  cen::controller_device_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::controller_device_added, event.type());
+}
+
 TEST(ControllerDeviceEvent, Constructors)
 {
   EXPECT_NO_THROW(cen::controller_device_event{});

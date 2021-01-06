@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(MultiGestureEvent, Defaults)
+{
+  cen::multi_gesture_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::multi_gesture, event.type());
+}
+
 TEST(MultiGestureEvent, SetTouchId)
 {
   cen::multi_gesture_event event;

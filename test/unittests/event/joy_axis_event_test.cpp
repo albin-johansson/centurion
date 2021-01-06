@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(JoyAxisEvent, Defaults)
+{
+  cen::joy_axis_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::joystick_axis_motion, event.type());
+}
+
 TEST(JoyAxisEvent, SetWhich)
 {
   cen::joy_axis_event event;

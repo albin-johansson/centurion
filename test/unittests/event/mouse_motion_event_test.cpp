@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(MouseMotionEvent, Defaults)
+{
+  cen::mouse_motion_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::mouse_motion, event.type());
+}
+
 TEST(MouseMotionEvent, SetWindowId)
 {
   cen::mouse_motion_event event;

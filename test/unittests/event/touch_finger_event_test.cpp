@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(TouchFingerEvent, Defaults)
+{
+  cen::touch_finger_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::touch_down, event.type());
+}
+
 TEST(TouchFingerEvent, SetTouchId)
 {
   cen::touch_finger_event event;

@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(WindowEvent, Defaults)
+{
+  cen::window_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::window, event.type());
+}
+
 TEST(WindowEvent, EventId)
 {
   SDL_WindowEvent sdl{};

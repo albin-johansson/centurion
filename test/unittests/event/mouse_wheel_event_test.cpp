@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(MouseWheelEvent, Defaults)
+{
+  cen::mouse_wheel_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::mouse_wheel, event.type());
+}
+
 TEST(MouseWheelEvent, SetWindowId)
 {
   cen::mouse_wheel_event event;

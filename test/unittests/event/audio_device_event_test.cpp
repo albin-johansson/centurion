@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(AudioDeviceEvent, Defaults)
+{
+  cen::audio_device_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::audio_device_added, event.type());
+}
+
 TEST(AudioDeviceEvent, Constructors)
 {
   EXPECT_NO_THROW(cen::audio_device_event{});

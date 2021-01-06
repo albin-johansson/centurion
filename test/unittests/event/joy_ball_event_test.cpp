@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(JoyBallEvent, Defaults)
+{
+  cen::joy_ball_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::joystick_ball_motion, event.type());
+}
+
 TEST(JoyBallEvent, SetWhich)
 {
   cen::joy_ball_event event;

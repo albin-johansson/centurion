@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(TextInputEvent, Defaults)
+{
+  cen::text_input_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::text_input, event.type());
+}
+
 TEST(TextInputEvent, SetWindowId)
 {
   cen::text_input_event event;

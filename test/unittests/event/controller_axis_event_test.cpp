@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(ControllerAxisEvent, Defaults)
+{
+  cen::controller_axis_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::controller_axis_motion, event.type());
+}
+
 TEST(ControllerAxisEvent, Constructors)
 {
   EXPECT_NO_THROW(cen::controller_axis_event{});

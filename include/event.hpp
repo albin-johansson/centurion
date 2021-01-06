@@ -78,11 +78,27 @@ class common_event
 {
  public:
   /**
-   * \brief Creates a `CommonEvent` and default-initializes the internal event.
+   * \brief Creates a zero-initialized `common_event`.
+   *
+   * \deprecated Use `common_event(event_type)` instead.
    *
    * \since 4.0.0
    */
-  common_event() noexcept = default;
+  [[deprecated]] common_event() noexcept = default;
+
+  /**
+   * \brief Creates a `common_event` and zero-initializes the internal event
+   * except for the timestamp and the supplied type.
+   *
+   * \param type the type of the event.
+   *
+   * \since 5.1.0
+   */
+  explicit common_event(const event_type type) noexcept
+  {
+    set_time(SDL_GetTicks());
+    set_type(type);
+  }
 
   /**
    * \brief Creates a common_event and copies the supplied event.
@@ -172,6 +188,9 @@ class common_event
   T m_event{};
 };
 
+template <typename T>
+[[nodiscard]] auto as_sdl_event(const common_event<T>& event) -> SDL_Event;
+
 /**
  * \class audio_device_event
  *
@@ -188,11 +207,11 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized audio device event.
+   * \brief Creates an audio device event of type `audio_device_added`.
    *
    * \since 4.0.0
    */
-  audio_device_event() noexcept : common_event{}
+  audio_device_event() noexcept : common_event{event_type::audio_device_added}
   {}
 
   /**
@@ -271,7 +290,29 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
   {
     return m_event.iscapture;
   }
+
+  [[nodiscard]] auto as_sdl_event() const -> SDL_Event
+  {
+    SDL_Event e{};
+
+    e.type = m_event.type;
+    e.common.type = m_event.type;
+    e.common.timestamp = m_event.timestamp;
+
+    e.adevice = m_event;
+
+    return e;
+  }
 };
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.adevice = event.get();
+  return e;
+}
 
 /**
  * \class controller_axis_event
@@ -286,11 +327,12 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized controller axis event.
+   * \brief Creates a controller axis event of type `controller_axis_motion`.
    *
    * \since 4.0.0
    */
-  controller_axis_event() noexcept : common_event{}
+  controller_axis_event() noexcept
+      : common_event{cen::event_type::controller_axis_motion}
   {}
 
   /**
@@ -381,6 +423,15 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.caxis = event.get();
+  return e;
+}
+
 /**
  * \class controller_button_event
  *
@@ -398,11 +449,12 @@ class controller_button_event final
 {
  public:
   /**
-   * \brief Creates a default-initialized controller button event.
+   * \brief Creates a controller button event of type `controller_button_down`.
    *
    * \since 4.0.0
    */
-  controller_button_event() noexcept : common_event{}
+  controller_button_event() noexcept
+      : common_event{event_type::controller_button_down}
   {}
 
   /**
@@ -516,6 +568,15 @@ class controller_button_event final
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.cbutton = event.get();
+  return e;
+}
+
 /**
  * \class controller_device_event
  *
@@ -533,11 +594,12 @@ class controller_device_event final
 {
  public:
   /**
-   * \brief Creates a default-initialized controller device event.
+   * \brief Creates a controller device event of type `controller_device_added`.
    *
    * \since 4.0.0
    */
-  controller_device_event() noexcept : common_event{}
+  controller_device_event() noexcept
+      : common_event{event_type::controller_device_added}
   {}
 
   /**
@@ -586,6 +648,15 @@ class controller_device_event final
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.cdevice = event.get();
+  return e;
+}
+
 /**
  * \class dollar_gesture_event
  *
@@ -601,12 +672,14 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized dollar gesture event.
+   * \brief Creates a dollar gesture event of type `dollar_gesture`.
    *
    * \since 4.0.0
    */
-  dollar_gesture_event() noexcept : common_event{}
-  {}
+  dollar_gesture_event() noexcept : common_event{event_type::dollar_gesture}
+  {
+    set_type(event_type::dollar_gesture);
+  }
 
   /**
    * \brief Creates a dollar gesture event that is based on the supplied SDL
@@ -769,6 +842,15 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.dgesture = event.get();
+  return e;
+}
+
 /**
  * \class drop_event
  *
@@ -784,11 +866,11 @@ class drop_event final : public common_event<SDL_DropEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized drop event.
+   * \brief Creates a drop event of type `drop_file`.
    *
    * \since 4.0.0
    */
-  drop_event() noexcept : common_event{}
+  drop_event() noexcept : common_event{event_type::drop_file}
   {}
 
   /**
@@ -926,6 +1008,14 @@ class drop_event final : public common_event<SDL_DropEvent>
   bool m_willFreeFile{false};
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.drop = event.get();
+  return e;
+}
+
 /**
  * \class joy_axis_event
  *
@@ -942,11 +1032,11 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized joy axis event.
+   * \brief Creates a joy axis event.
    *
    * \since 4.0.0
    */
-  joy_axis_event() noexcept : common_event{}
+  joy_axis_event() noexcept : common_event{event_type::joystick_axis_motion}
   {}
 
   /**
@@ -1033,6 +1123,15 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jaxis = event.get();
+  return e;
+}
+
 /**
  * \class joy_ball_event
  *
@@ -1049,11 +1148,11 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized joy ball event.
+   * \brief Creates a joy ball event.
    *
    * \since 4.0.0
    */
-  joy_ball_event() noexcept : common_event{}
+  joy_ball_event() noexcept : common_event{event_type::joystick_ball_motion}
   {}
 
   /**
@@ -1170,6 +1269,15 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jball = event.get();
+  return e;
+}
+
 /**
  * \class joy_button_event
  *
@@ -1186,11 +1294,11 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized JoyButtonEvent.
+   * \brief Creates a joystick button event of type `joystick_button_down`.
    *
    * \since 4.0.0
    */
-  joy_button_event() noexcept : common_event{}
+  joy_button_event() noexcept : common_event{event_type::joystick_button_down}
   {}
 
   /**
@@ -1303,6 +1411,15 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jbutton = event.get();
+  return e;
+}
+
 /**
  * \class joy_device_event
  *
@@ -1318,11 +1435,11 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized JoyDeviceEvent.
+   * \brief Creates a joystick device event of type `joystick_device_added`.
    *
    * \since 4.0.0
    */
-  joy_device_event() noexcept : common_event{}
+  joy_device_event() noexcept : common_event{event_type::joystick_device_added}
   {}
 
   /**
@@ -1366,6 +1483,15 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jdevice = event.get();
+  return e;
+}
+
 /**
  * \enum joy_hat_position
  *
@@ -1402,11 +1528,11 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized joy hat event.
+   * \brief Creates a joy hat event.
    *
    * \since 4.0.0
    */
-  joy_hat_event() noexcept : common_event{}
+  joy_hat_event() noexcept : common_event{event_type::joystick_hat_motion}
   {}
 
   /**
@@ -1469,6 +1595,15 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jhat = event.get();
+  return e;
+}
+
 /**
  * \class keyboard_event
  *
@@ -1485,11 +1620,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized keyboard event.
+   * \brief Creates a keyboard event of type `key_down`.
    *
    * \since 4.0.0
    */
-  keyboard_event() noexcept : common_event{}
+  keyboard_event() noexcept : common_event{event_type::key_down}
   {}
 
   /**
@@ -1800,6 +1935,15 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.key = event.get();
+  return e;
+}
+
 /**
  * \class mouse_button_event
  *
@@ -1815,11 +1959,11 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized `MouseButtonEvent`.
+   * \brief Creates a mouse button event of type `mouse_button_down`.
    *
    * \since 4.0.0
    */
-  mouse_button_event() noexcept : common_event{}
+  mouse_button_event() noexcept : common_event{event_type::mouse_button_down}
   {}
 
   /**
@@ -2028,6 +2172,15 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.button = event.get();
+  return e;
+}
+
 /**
  * \class mouse_motion_event
  *
@@ -2043,11 +2196,11 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized MouseMotionEvent.
+   * \brief Creates a mouse motion event.
    *
    * \since 4.0.0
    */
-  mouse_motion_event() noexcept : common_event{}
+  mouse_motion_event() noexcept : common_event{event_type::mouse_motion}
   {}
 
   /**
@@ -2258,6 +2411,15 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.motion = event.get();
+  return e;
+}
+
 /**
  * \enum mouse_wheel_direction
  *
@@ -2290,11 +2452,11 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized MouseWheelEvent.
+   * \brief Creates a mouse wheel event.
    *
    * \since 4.0.0
    */
-  mouse_wheel_event() noexcept : common_event{}
+  mouse_wheel_event() noexcept : common_event{event_type::mouse_wheel}
   {}
 
   /**
@@ -2443,6 +2605,15 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.wheel = event.get();
+  return e;
+}
+
 /**
  * \class multi_gesture_event
  *
@@ -2459,11 +2630,11 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized `MultiGestureEvent`.
+   * \brief Creates a multi-gesture event.
    *
    * \since 4.0.0
    */
-  multi_gesture_event() noexcept : common_event{}
+  multi_gesture_event() noexcept : common_event{event_type::multi_gesture}
   {}
 
   /**
@@ -2638,6 +2809,15 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_MultiGestureEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.mgesture = event.get();
+  return e;
+}
+
 /**
  * \class quit_event
  *
@@ -2654,11 +2834,11 @@ class quit_event final : public common_event<SDL_QuitEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized quit event.
+   * \brief Creates a quit event.
    *
    * \since 4.0.0
    */
-  quit_event() noexcept : common_event{}
+  quit_event() noexcept : common_event{event_type::quit}
   {}
 
   /**
@@ -2671,6 +2851,14 @@ class quit_event final : public common_event<SDL_QuitEvent>
   explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event}
   {}
 };
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.quit = event.get();
+  return e;
+}
 
 /**
  * \class text_editing_event
@@ -2690,11 +2878,11 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized `TextEditingEvent`.
+   * \brief Creates a text editing event.
    *
    * \since 4.0.0
    */
-  text_editing_event() noexcept : common_event{}
+  text_editing_event() noexcept : common_event{event_type::text_editing}
   {
     check_length();
   }
@@ -2809,6 +2997,15 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.edit = event.get();
+  return e;
+}
+
 /**
  * \class text_input_event
  *
@@ -2824,11 +3021,11 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized TextInputEvent.
+   * \brief Creates a text input event.
    *
    * \since 4.0.0
    */
-  text_input_event() noexcept : common_event{}
+  text_input_event() noexcept : common_event{event_type::text_input}
   {}
 
   /**
@@ -2879,6 +3076,15 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_TextInputEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.text = event.get();
+  return e;
+}
+
 /**
  * \class touch_finger_event
  *
@@ -2894,11 +3100,11 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized touch finger event.
+   * \brief Creates a touch finger event of type `touch_down`.
    *
    * \since 4.0.0
    */
-  touch_finger_event() noexcept : common_event{}
+  touch_finger_event() noexcept : common_event{event_type::touch_down}
   {}
 
   /**
@@ -3136,6 +3342,15 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.tfinger = event.get();
+  return e;
+}
+
 /**
  * \enum window_event_id
  *
@@ -3279,11 +3494,11 @@ class window_event final : public common_event<SDL_WindowEvent>
 {
  public:
   /**
-   * \brief Creates a default-initialized window event.
+   * \brief Creates a window event.
    *
    * \since 4.0.0
    */
-  window_event() noexcept : common_event{}
+  window_event() noexcept : common_event{event_type::window}
   {}
 
   /**
@@ -3353,6 +3568,15 @@ class window_event final : public common_event<SDL_WindowEvent>
   }
 };
 
+template <>
+inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.window = event.get();
+  return e;
+}
+
 /**
  * \class event
  *
@@ -3383,7 +3607,14 @@ class event final
    */
   explicit event(const SDL_Event& event) noexcept : m_event{event}
   {
-    update_data();
+    update_data(static_cast<event_type>(event.type));
+  }
+
+  template <typename T>
+  explicit event(const common_event<T>& event) noexcept
+      : m_event{as_sdl_event(event)}
+  {
+    update_data(event.type());
   }
 
   /**
@@ -3411,6 +3642,25 @@ class event final
   {
     auto& sdlEvent = event.m_event;
     SDL_PushEvent(&sdlEvent);
+  }
+
+  /**
+   * \brief Pushes an event onto the event queue.
+   *
+   * \tparam T the SDL event type.
+   *
+   * \param event the event that will be pushed onto the event queue.
+   *
+   * \return `true` if the event was successfully added; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  template <typename T>
+  static auto push(const common_event<T>& event) noexcept -> bool
+  {
+    auto sdlEvent = as_sdl_event(event);
+    const auto result = SDL_PushEvent(&sdlEvent);
+    return result >= 0;
   }
 
   /**
@@ -3450,7 +3700,11 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    update_data();
+    if (result) {
+      update_data(static_cast<event_type>(m_event.type));
+    } else {
+      update_data(std::nullopt);
+    }
 
     return result;
   }
@@ -3458,15 +3712,18 @@ class event final
   /**
    * \brief Returns the type of the event.
    *
-   * \details This method can always be safely called on an event instance.
-   *
-   * \return the type of the event.
+   * \return the type of the event; `std::nullopt` if there is no internal
+   * event.
    *
    * \since 3.1.0
    */
-  [[nodiscard]] auto type() const noexcept -> event_type
+  [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    return static_cast<event_type>(m_event.type);
+    if (is_empty()) {
+      return std::nullopt;
+    } else {
+      return static_cast<event_type>(m_event.type);
+    }
   }
 
   /**
@@ -3669,82 +3926,81 @@ class event final
                window_event>
       m_data{};
 
-  void update_data() noexcept
+  void update_data(const std::optional<event_type> t) noexcept
   {
-    const auto t = type();
+    using et = event_type;
 
-    if (t == event_type::quit) {
+    if (t == et::quit) {
       m_data.emplace<quit_event>(m_event.quit);
 
-    } else if (t == event_type::audio_device_added ||
-               t == event_type::audio_device_removed) {
+    } else if (t == et::audio_device_added || t == et::audio_device_removed) {
       m_data.emplace<audio_device_event>(m_event.adevice);
 
-    } else if (t == event_type::controller_axis_motion) {
+    } else if (t == et::controller_axis_motion) {
       m_data.emplace<controller_axis_event>(m_event.caxis);
 
-    } else if (t == event_type::controller_button_down ||
-               t == event_type::controller_button_up) {
+    } else if (t == et::controller_button_down ||
+               t == et::controller_button_up) {
       m_data.emplace<controller_button_event>(m_event.cbutton);
 
-    } else if (t == event_type::controller_device_added ||
-               t == event_type::controller_device_removed ||
-               t == event_type::controller_device_remapped) {
+    } else if (t == et::controller_device_added ||
+               t == et::controller_device_removed ||
+               t == et::controller_device_remapped) {
       m_data.emplace<controller_device_event>(m_event.cdevice);
 
-    } else if (t == event_type::dollar_gesture ||
-               t == event_type::dollar_record) {
+    } else if (t == et::dollar_gesture || t == et::dollar_record) {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
 
-    } else if (t == event_type::drop_begin || t == event_type::drop_complete ||
-               t == event_type::drop_file || t == event_type::drop_text) {
+    } else if (t == et::drop_begin || t == et::drop_complete ||
+               t == et::drop_file || t == et::drop_text) {
       m_data.emplace<drop_event>(m_event.drop);
 
-    } else if (t == event_type::joystick_axis_motion) {
+    } else if (t == et::joystick_axis_motion) {
       m_data.emplace<joy_axis_event>(m_event.jaxis);
 
-    } else if (t == event_type::joystick_ball_motion) {
+    } else if (t == et::joystick_ball_motion) {
       m_data.emplace<joy_ball_event>(m_event.jball);
 
-    } else if (t == event_type::joystick_button_up ||
-               t == event_type::joystick_button_down) {
+    } else if (t == et::joystick_button_up || t == et::joystick_button_down) {
       m_data.emplace<joy_button_event>(m_event.jbutton);
 
-    } else if (t == event_type::joystick_device_added ||
-               t == event_type::joystick_device_removed) {
+    } else if (t == et::joystick_device_added ||
+               t == et::joystick_device_removed) {
       m_data.emplace<joy_device_event>(m_event.jdevice);
 
     } else if (t == event_type::joystick_hat_motion) {
       m_data.emplace<joy_hat_event>(m_event.jhat);
 
-    } else if (t == event_type::key_down || t == event_type::key_up) {
+    } else if (t == et::key_down || t == et::key_up) {
       m_data.emplace<keyboard_event>(m_event.key);
 
-    } else if (t == event_type::mouse_button_up ||
-               t == event_type::mouse_button_down) {
+    } else if (t == et::mouse_button_up || t == et::mouse_button_down) {
       m_data.emplace<mouse_button_event>(m_event.button);
 
-    } else if (t == event_type::mouse_motion) {
+    } else if (t == et::mouse_motion) {
       m_data.emplace<mouse_motion_event>(m_event.motion);
 
-    } else if (t == event_type::mouse_wheel) {
+    } else if (t == et::mouse_wheel) {
       m_data.emplace<mouse_wheel_event>(m_event.wheel);
 
-    } else if (t == event_type::multi_gesture) {
+    } else if (t == et::multi_gesture) {
       m_data.emplace<multi_gesture_event>(m_event.mgesture);
 
-    } else if (t == event_type::text_editing) {
+    } else if (t == et::text_editing) {
       m_data.emplace<text_editing_event>(m_event.edit);
 
-    } else if (t == event_type::text_input) {
+    } else if (t == et::text_input) {
       m_data.emplace<text_input_event>(m_event.text);
 
-    } else if (t == event_type::touch_motion || t == event_type::touch_down ||
-               t == event_type::touch_up) {
+    } else if (t == et::touch_motion || t == et::touch_down ||
+               t == et::touch_up) {
       m_data.emplace<touch_finger_event>(m_event.tfinger);
 
-    } else if (t == event_type::window) {
+    } else if (t == et::window) {
       m_data.emplace<window_event>(m_event.window);
+
+    } else {
+      m_data.emplace<std::monostate>();
     }
   }
 };

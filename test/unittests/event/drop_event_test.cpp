@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(DropEvent, Defaults)
+{
+  cen::drop_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::drop_file, event.type());
+}
+
 TEST(DropEvent, SetWillFreeFile)
 {
   cen::drop_event event;

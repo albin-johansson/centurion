@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(KeyboardEvent, Defaults)
+{
+  cen::keyboard_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::key_down, event.type());
+}
+
 TEST(KeyboardEvent, SetScanCode)
 {
   cen::keyboard_event event;

@@ -2,6 +2,13 @@
 
 #include "event.hpp"
 
+TEST(TextEditingEvent, Defaults)
+{
+  cen::text_editing_event event;
+  EXPECT_GT(event.time(), 0);
+  EXPECT_EQ(cen::event_type::text_editing, event.type());
+}
+
 TEST(TextEditingEvent, SetWindowId)
 {
   cen::text_editing_event event;

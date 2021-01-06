@@ -35,13 +35,12 @@ be easy to separate different event handlers and it leads to much nicer to read 
 ``event_dispatcher`` class makes this possible.
 
 To use the ``event_dispatcher`` class, we supply the events that we are interested in
-handling as template parameters,  takes a variadic list of event types as class template parameters, 
-which are referred to as the "subscribed" events, i.e. the events that we are interested in 
-handling. So for the previous example we would supply ``cen::quit_event``, ``cen::window_event`` and 
-``cen::keyboard_event`` as template parameters. By connecting event handlers to these subscribe events,
-all we need to do in our game loop is to call the ``poll()`` function of the ``event_dispatcher``, see 
-the examples for how to set event handlers. The game loop from the previous example could look like the 
-following using an event dispatcher.
+handling as template parameters, which are referred to as the "subscribed" events. So for the
+previous example we would supply ``cen::quit_event``, ``cen::window_event`` and ``cen::keyboard_event``
+as template parameters. By connecting event handlers to these subscribe events, all we need to do
+in our game loop is to call the ``poll()`` function of ``event_dispatcher``, see the examples for
+how to set event handlers. The game loop from the previous example could look like the
+following using an event dispatcher instance.
 
 .. code:: c++
 

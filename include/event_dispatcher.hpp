@@ -305,6 +305,9 @@ class event_dispatcher final
   /**
    * \brief Returns the number of subscribed events.
    *
+   * \note The returned value is the same as the number of template parameters
+   * to the class.
+   *
    * \return the amount of subscribed events.
    *
    * \since 5.1.0

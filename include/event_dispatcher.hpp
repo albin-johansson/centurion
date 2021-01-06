@@ -3,19 +3,25 @@
 #include <array>        // array
 #include <cstddef>      // size_t
 #include <functional>   // function, bind
+#include <ostream>      // ostream
+#include <string>       // string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
+#include "detail/to_string.hpp"
 #include "detail/tuple_type_index.hpp"
 #include "event.hpp"
 
-namespace cen::experimental {
+namespace cen {
 
 /// \addtogroup event
 /// \{
 
 /**
  * \brief Manages a subscription to an event.
+ *
+ * \note This class is used by `event_dispatcher` and isn't really meant to be
+ * used by itself.
  *
  * \tparam E the event type, e.g. `window_event`.
  *
@@ -31,6 +37,7 @@ class event_sink final
  public:
   using event_type = std::decay_t<E>;              ///< Associated event type.
   using signature_type = void(const event_type&);  ///< Signature of handler.
+  using function_type = std::function<signature_type>;
 
   /**
    * \brief Resets the event sink, removing any associated handler.
@@ -55,12 +62,12 @@ class event_sink final
    * \since 5.1.0
    */
   template <typename T>
-  void bind(T&& callable)
+  void to(T&& callable)
   {
     static_assert(std::is_invocable_v<T, const event_type&>,
                   "Callable must be invocable with subscribed event!");
 
-    m_function = std::function<signature_type>{callable};
+    m_function = function_type{callable};
   }
 
   /**
@@ -78,7 +85,7 @@ class event_sink final
    * \since 5.1.0
    */
   template <auto memberFunc, typename Self>
-  void bind(Self* self)
+  void to(Self* self)
   {
     static_assert(std::is_member_function_pointer_v<decltype(memberFunc)>,
                   "\"memberFunc\" must be member function pointer!");
@@ -86,7 +93,7 @@ class event_sink final
         std::is_invocable_v<decltype(memberFunc), Self*, const event_type&>,
         "Member function must be invocable with subscribed event!");
 
-    bind(std::bind(memberFunc, self, std::placeholders::_1));
+    to(std::bind(memberFunc, self, std::placeholders::_1));
   }
 
   /**
@@ -99,9 +106,9 @@ class event_sink final
    * \since 5.1.0
    */
   template <auto function>
-  void bind()
+  void to()
   {
-    bind(function);
+    to(function);
   }
 
   /**
@@ -111,13 +118,18 @@ class event_sink final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto function() -> std::function<signature_type>&
+  [[nodiscard]] auto function() -> function_type&
+  {
+    return m_function;
+  }
+
+  [[nodiscard]] auto function() const -> const function_type&
   {
     return m_function;
   }
 
  private:
-  std::function<signature_type> m_function;
+  function_type m_function;
 };
 
 /**
@@ -182,7 +194,7 @@ class event_dispatcher final
   template <typename Event>
   [[nodiscard]] constexpr static auto index_of()
   {
-    using sink_t = event_sink<Event>;
+    using sink_t = event_sink<std::decay_t<Event>>;
 
     constexpr auto index = detail::tuple_type_index_v<sink_t, sink_tuple>;
     static_assert(index != -1);
@@ -215,7 +227,23 @@ class event_dispatcher final
     }
   }
 
+  template <typename Event>
+  [[nodiscard]] auto get_sink() -> event_sink<Event>&
+  {
+    constexpr auto index = index_of<Event>();
+    return std::get<index>(m_sinks);
+  }
+
+  template <typename Event>
+  [[nodiscard]] auto get_sink() const -> const event_sink<Event>&
+  {
+    constexpr auto index = index_of<Event>();
+    return std::get<index>(m_sinks);
+  }
+
  public:
+  using size_type = std::size_t;
+
   /**
    * \brief Polls all events, checking for subscribed events.
    *
@@ -244,18 +272,12 @@ class event_dispatcher final
    * \since 5.1.0
    */
   template <typename Event>
-  auto on() -> event_sink<Event>&
+  auto bind() -> event_sink<Event>&
   {
-    using event_t = std::decay_t<Event>;
-
-    static_assert(((std::is_same_v<event_t, E>) || ...),
-                  "Cannot connect unsubscribed event! Make sure that the "
+    static_assert((std::is_same_v<std::decay_t<Event>, E> || ...),
+                  "Can't connect unsubscribed event! Make sure that the "
                   "event is listed as a class template parameter.");
-
-    constexpr auto index = index_of<event_t>();
-    static_assert(index != -1);
-
-    return std::get<index>(m_sinks);
+    return get_sink<Event>();
   }
 
   /**
@@ -265,87 +287,31 @@ class event_dispatcher final
    */
   void reset() noexcept
   {
-    (on<E>().reset(), ...);
+    (bind<E>().reset(), ...);
   }
 
   /**
-   * \brief Removes any set handler from the specified subscribed event.
+   * \brief Returns the amount of set event handlers.
    *
-   * \tparam Event the subscribed event to reset the handler for.
+   * \return the amount of set event handlers.
    *
    * \since 5.1.0
    */
-  template <typename Event>
-  void reset() noexcept
+  [[nodiscard]] auto active_count() const -> size_type
   {
-    on<Event>().reset();
+    return (0u + ... + (get_sink<E>().function() ? 1u : 0u));
   }
 
   /**
-   * \brief Connects a function object to a subscribed event.
+   * \brief Returns the number of subscribed events.
    *
-   * \note This will overwrite any previously set handler for the event.
-   *
-   * \remarks This is a convenience function that calls `on()`
-   * behind-the-scenes.
-   *
-   * \tparam Event the subscribed event type. Must be present in the class
-   * template argument list.
-   * \tparam T the type of the function object.
-   *
-   * \param callable the function object that will handle the event.
+   * \return the amount of subscribed events.
    *
    * \since 5.1.0
    */
-  template <typename Event, typename T>
-  void bind(T&& callable)
+  [[nodiscard]] constexpr static auto size() noexcept -> size_type
   {
-    on<Event>().template bind<T>(std::forward<T>(callable));
-  }
-
-  /**
-   * \brief Connects a member function to a subscribed event.
-   *
-   * \note This will overwrite any previously set handler for the event.
-   *
-   * \note The event sink does *not* take ownership of the supplied pointer.
-   *
-   * \remarks This is a convenience function that calls `on()`
-   * behind-the-scenes.
-   *
-   * \tparam Event the subscribed event type. Must be present in the class
-   * template argument list.
-   * \tparam memberFunc the member function pointer.
-   * \tparam Self the type of the object that features the member function.
-   *
-   * \param self a pointer to the instance that will handle the event.
-   *
-   * \since 5.1.0
-   */
-  template <typename Event, auto memberFunc, typename Self>
-  void bind(Self* self)
-  {
-    on<Event>().template bind<memberFunc>(self);
-  }
-
-  /**
-   * \brief Connects a free function to a subscribed event.
-   *
-   * \note This will overwrite any previously set handler for the event.
-   *
-   * \remarks This is a convenience function that calls `on()`
-   * behind-the-scenes.
-   *
-   * \tparam Event the subscribed event type. Must be present in the class
-   * template argument list.
-   * \tparam function a function pointer.
-   *
-   * \since 5.1.0
-   */
-  template <typename Event, auto func>
-  void bind()
-  {
-    on<Event>().template bind<func>();
+    return sizeof...(E);
   }
 
  private:
@@ -355,6 +321,26 @@ class event_dispatcher final
   sink_tuple m_sinks;
 };
 
+template <typename... E>
+[[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
+    -> std::string
+{
+  // clang-format off
+  return "[event_dispatcher | size: " + detail::to_string(dispatcher.size()).value()
+         + ", #active: " + detail::to_string(dispatcher.active_count()).value()
+         + "]";
+  // clang-format on
+}
+
+template <typename... E>
+inline auto operator<<(std::ostream& stream,
+                       const event_dispatcher<E...>& dispatcher)
+    -> std::ostream&
+{
+  stream << to_string(dispatcher);
+  return stream;
+}
+
 /// \}
 
-}  // namespace cen::experimental
+}  // namespace cen

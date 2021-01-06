@@ -2,65 +2,134 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
+#include "log.hpp"
+
+using dispatcher_t = cen::event_dispatcher<cen::quit_event,
+                                           cen::controller_button_event,
+                                           cen::window_event>;
+
 namespace {
 
-using dispatcher_t =
-    cen::experimental::event_dispatcher<cen::quit_event,
-                                        cen::controller_button_event,
-                                        cen::controller_axis_event>;
+inline bool visitedFreeFunction{};
 
 void on_quit(const cen::quit_event&)
 {
-  std::cout << "Received quit_event!\n";
+  visitedFreeFunction = true;
 }
 
-class button_handler final
+struct button_handler final
 {
- public:
   void on_event(const cen::controller_button_event&)
   {
-    std::cout << "Received controller_button_event!\n";
+    visited = true;
   }
+
+  bool visited{};
 };
 
 }  // namespace
 
-TEST(EventDispatcher, Foo)
+TEST(EventDispatcher, Bind)
 {
+  /* Ensure that it is possible to connect free functions, member functions and
+   * lambdas as event handlers.
+   */
+
   cen::event::flush_all();
 
   button_handler buttonHandler;
   dispatcher_t dispatcher;
 
-//  dispatcher.on<cen::quit_event>().bind<&on_quit>();
-//
-//  dispatcher.on<cen::controller_button_event>().bind<&button_handler::on_event>(
-//      &buttonHandler);
-//
-//  dispatcher.on<cen::controller_axis_event>().bind(
-//      [](const cen::controller_axis_event& event) {
-//        std::cout << "Received controller_axis_event!\n";
-//      });
+  // clang-format off
+  dispatcher.bind<cen::quit_event>().to<&on_quit>();
+  dispatcher.bind<cen::controller_button_event>()
+            .to<&button_handler::on_event>(&buttonHandler);
+  // clang-format on
 
-  dispatcher.reset();
-
-  dispatcher.bind<cen::quit_event, &on_quit>();
-  dispatcher.bind<cen::controller_button_event, &button_handler::on_event>(
-      &buttonHandler);
-  dispatcher.bind<cen::quit_event>([](const cen::quit_event& event) {
-    std::cout << "Quit!\n";
+  bool visitedLambda{};
+  dispatcher.bind<cen::window_event>().to([&](const cen::window_event&) {
+    visitedLambda = true;
   });
 
-  SDL_Event e{};
+  cen::window_event windowEvent;
+  ASSERT_TRUE(cen::event::push(windowEvent));
 
-  e.type = SDL_CONTROLLERAXISMOTION;
-  SDL_PushEvent(&e);
+  cen::quit_event quitEvent;
+  ASSERT_TRUE(cen::event::push(quitEvent));
 
-  e.type = SDL_QUIT;
-  SDL_PushEvent(&e);
-
-  e.type = SDL_CONTROLLERBUTTONDOWN;
-  SDL_PushEvent(&e);
+  cen::controller_button_event buttonEvent;
+  ASSERT_TRUE(cen::event::push(buttonEvent));
 
   dispatcher.poll();
+  EXPECT_TRUE(buttonHandler.visited);
+  EXPECT_TRUE(visitedFreeFunction);
+  EXPECT_TRUE(visitedLambda);
+}
+
+TEST(EventDispatcher, Reset)
+{
+  dispatcher_t dispatcher;
+  ASSERT_EQ(0, dispatcher.active_count());
+
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
+  });
+
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {
+  });
+
+  dispatcher.bind<cen::controller_button_event>().to(
+      [](cen::controller_button_event) {
+      });
+
+  EXPECT_EQ(3, dispatcher.active_count());
+
+  dispatcher.reset();
+  EXPECT_EQ(0, dispatcher.active_count());
+
+  EXPECT_NO_THROW(dispatcher.reset());
+}
+
+TEST(EventDispatcher, ActiveCount)
+{
+  dispatcher_t dispatcher;
+  EXPECT_EQ(0, dispatcher.active_count());
+
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
+  });
+  EXPECT_EQ(1, dispatcher.active_count());
+
+  // Bind same event to another lambda, should replace the previous handler
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
+  });
+  EXPECT_EQ(1, dispatcher.active_count());
+
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {
+  });
+  EXPECT_EQ(2, dispatcher.active_count());
+}
+
+TEST(EventDispatcher, Size)
+{
+  cen::event_dispatcher zero;
+  EXPECT_EQ(0, zero.size());
+
+  cen::event_dispatcher<cen::quit_event> one;
+  EXPECT_EQ(1, one.size());
+
+  cen::event_dispatcher<cen::quit_event, cen::window_event> two;
+  EXPECT_EQ(2, two.size());
+}
+
+TEST(EventDispatcher, ToString)
+{
+  dispatcher_t dispatcher;
+  cen::log::put(cen::to_string(dispatcher));
+}
+
+TEST(EventDispatcher, StreamOperator)
+{
+  dispatcher_t dispatcher;
+  std::cout << "COUT: " << dispatcher << '\n';
 }

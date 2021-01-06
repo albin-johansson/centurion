@@ -60,6 +60,7 @@ Welcome to Centurion's documentation!
 
    pages/api/event/event
    pages/api/event/event_type
+   pages/api/event/event_dispatcher
 
 .. toctree::
    :maxdepth: 1

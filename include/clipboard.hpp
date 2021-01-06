@@ -27,7 +27,8 @@
 
 #include <SDL_clipboard.h>
 
-#include <string>  // string
+#include <cassert>  // assert
+#include <string>   // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
@@ -93,6 +94,7 @@ namespace cen::clipboard {
  */
 inline auto set_text(not_null<czstring> text) noexcept -> bool
 {
+  assert(text);
   return SDL_SetClipboardText(text) == 0;
 }
 

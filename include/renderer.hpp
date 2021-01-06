@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <optional>     // optional
 #include <ostream>      // ostream
@@ -353,6 +354,7 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_utf8(not_null<czstring> str,
                                          const font& font) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderUTF8_Blended(font.get(),
                                str,
@@ -391,6 +393,7 @@ class basic_renderer final
                                                  const font& font,
                                                  const u32 wrap) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderUTF8_Blended_Wrapped(font.get(),
                                        str,
@@ -427,6 +430,7 @@ class basic_renderer final
                                         const font& font,
                                         const color& background) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderUTF8_Shaded(font.get(),
                               str,
@@ -460,6 +464,7 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_utf8(not_null<czstring> str, const font& font)
       -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderUTF8_Solid(font.get(),
                              str,
@@ -492,6 +497,7 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_latin1(not_null<czstring> str,
                                            const font& font) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderText_Blended(font.get(),
                                str,
@@ -530,6 +536,7 @@ class basic_renderer final
                                                    const font& font,
                                                    const u32 wrap) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderText_Blended_Wrapped(font.get(),
                                        str,
@@ -566,6 +573,7 @@ class basic_renderer final
                                           const font& font,
                                           const color& background) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderText_Shaded(font.get(),
                               str,
@@ -599,6 +607,7 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_latin1(not_null<czstring> str,
                                          const font& font) -> texture
   {
+    assert(str);
     return render_text(
         TTF_RenderText_Solid(font.get(),
                              str,

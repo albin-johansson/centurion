@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <optional>     // optional, nullopt
 #include <ostream>      // ostream
@@ -456,6 +457,7 @@ class basic_controller final
   [[nodiscard]] static auto get_axis(not_null<czstring> str) noexcept
       -> controller_axis
   {
+    assert(str);
     return static_cast<controller_axis>(
         SDL_GameControllerGetAxisFromString(str));
   }
@@ -660,6 +662,7 @@ class basic_controller final
    */
   static auto add_mapping(not_null<czstring> mapping) -> bool
   {  // TODO don't throw, return optional
+    assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
     if (result == 1) {
       return true;
@@ -694,6 +697,7 @@ class basic_controller final
    */
   static auto load_mappings(not_null<czstring> file) -> int
   {  // TODO don't throw, return optional
+    assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
     if (result != -1) {
       return result;

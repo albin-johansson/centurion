@@ -28,6 +28,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
@@ -209,6 +210,8 @@ class basic_texture final
                                       not_null<czstring> path,
                                       pixel_format format) -> basic_texture
   {
+    assert(path);
+
     constexpr auto blendMode = blend_mode::blend;
 
     const auto createSurface = [blendMode](czstring path,

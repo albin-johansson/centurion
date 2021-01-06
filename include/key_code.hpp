@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -177,6 +178,7 @@ class key_code final
    */
   auto operator=(not_null<czstring> name) noexcept -> key_code&
   {
+    assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
   }

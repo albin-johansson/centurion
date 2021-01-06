@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <optional>     // optional
 #include <type_traits>  // enable_if_t, true_type, false_type, is_same_v
@@ -836,6 +837,7 @@ class basic_joystick final
   [[nodiscard]] static auto guid_from_string(not_null<czstring> str) noexcept
       -> SDL_JoystickGUID
   {
+    assert(str);
     return SDL_JoystickGetGUIDFromString(str);
   }
 

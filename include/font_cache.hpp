@@ -27,6 +27,7 @@
 
 #include <SDL_ttf.h>
 
+#include <cassert>        // assert
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
@@ -148,6 +149,7 @@ class font_cache final
                           not_null<czstring> string,
                           Renderer& renderer)
   {
+    assert(string);
     store(id, renderer.render_blended_utf8(string, get_font()));
   }
 
@@ -175,6 +177,7 @@ class font_cache final
                                   Renderer& renderer,
                                   const u32 wrap)
   {
+    assert(string);
     store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
   }
 
@@ -202,6 +205,7 @@ class font_cache final
                          Renderer& renderer,
                          const color& background)
   {
+    assert(string);
     store(id, renderer.render_shaded_utf8(string, get_font(), background));
   }
 
@@ -227,6 +231,7 @@ class font_cache final
                         not_null<czstring> string,
                         Renderer& renderer)
   {
+    assert(string);
     store(id, renderer.render_solid_utf8(string, get_font()));
   }
 
@@ -252,6 +257,7 @@ class font_cache final
                             not_null<czstring> string,
                             Renderer& renderer)
   {
+    assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
   }
 
@@ -279,6 +285,7 @@ class font_cache final
                                     Renderer& renderer,
                                     const u32 wrap)
   {
+    assert(string);
     store(id, renderer.render_blended_wrapped_latin1(string, get_font(), wrap));
   }
 
@@ -306,6 +313,7 @@ class font_cache final
                            Renderer& renderer,
                            const color& background)
   {
+    assert(string);
     store(id, renderer.render_shaded_latin1(string, get_font(), background));
   }
 
@@ -331,6 +339,7 @@ class font_cache final
                           not_null<czstring> string,
                           Renderer& renderer)
   {
+    assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
   }
 

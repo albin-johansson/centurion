@@ -27,6 +27,7 @@
 
 #include <SDL_ttf.h>
 
+#include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
@@ -615,6 +616,7 @@ class font final
    */
   [[nodiscard]] auto string_width(not_null<czstring> str) const noexcept -> int
   {
+    assert(str);
     int width{};
     TTF_SizeText(m_font.get(), str, &width, nullptr);
     return width;
@@ -633,6 +635,7 @@ class font final
    */
   [[nodiscard]] auto string_height(not_null<czstring> str) const noexcept -> int
   {
+    assert(str);
     int height{};
     TTF_SizeText(m_font.get(), str, nullptr, &height);
     return height;
@@ -650,6 +653,7 @@ class font final
    */
   [[nodiscard]] auto string_size(not_null<czstring> str) const noexcept -> iarea
   {
+    assert(str);
     int width{};
     int height{};
     TTF_SizeText(m_font.get(), str, &width, &height);

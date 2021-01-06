@@ -27,6 +27,7 @@
 
 #include <SDL_log.h>
 
+#include <cassert>  // assert
 #include <string>   // string
 #include <utility>  // forward
 
@@ -124,6 +125,7 @@ void msg(const priority priority,
          not_null<czstring> fmt,
          Args&&... args) noexcept
 {
+  assert(fmt);
   const auto sdlCategory = static_cast<SDL_LogCategory>(category);
   const auto prio = static_cast<SDL_LogPriority>(priority);
   SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);

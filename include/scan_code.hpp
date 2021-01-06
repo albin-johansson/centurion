@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -170,6 +171,7 @@ class scan_code final
    */
   auto operator=(not_null<czstring> name) noexcept -> scan_code&
   {
+    assert(name);
     m_code = SDL_GetScancodeFromName(name);
     return *this;
   }

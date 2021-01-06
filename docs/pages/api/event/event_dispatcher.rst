@@ -78,7 +78,7 @@ Since                    5.1.0
 Interface 
 ---------
 
-.. doxygenclass:: cen::experimental::event_dispatcher
+.. doxygenclass:: cen::event_dispatcher
   :members:
   :undoc-members:
   :outline:

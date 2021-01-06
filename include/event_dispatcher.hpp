@@ -15,6 +15,112 @@ namespace cen::experimental {
 /// \{
 
 /**
+ * \brief Manages a subscription to an event.
+ *
+ * \tparam E the event type, e.g. `window_event`.
+ *
+ * \headerfile event_dispatcher.hpp
+ *
+ * \see `event_dispatcher`
+ *
+ * \since 5.1.0
+ */
+template <typename E>
+class event_sink final
+{
+ public:
+  using event_type = std::decay_t<E>;              ///< Associated event type.
+  using signature_type = void(const event_type&);  ///< Signature of handler.
+
+  /**
+   * \brief Resets the event sink, removing any associated handler.
+   *
+   * \since 5.1.0
+   */
+  void reset() noexcept
+  {
+    m_function = nullptr;
+  }
+
+  /**
+   * \brief Connects to a function object.
+   *
+   * \note This function will overwrite any previously set handler.
+   *
+   * \tparam T the type of the function object.
+   *
+   * \param callable the callable that will be invoked when an event is
+   * received.
+   *
+   * \since 5.1.0
+   */
+  template <typename T>
+  void bind(T&& callable)
+  {
+    static_assert(std::is_invocable_v<T, const event_type&>,
+                  "Callable must be invocable with subscribed event!");
+
+    m_function = std::function<signature_type>{callable};
+  }
+
+  /**
+   * \brief Connects to a member function.
+   *
+   * \note The event sink does *not* take ownership of the supplied pointer.
+   *
+   * \note This function will overwrite any previously set handler.
+   *
+   * \tparam memberFunction a pointer to a member function.
+   * \tparam Self the type of the object that owns the function.
+   *
+   * \param self a pointer to the object that will handle the event.
+   *
+   * \since 5.1.0
+   */
+  template <auto memberFunc, typename Self>
+  void bind(Self* self)
+  {
+    static_assert(std::is_member_function_pointer_v<decltype(memberFunc)>,
+                  "\"memberFunc\" must be member function pointer!");
+    static_assert(
+        std::is_invocable_v<decltype(memberFunc), Self*, const event_type&>,
+        "Member function must be invocable with subscribed event!");
+
+    bind(std::bind(memberFunc, self, std::placeholders::_1));
+  }
+
+  /**
+   * \brief Connects to a free function.
+   *
+   * \note This function will overwrite any previously set handler.
+   *
+   * \tparam function a function pointer.
+   *
+   * \since 5.1.0
+   */
+  template <auto function>
+  void bind()
+  {
+    bind(function);
+  }
+
+  /**
+   * \brief Returns the function associated with the sink.
+   *
+   * \return the function associated with the sink, might be invalid.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto function() -> std::function<signature_type>&
+  {
+    return m_function;
+  }
+
+ private:
+  std::function<signature_type> m_function;
+};
+
+/**
  * \brief An event dispatcher wrapper around a `cen::event` instance.
  *
  * \details This class is an attempt to simplify handling events in
@@ -52,8 +158,17 @@ namespace cen::experimental {
 template <typename... E>
 class event_dispatcher final
 {
-  template <typename T>
-  using strip_type = std::remove_cv_t<std::remove_reference_t<T>>;
+  static_assert((!std::is_const_v<E>, ...),
+                "Can't use \"const\" on template parameter!");
+
+  static_assert((!std::is_volatile_v<E>, ...),
+                "Can't use \"volatile\" on template parameter!");
+
+  static_assert((!std::is_reference_v<E>, ...),
+                "Reference types can't be used as template parameters!");
+
+  static_assert((!std::is_pointer_v<E>, ...),
+                "Pointer types can't be used as template parameters!");
 
   /**
    * \brief Returns the index of an event type in the function tuple.
@@ -67,9 +182,9 @@ class event_dispatcher final
   template <typename Event>
   [[nodiscard]] constexpr static auto index_of()
   {
-    using func_t = std::function<void(const Event&)>;
+    using sink_t = event_sink<Event>;
 
-    constexpr auto index = detail::tuple_type_index_v<func_t, function_tuple>;
+    constexpr auto index = detail::tuple_type_index_v<sink_t, sink_tuple>;
     static_assert(index != -1);
 
     return index;
@@ -90,7 +205,7 @@ class event_dispatcher final
     if (const auto* e = m_event.template try_get<Event>()) {
       constexpr auto index = index_of<Event>();
 
-      if (auto func = std::get<index>(m_functions)) {
+      if (auto& func = std::get<index>(m_sinks).function()) {
         func(*e);
       }
 
@@ -118,101 +233,126 @@ class event_dispatcher final
   }
 
   /**
-   * \brief Connects an event to a function object.
+   * \brief Returns the event sink associated with the specified event.
    *
-   * \note This function will overwrite any previously set handler for the
-   * specified event type.
+   * \tparam Event the subscribed event to obtain the event sink for. This
+   * function will not accept an event type that isn't one of the subscribed
+   * events (i.e. on of the class template arguments).
    *
-   * \tparam Event the event that will be handled by the function object.
+   * \return the associated event sink.
+   *
+   * \since 5.1.0
+   */
+  template <typename Event>
+  auto on() -> event_sink<Event>&
+  {
+    using event_t = std::decay_t<Event>;
+
+    static_assert(((std::is_same_v<event_t, E>) || ...),
+                  "Cannot connect unsubscribed event! Make sure that the "
+                  "event is listed as a class template parameter.");
+
+    constexpr auto index = index_of<event_t>();
+    static_assert(index != -1);
+
+    return std::get<index>(m_sinks);
+  }
+
+  /**
+   * \brief Removes all set handlers from all of the subscribed events.
+   *
+   * \since 5.1.0
+   */
+  void reset() noexcept
+  {
+    (on<E>().reset(), ...);
+  }
+
+  /**
+   * \brief Removes any set handler from the specified subscribed event.
+   *
+   * \tparam Event the subscribed event to reset the handler for.
+   *
+   * \since 5.1.0
+   */
+  template <typename Event>
+  void reset() noexcept
+  {
+    on<Event>().reset();
+  }
+
+  /**
+   * \brief Connects a function object to a subscribed event.
+   *
+   * \note This will overwrite any previously set handler for the event.
+   *
+   * \remarks This is a convenience function that calls `on()`
+   * behind-the-scenes.
+   *
+   * \tparam Event the subscribed event type. Must be present in the class
+   * template argument list.
    * \tparam T the type of the function object.
    *
-   * \param callable the callable that will be invoked when an event of the
-   * specified type is received.
+   * \param callable the function object that will handle the event.
    *
    * \since 5.1.0
    */
   template <typename Event, typename T>
-  void on(T&& callable)
+  void bind(T&& callable)
   {
-    static_assert(!std::is_reference_v<Event>,
-                  "\"Event\" template parameter can't be reference type!");
-
-    static_assert(!std::is_pointer_v<Event>,
-                  "\"Event\" template parameter can't be pointer type!");
-
-    static_assert(!std::is_volatile_v<Event>,
-                  "\"Event\" template parameter can't be marked as volatile!");
-
-    static_assert(!std::is_const_v<Event>,
-                  "\"Event\" template parameter can't be marked as const!");
-
-    static_assert(((std::is_same_v<Event, E>) || ...),
-                  "Cannot connect to unsubscribed event! Make sure that the "
-                  "event is listed as a class template parameter.");
-
-    static_assert(std::is_invocable_v<T, const Event&>,
-                  "Function object must be invocable with subscribed event!");
-
-    constexpr auto index = index_of<Event>();
-    std::get<index>(m_functions) = std::function<void(const Event&)>(callable);
+    on<Event>().template bind<T>(std::forward<T>(callable));
   }
 
   /**
-   * \brief Connects an event to a member function.
+   * \brief Connects a member function to a subscribed event.
    *
-   * \note The event dispatcher does *not* take ownership of the supplied
-   * pointer.
+   * \note This will overwrite any previously set handler for the event.
    *
-   * \note This function will overwrite any previously set handler for the
-   * specified event type.
+   * \note The event sink does *not* take ownership of the supplied pointer.
    *
-   * \tparam Event the event that will be handled by the object.
-   * \tparam memFun a pointer to a member function.
-   * \tparam Self the type of the object that owns the function.
+   * \remarks This is a convenience function that calls `on()`
+   * behind-the-scenes.
    *
-   * \param self a pointer to the object that will handle the event.
+   * \tparam Event the subscribed event type. Must be present in the class
+   * template argument list.
+   * \tparam memberFunc the member function pointer.
+   * \tparam Self the type of the object that features the member function.
+   *
+   * \param self a pointer to the instance that will handle the event.
    *
    * \since 5.1.0
    */
-  template <typename Event, auto memFun, typename Self>
-  void on(Self* self)
+  template <typename Event, auto memberFunc, typename Self>
+  void bind(Self* self)
   {
-    using mem_fun_t = std::decay_t<decltype(memFun)>;
-    using event_t = strip_type<Event>;
-    using self_t = strip_type<Self>;
-
-    static_assert(std::is_member_function_pointer_v<mem_fun_t>,
-                  "\"memFun\" must be a pointer to a member function!");
-
-    static_assert(
-        std::is_invocable_v<mem_fun_t, self_t*, const event_t&>,
-        "\"memFun\" must be invocable with object pointer and event!");
-
-    on<event_t>(std::bind(memFun, self, std::placeholders::_1));
+    on<Event>().template bind<memberFunc>(self);
   }
 
   /**
-   * \brief Connects an event to a free function.
+   * \brief Connects a free function to a subscribed event.
    *
-   * \note This function will overwrite any previously set handler for the
-   * specified event type.
+   * \note This will overwrite any previously set handler for the event.
    *
-   * \tparam Event the event that will be handled by the function pointer.
+   * \remarks This is a convenience function that calls `on()`
+   * behind-the-scenes.
+   *
+   * \tparam Event the subscribed event type. Must be present in the class
+   * template argument list.
    * \tparam function a function pointer.
    *
    * \since 5.1.0
    */
-  template <typename Event, auto function>
-  void on()
+  template <typename Event, auto func>
+  void bind()
   {
-    on<Event>(function);
+    on<Event>().template bind<func>();
   }
 
  private:
-  using function_tuple = std::tuple<std::function<void(const E&)>...>;
+  using sink_tuple = std::tuple<event_sink<E>...>;
 
   cen::event m_event;
-  function_tuple m_functions;
+  sink_tuple m_sinks;
 };
 
 /// \}

@@ -158,16 +158,16 @@ class event_sink final
 template <typename... E>
 class event_dispatcher final
 {
-  static_assert((!std::is_const_v<E>, ...),
+  static_assert((!std::is_const_v<E> && ...),
                 "Can't use \"const\" on template parameter!");
 
-  static_assert((!std::is_volatile_v<E>, ...),
+  static_assert((!std::is_volatile_v<E> && ...),
                 "Can't use \"volatile\" on template parameter!");
 
-  static_assert((!std::is_reference_v<E>, ...),
+  static_assert((!std::is_reference_v<E> && ...),
                 "Reference types can't be used as template parameters!");
 
-  static_assert((!std::is_pointer_v<E>, ...),
+  static_assert((!std::is_pointer_v<E> && ...),
                 "Pointer types can't be used as template parameters!");
 
   /**

@@ -34,7 +34,7 @@
 #include <string>    // string
 
 #include "area.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/to_string.hpp"

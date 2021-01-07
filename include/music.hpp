@@ -32,7 +32,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/any_eq.hpp"

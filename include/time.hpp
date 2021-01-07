@@ -28,7 +28,7 @@
 #include <chrono>  // duration
 #include <ratio>   // milli, micro, nano
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

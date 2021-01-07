@@ -25,7 +25,7 @@
 #ifndef CENTURION_CZSTRING_HEADER
 #define CENTURION_CZSTRING_HEADER
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

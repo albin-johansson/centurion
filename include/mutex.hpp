@@ -29,7 +29,7 @@
 
 #include <memory>  // unique_ptr
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

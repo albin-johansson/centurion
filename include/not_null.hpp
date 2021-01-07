@@ -29,7 +29,7 @@
 
 #include <type_traits>  // enable_if_t, is_pointer_v
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

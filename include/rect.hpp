@@ -39,7 +39,7 @@
 
 #include "area.hpp"
 #include "cast.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/max.hpp"
 #include "detail/min.hpp"
 #include "detail/to_string.hpp"

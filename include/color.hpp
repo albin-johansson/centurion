@@ -30,7 +30,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/to_string.hpp"
 #include "integers.hpp"
 

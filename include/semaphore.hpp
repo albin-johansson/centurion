@@ -29,7 +29,7 @@
 
 #include <memory>  // unique_ptr
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "exception.hpp"
 #include "integers.hpp"
 #include "mutex.hpp"

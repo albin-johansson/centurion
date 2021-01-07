@@ -65,7 +65,7 @@
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/czstring_eq.hpp"
 #include "detail/static_bimap.hpp"
 #include "exception.hpp"

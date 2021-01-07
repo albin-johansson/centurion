@@ -37,7 +37,7 @@
 #include <algorithm>  // copy
 #include <array>      // array
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"

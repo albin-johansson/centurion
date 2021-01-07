@@ -39,7 +39,7 @@
 #include <utility>      // move
 #include <variant>      // variant, holds_alternative, monostate, get, get_if
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "controller.hpp"
 #include "detail/clamp.hpp"
 #include "event_type.hpp"

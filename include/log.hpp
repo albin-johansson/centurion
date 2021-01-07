@@ -31,7 +31,7 @@
 #include <string>   // string
 #include <utility>  // forward
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "not_null.hpp"
 

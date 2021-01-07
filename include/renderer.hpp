@@ -28,6 +28,7 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
+#include <cstddef>      // size_t
 #include <memory>       // unique_ptr
 #include <optional>     // optional
 #include <ostream>      // ostream
@@ -1327,7 +1328,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  void add_font(const font_id id, font&& font)
+  void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1350,7 +1351,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename T_ = T, detail::is_owner<T_> = true>
-  void emplace_font(const font_id id, Args&&... args)
+  void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1370,7 +1371,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  void remove_font(const font_id id)
+  void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -1387,7 +1388,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto get_font(const font_id id) -> font&
+  [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1396,7 +1397,7 @@ class basic_renderer final
    * \copydoc get_font
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto get_font(const font_id id) const -> const font&
+  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1413,7 +1414,7 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto has_font(const font_id id) const noexcept -> bool
+  [[nodiscard]] auto has_font(const std::size_t id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
   }

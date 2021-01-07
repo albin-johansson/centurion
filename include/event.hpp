@@ -290,19 +290,6 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
   {
     return m_event.iscapture;
   }
-
-  [[nodiscard]] auto as_sdl_event() const -> SDL_Event
-  {
-    SDL_Event e{};
-
-    e.type = m_event.type;
-    e.common.type = m_event.type;
-    e.common.timestamp = m_event.timestamp;
-
-    e.adevice = m_event;
-
-    return e;
-  }
 };
 
 template <>

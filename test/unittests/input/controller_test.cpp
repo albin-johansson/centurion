@@ -32,7 +32,7 @@ TEST(Controller, FromIndex)
 
 TEST(Controller, LoadMappings)
 {
-  const auto path = "resources/gamecontrollerdb.txt";
+  const auto path = "resources/controllers.txt";
   EXPECT_GT(cen::controller::load_mappings(path), 0);
 }
 

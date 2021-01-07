@@ -30,7 +30,7 @@
 #include <chrono>    // duration_cast
 #include <optional>  // optional
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/any_eq.hpp"
 #include "time.hpp"
 

@@ -30,7 +30,7 @@
 #include <type_traits>       // is_same_v
 #include <vector>            // vector
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

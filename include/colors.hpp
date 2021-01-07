@@ -25,7 +25,7 @@
 #ifndef CENTURION_COLORS_HEADER
 #define CENTURION_COLORS_HEADER
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

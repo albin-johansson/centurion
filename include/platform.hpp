@@ -36,7 +36,7 @@
 #include <optional>  // optional
 #include <string>    // string
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/czstring_eq.hpp"
 #include "pixel_format.hpp"
 

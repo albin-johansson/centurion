@@ -26,7 +26,7 @@
 #define CENTURION_MOUSE_STATE_HEADER
 
 #include "area.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/max.hpp"
 #include "integers.hpp"
 #include "point.hpp"

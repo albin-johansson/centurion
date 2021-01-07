@@ -37,7 +37,7 @@
 #include <utility>      // pair
 
 #include "blend_mode.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "czstring.hpp"

@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "exception.hpp"
 #include "mutex.hpp"
 

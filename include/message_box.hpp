@@ -34,7 +34,7 @@
 #include <utility>      // move
 #include <vector>       // vector
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "detail/stack_resource.hpp"

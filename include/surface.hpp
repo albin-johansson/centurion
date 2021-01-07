@@ -34,7 +34,7 @@
 #include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
 
 #include "blend_mode.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"

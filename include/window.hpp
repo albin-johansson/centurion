@@ -34,7 +34,7 @@
 #include <type_traits>  // conditional_t, true_type, false_type, enable_if_t
 
 #include "area.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/clamp.hpp"

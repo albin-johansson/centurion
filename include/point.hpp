@@ -33,7 +33,7 @@
 #include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
 
 #include "cast.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "detail/to_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

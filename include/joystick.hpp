@@ -33,7 +33,7 @@
 #include <type_traits>  // enable_if_t, true_type, false_type, is_same_v
 
 #include "button_state.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"

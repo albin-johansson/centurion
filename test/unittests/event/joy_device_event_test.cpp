@@ -27,3 +27,12 @@ TEST(JoyDeviceEvent, Which)
   const cen::joy_device_event event{sdl};
   EXPECT_EQ(sdl.which, event.which());
 }
+
+TEST(JoyDeviceEvent, AsSDLEvent)
+{
+  const cen::joy_device_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.jdevice.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.jdevice.timestamp, event.time());
+}

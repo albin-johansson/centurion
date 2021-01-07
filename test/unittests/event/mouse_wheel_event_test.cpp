@@ -5,7 +5,7 @@
 TEST(MouseWheelEvent, Defaults)
 {
   cen::mouse_wheel_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::mouse_wheel, event.type());
 }
 
@@ -102,4 +102,13 @@ TEST(MouseWheelEvent, Direction)
 
   const cen::mouse_wheel_event event{sdl};
   EXPECT_EQ(cen::mouse_wheel_direction::normal, event.direction());
+}
+
+TEST(MouseWheelEvent, AsSDLEvent)
+{
+  const cen::mouse_wheel_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.wheel.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.wheel.timestamp, event.time());
 }

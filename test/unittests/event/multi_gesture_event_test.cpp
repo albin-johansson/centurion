@@ -5,7 +5,7 @@
 TEST(MultiGestureEvent, Defaults)
 {
   cen::multi_gesture_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::multi_gesture, event.type());
 }
 
@@ -121,4 +121,13 @@ TEST(MultiGestureEvent, Fingers)
 
   const cen::multi_gesture_event event{sdl};
   EXPECT_EQ(sdl.numFingers, event.fingers());
+}
+
+TEST(MultiGestureEvent, AsSDLEvent)
+{
+  const cen::multi_gesture_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.mgesture.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.mgesture.timestamp, event.time());
 }

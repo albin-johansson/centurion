@@ -65,3 +65,12 @@ TEST(JoyAxisEvent, Value)
   const cen::joy_axis_event event{sdl};
   EXPECT_EQ(sdl.value, event.value());
 }
+
+TEST(JoyAxisEvent, AsSDLEvent)
+{
+  const cen::joy_axis_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.jaxis.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.jaxis.timestamp, event.time());
+}

@@ -35,3 +35,12 @@ TEST(ControllerDeviceEvent, Which)
   const cen::controller_device_event event{sdl};
   EXPECT_EQ(11, event.which());
 }
+
+TEST(ControllerDeviceEvent, AsSDLEvent)
+{
+  const cen::controller_device_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.cdevice.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.cdevice.timestamp, event.time());
+}

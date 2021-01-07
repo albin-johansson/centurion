@@ -5,7 +5,7 @@
 TEST(JoyBallEvent, Defaults)
 {
   cen::joy_ball_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::joystick_ball_motion, event.type());
 }
 
@@ -83,4 +83,13 @@ TEST(JoyBallEvent, Dy)
 
   const cen::joy_ball_event event{sdl};
   EXPECT_EQ(sdl.yrel, event.dy());
+}
+
+TEST(JoyBallEvent, AsSDLEvent)
+{
+  const cen::joy_ball_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.jball.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.jball.timestamp, event.time());
 }

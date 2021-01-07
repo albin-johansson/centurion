@@ -122,3 +122,12 @@ TEST(DollarGestureEvent, Y)
   const cen::dollar_gesture_event event{sdl};
   EXPECT_EQ(sdl.y, event.y());
 }
+
+TEST(DollarGestureEvent, AsSDLEvent)
+{
+  const cen::dollar_gesture_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.dgesture.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.dgesture.timestamp, event.time());
+}

@@ -5,7 +5,7 @@
 TEST(JoyHatEvent, Defaults)
 {
   cen::joy_hat_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::joystick_hat_motion, event.type());
 }
 
@@ -45,4 +45,13 @@ TEST(JoyHatEvent, Position)
 
   const cen::joy_hat_event event{sdl};
   EXPECT_EQ(cen::joy_hat_position::left, event.position());
+}
+
+TEST(JoyHatEvent, AsSDLEvent)
+{
+  const cen::joy_hat_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.jhat.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.jhat.timestamp, event.time());
 }

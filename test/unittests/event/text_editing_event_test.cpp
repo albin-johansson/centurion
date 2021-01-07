@@ -5,7 +5,7 @@
 TEST(TextEditingEvent, Defaults)
 {
   cen::text_editing_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::text_editing, event.type());
 }
 
@@ -88,4 +88,13 @@ TEST(TextEditingEvent, Length)
     const cen::text_editing_event event{sdl};
     EXPECT_EQ(32, event.length());
   }
+}
+
+TEST(TextEditingEvent, AsSDLEvent)
+{
+  const cen::text_editing_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.edit.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.edit.timestamp, event.time());
 }

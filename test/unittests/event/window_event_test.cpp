@@ -5,7 +5,7 @@
 TEST(WindowEvent, Defaults)
 {
   cen::window_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::window, event.type());
 }
 
@@ -40,4 +40,13 @@ TEST(WindowEvent, Data2)
 
   const cen::window_event event{sdl};
   EXPECT_EQ(height, event.data_2());
+}
+
+TEST(WindowEvent, AsSDLEvent)
+{
+  const cen::window_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.window.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.window.timestamp, event.time());
 }

@@ -68,3 +68,12 @@ TEST(DropEvent, WindowId)
   const cen::drop_event event{sdl};
   EXPECT_EQ(sdl.windowID, event.window_id());
 }
+
+TEST(DropEvent, AsSDLEvent)
+{
+  const cen::drop_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.drop.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.drop.timestamp, event.time());
+}

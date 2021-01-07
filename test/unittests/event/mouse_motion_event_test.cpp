@@ -5,7 +5,7 @@
 TEST(MouseMotionEvent, Defaults)
 {
   cen::mouse_motion_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
@@ -153,4 +153,13 @@ TEST(MouseMotionEvent, Dy)
 
   const cen::mouse_motion_event event{sdl};
   EXPECT_EQ(sdl.yrel, event.dy());
+}
+
+TEST(MouseMotionEvent, AsSDLEvent)
+{
+  const cen::mouse_motion_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.motion.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.motion.timestamp, event.time());
 }

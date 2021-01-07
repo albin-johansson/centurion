@@ -83,3 +83,12 @@ TEST(JoyButtonEvent, Released)
   const cen::joy_button_event event{sdl};
   EXPECT_TRUE(event.released());
 }
+
+TEST(JoyButtonEvent, AsSDLEvent)
+{
+  const cen::joy_button_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.jbutton.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.jbutton.timestamp, event.time());
+}

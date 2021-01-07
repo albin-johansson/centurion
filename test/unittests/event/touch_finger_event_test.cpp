@@ -5,7 +5,7 @@
 TEST(TouchFingerEvent, Defaults)
 {
   cen::touch_finger_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::touch_down, event.type());
 }
 
@@ -219,4 +219,13 @@ TEST(TouchFingerEvent, Pressure)
 
   const cen::touch_finger_event event{sdl};
   EXPECT_EQ(sdl.pressure, event.pressure());
+}
+
+TEST(TouchFingerEvent, AsSDLEvent)
+{
+  const cen::touch_finger_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.tfinger.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.tfinger.timestamp, event.time());
 }

@@ -93,3 +93,12 @@ TEST(ControllerButtonEvent, Which)
   const cen::controller_button_event event{sdl};
   EXPECT_EQ(16, event.which());
 }
+
+TEST(ControllerButtonEvent, AsSDLEvent)
+{
+  const cen::controller_button_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.cbutton.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.cbutton.timestamp, event.time());
+}

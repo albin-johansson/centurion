@@ -5,7 +5,7 @@
 TEST(KeyboardEvent, Defaults)
 {
   cen::keyboard_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::key_down, event.type());
 }
 
@@ -390,4 +390,13 @@ TEST(KeyboardEvent, WindowId)
 
   const cen::keyboard_event event{sdl};
   EXPECT_EQ(sdl.windowID, event.window_id());
+}
+
+TEST(KeyboardEvent, AsSDLEvent)
+{
+  const cen::keyboard_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.key.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.key.timestamp, event.time());
 }

@@ -68,3 +68,12 @@ TEST(AudioDeviceEvent, Capture)
   EXPECT_TRUE(event.capture());
   EXPECT_FALSE(event.output());
 }
+
+TEST(AudioDeviceEvent, AsSDLEvent)
+{
+  const cen::audio_device_event event;
+  const auto sdl = cen::as_sdl_event(event);
+
+  EXPECT_EQ(sdl.adevice.type, static_cast<cen::u32>(event.type()));
+  EXPECT_EQ(sdl.adevice.timestamp, event.time());
+}

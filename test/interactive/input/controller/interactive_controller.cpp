@@ -1,6 +1,5 @@
 #include <array>       // array
 #include <cstddef>     // size_t
-#include <functional>  // function
 
 #include "centurion.hpp"
 #include "controller.hpp"
@@ -53,8 +52,8 @@ class interactive_controller final
   }
 
  private:
-  inline static constexpr auto m_deadZone = 8'000;
-  inline static constexpr auto m_step = 0.0005f;
+  inline static constexpr cen::i16 m_deadZone = 15'000;
+  inline static constexpr auto m_step = 0.0002f;
 
   inline static constexpr std::array m_colors{cen::colors::pink,
                                               cen::colors::steel_blue,
@@ -92,7 +91,7 @@ class interactive_controller final
 
   void update_position(const cen::controller_axis_event& event)
   {
-    const auto value = event.value();  // -32768 to 32767
+    const auto value = event.value();  // -32'768 to 32'767
     const auto axis = event.axis();
 
     const auto updateWith = [](float& diff, const int value) {
@@ -113,7 +112,6 @@ class interactive_controller final
 
   void on_quit_event(const cen::quit_event& event)
   {
-    std::printf("QUIT!\n");
     m_running = false;
   }
 

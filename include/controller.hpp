@@ -241,7 +241,7 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  explicit basic_controller(const int index)
+  explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {

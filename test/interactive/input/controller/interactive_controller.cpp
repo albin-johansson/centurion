@@ -36,7 +36,7 @@ class interactive_controller final
   void run()
   {
     cen::event event;
-    cen::controller controller{0};
+    cen::controller controller;
 
     m_window.show();
 

@@ -17,7 +17,7 @@ TEST(Controller, PointerConstructor)
 
 TEST(Controller, IndexConstructor)
 {
-  EXPECT_THROW(cen::controller{0}, cen::sdl_error);
+  EXPECT_THROW(cen::controller{}, cen::sdl_error);
 }
 
 TEST(Controller, FromJoystick)

@@ -27,7 +27,7 @@
 
 #include <cassert>           // assert
 #include <initializer_list>  // initializer_list
-#include <type_traits>       // is_same_v
+#include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
 #include "centurion_cfg.hpp"
@@ -135,19 +135,20 @@ class unicode_string final
    * \brief Appends a series of glyphs to the string.
    *
    * \tparam First the type of the first glyph, always `unicode`.
-   * \tparam Args the types of the other glyphs, always `unicode`.
+   * \tparam Character the types of the other glyphs, always `unicode`.
    *
-   * \param first the first glyph that will be added.
-   * \param codes the other glyphs that will be added.
+   * \param code the pack of glyphs that will be added, cannot be empty.
    *
    * \since 5.0.0
    */
-  template <typename First, typename... Args>
-  void append(First first, Args... codes)
+  template <typename... Character>
+  void append(Character... code)
   {
-    static_assert(std::is_same_v<unicode, First>);
-    append(first);
-    append(codes...);
+    static_assert(sizeof...(Character) != 0,
+                  "Function requires at least 1 argument!");
+    static_assert((std::is_same_v<unicode, std::decay_t<Character>> && ...),
+                  "Cannot append values that aren't of type \"unicode\"!");
+    (append(code), ...);
   }
 
   /**

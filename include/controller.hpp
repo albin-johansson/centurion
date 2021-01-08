@@ -689,20 +689,20 @@ class basic_controller final
    *
    * \param file the path of the mapping file.
    *
-   * \return the amount of mappings added.
-   *
-   * \throws sdl_error if the mapping couldn't be added.
+   * \return the amount of mappings added; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.0.0
    */
-  static auto load_mappings(not_null<czstring> file) -> int
-  {  // TODO don't throw, return optional
+  static auto load_mappings(not_null<czstring> file) noexcept
+      -> std::optional<int>
+  {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
     if (result != -1) {
       return result;
     } else {
-      throw sdl_error{"Failed to add game controller mappings from file"};
+      return std::nullopt;
     }
   }
 

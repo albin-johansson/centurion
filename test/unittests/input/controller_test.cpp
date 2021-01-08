@@ -34,6 +34,7 @@ TEST(Controller, LoadMappings)
 {
   const auto path = "resources/controllers.txt";
   EXPECT_GT(cen::controller::load_mappings(path), 0);
+  EXPECT_FALSE(cen::controller::load_mappings("foobar").has_value());
 }
 
 TEST(Controller, NumMappings)

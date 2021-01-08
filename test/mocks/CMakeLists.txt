@@ -5,6 +5,8 @@ project(centurion-test-mocks LANGUAGES CXX)
 set(SOURCE_FILES
     test_main.cpp
 
+    config/hints_test.cpp
+
     event/event_test.cpp
 
     graphics/message_box_test.cpp

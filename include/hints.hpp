@@ -62,6 +62,8 @@
 
 #include <SDL.h>
 
+#include <cstddef>      // size_t
+#include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair
 
@@ -80,9 +82,6 @@ namespace cen {
 /// \cond FALSE
 
 namespace detail {
-
-template <typename Hint, typename Value>
-concept valid_arg = Hint::template valid_arg<Value>();
 
 struct string_compare final
 {
@@ -137,7 +136,7 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
-  [[nodiscard]] static auto to_string(bool value) -> std::string
+  [[nodiscard]] static auto to_string(const bool value) -> std::string
   {
     return value ? "1" : "0";
   }
@@ -432,7 +431,7 @@ class enum_hint
     return Derived::map.key_from(hint);
   }
 
-  static auto to_string(value value) -> std::string
+  static auto to_string(const value value) -> std::string
   {
     return Derived::map.find(value);
   }
@@ -1343,9 +1342,9 @@ enum class hint_priority
  */
 template <typename Hint,
           hint_priority priority = hint_priority::normal,
-          typename Value>
-auto set_hint(const Value& value)
-    -> bool requires detail::valid_arg<Hint, Value>
+          typename Value,
+          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
+auto set_hint(const Value& value) -> bool
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
@@ -1405,7 +1404,8 @@ class hint_callback final
    *
    * \since 4.1.0
    */
-  hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
+  explicit hint_callback(SDL_HintCallback callback,
+                         UserData* userData = nullptr)
       : m_callback{callback}
       , m_userData{userData}
   {

@@ -9,6 +9,7 @@ set(SOURCE_FILES
     log_test.cpp
     sdl_string_test.cpp
 
+    config/hints_test.cpp
     detail/any_eq_test.cpp
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp

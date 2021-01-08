@@ -968,7 +968,7 @@ class basic_window final
   /**
    * \brief Returns a pointer to the associated SDL window.
    *
-   * \warning Don't claim ownership of the returned pointer.
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated SDL window.
    *

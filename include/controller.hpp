@@ -860,8 +860,7 @@ class basic_controller final
   /**
    * \brief Returns a pointer to the associated SDL game controller.
    *
-   * \warning Don't claim ownership of the returned pointer, doing so is playing
-   * with fire.
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated SDL game controller.
    *

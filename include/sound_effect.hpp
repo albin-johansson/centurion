@@ -285,9 +285,10 @@ class sound_effect final
   /**
    * \brief Returns a pointer to the associated `Mix_Chunk`.
    *
-   * \warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However it is useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However it is useful since
+   * many SDL calls use non-const pointers even when no change will be applied.
+   *
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated `Mix_Chunk`.
    *

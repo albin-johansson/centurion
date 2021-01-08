@@ -1927,8 +1927,7 @@ class basic_renderer final
   /**
    * \brief Returns a pointer to the associated SDL renderer.
    *
-   * \warning Don't claim ownership of the returned pointer unless you're
-   * absolutely sure about what you're doing.
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated SDL_Renderer.
    *

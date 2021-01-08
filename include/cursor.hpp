@@ -348,8 +348,7 @@ class basic_cursor final
   /**
    * \brief Returns a pointer to the associated cursor.
    *
-   * \warning Don't claim ownership of the returned pointer unless you enjoy
-   * playing with fire...
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated cursor.
    *

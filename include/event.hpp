@@ -966,8 +966,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    * \warning Do **not** claim ownership of the returned pointer *without*
    * setting the `will_free_file` property to **false**.
    *
-   * \note The returned pointer is always `nullptr` for `DropBegin` and
-   * `DropComplete` drop events.
+   * \note The returned pointer is always `nullptr` for `drop_begin` and
+   * `drop_complete` drop events.
    *
    * \return a pointer to the file associated with the event, might be null.
    *

@@ -95,6 +95,21 @@ void test_string_hint(cen::czstring str)
   });
 }
 
+template <typename Hint, typename T>
+void test_enum_value(const T& value)
+{
+  ASSERT_TRUE(cen::set_hint<Hint>(value));
+  EXPECT_EQ(value, cen::get_hint<Hint>());
+}
+
+template <typename Hint, typename... T>
+void test_enum_hint(T&&... value)
+{
+  test_hint<Hint>([=] {
+    (test_enum_value<Hint>(value), ...);
+  });
+}
+
 template <typename T>
 class HintTest : public testing::Test
 {};
@@ -253,6 +268,111 @@ TEST(Hints, WindowVisualID)
 {
   using cen::hint::x11::window_visual_id;
   test_string_hint<window_visual_id>("foo");
+}
+
+TEST(Hints, RenderDriver)
+{
+  using cen::hint::render_driver;
+  test_enum_hint<render_driver>(render_driver::value::direct3d,
+                                render_driver::value::opengl,
+                                render_driver::value::opengles,
+                                render_driver::value::opengles2,
+                                render_driver::value::metal,
+                                render_driver::value::software);
+}
+
+TEST(Hints, AudioResamplingMode)
+{
+  using cen::hint::audio_resampling_mode;
+  test_enum_hint<audio_resampling_mode>(audio_resampling_mode::value::normal,
+                                        audio_resampling_mode::value::fast,
+                                        audio_resampling_mode::value::medium,
+                                        audio_resampling_mode::value::best);
+}
+
+TEST(Hints, ScaleQuality)
+{
+  using cen::hint::scale_quality;
+  test_enum_hint<scale_quality>(scale_quality::value::nearest,
+                                scale_quality::value::linear,
+                                scale_quality::value::best);
+}
+
+TEST(Hints, FramebufferAcceleration)
+{
+  using cen::hint::framebuffer_acceleration;
+  test_enum_hint<framebuffer_acceleration>(
+      framebuffer_acceleration::value::off,
+      framebuffer_acceleration::value::on,
+      framebuffer_acceleration::value::direct3d,
+      framebuffer_acceleration::value::opengl,
+      framebuffer_acceleration::value::opengles,
+      framebuffer_acceleration::value::opengles2,
+      framebuffer_acceleration::value::metal,
+      framebuffer_acceleration::value::software);
+}
+
+TEST(Hints, AudioCategory)
+{
+  using cen::hint::audio_category;
+  test_enum_hint<audio_category>(audio_category::value::ambient,
+                                 audio_category::value::playback);
+}
+
+TEST(Hints, WaveRIFFChunkSize)
+{
+  using cen::hint::wave_riff_chunk_size;
+  test_enum_hint<wave_riff_chunk_size>(wave_riff_chunk_size::value::force,
+                                       wave_riff_chunk_size::value::ignore,
+                                       wave_riff_chunk_size::value::ignore_zero,
+                                       wave_riff_chunk_size::value::maximum);
+
+  // Might break sound effect tests without resetting the hint
+  cen::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::value::ignore_zero);
+}
+
+TEST(Hints, WaveTruncation)
+{
+  using cen::hint::wave_truncation;
+  test_enum_hint<wave_truncation>(wave_truncation::value::drop_block,
+                                  wave_truncation::value::drop_frame,
+                                  wave_truncation::value::strict,
+                                  wave_truncation::value::very_strict);
+}
+
+TEST(Hints, WaveFactChunk)
+{
+  using cen::hint::wave_fact_chunk;
+  test_enum_hint<wave_fact_chunk>(wave_fact_chunk::value::strict,
+                                  wave_fact_chunk::value::ignore_zero,
+                                  wave_fact_chunk::value::ignore,
+                                  wave_fact_chunk::value::truncate);
+}
+
+TEST(Hints, LogicalSizeMode)
+{
+  using cen::hint::logical_size_mode;
+  test_enum_hint<logical_size_mode>(logical_size_mode::value::letterbox,
+                                    logical_size_mode::value::overscan);
+}
+
+TEST(Hints, ContentOrientation)
+{
+  using cen::hint::qtwayland::content_orientation;
+  test_enum_hint<content_orientation>(
+      content_orientation::value::primary,
+      content_orientation::value::portrait,
+      content_orientation::value::landscape,
+      content_orientation::value::inverted_portrait,
+      content_orientation::value::inverted_landscape);
+}
+
+TEST(Hints, D3DCompiler)
+{
+  using cen::hint::windows::d3d_compiler;
+  test_enum_hint<d3d_compiler>(d3d_compiler::value::v46,
+                               d3d_compiler::value::v43,
+                               d3d_compiler::value::none);
 }
 
 TEST(Hints, AddHintCallback)

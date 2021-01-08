@@ -144,7 +144,9 @@ TEST_F(ControllerTest, SetPlayerIndex)
 TEST_F(ControllerTest, Product)
 {
   std::array<Uint16, 2> values{0, 3};
-  SET_RETURN_SEQ(SDL_GameControllerGetProduct, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetProduct,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.product().has_value());
   EXPECT_EQ(3, m_handle.product().value());
@@ -153,7 +155,9 @@ TEST_F(ControllerTest, Product)
 TEST_F(ControllerTest, Vendor)
 {
   std::array<Uint16, 2> values{0, 7};
-  SET_RETURN_SEQ(SDL_GameControllerGetVendor, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetVendor,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.vendor().has_value());
   EXPECT_EQ(7, m_handle.vendor().value());
@@ -164,7 +168,7 @@ TEST_F(ControllerTest, ProductVersion)
   std::array<Uint16, 2> values{0, 4};
   SET_RETURN_SEQ(SDL_GameControllerGetProductVersion,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.product_version().has_value());
   EXPECT_EQ(4, m_handle.product_version().value());
@@ -175,7 +179,7 @@ TEST_F(ControllerTest, Index)
   std::array<int, 2> values{-1, 6};
   SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.index().has_value());
   EXPECT_EQ(6, m_handle.index().value());
@@ -184,7 +188,9 @@ TEST_F(ControllerTest, Index)
 TEST_F(ControllerTest, IsConnected)
 {
   std::array<SDL_bool, 2> values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerGetAttached, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetAttached,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.is_connected());
   EXPECT_TRUE(m_handle.is_connected());
@@ -193,7 +199,9 @@ TEST_F(ControllerTest, IsConnected)
 TEST_F(ControllerTest, Name)
 {
   std::array<cen::czstring, 2> values{nullptr, "foobar"};
-  SET_RETURN_SEQ(SDL_GameControllerName, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerName,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(nullptr, m_handle.name());
   EXPECT_STREQ("foobar", m_handle.name());
@@ -204,7 +212,9 @@ TEST_F(ControllerTest, Type)
   std::array<SDL_GameControllerType, 3> values{SDL_CONTROLLER_TYPE_UNKNOWN,
                                                SDL_CONTROLLER_TYPE_XBOX360,
                                                SDL_CONTROLLER_TYPE_PS4};
-  SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetType,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::controller_type::unknown, m_handle.type());
   EXPECT_EQ(cen::controller_type::xbox_360, m_handle.type());
@@ -215,7 +225,9 @@ TEST_F(ControllerTest, TypeWithIndex)
 {
   std::array<SDL_GameControllerType, 2> values{SDL_CONTROLLER_TYPE_UNKNOWN,
                                                SDL_CONTROLLER_TYPE_XBOXONE};
-  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
   EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
@@ -224,7 +236,9 @@ TEST_F(ControllerTest, TypeWithIndex)
 TEST_F(ControllerTest, GetState)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetButton,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::button_state::released,
             m_handle.get_state(cen::controller_button::a));
@@ -235,7 +249,9 @@ TEST_F(ControllerTest, GetState)
 TEST_F(ControllerTest, IsPressed)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetButton,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.is_pressed(cen::controller_button::a));
   EXPECT_TRUE(m_handle.is_pressed(cen::controller_button::a));
@@ -244,7 +260,9 @@ TEST_F(ControllerTest, IsPressed)
 TEST_F(ControllerTest, IsReleased)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetButton,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_TRUE(m_handle.is_released(cen::controller_button::a));
   EXPECT_FALSE(m_handle.is_released(cen::controller_button::a));
@@ -256,7 +274,7 @@ TEST_F(ControllerTest, GetAxisFromString)
                                                SDL_CONTROLLER_AXIS_RIGHTX};
   SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
   EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
@@ -265,7 +283,9 @@ TEST_F(ControllerTest, GetAxisFromString)
 TEST_F(ControllerTest, GetAxis)
 {
   std::array<Sint16, 2> values{123, 321};
-  SET_RETURN_SEQ(SDL_GameControllerGetAxis, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerGetAxis,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
   EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
@@ -279,13 +299,18 @@ TEST_F(ControllerTest, GetJoystick)
 TEST_F(ControllerTest, AddMapping)
 {
   std::array<int, 3> values{1, 0, -1};
-  SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerAddMapping,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
-  EXPECT_TRUE(m_handle.add_mapping("foo"));
-  EXPECT_FALSE(m_handle.add_mapping("foo"));
+  EXPECT_EQ(cen::controller_handle::mapping_result::added,
+            m_handle.add_mapping("foo"));
 
-  SDL_GetError_fake.return_val = "";
-  EXPECT_THROW(m_handle.add_mapping("foo"), cen::sdl_error);
+  EXPECT_EQ(cen::controller_handle::mapping_result::updated,
+            m_handle.add_mapping("foo"));
+
+  EXPECT_EQ(cen::controller_handle::mapping_result::error,
+            m_handle.add_mapping("foo"));
 }
 
 TEST_F(ControllerTest, LoadMappings)
@@ -293,10 +318,9 @@ TEST_F(ControllerTest, LoadMappings)
   std::array<int, 3> values{-1, 7};
   SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
-  SDL_GetError_fake.return_val = "";
-  EXPECT_THROW(cen::controller::load_mappings("foo"), cen::sdl_error);
+  EXPECT_FALSE(cen::controller::load_mappings("foo").has_value());
   EXPECT_EQ(7, cen::controller::load_mappings("foo"));
 }
 
@@ -327,7 +351,7 @@ TEST_F(ControllerTest, GetButton)
                                                  SDL_CONTROLLER_BUTTON_B};
   SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
   EXPECT_EQ(cen::controller_button::b, cen::controller::get_button(""));
@@ -338,7 +362,7 @@ TEST_F(ControllerTest, StringifyWithAxis)
   std::array<const char*, 2> values{nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_axis::left_y));
   EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_axis::left_y));
@@ -349,7 +373,7 @@ TEST_F(ControllerTest, StringifyWithButton)
   std::array<const char*, 2> values{nullptr, "foo"};
   SET_RETURN_SEQ(SDL_GameControllerGetStringForButton,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_button::x));
   EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_button::x));
@@ -366,7 +390,7 @@ TEST_F(ControllerTest, GetBindingWithAxis)
   std::array<SDL_GameControllerButtonBind, 2> values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
   EXPECT_TRUE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
@@ -383,7 +407,7 @@ TEST_F(ControllerTest, GetBindingWithButton)
   std::array<SDL_GameControllerButtonBind, 2> values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForButton,
                  values.data(),
-                 values.size());
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(m_handle.get_binding(cen::controller_button::x).has_value());
   EXPECT_TRUE(m_handle.get_binding(cen::controller_button::x).has_value());
@@ -415,7 +439,9 @@ TEST_F(ControllerTest, SetPolling)
 TEST_F(ControllerTest, IsPolling)
 {
   std::array<int, 2> values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerEventState, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GameControllerEventState,
+                 values.data(),
+                 static_cast<int>(values.size()));
 
   EXPECT_FALSE(cen::controller::is_polling());
   EXPECT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);

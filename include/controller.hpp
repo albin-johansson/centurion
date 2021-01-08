@@ -171,6 +171,18 @@ class basic_controller final
   using joystick_index = int;
   using player_index = int;
 
+  /**
+   * \brief Used to indicate the result of adding controller mappings.
+   *
+   * \since 5.1.0
+   */
+  enum class mapping_result
+  {
+    error,    ///< Something went wrong.
+    updated,  ///< Updated a previous mapping.
+    added     ///< Successfully added a new mapping.
+  };
+
   // clang-format off
 
   /**
@@ -653,23 +665,21 @@ class basic_controller final
    *
    * \param mapping the string that encodes the game controller mapping.
    *
-   * \return `true` if a new mapping was added; `false` if a previous mapping
-   * was updated.
-   *
-   * \throws sdl_error if something goes wrong whilst adding the mapping.
+   * \return `added` if a new mapping was added; `updated` if a previous mapping
+   * was updated; `error` if something went wrong.
    *
    * \since 5.0.0
    */
-  static auto add_mapping(not_null<czstring> mapping) -> bool
-  {  // TODO don't throw, return optional
+  static auto add_mapping(not_null<czstring> mapping) noexcept -> mapping_result
+  {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
     if (result == 1) {
-      return true;
+      return mapping_result::added;
     } else if (result == 0) {
-      return false;
+      return mapping_result::updated;
     } else {
-      throw sdl_error{"Failed to add game controller mapping"};
+      return mapping_result::error;
     }
   }
 

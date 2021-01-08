@@ -230,7 +230,7 @@ TEST_F(RendererTest, DrawLines)
     EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     EXPECT_EQ(0, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0; i < points.size(); ++i) {
+    for (auto i = 0u; i < points.size(); ++i) {
       EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
       EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLines_fake.arg1_val[i].y);
     }
@@ -242,7 +242,7 @@ TEST_F(RendererTest, DrawLines)
     EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     EXPECT_EQ(1, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0; i < points.size(); ++i) {
+    for (auto i = 0u; i < points.size(); ++i) {
       EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
       EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
     }

@@ -4,7 +4,7 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-DEFINE_FFF_GLOBALS;
+DEFINE_FFF_GLOBALS
 
 int main(int argc, char* argv[])
 {

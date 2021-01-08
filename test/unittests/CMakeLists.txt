@@ -4,12 +4,14 @@ project(centurion-test-unittests LANGUAGES CXX)
 
 set(SOURCE_FILES
     test_main.cpp
-    centurion_test.cpp
-    exception_test.cpp
     log_test.cpp
     sdl_string_test.cpp
 
     config/hints_test.cpp
+
+    core/centurion_test.cpp
+    core/exception_test.cpp
+
     detail/any_eq_test.cpp
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp

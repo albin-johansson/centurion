@@ -5,7 +5,7 @@
 TEST(DropEvent, Defaults)
 {
   cen::drop_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::drop_file, event.type());
 }
 

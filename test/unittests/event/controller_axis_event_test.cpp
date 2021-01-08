@@ -5,7 +5,7 @@
 TEST(ControllerAxisEvent, Defaults)
 {
   cen::controller_axis_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::controller_axis_motion, event.type());
 }
 

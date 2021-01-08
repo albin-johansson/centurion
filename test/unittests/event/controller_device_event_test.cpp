@@ -5,7 +5,7 @@
 TEST(ControllerDeviceEvent, Defaults)
 {
   cen::controller_device_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::controller_device_added, event.type());
 }
 

@@ -52,7 +52,7 @@ TEST_F(SoundEffectTest, Pause)
   cen::sound_effect sound;
 
   std::array values{0, 1};
-  SET_RETURN_SEQ(Mix_Playing, values.data(), values.size());
+  SET_RETURN_SEQ(Mix_Playing, values.data(), static_cast<int>(values.size()));
 
   sound.stop();  // Does not invoke Mix_Playing
   EXPECT_EQ(0, Mix_Pause_fake.call_count);

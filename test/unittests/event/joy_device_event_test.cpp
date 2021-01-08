@@ -5,7 +5,7 @@
 TEST(JoyDeviceEvent, Defaults)
 {
   cen::joy_device_event event;
-  EXPECT_GT(event.time(), 0);
+  EXPECT_GT(event.time(), 0u);
   EXPECT_EQ(cen::event_type::joystick_device_added, event.type());
 }
 

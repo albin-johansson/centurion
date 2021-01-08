@@ -25,7 +25,7 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-#include <SDL_log.h>
+#include <SDL.h>
 
 #include <cassert>  // assert
 #include <string>   // string

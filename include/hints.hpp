@@ -60,7 +60,7 @@
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 
-#include <SDL_hints.h>
+#include <SDL.h>
 
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair

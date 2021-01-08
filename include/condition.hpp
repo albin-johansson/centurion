@@ -25,7 +25,7 @@
 #ifndef CENTURION_CONDITION_HEADER
 #define CENTURION_CONDITION_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
 #include <memory>  // unique_ptr
 

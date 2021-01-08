@@ -25,7 +25,7 @@
 #ifndef CENTURION_CLIPBOARD_HEADER
 #define CENTURION_CLIPBOARD_HEADER
 
-#include <SDL_clipboard.h>
+#include <SDL.h>
 
 #include <cassert>  // assert
 #include <string>   // string

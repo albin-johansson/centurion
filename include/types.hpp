@@ -31,7 +31,7 @@
 #ifndef CENTURION_TYPES_HEADER
 #define CENTURION_TYPES_HEADER
 
-#include <SDL_stdinc.h>
+#include <SDL.h>
 
 #include <array>        // array
 #include <chrono>       // duration

@@ -25,7 +25,7 @@
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 
-#include <SDL_timer.h>
+#include <SDL.h>
 
 #include "centurion_cfg.hpp"
 #include "time.hpp"

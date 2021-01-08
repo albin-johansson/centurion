@@ -292,7 +292,7 @@ TEST(KeyboardEvent, Repeated)
 {
   const auto createEvent = [](const int repeats) noexcept {
     SDL_KeyboardEvent sdl{};
-    sdl.repeat = repeats;
+    sdl.repeat = static_cast<cen::u8>(repeats);
     return cen::keyboard_event{sdl};
   };
 

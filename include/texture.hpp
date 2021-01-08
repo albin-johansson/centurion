@@ -171,8 +171,8 @@ class basic_texture final
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   basic_texture(const Renderer& renderer,
-                pixel_format format,
-                texture_access access,
+                const pixel_format format,
+                const texture_access access,
                 const iarea& size)
       : m_texture{SDL_CreateTexture(renderer.get(),
                                     static_cast<u32>(format),
@@ -208,7 +208,8 @@ class basic_texture final
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       not_null<czstring> path,
-                                      pixel_format format) -> basic_texture
+                                      const pixel_format format)
+      -> basic_texture
   {
     assert(path);
 
@@ -294,7 +295,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_alpha(u8 alpha) noexcept
+  void set_alpha(const u8 alpha) noexcept
   {
     SDL_SetTextureAlphaMod(get(), alpha);
   }
@@ -306,7 +307,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetTextureBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
@@ -333,7 +334,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  void set_scale_mode(scale_mode mode) noexcept
+  void set_scale_mode(const scale_mode mode) noexcept
   {
     SDL_SetTextureScaleMode(get(), static_cast<SDL_ScaleMode>(mode));
   }

@@ -169,6 +169,16 @@ TEST_F(TextureTest, SetScaleMode)
   m_texture->set_scale_mode(previous);
 }
 
+TEST_F(TextureTest, Release)
+{
+  cen::texture texture{*m_renderer, m_path};
+
+  auto ptr = texture.release();
+  ASSERT_TRUE(ptr);
+
+  SDL_DestroyTexture(ptr);
+}
+
 TEST_F(TextureTest, IsStatic)
 {
   const cen::texture texture{*m_renderer,

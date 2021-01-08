@@ -211,7 +211,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_alpha(u8 alpha) noexcept
+  void set_alpha(const u8 alpha) noexcept
   {
     SDL_SetSurfaceAlphaMod(get(), alpha);
   }
@@ -236,7 +236,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetSurfaceBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
@@ -298,7 +298,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto convert(pixel_format format) const -> basic_surface
+  [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
     const auto pixelFormat = static_cast<u32>(format);
     if (auto* s = SDL_ConvertSurfaceFormat(get(), pixelFormat, 0)) {

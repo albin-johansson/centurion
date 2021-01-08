@@ -87,7 +87,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(SDL_Scancode scancode) noexcept
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
       : m_code{scancode}
   {}
 
@@ -101,7 +101,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(SDL_Keycode key) noexcept
+  explicit scan_code(const SDL_Keycode key) noexcept
       : m_code{SDL_GetScancodeFromKey(key)}
   {}
 
@@ -134,7 +134,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr auto operator=(SDL_Scancode code) noexcept -> scan_code&
+  constexpr auto operator=(const SDL_Scancode code) noexcept -> scan_code&
   {
     m_code = code;
     return *this;
@@ -150,7 +150,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  auto operator=(SDL_Keycode keycode) noexcept -> scan_code&
+  auto operator=(const SDL_Keycode keycode) noexcept -> scan_code&
   {
     m_code = SDL_GetScancodeFromKey(keycode);
     return *this;

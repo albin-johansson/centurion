@@ -126,17 +126,18 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(event_type lhs,
-                                        SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const event_type lhs,
+                                        const SDL_EventType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /**
- * \copydoc operator==(event_type, SDL_EventType)
+ * \copydoc operator==(const event_type, const SDL_EventType)
  */
-[[nodiscard]] constexpr auto operator==(SDL_EventType lhs,
-                                        event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
+                                        const event_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -151,17 +152,18 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(event_type lhs,
-                                        SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const event_type lhs,
+                                        const SDL_EventType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * \copydoc operator!=(event_type, SDL_EventType)
+ * \copydoc operator!=(const event_type, const SDL_EventType)
  */
-[[nodiscard]] constexpr auto operator!=(SDL_EventType lhs,
-                                        event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
+                                        const event_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

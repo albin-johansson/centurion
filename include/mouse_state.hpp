@@ -69,11 +69,8 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  void update(int windowWidth = 1, int windowHeight = 1) noexcept
+  void update(const int windowWidth = 1, const int windowHeight = 1) noexcept
   {
-    windowWidth = detail::max(windowWidth, 1);
-    windowHeight = detail::max(windowHeight, 1);
-
     m_oldX = m_mouseX;
     m_oldY = m_mouseY;
     m_prevLeftPressed = m_leftPressed;
@@ -86,12 +83,12 @@ class mouse_state final
     }
 
     {
-      const auto xRatio =
-          static_cast<float>(m_mouseX) / static_cast<float>(windowWidth);
+      const auto xRatio = static_cast<float>(m_mouseX) /
+                          static_cast<float>(detail::max(windowWidth, 1));
       const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
 
-      const auto yRatio =
-          static_cast<float>(m_mouseY) / static_cast<float>(windowHeight);
+      const auto yRatio = static_cast<float>(m_mouseY) /
+                          static_cast<float>(detail::max(windowHeight, 1));
       const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
 
       m_mouseX = static_cast<int>(adjustedX);

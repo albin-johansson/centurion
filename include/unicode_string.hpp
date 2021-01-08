@@ -153,7 +153,7 @@ class unicode_string final
   /**
    * \copydoc append(unicode)
    */
-  void operator+=(unicode ch)
+  void operator+=(const unicode ch)
   {
     append(ch);
   }
@@ -396,7 +396,7 @@ namespace literals {
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(char c) noexcept -> unicode
+constexpr auto operator""_uni(const char c) noexcept -> unicode
 {
   return static_cast<unicode>(c);
 }
@@ -410,7 +410,8 @@ constexpr auto operator""_uni(char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(unsigned long long int i) noexcept -> unicode
+constexpr auto operator""_uni(const unsigned long long int i) noexcept
+    -> unicode
 {
   return static_cast<unicode>(i);
 }

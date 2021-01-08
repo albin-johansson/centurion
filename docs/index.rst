@@ -47,12 +47,13 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Input
 
+   pages/api/input/basic_controller
+   pages/api/input/button_state
    pages/api/input/key_code
    pages/api/input/key_codes
+   pages/api/input/key_modifier
    pages/api/input/scan_code
    pages/api/input/scan_codes
-   pages/api/input/button_state
-   pages/api/input/key_modifier
 
 .. toctree::
    :maxdepth: 1

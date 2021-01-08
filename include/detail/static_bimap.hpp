@@ -27,7 +27,6 @@
 
 #include <algorithm>  // find_if
 #include <array>      // array
-#include <ranges>     // find_if
 #include <utility>    // pair
 
 #include "centurion_cfg.hpp"

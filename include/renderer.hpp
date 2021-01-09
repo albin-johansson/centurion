@@ -94,7 +94,7 @@ class basic_renderer final
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * \note The supplied pointer might be claimed by the renderer if the created
+   * \note The supplied pointer will be claimed by the renderer if the created
    * renderer is owning.
    *
    * \param renderer a pointer to the associated SDL renderer.
@@ -114,9 +114,6 @@ class basic_renderer final
 
   /**
    * \brief Creates an owning renderer based on the supplied window.
-   *
-   * \details By default, the internal renderer will be created using the
-   * `SDL_RENDERER_ACCELERATED` and `SDL_RENDERER_PRESENTVSYNC` flags.
    *
    * \param window the associated window instance.
    * \param flags the renderer flags that will be used.

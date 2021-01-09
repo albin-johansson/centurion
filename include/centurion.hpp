@@ -47,7 +47,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * \namespace centurion
+ * \namespace cen
  *
  * \ingroup core
  *

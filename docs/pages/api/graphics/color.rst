@@ -59,7 +59,7 @@ Compile-time color creation
 
   void draw(cen::renderer& renderer)
   {
-    // Create a color that identical to magenta except for different alpha
+    // Create a color that is identical to magenta except for different alpha
     constexpr auto customMagenta = cen::colors::magenta.with_alpha(182);  
 
     // Explicit RGB components, alpha defaults to 0xFF (255)

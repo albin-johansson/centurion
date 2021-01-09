@@ -137,6 +137,11 @@ class mutex final
     }
   };
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  explicit mutex(int){};
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// \}

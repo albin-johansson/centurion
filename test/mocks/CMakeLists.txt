@@ -27,6 +27,9 @@ set(SOURCE_FILES
 
     system/battery_test.cpp
     system/platform_test.cpp
+
+    thread/mutex_test.cpp
+    thread/scoped_lock_test.cpp
     )
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)

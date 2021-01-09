@@ -33,4 +33,9 @@ TEST(SDLString, Copy)
     const cen::sdl_string empty{SDL_GetClipboardText()};
     EXPECT_TRUE(empty.copy().empty());
   }
+
+  {  // Null string
+    const cen::sdl_string str{nullptr};
+    EXPECT_EQ("", str.copy());
+  }
 }

@@ -353,3 +353,13 @@ TEST_F(RendererTest, Info)
 {
   EXPECT_TRUE(m_renderer->info().has_value());
 }
+
+TEST_F(RendererTest, ToString)
+{
+  cen::log::put(cen::to_string(*m_renderer));
+}
+
+TEST_F(RendererTest, StreamOperator)
+{
+  std::cout << "COUT: " << *m_renderer << '\n';
+}

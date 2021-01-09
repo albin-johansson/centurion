@@ -62,6 +62,7 @@ set(SOURCE_FILES
     graphics/message_box_test.cpp
     graphics/pixel_format_test.cpp
     graphics/renderer_test.cpp
+    graphics/renderer_handle_test.cpp
     graphics/scale_mode_test.cpp
     graphics/surface_test.cpp
     graphics/surface_handle_test.cpp

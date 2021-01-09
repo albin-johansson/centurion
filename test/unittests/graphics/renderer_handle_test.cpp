@@ -1,56 +1,59 @@
-#include <catch.hpp>
-#include <iostream>
+#include <gtest/gtest.h>
+
+#include <iostream>  // cout
+#include <memory>    // unique_ptr
 
 #include "log.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
-TEST_CASE("renderer_handle::renderer_handle(SDL_Renderer*)",
-          "[renderer_handle]")
+class RendererHandleTest : public testing::Test
 {
-  SECTION("Null pointer")
+ protected:
+  [[maybe_unused]] static void SetUpTestSuite()
   {
+    m_window = std::make_unique<cen::window>();
+    m_renderer = std::make_unique<cen::renderer>(*m_window);
+  }
+
+  [[maybe_unused]] static void TearDownTestSuite()
+  {
+    m_renderer.reset();
+    m_window.reset();
+  }
+
+  inline static std::unique_ptr<cen::window> m_window;
+  inline static std::unique_ptr<cen::renderer> m_renderer;
+};
+
+TEST_F(RendererHandleTest, RawPointerConstructor)
+{
+  {  // Null pointer
     cen::renderer_handle handle{nullptr};
-    CHECK(!handle);
-    CHECK(!handle.get());
+    EXPECT_FALSE(handle);
+    EXPECT_FALSE(handle.get());
   }
 
-  SECTION("From valid pointer")
-  {
-    cen::window window;
-    cen::renderer renderer{window};
-    cen::renderer_handle handle{renderer.get()};
+  {  // Valid pointer
+    const cen::renderer_handle handle{m_renderer->get()};
 
-    CHECK(handle);
-    CHECK(handle.get());
+    EXPECT_TRUE(handle);
+    EXPECT_TRUE(handle.get());
   }
 }
 
-TEST_CASE("renderer_handle::renderer_handle(const renderer&)",
-          "[renderer_handle]")
+TEST_F(RendererHandleTest, FromOwningRenderer)
 {
-  cen::window window;
-  cen::renderer renderer{window};
-  cen::renderer_handle handle{renderer};
+  const cen::renderer_handle handle{*m_renderer};
 
-  CHECK(handle);
-  CHECK(handle.get());
+  EXPECT_TRUE(handle);
+  EXPECT_TRUE(handle.get());
 }
 
-TEST_CASE("renderer_handle to_string", "[renderer_handle]")
+TEST_F(RendererHandleTest, ToStringAndStreamOperator)
 {
-  cen::window window;
-  cen::renderer renderer{window};
-  cen::renderer_handle handle{renderer};
-
-  cen::log::put(cen::to_string(handle));
-}
-
-TEST_CASE("renderer_handle stream operator", "[renderer_handle]")
-{
-  cen::window window;
-  cen::renderer renderer{window};
-  cen::renderer_handle handle{renderer};
+  const cen::renderer_handle handle{*m_renderer};
 
   std::cout << "COUT: " << handle << '\n';
+  cen::log::put(cen::to_string(handle));
 }

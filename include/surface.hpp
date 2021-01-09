@@ -42,6 +42,7 @@
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 #include "not_null.hpp"
+#include "owner.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 

@@ -29,7 +29,7 @@ TEST(KeyState, IsPressed)
   EXPECT_FALSE(state.is_pressed(SDLK_a));
 
   EXPECT_FALSE(state.is_pressed(cen::scan_code{-1}));
-  EXPECT_FALSE(state.is_pressed(SDL_NUM_SCANCODES));  // TODO scan_code::count?
+  EXPECT_FALSE(state.is_pressed(SDL_NUM_SCANCODES));
   EXPECT_FALSE(state.is_pressed(cen::scan_code{SDL_NUM_SCANCODES + 1}));
 }
 

@@ -15,6 +15,13 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 1
+   :caption: Core
+
+   pages/core/library
+   pages/core/config
+
+.. toctree::
+   :maxdepth: 1
    :caption: Geometry
 
    pages/api/geometry/point

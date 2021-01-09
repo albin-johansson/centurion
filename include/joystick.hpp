@@ -812,9 +812,9 @@ class basic_joystick final
    * \return the current amount of available joysticks; `std::nullopt` if
    * something goes wrong.
    *
-   * \since 4.2.0
+   * \since 5.1.0
    */
-  [[nodiscard]] static auto amount() noexcept -> std::optional<int>
+  [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
     if (result < 0) {
@@ -822,6 +822,21 @@ class basic_joystick final
     } else {
       return result;
     }
+  }
+
+  /**
+   * \brief Returns the amount of currently available joysticks.
+   *
+   * \return the current amount of available joysticks; `std::nullopt` if
+   * something goes wrong.
+   *
+   * \deprecated Use `count()` instead.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard, deprecated]] static auto amount() noexcept -> std::optional<int>
+  {
+    return count();
   }
 
   /**

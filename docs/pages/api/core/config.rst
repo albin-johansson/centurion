@@ -48,6 +48,9 @@ Examples
   It is your responsibility to make sure to not use any Centurion/SDL APIs 
   that depend on a subsystem that you might have disabled.
 
+Typical usage 
+~~~~~~~~~~~~~
+
 .. code:: C++ 
 
   #include <centurion.hpp>

@@ -23,7 +23,9 @@ set(SOURCE_FILES
     input/key_state_test.cpp
     input/touch_test.cpp
 
-    system/battery_test.cpp)
+    system/battery_test.cpp
+    system/platform_test.cpp
+    )
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(SOURCE_FILES

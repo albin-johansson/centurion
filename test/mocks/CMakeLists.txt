@@ -17,6 +17,7 @@ set(SOURCE_FILES
 
     graphics/message_box_test.cpp
     graphics/renderer_test.cpp
+    graphics/surface_test.cpp
     graphics/window_test.cpp
     graphics/window_utils_test.cpp
 

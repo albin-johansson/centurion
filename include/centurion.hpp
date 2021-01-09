@@ -109,22 +109,23 @@ namespace cen {
  */
 struct config final
 {
-  bool initCore = true;
-  bool initImage = true;
-  bool initMixer = true;
-  bool initTTF = true;
+  bool initCore{true};
+  bool initImage{true};
+  bool initMixer{true};
+  bool initTTF{true};
 
-  u32 coreFlags = SDL_INIT_EVERYTHING;
+  u32 coreFlags{SDL_INIT_EVERYTHING};
 
-  int imageFlags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
+  int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 
-  int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
-                   MIX_INIT_MOD | MIX_INIT_OPUS;
+  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
+                 MIX_INIT_MOD | MIX_INIT_OPUS};
 
-  int mixerFreq = MIX_DEFAULT_FREQUENCY;
-  u16 mixerFormat = MIX_DEFAULT_FORMAT;
-  int mixerChannels = MIX_DEFAULT_CHANNELS;
-  int mixerChunkSize = 4096;
+  int mixerFreq{MIX_DEFAULT_FREQUENCY};
+  u16 mixerFormat{MIX_DEFAULT_FORMAT};
+  int mixerChannels{MIX_DEFAULT_CHANNELS};
+  int mixerChunkSize{4096};
+};
 };
 
 /**

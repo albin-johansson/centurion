@@ -18,7 +18,6 @@ class CenturionTest : public testing::Test
     IMG_Init_fake.return_val = cfg.imageFlags;
     Mix_Init_fake.return_val = cfg.mixerFlags;
     Mix_OpenAudio_fake.return_val = 0;
-    SDL_GetError_fake.return_val = "foo";
   }
 };
 

@@ -105,7 +105,7 @@ class basic_surface final
   explicit basic_surface(not_null<czstring> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
-      throw img_error{"Failed to create surface from file"};
+      throw img_error{};
     }
   }
 
@@ -307,7 +307,7 @@ class basic_surface final
       converted.set_blend_mode(get_blend_mode());
       return converted;
     } else {
-      throw sdl_error{"Failed to convert surface"};
+      throw sdl_error{};
     }
   }
 
@@ -558,7 +558,7 @@ class basic_surface final
     if (auto* copy = SDL_DuplicateSurface(m_surface.get())) {
       return copy;
     } else {
-      throw sdl_error{"Failed to duplicate surface"};
+      throw sdl_error{};
     }
   }
 

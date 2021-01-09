@@ -131,7 +131,7 @@ class basic_window final
                                     size.height,
                                     SDL_WINDOW_HIDDEN));
     if (!m_window) {
-      throw sdl_error{"Failed to create window"};
+      throw sdl_error{};
     }
   }
 

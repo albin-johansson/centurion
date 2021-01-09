@@ -584,7 +584,7 @@ class message_box final
                                      message.c_str(),
                                      parent);
         result == -1) {
-      throw sdl_error{"Failed to show message box"};
+      throw sdl_error{};
     }
   }
 
@@ -615,7 +615,7 @@ class message_box final
 
     button_id button{-1};
     if (SDL_ShowMessageBox(&data, &button) == -1) {
-      throw sdl_error{"Failed to show message box"};
+      throw sdl_error{};
     }
 
     if (button != -1) {

@@ -245,7 +245,7 @@ class basic_controller final
       : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {
-      throw sdl_error{"Failed to open game controller"};
+      throw sdl_error{};
     }
   }
 
@@ -270,7 +270,7 @@ class basic_controller final
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
       return basic_controller{ptr};
     } else {
-      throw sdl_error{"Failed to create controller from joystick ID"};
+      throw sdl_error{};
     }
   }
 
@@ -292,7 +292,7 @@ class basic_controller final
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
       return basic_controller{ptr};
     } else {
-      throw sdl_error{"Failed to create controller from player index"};
+      throw sdl_error{};
     }
   }
 

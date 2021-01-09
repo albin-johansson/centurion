@@ -116,7 +116,7 @@ class sound_effect final
   explicit sound_effect(not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk) {
-      throw mix_error{"Failed to load sound effect from file"};
+      throw mix_error{};
     }
   }
 

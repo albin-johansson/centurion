@@ -166,7 +166,7 @@ class basic_cursor final
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
     if (!m_cursor) {
-      throw sdl_error{"Failed to create system cursor"};
+      throw sdl_error{};
     }
   }
 
@@ -188,7 +188,7 @@ class basic_cursor final
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
     if (!m_cursor) {
-      throw sdl_error{"Failed to create color cursor"};
+      throw sdl_error{};
     }
   }
 

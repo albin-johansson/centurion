@@ -69,7 +69,7 @@ class semaphore final
       : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
     if (!m_semaphore) {
-      throw sdl_error{"Failed to create semaphore"};
+      throw sdl_error{};
     }
   }
 

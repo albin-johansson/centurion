@@ -152,7 +152,7 @@ class music final
   explicit music(not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
   {
     if (!m_music) {
-      throw mix_error{"Failed to load music from file"};
+      throw mix_error{};
     }
   }
 

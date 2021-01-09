@@ -131,7 +131,7 @@ class basic_renderer final
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
-      throw sdl_error{"Failed to create renderer"};
+      throw sdl_error{};
     }
 
     set_blend_mode(blend_mode::blend);

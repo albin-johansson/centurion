@@ -128,7 +128,7 @@ class basic_texture final
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
-      throw img_error{"Failed to load texture from file"};
+      throw img_error{};
     }
   }
 
@@ -150,7 +150,7 @@ class basic_texture final
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!m_texture) {
-      throw sdl_error{"Failed to create texture from surface"};
+      throw sdl_error{};
     }
   }
 
@@ -181,7 +181,7 @@ class basic_texture final
                                     size.height)}
   {
     if (!m_texture) {
-      throw sdl_error{"Failed to create texture"};
+      throw sdl_error{};
     }
   }
 

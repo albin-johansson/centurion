@@ -30,13 +30,12 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <exception>    // exception
-#include <string>       // string
-#include <string_view>  // string_view
-#include <utility>      // move
+#include <cassert>    // assert
+#include <exception>  // exception
 
 #include "centurion_cfg.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -58,47 +57,25 @@ namespace cen {
 class exception : public std::exception
 {
  public:
-  exception() = default;
+  exception() noexcept = default;
 
   /**
-   * \param what the message of the exception. If the string is null, "N/A" is
-   * used.
+   * \param what the message of the exception.
    *
    * \since 3.0.0
    */
-  explicit exception(czstring what)
+  explicit exception(not_null<czstring> what) noexcept : m_what{what}
   {
-    if (what) {
-      set_what(what);
-    }
-  }
-
-  /**
-   * \param what the message of the exception. If the string is empty, "N/A"
-   * is used.
-   *
-   * \since 3.0.0
-   */
-  explicit exception(std::string what)
-  {
-    if (!what.empty()) {
-      set_what(std::move(what));
-    }
+    assert(what && "Cannot supply null exception message!");
   }
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
-    return m_what.c_str();
-  }
-
- protected:
-  void set_what(std::string what)
-  {
-    m_what = std::move(what);
+    return m_what;
   }
 
  private:
-  std::string m_what{"N/A"};
+  czstring m_what{"N/A"};
 };
 
 /**
@@ -113,23 +90,24 @@ class exception : public std::exception
 class sdl_error final : public exception
 {
  public:
-  sdl_error() = default;
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : exception{SDL_GetError()}
+  {}
 
   /**
    * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * SDL_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  explicit sdl_error(std::string_view what)
-  {
-    using namespace std::string_literals;
-    set_what(what.data() + ": "s + SDL_GetError());
-  }
+  explicit sdl_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -144,23 +122,24 @@ class sdl_error final : public exception
 class img_error final : public exception
 {
  public:
-  img_error() = default;
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : exception{IMG_GetError()}
+  {}
 
   /**
    * \brief Creates an `img_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * IMG_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  explicit img_error(std::string_view what)
-  {
-    using namespace std::string_literals;
-    set_what(what.data() + ": "s + IMG_GetError());
-  }
+  explicit img_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -175,23 +154,24 @@ class img_error final : public exception
 class ttf_error final : public exception
 {
  public:
-  ttf_error() = default;
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : exception{TTF_GetError()}
+  {}
 
   /**
    * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * TTF_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  explicit ttf_error(std::string_view what)
-  {
-    using namespace std::string_literals;
-    set_what(what.data() + ": "s + TTF_GetError());
-  }
+  explicit ttf_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -206,23 +186,24 @@ class ttf_error final : public exception
 class mix_error final : public exception
 {
  public:
-  mix_error() = default;
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : exception{Mix_GetError()}
+  {}
 
   /**
    * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * Mix_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  explicit mix_error(std::string_view what)
-  {
-    using namespace std::string_literals;
-    set_what(what.data() + ": "s + Mix_GetError());
-  }
+  explicit mix_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 }  // namespace cen

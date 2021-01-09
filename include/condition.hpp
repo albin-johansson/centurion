@@ -59,7 +59,7 @@ class condition final
   condition() : m_cond{SDL_CreateCond()}
   {
     if (!m_cond) {
-      throw sdl_error{"Failed to create condition variable"};
+      throw sdl_error{};
     }
   }
 

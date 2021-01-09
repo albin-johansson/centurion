@@ -67,7 +67,7 @@ class scoped_lock final
   explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
     if (!mutex.lock()) {
-      throw sdl_error{"Couldn't lock mutex"};
+      throw sdl_error{};
     }
   }
 

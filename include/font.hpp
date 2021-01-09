@@ -123,7 +123,7 @@ class font final
 
     m_font.reset(TTF_OpenFont(file, size));
     if (!m_font) {
-      throw ttf_error{"Failed to open font"};
+      throw ttf_error{};
     }
 
     m_style = TTF_GetFontStyle(m_font.get());

@@ -186,7 +186,7 @@ class basic_joystick final
       : m_joystick{SDL_JoystickOpen(deviceIndex)}
   {
     if (!m_joystick) {
-      throw sdl_error{"Failed to open joystick from device index!"};
+      throw sdl_error{};
     }
   }
 

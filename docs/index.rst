@@ -60,6 +60,7 @@ Welcome to Centurion's documentation!
    pages/api/input/key_code
    pages/api/input/key_codes
    pages/api/input/key_modifier
+   pages/api/input/mouse_button
    pages/api/input/scan_code
    pages/api/input/scan_codes
 

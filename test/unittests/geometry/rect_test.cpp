@@ -70,6 +70,28 @@ TEST(Rect, SetY)
   EXPECT_EQ(rect.y(), y);
 }
 
+TEST(Rect, SetMaxX)
+{
+  cen::frect rect{{12, 92}, {241, 393}};
+
+  const auto mx = 74.3f;
+  rect.set_max_x(mx);
+
+  EXPECT_FLOAT_EQ(mx, rect.max_x());
+  EXPECT_FLOAT_EQ(241, rect.width());
+}
+
+TEST(Rect, SetMaxY)
+{
+  cen::frect rect{{12, 92}, {241, 393}};
+
+  const auto my = 34.3f;
+  rect.set_max_y(my);
+
+  EXPECT_FLOAT_EQ(my, rect.max_y());
+  EXPECT_FLOAT_EQ(393, rect.height());
+}
+
 TEST(Rect, MoveTo)
 {
   cen::frect rect;

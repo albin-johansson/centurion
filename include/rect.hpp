@@ -228,6 +228,34 @@ class basic_rect final
   }
 
   /**
+   * \brief Sets the maximum x-coordinate of the rectangle.
+   *
+   * \note This function preserves the width of the rectangle.
+   *
+   * \param maxX the new maximum x-coordinate of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_max_x(const value_type maxX) noexcept
+  {
+    m_rect.x = maxX - m_rect.w;
+  }
+
+  /**
+   * \brief Sets the maximum y-coordinate of the rectangle.
+   *
+   * \note This function preserves the height of the rectangle.
+   *
+   * \param maxX the new maximum y-coordinate of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_max_y(const value_type maxY) noexcept
+  {
+    m_rect.y = maxY - m_rect.h;
+  }
+
+  /**
    * \brief Sets the position of the rectangle.
    *
    * \note Some frameworks have this kind of function change the size of the

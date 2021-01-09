@@ -46,6 +46,9 @@ Interface
 Examples 
 --------
 
+Typical usage 
+~~~~~~~~~~~~~
+
 .. code:: C++
 
   #include <centurion.hpp>

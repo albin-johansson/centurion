@@ -27,8 +27,8 @@
 
 #include <cstring>  // strcmp
 
-#include "centurion_cfg.hpp"
-#include "types.hpp"
+#include "../centurion_cfg.hpp"
+#include "../czstring.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

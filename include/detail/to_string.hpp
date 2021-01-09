@@ -32,7 +32,7 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
-#include "centurion_cfg.hpp"
+#include "../centurion_cfg.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

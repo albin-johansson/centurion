@@ -27,7 +27,7 @@
 
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "centurion_cfg.hpp"
+#include "../centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

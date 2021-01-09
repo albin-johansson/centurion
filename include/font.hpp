@@ -115,6 +115,8 @@ class font final
    */
   font(not_null<czstring> file, const int size) : m_size{size}
   {
+    assert(file);
+
     if (size <= 0) {
       throw exception{"Bad font size!"};
     }

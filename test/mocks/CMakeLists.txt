@@ -9,6 +9,8 @@ set(SOURCE_FILES
 
     config/hints_test.cpp
 
+    core/centurion_test.cpp
+
     event/event_test.cpp
 
     graphics/message_box_test.cpp

@@ -98,6 +98,7 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Miscellaneous
 
+   pages/api/misc/exceptions
    pages/api/misc/logging
 
 .. toctree::

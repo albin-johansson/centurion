@@ -30,6 +30,9 @@ FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
+FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
 }
 // clang-format on
 
@@ -59,6 +62,9 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderSetClipRect);
     RESET_FAKE(SDL_RenderSetViewport);
     RESET_FAKE(SDL_SetRenderDrawBlendMode);
+    RESET_FAKE(SDL_GetRendererInfo);
+    RESET_FAKE(SDL_RenderGetIntegerScale);
+    RESET_FAKE(SDL_RenderIsClipEnabled);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -389,4 +395,70 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
 
   EXPECT_EQ(1, SDL_RenderCopyEx_fake.call_count);
   EXPECT_EQ(1, SDL_RenderCopyExF_fake.call_count);
+}
+
+TEST_F(RendererTest, Info)
+{
+  SDL_GetRendererInfo_fake.return_val = -1;
+  EXPECT_FALSE(m_renderer.info().has_value());
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, OutputWidth)
+{
+  const auto width [[maybe_unused]] = m_renderer.output_width();
+  EXPECT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  EXPECT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
+  EXPECT_EQ(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
+}
+
+TEST_F(RendererTest, OutputHeight)
+{
+  const auto height [[maybe_unused]] = m_renderer.output_height();
+  EXPECT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  EXPECT_EQ(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
+  EXPECT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
+}
+
+TEST_F(RendererTest, Flags)
+{
+  const auto flags [[maybe_unused]] = m_renderer.flags();
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, IsVSyncEnabled)
+{
+  const auto enabled [[maybe_unused]] = m_renderer.is_vsync_enabled();
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, IsAccelerated)
+{
+  const auto accelerated [[maybe_unused]] = m_renderer.is_accelerated();
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, IsSoftwareBased)
+{
+  const auto software [[maybe_unused]] = m_renderer.is_software_based();
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, SupportsTargetTextures)
+{
+  const auto support [[maybe_unused]] = m_renderer.supports_target_textures();
+  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
+}
+
+TEST_F(RendererTest, IsUsingIntegerLogicalScaling)
+{
+  const auto scaling [[maybe_unused]] =
+      m_renderer.is_using_integer_logical_scaling();
+  EXPECT_EQ(1, SDL_RenderGetIntegerScale_fake.call_count);
+}
+
+TEST_F(RendererTest, IsClippingEnabled)
+{
+  const auto isClipping [[maybe_unused]] = m_renderer.is_clipping_enabled();
+  EXPECT_EQ(1, SDL_RenderIsClipEnabled_fake.call_count);
 }

@@ -42,5 +42,3 @@ TEST_F(SurfaceTest, Copy)
   EXPECT_THROW(dst = src, cen::sdl_error);
   EXPECT_EQ(1, SDL_DuplicateSurface_fake.call_count);
 }
-
-

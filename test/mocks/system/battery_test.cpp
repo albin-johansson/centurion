@@ -3,7 +3,7 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include <array>        // array
+#include <array>  // array
 
 extern "C" {
 FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)

@@ -1,5 +1,5 @@
-#include <array>       // array
-#include <cstddef>     // size_t
+#include <array>    // array
+#include <cstddef>  // size_t
 
 #include "centurion.hpp"
 #include "controller.hpp"

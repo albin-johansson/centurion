@@ -28,6 +28,7 @@ set(SOURCE_FILES
     system/battery_test.cpp
     system/platform_test.cpp
 
+    thread/condition_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
     thread/semaphore_test.cpp

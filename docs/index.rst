@@ -33,9 +33,10 @@ Welcome to Centurion's documentation!
 
    pages/api/graphics/basic_window
    pages/api/graphics/basic_renderer
+   pages/api/graphics/basic_texture
+   pages/api/graphics/surface
    pages/api/graphics/font
    pages/api/graphics/font_cache
-   pages/api/graphics/surface
    pages/api/graphics/color
    pages/api/graphics/message_box
    pages/api/graphics/blend_mode

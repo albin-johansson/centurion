@@ -40,8 +40,9 @@ Welcome to Centurion's documentation!
    pages/api/graphics/color
    pages/api/graphics/message_box
    pages/api/graphics/blend_mode
-   pages/api/graphics/scale_mode
    pages/api/graphics/pixel_format
+   pages/api/graphics/scale_mode
+   pages/api/graphics/texture_access
 
 .. toctree::
    :maxdepth: 1

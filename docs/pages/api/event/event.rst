@@ -28,6 +28,51 @@ Interface
   :outline:
   :no-link:
 
+Related functions 
+-----------------
+
+.. doxygenfunction:: as_sdl_event(const common_event<T> &event) -> SDL_Event
+  :outline:
+  :no-link:
+
+Event types
+-----------
+
+All event types are defined in the ``event.hpp`` header, for more 
+details about any specific event, refer to the Doxygen or in-source 
+documentation.
+
+.. note:: 
+
+  All event classes in the Centurion library inherit from ``cen::common_event<T>``.
+
+=============================  ===============================
+ Event class                    SDL counterpart
+-----------------------------  -------------------------------
+ ``audio_device_event``         ``SDL_AudioDeviceEvent``
+ ``controller_axis_event``      ``SDL_ControllerAxisEvent``
+ ``controller_button_event``    ``SDL_ControllerButtonEvent``
+ ``controller_device_event``    ``SDL_ControllerDeviceEvent``
+ ``dollar_gesture_event``       ``SDL_DollarGestureEvent``
+ ``drop_event``                 ``SDL_DropEvent``
+ ``event``                      ``SDL_Event``
+ ``joy_axis_event``             ``SDL_JoyAxisEvent``
+ ``joy_ball_event``             ``SDL_JoyBallEvent``
+ ``joy_button_event``           ``SDL_JoyButtonEvent``
+ ``joy_device_event``           ``SDL_JoyDeviceEvent``
+ ``joy_hat_event``              ``SDL_JoyHatEvent``
+ ``keyboard_event``             ``SDL_KeyboardEvent``
+ ``mouse_button_event``         ``SDL_MouseButtonEvent``
+ ``mouse_motion_event``         ``SDL_MouseMotionEvent``
+ ``mouse_wheel_event``          ``SDL_MouseWheelEvent``
+ ``multi_gesture_event``        ``SDL_MultiGestureEvent``
+ ``quit_event``                 ``SDL_QuitEvent``
+ ``text_editing_event``         ``SDL_TextEditingEvent``
+ ``text_input_event``           ``SDL_TextInputEvent``
+ ``touch_finger_event``         ``SDL_TouchFingerEvent``
+ ``window_event``               ``SDL_WindowEvent``
+=============================  ===============================
+
 Examples
 --------
 
@@ -114,3 +159,7 @@ type. This can be accomplished with the ``is`` function.
       // quit application...
     }
   } 
+
+See also
+--------
+* :doc:`event_dispatcher </pages/api/event/event_dispatcher>`

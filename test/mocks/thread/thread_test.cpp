@@ -6,12 +6,12 @@
 #include "thread_mocks.hpp"
 
 // See SDL_thread.h
-#define SDL_CreateThread(fn, name, data)                       \
-  SDL_CreateThread(fn,                                         \
-                   name,                                       \
-                   data,                                       \
-                   (pfnSDL_CurrentBeginThread)SDL_beginthread, \
-                   (pfnSDL_CurrentEndThread)SDL_endthread)
+//#define SDL_CreateThread(fn, name, data)                       \
+//  SDL_CreateThread(fn,                                         \
+//                   name,                                       \
+//                   data,                                       \
+//                   (pfnSDL_CurrentBeginThread)SDL_beginthread, \
+//                   (pfnSDL_CurrentEndThread)SDL_endthread)
 
 class ThreadTest : public testing::Test
 {

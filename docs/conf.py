@@ -19,7 +19,7 @@ import subprocess, os
 # -- Project information -----------------------------------------------------
 
 project = 'Centurion'
-copyright = '2020, Albin Johansson'
+copyright = '2019-2021, Albin Johansson'
 author = 'Albin Johansson'
 
 # The full version, including alpha/beta/rc tags

@@ -59,10 +59,12 @@ Set up controllers using ``basic_controller`` API
   {
     // Parse all mappings from controller database file
     const auto count = cen::controller::load_mappings("resources/controllers.txt");
-    if (count > 0) { // At least one mapping was added
-      cen::controller controller; // Defaults to controller associated with index 0
-      // ...
-    }
+    if (!count) {
+      // potential error handling here, since no mappings were added...
+    } 
+
+    cen::controller controller; // Defaults to controller associated with index 0
+    // ...
   }
 
 Set up controllers using hint API

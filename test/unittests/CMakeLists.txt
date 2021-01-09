@@ -12,6 +12,7 @@ set(SOURCE_FILES
     core/centurion_test.cpp
     core/exception_test.cpp
 
+    detail/address_of_test.cpp
     detail/any_eq_test.cpp
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp

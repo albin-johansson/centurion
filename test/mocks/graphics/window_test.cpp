@@ -86,6 +86,12 @@ class WindowTest : public testing::Test
   cen::window_handle m_window{nullptr};
 };
 
+TEST_F(WindowTest, Constructor)
+{
+  EXPECT_THROW(cen::window{"foo"}, cen::sdl_error);
+  EXPECT_EQ(1, SDL_CreateWindow_fake.call_count);
+}
+
 TEST_F(WindowTest, Show)
 {
   m_window.show();

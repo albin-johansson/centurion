@@ -22,7 +22,7 @@ class CenturionTest : public testing::Test
   }
 };
 
-TEST_F(CenturionTest, NoFailure)
+TEST_F(CenturionTest, NoFailureDefaultConfiguration)
 {
   try {
     const cen::library library;
@@ -31,6 +31,16 @@ TEST_F(CenturionTest, NoFailure)
     EXPECT_EQ(1, TTF_Init_fake.call_count);
     EXPECT_EQ(1, IMG_Init_fake.call_count);
     EXPECT_EQ(1, Mix_Init_fake.call_count);
+
+    constexpr cen::config cfg;
+    EXPECT_EQ(cfg.coreFlags, SDL_Init_fake.arg0_val);
+    EXPECT_EQ(cfg.imageFlags, IMG_Init_fake.arg0_val);
+    EXPECT_EQ(cfg.mixerFlags, Mix_Init_fake.arg0_val);
+
+    EXPECT_EQ(cfg.mixerFreq, Mix_OpenAudio_fake.arg0_val);
+    EXPECT_EQ(cfg.mixerFormat, Mix_OpenAudio_fake.arg1_val);
+    EXPECT_EQ(cfg.mixerChannels, Mix_OpenAudio_fake.arg2_val);
+    EXPECT_EQ(cfg.mixerChunkSize, Mix_OpenAudio_fake.arg3_val);
   } catch (...) {
     FAIL();
   }

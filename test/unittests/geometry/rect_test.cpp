@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
 #include <type_traits>
 
 #include "log.hpp"
@@ -389,6 +390,12 @@ TEST(Rect, ToString)
 {
   const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
   cen::log::put(cen::to_string(rect));
+}
+
+TEST(Rect, StreamOperator)
+{
+  const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
+  std::cout << "COUT: " << rect << '\n';
 }
 
 TEST(Rect, GetUnion)

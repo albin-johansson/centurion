@@ -3,9 +3,33 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>        // array
+
 extern "C" {
 FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)
 }
+
+namespace {
+
+using signature_t = SDL_PowerState (*)(int*, int*);
+
+inline constexpr cen::seconds<int> seconds{1'337};
+inline constexpr auto percentage = 27;
+
+auto power_delegate(int* outSeconds, int* outPercentage) -> SDL_PowerState
+{
+  if (outSeconds) {
+    *outSeconds = seconds.count();
+  }
+
+  if (outPercentage) {
+    *outPercentage = percentage;
+  }
+
+  return SDL_POWERSTATE_ON_BATTERY;
+}
+
+}  // namespace
 
 class BatteryTest : public testing::Test
 {
@@ -15,6 +39,31 @@ class BatteryTest : public testing::Test
     RESET_FAKE(SDL_GetPowerInfo);
   }
 };
+
+TEST_F(BatteryTest, SecondsLeft)
+{
+  signature_t functions[] = {power_delegate};
+  SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
+
+  EXPECT_EQ(seconds, cen::battery::seconds_left());
+}
+
+TEST_F(BatteryTest, MinutesLeft)
+{
+  signature_t functions[] = {power_delegate};
+  SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
+
+  EXPECT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds),
+            cen::battery::minutes_left());
+}
+
+TEST_F(BatteryTest, Percentage)
+{
+  signature_t functions[] = {power_delegate};
+  SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
+
+  EXPECT_EQ(percentage, cen::battery::percentage());
+}
 
 TEST_F(BatteryTest, Exists)
 {

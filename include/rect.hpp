@@ -228,6 +228,23 @@ class basic_rect final
   }
 
   /**
+   * \brief Sets the position of the rectangle.
+   *
+   * \note Some frameworks have this kind of function change the size of the
+   * rectangle. However, this function does *not* change the size of the
+   * rectangle.
+   *
+   * \param pos the new position of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_position(const point_type& pos) noexcept
+  {
+    m_rect.x = pos.x();
+    m_rect.y = pos.y();
+  }
+
+  /**
    * \brief Moves the rectangle to the specified position.
    *
    * \note Some frameworks have this kind of method change the size of the
@@ -236,12 +253,13 @@ class basic_rect final
    *
    * \param pos the new position of the rectangle.
    *
+   * \deprecated Use `set_position()` instead.
+   *
    * \since 4.2.0
    */
-  constexpr void move_to(const point_type& pos) noexcept
+  [[deprecated]] constexpr void move_to(const point_type& pos) noexcept
   {
-    m_rect.x = pos.x();
-    m_rect.y = pos.y();
+    set_position(pos);
   }
 
   /**
@@ -269,16 +287,30 @@ class basic_rect final
   }
 
   /**
+   * \brief Sets the size of the rectangle.
+   *
+   * \param size the new size of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_size(const area_type& size) noexcept
+  {
+    m_rect.w = size.width;
+    m_rect.h = size.height;
+  };
+
+  /**
    * \brief Changes the size of the rectangle.
    *
    * \param size the new size of the rectangle.
    *
+   * \deprecated Use `set_size()` instead.
+   *
    * \since 4.2.0
    */
-  constexpr void resize(const area_type& size) noexcept
+  [[deprecated]] constexpr void resize(const area_type& size) noexcept
   {
-    m_rect.w = size.width;
-    m_rect.h = size.height;
+    set_size(size);
   };
 
   /**

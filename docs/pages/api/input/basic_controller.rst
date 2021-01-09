@@ -76,6 +76,8 @@ Set up controllers using hint API
   #include <controller.hpp>
   #include <hints.hpp>
 
+  namespace {
+
   void init_controller_mappings() 
   {
     using cen::hint::gamecontroller::config_file;
@@ -84,6 +86,8 @@ Set up controllers using hint API
     // this has to happen before the library is initialized
     cen::set_hint<config_file>("resources/controllers.txt");
   }
+
+  }  // namespace
 
   int main(int, char**) 
   {

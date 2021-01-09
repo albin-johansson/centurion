@@ -63,6 +63,7 @@
 #include <SDL.h>
 
 #include <cstddef>      // size_t
+#include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair

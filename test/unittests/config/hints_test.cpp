@@ -112,7 +112,16 @@ void test_enum_hint(T&&... value)
 
 template <typename T>
 class HintTest : public testing::Test
-{};
+{
+ public:
+  [[maybe_unused]] static void TearDownTestSuite()
+  {
+    // Reset our changes so that other tests don't break
+    cen::clear_hints();
+  }
+};
+
+using BasicHintTest = HintTest<void>;
 
 template <typename T>
 using BoolHintTest = HintTest<T>;
@@ -189,13 +198,13 @@ INSTANTIATE_TYPED_TEST_SUITE_P(IntegerHints, IntHintTest, integer_hints);
 INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedHints, UnsignedHintTest, unsigned_hints);
 INSTANTIATE_TYPED_TEST_SUITE_P(FloatHints, FloatHintTest, float_hints);
 
-TEST(Hints, DisplayUsableBounds)
+TEST_F(BasicHintTest, DisplayUsableBounds)
 {
   using cen::hint::display_usable_bounds;
   test_string_hint<display_usable_bounds>("10, 20, 30, 40");
 }
 
-TEST(Hints, WindowSharePixelFormat)
+TEST_F(BasicHintTest, WindowSharePixelFormat)
 {
   using cen::hint::window_share_pixel_format;
 
@@ -205,7 +214,7 @@ TEST(Hints, WindowSharePixelFormat)
   test_string_hint<window_share_pixel_format>(str.c_str());
 }
 
-TEST(Hints, KeyboardElement)
+TEST_F(BasicHintTest, KeyboardElement)
 {
   using cen::hint::emscripten::keyboard_element;
   test_string_hint<keyboard_element>("#window");
@@ -214,7 +223,7 @@ TEST(Hints, KeyboardElement)
   test_string_hint<keyboard_element>("#canvas");
 }
 
-TEST(Hints, WindowFlags)
+TEST_F(BasicHintTest, WindowFlags)
 {
   using cen::hint::qtwayland::window_flags;
   test_string_hint<window_flags>("OverridesSystemGestures StaysOnTop");
@@ -222,55 +231,55 @@ TEST(Hints, WindowFlags)
   test_string_hint<window_flags>("");
 }
 
-TEST(Hints, ConfigFile)
+TEST_F(BasicHintTest, ConfigFile)
 {
   using cen::hint::gamecontroller::config_file;
   test_string_hint<config_file>("foo");
 }
 
-TEST(Hints, IgnoreDevices)
+TEST_F(BasicHintTest, IgnoreDevices)
 {
   using cen::hint::gamecontroller::ignore_devices;
   test_string_hint<ignore_devices>("0xAAAA");
 }
 
-TEST(Hints, IgnoreDevicesExcept)
+TEST_F(BasicHintTest, IgnoreDevicesExcept)
 {
   using cen::hint::gamecontroller::ignore_devices_except;
   test_string_hint<ignore_devices_except>("0xBBBB, 0xCCCC");
 }
 
-TEST(Hints, PrivacyPolicyLabel)
+TEST_F(BasicHintTest, PrivacyPolicyLabel)
 {
   using cen::hint::winrt::privacy_policy_label;
   test_string_hint<privacy_policy_label>("foo");
 }
 
-TEST(Hints, PrivacyPolicyURL)
+TEST_F(BasicHintTest, PrivacyPolicyURL)
 {
   using cen::hint::winrt::privacy_policy_url;
   test_string_hint<privacy_policy_url>("bar");
 }
 
-TEST(Hints, IntResourceIcon)
+TEST_F(BasicHintTest, IntResourceIcon)
 {
   using cen::hint::windows::int_resource_icon;
   test_string_hint<int_resource_icon>("foo");
 }
 
-TEST(Hints, IntResourceIconSmall)
+TEST_F(BasicHintTest, IntResourceIconSmall)
 {
   using cen::hint::windows::int_resource_icon_small;
   test_string_hint<int_resource_icon_small>("bar");
 }
 
-TEST(Hints, WindowVisualID)
+TEST_F(BasicHintTest, WindowVisualID)
 {
   using cen::hint::x11::window_visual_id;
   test_string_hint<window_visual_id>("foo");
 }
 
-TEST(Hints, RenderDriver)
+TEST_F(BasicHintTest, RenderDriver)
 {
   using cen::hint::render_driver;
   test_enum_hint<render_driver>(render_driver::value::direct3d,
@@ -281,7 +290,7 @@ TEST(Hints, RenderDriver)
                                 render_driver::value::software);
 }
 
-TEST(Hints, AudioResamplingMode)
+TEST_F(BasicHintTest, AudioResamplingMode)
 {
   using cen::hint::audio_resampling_mode;
   test_enum_hint<audio_resampling_mode>(audio_resampling_mode::value::normal,
@@ -290,7 +299,7 @@ TEST(Hints, AudioResamplingMode)
                                         audio_resampling_mode::value::best);
 }
 
-TEST(Hints, ScaleQuality)
+TEST_F(BasicHintTest, ScaleQuality)
 {
   using cen::hint::scale_quality;
   test_enum_hint<scale_quality>(scale_quality::value::nearest,
@@ -298,7 +307,7 @@ TEST(Hints, ScaleQuality)
                                 scale_quality::value::best);
 }
 
-TEST(Hints, FramebufferAcceleration)
+TEST_F(BasicHintTest, FramebufferAcceleration)
 {
   using cen::hint::framebuffer_acceleration;
   test_enum_hint<framebuffer_acceleration>(
@@ -312,26 +321,23 @@ TEST(Hints, FramebufferAcceleration)
       framebuffer_acceleration::value::software);
 }
 
-TEST(Hints, AudioCategory)
+TEST_F(BasicHintTest, AudioCategory)
 {
   using cen::hint::audio_category;
   test_enum_hint<audio_category>(audio_category::value::ambient,
                                  audio_category::value::playback);
 }
 
-TEST(Hints, WaveRIFFChunkSize)
+TEST_F(BasicHintTest, WaveRIFFChunkSize)
 {
   using cen::hint::wave_riff_chunk_size;
   test_enum_hint<wave_riff_chunk_size>(wave_riff_chunk_size::value::force,
                                        wave_riff_chunk_size::value::ignore,
                                        wave_riff_chunk_size::value::ignore_zero,
                                        wave_riff_chunk_size::value::maximum);
-
-  // Might break sound effect tests without resetting the hint
-  cen::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::value::ignore_zero);
 }
 
-TEST(Hints, WaveTruncation)
+TEST_F(BasicHintTest, WaveTruncation)
 {
   using cen::hint::wave_truncation;
   test_enum_hint<wave_truncation>(wave_truncation::value::drop_block,
@@ -340,7 +346,7 @@ TEST(Hints, WaveTruncation)
                                   wave_truncation::value::very_strict);
 }
 
-TEST(Hints, WaveFactChunk)
+TEST_F(BasicHintTest, WaveFactChunk)
 {
   using cen::hint::wave_fact_chunk;
   test_enum_hint<wave_fact_chunk>(wave_fact_chunk::value::strict,
@@ -349,14 +355,14 @@ TEST(Hints, WaveFactChunk)
                                   wave_fact_chunk::value::truncate);
 }
 
-TEST(Hints, LogicalSizeMode)
+TEST_F(BasicHintTest, LogicalSizeMode)
 {
   using cen::hint::logical_size_mode;
   test_enum_hint<logical_size_mode>(logical_size_mode::value::letterbox,
                                     logical_size_mode::value::overscan);
 }
 
-TEST(Hints, ContentOrientation)
+TEST_F(BasicHintTest, ContentOrientation)
 {
   using cen::hint::qtwayland::content_orientation;
   test_enum_hint<content_orientation>(
@@ -367,7 +373,7 @@ TEST(Hints, ContentOrientation)
       content_orientation::value::inverted_landscape);
 }
 
-TEST(Hints, D3DCompiler)
+TEST_F(BasicHintTest, D3DCompiler)
 {
   using cen::hint::windows::d3d_compiler;
   test_enum_hint<d3d_compiler>(d3d_compiler::value::v46,
@@ -375,7 +381,7 @@ TEST(Hints, D3DCompiler)
                                d3d_compiler::value::none);
 }
 
-TEST(Hints, AddHintCallback)
+TEST_F(BasicHintTest, AddHintCallback)
 {
   using cen::hint::render_driver;
   cen::set_hint<render_driver>(render_driver::value::software);
@@ -412,7 +418,7 @@ TEST(Hints, AddHintCallback)
       render_driver::value::opengl);
 }
 
-TEST(Hints, HintPriority)
+TEST_F(BasicHintTest, HintPriority)
 {
   using prio = cen::hint_priority;
   EXPECT_EQ(prio::low, static_cast<prio>(SDL_HINT_DEFAULT));

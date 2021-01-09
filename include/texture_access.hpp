@@ -50,13 +50,13 @@ namespace cen {
  */
 enum class texture_access
 {
-  no_lock = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
-                                       * rarely, and isn't lockable. */
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Indicates that the texture changes
+                                       ///< rarely, and isn't lockable.
   streaming =
-      SDL_TEXTUREACCESS_STREAMING,  /**< Indicates that the texture changes
-                                     * frequently, and is lockable. */
-  target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be used
-                                     * as a render target. */
+      SDL_TEXTUREACCESS_STREAMING,   ///< Indicates that the texture changes
+                                     ///< frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Indicates that the texture can be used
+                                     ///< as a render target.
 };
 
 /**

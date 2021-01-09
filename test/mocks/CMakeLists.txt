@@ -6,6 +6,8 @@ set(SOURCE_FILES
     test_main.cpp
     core_mocks.hpp
     core_mocks.cpp
+    thread_mocks.hpp
+    thread_mocks.cpp
 
     config/hints_test.cpp
 

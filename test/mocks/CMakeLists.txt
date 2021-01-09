@@ -4,6 +4,8 @@ project(centurion-test-mocks LANGUAGES CXX)
 
 set(SOURCE_FILES
     test_main.cpp
+    core_mocks.hpp
+    core_mocks.cpp
 
     config/hints_test.cpp
 
@@ -40,6 +42,7 @@ add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)
 cen_set_compiler_options(${CENTURION_MOCK_TARGET})
 
 target_include_directories(${CENTURION_MOCK_TARGET}
+    PUBLIC .
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}

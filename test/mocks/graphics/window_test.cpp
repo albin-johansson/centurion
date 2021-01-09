@@ -5,8 +5,9 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
+
 extern "C" {
-FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
 FAKE_VOID_FUNC(SDL_ShowWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)

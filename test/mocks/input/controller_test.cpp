@@ -5,6 +5,7 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
 #include "exception.hpp"
 
 // clang-format off
@@ -50,12 +51,6 @@ FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
 FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
-
-FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
-
-FAKE_VALUE_FUNC(const char*, SDL_GetError)
-FAKE_VOID_FUNC(SDL_free, void*)
-
 }
 // clang-format on
 

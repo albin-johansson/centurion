@@ -126,7 +126,6 @@ struct config final
   int mixerChannels{MIX_DEFAULT_CHANNELS};
   int mixerChunkSize{4096};
 };
-};
 
 /**
  * \class library

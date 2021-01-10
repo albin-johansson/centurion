@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,25 +28,26 @@
  * \brief Contains entities considered to be fundamental for the library.
  */
 
-#ifndef CENTURION_HEADER
-#define CENTURION_HEADER
+#ifndef CENTURION_CORE_HEADER
+#define CENTURION_CORE_HEADER
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <optional>
+#include <optional>  // optional
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "exception.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * \namespace centurion
+ * \namespace cen
  *
  * \ingroup core
  *
@@ -108,22 +109,22 @@ namespace cen {
  */
 struct config final
 {
-  bool initCore = true;
-  bool initImage = true;
-  bool initMixer = true;
-  bool initTTF = true;
+  bool initCore{true};
+  bool initImage{true};
+  bool initMixer{true};
+  bool initTTF{true};
 
-  u32 coreFlags = SDL_INIT_EVERYTHING;
+  u32 coreFlags{SDL_INIT_EVERYTHING};
 
-  int imageFlags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
+  int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 
-  int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
-                   MIX_INIT_MOD | MIX_INIT_OPUS;
+  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
+                 MIX_INIT_MOD | MIX_INIT_OPUS};
 
-  int mixerFreq = MIX_DEFAULT_FREQUENCY;
-  u16 mixerFormat = MIX_DEFAULT_FORMAT;
-  int mixerChannels = MIX_DEFAULT_CHANNELS;
-  int mixerChunkSize = 4096;
+  int mixerFreq{MIX_DEFAULT_FREQUENCY};
+  u16 mixerFormat{MIX_DEFAULT_FORMAT};
+  int mixerChannels{MIX_DEFAULT_CHANNELS};
+  int mixerChunkSize{4096};
 };
 
 /**
@@ -146,6 +147,10 @@ class library final
   /**
    * \brief Initializes the library.
    *
+   * \note Make sure to have the `library` instance as a local variable that
+   * will outlive the duration of your main program. It's not sufficient to just
+   * call the constructor but not store the result as a variable.
+   *
    * \pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
@@ -156,8 +161,10 @@ class library final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  library();
+  library()
+  {
+    init();
+  }
 
   /**
    * \brief Initializes the library according to the supplied configuration.
@@ -174,8 +181,10 @@ class library final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit library(const config& cfg);
+  explicit library(const config& cfg) : m_cfg{cfg}
+  {
+    init();
+  }
 
   library(const library&) = delete;
 
@@ -189,58 +198,174 @@ class library final
   class sdl final
   {
    public:
-    explicit sdl(u32 flags);
+    explicit sdl(const u32 flags)
+    {
+      const auto result = SDL_Init(flags);
+      if (result < 0) {
+        throw sdl_error{};
+      }
+    }
 
-    CENTURION_API
-    ~sdl() noexcept;
+    ~sdl() noexcept
+    {
+      SDL_Quit();
+    }
   };
 
   class sdl_ttf final
   {
    public:
-    explicit sdl_ttf();
+    explicit sdl_ttf()
+    {
+      const auto result = TTF_Init();
+      if (result == -1) {
+        throw ttf_error{};
+      }
+    }
 
-    CENTURION_API
-    ~sdl_ttf() noexcept;
+    ~sdl_ttf() noexcept
+    {
+      TTF_Quit();
+    }
   };
 
   class sdl_mixer final
   {
    public:
-    sdl_mixer(int flags, int freq, u16 format, int nChannels, int chunkSize);
+    sdl_mixer(const int flags,
+              const int freq,
+              const u16 format,
+              const int nChannels,
+              const int chunkSize)
+    {
+      if (!Mix_Init(flags)) {
+        throw mix_error{};
+      }
 
-    CENTURION_API
-    ~sdl_mixer() noexcept;
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
+        throw mix_error{};
+      }
+    }
+
+    ~sdl_mixer() noexcept
+    {
+      Mix_CloseAudio();
+      Mix_Quit();
+    }
   };
 
   class sdl_image final
   {
    public:
-    explicit sdl_image(int flags);
+    explicit sdl_image(const int flags)
+    {
+      if (!IMG_Init(flags)) {
+        throw img_error{};
+      }
+    }
 
-    CENTURION_API
-    ~sdl_image() noexcept;
+    ~sdl_image() noexcept
+    {
+      IMG_Quit();
+    }
   };
 
-  config m_cfg{};
-  std::optional<sdl> m_sdl{};
-  std::optional<sdl_image> m_img{};
-  std::optional<sdl_ttf> m_ttf{};
-  std::optional<sdl_mixer> m_mixer{};
+  config m_cfg;
+  std::optional<sdl> m_sdl;
+  std::optional<sdl_image> m_img;
+  std::optional<sdl_ttf> m_ttf;
+  std::optional<sdl_mixer> m_mixer;
 
-  void init();
+  void init()
+  {
+    if (m_cfg.initCore) {
+      m_sdl.emplace(m_cfg.coreFlags);
+    }
+
+    if (m_cfg.initImage) {
+      m_img.emplace(m_cfg.imageFlags);
+    }
+
+    if (m_cfg.initTTF) {
+      m_ttf.emplace();
+    }
+
+    if (m_cfg.initMixer) {
+      m_mixer.emplace(m_cfg.mixerFlags,
+                      m_cfg.mixerFreq,
+                      m_cfg.mixerFormat,
+                      m_cfg.mixerChannels,
+                      m_cfg.mixerChunkSize);
+    }
+  }
 };
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION,
+          SDL_IMAGE_MINOR_VERSION,
+          SDL_IMAGE_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION,
+          SDL_MIXER_MINOR_VERSION,
+          SDL_MIXER_PATCHLEVEL};
+}
 
 /**
  * \brief Returns the compile-time version of SDL2_ttf that is being used.
  *
  * \return the compile-time version of SDL2_ttf that is being used.
  *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \deprecated Use `sdl_ttf_version()` instead.
+ *
  * \since 4.0.0
  */
-CENTURION_QUERY
-auto ttf_version() noexcept -> SDL_version;
+[[nodiscard, deprecated]] constexpr auto ttf_version() noexcept -> SDL_version
+{
+  return sdl_ttf_version();
+}
 
 }  // namespace cen
 
-#endif  // CENTURION_HEADER
+#endif  // CENTURION_CORE_HEADER

@@ -85,7 +85,7 @@ be used to obtain various information about the font face.
     // Detailed information about the font
     int descent = font.descent();
     int ascent = font.ascent();
-    bool kerning = font.kerning();
+    bool kerning = font.has_kerning();
     auto hinting = font.font_hinting();
     auto style = font.style_name();
     auto family = font.family_name();

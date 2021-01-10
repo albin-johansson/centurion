@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@
 #ifndef CENTURION_MOUSE_BUTTON_HEADER
 #define CENTURION_MOUSE_BUTTON_HEADER
 
-#include <SDL_mouse.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \enum mouse_button
- *
- * \ingroup input
  *
  * \brief Provides values that represent various mouse buttons.
  *
@@ -54,6 +55,8 @@ enum class mouse_button
   x1 = SDL_BUTTON_X1,
   x2 = SDL_BUTTON_X2
 };
+
+/// \}
 
 }  // namespace cen
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,9 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
-#include "centurion_api.hpp"
+#include "../centurion_cfg.hpp"
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -67,8 +68,7 @@ template <std::size_t bufferSize = 16, typename T>
   const auto [ptr, err] =
       std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
   if (err == std::errc{}) {
-    const auto len = static_cast<std::size_t>(ptr - buffer.data());
-    return std::string{buffer.data(), len};
+    return std::string{buffer.data(), ptr};
   } else {
     return std::nullopt;
   }
@@ -76,5 +76,6 @@ template <std::size_t bufferSize = 16, typename T>
 }
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_TO_STRING_HEADER

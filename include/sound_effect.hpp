@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,21 @@
 
 #include <SDL_mixer.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/clamp.hpp"
+#include "detail/max.hpp"
+#include "detail/to_string.hpp"
+#include "exception.hpp"
+#include "not_null.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -47,10 +55,11 @@
 
 namespace cen {
 
+/// \addtogroup audio
+/// \{
+
 /**
  * \class sound_effect
- *
- * \ingroup audio
  *
  * \brief Represents a sound effect.
  *
@@ -81,9 +90,18 @@ class sound_effect final
   /**
    * \brief Indicates that an audio snippet should be looped indefinitely.
    *
+   * \since 5.1.0
+   */
+  inline constexpr static int forever = -1;
+
+  /**
+   * \brief Indicates that an audio snippet should be looped indefinitely.
+   *
+   * \deprecated Use `sound_effect::forever` instead.
+   *
    * \since 4.0.0
    */
-  inline constexpr static int loopForever = -1;
+  [[deprecated]] inline constexpr static int loopForever = forever;
 
   /**
    * \brief Creates a sound effect based on the audio file at the specified
@@ -95,8 +113,12 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  explicit sound_effect(nn_czstring file);
+  explicit sound_effect(not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
+  {
+    if (!m_chunk) {
+      throw mix_error{};
+    }
+  }
 
   /**
    * \brief Plays the sound effect.
@@ -104,48 +126,70 @@ class sound_effect final
    * \note A negative value indicates that the sound effect should be looped
    * forever.
    *
-   * \param nLoops the amount of loops, can be negative.
+   * \param nLoops the amount of loops, `sound_effect::forever` can be used to
+   * loop the sound effect indefinitely.
    *
-   * \see `sound_effect::loopForever`
+   * \see `sound_effect::forever`
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void play(int nLoops = 0) noexcept;
+  void play(const int nLoops = 0) noexcept
+  {
+    activate(detail::max(nLoops, forever));
+  }
 
   /**
    * \brief Stops the sound effect from playing.
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void stop() noexcept;
+  void stop() noexcept
+  {
+    if (is_playing()) {
+      Mix_Pause(m_channel);
+      m_channel = undefined_channel();
+    }
+  }
 
   /**
    * \brief Fades in the sound effect.
    *
-   * \details This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect is currently playing.
+   * \pre `ms` must be greater than zero.
+   *
+   * \details This method has no effect if the sound effect is currently
+   * playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void fade_in(milliseconds<int> ms) noexcept;
+  void fade_in(const milliseconds<int> ms) noexcept
+  {
+    assert(ms.count() > 0);
+    if (!is_playing()) {
+      m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
+    }
+  }
 
   /**
    * \brief Fades out the sound effect.
    *
-   * \details This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect isn't currently playing.
+   * \pre `ms` must be greater than zero.
+   *
+   * \details This method has no effect if the sound effect isn't currently
+   * playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void fade_out(milliseconds<int> ms) noexcept;
+  void fade_out(const milliseconds<int> ms) noexcept  // NOLINT not const
+  {
+    assert(ms.count() > 0);
+    if (is_playing()) {
+      Mix_FadeOutChannel(m_channel, ms.count());
+    }
+  }
 
   /**
    * \brief Sets the volume of the sound effect.
@@ -158,8 +202,10 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_volume(int volume) noexcept;
+  void set_volume(const int volume) noexcept
+  {
+    Mix_VolumeChunk(m_chunk.get(), detail::clamp(volume, 0, max_volume()));
+  }
 
   /**
    * \brief Indicates whether or not the sound effect is currently playing.
@@ -168,8 +214,23 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto is_playing() const noexcept -> bool;
+  [[nodiscard]] auto is_playing() const noexcept -> bool
+  {
+    return (m_channel != undefined_channel()) && Mix_Playing(m_channel);
+  }
+
+  /**
+   * \brief Indicates whether or not any sound effects are currently playing.
+   *
+   * \return `true` if any sound effect is playing on some channel; `false`
+   * otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] static auto is_any_playing() noexcept -> bool
+  {
+    return Mix_Playing(undefined_channel());
+  }
 
   /**
    * \brief Indicates whether or not the sound effect is being faded.
@@ -182,8 +243,10 @@ class sound_effect final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto is_fading() const noexcept -> bool;
+  [[nodiscard]] auto is_fading() const noexcept -> bool
+  {
+    return is_playing() && Mix_FadingChannel(m_channel);
+  }
 
   /**
    * \brief Returns the current volume of the sound effect.
@@ -200,11 +263,32 @@ class sound_effect final
   }
 
   /**
+   * \brief Returns the channel associated with the sound effect, if any.
+   *
+   * \note Channels are not associated with sound effects for long, and might
+   * change in between playbacks.
+   *
+   * \return the channel currently associated with the sound effect;
+   * `std::nullopt` if there is none.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto channel() const noexcept -> std::optional<int>
+  {
+    if (m_channel != undefined_channel()) {
+      return m_channel;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
    * \brief Returns a pointer to the associated `Mix_Chunk`.
    *
-   * \warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However it is useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However it is useful since
+   * many SDL calls use non-const pointers even when no change will be applied.
+   *
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated `Mix_Chunk`.
    *
@@ -276,13 +360,28 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void activate(int nLoops) noexcept;
+  void activate(const int nLoops) noexcept
+  {
+    if (m_channel != undefined_channel()) {
+      Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
+    } else {
+      m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
+    }
+  }
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  sound_effect() = default;
+
+  void set_channel(const int channel) noexcept
+  {
+    m_channel = channel;
+  }
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /**
  * \brief Returns a textual representation of a sound effect.
- *
- * \ingroup audio
  *
  * \param sound the sound effect that will be converted.
  *
@@ -290,8 +389,12 @@ class sound_effect final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const sound_effect& sound) -> std::string;
+[[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
+{
+  using detail::to_string;
+  return "[sound_effect | data: " + detail::address_of(sound.get()) +
+         ", volume: " + detail::to_string(sound.volume()).value() + "]";
+}
 
 /**
  * \brief Prints a textual representation of a sound effect.
@@ -303,9 +406,14 @@ auto to_string(const sound_effect& sound) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const sound_effect& sound)
-    -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const sound_effect& sound)
+    -> std::ostream&
+{
+  stream << to_string(sound);
+  return stream;
+}
+
+/// \}
 
 }  // namespace cen
 

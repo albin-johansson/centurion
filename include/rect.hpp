@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,16 @@
 
 #include <SDL.h>
 
-#include <algorithm>
-#include <ostream>
-#include <string>
-#include <type_traits>
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
 
 #include "area.hpp"
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "cast.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/max.hpp"
+#include "detail/min.hpp"
+#include "detail/to_string.hpp"
 #include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -49,10 +51,11 @@
 
 namespace cen {
 
+/// \addtogroup geometry
+/// \{
+
 /**
  * \class rect_traits
- *
- * \ingroup geometry
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
@@ -134,8 +137,6 @@ class rect_traits final
 /**
  * \class basic_rect
  *
- * \ingroup geometry
- *
  * \brief A simple rectangle implementation.
  *
  * \tparam T the representation type. Must be convertible to either `int` or
@@ -209,7 +210,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_x(value_type x) noexcept
+  constexpr void set_x(const value_type x) noexcept
   {
     m_rect.x = x;
   }
@@ -221,9 +222,54 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_y(value_type y) noexcept
+  constexpr void set_y(const value_type y) noexcept
   {
     m_rect.y = y;
+  }
+
+  /**
+   * \brief Sets the maximum x-coordinate of the rectangle.
+   *
+   * \note This function preserves the width of the rectangle.
+   *
+   * \param maxX the new maximum x-coordinate of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_max_x(const value_type maxX) noexcept
+  {
+    m_rect.x = maxX - m_rect.w;
+  }
+
+  /**
+   * \brief Sets the maximum y-coordinate of the rectangle.
+   *
+   * \note This function preserves the height of the rectangle.
+   *
+   * \param maxX the new maximum y-coordinate of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_max_y(const value_type maxY) noexcept
+  {
+    m_rect.y = maxY - m_rect.h;
+  }
+
+  /**
+   * \brief Sets the position of the rectangle.
+   *
+   * \note Some frameworks have this kind of function change the size of the
+   * rectangle. However, this function does *not* change the size of the
+   * rectangle.
+   *
+   * \param pos the new position of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_position(const point_type& pos) noexcept
+  {
+    m_rect.x = pos.x();
+    m_rect.y = pos.y();
   }
 
   /**
@@ -235,12 +281,13 @@ class basic_rect final
    *
    * \param pos the new position of the rectangle.
    *
+   * \deprecated Use `set_position()` instead.
+   *
    * \since 4.2.0
    */
-  constexpr void move_to(const point_type& pos) noexcept
+  [[deprecated]] constexpr void move_to(const point_type& pos) noexcept
   {
-    m_rect.x = pos.x();
-    m_rect.y = pos.y();
+    set_position(pos);
   }
 
   /**
@@ -250,7 +297,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_width(value_type width) noexcept
+  constexpr void set_width(const value_type width) noexcept
   {
     m_rect.w = width;
   }
@@ -262,22 +309,36 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_height(value_type height) noexcept
+  constexpr void set_height(const value_type height) noexcept
   {
     m_rect.h = height;
   }
+
+  /**
+   * \brief Sets the size of the rectangle.
+   *
+   * \param size the new size of the rectangle.
+   *
+   * \since 5.1.0
+   */
+  constexpr void set_size(const area_type& size) noexcept
+  {
+    m_rect.w = size.width;
+    m_rect.h = size.height;
+  };
 
   /**
    * \brief Changes the size of the rectangle.
    *
    * \param size the new size of the rectangle.
    *
+   * \deprecated Use `set_size()` instead.
+   *
    * \since 4.2.0
    */
-  constexpr void resize(const area_type& size) noexcept
+  [[deprecated]] constexpr void resize(const area_type& size) noexcept
   {
-    m_rect.w = size.width;
-    m_rect.h = size.height;
+    set_size(size);
   };
 
   /**
@@ -511,8 +572,6 @@ class basic_rect final
 /**
  * \typedef irect
  *
- * \ingroup geometry
- *
  * \brief Alias for an `int`-based rectangle.
  *
  * \since 5.0.0
@@ -522,36 +581,14 @@ using irect = basic_rect<int>;
 /**
  * \typedef frect
  *
- * \ingroup geometry
- *
  * \brief Alias for a `float`-based rectangle.
  *
  * \since 5.0.0
  */
 using frect = basic_rect<float>;
 
-static_assert(std::is_nothrow_default_constructible_v<frect>);
-static_assert(std::is_nothrow_default_constructible_v<irect>);
-
-static_assert(std::is_nothrow_copy_constructible_v<frect>);
-static_assert(std::is_nothrow_copy_constructible_v<irect>);
-
-static_assert(std::is_nothrow_copy_assignable_v<frect>);
-static_assert(std::is_nothrow_copy_assignable_v<irect>);
-
-static_assert(std::is_nothrow_move_constructible_v<frect>);
-static_assert(std::is_nothrow_move_constructible_v<irect>);
-
-static_assert(std::is_nothrow_move_assignable_v<frect>);
-static_assert(std::is_nothrow_move_assignable_v<irect>);
-
-static_assert(std::is_nothrow_destructible_v<frect>);
-static_assert(std::is_nothrow_destructible_v<irect>);
-
 /**
  * \brief Indicates whether or not two rectangles are equal.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -573,8 +610,6 @@ template <typename T>
 
 /**
  * \brief Indicates whether or not two rectangles aren't equal.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -668,8 +703,6 @@ template <typename T>
 /**
  * \brief Returns the union of two rectangles.
  *
- * \ingroup geometry
- *
  * \details Returns a rectangle that represents the union of two rectangles.
  *
  * \tparam T the representation type used by the rectangles.
@@ -697,18 +730,16 @@ template <typename T>
     return fst;
   }
 
-  const auto x = std::min(fst.x(), snd.x());
-  const auto y = std::min(fst.y(), snd.y());
-  const auto maxX = std::max(fst.max_x(), snd.max_x());
-  const auto maxY = std::max(fst.max_y(), snd.max_y());
+  const auto x = detail::min(fst.x(), snd.x());
+  const auto y = detail::min(fst.y(), snd.y());
+  const auto maxX = detail::max(fst.max_x(), snd.max_x());
+  const auto maxY = detail::max(fst.max_y(), snd.max_y());
 
   return {{x, y}, {maxX - x, maxY - y}};
 }
 
 /**
  * \brief Returns a textual representation of a rectangle.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the rectangle.
  *
@@ -721,18 +752,14 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  const auto x = std::to_string(rect.x());
-  const auto y = std::to_string(rect.y());
-  const auto w = std::to_string(rect.width());
-  const auto h = std::to_string(rect.height());
-  return "[Rect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h +
-         "]";
+  return "[rect | x: " + detail::to_string(rect.x()).value() +
+         ", y: " + detail::to_string(rect.y()).value() +
+         ", width: " + detail::to_string(rect.width()).value() +
+         ", height: " + detail::to_string(rect.height()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a rectangle using a stream.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the rectangle.
  *
@@ -750,6 +777,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
   stream << to_string(rect);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

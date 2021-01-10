@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +25,17 @@
 #ifndef CENTURION_EXCEPTION_HEADER
 #define CENTURION_EXCEPTION_HEADER
 
-#include <exception>
-#include <string_view>
-#include <type_traits>
-#include <utility>  // move
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include <cassert>    // assert
+#include <exception>  // exception
+
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -53,53 +57,26 @@ namespace cen {
 class exception : public std::exception
 {
  public:
-  exception() = default;
+  exception() noexcept = default;
 
   /**
-   * \param what the message of the exception. If the string is null, "N/A" is
-   * used.
+   * \param what the message of the exception.
    *
    * \since 3.0.0
    */
-  explicit exception(czstring what)
+  explicit exception(not_null<czstring> what) noexcept : m_what{what}
   {
-    if (what) {
-      set_what(what);
-    }
-  }
-
-  /**
-   * \param what the message of the exception. If the string is empty, "N/A"
-   * is used.
-   *
-   * \since 3.0.0
-   */
-  explicit exception(std::string what)
-  {
-    if (!what.empty()) {
-      set_what(std::move(what));
-    }
+    assert(what && "Cannot supply null exception message!");
   }
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
-    return m_what.c_str();
-  }
-
- protected:
-  void set_what(std::string what)
-  {
-    m_what = std::move(what);
+    return m_what;
   }
 
  private:
-  std::string m_what{"N/A"};
+  czstring m_what{"N/A"};
 };
-
-static_assert(std::has_virtual_destructor_v<exception>);
-static_assert(std::is_default_constructible_v<exception>);
-static_assert(std::is_nothrow_move_constructible_v<exception>);
-static_assert(std::is_nothrow_destructible_v<exception>);
 
 /**
  * \class sdl_error
@@ -113,20 +90,24 @@ static_assert(std::is_nothrow_destructible_v<exception>);
 class sdl_error final : public exception
 {
  public:
-  sdl_error() = default;
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : exception{SDL_GetError()}
+  {}
 
   /**
    * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * SDL_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit sdl_error(std::string_view what);
+  explicit sdl_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -141,20 +122,24 @@ class sdl_error final : public exception
 class img_error final : public exception
 {
  public:
-  img_error() = default;
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : exception{IMG_GetError()}
+  {}
 
   /**
    * \brief Creates an `img_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * IMG_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit img_error(std::string_view what);
+  explicit img_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -169,20 +154,24 @@ class img_error final : public exception
 class ttf_error final : public exception
 {
  public:
-  ttf_error() = default;
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : exception{TTF_GetError()}
+  {}
 
   /**
    * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * TTF_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit ttf_error(std::string_view what);
+  explicit ttf_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 /**
@@ -197,20 +186,24 @@ class ttf_error final : public exception
 class mix_error final : public exception
 {
  public:
-  mix_error() = default;
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : exception{Mix_GetError()}
+  {}
 
   /**
    * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \details The message will be formatted according to `what + ": " +
-   * Mix_GetError()`.
    *
    * \param what the error message that will be used.
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit mix_error(std::string_view what);
+  explicit mix_error(not_null<czstring> what) noexcept : exception{what}
+  {}
 };
 
 }  // namespace cen

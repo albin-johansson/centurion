@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +25,15 @@
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_keycode.h>
-#include <SDL_scancode.h>
+#include <SDL.h>
 
-#include <ostream>
-#include <string>
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -41,10 +41,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class scan_code
- *
- * \ingroup input
  *
  * \brief Represents a scan code.
  *
@@ -86,7 +87,8 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr scan_code(SDL_Scancode scancode) noexcept : m_code{scancode}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
+      : m_code{scancode}
   {}
 
   /**
@@ -99,7 +101,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(SDL_Keycode key) noexcept
+  explicit scan_code(const SDL_Keycode key) noexcept
       : m_code{SDL_GetScancodeFromKey(key)}
   {}
 
@@ -115,7 +117,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(nn_czstring name) noexcept
+  explicit scan_code(not_null<czstring> name) noexcept
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
@@ -132,7 +134,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr auto operator=(SDL_Scancode code) noexcept -> scan_code&
+  constexpr auto operator=(const SDL_Scancode code) noexcept -> scan_code&
   {
     m_code = code;
     return *this;
@@ -148,7 +150,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  auto operator=(SDL_Keycode keycode) noexcept -> scan_code&
+  auto operator=(const SDL_Keycode keycode) noexcept -> scan_code&
   {
     m_code = SDL_GetScancodeFromKey(keycode);
     return *this;
@@ -167,10 +169,23 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  auto operator=(nn_czstring name) noexcept -> scan_code&
+  auto operator=(not_null<czstring> name) noexcept -> scan_code&
   {
+    assert(name);
     m_code = SDL_GetScancodeFromName(name);
     return *this;
+  }
+
+  /**
+   * \brief Returns the total amount of scan codes.
+   *
+   * \return the amount of scan codes.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] constexpr static auto count() noexcept -> int
+  {
+    return static_cast<int>(SDL_NUM_SCANCODES);
   }
 
   /**
@@ -197,6 +212,20 @@ class scan_code final
   [[nodiscard]] auto name() const -> std::string
   {
     return SDL_GetScancodeName(m_code);
+  }
+
+  /**
+   * \brief Returns the corresponding `SDL_KeyCode`.
+   *
+   * \return the key code associated with the internal scan code.
+   *
+   * \see `SDL_GetKeyFromScancode`
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto to_key_code() const noexcept -> SDL_KeyCode
+  {
+    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
   }
 
   /**
@@ -234,7 +263,7 @@ class scan_code final
    */
   explicit operator SDL_KeyCode() const noexcept
   {
-    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
+    return to_key_code();
   }
 
  private:
@@ -244,21 +273,19 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \ingroup input
- *
  * \param scanCode the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const scan_code& scanCode) -> std::string;
+[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+{
+  return "[scan_code | key: " + scanCode.name() + "]";
+}
 
 /**
  * \brief Prints a scan code using a stream.
- *
- * \ingroup input
  *
  * \param stream the stream that will be used.
  * \param scanCode the scan code that will be printed.
@@ -267,14 +294,15 @@ auto to_string(const scan_code& scanCode) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const scan_code& scanCode)
-    -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
+    -> std::ostream&
+{
+  stream << to_string(scanCode);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two scan codes are the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side scan code.
  * \param rhs the right-hand side scan code.
@@ -283,17 +311,14 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const scan_code& lhs,
-                                               const scan_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
+                                        const scan_code& rhs) noexcept -> bool
 {
   return lhs.get() == rhs.get();
 }
 
 /**
  * \brief Indicates whether or not two scan codes aren't the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side scan code.
  * \param rhs the right-hand side scan code.
@@ -302,17 +327,14 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const scan_code& lhs,
-                                               const scan_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
+                                        const scan_code& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \namespace cen::scancodes
- *
- * \ingroup input
  *
  * \brief Provides a collection of `scan_code` constants.
  *
@@ -955,6 +977,9 @@ inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 }  // namespace scancodes
+
+/// \}
+
 }  // namespace cen
 
 #endif  // CENTURION_SCAN_CODE_HEADER

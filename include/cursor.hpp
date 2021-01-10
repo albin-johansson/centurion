@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, conditional_t, true_type, false_type
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "point.hpp"
 #include "surface.hpp"
 
@@ -41,10 +41,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \enum system_cursor
- *
- * \ingroup graphics
  *
  * \brief Represents the various available system cursors.
  *
@@ -75,8 +76,6 @@ enum class system_cursor
 /**
  * \brief Indicates whether or not two system cursor values are the same.
  *
- * \ingroup graphics
- *
  * \param lhs the left-hand side system cursor value.
  * \param rhs the right-hand side system cursor value.
  *
@@ -84,8 +83,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept
     -> bool
 {
   return static_cast<SDL_SystemCursor>(lhs) == rhs;
@@ -93,11 +92,9 @@ enum class system_cursor
 
 /**
  * \copydoc operator==(system_cursor, SDL_SystemCursor)
- *
- * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -105,8 +102,6 @@ enum class system_cursor
 
 /**
  * \brief Indicates whether or not two system cursor values aren't the same.
- *
- * \ingroup graphics
  *
  * \param lhs the left-hand side system cursor value.
  * \param rhs the right-hand side system cursor value.
@@ -116,8 +111,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -125,11 +120,9 @@ enum class system_cursor
 
 /**
  * \copydoc operator!=(system_cursor, SDL_SystemCursor)
- *
- * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -169,11 +162,11 @@ class basic_cursor final
    * \since 4.0.0
    */
   template <typename U = T, detail::is_owner<U> = true>
-  explicit basic_cursor(system_cursor cursor)
+  explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
     if (!m_cursor) {
-      throw sdl_error{"Failed to create system cursor"};
+      throw sdl_error{};
     }
   }
 
@@ -195,7 +188,7 @@ class basic_cursor final
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
     if (!m_cursor) {
-      throw sdl_error{"Failed to create color cursor"};
+      throw sdl_error{};
     }
   }
 
@@ -308,7 +301,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  static void set_visible(bool visible) noexcept
+  static void set_visible(const bool visible) noexcept
   {
     SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
   }
@@ -355,8 +348,7 @@ class basic_cursor final
   /**
    * \brief Returns a pointer to the associated cursor.
    *
-   * \warning Don't claim ownership of the returned pointer unless you enjoy
-   * playing with fire...
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated cursor.
    *
@@ -406,6 +398,8 @@ using cursor = basic_cursor<std::true_type>;
  * \since 5.0.0
  */
 using cursor_handle = basic_cursor<std::false_type>;
+
+/// \}
 
 }  // namespace cen
 

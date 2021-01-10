@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,10 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+#include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_render.h>
-#include <SDL_video.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
@@ -36,17 +36,20 @@
 
 #include "area.hpp"
 #include "blend_mode.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
+#include "owner.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -54,10 +57,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class basic_texture
- *
- * \ingroup graphics
  *
  * \brief Represents an hardware-accelerated image.
  *
@@ -120,11 +124,11 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
-  basic_texture(const Renderer& renderer, nn_czstring path)
+  basic_texture(const Renderer& renderer, not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
-      throw img_error{"Failed to load texture from file"};
+      throw img_error{};
     }
   }
 
@@ -146,7 +150,7 @@ class basic_texture final
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!m_texture) {
-      throw sdl_error{"Failed to create texture from surface"};
+      throw sdl_error{};
     }
   }
 
@@ -167,8 +171,8 @@ class basic_texture final
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   basic_texture(const Renderer& renderer,
-                pixel_format format,
-                texture_access access,
+                const pixel_format format,
+                const texture_access access,
                 const iarea& size)
       : m_texture{SDL_CreateTexture(renderer.get(),
                                     static_cast<u32>(format),
@@ -177,7 +181,7 @@ class basic_texture final
                                     size.height)}
   {
     if (!m_texture) {
-      throw sdl_error{"Failed to create texture"};
+      throw sdl_error{};
     }
   }
 
@@ -203,35 +207,41 @@ class basic_texture final
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      nn_czstring path,
-                                      pixel_format format) -> basic_texture
+                                      not_null<czstring> path,
+                                      const pixel_format format)
+      -> basic_texture
   {
-    const auto blendMode = blend_mode::blend;
-    const auto createSurface = [=](czstring path, pixel_format format) {
+    assert(path);
+
+    constexpr auto blendMode = blend_mode::blend;
+
+    const auto createSurface = [blendMode](czstring path,
+                                           const pixel_format format) {
       surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
     };
+
     const auto surface = createSurface(path, format);
-    auto tex = basic_texture{renderer,
-                             format,
-                             texture_access::streaming,
-                             {surface.width(), surface.height()}};
-    tex.set_blend_mode(blendMode);
+    basic_texture texture{renderer,
+                          format,
+                          texture_access::streaming,
+                          {surface.width(), surface.height()}};
+    texture.set_blend_mode(blendMode);
 
     u32* pixels = nullptr;
-    const auto success = tex.lock(&pixels);
+    const auto success = texture.lock(&pixels);
     if (!success) {
       throw exception{"Failed to lock texture!"};
     }
 
     const auto maxCount = static_cast<size_t>(surface.pitch()) *
                           static_cast<size_t>(surface.height());
-    std::memcpy(pixels, surface.pixels(), maxCount);
+    SDL_memcpy(pixels, surface.pixels(), maxCount);
 
-    tex.unlock();
+    texture.unlock();
 
-    return tex;
+    return texture;
   }
 
   /**
@@ -285,7 +295,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_alpha(u8 alpha) noexcept
+  void set_alpha(const u8 alpha) noexcept
   {
     SDL_SetTextureAlphaMod(get(), alpha);
   }
@@ -297,7 +307,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetTextureBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
@@ -324,7 +334,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  void set_scale_mode(scale_mode mode) noexcept
+  void set_scale_mode(const scale_mode mode) noexcept
   {
     SDL_SetTextureScaleMode(get(), static_cast<SDL_ScaleMode>(mode));
   }
@@ -434,9 +444,23 @@ class basic_texture final
    *
    * \return `true` if the texture has static texture access.
    *
+   * \deprecated Use `is_no_lock()` instead.
+   *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_static() const noexcept -> bool
+  [[nodiscard, deprecated]] auto is_static() const noexcept -> bool
+  {
+    return is_no_lock();
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has static texture access.
+   *
+   * \return `true` if the texture has static texture access; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_no_lock() const noexcept -> bool
   {
     return access() == texture_access::no_lock;
   }
@@ -629,8 +653,6 @@ using texture_handle = basic_texture<std::false_type>;
 /**
  * \brief Returns a textual representation of a texture.
  *
- * \ingroup graphics
- *
  * \param texture the texture that will be converted.
  *
  * \return a string that represents the texture.
@@ -640,16 +662,13 @@ using texture_handle = basic_texture<std::false_type>;
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  using detail::to_string;
   return "[texture | ptr: " + detail::address_of(texture.get()) +
-         ", width: " + to_string(texture.width()).value() +
-         ", height: " + to_string(texture.height()).value() + "]";
+         ", width: " + detail::to_string(texture.width()).value() +
+         ", height: " + detail::to_string(texture.height()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a texture.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param texture
@@ -665,6 +684,8 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture)
   stream << to_string(texture);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

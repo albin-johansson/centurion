@@ -100,14 +100,21 @@ script:
   - mkdir -p build
   - cd build
 
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -GNinja
-  - ninja CenturionLibrary
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -GNinja
   - ninja CenturionTests
+  - ninja CenturionMocks
 
-  - cd test
-  - ctest
+  # Run mocked tests
+  - cd test/mocks
+  - ./CenturionMocks
 
-  - valgrind --gen-suppressions=all --suppressions=../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests
+  # Run unit tests that use real SDL2 functions
+  - cd ..
+  - cd unittests
+  - ./CenturionTests
+
+  # Only run Valgrind on unit test executable
+  - valgrind --leak-check=yes --gen-suppressions=all --suppressions=resources/suppressions.sup ./CenturionTests
 
 deploy:
   provider: pages

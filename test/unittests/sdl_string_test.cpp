@@ -1,38 +1,41 @@
 #include "sdl_string.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "types.hpp"
 
-TEST_CASE("sdl_string ctor", "[sdl_string]")
+TEST(SDLString, Constructor)
 {
-  CHECK_NOTHROW(cen::sdl_string{nullptr});
+  EXPECT_NO_THROW(cen::sdl_string{nullptr});
 
   const cen::sdl_string str{nullptr};
-  CHECK(!str);
+  EXPECT_FALSE(str);
 }
 
-TEST_CASE("sdl_string::get", "[sdl_string]")
+TEST(SDLString, Get)
 {
   SDL_SetClipboardText("foo");
   const cen::sdl_string str{SDL_GetClipboardText()};
-  CHECK_THAT(str.get(), Catch::Equals("foo"));
+  EXPECT_STREQ(str.get(), "foo");
 }
 
-TEST_CASE("sdl_string::copy", "[sdl_string]")
+TEST(SDLString, Copy)
 {
-  SECTION("Valid string")
-  {
+  {  // Valid string
     SDL_SetClipboardText("bar");
     const cen::sdl_string str{SDL_GetClipboardText()};
     const auto copy = str.copy();
-    CHECK(copy == "bar");
+    EXPECT_EQ("bar", copy);
   }
 
-  SECTION("Empty string")
-  {
+  {  // Empty string
     SDL_SetClipboardText(nullptr);
     const cen::sdl_string empty{SDL_GetClipboardText()};
-    CHECK(empty.copy().empty());
+    EXPECT_TRUE(empty.copy().empty());
+  }
+
+  {  // Null string
+    const cen::sdl_string str{nullptr};
+    EXPECT_EQ("", str.copy());
   }
 }

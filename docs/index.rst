@@ -15,6 +15,13 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 1
+   :caption: Core
+
+   pages/core/library
+   pages/core/config
+
+.. toctree::
+   :maxdepth: 1
    :caption: Geometry
 
    pages/api/geometry/point
@@ -26,13 +33,16 @@ Welcome to Centurion's documentation!
 
    pages/api/graphics/basic_window
    pages/api/graphics/basic_renderer
+   pages/api/graphics/basic_texture
+   pages/api/graphics/surface
    pages/api/graphics/font
    pages/api/graphics/font_cache
-   pages/api/graphics/surface
+   pages/api/graphics/color
    pages/api/graphics/message_box
    pages/api/graphics/blend_mode
-   pages/api/graphics/scale_mode
    pages/api/graphics/pixel_format
+   pages/api/graphics/scale_mode
+   pages/api/graphics/texture_access
 
 .. toctree::
    :maxdepth: 1
@@ -47,12 +57,14 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Input
 
+   pages/api/input/basic_controller
+   pages/api/input/button_state
    pages/api/input/key_code
    pages/api/input/key_codes
+   pages/api/input/key_modifier
+   pages/api/input/mouse_button
    pages/api/input/scan_code
    pages/api/input/scan_codes
-   pages/api/input/button_state
-   pages/api/input/key_modifier
 
 .. toctree::
    :maxdepth: 1
@@ -60,6 +72,7 @@ Welcome to Centurion's documentation!
 
    pages/api/event/event
    pages/api/event/event_type
+   pages/api/event/event_dispatcher
 
 .. toctree::
    :maxdepth: 1
@@ -96,15 +109,13 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Miscellaneous
 
-   pages/api/misc/log
-   pages/api/misc/aliases
-   pages/api/misc/naming_conventions
+   pages/api/misc/exceptions
+   pages/api/misc/logging
 
 .. toctree::
    :maxdepth: 1
    :caption: Tutorials
 
-   pages/tutorials/installation
-   pages/tutorials/building_on_windows
-   pages/tutorials/building_on_ubuntu
+   pages/tutorials/installation_ubuntu
+   pages/tutorials/installation_windows
    pages/tutorials/hello_centurion

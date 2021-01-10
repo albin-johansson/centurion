@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,9 @@
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
-#include <type_traits>
-
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "mutex.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -61,8 +59,10 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit try_lock(mutex& mutex) noexcept;
+  explicit try_lock(mutex& mutex) noexcept
+      : m_mutex{&mutex}
+      , m_status{mutex.try_lock()}
+  {}
 
   try_lock(const try_lock&) = delete;
 
@@ -73,8 +73,12 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  ~try_lock() noexcept;
+  ~try_lock() noexcept
+  {
+    if (m_status == lock_status::success) {
+      m_mutex->unlock();
+    }
+  }
 
   /**
    * \brief Returns the result of trying to lock the associated mutex.
@@ -83,8 +87,10 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_status() const noexcept -> lock_status;
+  [[nodiscard]] auto get_status() const noexcept -> lock_status
+  {
+    return m_status;
+  }
 
   /**
    * \brief Indicates whether or not the mutex was successfully locked.
@@ -93,8 +99,10 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto success() const noexcept -> bool;
+  [[nodiscard]] auto success() const noexcept -> bool
+  {
+    return get_status() == lock_status::success;
+  }
 
   /**
    * \brief Indicates whether or not the lock timed out whilst trying to lock
@@ -104,8 +112,10 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto timed_out() const noexcept -> bool;
+  [[nodiscard]] auto timed_out() const noexcept -> bool
+  {
+    return get_status() == lock_status::timed_out;
+  }
 
   /**
    * \brief Indicates whether or not there was an error whilst locking the
@@ -116,22 +126,23 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto error() const noexcept -> bool;
+  [[nodiscard]] auto error() const noexcept -> bool
+  {
+    return get_status() == lock_status::error;
+  }
 
   /**
    * \copydoc success()
    */
-  CENTURION_QUERY
-  explicit operator bool() const noexcept;
+  [[nodiscard]] explicit operator bool() const noexcept
+  {
+    return success();
+  }
 
  private:
   mutex* m_mutex{};
   lock_status m_status{};
 };
-
-static_assert(!std::is_copy_constructible_v<try_lock>);
-static_assert(!std::is_copy_assignable_v<try_lock>);
 
 /// \}
 

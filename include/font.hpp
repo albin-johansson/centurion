@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,19 @@
 
 #include <SDL_ttf.h>
 
-#include <memory>
-#include <optional>
-#include <ostream>
-#include <string>
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "area.hpp"
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/to_string.hpp"
 #include "exception.hpp"
-#include "types.hpp"
+#include "not_null.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -45,10 +48,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \struct glyph_metrics
- *
- * \ingroup Graphics
  *
  * \brief Provides metrics about a glyph in a font.
  *
@@ -68,8 +72,6 @@ struct glyph_metrics final
 /**
  * \class font
  *
- * \ingroup graphics
- *
  * \brief Represents a True Type font.
  *
  * \see `TTF_Font`
@@ -87,6 +89,8 @@ class font final
    * \brief Provides different possible TrueType font hint values.
    *
    * \since 3.1.0
+   *
+   * \todo Centurion 6: Make this a normal enum?
    *
    * \headerfile font.hpp
    */
@@ -109,16 +113,32 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  font(nn_czstring file, int size);
+  font(not_null<czstring> file, const int size) : m_size{size}
+  {
+    assert(file);
+
+    if (size <= 0) {
+      throw exception{"Bad font size!"};
+    }
+
+    m_font.reset(TTF_OpenFont(file, size));
+    if (!m_font) {
+      throw ttf_error{};
+    }
+
+    m_style = TTF_GetFontStyle(m_font.get());
+  }
 
   /**
    * \brief Resets the style of the font.
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void reset() noexcept;
+  void reset() noexcept
+  {
+    m_style = TTF_STYLE_NORMAL;
+    TTF_SetFontStyle(m_font.get(), m_style);
+  }
 
   /**
    * \brief Sets whether the font is bold.
@@ -127,8 +147,14 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_bold(bool bold) noexcept;
+  void set_bold(const bool bold) noexcept
+  {
+    if (bold) {
+      add_style(TTF_STYLE_BOLD);
+    } else {
+      remove_style(TTF_STYLE_BOLD);
+    }
+  }
 
   /**
    * \brief Sets whether the font is italic.
@@ -137,8 +163,14 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_italic(bool italic) noexcept;
+  void set_italic(const bool italic) noexcept
+  {
+    if (italic) {
+      add_style(TTF_STYLE_ITALIC);
+    } else {
+      remove_style(TTF_STYLE_ITALIC);
+    }
+  }
 
   /**
    * \brief Sets whether the font is underlined.
@@ -148,8 +180,14 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_underlined(bool underlined) noexcept;
+  void set_underlined(const bool underlined) noexcept
+  {
+    if (underlined) {
+      add_style(TTF_STYLE_UNDERLINE);
+    } else {
+      remove_style(TTF_STYLE_UNDERLINE);
+    }
+  }
 
   /**
    * \brief Sets whether the font is strikethrough.
@@ -159,8 +197,14 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_strikethrough(bool strikethrough) noexcept;
+  void set_strikethrough(const bool strikethrough) noexcept
+  {
+    if (strikethrough) {
+      add_style(TTF_STYLE_STRIKETHROUGH);
+    } else {
+      remove_style(TTF_STYLE_STRIKETHROUGH);
+    }
+  }
 
   /**
    * \brief Sets the outline size of the font.
@@ -170,8 +214,10 @@ class font final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_outline(int outline) noexcept;
+  void set_outline(const int outline) noexcept
+  {
+    TTF_SetFontOutline(m_font.get(), outline);
+  }
 
   /**
    * \brief Sets the TrueType font hint of the font.
@@ -180,8 +226,10 @@ class font final
    *
    * \since 3.1.0
    */
-  CENTURION_API
-  void set_font_hinting(hint hint) noexcept;
+  void set_font_hinting(const hint hint) noexcept
+  {
+    TTF_SetFontHinting(m_font.get(), static_cast<int>(hint));
+  }
 
   /**
    * \brief Sets whether or not font kerning is allowed.
@@ -193,8 +241,10 @@ class font final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_kerning(bool kerning) noexcept;
+  void set_kerning(const bool kerning) noexcept
+  {
+    TTF_SetFontKerning(m_font.get(), kerning ? 1 : 0);
+  }
 
   /**
    * \brief Returns the maximum height of a character in this font.
@@ -205,8 +255,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto height() const noexcept -> int;
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    return TTF_FontHeight(m_font.get());
+  }
 
   /**
    * \brief Returns the offset from the baseline to the bottom of the font
@@ -218,8 +270,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto descent() const noexcept -> int;
+  [[nodiscard]] auto descent() const noexcept -> int
+  {
+    return TTF_FontDescent(m_font.get());
+  }
 
   /**
    * \brief Returns the offset from the baseline to the top of the font
@@ -231,8 +285,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto ascent() const noexcept -> int;
+  [[nodiscard]] auto ascent() const noexcept -> int
+  {
+    return TTF_FontAscent(m_font.get());
+  }
 
   /**
    * \brief Returns the recommended pixel height of rendered text in the font.
@@ -243,8 +299,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto line_skip() const noexcept -> int;
+  [[nodiscard]] auto line_skip() const noexcept -> int
+  {
+    return TTF_FontLineSkip(m_font.get());
+  }
 
   /**
    * \brief Returns the number of available font faces in the font.
@@ -253,8 +311,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto font_faces() const noexcept -> int;
+  [[nodiscard]] auto font_faces() const noexcept -> int
+  {
+    return static_cast<int>(TTF_FontFaces(m_font.get()));
+  }
 
   /**
    * \brief Returns the TrueType font hinting of the font.
@@ -265,68 +325,166 @@ class font final
    *
    * \since 3.1.0
    */
-  CENTURION_QUERY
-  auto font_hinting() const noexcept -> hint;
+  [[nodiscard]] auto font_hinting() const noexcept -> hint
+  {
+    return static_cast<font::hint>(TTF_GetFontHinting(m_font.get()));
+  }
 
   /**
    * \brief Indicates whether or not kerning is being used.
    *
    * \return `true` if kerning is being used by the font; `false` otherwise.
    *
+   * \deprecated Use `has_kerning()` instead.
+   *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto kerning() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto kerning() const noexcept -> bool
+  {
+    return has_kerning();
+  }
+
+  /**
+   * \brief Indicates whether or not kerning is being used.
+   *
+   * \return `true` if kerning is being used by the font; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto has_kerning() const noexcept -> bool
+  {
+    return TTF_GetFontKerning(m_font.get());
+  }
 
   /**
    * \brief Indicates whether or not the font is bold.
    *
    * \return `true` if the font is bold; `false` otherwise.
    *
+   * \deprecated Use `is_bold()` instead.
+   *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto bold() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto bold() const noexcept -> bool
+  {
+    return is_bold();
+  }
+
+  /**
+   * \brief Indicates whether or not the font is bold.
+   *
+   * \return `true` if the font is bold; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_bold() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_BOLD;
+  }
 
   /**
    * \brief Indicates whether or not the font is italic.
    *
    * \return `true` if the font is italic; `false` otherwise.
    *
+   * \deprecated Use `is_italic()` instead.
+   *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto italic() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto italic() const noexcept -> bool
+  {
+    return is_italic();
+  }
+
+  /**
+   * \brief Indicates whether or not the font is italic.
+   *
+   * \return `true` if the font is italic; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_italic() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_ITALIC;
+  }
 
   /**
    * \brief Indicates whether or not the font is underlined.
    *
    * \return `true` if the font is underlined; `false` otherwise.
    *
+   * \deprecated Use `is_underlined()` instead.
+   *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto underlined() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto underlined() const noexcept -> bool
+  {
+    return is_underlined();
+  }
+
+  /**
+   * \brief Indicates whether or not the font is underlined.
+   *
+   * \return `true` if the font is underlined; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_underlined() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_UNDERLINE;
+  }
 
   /**
    * \brief Indicates whether or not the font is a strikethrough font.
    *
    * \return `true` if the font is a strikethrough font; `false` otherwise.
    *
+   * \deprecated Use `is_strikethrough()` instead.
+   *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto strikethrough() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto strikethrough() const noexcept -> bool
+  {
+    return is_strikethrough();
+  }
+
+  /**
+   * \brief Indicates whether or not the font is a strikethrough font.
+   *
+   * \return `true` if the font is a strikethrough font; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_strikethrough() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_STRIKETHROUGH;
+  }
 
   /**
    * \brief Indicates whether or not the font is outlined.
    *
    * \return `true` if the font is outlined; `false` otherwise.
    *
+   * \deprecated Use `is_outlined()` instead.
+   *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto outlined() const noexcept -> bool;
+  [[nodiscard, deprecated]] auto outlined() const noexcept -> bool
+  {
+    return is_outlined();
+  }
+
+  /**
+   * \brief Indicates whether or not the font is outlined.
+   *
+   * \return `true` if the font is outlined; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_outlined() const noexcept -> bool
+  {
+    return TTF_GetFontOutline(m_font.get()) != 0;
+  }
 
   /**
    * \brief Indicates whether or not the font is fixed width.
@@ -335,8 +493,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto is_fixed_width() const noexcept -> bool;
+  [[nodiscard]] auto is_fixed_width() const noexcept -> bool
+  {
+    return TTF_FontFaceIsFixedWidth(m_font.get());
+  }
 
   /**
    * \brief Returns the size of the outline of the font.
@@ -345,8 +505,10 @@ class font final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto outline() const noexcept -> int;
+  [[nodiscard]] auto outline() const noexcept -> int
+  {
+    return TTF_GetFontOutline(m_font.get());
+  }
 
   /**
    * \brief Returns the kerning amount between two glyphs in the font, if
@@ -363,9 +525,14 @@ class font final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto kerning_amount(unicode firstGlyph, unicode secondGlyph) const noexcept
-      -> int;
+  [[nodiscard]] auto kerning_amount(const unicode firstGlyph,
+                                    const unicode secondGlyph) const noexcept
+      -> int
+  {
+    const auto amount =
+        TTF_GetFontKerningSizeGlyphs(m_font.get(), firstGlyph, secondGlyph);
+    return amount;
+  }
 
   /**
    * \brief Indicates whether or not the specified glyph is available in the
@@ -377,8 +544,11 @@ class font final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto is_glyph_provided(unicode glyph) const noexcept -> bool;
+  [[nodiscard]] auto is_glyph_provided(const unicode glyph) const noexcept
+      -> bool
+  {
+    return TTF_GlyphIsProvided(m_font.get(), glyph);
+  }
 
   /**
    * \brief Returns the metrics of the specified glyph in this font.
@@ -390,9 +560,23 @@ class font final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto get_metrics(unicode glyph) const noexcept
-      -> std::optional<glyph_metrics>;
+  [[nodiscard]] auto get_metrics(const unicode glyph) const noexcept
+      -> std::optional<glyph_metrics>
+  {
+    glyph_metrics metrics{};
+    const auto result = TTF_GlyphMetrics(m_font.get(),
+                                         glyph,
+                                         &metrics.minX,
+                                         &metrics.maxX,
+                                         &metrics.minY,
+                                         &metrics.maxY,
+                                         &metrics.advance);
+    if (result != -1) {
+      return metrics;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * \brief Returns the family name of the font.
@@ -401,8 +585,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto family_name() const noexcept -> czstring;
+  [[nodiscard]] auto family_name() const noexcept -> czstring
+  {
+    return TTF_FontFaceFamilyName(m_font.get());
+  }
 
   /**
    * \brief Returns the font face style name of the font.
@@ -414,8 +600,10 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto style_name() const noexcept -> czstring;
+  [[nodiscard]] auto style_name() const noexcept -> czstring
+  {
+    return TTF_FontFaceStyleName(m_font.get());
+  }
 
   /**
    * \brief Returns the width of the supplied string, if it was rendered using
@@ -428,8 +616,13 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto string_width(nn_czstring str) const noexcept -> int;
+  [[nodiscard]] auto string_width(not_null<czstring> str) const noexcept -> int
+  {
+    assert(str);
+    int width{};
+    TTF_SizeText(m_font.get(), str, &width, nullptr);
+    return width;
+  }
 
   /**
    * \brief Returns the height of the supplied string, if it was rendered
@@ -442,8 +635,13 @@ class font final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto string_height(nn_czstring str) const noexcept -> int;
+  [[nodiscard]] auto string_height(not_null<czstring> str) const noexcept -> int
+  {
+    assert(str);
+    int height{};
+    TTF_SizeText(m_font.get(), str, nullptr, &height);
+    return height;
+  }
 
   /**
    * \brief Returns the size of the supplied string, if it was rendered using
@@ -455,8 +653,14 @@ class font final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto string_size(nn_czstring str) const noexcept -> iarea;
+  [[nodiscard]] auto string_size(not_null<czstring> str) const noexcept -> iarea
+  {
+    assert(str);
+    int width{};
+    int height{};
+    TTF_SizeText(m_font.get(), str, &width, &height);
+    return {width, height};
+  }
 
   /**
    * \brief Returns the size of the font.
@@ -473,9 +677,10 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However, it's useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However, it's useful since
+   * many SDL calls use non-const pointers even when no change will be applied.
+   *
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated `TTF_Font`.
    *
@@ -533,7 +738,11 @@ class font final
    *
    * \since 3.0.0
    */
-  void add_style(int mask) noexcept;
+  void add_style(const int mask) noexcept
+  {
+    m_style |= mask;
+    TTF_SetFontStyle(m_font.get(), m_style);
+  }
 
   /**
    * \brief Removes the font style associated with the supplied bit mask.
@@ -545,25 +754,29 @@ class font final
    *
    * \since 3.0.0
    */
-  void remove_style(int mask) noexcept;
+  void remove_style(const int mask) noexcept
+  {
+    m_style &= ~mask;
+    TTF_SetFontStyle(m_font.get(), m_style);
+  }
 };
 
 /**
  * \brief Returns a textual representation of a font instance.
  *
- * \ingroup graphics
- *
  * \return a textual representation of the font instance.
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const font& font) -> std::string;
+[[nodiscard]] inline auto to_string(const font& font) -> std::string
+{
+  return "[font | data: " + detail::address_of(font.get()) +
+         ", name: " + std::string{font.family_name()} +
+         ", size: " + detail::to_string(font.size()).value() + "]";
+}
 
 /**
  * \brief Prints a textual representation of a font.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param font the font instance that will be printed.
@@ -572,8 +785,13 @@ auto to_string(const font& font) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const font& font) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
+{
+  stream << to_string(font);
+  return stream;
+}
+
+/// \}
 
 }  // namespace cen
 

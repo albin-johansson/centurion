@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@
 #ifndef CENTURION_BLEND_MODE_HEADER
 #define CENTURION_BLEND_MODE_HEADER
 
-#include <SDL_blendmode.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -67,7 +67,8 @@ enum class blend_mode
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto operator==(blend_mode lhs, SDL_BlendMode rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept
     -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
@@ -76,8 +77,8 @@ enum class blend_mode
 /**
  * \copydoc operator==(blend_mode, SDL_BlendMode)
  */
-[[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -92,7 +93,8 @@ enum class blend_mode
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto operator!=(blend_mode lhs, SDL_BlendMode rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -101,8 +103,8 @@ enum class blend_mode
 /**
  * \copydoc operator!=(blend_mode, SDL_BlendMode)
  */
-[[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

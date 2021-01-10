@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,13 @@
 #ifndef CENTURION_CONDITION_HEADER
 #define CENTURION_CONDITION_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
-#include <memory>
+#include <memory>  // unique_ptr
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "exception.hpp"
+#include "mutex.hpp"
 #include "scoped_lock.hpp"
 #include "types.hpp"
 
@@ -54,8 +56,12 @@ namespace cen {
 class condition final
 {
  public:
-  CENTURION_API
-  condition();
+  condition() : m_cond{SDL_CreateCond()}
+  {
+    if (!m_cond) {
+      throw sdl_error{};
+    }
+  }
 
   /**
    * \brief Wakes up one of the threads that are waiting on the condition
@@ -65,8 +71,10 @@ class condition final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto signal() noexcept -> bool;
+  auto signal() noexcept -> bool
+  {
+    return SDL_CondSignal(m_cond.get()) == 0;
+  }
 
   /**
    * \brief Wakes up all threads that are waiting on the condition variable.
@@ -75,8 +83,10 @@ class condition final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto broadcast() noexcept -> bool;
+  auto broadcast() noexcept -> bool
+  {
+    return SDL_CondBroadcast(m_cond.get()) == 0;
+  }
 
   /**
    * \brief Waits until the condition variable is signaled.
@@ -89,8 +99,10 @@ class condition final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto wait(mutex& mutex) noexcept -> bool;
+  auto wait(mutex& mutex) noexcept -> bool
+  {
+    return SDL_CondWait(m_cond.get(), mutex.get()) == 0;
+  }
 
   /**
    * \brief Waits until the condition variable is signaled or if the specified
@@ -108,8 +120,11 @@ class condition final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto wait(mutex& mutex, milliseconds<u32> ms) noexcept -> lock_status;
+  auto wait(mutex& mutex, const milliseconds<u32> ms) noexcept -> lock_status
+  {
+    return static_cast<lock_status>(
+        SDL_CondWaitTimeout(m_cond.get(), mutex.get(), ms.count()));
+  }
 
  private:
   struct deleter final
@@ -120,7 +135,7 @@ class condition final
     };
   };
 
-  std::unique_ptr<SDL_cond, deleter> m_cond{};
+  std::unique_ptr<SDL_cond, deleter> m_cond;
 };
 
 /// \}

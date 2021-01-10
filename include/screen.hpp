@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,13 @@
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 
+#include <SDL.h>
+
+#include <optional>  // optional
+
 #include "area.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 
@@ -98,7 +103,8 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto dpi(int displayIndex = 0) -> std::optional<dpi_info>
+[[nodiscard]] inline auto dpi(const int displayIndex = 0)
+    -> std::optional<dpi_info>
 {
   dpi_info info{};
   const auto res = SDL_GetDisplayDPI(displayIndex,
@@ -123,7 +129,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto vertical_dpi(int displayIndex = 0)
+[[nodiscard]] inline auto vertical_dpi(const int displayIndex = 0)
     -> std::optional<float>
 {
   float vertical{};
@@ -146,7 +152,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto diagonal_dpi(int displayIndex = 0)
+[[nodiscard]] inline auto diagonal_dpi(const int displayIndex = 0)
     -> std::optional<float>
 {
   float diagonal{};
@@ -169,7 +175,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto horizontal_dpi(int displayIndex = 0)
+[[nodiscard]] inline auto horizontal_dpi(const int displayIndex = 0)
     -> std::optional<float>
 {
   float horizontal{};
@@ -193,7 +199,8 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto bounds(int displayIndex = 0) -> std::optional<irect>
+[[nodiscard]] inline auto bounds(const int displayIndex = 0)
+    -> std::optional<irect>
 {
   irect result{};
   if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0) {
@@ -216,7 +223,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto usable_bounds(int displayIndex = 0)
+[[nodiscard]] inline auto usable_bounds(const int displayIndex = 0)
     -> std::optional<irect>
 {
   irect result{};
@@ -237,7 +244,8 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(int displayIndex = 0) -> orientation
+[[nodiscard]] inline auto get_orientation(const int displayIndex = 0)
+    -> orientation
 {
   const auto result = SDL_GetDisplayOrientation(displayIndex);
   return static_cast<orientation>(result);
@@ -265,7 +273,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto name(int displayIndex = 0) noexcept -> czstring
+[[nodiscard]] inline auto name(const int displayIndex = 0) noexcept -> czstring
 {
   return SDL_GetDisplayName(displayIndex);
 }
@@ -279,8 +287,14 @@ enum class orientation
  *
  * \since 4.0.0
  */
-CENTURION_API
-void set_screen_saver_enabled(bool enabled) noexcept;
+inline void set_screen_saver_enabled(const bool enabled) noexcept
+{
+  if (enabled) {
+    SDL_EnableScreenSaver();
+  } else {
+    SDL_DisableScreenSaver();
+  }
+}
 
 /**
  * \brief Indicates whether or not screen savers are enabled.
@@ -291,8 +305,10 @@ void set_screen_saver_enabled(bool enabled) noexcept;
  *
  * \since 4.0.0
  */
-CENTURION_QUERY
-auto screen_saver_enabled() noexcept -> bool;
+[[nodiscard]] inline auto screen_saver_enabled() noexcept -> bool
+{
+  return SDL_IsScreenSaverEnabled();
+}
 
 /**
  * \brief Returns the width of the screen.
@@ -301,8 +317,12 @@ auto screen_saver_enabled() noexcept -> bool;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto width() noexcept -> int;
+[[nodiscard]] inline auto width() noexcept -> int
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.w;
+}
 
 /**
  * \brief Returns the height of the screen.
@@ -311,8 +331,12 @@ auto width() noexcept -> int;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto height() noexcept -> int;
+[[nodiscard]] inline auto height() noexcept -> int
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.h;
+}
 
 /**
  * \brief Returns the size of the screen.
@@ -321,8 +345,12 @@ auto height() noexcept -> int;
  *
  * \since 4.1.0
  */
-CENTURION_QUERY
-auto size() noexcept -> iarea;
+[[nodiscard]] inline auto size() noexcept -> iarea
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return {mode.w, mode.h};
+}
 
 /**
  * \brief Returns the refresh rate of the screen.
@@ -331,8 +359,12 @@ auto size() noexcept -> iarea;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto refresh_rate() noexcept -> int;
+[[nodiscard]] inline auto refresh_rate() noexcept -> int
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.refresh_rate;
+}
 
 /**
  * \brief Returns the pixel format of the desktop display mode.
@@ -345,8 +377,12 @@ auto refresh_rate() noexcept -> int;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto get_pixel_format() noexcept -> pixel_format;
+[[nodiscard]] inline auto get_pixel_format() noexcept -> pixel_format
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return static_cast<pixel_format>(mode.format);
+}
 
 }  // namespace cen::screen
 

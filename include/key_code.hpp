@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,15 @@
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_keycode.h>
-#include <SDL_scancode.h>
+#include <SDL.h>
 
-#include <ostream>
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -40,12 +41,13 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class key_code
  *
- * \ingroup input
- *
- * \brief Represents a key code (virtual key).
+ * \brief Represents a key code (or virtual key).
  *
  * \details Key codes are mapped to the current layout of the keyboard and
  * correlate to a `scan_code`. Whilst scan codes identify the *location* of
@@ -59,33 +61,6 @@ namespace cen {
  * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
  * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
  * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
- *
- * \par Usage
- * \code{.cpp}
- *
- *   #include <key.hpp>
- *
- *   void key_code_demo()
- *   {
- *     cen::key_code none;
- *     cen::key_code a {SDLK_a};
- *     cen::key_code b {SDL_SCANCODE_B}; // converts to SDL_Keycode
- *     cen::key_code c {"C"};
- *
- *     cen::key foo;
- *     foo = SDLK_k;
- *     foo = SDL_SCANCODE_D;
- *
- *     if (none.unknown()) {
- *       // none contains SDLK_UNKNOWN
- *     }
- *
- *     SDL_Keycode code = a.get();
- *
- *     auto scan = static_cast<SDL_Scancode>(a);
- *     auto key = static_cast<SDL_Keycode>(b);
- *   }
- * \endcode
  *
  * \note Key codes are sometimes referred to as "keysyms" in the SDL
  * documentation.
@@ -118,7 +93,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key}
+  constexpr /*implicit*/ key_code(SDL_KeyCode key) noexcept : m_key{key}
   {}
 
   /**
@@ -149,7 +124,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  explicit key_code(nn_czstring name) noexcept
+  explicit key_code(not_null<czstring> name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
@@ -201,8 +176,9 @@ class key_code final
    *
    * \since 5.0.0
    */
-  auto operator=(nn_czstring name) noexcept -> key_code&
+  auto operator=(not_null<czstring> name) noexcept -> key_code&
   {
+    assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
   }
@@ -230,6 +206,20 @@ class key_code final
   [[nodiscard]] auto name() const -> std::string
   {
     return SDL_GetKeyName(m_key);
+  }
+
+  /**
+   * \brief Returns the corresponding `SDL_Scancode`.
+   *
+   * \return the scan code associated with the internal key code.
+   *
+   * \see `SDL_GetScancodeFromKey`
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto to_scan_code() const noexcept -> SDL_Scancode
+  {
+    return SDL_GetScancodeFromKey(m_key);
   }
 
   /**
@@ -281,7 +271,7 @@ class key_code final
    */
   explicit operator SDL_Scancode() const noexcept
   {
-    return SDL_GetScancodeFromKey(m_key);
+    return to_scan_code();
   }
 
  private:
@@ -291,21 +281,19 @@ class key_code final
 /**
  * \brief Returns a textual representation of a key code.
  *
- * \ingroup input
- *
  * \param keyCode the key code that will be converted.
  *
  * \return a textual representation of the key code.
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const key_code& keyCode) -> std::string;
+[[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
+{
+  return "[key_code | key: " + keyCode.name() + "]";
+}
 
 /**
  * \brief Prints a key code using a stream.
- *
- * \ingroup input
  *
  * \param stream the stream that will be used.
  * \param keyCode the key code that will be printed.
@@ -314,13 +302,15 @@ auto to_string(const key_code& keyCode) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const key_code& keyCode)
+    -> std::ostream&
+{
+  stream << to_string(keyCode);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two key codes are the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side key code.
  * \param rhs the right-hand side key code.
@@ -329,17 +319,14 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return lhs.get() == rhs.get();
 }
 
 /**
  * \brief Indicates whether or not two key codes aren't the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side key code.
  * \param rhs the right-hand side key code.
@@ -348,17 +335,14 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \namespace cen::keycodes
- *
- * \ingroup input
  *
  * \brief Provides a collection of `key_code` constants.
  *
@@ -1001,6 +985,9 @@ inline constexpr key_code left_gui{SDLK_LGUI};
 inline constexpr key_code right_gui{SDLK_RGUI};
 
 }  // namespace keycodes
+
+/// \}
+
 }  // namespace cen
 
 #endif  // CENTURION_KEY_CODE_HEADER

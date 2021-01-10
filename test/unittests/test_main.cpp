@@ -1,5 +1,4 @@
-#define CATCH_CONFIG_RUNNER
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "centurion.hpp"
 
@@ -15,5 +14,6 @@ int main(int argc, char* argv[])
 #else
   const cen::library lib;
 #endif
-  return Catch::Session().run(argc, argv);
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

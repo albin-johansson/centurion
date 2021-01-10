@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * \file centurion_api.hpp
+ *
+ * \deprecated Since 5.1.0, this header only includes `centurion_cfg`.
+ */
+
 #ifndef CENTURION_API_HEADER
 #define CENTURION_API_HEADER
 
-#include <type_traits>
-
 #include "centurion_cfg.hpp"
-
-/**
- * \def CENTURION_API
- *
- * \brief Used for exporting entities in generated Windows DLL.
- *
- * \headerfile centurion_api.hpp
- *
- * \internal https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
- */
-#if defined(_WIN32)
-#ifdef WIN_EXPORT
-#define CENTURION_API __declspec(dllexport)
-#else
-#define CENTURION_API __declspec(dllimport)
-#endif  // WIN_EXPORT
-#else
-#define CENTURION_API
-#endif  // defined(_WIN32)
-
-/**
- * \brief Used for methods that return something and aren't inlined.
- *
- * \since 5.0.0
- *
- * \headerfile centurion_api.hpp
- */
-#define CENTURION_QUERY [[nodiscard]] CENTURION_API
 
 #endif  // CENTURION_API_HEADER

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,13 +37,18 @@
 
 #include <SDL.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
-#include <type_traits>
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/to_string.hpp"
+#include "exception.hpp"
+#include "integers.hpp"
+#include "not_null.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -130,10 +135,15 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
   explicit thread(task_type task,
-                  nn_czstring name = "thread",
-                  void* data = nullptr);
+                  not_null<czstring> name = "thread",
+                  void* data = nullptr)
+      : m_thread{SDL_CreateThread(task, name, data)}
+  {
+    if (!m_thread) {
+      throw sdl_error{};
+    }
+  }
 
   thread(const thread&) = delete;
 
@@ -144,8 +154,12 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  ~thread() noexcept;
+  ~thread() noexcept
+  {
+    if (joinable()) {
+      join();
+    }
+  }
 
   /**
    * \brief Lets the thread terminate without having another thread join it.
@@ -155,8 +169,17 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void detach() noexcept;
+  void detach() noexcept
+  {
+    if (m_joined || m_detached) {
+      return;
+    }
+
+    SDL_DetachThread(m_thread);
+
+    m_detached = true;
+    assert(m_detached != m_joined);
+  }
 
   /**
    * \brief Waits for the thread to finish its execution.
@@ -168,8 +191,20 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto join() noexcept -> int;
+  auto join() noexcept -> int
+  {
+    if (m_joined || m_detached) {
+      return 0;
+    }
+
+    int status{};
+    SDL_WaitThread(m_thread, &status);
+
+    m_joined = true;
+    assert(m_detached != m_joined);
+
+    return status;
+  }
 
   /**
    * \brief Indicates whether or not the thread can be joined.
@@ -183,8 +218,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto joinable() const noexcept -> bool;
+  [[nodiscard]] auto joinable() const noexcept -> bool
+  {
+    return !m_joined && !m_detached;
+  }
 
   /**
    * \brief Indicates whether or not the thread was joined.
@@ -193,8 +230,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto was_joined() const noexcept -> bool;
+  [[nodiscard]] auto was_joined() const noexcept -> bool
+  {
+    return m_joined;
+  }
 
   /**
    * \brief Indicates whether or not the thread was detached.
@@ -203,8 +242,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto was_detached() const noexcept -> bool;
+  [[nodiscard]] auto was_detached() const noexcept -> bool
+  {
+    return m_detached;
+  }
 
   /**
    * \brief Returns the identifier associated with the thread.
@@ -213,8 +254,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_id() const noexcept -> id;
+  [[nodiscard]] auto get_id() const noexcept -> id
+  {
+    return SDL_GetThreadID(m_thread);
+  }
 
   /**
    * \brief Returns the name of the thread.
@@ -225,8 +268,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto name() const -> std::string;
+  [[nodiscard]] auto name() const -> std::string
+  {
+    return SDL_GetThreadName(m_thread);
+  }
 
   /**
    * \brief Returns a pointer to the associated SDL thread.
@@ -235,14 +280,18 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get() noexcept -> SDL_Thread*;
+  [[nodiscard]] auto get() noexcept -> SDL_Thread*
+  {
+    return m_thread;
+  }
 
   /**
    * \copydoc get
    */
-  CENTURION_QUERY
-  auto get() const noexcept -> const SDL_Thread*;
+  [[nodiscard]] auto get() const noexcept -> const SDL_Thread*
+  {
+    return m_thread;
+  }
 
   /**
    * \brief Forces the current thread to halt for at least the specified
@@ -256,8 +305,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  static void sleep(milliseconds<u32> ms) noexcept;
+  static void sleep(const milliseconds<u32> ms) noexcept
+  {
+    SDL_Delay(ms.count());
+  }
 
   /**
    * \brief Sets the priority of the current thread.
@@ -271,8 +322,12 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  static auto set_priority(thread_priority priority) noexcept -> bool;
+  [[nodiscard]] static auto set_priority(
+      const thread_priority priority) noexcept -> bool
+  {
+    const auto prio = static_cast<SDL_ThreadPriority>(priority);
+    return SDL_SetThreadPriority(prio) == 0;
+  }
 
   /**
    * \brief Returns the identifier associated with the current thread.
@@ -281,17 +336,16 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  static auto current_id() noexcept -> id;
+  [[nodiscard]] static auto current_id() noexcept -> id
+  {
+    return SDL_ThreadID();
+  }
 
  private:
   SDL_Thread* m_thread{};
   bool m_joined{false};
   bool m_detached{false};
 };
-
-static_assert(!std::is_copy_constructible_v<thread>);
-static_assert(!std::is_copy_assignable_v<thread>);
 
 /**
  * \brief Returns a textual representation of a thread.
@@ -302,8 +356,13 @@ static_assert(!std::is_copy_assignable_v<thread>);
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const thread& thread) -> std::string;
+[[nodiscard]] inline auto to_string(const thread& thread) -> std::string
+{
+  using detail::to_string;
+  return "[thread | ptr: " + detail::address_of(thread.get()) +
+         ", name: " + thread.name() +
+         ", id: " + to_string(thread.get_id()).value() + "]";
+}
 
 /**
  * \brief Prints a textual representation of a thread.
@@ -315,8 +374,12 @@ auto to_string(const thread& thread) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const thread& thread)
+    -> std::ostream&
+{
+  stream << to_string(thread);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two thread priorities are the same.
@@ -328,8 +391,8 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(thread_priority lhs,
-                                               SDL_ThreadPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept
     -> bool
 {
   return static_cast<SDL_ThreadPriority>(lhs) == rhs;
@@ -338,8 +401,8 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
 /**
  * \copydoc operator==(thread_priority, SDL_ThreadPriority)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_ThreadPriority lhs,
-                                               thread_priority rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -355,8 +418,8 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(thread_priority lhs,
-                                               SDL_ThreadPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -365,8 +428,8 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
 /**
  * \copydoc operator!=(thread_priority, SDL_ThreadPriority)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_ThreadPriority lhs,
-                                               thread_priority rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

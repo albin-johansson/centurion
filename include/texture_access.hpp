@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@
 #ifndef CENTURION_TEXTURE_ACCESS_HEADER
 #define CENTURION_TEXTURE_ACCESS_HEADER
 
-#include <SDL_render.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 namespace cen {
 
@@ -50,13 +50,13 @@ namespace cen {
  */
 enum class texture_access
 {
-  no_lock = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
-                                       * rarely, and isn't lockable. */
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Indicates that the texture changes
+                                       ///< rarely, and isn't lockable.
   streaming =
-      SDL_TEXTUREACCESS_STREAMING,  /**< Indicates that the texture changes
-                                     * frequently, and is lockable. */
-  target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be used
-                                     * as a render target. */
+      SDL_TEXTUREACCESS_STREAMING,   ///< Indicates that the texture changes
+                                     ///< frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Indicates that the texture can be used
+                                     ///< as a render target.
 };
 
 /**
@@ -69,8 +69,8 @@ enum class texture_access
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(enum texture_access lhs,
-                                               SDL_TextureAccess rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept
     -> bool
 {
   return static_cast<SDL_TextureAccess>(lhs) == rhs;
@@ -79,8 +79,8 @@ enum class texture_access
 /**
  * \copydoc operator==(texture_access, SDL_TextureAccess)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_TextureAccess lhs,
-                                               enum texture_access rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -98,8 +98,8 @@ enum class texture_access
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(texture_access lhs,
-                                               SDL_TextureAccess rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -108,8 +108,8 @@ enum class texture_access
 /**
  * \copydoc operator!=(texture_access, SDL_TextureAccess)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_TextureAccess lhs,
-                                               texture_access rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

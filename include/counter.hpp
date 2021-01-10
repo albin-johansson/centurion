@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,10 @@
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 
-#include <SDL_timer.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

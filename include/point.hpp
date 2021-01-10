@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,14 @@
 
 #include <SDL.h>
 
-#include <cmath>
-#include <ostream>
-#include <string>
-#include <type_traits>
-#include <utility>
+#include <cmath>        // sqrt, abs, round
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
-#include "types.hpp"
+#include "cast.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/to_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -43,10 +42,11 @@
 
 namespace cen {
 
+/// \addtogroup geometry
+/// \{
+
 /**
  * \brief Provides traits used by the `basic_point` class.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -105,8 +105,6 @@ class point_traits final
 /**
  * \class basic_point
  *
- * \ingroup geometry
- *
  * \brief Represents a two-dimensional point.
  *
  * \details This class is designed as a wrapper for `SDL_Point` and
@@ -163,7 +161,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr basic_point(value_type x, value_type y) noexcept
+  constexpr basic_point(const value_type x, const value_type y) noexcept
   {
     m_point.x = x;
     m_point.y = y;
@@ -176,7 +174,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_x(value_type x) noexcept
+  constexpr void set_x(const value_type x) noexcept
   {
     m_point.x = x;
   }
@@ -188,7 +186,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_y(value_type y) noexcept
+  constexpr void set_y(const value_type y) noexcept
   {
     m_point.y = y;
   }
@@ -311,24 +309,8 @@ using ipoint = basic_point<int>;
  */
 using fpoint = basic_point<float>;
 
-static_assert(std::is_nothrow_default_constructible_v<ipoint>);
-static_assert(std::is_nothrow_destructible_v<ipoint>);
-static_assert(std::is_nothrow_copy_constructible_v<ipoint>);
-static_assert(std::is_nothrow_copy_assignable_v<ipoint>);
-static_assert(std::is_nothrow_move_constructible_v<ipoint>);
-static_assert(std::is_nothrow_move_assignable_v<ipoint>);
-
-static_assert(std::is_nothrow_default_constructible_v<fpoint>);
-static_assert(std::is_nothrow_destructible_v<fpoint>);
-static_assert(std::is_nothrow_copy_constructible_v<fpoint>);
-static_assert(std::is_nothrow_copy_assignable_v<fpoint>);
-static_assert(std::is_nothrow_move_constructible_v<fpoint>);
-static_assert(std::is_nothrow_move_assignable_v<fpoint>);
-
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
- *
- * \ingroup geometry
  *
  * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `ipoint` instance.
@@ -353,8 +335,6 @@ template <>
  * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `fpoint` instance.
  *
- * \ingroup geometry
- *
  * \param from the point that will be converted.
  *
  * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
@@ -374,8 +354,6 @@ template <>
  *
  * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `SDL_Point` instance.
- *
- * \ingroup geometry
  *
  * \param from the point that will be converted.
  *
@@ -398,8 +376,6 @@ template <>
  * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
  *
- * \ingroup geometry
- *
  * \param from the point that will be converted.
  *
  * \return an `SDL_FPoint` instance that corresponds to the supplied
@@ -417,8 +393,6 @@ template <>
 
 /**
  * \brief Returns the distance between two points.
- *
- * \ingroup geometry
  *
  * \tparam T the representation type used by the points.
  *
@@ -444,80 +418,64 @@ template <typename T>
   }
 }
 
-[[nodiscard]] inline constexpr auto operator+(const fpoint& lhs,
-                                              const fpoint& rhs) noexcept
-    -> fpoint
+[[nodiscard]] constexpr auto operator+(const fpoint& lhs,
+                                       const fpoint& rhs) noexcept -> fpoint
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator-(const fpoint& lhs,
-                                              const fpoint& rhs) noexcept
-    -> fpoint
+[[nodiscard]] constexpr auto operator-(const fpoint& lhs,
+                                       const fpoint& rhs) noexcept -> fpoint
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator+(const ipoint& lhs,
-                                              const ipoint& rhs) noexcept
-    -> ipoint
+[[nodiscard]] constexpr auto operator+(const ipoint& lhs,
+                                       const ipoint& rhs) noexcept -> ipoint
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator-(const ipoint& lhs,
-                                              const ipoint& rhs) noexcept
-    -> ipoint
+[[nodiscard]] constexpr auto operator-(const ipoint& lhs,
+                                       const ipoint& rhs) noexcept -> ipoint
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator==(const ipoint& lhs,
-                                               const ipoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const ipoint& lhs,
+                                        const ipoint& rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] inline constexpr auto operator==(const fpoint& lhs,
-                                               const fpoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const fpoint& lhs,
+                                        const fpoint& rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] inline constexpr auto operator!=(const ipoint& lhs,
-                                               const ipoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const ipoint& lhs,
+                                        const ipoint& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-[[nodiscard]] inline constexpr auto operator!=(const fpoint& lhs,
-                                               const fpoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const fpoint& lhs,
+                                        const fpoint& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 [[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
 {
-  using namespace std::string_literals;
-
-  const auto xStr = std::to_string(point.x());
-  const auto yStr = std::to_string(point.y());
-
-  return "[i_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+  return "[ipoint | X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "]";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
 {
-  using namespace std::string_literals;
-
-  const auto xStr = std::to_string(point.x());
-  const auto yStr = std::to_string(point.y());
-
-  return "[f_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+  return "[fpoint | X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "]";
 }
 
 inline auto operator<<(std::ostream& stream, const ipoint& point)
@@ -533,6 +491,8 @@ inline auto operator<<(std::ostream& stream, const fpoint& point)
   stream << to_string(point);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

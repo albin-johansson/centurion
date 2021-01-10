@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,18 @@
 #ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
 #define CENTURION_DETAIL_STATIC_BIMAP_HEADER
 
-#include <array>    // array
-#include <utility>  // pair
+#include <algorithm>  // find_if
+#include <array>      // array
+#include <utility>    // pair
 
-#include "centurion_api.hpp"
-#include "detail/algorithm.hpp"
-#include "exception.hpp"
+#include "../centurion_cfg.hpp"
+#include "../exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -69,26 +70,35 @@ class static_bimap final
 
   constexpr auto find(const Key& key) const -> const Value&
   {
-    for (const pair_type& pair : data) {
-      if (pair.first == key) {
-        return pair.second;
-      }
+    const auto it =
+        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+          return pair.first == key;
+        });
+
+    if (it != data.end()) {
+      return it->second;
+    } else {
+      throw exception{"Failed to find element in static map!"};
     }
-    throw exception{"Failed to find element in static map!"};
   }
 
   constexpr auto key_from(const Value& value) const -> const Key&
   {
-    ValueCmp compare{};
-    for (const pair_type& pair : data) {
-      if (compare(pair.second, value)) {
-        return pair.first;
-      }
+    const auto it =
+        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+          ValueCmp predicate;
+          return predicate(pair.second, value);
+        });
+
+    if (it != data.end()) {
+      return it->first;
+    } else {
+      throw exception{"Failed to find key in static map!"};
     }
-    throw exception{"Failed to find key in static map!"};
   }
 };
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER

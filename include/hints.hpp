@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@
  *
  * \author Albin Johansson
  *
- * \date 2019-2020
+ * \date 2019-2021
  *
  * \copyright MIT License
  */
@@ -60,16 +60,17 @@
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 
-#include <SDL_hints.h>
+#include <SDL.h>
 
-#include <algorithm>    // find_if
-#include <cstring>      // strcmp
+#include <cstddef>      // size_t
+#include <optional>     // optional
+#include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, ...
-#include <utility>      // pair
+#include <utility>      // pair, make_pair
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/czstring_eq.hpp"
 #include "detail/static_bimap.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 
@@ -87,7 +88,7 @@ struct string_compare final
 {
   auto operator()(czstring lhs, czstring rhs) const noexcept
   {
-    return detail::equal(lhs, rhs);
+    return detail::czstring_eq(lhs, rhs);
   }
 };
 
@@ -136,7 +137,7 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
-  [[nodiscard]] static auto to_string(bool value) -> std::string
+  [[nodiscard]] static auto to_string(const bool value) -> std::string
   {
     return value ? "1" : "0";
   }
@@ -245,8 +246,6 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 
 /**
  * \namespace cen::hint
- *
- *
  *
  * \brief Contains all hint types.
  *
@@ -433,7 +432,7 @@ class enum_hint
     return Derived::map.key_from(hint);
   }
 
-  static auto to_string(value value) -> std::string
+  static auto to_string(const value value) -> std::string
   {
     return Derived::map.find(value);
   }
@@ -1406,9 +1405,10 @@ class hint_callback final
    *
    * \since 4.1.0
    */
-  hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
-      : m_callback{callback},
-        m_userData{userData}
+  explicit hint_callback(SDL_HintCallback callback,
+                         UserData* userData = nullptr)
+      : m_callback{callback}
+      , m_userData{userData}
   {
     if (!callback) {
       throw exception{"Failed to create hint callback"};

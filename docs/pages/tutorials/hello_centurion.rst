@@ -9,7 +9,7 @@ actually initialize SDL for us. So you should never initialize *both* Centurion 
 
 The ``library`` class is located in the ``centurion.hpp`` header. Now, it's important to get the
 signature of ``main`` correct in order for your program to work. The signature of ``main``
-**must** be ``int main(int, char**)``! This is because SDL actually performs some setup before
+**must** be equivalent to ``int main(int, char**)``! This is because SDL actually performs some setup before
 the main method is entered through some macro magic.
 
 Standard Configuration

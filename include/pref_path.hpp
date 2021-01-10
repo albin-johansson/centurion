@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 #include <SDL.h>
 
-#include <ostream>
-#include <string>
+#include <ostream>  // ostream
+#include <string>   // string
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 #include "sdl_string.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -41,10 +41,11 @@
 
 namespace cen {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \class pref_path
- *
- * \ingroup system
  *
  * \brief A wrapper for the preferred path for storing application related
  * files.
@@ -73,8 +74,9 @@ class pref_path final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  pref_path(nn_czstring org, nn_czstring app);
+  pref_path(not_null<czstring> org, not_null<czstring> app)
+      : m_path{SDL_GetPrefPath(org, app)}
+  {}
 
   /**
    * \brief Indicates whether or not the instance holds a non-null path.
@@ -107,21 +109,20 @@ class pref_path final
 /**
  * \brief Returns a textual representation of a pref path.
  *
- * \ingroup system
- *
  * \param path the pref path that will be converted.
  *
  * \return a string that represents a pref path.
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const pref_path& path) -> std::string;
+[[nodiscard]] inline auto to_string(const pref_path& path) -> std::string
+{
+  const std::string str = path ? path.get() : "N/A";
+  return "[pref_path | path: \"" + str + "\"]";
+}
 
 /**
  * \brief Prints a textual representation of a pref path.
- *
- * \ingroup system
  *
  * \param stream the stream that will be used.
  * \param path the pref path that will be printed.
@@ -130,8 +131,14 @@ auto to_string(const pref_path& path) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const pref_path& path)
+    -> std::ostream&
+{
+  stream << to_string(path);
+  return stream;
+}
+
+/// \}
 
 }  // namespace cen
 

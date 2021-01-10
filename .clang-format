@@ -26,7 +26,7 @@ BraceWrapping:
 AllowShortFunctionsOnASingleLine: None
 AllowShortBlocksOnASingleLine: Never
 
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 AllowAllConstructorInitializersOnNextLine: false
 
 AllowShortLambdasOnASingleLine: None

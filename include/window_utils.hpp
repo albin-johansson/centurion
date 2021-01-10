@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,10 @@
 #ifndef CENTURION_WINDOW_UTILS_HEADER
 #define CENTURION_WINDOW_UTILS_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_mouse.h>
-#include <SDL_video.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "integers.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
@@ -85,7 +84,8 @@ namespace cen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_window_from_id(u32 id) noexcept -> window_handle
+[[nodiscard]] inline auto get_window_from_id(const u32 id) noexcept
+    -> window_handle
 {
   return window_handle{SDL_GetWindowFromID(id)};
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,9 @@
 
 #include <SDL.h>
 
-#include "centurion_api.hpp"
+#include <cstddef>  // size_t
+
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -259,7 +261,7 @@ namespace cen::cpu {
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto is_big_endian() noexcept -> bool
+[[nodiscard]] constexpr auto is_big_endian() noexcept -> bool
 {
   return SDL_BYTEORDER == SDL_BIG_ENDIAN;
 }
@@ -272,7 +274,7 @@ namespace cen::cpu {
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto is_little_endian() noexcept -> bool
+[[nodiscard]] constexpr auto is_little_endian() noexcept -> bool
 {
   return SDL_BYTEORDER == SDL_LIL_ENDIAN;
 }

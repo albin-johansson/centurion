@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,12 @@
 #ifndef CENTURION_MUTEX_HEADER
 #define CENTURION_MUTEX_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
-#include <memory>
+#include <memory>  // unique_ptr
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -72,8 +73,12 @@ class mutex final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  mutex();
+  mutex() : m_mutex{SDL_CreateMutex()}
+  {
+    if (!m_mutex) {
+      throw sdl_error{};
+    }
+  }
 
   /**
    * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
@@ -82,8 +87,10 @@ class mutex final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto lock() noexcept -> bool;
+  auto lock() noexcept -> bool
+  {
+    return SDL_LockMutex(get()) == 0;
+  }
 
   /**
    * \brief Attempts to lock the mutex, returns if the mutex isn't available.
@@ -92,8 +99,10 @@ class mutex final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto try_lock() noexcept -> lock_status;
+  auto try_lock() noexcept -> lock_status
+  {
+    return static_cast<lock_status>(SDL_TryLockMutex(get()));
+  }
 
   /**
    * \brief Attempts to unlock the mutex.
@@ -102,8 +111,10 @@ class mutex final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto unlock() noexcept -> bool;
+  auto unlock() noexcept -> bool
+  {
+    return SDL_UnlockMutex(get()) == 0;
+  }
 
   /**
    * \brief Returns a pointer to the associated SDL mutex.
@@ -112,8 +123,10 @@ class mutex final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get() noexcept -> SDL_mutex*;
+  [[nodiscard]] auto get() noexcept -> SDL_mutex*
+  {
+    return m_mutex.get();
+  }
 
  private:
   struct deleter final
@@ -124,6 +137,11 @@ class mutex final
     }
   };
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  explicit mutex(int){};
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// \}

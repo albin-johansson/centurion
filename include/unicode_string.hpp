@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,28 @@
 #ifndef CENTURION_UNICODE_STRING_HEADER
 #define CENTURION_UNICODE_STRING_HEADER
 
-#include <cassert>
-#include <initializer_list>
-#include <vector>
+#include <cassert>           // assert
+#include <initializer_list>  // initializer_list
+#include <type_traits>       // is_same_v, decay_t
+#include <vector>            // vector
 
-#include "centurion_api.hpp"
-#include "types.hpp"
+#include "centurion_cfg.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
+
+/**
+ * \typedef unicode
+ *
+ * \brief The representation of Unicode glyphs.
+ *
+ * \since 5.0.0
+ */
+using unicode = u16;
 
 /**
  * \class unicode_string
@@ -104,7 +114,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void reserve(size_type n)
+  void reserve(const size_type n)
   {
     m_data.reserve(n);
   }
@@ -116,7 +126,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void append(unicode ch)
+  void append(const unicode ch)
   {
     m_data.insert(m_data.end() - 1, ch);
   }
@@ -125,25 +135,26 @@ class unicode_string final
    * \brief Appends a series of glyphs to the string.
    *
    * \tparam First the type of the first glyph, always `unicode`.
-   * \tparam Args the types of the other glyphs, always `unicode`.
+   * \tparam Character the types of the other glyphs, always `unicode`.
    *
-   * \param first the first glyph that will be added.
-   * \param codes the other glyphs that will be added.
+   * \param code the pack of glyphs that will be added, cannot be empty.
    *
    * \since 5.0.0
    */
-  template <typename First, typename... Args>
-  void append(First first, Args... codes)
+  template <typename... Character>
+  void append(Character... code)
   {
-    static_assert(std::is_same_v<unicode, First>);
-    append(first);
-    append(codes...);
+    static_assert(sizeof...(Character) != 0,
+                  "Function requires at least 1 argument!");
+    static_assert((std::is_same_v<unicode, std::decay_t<Character>> && ...),
+                  "Cannot append values that aren't of type \"unicode\"!");
+    (append(code), ...);
   }
 
   /**
    * \copydoc append(unicode)
    */
-  void operator+=(unicode ch)
+  void operator+=(const unicode ch)
   {
     append(ch);
   }
@@ -283,7 +294,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto at(size_type index) -> reference
+  [[nodiscard]] auto at(const size_type index) -> reference
   {
     return m_data.at(index);
   }
@@ -291,7 +302,7 @@ class unicode_string final
   /**
    * \copydoc at
    */
-  [[nodiscard]] auto at(size_type index) const -> const_reference
+  [[nodiscard]] auto at(const size_type index) const -> const_reference
   {
     return m_data.at(index);
   }
@@ -311,7 +322,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](size_type index) noexcept -> reference
+  [[nodiscard]] auto operator[](const size_type index) noexcept -> reference
   {
     assert(index < m_data.size());
     return m_data[index];
@@ -320,7 +331,7 @@ class unicode_string final
   /**
    * \copydoc operator[]
    */
-  [[nodiscard]] auto operator[](size_type index) const noexcept
+  [[nodiscard]] auto operator[](const size_type index) const noexcept
       -> const_reference
   {
     assert(index < m_data.size());
@@ -386,7 +397,7 @@ namespace literals {
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(char c) noexcept -> unicode
+constexpr auto operator""_uni(const char c) noexcept -> unicode
 {
   return static_cast<unicode>(c);
 }
@@ -400,7 +411,7 @@ inline constexpr auto operator""_uni(char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(unsigned long long int i) noexcept
+constexpr auto operator""_uni(const unsigned long long int i) noexcept
     -> unicode
 {
   return static_cast<unicode>(i);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@
 #ifndef CENTURION_BUTTON_STATE_HEADER
 #define CENTURION_BUTTON_STATE_HEADER
 
-#include <SDL_events.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

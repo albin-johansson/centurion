@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,13 @@
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
-#include <optional>
-#include <string>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include <optional>  // optional
+#include <string>    // string
+
+#include "centurion_cfg.hpp"
+#include "detail/czstring_eq.hpp"
 #include "pixel_format.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -88,8 +90,28 @@ enum class platform_id
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto id() noexcept -> platform_id;
+[[nodiscard]] inline auto id() noexcept -> platform_id
+{
+  czstring platform = SDL_GetPlatform();
+  if (detail::czstring_eq(platform, "Windows")) {
+    return platform_id::windows;
+
+  } else if (detail::czstring_eq(platform, "Mac OS X")) {
+    return platform_id::mac_osx;
+
+  } else if (detail::czstring_eq(platform, "Linux")) {
+    return platform_id::linuxx;
+
+  } else if (detail::czstring_eq(platform, "iOS")) {
+    return platform_id::ios;
+
+  } else if (detail::czstring_eq(platform, "Android")) {
+    return platform_id::android;
+
+  } else {
+    return platform_id::unknown;
+  }
+}
 
 /**
  * \brief Indicates whether or not the current platform is Windows.
@@ -98,8 +120,10 @@ auto id() noexcept -> platform_id;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto is_windows() noexcept -> bool;
+[[nodiscard]] inline auto is_windows() noexcept -> bool
+{
+  return id() == platform_id::windows;
+}
 
 /**
  * \brief Indicates whether or not the current platform is Mac OSX.
@@ -108,8 +132,10 @@ auto is_windows() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto is_mac_osx() noexcept -> bool;
+[[nodiscard]] inline auto is_mac_osx() noexcept -> bool
+{
+  return id() == platform_id::mac_osx;
+}
 
 /**
  * \brief Indicates whether or not the current platform is Linux.
@@ -118,8 +144,10 @@ auto is_mac_osx() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto is_linux() noexcept -> bool;
+[[nodiscard]] inline auto is_linux() noexcept -> bool
+{
+  return id() == platform_id::linuxx;
+}
 
 /**
  * \brief Indicates whether or not the current platform is iOS.
@@ -128,8 +156,10 @@ auto is_linux() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto is_ios() noexcept -> bool;
+[[nodiscard]] inline auto is_ios() noexcept -> bool
+{
+  return id() == platform_id::ios;
+}
 
 /**
  * \brief Indicates whether or not the current platform is Android.
@@ -138,8 +168,10 @@ auto is_ios() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto is_android() noexcept -> bool;
+[[nodiscard]] inline auto is_android() noexcept -> bool
+{
+  return id() == platform_id::android;
+}
 
 /**
  * \brief Returns the name of the current platform.
@@ -149,8 +181,15 @@ auto is_android() noexcept -> bool;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto name() -> std::optional<std::string>;
+[[nodiscard]] inline auto name() -> std::optional<std::string>
+{
+  const std::string name{SDL_GetPlatform()};
+  if (name != "Unknown") {
+    return name;
+  } else {
+    return std::nullopt;
+  }
+}
 
 /// \}
 

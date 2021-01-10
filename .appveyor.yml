@@ -1,6 +1,6 @@
 image: Visual Studio 2019
 
-version: '5.0.0-{build}'
+version: '5.1.0-{build}'
 
 install:
   - cmake --version # expect >= 3.16
@@ -64,5 +64,10 @@ before_build:
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja
 
 build_script:
-  - ninja CenturionLibrary
   - ninja CenturionTests
+  - ninja CenturionMocks
+
+test_script:
+  - cd test/mocks
+  - dir
+  - CenturionMocks.exe

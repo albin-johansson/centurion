@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,15 @@
 #include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
 
 #include "blend_mode.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "color.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
+#include "owner.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 
@@ -48,10 +52,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class basic_surface
- *
- * \ingroup graphics
  *
  * \brief Represents a non-accelerated image.
  *
@@ -97,10 +102,10 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  explicit basic_surface(nn_czstring file) : m_surface{IMG_Load(file)}
+  explicit basic_surface(not_null<czstring> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
-      throw img_error{"Failed to create surface from file"};
+      throw img_error{};
     }
   }
 
@@ -207,7 +212,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_alpha(u8 alpha) noexcept
+  void set_alpha(const u8 alpha) noexcept
   {
     SDL_SetSurfaceAlphaMod(get(), alpha);
   }
@@ -232,7 +237,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetSurfaceBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
@@ -294,7 +299,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto convert(pixel_format format) const -> basic_surface
+  [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
     const auto pixelFormat = static_cast<u32>(format);
     if (auto* s = SDL_ConvertSurfaceFormat(get(), pixelFormat, 0)) {
@@ -302,7 +307,7 @@ class basic_surface final
       converted.set_blend_mode(get_blend_mode());
       return converted;
     } else {
-      throw sdl_error{"Failed to convert surface"};
+      throw sdl_error{};
     }
   }
 
@@ -385,10 +390,10 @@ class basic_surface final
   /**
    * \brief Returns a pointer to the associated `SDL_Surface`.
    *
-   * \warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However it is useful since many SDL calls use
-   * non-const pointers even when no change will be applied. Don't take
-   * ownership of the returned pointer, or bad things will happen.
+   * \warning Use of this method is not recommended. However it is useful since
+   * many SDL calls use non-const pointers even when no change will be applied.
+   *
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated `SDL_Surface`.
    *
@@ -553,9 +558,14 @@ class basic_surface final
     if (auto* copy = SDL_DuplicateSurface(m_surface.get())) {
       return copy;
     } else {
-      throw sdl_error{"Failed to duplicate surface"};
+      throw sdl_error{};
     }
   }
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  basic_surface() = default;
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /**
@@ -579,8 +589,6 @@ using surface_handle = basic_surface<std::false_type>;
 /**
  * \brief Returns a textual representation of a surface.
  *
- * \ingroup graphics
- *
  * \param surface the surface that will be converted.
  *
  * \return a textual representation of the surface.
@@ -590,17 +598,13 @@ using surface_handle = basic_surface<std::false_type>;
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  using namespace std::string_literals;
-  using detail::to_string;
-  return "[surface | ptr: "s + detail::address_of(surface.get()) +
-         ", width: "s + to_string(surface.width()).value() + ", height: "s +
-         to_string(surface.height()).value() + "]";
+  return "[surface | ptr: " + detail::address_of(surface.get()) +
+         ", width: " + detail::to_string(surface.width()).value() +
+         ", height: " + detail::to_string(surface.height()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a surface.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param surface the surface that will be printed.
@@ -616,6 +620,8 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface)
   stream << to_string(surface);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

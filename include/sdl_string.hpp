@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

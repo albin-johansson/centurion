@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,12 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-#include <ostream>
-#include <type_traits>
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/to_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -159,9 +160,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  const auto width = std::to_string(area.width);
-  const auto height = std::to_string(area.height);
-  return "[area | width: " + width + ", height: " + height + "]";
+  return "[area | width: " + detail::to_string(area.width).value() +
+         ", height: " + detail::to_string(area.height).value() + "]";
 }
 
 /**

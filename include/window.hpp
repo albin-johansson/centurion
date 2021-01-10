@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,23 +25,28 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-#include <SDL_render.h>
-#include <SDL_video.h>
+#include <SDL.h>
 
+#include <cassert>      // assert
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // conditional_t, true_type, false_type, enable_if_t
 
 #include "area.hpp"
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/clamp.hpp"
+#include "detail/convert_bool.hpp"
+#include "detail/max.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -110,8 +115,11 @@ class basic_window final
    * \since 3.0.0
    */
   template <typename U = T, detail::is_owner<U> = true>
-  explicit basic_window(nn_czstring title, const iarea& size = default_size())
+  explicit basic_window(not_null<czstring> title,
+                        const iarea& size = default_size())
   {
+    assert(title);
+
     if ((size.width < 1) || (size.height < 1)) {
       throw exception{"Invalid width or height!"};
     }
@@ -123,7 +131,7 @@ class basic_window final
                                     size.height,
                                     SDL_WINDOW_HIDDEN));
     if (!m_window) {
-      throw sdl_error{"Failed to create window"};
+      throw sdl_error{};
     }
   }
 
@@ -235,14 +243,10 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_fullscreen(bool fullscreen) noexcept
+  void set_fullscreen(const bool fullscreen) noexcept
   {
-    const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
+    constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
     SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
-
-    if (!fullscreen) {
-      set_brightness(1);
-    }
   }
 
   /**
@@ -255,7 +259,7 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  void set_fullscreen_desktop(bool fullscreen) noexcept
+  void set_fullscreen_desktop(const bool fullscreen) noexcept
   {
     const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
@@ -271,7 +275,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_decorated(bool decorated) noexcept
+  void set_decorated(const bool decorated) noexcept
   {
     SDL_SetWindowBordered(get(), detail::convert_bool(decorated));
   }
@@ -284,7 +288,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_resizable(bool resizable) noexcept
+  void set_resizable(const bool resizable) noexcept
   {
     SDL_SetWindowResizable(get(), detail::convert_bool(resizable));
   }
@@ -298,9 +302,9 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_width(int width) noexcept
+  void set_width(const int width) noexcept
   {
-    SDL_SetWindowSize(get(), detail::at_least(width, 1), height());
+    SDL_SetWindowSize(get(), detail::max(width, 1), height());
   }
 
   /**
@@ -312,9 +316,9 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_height(int height) noexcept
+  void set_height(const int height) noexcept
   {
-    SDL_SetWindowSize(get(), width(), detail::at_least(height, 1));
+    SDL_SetWindowSize(get(), width(), detail::max(height, 1));
   }
 
   /**
@@ -329,8 +333,8 @@ class basic_window final
    */
   void set_size(const iarea& size) noexcept
   {
-    const auto width = detail::at_least(size.width, 1);
-    const auto height = detail::at_least(size.height, 1);
+    const auto width = detail::max(size.width, 1);
+    const auto height = detail::max(size.height, 1);
     SDL_SetWindowSize(get(), width, height);
   }
 
@@ -353,8 +357,9 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_title(nn_czstring title) noexcept
+  void set_title(not_null<czstring> title) noexcept
   {
+    assert(title);
     SDL_SetWindowTitle(get(), title);
   }
 
@@ -368,7 +373,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_opacity(float opacity) noexcept
+  void set_opacity(const float opacity) noexcept
   {
     SDL_SetWindowOpacity(get(), opacity);
   }
@@ -430,7 +435,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(bool grabMouse) noexcept
+  void set_grab_mouse(const bool grabMouse) noexcept
   {
     SDL_SetWindowGrab(get(), detail::convert_bool(grabMouse));
   }
@@ -438,21 +443,20 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \details This operation is only supported if the window is in fullscreen
-   * mode. This property will be reset every time the fullscreen mode is exited.
-   *
    * \note A brightness value outside the legal range will be clamped to the
    * closest valid value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
+   * \return `true` if the brightness was successfully set; `false` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_brightness(float brightness) noexcept
+  auto set_brightness(const float brightness) noexcept -> bool
   {
-    if (is_fullscreen()) {
-      SDL_SetWindowBrightness(get(), std::clamp(brightness, 0.0f, 1.0f));
-    }
+    const auto res =
+        SDL_SetWindowBrightness(get(), detail::clamp(brightness, 0.0f, 1.0f));
+    return res == 0;
   }
 
   /**
@@ -468,7 +472,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  static void set_capturing_mouse(bool capturingMouse) noexcept
+  static void set_capturing_mouse(const bool capturingMouse) noexcept
   {
     SDL_CaptureMouse(detail::convert_bool(capturingMouse));
   }
@@ -857,7 +861,8 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool
+  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept
+      -> bool
   {
     return static_cast<bool>(flags() & flag);
   }
@@ -963,7 +968,7 @@ class basic_window final
   /**
    * \brief Returns a pointer to the associated SDL window.
    *
-   * \warning Don't claim ownership of the returned pointer.
+   * \warning Don't take ownership of the returned pointer!
    *
    * \return a pointer to the associated SDL window.
    *

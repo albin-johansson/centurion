@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,12 @@
 #ifndef CENTURION_TOUCH_HEADER
 #define CENTURION_TOUCH_HEADER
 
-#include <SDL_touch.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include <optional>  // optional
+
+#include "centurion_cfg.hpp"
+#include "integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -81,8 +83,8 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(device_type lhs,
-                                               SDL_TouchDeviceType rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const device_type lhs,
+                                        const SDL_TouchDeviceType rhs) noexcept
     -> bool
 {
   return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
@@ -91,8 +93,8 @@ enum class device_type
 /**
  * \copydoc operator==(device_type, SDL_TouchDeviceType)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_TouchDeviceType lhs,
-                                               device_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_TouchDeviceType lhs,
+                                        const device_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -107,8 +109,8 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(device_type lhs,
-                                               SDL_TouchDeviceType rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const device_type lhs,
+                                        const SDL_TouchDeviceType rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -117,8 +119,8 @@ enum class device_type
 /**
  * \copydoc operator!=(device_type, SDL_TouchDeviceType)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_TouchDeviceType lhs,
-                                               device_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_TouchDeviceType lhs,
+                                        const device_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -130,8 +132,10 @@ enum class device_type
  *
  * \since 4.3.0
  */
-CENTURION_QUERY
-auto num_devices() noexcept -> int;
+[[nodiscard]] inline auto num_devices() noexcept -> int
+{
+  return SDL_GetNumTouchDevices();
+}
 
 /**
  * \brief Returns the touch device ID associated with the specified index.
@@ -142,8 +146,16 @@ auto num_devices() noexcept -> int;
  *
  * \since 4.3.0
  */
-CENTURION_QUERY
-auto get_device(int index) noexcept -> std::optional<SDL_TouchID>;
+[[nodiscard]] inline auto get_device(const int index) noexcept
+    -> std::optional<SDL_TouchID>
+{
+  const auto device = SDL_GetTouchDevice(index);
+  if (device != 0) {
+    return device;
+  } else {
+    return std::nullopt;
+  }
+}
 
 /**
  * \brief Returns the type of a touch device.
@@ -154,8 +166,10 @@ auto get_device(int index) noexcept -> std::optional<SDL_TouchID>;
  *
  * \since 4.3.0
  */
-CENTURION_QUERY
-auto type_of(SDL_TouchID id) noexcept -> device_type;
+[[nodiscard]] inline auto type_of(const SDL_TouchID id) noexcept -> device_type
+{
+  return static_cast<device_type>(SDL_GetTouchDeviceType(id));
+}
 
 /**
  * \brief Returns the number of active fingers for a given touch device.
@@ -166,8 +180,10 @@ auto type_of(SDL_TouchID id) noexcept -> device_type;
  *
  * \since 4.3.0
  */
-CENTURION_QUERY
-auto num_fingers(SDL_TouchID id) noexcept -> int;
+[[nodiscard]] inline auto num_fingers(const SDL_TouchID id) noexcept -> int
+{
+  return SDL_GetNumTouchFingers(id);
+}
 
 /**
  * \brief Returns the finger associated with the specified touch ID and index.
@@ -180,9 +196,16 @@ auto num_fingers(SDL_TouchID id) noexcept -> int;
  *
  * \since 4.3.0
  */
-CENTURION_QUERY
-auto get_finger(SDL_TouchID id, int index) noexcept
-    -> std::optional<SDL_Finger>;
+[[nodiscard]] inline auto get_finger(const SDL_TouchID id,
+                                     const int index) noexcept
+    -> std::optional<SDL_Finger>
+{
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
+    return *finger;
+  } else {
+    return std::nullopt;
+  }
+}
 
 /**
  * \brief Returns the device ID used for mouse events simulated with touch
@@ -192,7 +215,7 @@ auto get_finger(SDL_TouchID id, int index) noexcept
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto touch_mouse_id() noexcept -> u32
+[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> u32
 {
   return SDL_TOUCH_MOUSEID;
 }
@@ -205,7 +228,7 @@ auto get_finger(SDL_TouchID id, int index) noexcept
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto mouse_touch_id() noexcept -> SDL_TouchID
+[[nodiscard]] constexpr auto mouse_touch_id() noexcept -> SDL_TouchID
 {
   return SDL_MOUSE_TOUCHID;
 }

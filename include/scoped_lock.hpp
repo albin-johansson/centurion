@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,10 @@
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
-#include <SDL_mutex.h>
+#include <SDL.h>
 
-#include <type_traits>
-
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
+#include "exception.hpp"
 #include "mutex.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -65,8 +64,12 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit scoped_lock(mutex& mutex);
+  explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
+  {
+    if (!mutex.lock()) {
+      throw sdl_error{};
+    }
+  }
 
   scoped_lock(const scoped_lock&) = delete;
 
@@ -77,15 +80,14 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  ~scoped_lock() noexcept;
+  ~scoped_lock() noexcept
+  {
+    m_mutex->unlock();
+  }
 
  private:
   mutex* m_mutex{};
 };
-
-static_assert(!std::is_copy_constructible_v<scoped_lock>);
-static_assert(!std::is_copy_assignable_v<scoped_lock>);
 
 /// \}
 

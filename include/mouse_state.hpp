@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,9 @@
 #define CENTURION_MOUSE_STATE_HEADER
 
 #include "area.hpp"
-#include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "centurion_cfg.hpp"
+#include "detail/max.hpp"
+#include "integers.hpp"
 #include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -36,10 +37,11 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \class mouse_state
- *
- * \ingroup input
  *
  * \brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
@@ -56,8 +58,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  mouse_state() noexcept;
+  mouse_state() noexcept = default;
 
   /**
    * \brief Updates the mouse state. The window width and height will be
@@ -68,8 +69,32 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void update(int windowWidth = 1, int windowHeight = 1) noexcept;
+  void update(const int windowWidth = 1, const int windowHeight = 1) noexcept
+  {
+    m_oldX = m_mouseX;
+    m_oldY = m_mouseY;
+    m_prevLeftPressed = m_leftPressed;
+    m_prevRightPressed = m_rightPressed;
+
+    {
+      const u32 mask = SDL_GetMouseState(&m_mouseX, &m_mouseY);
+      m_leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
+      m_rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
+    }
+
+    {
+      const auto xRatio = static_cast<float>(m_mouseX) /
+                          static_cast<float>(detail::max(windowWidth, 1));
+      const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
+
+      const auto yRatio = static_cast<float>(m_mouseY) /
+                          static_cast<float>(detail::max(windowHeight, 1));
+      const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
+
+      m_mouseX = static_cast<int>(adjustedX);
+      m_mouseY = static_cast<int>(adjustedY);
+    }
+  }
 
   /**
    * \brief Resets the screen and logical dimensions of the mouse state
@@ -77,8 +102,11 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void reset() noexcept;
+  void reset() noexcept
+  {
+    m_logicalWidth = 1;
+    m_logicalHeight = 1;
+  }
 
   /**
    * \brief Sets the logical width that will be used to determine the mouse
@@ -91,8 +119,10 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_logical_width(int logicalWidth) noexcept;
+  void set_logical_width(const int logicalWidth) noexcept
+  {
+    m_logicalWidth = detail::max(logicalWidth, 1);
+  }
 
   /**
    * \brief Sets the logical height that will be used to determine the mouse
@@ -105,8 +135,10 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_logical_height(int logicalHeight) noexcept;
+  void set_logical_height(const int logicalHeight) noexcept
+  {
+    this->m_logicalHeight = detail::max(logicalHeight, 1);
+  }
 
   /**
    * \brief Indicates whether or not the left mouse button was released.
@@ -115,8 +147,10 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto was_left_button_released() const noexcept -> bool;
+  [[nodiscard]] auto was_left_button_released() const noexcept -> bool
+  {
+    return !m_leftPressed && m_prevLeftPressed;
+  }
 
   /**
    * \brief Indicates whether or not the right mouse button was released.
@@ -125,8 +159,10 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto was_right_button_released() const noexcept -> bool;
+  [[nodiscard]] auto was_right_button_released() const noexcept -> bool
+  {
+    return !m_rightPressed && m_prevRightPressed;
+  }
 
   /**
    * \brief Indicates whether or not the mouse was moved.
@@ -135,8 +171,10 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto was_mouse_moved() const noexcept -> bool;
+  [[nodiscard]] auto was_mouse_moved() const noexcept -> bool
+  {
+    return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
+  }
 
   /**
    * \brief Returns the x-coordinate of the mouse.
@@ -249,6 +287,8 @@ class mouse_state final
   bool m_prevLeftPressed{false};
   bool m_prevRightPressed{false};
 };
+
+/// \}
 
 }  // namespace cen
 

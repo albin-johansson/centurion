@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,9 @@
 #ifndef CENTURION_EVENT_TYPE_HEADER
 #define CENTURION_EVENT_TYPE_HEADER
 
-#include <SDL_events.h>
+#include <SDL.h>
 
-#include "centurion_api.hpp"
+#include "centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup event
+/// \{
+
 /**
  * \enum event_type
- *
- * \ingroup event
  *
  * \brief Mirrors the `SDL_EventType` enum.
  *
@@ -118,8 +119,6 @@ enum class event_type
 /**
  * \brief Indicates whether or not two event type values are the same.
  *
- * \ingroup event
- *
  * \param lhs the left-hand side event type value
  * \param rhs the right-hand side event type value
  *
@@ -127,28 +126,24 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator==(event_type lhs,
-                                               SDL_EventType rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const event_type lhs,
+                                        const SDL_EventType rhs) noexcept
     -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /**
- * \copydoc operator==(event_type, SDL_EventType)
- *
- * \ingroup event
+ * \copydoc operator==(const event_type, const SDL_EventType)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
-                                               event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
+                                        const event_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
 
 /**
  * \brief Indicates whether or not two event type values aren't the same.
- *
- * \ingroup event
  *
  * \param lhs the left-hand side event type value
  * \param rhs the right-hand side event type value
@@ -157,23 +152,23 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator!=(event_type lhs,
-                                               SDL_EventType rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const event_type lhs,
+                                        const SDL_EventType rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * \copydoc operator!=(event_type, SDL_EventType)
- *
- * \ingroup event
+ * \copydoc operator!=(const event_type, const SDL_EventType)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
-                                               event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
+                                        const event_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

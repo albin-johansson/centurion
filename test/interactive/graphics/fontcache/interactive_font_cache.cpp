@@ -6,7 +6,7 @@
 
 namespace {
 
-class interactive_font_cache
+class interactive_font_cache final
 {
  public:
   interactive_font_cache()

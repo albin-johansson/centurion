@@ -53,3 +53,8 @@ TEST(Platform, Name)
 {
   EXPECT_EQ(std::string{SDL_GetPlatform()}, *cen::platform::name());
 }
+
+TEST(Platform, IsTablet)
+{
+  EXPECT_EQ(SDL_IsTablet(), cen::platform::is_tablet());
+}

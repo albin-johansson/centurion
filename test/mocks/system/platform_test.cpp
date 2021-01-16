@@ -5,6 +5,7 @@
 
 extern "C" {
 FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
+FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
 }
 
 class PlatformTest : public testing::Test
@@ -14,6 +15,7 @@ class PlatformTest : public testing::Test
   void SetUp() override
   {
     RESET_FAKE(SDL_GetPlatform);
+    RESET_FAKE(SDL_IsTablet);
   }
 };
 
@@ -87,4 +89,10 @@ TEST_F(PlatformTest, Name)
 
   SDL_GetPlatform_fake.return_val = "Unknown";
   EXPECT_FALSE(cen::platform::name().has_value());
+}
+
+TEST_F(PlatformTest, IsTablet)
+{
+  const auto isTablet [[maybe_unused]] = cen::platform::is_tablet();
+  EXPECT_EQ(1, SDL_IsTablet_fake.call_count);
 }

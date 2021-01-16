@@ -191,6 +191,18 @@ enum class platform_id
   }
 }
 
+/**
+ * \brief Indicates whether or not the current system is a tablet.
+ *
+ * \return `true` if the current system is a tablet; `false` otherwise.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto is_tablet() noexcept -> bool
+{
+  return static_cast<bool>(SDL_IsTablet());
+}
+
 /// \}
 
 }  // namespace cen::platform

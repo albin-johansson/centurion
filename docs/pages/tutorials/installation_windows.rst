@@ -19,7 +19,7 @@ the appropriate runtime binaries, see the following links.
 After setting up the environment variables, we need to grab the Centurion source files. 
 Centurion is header-only so we only need the files located in the ``include`` folder. It is 
 recommended to download the latest release of Centurion and include the header files from 
-the downloaded archive (view releases `here <https://github.com/albin-johansson/Centurion/releases>`_. 
+the downloaded archive (view releases `here <https://github.com/albin-johansson/centurion/releases>`_. 
 
 There are openly available CMake scripts for finding SDL2 available, which enable the 
 use of the following commands. For a real world example of this, see `this <https://github.com/albin-johansson/wanderer>`_

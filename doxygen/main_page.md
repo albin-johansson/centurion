@@ -5,7 +5,7 @@
   overall ease-of-use.
 
   <div style="position: relative; overflow: hidden; width: 100%; float: left;">
-    <a href="https://github.com/albin-johansson/Centurion">
+    <a href="https://github.com/albin-johansson/centurion">
       <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
            width="100px"/>
     </a>

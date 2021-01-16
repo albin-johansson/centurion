@@ -93,7 +93,7 @@ script:
   - cd ${TRAVIS_BUILD_DIR}
 
   - |
-    if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
+    if [[ "${TRAVIS_BRANCH}" == "main" ]]; then
       doxygen
     fi
 

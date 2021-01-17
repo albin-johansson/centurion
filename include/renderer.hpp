@@ -27,14 +27,15 @@
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <memory>       // unique_ptr
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
-#include <utility>      // pair
+#include <cassert>        // assert
+#include <cstddef>        // size_t
+#include <memory>         // unique_ptr
+#include <optional>       // optional
+#include <ostream>        // ostream
+#include <string>         // string
+#include <type_traits>    // enable_if_t, true_type, false_type, conditional_t
+#include <unordered_map>  // unordered_map
+#include <utility>        // move, pair
 
 #include "blend_mode.hpp"
 #include "centurion_cfg.hpp"
@@ -101,8 +102,6 @@ using renderer_handle = basic_renderer<std::false_type>;
 template <typename B>
 class basic_renderer final
 {
-  using owner_t = basic_renderer<std::true_type>;
-
   [[nodiscard]] constexpr static auto default_flags() noexcept
       -> SDL_RendererFlags
   {

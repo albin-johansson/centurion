@@ -1936,7 +1936,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename U = B, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -1990,35 +1990,35 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
+  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
+      -> basic_point<T>
   {
-    using value_type = typename basic_point<U>::value_type;
+    using value_type = typename basic_point<T>::value_type;
 
     const auto& translation = m_renderer.translation;
     const auto x = point.x() - static_cast<value_type>(translation.x());
     const auto y = point.y() - static_cast<value_type>(translation.y());
 
-    return basic_point<U>{x, y};
+    return basic_point<T>{x, y};
   }
 
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
-      -> basic_rect<U>
+  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
+      -> basic_rect<T>
   {
-    return basic_rect<U>{translate(rect.position()), rect.size()};
+    return basic_rect<T>{translate(rect.position()), rect.size()};
   }
 };
 
-template <typename T>
-[[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
+template <typename B>
+[[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
 {
   return "[renderer | data: " + detail::address_of(renderer.get()) + "]";
 }
 
-template <typename T>
-auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer)
+template <typename B>
+auto operator<<(std::ostream& stream, const basic_renderer<B>& renderer)
     -> std::ostream&
 {
   stream << to_string(renderer);

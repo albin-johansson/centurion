@@ -30,7 +30,7 @@
 #include <cassert>      // assert
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <type_traits>  // true_type, false_type, is_same_v
 
 #include "area.hpp"
 #include "centurion_cfg.hpp"
@@ -95,6 +95,9 @@ using window_handle = basic_window<std::false_type>;
 template <typename B>
 class basic_window final
 {
+  inline static constexpr bool isOwner = std::is_same_v<B, std::true_type>;
+  inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;
+
  public:
   /**
    * \brief Creates a window from a pointer to an SDL window.
@@ -108,10 +111,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<B>())
+  explicit basic_window(SDL_Window* window) noexcept(isHandle)
       : m_window{window}
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (isOwner) {
       if (!m_window) {
         throw exception{"Cannot create window from null pointer!"};
       }

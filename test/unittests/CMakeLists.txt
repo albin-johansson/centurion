@@ -19,6 +19,7 @@ set(SOURCE_FILES
     detail/czstring_eq_test.cpp
     detail/max_test.cpp
     detail/min_test.cpp
+    detail/owner_handle_api_test.cpp
     detail/to_string_test.cpp
 
     event/audio_device_event_test.cpp

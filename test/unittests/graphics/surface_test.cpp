@@ -155,6 +155,13 @@ TEST_F(SurfaceTest, Height)
   EXPECT_EQ(150, m_surface->height());
 }
 
+TEST_F(SurfaceTest, Size)
+{
+  const auto size = m_surface->size();
+  EXPECT_EQ(200, size.width);
+  EXPECT_EQ(150, size.height);
+}
+
 TEST_F(SurfaceTest, Pitch)
 {
   EXPECT_EQ(4 * m_surface->width(), m_surface->pitch());

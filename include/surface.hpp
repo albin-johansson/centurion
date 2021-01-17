@@ -33,6 +33,7 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
+#include "area.hpp"
 #include "blend_mode.hpp"
 #include "centurion_cfg.hpp"
 #include "color.hpp"
@@ -374,6 +375,18 @@ class basic_surface final
   [[nodiscard]] auto height() const noexcept -> int
   {
     return m_surface->h;
+  }
+
+  /**
+   * \brief Returns the size of the surface.
+   *
+   * \return the size of the surface.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    return iarea{width(), height()};
   }
 
   /**

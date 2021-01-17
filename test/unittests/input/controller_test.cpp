@@ -141,7 +141,7 @@ class controller_handler  // TODO worth adding?
  public:
   void add_all()
   {
-    const auto amount = cen::joystick::amount().value_or(0);
+    const auto amount = cen::joystick::count().value_or(0);
     for (int i = 0; i < amount; ++i) {
       if (cen::controller::is_supported(i)) {
         emplace(i);

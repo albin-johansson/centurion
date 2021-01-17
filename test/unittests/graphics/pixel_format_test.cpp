@@ -2,7 +2,86 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>  // unique_ptr
+
+#include "colors.hpp"
 #include "cpu.hpp"
+
+class PixelFormatInfoTest : public testing::Test
+{
+ protected:
+  static void SetUpTestSuite()
+  {
+    constexpr auto format = cen::pixel_format::rgba8888;  // Arbitrary
+    m_info = std::make_unique<cen::pixel_format_info>(format);
+  }
+
+  static void TearDownTestSuite()
+  {
+    m_info.reset();
+  }
+
+  inline static std::unique_ptr<cen::pixel_format_info> m_info;
+};
+
+TEST_F(PixelFormatInfoTest, PointerConstructor)
+{
+  static_assert(!noexcept(cen::pixel_format_info{nullptr}));
+  static_assert(noexcept(cen::pixel_format_info_handle{nullptr}));
+
+  EXPECT_THROW(cen::pixel_format_info{nullptr}, cen::exception);
+  EXPECT_NO_THROW(cen::pixel_format_info_handle{nullptr});
+}
+
+TEST_F(PixelFormatInfoTest, HandleFromOwner)
+{
+  const cen::pixel_format_info_handle handle{*m_info};
+  EXPECT_TRUE(handle);
+}
+
+TEST_F(PixelFormatInfoTest, Format)
+{
+  EXPECT_EQ(cen::pixel_format::rgba8888, m_info->format());
+}
+
+TEST_F(PixelFormatInfoTest, Name)
+{
+  EXPECT_STREQ(SDL_GetPixelFormatName(m_info->get()->format), m_info->name());
+}
+
+TEST_F(PixelFormatInfoTest, RGBToPixel)
+{
+  constexpr auto color = cen::colors::hot_pink;
+  EXPECT_EQ(SDL_MapRGB(m_info->get(), color.red(), color.green(), color.blue()),
+            m_info->rgb_to_pixel(color));
+}
+
+TEST_F(PixelFormatInfoTest, RGBAToPixel)
+{
+  constexpr auto color = cen::colors::honey_dew;
+  EXPECT_EQ(SDL_MapRGBA(m_info->get(),
+                        color.red(),
+                        color.green(),
+                        color.blue(),
+                        color.alpha()),
+            m_info->rgba_to_pixel(color));
+}
+
+TEST_F(PixelFormatInfoTest, PixelToRGB)
+{
+  constexpr auto color = cen::colors::hot_pink;
+  const cen::u32 pixel =
+      (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
+  EXPECT_EQ(color, m_info->pixel_to_rgb(pixel));
+}
+
+TEST_F(PixelFormatInfoTest, PixelToRGBA)
+{
+  constexpr auto color = cen::colors::aquamarine;
+  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) |
+                         (color.blue() << 8u) | (color.alpha() << 0u);
+  EXPECT_EQ(color, m_info->pixel_to_rgba(pixel));
+}
 
 TEST(PixelFormat, Values)
 {

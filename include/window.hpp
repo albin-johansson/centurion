@@ -189,7 +189,7 @@ class basic_window final
    */
   void show() noexcept
   {
-    SDL_ShowWindow(get());
+    SDL_ShowWindow(m_window);
   }
 
   /**
@@ -199,7 +199,7 @@ class basic_window final
    */
   void hide() noexcept
   {
-    SDL_HideWindow(get());
+    SDL_HideWindow(m_window);
   }
 
   /**
@@ -221,7 +221,7 @@ class basic_window final
    */
   void raise() noexcept
   {
-    SDL_RaiseWindow(get());
+    SDL_RaiseWindow(m_window);
   }
 
   /**
@@ -268,7 +268,7 @@ class basic_window final
   void set_fullscreen(const bool fullscreen) noexcept
   {
     constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-    SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
+    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
   }
 
   /**
@@ -284,7 +284,7 @@ class basic_window final
   void set_fullscreen_desktop(const bool fullscreen) noexcept
   {
     const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
-    SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
+    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
   }
 
   /**
@@ -299,7 +299,7 @@ class basic_window final
    */
   void set_decorated(const bool decorated) noexcept
   {
-    SDL_SetWindowBordered(get(), detail::convert_bool(decorated));
+    SDL_SetWindowBordered(m_window, detail::convert_bool(decorated));
   }
 
   /**
@@ -312,7 +312,7 @@ class basic_window final
    */
   void set_resizable(const bool resizable) noexcept
   {
-    SDL_SetWindowResizable(get(), detail::convert_bool(resizable));
+    SDL_SetWindowResizable(m_window, detail::convert_bool(resizable));
   }
 
   /**
@@ -326,7 +326,7 @@ class basic_window final
    */
   void set_width(const int width) noexcept
   {
-    SDL_SetWindowSize(get(), detail::max(width, 1), height());
+    SDL_SetWindowSize(m_window, detail::max(width, 1), height());
   }
 
   /**
@@ -340,7 +340,7 @@ class basic_window final
    */
   void set_height(const int height) noexcept
   {
-    SDL_SetWindowSize(get(), width(), detail::max(height, 1));
+    SDL_SetWindowSize(m_window, width(), detail::max(height, 1));
   }
 
   /**
@@ -357,7 +357,7 @@ class basic_window final
   {
     const auto width = detail::max(size.width, 1);
     const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(get(), width, height);
+    SDL_SetWindowSize(m_window, width, height);
   }
 
   /**
@@ -369,7 +369,7 @@ class basic_window final
    */
   void set_icon(const surface& icon) noexcept
   {
-    SDL_SetWindowIcon(get(), icon.get());
+    SDL_SetWindowIcon(m_window, icon.get());
   }
 
   /**
@@ -382,7 +382,7 @@ class basic_window final
   void set_title(not_null<czstring> title) noexcept
   {
     assert(title);
-    SDL_SetWindowTitle(get(), title);
+    SDL_SetWindowTitle(m_window, title);
   }
 
   /**
@@ -397,7 +397,7 @@ class basic_window final
    */
   void set_opacity(const float opacity) noexcept
   {
-    SDL_SetWindowOpacity(get(), opacity);
+    SDL_SetWindowOpacity(m_window, opacity);
   }
 
   /**
@@ -413,7 +413,7 @@ class basic_window final
    */
   void set_min_size(const iarea& size) noexcept
   {
-    SDL_SetWindowMinimumSize(get(), size.width, size.height);
+    SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
@@ -429,7 +429,7 @@ class basic_window final
    */
   void set_max_size(const iarea& size) noexcept
   {
-    SDL_SetWindowMaximumSize(get(), size.width, size.height);
+    SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
   /**
@@ -444,7 +444,7 @@ class basic_window final
    */
   void set_position(const ipoint& position) noexcept
   {
-    SDL_SetWindowPosition(get(), position.x(), position.y());
+    SDL_SetWindowPosition(m_window, position.x(), position.y());
   }
 
   /**
@@ -459,7 +459,7 @@ class basic_window final
    */
   void set_grab_mouse(const bool grabMouse) noexcept
   {
-    SDL_SetWindowGrab(get(), detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
   }
 
   /**
@@ -477,7 +477,8 @@ class basic_window final
   auto set_brightness(const float brightness) noexcept -> bool
   {
     const auto res =
-        SDL_SetWindowBrightness(get(), detail::clamp(brightness, 0.0f, 1.0f));
+        SDL_SetWindowBrightness(m_window,
+                                detail::clamp(brightness, 0.0f, 1.0f));
     return res == 0;
   }
 
@@ -716,7 +717,7 @@ class basic_window final
   [[nodiscard]] auto opacity() const noexcept -> float
   {
     float opacity{1};
-    SDL_GetWindowOpacity(get(), &opacity);
+    SDL_GetWindowOpacity(m_window, &opacity);
     return opacity;
   }
 
@@ -730,7 +731,7 @@ class basic_window final
   [[nodiscard]] auto x() const noexcept -> int
   {
     int x{};
-    SDL_GetWindowPosition(get(), &x, nullptr);
+    SDL_GetWindowPosition(m_window, &x, nullptr);
     return x;
   }
 
@@ -744,7 +745,7 @@ class basic_window final
   [[nodiscard]] auto y() const noexcept -> int
   {
     int y{};
-    SDL_GetWindowPosition(get(), nullptr, &y);
+    SDL_GetWindowPosition(m_window, nullptr, &y);
     return y;
   }
 
@@ -791,7 +792,7 @@ class basic_window final
   {
     int x{};
     int y{};
-    SDL_GetWindowPosition(get(), &x, &y);
+    SDL_GetWindowPosition(m_window, &x, &y);
     return {x, y};
   }
 
@@ -806,7 +807,7 @@ class basic_window final
   {
     int width{};
     int height{};
-    SDL_GetWindowMinimumSize(get(), &width, &height);
+    SDL_GetWindowMinimumSize(m_window, &width, &height);
     return {width, height};
   }
 
@@ -821,7 +822,7 @@ class basic_window final
   {
     int width{};
     int height{};
-    SDL_GetWindowMaximumSize(get(), &width, &height);
+    SDL_GetWindowMaximumSize(m_window, &width, &height);
     return {width, height};
   }
 
@@ -835,7 +836,7 @@ class basic_window final
   [[nodiscard]] auto width() const noexcept -> int
   {
     int width{};
-    SDL_GetWindowSize(get(), &width, nullptr);
+    SDL_GetWindowSize(m_window, &width, nullptr);
     return width;
   }
 
@@ -849,7 +850,7 @@ class basic_window final
   [[nodiscard]] auto height() const noexcept -> int
   {
     int height{};
-    SDL_GetWindowSize(get(), nullptr, &height);
+    SDL_GetWindowSize(m_window, nullptr, &height);
     return height;
   }
 
@@ -866,7 +867,7 @@ class basic_window final
   [[nodiscard]] auto size() const noexcept -> iarea
   {
     iarea size{};
-    SDL_GetWindowSize(get(), &size.width, &size.height);
+    SDL_GetWindowSize(m_window, &size.width, &size.height);
     return size;
   }
 
@@ -998,11 +999,7 @@ class basic_window final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Window*
   {
-    if constexpr (detail::is_owning<B>()) {
-      return m_window.get();
-    } else {
-      return m_window;
-    }
+    return m_window.get();
   }
 
   /**

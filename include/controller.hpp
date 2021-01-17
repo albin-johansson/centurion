@@ -28,11 +28,10 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <memory>       // unique_ptr
-#include <optional>     // optional, nullopt
+#include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_same_v, ...
+#include <type_traits>  // true_type, false_type
 
 #include "button_state.hpp"
 #include "centurion_cfg.hpp"
@@ -146,12 +145,33 @@ enum class controller_bind_type
   hat = SDL_CONTROLLER_BINDTYPE_HAT
 };
 
+template <typename B>
+class basic_controller;
+
+/**
+ * \typedef controller
+ *
+ * \brief Represents an owning game controller.
+ *
+ * \since 5.0.0
+ */
+using controller = basic_controller<std::true_type>;
+
+/**
+ * \typedef controller_handle
+ *
+ * \brief Represents a non-owning game controller.
+ *
+ * \since 5.0.0
+ */
+using controller_handle = basic_controller<std::false_type>;
+
 /**
  * \class basic_controller
  *
  * \brief Represents a game controller, e.g. an xbox-controller.
  *
- * \tparam T `std::true_type` for owning controllers; `std::false_type` for
+ * \tparam B `std::true_type` for owning controllers; `std::false_type` for
  * non-owning controllers.
  *
  * \since 5.0.0
@@ -161,11 +181,9 @@ enum class controller_bind_type
  *
  * \headerfile controller.hpp
  */
-template <typename T>
+template <typename B>
 class basic_controller final
 {
-  using owner_t = basic_controller<std::true_type>;
-
  public:
   using mapping_index = int;
   using joystick_index = int;
@@ -195,10 +213,10 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<B>())
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       if (!m_controller) {
         throw exception{"Cannot create controller from null pointer!"};
       }
@@ -210,14 +228,13 @@ class basic_controller final
   /**
    * \brief Creates a handle to an existing controller instance.
    *
-   * \param controller the controller that owns the `SDL_GameController`
-   * pointer.
+   * \param owner the controller that owns the `SDL_GameController` pointer.
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
-  explicit basic_controller(const owner_t& controller) noexcept
-      : m_controller{controller.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_controller(const controller& owner) noexcept
+      : m_controller{owner.get()}
   {}
 
   /**
@@ -240,7 +257,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -263,7 +280,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
@@ -285,7 +302,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
@@ -316,7 +333,7 @@ class basic_controller final
               const u16 hi,
               const milliseconds<u32> duration) noexcept
   {
-    SDL_GameControllerRumble(get(), lo, hi, duration.count());
+    SDL_GameControllerRumble(m_controller, lo, hi, duration.count());
   }
 
   /**
@@ -338,7 +355,7 @@ class basic_controller final
    */
   void set_player_index(const player_index index) noexcept
   {
-    SDL_GameControllerSetPlayerIndex(get(), index);
+    SDL_GameControllerSetPlayerIndex(m_controller, index);
   }
 
   /**
@@ -351,7 +368,7 @@ class basic_controller final
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetProduct(get());
+    const auto id = SDL_GameControllerGetProduct(m_controller);
     if (id != 0) {
       return id;
     } else {
@@ -368,7 +385,7 @@ class basic_controller final
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetVendor(get());
+    const auto id = SDL_GameControllerGetVendor(m_controller);
     if (id != 0) {
       return id;
     } else {
@@ -386,7 +403,7 @@ class basic_controller final
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetProductVersion(get());
+    const auto id = SDL_GameControllerGetProductVersion(m_controller);
     if (id != 0) {
       return id;
     } else {
@@ -407,7 +424,7 @@ class basic_controller final
    */
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
-    const auto result = SDL_GameControllerGetPlayerIndex(get());
+    const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
     if (result != -1) {
       return result;
     } else {
@@ -424,7 +441,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(get()));
+    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
   }
 
   /**
@@ -439,7 +456,7 @@ class basic_controller final
    */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
-    return SDL_GameControllerName(get());
+    return SDL_GameControllerName(m_controller);
   }
 
   /**
@@ -451,7 +468,8 @@ class basic_controller final
    */
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
-    return static_cast<controller_type>(SDL_GameControllerGetType(get()));
+    return static_cast<controller_type>(
+        SDL_GameControllerGetType(m_controller));
   }
 
   /**
@@ -535,7 +553,7 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForAxis(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerAxis>(axis));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
@@ -557,7 +575,7 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForButton(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerButton>(button));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
@@ -595,7 +613,7 @@ class basic_controller final
       -> button_state
   {
     const auto state = SDL_GameControllerGetButton(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerButton>(button));
     return static_cast<button_state>(state);
   }
@@ -641,7 +659,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
-    return SDL_GameControllerGetAxis(get(),
+    return SDL_GameControllerGetAxis(m_controller,
                                      static_cast<SDL_GameControllerAxis>(axis));
   }
 
@@ -654,7 +672,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
   {
-    return joystick_handle{SDL_GameControllerGetJoystick(get())};
+    return joystick_handle{SDL_GameControllerGetJoystick(m_controller)};
   }
 
   /// \name Mapping functions
@@ -725,7 +743,7 @@ class basic_controller final
    */
   [[nodiscard]] auto mapping() const noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMapping(get())};
+    return sdl_string{SDL_GameControllerMapping(m_controller)};
   }
 
   /**
@@ -851,7 +869,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -868,11 +886,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_GameController*
   {
-    if constexpr (detail::is_owning<T>()) {
-      return m_controller.get();
-    } else {
-      return m_controller;
-    }
+    return m_controller.get();
   }
 
  private:
@@ -883,30 +897,8 @@ class basic_controller final
       SDL_GameControllerClose(controller);
     }
   };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_GameController, deleter>,
-                                   SDL_GameController*>;
-  rep_t m_controller;
+  detail::pointer_manager<B, SDL_GameController, deleter> m_controller;
 };
-
-/**
- * \typedef controller
- *
- * \brief Represents an owning game controller.
- *
- * \since 5.0.0
- */
-using controller = basic_controller<std::true_type>;
-
-/**
- * \typedef controller_handle
- *
- * \brief Represents a non-owning game controller.
- *
- * \since 5.0.0
- */
-using controller_handle = basic_controller<std::false_type>;
 
 /**
  * \brief Returns a textual representation of a game controller.
@@ -922,9 +914,9 @@ template <typename T>
     -> std::string
 {
   using namespace std::string_literals;
-  const auto ptr = detail::address_of(controller.get());
   const auto name = controller.name() ? controller.name() : "N/A";
-  return "[controller | data: "s + ptr + ", name: "s + name + "]"s;
+  return "[controller | data: " + detail::address_of(controller.get()) +
+         ", name: "s + name + "]";
 }
 
 /**

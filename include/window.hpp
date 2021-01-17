@@ -231,7 +231,7 @@ class basic_window final
    */
   void maximize() noexcept
   {
-    SDL_MaximizeWindow(get());
+    SDL_MaximizeWindow(m_window);
   }
 
   /**
@@ -241,7 +241,7 @@ class basic_window final
    */
   void minimize() noexcept
   {
-    SDL_MinimizeWindow(get());
+    SDL_MinimizeWindow(m_window);
   }
 
   /**
@@ -254,7 +254,7 @@ class basic_window final
    */
   auto update_surface() noexcept -> bool
   {
-    return SDL_UpdateWindowSurface(get()) == 0;
+    return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
   /**
@@ -510,7 +510,7 @@ class basic_window final
    */
   [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
   {
-    return SDL_GetWindowGrab(get());
+    return SDL_GetWindowGrab(m_window);
   }
 
   /**
@@ -704,7 +704,7 @@ class basic_window final
    */
   [[nodiscard]] auto brightness() const noexcept -> float
   {
-    return SDL_GetWindowBrightness(get());
+    return SDL_GetWindowBrightness(m_window);
   }
 
   /**
@@ -758,7 +758,7 @@ class basic_window final
    */
   [[nodiscard]] auto id() const noexcept -> u32
   {
-    return SDL_GetWindowID(get());
+    return SDL_GetWindowID(m_window);
   }
 
   /**
@@ -771,7 +771,7 @@ class basic_window final
    */
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
-    const auto index = SDL_GetWindowDisplayIndex(get());
+    const auto index = SDL_GetWindowDisplayIndex(m_window);
     if (index != -1) {
       return index;
     } else {
@@ -903,7 +903,7 @@ class basic_window final
    */
   [[nodiscard]] auto flags() const noexcept -> u32
   {
-    return SDL_GetWindowFlags(get());
+    return SDL_GetWindowFlags(m_window);
   }
 
   /**
@@ -915,7 +915,7 @@ class basic_window final
    */
   [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format
   {
-    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(get()));
+    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(m_window));
   }
 
   /**
@@ -931,7 +931,7 @@ class basic_window final
    */
   [[nodiscard]] auto get_surface() noexcept -> surface_handle
   {
-    return surface_handle{SDL_GetWindowSurface(get())};
+    return surface_handle{SDL_GetWindowSurface(m_window)};
   }
 
   /**
@@ -943,7 +943,7 @@ class basic_window final
    */
   [[nodiscard]] auto title() const -> std::string
   {
-    return SDL_GetWindowTitle(get());
+    return SDL_GetWindowTitle(m_window);
   }
 
   /**

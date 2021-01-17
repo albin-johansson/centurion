@@ -21,8 +21,8 @@ using cen::detail::pointer_manager;
 using owner_t = pointer_manager<std::true_type, int, int_deleter>;
 using handle_t = pointer_manager<std::false_type, int, int_deleter>;
 
-static_assert(!std::is_default_constructible_v<handle_t>);
-static_assert(!std::is_default_constructible_v<owner_t>);
+static_assert(std::is_nothrow_default_constructible_v<handle_t>);
+static_assert(std::is_nothrow_default_constructible_v<owner_t>);
 
 static_assert(std::is_nothrow_copy_constructible_v<handle_t>);
 static_assert(!std::is_copy_constructible_v<owner_t>);

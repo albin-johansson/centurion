@@ -28,10 +28,9 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // conditional_t, true_type, false_type, enable_if_t
+#include <type_traits>  // true_type, false_type
 
 #include "area.hpp"
 #include "centurion_cfg.hpp"
@@ -57,12 +56,33 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
+template <typename B>
+class basic_window;
+
+/**
+ * \typedef window
+ *
+ * \brief Represents an owning window.
+ *
+ * \since 5.0.0
+ */
+using window = basic_window<std::true_type>;
+
+/**
+ * \typedef window_handle
+ *
+ * \brief Represents a non-owning window.
+ *
+ * \since 5.0.0
+ */
+using window_handle = basic_window<std::false_type>;
+
 /**
  * \class basic_window
  *
  * \brief Represents an operating system window.
  *
- * \tparam T `std::true_type` for owning windows; `std::false_type` for
+ * \tparam B `std::true_type` for owning windows; `std::false_type` for
  * non-owning windows.
  *
  * \since 5.0.0
@@ -72,11 +92,9 @@ namespace cen {
  *
  * \headerfile window.hpp
  */
-template <typename T>
+template <typename B>
 class basic_window final
 {
-  using owner_t = basic_window<std::true_type>;
-
  public:
   /**
    * \brief Creates a window from a pointer to an SDL window.
@@ -90,10 +108,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<B>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       if (!m_window) {
         throw exception{"Cannot create window from null pointer!"};
       }
@@ -114,14 +132,18 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_window(not_null<czstring> title,
                         const iarea& size = default_size())
   {
     assert(title);
 
-    if ((size.width < 1) || (size.height < 1)) {
-      throw exception{"Invalid width or height!"};
+    if (size.width < 1) {
+      throw exception{"Bad window width!"};
+    }
+
+    if (size.height < 1) {
+      throw exception{"Bad window height!"};
     }
 
     m_window.reset(SDL_CreateWindow(title,
@@ -145,19 +167,19 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   basic_window() : basic_window{"Centurion window"}
   {}
 
   /**
    * \brief Creates a window handle based on an owning window.
    *
-   * \param window the owning window to base the handle on.
+   * \param owner the owning window to base the handle on.
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
-  explicit basic_window(const owner_t& window) noexcept : m_window{window.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
   /**
@@ -959,7 +981,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -976,7 +998,7 @@ class basic_window final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Window*
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       return m_window.get();
     } else {
       return m_window;
@@ -992,7 +1014,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] constexpr static auto default_size() -> iarea
   {
     return {800, 600};
@@ -1006,31 +1028,8 @@ class basic_window final
       SDL_DestroyWindow(window);
     }
   };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_Window, deleter>,
-                                   SDL_Window*>;
-
-  rep_t m_window;
+  detail::pointer_manager<B, SDL_Window, deleter> m_window;
 };
-
-/**
- * \typedef window
- *
- * \brief Represents an owning window.
- *
- * \since 5.0.0
- */
-using window = basic_window<std::true_type>;
-
-/**
- * \typedef window_handle
- *
- * \brief Represents a non-owning window.
- *
- * \since 5.0.0
- */
-using window_handle = basic_window<std::false_type>;
 
 /**
  * \brief Returns a textual representation of a window.

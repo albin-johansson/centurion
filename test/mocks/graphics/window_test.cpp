@@ -47,6 +47,7 @@ class WindowTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
     RESET_FAKE(SDL_FreeSurface);
     RESET_FAKE(SDL_ShowWindow);
     RESET_FAKE(SDL_HideWindow);

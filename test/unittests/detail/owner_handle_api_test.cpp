@@ -37,6 +37,34 @@ TEST(OwnerHandleAPI, Constructor)
 {
   EXPECT_NO_THROW(owner_t{nullptr});
   EXPECT_NO_THROW(handle_t{nullptr});
+
+  {
+    int i = 42;
+
+    handle_t handle{&i};
+    const auto& cHandle = handle;
+
+    EXPECT_TRUE(handle);
+    EXPECT_TRUE(cHandle);
+    EXPECT_TRUE(handle.get());
+    EXPECT_TRUE(cHandle.get());
+    EXPECT_TRUE(handle.operator->());
+    EXPECT_TRUE(cHandle.operator->());
+    EXPECT_NO_FATAL_FAILURE(handle.operator*());
+    EXPECT_NO_FATAL_FAILURE(cHandle.operator*());
+  }
+
+  {
+    handle_t handle{nullptr};
+    const auto& cHandle = handle;
+
+    EXPECT_FALSE(handle);
+    EXPECT_FALSE(cHandle);
+    EXPECT_FALSE(handle.get());
+    EXPECT_FALSE(cHandle.get());
+    EXPECT_FALSE(handle.operator->());
+    EXPECT_FALSE(cHandle.operator->());
+  }
 }
 
 TEST(OwnerHandleAPI, DeleteCorrectness)

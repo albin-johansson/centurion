@@ -27,8 +27,7 @@
 
 #include <SDL.h>
 
-#include <memory>       // unique_ptr
-#include <type_traits>  // enable_if_t, conditional_t, true_type, false_type
+#include <type_traits>  // true_type, false_type
 
 #include "centurion_cfg.hpp"
 #include "detail/owner_handle_api.hpp"
@@ -128,6 +127,27 @@ enum class system_cursor
   return !(lhs == rhs);
 }
 
+template <typename B>
+class basic_cursor;
+
+/**
+ * \typedef cursor
+ *
+ * \brief Represents an owning cursor.
+ *
+ * \since 5.0.0
+ */
+using cursor = basic_cursor<std::true_type>;
+
+/**
+ * \typedef cursor_handle
+ *
+ * \brief Represents a non-owning cursor.
+ *
+ * \since 5.0.0
+ */
+using cursor_handle = basic_cursor<std::false_type>;
+
 /**
  * \class basic_cursor
  *
@@ -136,7 +156,7 @@ enum class system_cursor
  * \details Depending on the template type parameter, this class can
  * represent either an owning or non-owning cursor.
  *
- * \tparam T `std::true_type` for owning cursors, `std::false_type` for
+ * \tparam B `std::true_type` for owning cursors, `std::false_type` for
  * non-owning cursors.
  *
  * \since 5.0.0
@@ -146,7 +166,7 @@ enum class system_cursor
  *
  * \headerfile cursor.hpp
  */
-template <typename T>
+template <typename B>
 class basic_cursor final
 {
  public:
@@ -161,7 +181,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
@@ -183,7 +203,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
@@ -205,22 +225,21 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit basic_cursor(SDL_Cursor* cursor) noexcept : m_cursor{cursor}
   {}
 
   /**
    * \brief Creates a handle to an owning cursor.
    *
-   * \tparam U dummy template parameter used for SFINAE.
+   * \tparam BB dummy template parameter used for SFINAE.
    *
-   * \param cursor the associated owning cursor.
+   * \param owner the associated owning cursor.
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
-  explicit basic_cursor(const basic_cursor<std::true_type>& cursor) noexcept
-      : m_cursor{cursor.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_cursor(const cursor& owner) noexcept : m_cursor{owner.get()}
   {}
 
   /**
@@ -231,9 +250,9 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_default() noexcept
+  [[nodiscard]] static auto get_default() noexcept -> cursor_handle
   {
-    return handle_t{SDL_GetDefaultCursor()};
+    return cursor_handle{SDL_GetDefaultCursor()};
   }
 
   /**
@@ -243,9 +262,9 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_current() noexcept
+  [[nodiscard]] static auto get_current() noexcept -> cursor_handle
   {
-    return handle_t{SDL_GetCursor()};
+    return cursor_handle{SDL_GetCursor()};
   }
 
   /**
@@ -255,7 +274,7 @@ class basic_cursor final
    */
   void enable() noexcept
   {
-    SDL_SetCursor(get());
+    SDL_SetCursor(m_cursor);
   }
 
   /**
@@ -339,7 +358,7 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_cursor != nullptr;
@@ -356,11 +375,7 @@ class basic_cursor final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
   {
-    if constexpr (detail::is_owning<T>()) {
-      return m_cursor.get();
-    } else {
-      return m_cursor;
-    }
+    return m_cursor.get();
   }
 
  private:
@@ -371,33 +386,8 @@ class basic_cursor final
       SDL_FreeCursor(cursor);
     }
   };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_Cursor, deleter>,
-                                   SDL_Cursor*>;
-  using owner_t = basic_cursor<std::true_type>;
-  using handle_t = basic_cursor<std::false_type>;
-
-  rep_t m_cursor;
+  detail::pointer_manager<B, SDL_Cursor, deleter> m_cursor;
 };
-
-/**
- * \typedef cursor
- *
- * \brief Represents an owning cursor.
- *
- * \since 5.0.0
- */
-using cursor = basic_cursor<std::true_type>;
-
-/**
- * \typedef cursor_handle
- *
- * \brief Represents a non-owning cursor.
- *
- * \since 5.0.0
- */
-using cursor_handle = basic_cursor<std::false_type>;
 
 /// \}
 

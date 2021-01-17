@@ -8,6 +8,7 @@ Welcome to Centurion's documentation!
    pages/introduction
    pages/centurion_101
    pages/faq
+   pages/owner_handle_api
 
 .. toctree::
    :maxdepth: 2

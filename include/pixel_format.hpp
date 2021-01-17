@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include <memory>  // unique_ptr
+#include <type_traits>  // true_type, false_type
 
 #include "centurion_cfg.hpp"
 #include "color.hpp"

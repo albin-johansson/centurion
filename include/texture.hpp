@@ -251,7 +251,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  void set_pixel(const ipoint& pixel, const color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) ||
         (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height())) {

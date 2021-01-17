@@ -64,20 +64,12 @@ class pointer_manager final
 
   auto operator->() noexcept -> Type*
   {
-    if constexpr (B::value) {
-      return m_ptr.get();
-    } else {
-      return m_ptr;
-    }
+    return get();
   }
 
   auto operator->() const noexcept -> const Type*
   {
-    if constexpr (B::value) {
-      return m_ptr.get();
-    } else {
-      return m_ptr;
-    }
+    return get();
   }
 
   auto operator*() noexcept -> Type&

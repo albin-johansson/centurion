@@ -59,8 +59,16 @@ class pointer_manager final
   using pointer_type = std::conditional_t<B::value, managed_ptr, raw_ptr>;
 
  public:
+  pointer_manager() noexcept = default;
+
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
+
+  template <typename BB = B, is_owner<BB> = true>
+  void reset(Type* ptr) noexcept
+  {
+    m_ptr.reset(ptr);
+  }
 
   auto operator->() noexcept -> Type*
   {

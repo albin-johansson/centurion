@@ -35,7 +35,7 @@
 #include <string>         // string
 #include <type_traits>    // enable_if_t, true_type, false_type, conditional_t
 #include <unordered_map>  // unordered_map
-#include <utility>        // move, pair
+#include <utility>        // move, forward, pair
 
 #include "blend_mode.hpp"
 #include "centurion_cfg.hpp"
@@ -174,7 +174,7 @@ class basic_renderer final
   /**
    * \brief Clears the rendering target with the specified color.
    *
-   * \note This method doesn't change the currently selected color.
+   * \note This function doesn't change the currently selected color.
    *
    * \param color the color that will be used to clear the rendering target.
    *
@@ -301,14 +301,14 @@ class basic_renderer final
   /**
    * \brief Renders a collection of lines.
    *
-   * \details This method requires the the `Container` type provides the
+   * \details This function requires the the `Container` type provides the
    * public member `value_type` and subsequently, that the `value_type`
    * in turn provides a `value_type` member. The former would correspond to
    * the actual point type, and the latter corresponds to either `int` or
    * `float`.
    *
    * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this method is undefined if this condition
+   * contiguously! The behaviour of this function is undefined if this condition
    * isn't met.
    *
    * \tparam Container the container type. Must store its elements
@@ -356,7 +356,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -389,9 +389,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -429,10 +429,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -466,8 +466,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the UTF-8 text that will be rendered.
@@ -499,7 +499,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -532,9 +532,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -572,10 +572,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -609,8 +609,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the Latin-1 text that will be rendered.
@@ -640,7 +640,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -670,9 +670,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -707,10 +707,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -741,8 +741,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the Unicode text that will be rendered.
@@ -799,16 +799,15 @@ class basic_renderer final
   /**
    * \brief Renders a string.
    *
-   * \details This method will not apply any clever conversions on the
-   * supplied string. The string is literally iterated,
-   * character-by-character, and each character is rendered using
-   * the `render_glyph` function.
+   * \details This function will not apply any clever conversions on the
+   * supplied string. The string is literally iterated, character-by-character,
+   * and each character is rendered using the `render_glyph` function.
    *
    * \pre Every character in the string must correspond to a valid Unicode
    * glyph.
    * \pre Every character must have been previously cached.
    *
-   * \note This method is sensitive to newline-characters, and will render
+   * \note This function is sensitive to newline-characters, and will render
    * strings that contain such characters appropriately.
    *
    * \tparam String the type of the string, must be iterable and provide
@@ -904,8 +903,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \remarks This should be your preferred method of rendering textures. This
-   * method is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
@@ -1082,7 +1081,7 @@ class basic_renderer final
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * \details This method should be called before calling any of the `_t`
+   * \details This function should be called before calling any of the `_t`
    * rendering methods, for automatic translation.
    *
    * \param viewport the rectangle that will be used as the translation
@@ -1202,8 +1201,8 @@ class basic_renderer final
    * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * \remarks This should be your preferred method of rendering textures. This
-   * method is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
@@ -1380,7 +1379,7 @@ class basic_renderer final
   /**
    * \brief Removes the font associated with the specified key.
    *
-   * \details This method has no effect if there is no font associated with
+   * \details This function has no effect if there is no font associated with
    * the specified key.
    *
    * \param id the key associated with the font that will be removed.
@@ -1500,7 +1499,7 @@ class basic_renderer final
    * \brief Sets the rendering target of the renderer.
    *
    * \details The supplied texture must support being a render target.
-   * Otherwise, this method will reset the render target.
+   * Otherwise, this function will reset the render target.
    *
    * \param target a pointer to the new target texture; `nullptr` indicates
    * that the default rendering target should be used.
@@ -1519,7 +1518,7 @@ class basic_renderer final
   /**
    * \brief Sets the rendering scale.
    *
-   * \note This method has no effect if any of the arguments aren't
+   * \note This function has no effect if any of the arguments aren't
    * greater than zero.
    *
    * \param xScale the x-axis scale that will be used.
@@ -1537,11 +1536,11 @@ class basic_renderer final
   /**
    * \brief Sets the logical size used by the renderer.
    *
-   * \details This method is useful for resolution-independent rendering.
+   * \details This function is useful for resolution-independent rendering.
    *
    * \remarks This is also known as *virtual size* in other frameworks.
    *
-   * \note This method has no effect if either of the supplied dimensions
+   * \note This function has no effect if either of the supplied dimensions
    * aren't greater than zero.
    *
    * \param size the logical width and height that will be used.
@@ -1559,7 +1558,7 @@ class basic_renderer final
    * \brief Sets whether or not to force integer scaling for the logical
    * viewport.
    *
-   * \details By default, this property is set to false. This method can be
+   * \details By default, this property is set to false. This function can be
    * useful to combat visual artefacts when doing floating-point rendering.
    *
    * \param enabled `true` if integer scaling should be used; `false` otherwise.
@@ -1623,7 +1622,7 @@ class basic_renderer final
   /**
    * \brief Returns the size of the logical (virtual) viewport.
    *
-   * \note calling this method once is faster than calling both
+   * \note calling this function once is faster than calling both
    * `logical_width` and `logical_height` for obtaining the size.
    *
    * \return the size of the logical (virtual) viewport.
@@ -1669,7 +1668,7 @@ class basic_renderer final
   /**
    * \brief Returns the x- and y-scale used by the renderer.
    *
-   * \note calling this method once is faster than calling both `x_scale`
+   * \note calling this function once is faster than calling both `x_scale`
    * and `y_scale` for obtaining the scale.
    *
    * \return the x- and y-scale used by the renderer.
@@ -1752,7 +1751,7 @@ class basic_renderer final
   /**
    * \brief Returns the output size of the renderer.
    *
-   * \note calling this method once is faster than calling `output_width`
+   * \note calling this function once is faster than calling `output_width`
    * and `output_height` for obtaining the output size.
    *
    * \return the current output size of the renderer.
@@ -1793,7 +1792,7 @@ class basic_renderer final
    *
    * \note There are multiple other methods for checking if a flag is set,
    * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
-   * this method.
+   * this function.
    *
    * \return a bit mask of the current renderer flags.
    *
@@ -1809,7 +1808,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the `present` method is synced with
+   * \brief Indicates whether or not the `present` function is synced with
    * the refresh rate of the screen.
    *
    * \return `true` if vsync is enabled; `false` otherwise.

@@ -781,7 +781,7 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    if (const auto data = cache.try_at(glyph)) {
+    if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();

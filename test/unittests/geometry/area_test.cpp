@@ -83,3 +83,48 @@ TEST(Area, StreamOperator)
   std::cout << "COUT: " << ia << '\n';
   std::cout << "COUT: " << fa << '\n';
 }
+
+TEST(Area, Cast)
+{
+  {  // iarea -> farea
+    const cen::iarea area{123, 456};
+    const auto res = cen::cast<cen::farea>(area);
+    EXPECT_EQ(static_cast<float>(area.width), res.width);
+    EXPECT_EQ(static_cast<float>(area.height), res.height);
+  }
+
+  {  // iarea -> darea
+    const cen::iarea area{534, 786};
+    const auto res = cen::cast<cen::darea>(area);
+    EXPECT_EQ(static_cast<double>(area.width), res.width);
+    EXPECT_EQ(static_cast<double>(area.height), res.height);
+  }
+
+  {  // farea -> darea
+    const cen::farea area{12.3f, 4.56f};
+    const auto res = cen::cast<cen::darea>(area);
+    EXPECT_EQ(static_cast<double>(area.width), res.width);
+    EXPECT_EQ(static_cast<double>(area.height), res.height);
+  }
+
+  {  // farea -> iarea
+    const cen::farea area{12.3f, 4.56f};
+    const auto res = cen::cast<cen::iarea>(area);
+    EXPECT_EQ(static_cast<int>(area.width), res.width);
+    EXPECT_EQ(static_cast<int>(area.height), res.height);
+  }
+
+  {  // darea -> iarea
+    const cen::darea area{12.3f, 4.56f};
+    const auto res = cen::cast<cen::iarea>(area);
+    EXPECT_EQ(static_cast<int>(area.width), res.width);
+    EXPECT_EQ(static_cast<int>(area.height), res.height);
+  }
+
+  {  // darea -> farea
+    const cen::darea area{12.3f, 4.56f};
+    const auto res = cen::cast<cen::farea>(area);
+    EXPECT_EQ(static_cast<float>(area.width), res.width);
+    EXPECT_EQ(static_cast<float>(area.height), res.height);
+  }
+}

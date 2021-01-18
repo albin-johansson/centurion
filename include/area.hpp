@@ -29,6 +29,7 @@
 #include <string>       // string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
+#include "cast.hpp"
 #include "centurion_cfg.hpp"
 #include "detail/to_string.hpp"
 
@@ -103,6 +104,42 @@ using farea = basic_area<float>;
  * \since 4.1.0
  */
 using darea = basic_area<double>;
+
+template <>
+[[nodiscard]] constexpr auto cast(const iarea& from) noexcept -> darea
+{
+  return {static_cast<double>(from.width), static_cast<double>(from.height)};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const iarea& from) noexcept -> farea
+{
+  return {static_cast<float>(from.width), static_cast<float>(from.height)};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const farea& from) noexcept -> darea
+{
+  return {static_cast<double>(from.width), static_cast<double>(from.height)};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const farea& from) noexcept -> iarea
+{
+  return {static_cast<int>(from.width), static_cast<int>(from.height)};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const darea& from) noexcept -> farea
+{
+  return {static_cast<float>(from.width), static_cast<float>(from.height)};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const darea& from) noexcept -> iarea
+{
+  return {static_cast<int>(from.width), static_cast<int>(from.height)};
+}
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.

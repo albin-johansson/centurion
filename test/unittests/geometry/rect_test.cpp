@@ -277,6 +277,16 @@ TEST(Rect, Center)
   EXPECT_EQ(center.y(), y + (h / 2));
 }
 
+TEST(Rect, Data)
+{
+  const cen::irect rect{{12, 34}, {56, 78}};
+  ASSERT_TRUE(rect.data());
+  EXPECT_EQ(12, rect.data()->x);
+  EXPECT_EQ(34, rect.data()->y);
+  EXPECT_EQ(56, rect.data()->w);
+  EXPECT_EQ(78, rect.data()->h);
+}
+
 TEST(Rect, Intersects)
 {
   const cen::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};

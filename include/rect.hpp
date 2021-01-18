@@ -542,6 +542,28 @@ class basic_rect final
   }
 
   /**
+   * \brief Returns a pointer to the internal rectangle representation.
+   *
+   * \note Don't cache the returned pointer.
+   *
+   * \return a pointer to the rectangle representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> rect_type*
+  {
+    return &m_rect;
+  }
+
+  /**
+   * \copydoc data()
+   */
+  [[nodiscard]] auto data() const noexcept -> const rect_type*
+  {
+    return &m_rect;
+  }
+
+  /**
    * \brief Returns a pointer to the internal rectangle.
    *
    * \return a pointer to the internal rectangle.

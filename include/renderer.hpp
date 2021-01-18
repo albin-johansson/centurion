@@ -766,16 +766,14 @@ class basic_renderer final
   /**
    * \brief Renders a glyph at the specified position.
    *
-   * \pre the specified glyph **must** have been cached.
-   *
-   * \tparam U the font key type that the renderer uses.
+   * \note This function has no effect if the glyph doesn't exist in the cache.
    *
    * \param cache the font cache that will be used.
    * \param glyph the glyph, in unicode, that will be rendered.
    * \param position the position of the rendered glyph.
    *
    * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph.
+   * current glyph, or the same x-coordinate if no glyph was rendered.
    *
    * \since 5.0.0
    */
@@ -783,17 +781,21 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    const auto& [texture, glyphMetrics] = cache.at(glyph);
+    if (const auto data = cache.try_at(glyph)) {
+      const auto& [texture, metrics] = *data;
 
-    const auto outline = cache.get_font().outline();
+      const auto outline = cache.get_font().outline();
 
-    // SDL_ttf handles the y-axis alignment
-    const auto x = position.x() + glyphMetrics.minX - outline;
-    const auto y = position.y() - outline;
+      // SDL_ttf handles the y-axis alignment
+      const auto x = position.x() + metrics.minX - outline;
+      const auto y = position.y() - outline;
 
-    render(texture, ipoint{x, y});
+      render(texture, ipoint{x, y});
 
-    return x + glyphMetrics.advance;
+      return x + metrics.advance;
+    } else {
+      return position.x();
+    }
   }
 
   /**
@@ -805,7 +807,6 @@ class basic_renderer final
    *
    * \pre Every character in the string must correspond to a valid Unicode
    * glyph.
-   * \pre Every character must have been previously cached.
    *
    * \note This function is sensitive to newline-characters, and will render
    * strings that contain such characters appropriately.
@@ -822,11 +823,15 @@ class basic_renderer final
   template <typename String>
   void render_text(const font_cache& cache, const String& str, ipoint position)
   {
+    const auto& font = cache.get_font();
+
     const auto originalX = position.x();
+    const auto lineSkip = font.line_skip();
+
     for (const unicode glyph : str) {
       if (glyph == '\n') {
         position.set_x(originalX);
-        position.set_y(position.y() + cache.get_font().line_skip());
+        position.set_y(position.y() + lineSkip);
       } else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
@@ -1373,7 +1378,7 @@ class basic_renderer final
     if (fonts.find(id) != fonts.end()) {
       remove_font(id);
     }
-    fonts.emplace(id, font{std::forward<Args>(args)...});
+    fonts.try_emplace(id, std::forward<Args>(args)...);
   }
 
   /**

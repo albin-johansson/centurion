@@ -721,7 +721,7 @@ class font_cache final
     if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);
     }
-    m_strings.emplace(id, std::move(texture));
+    m_strings.try_emplace(id, std::move(texture));
   }
 };
 

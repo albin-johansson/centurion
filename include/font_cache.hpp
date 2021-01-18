@@ -531,9 +531,9 @@ class font_cache final
       return;
     }
 
-    m_glyphs.emplace(glyph,
-                     glyph_data{create_glyph_texture(renderer, glyph),
-                                m_font.get_metrics(glyph).value()});
+    glyph_data data{create_glyph_texture(renderer, glyph),
+                    m_font.get_metrics(glyph).value()};
+    m_glyphs.try_emplace(glyph, std::move(data));
   }
 
   /**

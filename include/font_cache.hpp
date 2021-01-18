@@ -668,6 +668,31 @@ class font_cache final
     return at(glyph);
   }
 
+  /**
+   * \brief Returns the data associated with the specified glyph, if it exists.
+   *
+   * \details This function is a non-throwing alternative to the `at()` and
+   * `operator[]` functions.
+   *
+   * \note Do not store the returned pointer for longer than absolutely
+   * necessary, it may get invalidated upon modification of the font cache.
+   *
+   * \param glyph the desired glyph to lookup the data for.
+   *
+   * \return a pointer to the associated glyph data; a null pointer if no
+   * matching data was found.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
+  {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
+      return &it->second;
+    } else {
+      return nullptr;
+    }
+  }
+
   ///\}  // end of glyph caching
 
   /**

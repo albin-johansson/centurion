@@ -291,6 +291,15 @@ TEST_F(FontCacheTest, At)
   EXPECT_ANY_THROW(m_cache.at(256));
 }
 
+TEST_F(FontCacheTest, TryAt)
+{
+  m_cache.add_basic_latin(*m_renderer);
+  EXPECT_TRUE(m_cache.try_at('a'));
+  EXPECT_TRUE(m_cache.try_at(0x20));
+  EXPECT_TRUE(m_cache.try_at(0x7E));
+  EXPECT_FALSE(m_cache.try_at(0x7F));
+}
+
 TEST_F(FontCacheTest, SubscriptOperator)
 {
   m_cache.add_basic_latin(*m_renderer);

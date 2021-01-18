@@ -171,6 +171,14 @@ TEST(Point, Get)
   EXPECT_EQ(point.y(), ptr.y);
 }
 
+TEST(Point, Data)
+{
+  const cen::ipoint ip{123, 456};
+  ASSERT_TRUE(ip.data());
+  EXPECT_EQ(123, ip.data()->x);
+  EXPECT_EQ(456, ip.data()->y);
+}
+
 TEST(Point, ToString)
 {
   const cen::ipoint ip{123, 456};

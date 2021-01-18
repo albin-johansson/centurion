@@ -14,7 +14,7 @@ Copyable                 Only ``window_handle``
 Movable                  Both ``window`` and ``window_handle``
 Implicit conversions     None
 Explicit conversions     ``SDL_Window*``, ``const SDL_Window*``, ``bool`` (only ``window_handle``)
-Overloaded operators     None
+Overloaded operators     ``<<``
 Namespace                ``::cen``
 Header                   ``window.hpp``
 ======================  =========================================

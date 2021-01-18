@@ -28,7 +28,6 @@ Movable                  No
 Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
-Printable                No
 Namespace                ``::cen``
 Header                   ``centurion.hpp``
 Since                    3.0.0

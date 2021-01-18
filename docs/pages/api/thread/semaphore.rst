@@ -15,7 +15,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
-Printable                No
 Namespace                ``::cen``
 Header                   ``semaphore.hpp``
 ======================  =========================================

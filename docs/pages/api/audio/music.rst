@@ -22,7 +22,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``Mix_Music*``, ``const Mix_Music*``
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``music.hpp``
 Since                    3.0.0

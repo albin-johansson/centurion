@@ -15,7 +15,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``bool``
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``base_path.hpp``
 Since                    3.0.0

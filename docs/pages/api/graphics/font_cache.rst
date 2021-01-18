@@ -18,7 +18,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
-Printable                No
 Namespace                ``::cen``
 Header                   ``font_cache.hpp``
 Since                    5.0.0

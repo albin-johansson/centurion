@@ -1,10 +1,15 @@
 #include "centurion.hpp"
 #include "event.hpp"
+#include "event_dispatcher.hpp"
 #include "font_cache.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
 namespace {
+
+using dispatcher_t = cen::event_dispatcher<cen::quit_event,
+                                           cen::keyboard_event,
+                                           cen::text_input_event>;
 
 class interactive_font_cache final
 {
@@ -12,21 +17,35 @@ class interactive_font_cache final
   interactive_font_cache()
       : m_window{}
       , m_renderer{m_window}
-      , m_cache{"resources/daniel.ttf", 24}
+      , m_cache{"resources/fira_code.ttf", 24}
   {
     m_renderer.set_color(cen::colors::white);
     m_cache.add_latin1(m_renderer);
 
-    init();
+    m_renderer.set_color(cen::colors::magenta);
+    m_cache.store_blended_latin1(m_fst, "cool string! <|>", m_renderer);
+
+    const cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
+    m_cache.store_blended_unicode(m_snd, cool, m_renderer);
+
+    // clang-format off
+    m_dispatcher.bind<cen::quit_event>()
+                .to<&interactive_font_cache::on_quit_event>(this);
+    m_dispatcher.bind<cen::keyboard_event>()
+                .to<&interactive_font_cache::on_keyboard_event>(this);
+    m_dispatcher.bind<cen::text_input_event>()
+                .to<&interactive_font_cache::on_text_input_event>(this);
+    // clang-format on
+
+    m_text.reserve(100u);
   }
 
   void run()
   {
     m_window.show();
 
-    bool running = true;
-    while (running) {
-      running = handle_input();
+    while (m_running) {
+      m_dispatcher.poll();
       render();
     }
 
@@ -39,6 +58,7 @@ class interactive_font_cache final
 
   cen::window m_window;
   cen::renderer m_renderer;
+  dispatcher_t m_dispatcher;
   cen::font_cache m_cache;
   std::string m_text;
   cen::unicode_string m_unicodeString{'c',
@@ -57,42 +77,33 @@ class interactive_font_cache final
                                       '<',
                                       '|',
                                       '>'};
+  bool m_running{true};
 
-  void init()
+  void on_quit_event(const cen::quit_event&)
   {
-    m_renderer.set_color(cen::colors::magenta);
-    m_cache.store_blended_latin1(m_fst, "cool string! <|>", m_renderer);
-
-    const cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-    m_cache.store_blended_unicode(m_snd, cool, m_renderer);
+    m_running = false;
   }
 
-  [[nodiscard]] auto handle_input() -> bool
+  void on_keyboard_event(const cen::keyboard_event& event)
   {
-    cen::event event;
+    if (event.released() && event.is_active(cen::scancodes::escape)) {
+      m_running = false;
 
-    while (event.poll()) {
-      if (event.is<cen::quit_event>()) {
-        return false;
-      }
-
-      if (const auto* key = event.try_get<cen::keyboard_event>()) {
-        if (key->released() && key->is_active(SDL_SCANCODE_ESCAPE)) {
-          return false;
-        } else {
-          if (key->is_active(cen::scancodes::backspace)) {
-            if (!m_text.empty()) {
-              m_text.pop_back();
-            }
-          }
-        }
-
-      } else if (const auto* text = event.try_get<cen::text_input_event>()) {
-        m_text += text->text_utf8();
+    } else if (event.pressed() && event.is_active(cen::scancodes::backspace)) {
+      if (!m_text.empty()) {
+        m_text.pop_back();
       }
     }
+  }
 
-    return true;
+  void on_text_input_event(const cen::text_input_event& event)
+  {
+    const std::string str{event.text_utf8()};
+    for (const auto ch : str) {
+      if (m_cache.has(ch)) {
+        m_text += ch;
+      }
+    }
   }
 
   void render()
@@ -101,7 +112,9 @@ class interactive_font_cache final
 
     using namespace std::string_view_literals;
 
-    m_renderer.render_text(m_cache, "abcdefghijklmnopqrstuvwxyz"sv, {50, 10});
+    m_renderer.render_text(m_cache,
+                           "abcdefghijklmnopqrstuvwxyzåäö"sv,
+                           {50, 10});
     m_renderer.render_text(m_cache, m_text, {50, 150});
     m_renderer.render_text(m_cache, m_unicodeString, {50, 100});
 

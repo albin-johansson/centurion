@@ -219,9 +219,9 @@ class basic_renderer final
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
-      SDL_RenderDrawRect(get(), static_cast<const SDL_Rect*>(rect));
+      SDL_RenderDrawRect(get(), rect.data());
     } else {
-      SDL_RenderDrawRectF(get(), static_cast<const SDL_FRect*>(rect));
+      SDL_RenderDrawRectF(get(), rect.data());
     }
   }
 
@@ -238,9 +238,9 @@ class basic_renderer final
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
-      SDL_RenderFillRect(get(), static_cast<const SDL_Rect*>(rect));
+      SDL_RenderFillRect(get(), rect.data());
     } else {
-      SDL_RenderFillRectF(get(), static_cast<const SDL_FRect*>(rect));
+      SDL_RenderFillRectF(get(), rect.data());
     }
   }
 
@@ -327,13 +327,13 @@ class basic_renderer final
 
     if (!container.empty()) {
       const auto& front = container.front();
+      const auto* first = front.data();
+      const auto count = static_cast<int>(container.size());
 
       if constexpr (std::is_same_v<value_t, int>) {
-        const auto* first = static_cast<const SDL_Point*>(front);
-        SDL_RenderDrawLines(get(), first, static_cast<int>(container.size()));
+        SDL_RenderDrawLines(get(), first, count);
       } else {
-        const auto* first = static_cast<const SDL_FPoint*>(front);
-        SDL_RenderDrawLinesF(get(), first, static_cast<int>(container.size()));
+        SDL_RenderDrawLinesF(get(), first, count);
       }
     }
   }
@@ -374,9 +374,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderUTF8_Blended(font.get(),
-                               str,
-                               static_cast<SDL_Color>(get_color())));
+        TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
   }
 
   /**
@@ -412,11 +410,10 @@ class basic_renderer final
                                                  const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Blended_Wrapped(font.get(),
-                                       str,
-                                       static_cast<SDL_Color>(get_color()),
-                                       wrap));
+    return render_text(TTF_RenderUTF8_Blended_Wrapped(font.get(),
+                                                      str,
+                                                      get_color().get(),
+                                                      wrap));
   }
 
   /**
@@ -449,11 +446,10 @@ class basic_renderer final
                                         const color& background) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Shaded(font.get(),
-                              str,
-                              static_cast<SDL_Color>(get_color()),
-                              static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderUTF8_Shaded(font.get(),
+                                             str,
+                                             get_color().get(),
+                                             background.get()));
   }
 
   /**
@@ -484,9 +480,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderUTF8_Solid(font.get(),
-                             str,
-                             static_cast<SDL_Color>(get_color())));
+        TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
   }
 
   /**
@@ -517,9 +511,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderText_Blended(font.get(),
-                               str,
-                               static_cast<SDL_Color>(get_color())));
+        TTF_RenderText_Blended(font.get(), str, get_color().get()));
   }
 
   /**
@@ -555,11 +547,10 @@ class basic_renderer final
                                                    const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Blended_Wrapped(font.get(),
-                                       str,
-                                       static_cast<SDL_Color>(get_color()),
-                                       wrap));
+    return render_text(TTF_RenderText_Blended_Wrapped(font.get(),
+                                                      str,
+                                                      get_color().get(),
+                                                      wrap));
   }
 
   /**
@@ -592,11 +583,10 @@ class basic_renderer final
                                           const color& background) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Shaded(font.get(),
-                              str,
-                              static_cast<SDL_Color>(get_color()),
-                              static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderText_Shaded(font.get(),
+                                             str,
+                                             get_color().get(),
+                                             background.get()));
   }
 
   /**
@@ -627,9 +617,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderText_Solid(font.get(),
-                             str,
-                             static_cast<SDL_Color>(get_color())));
+        TTF_RenderText_Solid(font.get(), str, get_color().get()));
   }
 
   /**
@@ -657,9 +645,7 @@ class basic_renderer final
                                             const font& font) -> texture
   {
     return render_text(
-        TTF_RenderUNICODE_Blended(font.get(),
-                                  str.data(),
-                                  static_cast<SDL_Color>(get_color())));
+        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -692,11 +678,10 @@ class basic_renderer final
                                                     const font& font,
                                                     const u32 wrap) -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                          str.data(),
-                                          static_cast<SDL_Color>(get_color()),
-                                          wrap));
+    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
+                                                         str.data(),
+                                                         get_color().get(),
+                                                         wrap));
   }
 
   /**
@@ -726,11 +711,10 @@ class basic_renderer final
                                            const font& font,
                                            const color& background) -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Shaded(font.get(),
-                                 str.data(),
-                                 static_cast<SDL_Color>(get_color()),
-                                 static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
+                                                str.data(),
+                                                get_color().get(),
+                                                background.get()));
   }
 
   /**
@@ -758,9 +742,7 @@ class basic_renderer final
                                           const font& font) -> texture
   {
     return render_text(
-        TTF_RenderUNICODE_Solid(font.get(),
-                                str.data(),
-                                static_cast<SDL_Color>(get_color())));
+        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -863,10 +845,8 @@ class basic_renderer final
               const basic_point<P>& position) noexcept
   {
     if constexpr (basic_point<P>::isFloating) {
-      const SDL_FRect dst{position.x(),
-                          position.y(),
-                          static_cast<float>(texture.width()),
-                          static_cast<float>(texture.height())};
+      const auto size = cast<cen::farea>(texture.size());
+      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
     } else {
       const SDL_Rect dst{position.x(),
@@ -893,15 +873,9 @@ class basic_renderer final
               const basic_rect<P>& destination) noexcept
   {
     if constexpr (basic_rect<P>::isFloating) {
-      SDL_RenderCopyF(get(),
-                      texture.get(),
-                      nullptr,
-                      static_cast<const SDL_FRect*>(destination));
+      SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
     } else {
-      SDL_RenderCopy(get(),
-                     texture.get(),
-                     nullptr,
-                     static_cast<const SDL_Rect*>(destination));
+      SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
     }
   }
 
@@ -926,15 +900,9 @@ class basic_renderer final
               const basic_rect<P>& destination) noexcept
   {
     if constexpr (basic_rect<P>::isFloating) {
-      SDL_RenderCopyF(get(),
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination));
+      SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
     } else {
-      SDL_RenderCopy(get(),
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination));
+      SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
     }
   }
 
@@ -961,16 +929,16 @@ class basic_renderer final
     if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
                         nullptr,
                         SDL_FLIP_NONE);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
                        nullptr,
                        SDL_FLIP_NONE);
@@ -1009,18 +977,18 @@ class basic_renderer final
     if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
-                        static_cast<const SDL_FPoint*>(center),
+                        center.data(),
                         SDL_FLIP_NONE);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
-                       static_cast<const SDL_Point*>(center),
+                       center.data(),
                        SDL_FLIP_NONE);
     }
   }
@@ -1059,18 +1027,18 @@ class basic_renderer final
     if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
-                        static_cast<const SDL_FPoint*>(center),
+                        center.data(),
                         flip);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
-                       static_cast<const SDL_Point*>(center),
+                       center.data(),
                        flip);
     }
   }
@@ -1470,7 +1438,7 @@ class basic_renderer final
   void set_clip(const std::optional<irect> area) noexcept
   {
     if (area) {
-      SDL_RenderSetClipRect(get(), static_cast<const SDL_Rect*>(*area));
+      SDL_RenderSetClipRect(get(), area->data());
     } else {
       SDL_RenderSetClipRect(get(), nullptr);
     }
@@ -1485,7 +1453,7 @@ class basic_renderer final
    */
   void set_viewport(const irect& viewport) noexcept
   {
-    SDL_RenderSetViewport(get(), static_cast<const SDL_Rect*>(viewport));
+    SDL_RenderSetViewport(get(), viewport.data());
   }
 
   /**
@@ -1698,7 +1666,7 @@ class basic_renderer final
   [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
   {
     irect rect{};
-    SDL_RenderGetClipRect(get(), static_cast<SDL_Rect*>(rect));
+    SDL_RenderGetClipRect(get(), rect.data());
     if (!rect.has_area()) {
       return std::nullopt;
     } else {
@@ -1925,7 +1893,7 @@ class basic_renderer final
   [[nodiscard]] auto viewport() const noexcept -> irect
   {
     irect viewport{};
-    SDL_RenderGetViewport(get(), static_cast<SDL_Rect*>(viewport));
+    SDL_RenderGetViewport(get(), viewport.data());
     return viewport;
   }
 

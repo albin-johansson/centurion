@@ -504,8 +504,6 @@ class basic_haptic final
 
   /// \} End of system queries
 
-  // TODO std::optional<int> max_effect_count() const noexcept;
-
  private:
   struct deleter final
   {

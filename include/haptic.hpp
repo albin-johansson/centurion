@@ -164,6 +164,8 @@ class basic_haptic final
    *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
+   * \see `is_mouse_haptic()`
+   *
    * \since 5.2.0
    */
   template <typename BB = B, detail::is_owner<BB> = true>
@@ -185,6 +187,8 @@ class basic_haptic final
    * \tparam BB dummy parameter for SFINAE.
    *
    * \throws sdl_error if the haptic device couldn't be opened.
+   *
+   * \see `is_joystick_haptic()`
    *
    * \since 5.2.0
    */
@@ -356,6 +360,9 @@ class basic_haptic final
 
   /// \} End of feature queries
 
+  /// \name Device information
+  /// \{
+
   /**
    * \brief Returns the index associated with the haptic device.
    *
@@ -445,18 +452,15 @@ class basic_haptic final
     return SDL_HapticNumAxes(m_haptic);
   }
   /**
-   * \brief Indicates whether or not a haptic device at a specified index has
-   * been opened.
+   * \brief Returns the number of available haptic devices.
    *
-   * \param index the index of the haptic device that will be queried.
-   *
-   * \return `true` if the haptic device has been opened; `false` otherwise.
+   * \return the amount of available haptic devices.
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto is_opened(const int index) noexcept -> bool
+  [[nodiscard]] static auto count() noexcept -> int
   {
-    return SDL_HapticOpened(index);
+    return SDL_NumHaptics();
   }
 
   /**
@@ -475,21 +479,6 @@ class basic_haptic final
     return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;
   }
 
-  /// \name System queries
-  /// \{
-
-  /**
-   * \brief Returns the number of available haptic devices.
-   *
-   * \return the amount of available haptic devices.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] static auto count() noexcept -> int
-  {
-    return SDL_NumHaptics();
-  }
-
   /**
    * \brief Indicates whether or not the system mouse has haptic capabilities.
    *
@@ -502,7 +491,20 @@ class basic_haptic final
     return SDL_MouseIsHaptic();
   }
 
-  /// \} End of system queries
+  /**
+   * \brief Indicates whether or not a haptic device at a specified index has
+   * been opened.
+   *
+   * \param index the index of the haptic device that will be queried.
+   *
+   * \return `true` if the haptic device has been opened; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto is_opened(const int index) noexcept -> bool
+  {
+    return SDL_HapticOpened(index);
+  }
 
  private:
   struct deleter final

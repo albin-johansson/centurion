@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -45,6 +46,32 @@ namespace cen {
 /// \{
 
 /**
+ * \brief Returns the preferred path for storing application related files.
+ *
+ * \details This function returns the path to the directory to which
+ * applications are meant to write files such as preferences and save data, etc.
+ * This directory will be unique per user and application. The returned path
+ * will end with a path separator (e.g. "\\" or "/").
+ *
+ * \note Only use letters, numbers, and spaces in the supplied names!
+ *
+ * \param org the name of the organization, cannot be null.
+ * \param app the name of the application, cannot be null.
+ *
+ * \return an absolute path to the preferred path for storing application files;
+ * a null string is returned if something goes wrong.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto get_pref_path(not_null<czstring> org,
+                                        not_null<czstring> app) -> sdl_string
+{
+  assert(org);
+  assert(app);
+  return sdl_string{SDL_GetPrefPath(org, app)};
+}
+
+/**
  * \class pref_path
  *
  * \brief A wrapper for the preferred path for storing application related
@@ -57,11 +84,13 @@ namespace cen {
  *
  * \since 3.0.0
  *
+ * \deprecated Since 5.2.0, use `get_pref_path()` instead.
+ *
  * \see `SDL_GetPrefPath`
  *
  * \headerfile pref_path.hpp
  */
-class pref_path final
+class [[deprecated]] pref_path final
 {
  public:
   /**
@@ -75,7 +104,7 @@ class pref_path final
    * \since 3.0.0
    */
   pref_path(not_null<czstring> org, not_null<czstring> app)
-      : m_path{SDL_GetPrefPath(org, app)}
+      : m_path{get_pref_path(org, app)}
   {}
 
   /**
@@ -113,9 +142,12 @@ class pref_path final
  *
  * \return a string that represents a pref path.
  *
+ * \deprecated Since 5.2.0.
+ *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const pref_path& path) -> std::string
+[[nodiscard, deprecated]] inline auto to_string(const pref_path& path)
+    -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
   return "[pref_path | path: \"" + str + "\"]";
@@ -129,10 +161,12 @@ class pref_path final
  *
  * \return the used stream.
  *
+ * \deprecated Since 5.2.0.
+ *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const pref_path& path)
-    -> std::ostream&
+[[deprecated]] inline auto operator<<(std::ostream& stream,
+                                      const pref_path& path) -> std::ostream&
 {
   stream << to_string(path);
   return stream;

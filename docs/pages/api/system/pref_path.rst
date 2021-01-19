@@ -4,6 +4,10 @@ pref_path
 The ``pref_path`` class is used to obtain the preferred file path for storing files related to your
 application. This is useful for handling persistent data such as game saves or preferences.
 
+.. note:: 
+
+  This class is deprecated since Centurion 5.2.0. Use the ``get_pref_path()`` function instead.
+
 General information
 -------------------
 
@@ -27,6 +31,13 @@ Interface
 .. doxygenclass:: cen::pref_path
   :members:
   :undoc-members:
+  :outline:
+  :no-link:
+
+Related functions
+-----------------
+
+.. doxygenfunction:: get_pref_path(not_null<czstring>, not_null<czstring>) -> sdl_string
   :outline:
   :no-link:
 

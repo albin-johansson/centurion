@@ -246,7 +246,7 @@ class basic_rect final
    *
    * \note This function preserves the height of the rectangle.
    *
-   * \param maxX the new maximum y-coordinate of the rectangle.
+   * \param maxY the new maximum y-coordinate of the rectangle.
    *
    * \since 5.1.0
    */

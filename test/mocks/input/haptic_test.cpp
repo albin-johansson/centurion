@@ -16,6 +16,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticRumbleInit, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticRumblePlay, SDL_Haptic*, float, Uint32)
 FAKE_VALUE_FUNC(int, SDL_HapticRumbleStop, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticRumbleSupported, SDL_Haptic*)
+FAKE_VALUE_FUNC(unsigned, SDL_HapticQuery, SDL_Haptic*)
 }
 
 class HapticTest : public testing::Test
@@ -32,6 +33,7 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticRumblePlay);
     RESET_FAKE(SDL_HapticRumbleStop);
     RESET_FAKE(SDL_HapticRumbleSupported);
+    RESET_FAKE(SDL_HapticQuery);
   }
 
   cen::haptic_handle m_haptic{nullptr};
@@ -118,7 +120,220 @@ TEST_F(HapticTest, IsRumbleSupported)
   EXPECT_FALSE(m_haptic.is_rumble_supported());
   EXPECT_FALSE(m_haptic.is_rumble_supported());
   EXPECT_TRUE(m_haptic.is_rumble_supported());
-
   EXPECT_EQ(3, SDL_HapticRumbleSupported_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeature)
+{
+  const auto b [[maybe_unused]] = m_haptic.has_feature(SDL_HAPTIC_INERTIA);
+  EXPECT_EQ(1, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureConstant)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_CONSTANT};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_constant());
+  EXPECT_TRUE(m_haptic.has_feature_constant());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureSine)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_SINE};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_sine());
+  EXPECT_TRUE(m_haptic.has_feature_sine());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureLeftRight)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_LEFTRIGHT};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_left_right());
+  EXPECT_TRUE(m_haptic.has_feature_left_right());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureTriangle)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_TRIANGLE};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_triangle());
+  EXPECT_TRUE(m_haptic.has_feature_triangle());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureSawtoothUp)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_SAWTOOTHUP};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_sawtooth_up());
+  EXPECT_TRUE(m_haptic.has_feature_sawtooth_up());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureSawtoothDown)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_SAWTOOTHDOWN};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_sawtooth_down());
+  EXPECT_TRUE(m_haptic.has_feature_sawtooth_down());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureRamp)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_RAMP};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_ramp());
+  EXPECT_TRUE(m_haptic.has_feature_ramp());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureSpring)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_SPRING};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_spring());
+  EXPECT_TRUE(m_haptic.has_feature_spring());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureDamper)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_DAMPER};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_damper());
+  EXPECT_TRUE(m_haptic.has_feature_damper());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureInertia)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_INERTIA};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_inertia());
+  EXPECT_TRUE(m_haptic.has_feature_inertia());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureFriction)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_FRICTION};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_friction());
+  EXPECT_TRUE(m_haptic.has_feature_friction());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureGain)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_GAIN};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_gain());
+  EXPECT_TRUE(m_haptic.has_feature_gain());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureAutocenter)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_AUTOCENTER};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_autocenter());
+  EXPECT_TRUE(m_haptic.has_feature_autocenter());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureStatus)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_STATUS};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_status());
+  EXPECT_TRUE(m_haptic.has_feature_status());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeaturePause)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_PAUSE};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_pause());
+  EXPECT_TRUE(m_haptic.has_feature_pause());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, HasFeatureCustom)
+{
+  std::array<unsigned, 2> values{0, SDL_HAPTIC_CUSTOM};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.has_feature_custom());
+  EXPECT_TRUE(m_haptic.has_feature_custom());
+
+  EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
 }
 

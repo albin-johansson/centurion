@@ -243,6 +243,97 @@ class basic_haptic final
 
   /// \}
 
+  /// \name Feature checks
+  /// \{
+
+  [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept
+      -> bool
+  {
+    return has_feature(static_cast<unsigned>(feature));
+  }
+
+  [[nodiscard]] auto has_feature_constant() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_CONSTANT);
+  }
+
+  [[nodiscard]] auto has_feature_sine() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_SINE);
+  }
+
+  [[nodiscard]] auto has_feature_left_right() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_LEFTRIGHT);
+  }
+
+  [[nodiscard]] auto has_feature_triangle() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_TRIANGLE);
+  }
+
+  [[nodiscard]] auto has_feature_sawtooth_up() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_SAWTOOTHUP);
+  }
+
+  [[nodiscard]] auto has_feature_sawtooth_down() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_SAWTOOTHDOWN);
+  }
+
+  [[nodiscard]] auto has_feature_ramp() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_RAMP);
+  }
+
+  [[nodiscard]] auto has_feature_spring() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_SPRING);
+  }
+
+  [[nodiscard]] auto has_feature_damper() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_DAMPER);
+  }
+
+  [[nodiscard]] auto has_feature_inertia() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_INERTIA);
+  }
+
+  [[nodiscard]] auto has_feature_friction() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_FRICTION);
+  }
+
+  [[nodiscard]] auto has_feature_gain() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_GAIN);
+  }
+
+  [[nodiscard]] auto has_feature_autocenter() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_AUTOCENTER);
+  }
+
+  [[nodiscard]] auto has_feature_status() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_STATUS);
+  }
+
+  [[nodiscard]] auto has_feature_pause() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_PAUSE);
+  }
+
+  [[nodiscard]] auto has_feature_custom() const noexcept -> bool
+  {
+    return has_feature(SDL_HAPTIC_CUSTOM);
+  }
+
+  /// \} End of feature queries
+
  private:
   struct deleter final
   {
@@ -252,6 +343,44 @@ class basic_haptic final
     }
   };
   detail::pointer_manager<B, SDL_Haptic, deleter> m_haptic{};
+
+  /**
+   * \brief Indicates whether or not the haptic device supports the specified
+   features.
+   *
+   * \details The supplied value must be a masked subset of the following flags:
+   *
+   * \verbatim
+       SDL_HAPTIC_CONSTANT
+       SDL_HAPTIC_SINE
+       SDL_HAPTIC_LEFTRIGHT
+       SDL_HAPTIC_LEFTRIGHT
+       SDL_HAPTIC_TRIANGLE
+       SDL_HAPTIC_SAWTOOTHUP
+       SDL_HAPTIC_SAWTOOTHDOWN
+       SDL_HAPTIC_RAMP
+       SDL_HAPTIC_SPRING
+       SDL_HAPTIC_DAMPER
+       SDL_HAPTIC_INERTIA
+       SDL_HAPTIC_FRICTION
+       SDL_HAPTIC_CUSTOM
+       SDL_HAPTIC_GAIN
+       SDL_HAPTIC_AUTOCENTER
+       SDL_HAPTIC_STATUS
+       SDL_HAPTIC_PAUSE.
+   * \endverbatim
+   *
+   * \param flag the mask of feature flags.
+   *
+   * \return `true` if the haptic device supports the features; `false`
+   otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_feature(unsigned flag) const noexcept -> bool
+  {
+    return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
+  }
 };
 
 }  // namespace cen

@@ -49,9 +49,11 @@ namespace cen {
  *
  * \since 3.0.0
  *
+ * \deprecated Since 5.2.0, use ``get_base_path()`` instead.
+ *
  * \headerfile base_path.hpp
  */
-class base_path final
+class [[deprecated]] base_path final
 {
  public:
   /**
@@ -98,6 +100,26 @@ class base_path final
 };
 
 /**
+ * \brief Returns the "base" path associated with the application.
+ *
+ * \details The returned string represents the path to the directory from which
+ * application was run from, and will end with a path separator (e.g. "\\" or
+ * "/").
+ *
+ * \note This might be an expensive operation, so it's recommended to only call
+ * this function once and cache the returned path.
+ *
+ * \return the base path of the application; a null string is returned if the
+ * path cannot be obtained.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto get_base_path() -> sdl_string
+{
+  return sdl_string{SDL_GetBasePath()};
+}
+
+/**
  * \brief Returns a textual representation of a base path.
  *
  * \ingroup system
@@ -106,9 +128,12 @@ class base_path final
  *
  * \return a string that represents a base path.
  *
+ * \deprecated Since 5.2.0.
+ *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const base_path& path) -> std::string
+[[nodiscard, deprecated]] inline auto to_string(const base_path& path)
+    -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
   return "[base_path | path: \"" + str + "\"]";
@@ -124,10 +149,12 @@ class base_path final
  *
  * \return the used stream.
  *
+ * \deprecated Since 5.2.0.
+ *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const base_path& path)
-    -> std::ostream&
+[[deprecated]] inline auto operator<<(std::ostream& stream,
+                                      const base_path& path) -> std::ostream&
 {
   stream << to_string(path);
   return stream;

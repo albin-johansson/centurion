@@ -26,11 +26,11 @@ Happy coding! :heart:
 
 ## Requirements
 
-* C++17 (C++20 should work just as fine as well)
-* SDL2 (2.0.12 or later)
-* SDL2_image (2.0.5 or later)
-* SDL2_ttf (2.0.4 or later)
-* SDL2_mixer (2.0.4 or later)
+* C++17 or C++20
+* SDL2 2.0.12 or 2.0.14
+* SDL2_image 2.0.5
+* SDL2_ttf 2.0.4
+* SDL2_mixer 2.0.4
 
 ## Relevant resources
 

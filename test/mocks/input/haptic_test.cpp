@@ -18,6 +18,14 @@ FAKE_VALUE_FUNC(int, SDL_HapticRumbleStop, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticRumbleSupported, SDL_Haptic*)
 FAKE_VALUE_FUNC(unsigned, SDL_HapticQuery, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_NumHaptics)
+FAKE_VALUE_FUNC(int, SDL_HapticIndex, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_MouseIsHaptic)
+FAKE_VALUE_FUNC(const char*, SDL_HapticName, int)
+FAKE_VALUE_FUNC(int, SDL_HapticOpened, int)
+FAKE_VALUE_FUNC(int, SDL_JoystickIsHaptic, SDL_Joystick*)
+FAKE_VALUE_FUNC(int, SDL_HapticNumEffects, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_HapticNumEffectsPlaying, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_HapticNumAxes, SDL_Haptic*)
 }
 
 class HapticTest : public testing::Test
@@ -36,6 +44,14 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticRumbleSupported);
     RESET_FAKE(SDL_HapticQuery);
     RESET_FAKE(SDL_NumHaptics);
+    RESET_FAKE(SDL_HapticIndex);
+    RESET_FAKE(SDL_MouseIsHaptic);
+    RESET_FAKE(SDL_HapticName);
+    RESET_FAKE(SDL_HapticOpened);
+    RESET_FAKE(SDL_JoystickIsHaptic);
+    RESET_FAKE(SDL_HapticNumEffects);
+    RESET_FAKE(SDL_HapticNumEffectsPlaying);
+    RESET_FAKE(SDL_HapticNumAxes);
   }
 
   cen::haptic_handle m_haptic{nullptr};
@@ -123,12 +139,6 @@ TEST_F(HapticTest, IsRumbleSupported)
   EXPECT_FALSE(m_haptic.is_rumble_supported());
   EXPECT_TRUE(m_haptic.is_rumble_supported());
   EXPECT_EQ(3, SDL_HapticRumbleSupported_fake.call_count);
-}
-
-TEST_F(HapticTest, HasFeature)
-{
-  const auto b [[maybe_unused]] = m_haptic.has_feature(SDL_HAPTIC_INERTIA);
-  EXPECT_EQ(1, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureConstant)
@@ -339,9 +349,97 @@ TEST_F(HapticTest, HasFeatureCustom)
   EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
 }
 
+TEST_F(HapticTest, Index)
+{
+  std::array values{-1, 1};
+  SET_RETURN_SEQ(SDL_HapticIndex,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.index());
+  EXPECT_EQ(1, m_haptic.index());
+
+  EXPECT_EQ(2, SDL_HapticIndex_fake.call_count);
+}
+
+TEST_F(HapticTest, Name)
+{
+  std::array values{-1, 1};
+  SET_RETURN_SEQ(SDL_HapticIndex,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.name());
+  EXPECT_EQ(0, SDL_HapticName_fake.call_count);
+  EXPECT_EQ(1, SDL_HapticIndex_fake.call_count);
+
+  const auto name [[maybe_unused]] = m_haptic.name();
+  EXPECT_EQ(1, SDL_HapticName_fake.call_count);
+  EXPECT_EQ(2, SDL_HapticIndex_fake.call_count);
+}
+
+TEST_F(HapticTest, IsOpened)
+{
+  const auto opened [[maybe_unused]] = cen::haptic::is_opened(0);
+  EXPECT_EQ(1, SDL_HapticOpened_fake.call_count);
+}
+
+TEST_F(HapticTest, IsJoystickHaptic)
+{
+  std::array values{-1, 0, 1};
+  SET_RETURN_SEQ(SDL_JoystickIsHaptic,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  const cen::joystick_handle joystick{nullptr};
+
+  EXPECT_FALSE(cen::haptic::is_joystick_haptic(joystick));
+  EXPECT_FALSE(cen::haptic::is_joystick_haptic(joystick));
+  EXPECT_TRUE(cen::haptic::is_joystick_haptic(joystick));
+
+  EXPECT_EQ(3, SDL_JoystickIsHaptic_fake.call_count);
+}
+
+TEST_F(HapticTest, EffectCapacity)
+{
+  std::array values{-1, 7};
+  SET_RETURN_SEQ(SDL_HapticNumEffects,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.effect_capacity());
+  EXPECT_EQ(7, m_haptic.effect_capacity());
+
+  EXPECT_EQ(2, SDL_HapticNumEffects_fake.call_count);
+}
+
+TEST_F(HapticTest, ConcurrentCapacity)
+{
+  std::array values{-1, 4};
+  SET_RETURN_SEQ(SDL_HapticNumEffectsPlaying,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.concurrent_capacity());
+  EXPECT_EQ(4, m_haptic.concurrent_capacity());
+
+  EXPECT_EQ(2, SDL_HapticNumEffectsPlaying_fake.call_count);
+}
+
+TEST_F(HapticTest, AxisCount)
+{
+  const auto count [[maybe_unused]] = m_haptic.axis_count();
+  EXPECT_EQ(1, SDL_HapticNumAxes_fake.call_count);
+}
+
 TEST_F(HapticTest, Count)
 {
   const auto count [[maybe_unused]] = cen::haptic::count();
   EXPECT_EQ(1, SDL_NumHaptics_fake.call_count);
 }
 
+TEST_F(HapticTest, IsMouseHaptic)
+{
+  const auto isHaptic [[maybe_unused]] = cen::haptic::is_mouse_haptic();
+  EXPECT_EQ(1, SDL_MouseIsHaptic_fake.call_count);
+}

@@ -27,9 +27,11 @@
 
 #include <SDL.h>
 
+#include <optional>     // optional
 #include <type_traits>  // true_type, false_type
 
 #include "centurion_cfg.hpp"
+#include "czstring.hpp"
 #include "detail/clamp.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"
@@ -335,6 +337,128 @@ class basic_haptic final
   /// \} End of feature queries
 
   /**
+   * \brief Returns the index associated with the haptic device.
+   *
+   * \return the index associated with the haptic device; `std::nullopt` if
+   * something goes wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto index() const noexcept -> std::optional<int>
+  {
+    const auto res = SDL_HapticIndex(m_haptic);
+    if (res != -1) {
+      return res;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Attempts to return the name associated with the haptic device.
+   *
+   * \return the name associated with the haptic device; a null pointer is
+   * returned if no name was found.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto name() const noexcept -> czstring
+  {
+    if (const auto i = index()) {
+      return SDL_HapticName(*i);
+    } else {
+      return nullptr;
+    }
+  }
+
+  /**
+   * \brief Returns the maximum amount of effect the device can store.
+   *
+   * \note This function isn't supported on all platforms and the returned value
+   * should be treated as an approximation.
+   *
+   * \return the maximum number of effects the the haptic device can store;
+   * `std::nullopt` if something goes wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto effect_capacity() const noexcept -> std::optional<int>
+  {
+    const auto capacity = SDL_HapticNumEffects(m_haptic);
+    if (capacity != -1) {
+      return capacity;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Returns the maximum amount of effects that can be played
+   * simultaneously.
+   *
+   * \note This function isn't supported on all platforms.
+   *
+   * \return the maximum number of effects that can be playing simultaneously;
+   * `std::nullopt` if something goes wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto concurrent_capacity() const noexcept -> std::optional<int>
+  {
+    const auto capacity = SDL_HapticNumEffectsPlaying(m_haptic);
+    if (capacity != -1) {
+      return capacity;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Returns the number of axes that the haptic device has.
+   *
+   * \return the number of axes that the haptic device has.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto axis_count() const noexcept -> int
+  {
+    return SDL_HapticNumAxes(m_haptic);
+  }
+  /**
+   * \brief Indicates whether or not a haptic device at a specified index has
+   * been opened.
+   *
+   * \param index the index of the haptic device that will be queried.
+   *
+   * \return `true` if the haptic device has been opened; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto is_opened(const int index) noexcept -> bool
+  {
+    return SDL_HapticOpened(index);
+  }
+
+  /**
+   * \brief Indicates whether or not a joystick has haptic capabilities.
+   *
+   * \param joystick the joystick that will be checked.
+   *
+   * \return `true` if the joystick has haptic capabilities; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  template <typename T>
+  [[nodiscard]] static auto is_joystick_haptic(
+      const basic_joystick<T>& joystick) noexcept -> bool
+  {
+    return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;
+  }
+
+  /// \name System queries
+  /// \{
+
+  /**
    * \brief Returns the number of available haptic devices.
    *
    * \return the amount of available haptic devices.
@@ -346,6 +470,20 @@ class basic_haptic final
     return SDL_NumHaptics();
   }
 
+  /**
+   * \brief Indicates whether or not the system mouse has haptic capabilities.
+   *
+   * \return `true` if the mouse has haptic capabilities; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto is_mouse_haptic() noexcept -> bool
+  {
+    return SDL_MouseIsHaptic();
+  }
+
+  /// \} End of system queries
+
   // TODO std::optional<int> max_effect_count() const noexcept;
 
  private:
@@ -356,7 +494,7 @@ class basic_haptic final
       SDL_HapticClose(haptic);
     }
   };
-  detail::pointer_manager<B, SDL_Haptic, deleter> m_haptic{};
+  detail::pointer_manager<B, SDL_Haptic, deleter> m_haptic;
 
   /**
    * \brief Indicates whether or not the haptic device supports the specified
@@ -391,7 +529,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_feature(unsigned flag) const noexcept -> bool
+  [[nodiscard]] auto has_feature(const unsigned flag) const noexcept -> bool
   {
     return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
   }

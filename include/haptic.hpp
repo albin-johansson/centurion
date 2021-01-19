@@ -164,7 +164,7 @@ class basic_haptic final
    *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
-   * \see `is_mouse_haptic()`
+   * \see `is_joystick_haptic()`
    *
    * \since 5.2.0
    */
@@ -188,7 +188,7 @@ class basic_haptic final
    *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
-   * \see `is_joystick_haptic()`
+   * \see `is_mouse_haptic()`
    *
    * \since 5.2.0
    */

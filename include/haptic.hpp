@@ -176,7 +176,7 @@ class basic_haptic final
     }
   }
 
-  /// \}
+  /// \} End of construction
 
   /// \name Rumble effects
   /// \{
@@ -241,7 +241,7 @@ class basic_haptic final
     return SDL_HapticRumbleSupported(m_haptic) == SDL_TRUE;
   }
 
-  /// \}
+  /// \} End of rumble effects
 
   /// \name Feature checks
   /// \{

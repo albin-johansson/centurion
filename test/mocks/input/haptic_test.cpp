@@ -17,6 +17,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticRumblePlay, SDL_Haptic*, float, Uint32)
 FAKE_VALUE_FUNC(int, SDL_HapticRumbleStop, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticRumbleSupported, SDL_Haptic*)
 FAKE_VALUE_FUNC(unsigned, SDL_HapticQuery, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_NumHaptics)
 }
 
 class HapticTest : public testing::Test
@@ -34,6 +35,7 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticRumbleStop);
     RESET_FAKE(SDL_HapticRumbleSupported);
     RESET_FAKE(SDL_HapticQuery);
+    RESET_FAKE(SDL_NumHaptics);
   }
 
   cen::haptic_handle m_haptic{nullptr};
@@ -335,5 +337,11 @@ TEST_F(HapticTest, HasFeatureCustom)
   EXPECT_TRUE(m_haptic.has_feature_custom());
 
   EXPECT_EQ(2, SDL_HapticQuery_fake.call_count);
+}
+
+TEST_F(HapticTest, Count)
+{
+  const auto count [[maybe_unused]] = cen::haptic::count();
+  EXPECT_EQ(1, SDL_NumHaptics_fake.call_count);
 }
 

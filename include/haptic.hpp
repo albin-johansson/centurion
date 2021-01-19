@@ -334,6 +334,20 @@ class basic_haptic final
 
   /// \} End of feature queries
 
+  /**
+   * \brief Returns the number of available haptic devices.
+   *
+   * \return the amount of available haptic devices.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto count() noexcept -> int
+  {
+    return SDL_NumHaptics();
+  }
+
+  // TODO std::optional<int> max_effect_count() const noexcept;
+
  private:
   struct deleter final
   {

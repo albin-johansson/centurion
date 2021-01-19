@@ -276,82 +276,82 @@ class basic_haptic final
 
   [[nodiscard]] auto has_feature_constant() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_CONSTANT);
+    return has_feature(haptic_feature::constant);
   }
 
   [[nodiscard]] auto has_feature_sine() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_SINE);
+    return has_feature(haptic_feature::sine);
   }
 
   [[nodiscard]] auto has_feature_left_right() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_LEFTRIGHT);
+    return has_feature(haptic_feature::left_right);
   }
 
   [[nodiscard]] auto has_feature_triangle() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_TRIANGLE);
+    return has_feature(haptic_feature::triangle);
   }
 
   [[nodiscard]] auto has_feature_sawtooth_up() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_SAWTOOTHUP);
+    return has_feature(haptic_feature::sawtooth_up);
   }
 
   [[nodiscard]] auto has_feature_sawtooth_down() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_SAWTOOTHDOWN);
+    return has_feature(haptic_feature::sawtooth_down);
   }
 
   [[nodiscard]] auto has_feature_ramp() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_RAMP);
+    return has_feature(haptic_feature::ramp);
   }
 
   [[nodiscard]] auto has_feature_spring() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_SPRING);
+    return has_feature(haptic_feature::spring);
   }
 
   [[nodiscard]] auto has_feature_damper() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_DAMPER);
+    return has_feature(haptic_feature::damper);
   }
 
   [[nodiscard]] auto has_feature_inertia() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_INERTIA);
+    return has_feature(haptic_feature::inertia);
   }
 
   [[nodiscard]] auto has_feature_friction() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_FRICTION);
+    return has_feature(haptic_feature::friction);
   }
 
   [[nodiscard]] auto has_feature_gain() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_GAIN);
+    return has_feature(haptic_feature::gain);
   }
 
   [[nodiscard]] auto has_feature_autocenter() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_AUTOCENTER);
+    return has_feature(haptic_feature::autocenter);
   }
 
   [[nodiscard]] auto has_feature_status() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_STATUS);
+    return has_feature(haptic_feature::status);
   }
 
   [[nodiscard]] auto has_feature_pause() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_PAUSE);
+    return has_feature(haptic_feature::pause);
   }
 
   [[nodiscard]] auto has_feature_custom() const noexcept -> bool
   {
-    return has_feature(SDL_HAPTIC_CUSTOM);
+    return has_feature(haptic_feature::custom);
   }
 
   /// \} End of feature queries

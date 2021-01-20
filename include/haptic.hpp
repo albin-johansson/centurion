@@ -312,6 +312,52 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   }
 };
 
+class haptic_ramp final : public haptic_effect<haptic_ramp>
+{
+ public:
+  /**
+   * \brief Creates a haptic ramp effect.
+   *
+   * \since 5.2.0
+   */
+  haptic_ramp() noexcept
+  {
+    m_effect.ramp = {};
+    m_effect.ramp.type = SDL_HAPTIC_RAMP;
+  }
+
+  // Beginning strength level.
+  void set_start_strength(const i16 start) noexcept
+  {
+    representation().start = start;
+  }
+
+  // Ending strength level.
+  void set_end_strength(const i16 end) noexcept
+  {
+    representation().end = end;
+  }
+
+  [[nodiscard]] auto start_strength() const noexcept -> i16
+  {
+    return representation().start;
+  }
+
+  [[nodiscard]] auto end_strength() const noexcept -> i16
+  {
+    return representation().end;
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticRamp&
+  {
+    return m_effect.ramp;
+  }
+
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticRamp&
+  {
+    return m_effect.ramp;
+  }
+};
 template <typename B>
 class basic_haptic;
 

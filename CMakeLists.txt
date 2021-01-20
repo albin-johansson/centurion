@@ -164,6 +164,9 @@ if (CEN_AUDIO MATCHES ON)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} INTERFACE)
+target_include_directories(${CENTURION_LIB_TARGET} INTERFACE ${CEN_INCLUDE_DIR})
+
+export(TARGETS ${CENTURION_LIB_TARGET} FILE ${PROJECT_BINARY_DIR}/centurion-target.cmake)
 
 if (CEN_TESTS)
   enable_testing()

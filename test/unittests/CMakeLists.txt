@@ -78,6 +78,7 @@ set(SOURCE_FILES
     input/controller_axis_test.cpp
     input/controller_button_test.cpp
     input/controller_test.cpp
+    input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_code_tests.cpp
     input/key_state_test.cpp

@@ -46,26 +46,6 @@
 
 namespace cen {
 
-template <typename B>
-class basic_haptic;
-
-/**
- * \typedef haptic
- *
- * \brief Represents an owning haptic device.
- *
- * \since 5.2.0
- */
-using haptic = basic_haptic<std::true_type>;
-
-/**
- * \typedef haptic_handle
- *
- * \brief Represents a non-owning haptic device.
- *
- * \since 5.2.0
- */
-using haptic_handle = basic_haptic<std::false_type>;
 
 enum class haptic_feature  // TODO verify that these are all of the "features"
 {
@@ -86,6 +66,228 @@ enum class haptic_feature  // TODO verify that these are all of the "features"
   status = SDL_HAPTIC_STATUS,
   pause = SDL_HAPTIC_PAUSE
 };
+
+template <typename Derived>
+class haptic_effect
+{
+ public:
+
+  void set_duration(const milliseconds<u32> ms)
+  {
+    representation().length = ms.count();
+  }
+
+  void set_delay(const milliseconds<u16> ms)
+  {
+    representation().delay = ms.count();
+  }
+
+  void set_interval(const milliseconds<u16> ms)
+  {
+    representation().interval = ms.count();
+  }
+
+  void set_attack_duration(const milliseconds<u16> ms)
+  {
+    representation().attack_length = ms.count();
+  }
+
+  void set_fade_duration(const milliseconds<u16> ms)
+  {
+    representation().fade_length = ms.count();
+  }
+
+  void set_button(const u16 button) noexcept
+  {
+    representation().button = button;
+  }
+
+  void set_attack_level(const u16 level) noexcept
+  {
+    representation().attack_level = level;
+  }
+
+  void set_fade_level(const u16 level) noexcept
+  {
+    representation().fade_level = level;
+  }
+
+  // Duration of effect (ms).
+  [[nodiscard]] auto duration() const -> milliseconds<u32>
+  {
+    return milliseconds<u32>{representation().length};
+  }
+
+  // Delay before starting effect.
+  [[nodiscard]] auto delay() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().delay};
+  }
+
+  // How soon before effect can be triggered again.
+  [[nodiscard]] auto interval() const noexcept -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().interval};
+  }
+
+  // Duration of the attack.
+  [[nodiscard]] auto attack_duration() const noexcept -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().attack_length};
+  }
+
+  // Duration of the fade out.
+  [[nodiscard]] auto fade_duration() const noexcept -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().fade_length};
+  }
+
+  // Button that triggers effect.
+  [[nodiscard]] auto button() const noexcept -> u16
+  {
+    return representation().button;
+  }
+
+  // Level at the start of the attack.
+  [[nodiscard]] auto attack_level() const noexcept -> u16
+  {
+    return representation().attack_level;
+  }
+
+  // Level at the end of the fade.
+  [[nodiscard]] auto fade_level() const noexcept -> u16
+  {
+    return representation().fade_level;
+  }
+
+  [[nodiscard]] auto type() const noexcept -> u16
+  {
+    return representation().type;
+  }
+
+  [[nodiscard]] auto get() noexcept -> SDL_HapticEffect&
+  {
+    return m_effect;
+  }
+
+  [[nodiscard]] auto get() const noexcept -> const SDL_HapticEffect&
+  {
+    return m_effect;
+  }
+
+ protected:
+  SDL_HapticEffect m_effect{};
+
+ private:
+  [[nodiscard]] auto derived() noexcept -> Derived*
+  {
+    return static_cast<Derived*>(this);
+  }
+
+  [[nodiscard]] auto derived() const noexcept -> const Derived*
+  {
+    return static_cast<const Derived*>(this);
+  }
+
+  [[nodiscard]] auto representation() noexcept -> auto&
+  {
+    return derived()->representation();
+  }
+
+  [[nodiscard]] auto representation() const noexcept -> const auto&
+  {
+    return derived()->representation();
+  }
+};
+
+class haptic_constant final : public haptic_effect<haptic_constant>
+{
+ public:
+  /**
+   * \brief Creates a constant haptic effect.
+   *
+   * \since 5.2.0
+   */
+  haptic_constant() noexcept
+  {
+    m_effect.constant = {};
+    m_effect.constant.type = SDL_HAPTIC_CONSTANT;
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticConstant&
+  {
+    return m_effect.constant;
+  }
+
+  [[nodiscard]] auto representation() const noexcept
+      -> const SDL_HapticConstant&
+  {
+    return m_effect.constant;
+  }
+};
+
+class haptic_periodic final : public haptic_effect<haptic_periodic>
+{
+ public:
+  enum periodic_type : u16
+  {
+    sine = SDL_HAPTIC_SINE,
+    left_right = SDL_HAPTIC_LEFTRIGHT,
+    triangle = SDL_HAPTIC_TRIANGLE,
+    sawtooth_up = SDL_HAPTIC_SAWTOOTHUP,
+    sawtooth_down = SDL_HAPTIC_SAWTOOTHDOWN
+  };
+
+  /**
+   * \brief Creates a periodic haptic effect.
+   *
+   * \details The type of the effects defaults to `SDL_HAPTIC_SINE`.
+   *
+   * \since 5.2.0
+   */
+  haptic_periodic() noexcept
+  {
+    m_effect.periodic = {};
+    m_effect.periodic.type = SDL_HAPTIC_SINE;
+  }
+
+  void set_type(const periodic_type type) noexcept
+  {
+    representation().type = static_cast<u16>(type);
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticPeriodic&
+  {
+    return m_effect.periodic;
+  }
+
+  [[nodiscard]] auto representation() const noexcept
+      -> const SDL_HapticPeriodic&
+  {
+    return m_effect.periodic;
+  }
+};
+
+template <typename B>
+class basic_haptic;
+
+/**
+ * \typedef haptic
+ *
+ * \brief Represents an owning haptic device.
+ *
+ * \since 5.2.0
+ */
+using haptic = basic_haptic<std::true_type>;
+
+/**
+ * \typedef haptic_handle
+ *
+ * \brief Represents a non-owning haptic device.
+ *
+ * \since 5.2.0
+ */
+using haptic_handle = basic_haptic<std::false_type>;
 
 /**
  * \class basic_haptic
@@ -217,8 +419,7 @@ class basic_haptic final
    */
   auto init_rumble() noexcept -> bool
   {
-    const auto res = SDL_HapticRumbleInit(m_haptic);
-    return res == 0;
+    return SDL_HapticRumbleInit(m_haptic) == 0;
   }
 
   /**
@@ -236,10 +437,9 @@ class basic_haptic final
   auto play_rumble(const float strength, const milliseconds<u32> duration)
       -> bool
   {
-    const auto res = SDL_HapticRumblePlay(m_haptic,
-                                          detail::clamp(strength, 0.0f, 1.0f),
-                                          duration.count());
-    return res == 0;
+    return SDL_HapticRumblePlay(m_haptic,
+                                detail::clamp(strength, 0.0f, 1.0f),
+                                duration.count()) == 0;
   }
 
   /**
@@ -251,8 +451,7 @@ class basic_haptic final
    */
   auto stop_rumble() noexcept -> bool
   {
-    const auto res = SDL_HapticRumbleStop(m_haptic);
-    return res == 0;
+    return SDL_HapticRumbleStop(m_haptic) == 0;
   }
 
   /**
@@ -268,6 +467,48 @@ class basic_haptic final
   }
 
   /// \} End of rumble effects
+
+  /// \name Effects
+  /// \{
+
+  template <typename D>
+  auto add(const haptic_effect<D>& effect) noexcept -> std::optional<int>
+  {
+    auto copy = effect.get();
+    const auto id = SDL_HapticNewEffect(m_haptic, &copy);
+    if (id != -1) {
+      return id;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  template <typename D>
+  auto update(const int id, const haptic_effect<D>& effect) -> bool
+  {
+    auto copy = effect.get();
+    return SDL_HapticUpdateEffect(m_haptic, id, &copy) == 0;
+  }
+
+  auto run(const int id, const u32 iterations = 1) -> bool
+  {
+    return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
+  }
+
+  auto stop(const int id) -> bool
+  {
+    return SDL_HapticStopEffect(m_haptic, id) == 0;
+  }
+
+  template <typename D>
+  [[nodiscard]] auto is_supported(const haptic_effect<D>& effect) const noexcept
+      -> bool
+  {
+    auto copy = effect.get();
+    return SDL_HapticEffectSupported(m_haptic, &copy) == SDL_TRUE;
+  }
+
+  /// \}
 
   /// \name Feature checks
   /// \{
@@ -451,6 +692,9 @@ class basic_haptic final
   {
     return SDL_HapticNumAxes(m_haptic);
   }
+
+  /// \} End of device information
+
   /**
    * \brief Returns the number of available haptic devices.
    *

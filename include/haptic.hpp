@@ -125,19 +125,19 @@ class haptic_effect
   }
 
   // How soon before effect can be triggered again.
-  [[nodiscard]] auto interval() const noexcept -> milliseconds<u16>
+  [[nodiscard]] auto interval() const -> milliseconds<u16>
   {
     return milliseconds<u16>{representation().interval};
   }
 
   // Duration of the attack.
-  [[nodiscard]] auto attack_duration() const noexcept -> milliseconds<u16>
+  [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{representation().attack_length};
   }
 
   // Duration of the fade out.
-  [[nodiscard]] auto fade_duration() const noexcept -> milliseconds<u16>
+  [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{representation().fade_length};
   }

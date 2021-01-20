@@ -89,7 +89,6 @@ TEST(HapticPeriodic, Defaults)
   test_common<cen::haptic_periodic>();
 
   cen::haptic_periodic effect;
-
   EXPECT_EQ(SDL_HAPTIC_SINE, effect.type());
   EXPECT_EQ(cen::haptic_periodic::sine, effect.type());
 
@@ -132,7 +131,6 @@ TEST(HapticRamp, Defaults)
   test_common<cen::haptic_ramp>();
 
   cen::haptic_ramp effect;
-
   EXPECT_EQ(SDL_HAPTIC_RAMP, effect.type());
 
   effect.set_start_strength(1'234);

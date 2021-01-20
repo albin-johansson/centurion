@@ -111,6 +111,18 @@ TEST(HapticPeriodic, Defaults)
   effect.set_type(cen::haptic_periodic::sawtooth_up);
   EXPECT_EQ(cen::haptic_periodic::sawtooth_up, effect.type());
 
+  effect.set_period(123_ms);
+  EXPECT_EQ(123_ms, effect.period());
+
+  effect.set_magnitude(42);
+  EXPECT_EQ(42, effect.magnitude());
+
+  effect.set_offset(321);
+  EXPECT_EQ(321, effect.offset());
+
+  effect.set_phase(101u);
+  EXPECT_EQ(101u, effect.phase());
+
   EXPECT_EQ(SDL_HAPTIC_SINE, cen::haptic_periodic::sine);
   EXPECT_EQ(SDL_HAPTIC_LEFTRIGHT, cen::haptic_periodic::left_right);
   EXPECT_EQ(SDL_HAPTIC_TRIANGLE, cen::haptic_periodic::triangle);

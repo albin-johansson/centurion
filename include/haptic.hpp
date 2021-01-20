@@ -256,6 +256,50 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
     representation().type = static_cast<u16>(type);
   }
 
+  // Period of the wave.
+  void set_period(const milliseconds<u16> ms)
+  {
+    representation().period = ms.count();
+  }
+
+  // Peak value; if negative, equivalent to 180 degrees extra phase shift.
+  void set_magnitude(const i16 magnitude) noexcept
+  {
+    representation().magnitude = magnitude;
+  }
+
+  // Mean value of the wave.
+  void set_offset(const i16 offset) noexcept
+  {
+    representation().offset = offset;
+  }
+
+  // Positive phase shift given by hundredth of a degree.
+  void set_phase(const u16 phase) noexcept
+  {
+    representation().phase = phase;
+  }
+
+  [[nodiscard]] auto period() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().period};
+  }
+
+  [[nodiscard]] auto magnitude() const noexcept -> i16
+  {
+    return representation().magnitude;
+  }
+
+  [[nodiscard]] auto offset() const noexcept -> i16
+  {
+    return representation().offset;
+  }
+
+  [[nodiscard]] auto phase() const noexcept -> u16
+  {
+    return representation().phase;
+  }
+
   [[nodiscard]] auto representation() noexcept -> SDL_HapticPeriodic&
   {
     return m_effect.periodic;

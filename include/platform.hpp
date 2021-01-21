@@ -99,7 +99,7 @@ enum class platform_id
  * \remarks This function will differ greatly in its effects depending on the
  * current platform.
  *
- * \param url the URL or URI that should be opened, cannot be null.
+ * \param url the URL that should be opened, cannot be null.
  *
  * \return `true` on success; `false` otherwise.
  *

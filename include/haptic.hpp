@@ -213,7 +213,7 @@ class haptic_effect
    *
    * \tparam D dummy parameter for SFINAE.
    *
-   * \param level the button that triggers the effect.
+   * \param button the button that triggers the effect.
    *
    * \since 5.2.0
    */
@@ -320,7 +320,7 @@ class haptic_effect
    *
    * \tparam D dummy parameter for SFINAE.
    *
-   * \param level the duration of the attack.
+   * \param ms the duration of the attack.
    *
    * \since 5.2.0
    */
@@ -337,7 +337,7 @@ class haptic_effect
    *
    * \tparam D dummy parameter for SFINAE.
    *
-   * \param level the duration of the fade out.
+   * \param ms the duration of the fade out.
    *
    * \since 5.2.0
    */

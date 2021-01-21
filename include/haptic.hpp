@@ -70,6 +70,15 @@ namespace cen {
 //  - ?? SDL_HAPTIC_CARTESIAN ??
 //  - ?? SDL_HAPTIC_SPHERICAL ??
 
+/**
+ * \enum haptic_feature
+ *
+ * \brief Provides values that represent all of the haptic features.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic_feature
+ */
 enum class haptic_feature  // TODO verify that these are all of the "features"
 {
   constant = SDL_HAPTIC_CONSTANT,

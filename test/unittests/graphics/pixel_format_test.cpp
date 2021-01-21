@@ -95,6 +95,7 @@ TEST(PixelFormat, Values)
 
     EXPECT_EQ(cen::pixel_format::rgb332, SDL_PIXELFORMAT_RGB332);
     EXPECT_EQ(cen::pixel_format::rgb444, SDL_PIXELFORMAT_RGB444);
+    EXPECT_EQ(cen::pixel_format::bgr444, SDL_PIXELFORMAT_BGR444);
     EXPECT_EQ(cen::pixel_format::rgb555, SDL_PIXELFORMAT_RGB555);
     EXPECT_EQ(cen::pixel_format::bgr555, SDL_PIXELFORMAT_BGR555);
 
@@ -158,6 +159,7 @@ TEST(PixelFormat, Values)
 
     EXPECT_EQ(SDL_PIXELFORMAT_RGB332, cen::pixel_format::rgb332);
     EXPECT_EQ(SDL_PIXELFORMAT_RGB444, cen::pixel_format::rgb444);
+    EXPECT_EQ(SDL_PIXELFORMAT_BGR444, cen::pixel_format::bgr444);
     EXPECT_EQ(SDL_PIXELFORMAT_RGB555, cen::pixel_format::rgb555);
     EXPECT_EQ(SDL_PIXELFORMAT_BGR555, cen::pixel_format::bgr555);
 

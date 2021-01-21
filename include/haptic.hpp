@@ -630,6 +630,14 @@ class basic_haptic final  // TODO RtD entry
   /// \name Effects
   /// \{
 
+  // TODO SDL_HapticDestroyEffect     -> destroy_effect
+  // TODO SDL_HapticGetEffectStatus   -> effect_status
+  // TODO SDL_HapticSetGain           -> set_gain
+  // TODO SDL_HapticSetAutocenter     -> set_autocenter
+  // TODO SDL_HapticPause             -> pause
+  // TODO SDL_HapticUnpause           -> unpause
+  // TODO SDL_HapticStopAll           -> stop_all
+
   template <typename D>
   auto add(const haptic_effect<D>& effect) noexcept -> std::optional<int>
   {

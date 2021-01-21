@@ -44,9 +44,30 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+// TODO consistency: noexcept-specifier when using duration::count()?
 
 namespace cen {
 
+// Features:
+//  - SDL_HAPTIC_CONSTANT
+//  - SDL_HAPTIC_SINE
+//  - SDL_HAPTIC_LEFTRIGHT
+//  - SDL_HAPTIC_TRIANGLE
+//  - SDL_HAPTIC_SAWTOOTHUP
+//  - SDL_HAPTIC_SAWTOOTHDOWN
+//  - SDL_HAPTIC_RAMP
+//  - SDL_HAPTIC_SPRING
+//  - SDL_HAPTIC_DAMPER
+//  - SDL_HAPTIC_INERTIA
+//  - SDL_HAPTIC_FRICTION
+//  - SDL_HAPTIC_CUSTOM
+//  - SDL_HAPTIC_GAIN
+//  - SDL_HAPTIC_AUTOCENTER
+//  - SDL_HAPTIC_STATUS
+//  - SDL_HAPTIC_PAUSE
+//  - ?? SDL_HAPTIC_POLAR ??
+//  - ?? SDL_HAPTIC_CARTESIAN ??
+//  - ?? SDL_HAPTIC_SPHERICAL ??
 
 enum class haptic_feature  // TODO verify that these are all of the "features"
 {

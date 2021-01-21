@@ -2,91 +2,97 @@
 
 #include <gtest/gtest.h>
 
+#include "typed_test_macros.hpp"
+
 using namespace cen::literals;
 
-namespace {
+using all_effects = testing::Types<cen::haptic_constant,
+                                   cen::haptic_periodic,
+                                   cen::haptic_condition,
+                                   cen::haptic_ramp,
+                                   cen::haptic_left_right,
+                                   cen::haptic_custom>;
 
-template <typename Effect>
-void test_common()
+CENTURION_DEFINE_TYPED_TEST(HapticCommonTest, all_effects)
 {
-  Effect effect;
+  TypeParam effect;
 
-  EXPECT_EQ(0_ms, effect.interval());
-  EXPECT_EQ(0, effect.button());
+  if constexpr (TypeParam::hasTrigger) {
+    effect.set_button(3u);
+    EXPECT_EQ(3u, effect.button());
 
-  if constexpr (Effect::hasEnvelope) {
-    EXPECT_EQ(0_ms, effect.attack_duration());
-    EXPECT_EQ(0_ms, effect.fade_duration());
-    EXPECT_EQ(0, effect.fade_level());
-    EXPECT_EQ(0, effect.attack_level());
+    effect.set_interval(42_ms);
+    EXPECT_EQ(42_ms, effect.interval());
   }
 
-  effect.set_interval(42_ms);
-  EXPECT_EQ(42_ms, effect.interval());
-
-  effect.set_button(3u);
-  EXPECT_EQ(3u, effect.button());
-
-  if constexpr (Effect::hasEnvelope) {
+  if constexpr (TypeParam::hasEnvelope) {
     effect.set_attack_duration(12_ms);
     EXPECT_EQ(12_ms, effect.attack_duration());
+
+    effect.set_attack_level(1'000);
+    EXPECT_EQ(1'000, effect.attack_level());
 
     effect.set_fade_duration(27_ms);
     EXPECT_EQ(27_ms, effect.fade_duration());
 
     effect.set_fade_level(3'000);
     EXPECT_EQ(3'000, effect.fade_level());
-
-    effect.set_attack_level(1'000);
-    EXPECT_EQ(1'000, effect.attack_level());
   }
 }
 
-template <typename Effect>
-void test_replay()
+using envelope_effects = testing::Types<cen::haptic_constant,
+                                        cen::haptic_periodic,
+                                        cen::haptic_ramp,
+                                        cen::haptic_custom>;
+
+CENTURION_DEFINE_TYPED_TEST(HapticEnvelopeTest, envelope_effects)
 {
-  Effect effect;
+  TypeParam effect;
 
-  EXPECT_EQ(0_ms, effect.delay());
-  EXPECT_EQ(0_ms, effect.duration());
-
-  effect.set_delay(1'337_ms);
-  EXPECT_EQ(1'337_ms, effect.delay());
-
-  effect.set_duration(100_ms);
-  EXPECT_EQ(100_ms, effect.duration());
-}
-
-}  // namespace
-
-TEST(HapticEffect, CommonAPI)
-{
-  cen::haptic_constant effect;
-
-  effect.set_button(3u);
-  EXPECT_EQ(3u, effect.button());
-
-  effect.set_interval(42_ms);
-  EXPECT_EQ(42_ms, effect.interval());
+  EXPECT_EQ(0_ms, effect.attack_duration());
+  EXPECT_EQ(0_ms, effect.fade_duration());
+  EXPECT_EQ(0, effect.fade_level());
+  EXPECT_EQ(0, effect.attack_level());
 
   effect.set_attack_duration(12_ms);
   EXPECT_EQ(12_ms, effect.attack_duration());
-
-  effect.set_attack_level(1'000);
-  EXPECT_EQ(1'000, effect.attack_level());
 
   effect.set_fade_duration(27_ms);
   EXPECT_EQ(27_ms, effect.fade_duration());
 
   effect.set_fade_level(3'000);
   EXPECT_EQ(3'000, effect.fade_level());
+
+  effect.set_attack_level(1'000);
+  EXPECT_EQ(1'000, effect.attack_level());
 }
+
+using trigger_effects = testing::Types<cen::haptic_constant,
+                                       cen::haptic_periodic,
+                                       cen::haptic_condition,
+                                       cen::haptic_ramp,
+                                       cen::haptic_custom>;
+
+CENTURION_DEFINE_TYPED_TEST(HapticTriggerTest, trigger_effects)
+{
+  TypeParam effect;
+
+  EXPECT_EQ(0_ms, effect.interval());
+  EXPECT_EQ(0, effect.button());
+
+  effect.set_interval(42_ms);
+  EXPECT_EQ(42_ms, effect.interval());
+
+  effect.set_button(3u);
+  EXPECT_EQ(3u, effect.button());
+}
+
+CENTURION_REGISTER_TYPED_TEST(HapticCommonTest, all_effects);
+CENTURION_REGISTER_TYPED_TEST(HapticEnvelopeTest, envelope_effects);
+CENTURION_REGISTER_TYPED_TEST(HapticTriggerTest, trigger_effects);
 
 TEST(HapticConstant, Defaults)
 {
-  test_common<cen::haptic_constant>();
-  test_replay<cen::haptic_constant>();
-
   cen::haptic_constant effect;
   EXPECT_EQ(SDL_HAPTIC_CONSTANT, effect.type());
 
@@ -99,9 +105,6 @@ TEST(HapticConstant, Defaults)
 
 TEST(HapticPeriodic, Defaults)
 {
-  test_common<cen::haptic_periodic>();
-  test_replay<cen::haptic_periodic>();
-
   cen::haptic_periodic effect;
   EXPECT_EQ(SDL_HAPTIC_SINE, effect.type());
   EXPECT_EQ(cen::haptic_periodic::sine, effect.type());
@@ -142,9 +145,6 @@ TEST(HapticPeriodic, Defaults)
 
 TEST(HapticRamp, Defaults)
 {
-  test_common<cen::haptic_ramp>();
-  test_replay<cen::haptic_ramp>();
-
   cen::haptic_ramp effect;
   EXPECT_EQ(SDL_HAPTIC_RAMP, effect.type());
 
@@ -157,8 +157,6 @@ TEST(HapticRamp, Defaults)
 
 TEST(HapticCustom, Defaults)
 {
-  test_common<cen::haptic_custom>();
-
   cen::haptic_custom effect;
   EXPECT_EQ(SDL_HAPTIC_CUSTOM, effect.type());
 
@@ -179,9 +177,8 @@ TEST(HapticCustom, Defaults)
 
 TEST(HapticCondition, Defaults)
 {
-  test_common<cen::haptic_condition>();
-
   cen::haptic_condition effect;
+  EXPECT_EQ(cen::haptic_condition::spring, effect.type());
 
   effect.set_joystick_positive_level({1, 2, 3});
   EXPECT_EQ(1, effect.joystick_positive_level().x);
@@ -217,4 +214,16 @@ TEST(HapticCondition, Defaults)
   EXPECT_EQ(SDL_HAPTIC_DAMPER, cen::haptic_condition::damper);
   EXPECT_EQ(SDL_HAPTIC_INERTIA, cen::haptic_condition::inertia);
   EXPECT_EQ(SDL_HAPTIC_FRICTION, cen::haptic_condition::friction);
+}
+
+TEST(HapticLeftRight, Defaults)
+{
+  cen::haptic_left_right effect;
+  EXPECT_EQ(SDL_HAPTIC_LEFTRIGHT, effect.type());
+
+  effect.set_large_magnitude(27u);
+  EXPECT_EQ(27u, effect.large_magnitude());
+
+  effect.set_small_magnitude(182u);
+  EXPECT_EQ(182u, effect.small_magnitude());
 }

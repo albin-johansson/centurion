@@ -96,6 +96,9 @@ class haptic_effect
   template <typename T>
   using has_envelope = std::enable_if_t<T::hasEnvelope, bool>;
 
+  template <typename T>
+  using has_trigger = std::enable_if_t<T::hasTrigger, bool>;
+
  public:
   /// \name Replay functions
   /// \{
@@ -127,23 +130,27 @@ class haptic_effect
   /// \name Trigger functions
   /// \{
 
+  template <typename D = Derived, has_trigger<D> = true>
   void set_button(const u16 button) noexcept
   {
     rep().button = button;
   }
 
+  template <typename D = Derived, has_trigger<D> = true>
   void set_interval(const milliseconds<u16> ms)
   {
     rep().interval = ms.count();
   }
 
   // Button that triggers effect.
+  template <typename D = Derived, has_trigger<D> = true>
   [[nodiscard]] auto button() const noexcept -> u16
   {
     return rep().button;
   }
 
   // How soon before effect can be triggered again.
+  template <typename D = Derived, has_trigger<D> = true>
   [[nodiscard]] auto interval() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().interval};
@@ -254,6 +261,7 @@ class haptic_constant final : public haptic_effect<haptic_constant>
 {
  public:
   inline constexpr static bool hasEnvelope = true;
+  inline constexpr static bool hasTrigger = true;
 
   /**
    * \brief Creates a constant haptic effect.
@@ -282,6 +290,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
  public:
   inline constexpr static bool hasEnvelope = true;
+  inline constexpr static bool hasTrigger = true;
 
   enum periodic_type : u16
   {
@@ -370,6 +379,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
  public:
   inline constexpr static bool hasEnvelope = true;
+  inline constexpr static bool hasTrigger = true;
 
   /**
    * \brief Creates a haptic ramp effect.
@@ -419,6 +429,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
 {
  public:
   inline constexpr static bool hasEnvelope = true;
+  inline constexpr static bool hasTrigger = true;
 
   /**
    * \brief Creates a haptic custom effect.
@@ -488,6 +499,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
 {
  public:
   inline constexpr static bool hasEnvelope = false;
+  inline constexpr static bool hasTrigger = true;
 
   enum condition_type : u32
   {
@@ -601,6 +613,52 @@ class haptic_condition final : public haptic_effect<haptic_condition>
       -> const SDL_HapticCondition&
   {
     return m_effect.condition;
+  }
+};
+
+class haptic_left_right final : public haptic_effect<haptic_left_right>
+{
+ public:
+  inline constexpr static bool hasEnvelope = false;
+  inline constexpr static bool hasTrigger = false;
+
+  haptic_left_right() noexcept
+  {
+    m_effect.leftright = {};
+    representation().type = SDL_HAPTIC_LEFTRIGHT;
+  }
+
+  // Control of the large controller motor.
+  void set_large_magnitude(const u16 magnitude) noexcept
+  {
+    representation().large_magnitude = magnitude;
+  }
+
+  // Control of the small controller motor.
+  void set_small_magnitude(const u16 magnitude) noexcept
+  {
+    representation().small_magnitude = magnitude;
+  }
+
+  [[nodiscard]] auto large_magnitude() const noexcept -> u16
+  {
+    return representation().large_magnitude;
+  }
+
+  [[nodiscard]] auto small_magnitude() const noexcept -> u16
+  {
+    return representation().small_magnitude;
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticLeftRight&
+  {
+    return m_effect.leftright;
+  }
+
+  [[nodiscard]] auto representation() const noexcept
+      -> const SDL_HapticLeftRight&
+  {
+    return m_effect.leftright;
   }
 };
 

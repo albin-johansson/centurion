@@ -476,6 +476,21 @@ class haptic_effect
   }
 };
 
+/**
+ * \class haptic_constant
+ *
+ * \brief Represents a haptic effect that applies a constant force in some
+ * direction.
+ *
+ * \note See the SDL documentation for `SDL_HapticConstant` for much more
+ * detailed related documentation.
+ *
+ * \see SDL_HapticConstant
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_constant final : public haptic_effect<haptic_constant>
 {
  public:
@@ -516,6 +531,20 @@ class haptic_constant final : public haptic_effect<haptic_constant>
   }
 };
 
+/**
+ * \class haptic_periodic
+ *
+ * \brief Represents a wave-shaped haptic effect that repeats itself over time.
+ *
+ * \note See the SDL documentation for `SDL_HapticPeriodic` for much more
+ * detailed related documentation.
+ *
+ * \see SDL_HapticPeriodic
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
  public:
@@ -616,6 +645,20 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   }
 };
 
+/**
+ * \class haptic_ramp
+ *
+ * \brief Represents a linear or quadratic haptic effect.
+ *
+ * \note See the SDL documentation for `SDL_HapticRamp` for much more detailed
+ * related documentation.
+ *
+ * \see SDL_HapticRamp
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
  public:
@@ -677,6 +720,20 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
   }
 };
 
+/**
+ * \class haptic_custom
+ *
+ * \brief Represents a custom haptic effect, similar to a periodic effect.
+ *
+ * \note See the SDL documentation for `SDL_HapticCustom` for much more detailed
+ * related documentation.
+ *
+ * \see SDL_HapticCustom
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_custom final : public haptic_effect<haptic_custom>
 {
  public:
@@ -758,6 +815,20 @@ class haptic_custom final : public haptic_effect<haptic_custom>
   }
 };
 
+/**
+ * \class haptic_condition
+ *
+ * \brief Represents an axes-based haptic effect.
+ *
+ * \note See the SDL documentation for `SDL_HapticCondition` for much more
+ * detailed related documentation.
+ *
+ * \see SDL_HapticCondition
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_condition final : public haptic_effect<haptic_condition>
 {
  public:
@@ -890,6 +961,21 @@ class haptic_condition final : public haptic_effect<haptic_condition>
   }
 };
 
+/**
+ * \class haptic_left_right
+ *
+ * \brief Represents a haptic effect based on controlling the large and small
+ * motors featured in many modern game controllers.
+ *
+ * \note See the SDL documentation for `SDL_HapticLeftRight` for much more
+ * detailed related documentation.
+ *
+ * \see SDL_HapticLeftRight
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 class haptic_left_right final : public haptic_effect<haptic_left_right>
 {
  public:

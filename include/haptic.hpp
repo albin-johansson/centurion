@@ -28,10 +28,13 @@
 #include <SDL.h>
 
 #include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
 #include <type_traits>  // true_type, false_type, enable_if_t
 
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
+#include "detail/address_of.hpp"
 #include "detail/clamp.hpp"
 #include "detail/max.hpp"
 #include "detail/owner_handle_api.hpp"
@@ -48,6 +51,9 @@
 // TODO consistency: noexcept-specifier when using duration::count()?
 
 namespace cen {
+
+/// \addtogroup input
+/// \{
 
 //  - SDL_HAPTIC_CONSTANT
 //  - SDL_HAPTIC_SINE
@@ -1533,6 +1539,20 @@ class basic_haptic final  // TODO RtD entry
     return SDL_HapticOpened(index);
   }
 
+  /**
+   * \brief Returns a pointer to the internal representation.
+   *
+   * \warning Don't claim ownership of the returned pointer!
+   *
+   * \return a pointer to the internal representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Haptic*
+  {
+    return m_haptic.get();
+  }
+
  private:
   struct deleter final
   {
@@ -1581,6 +1601,48 @@ class basic_haptic final  // TODO RtD entry
     return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
   }
 };
+
+/**
+ * \brief Returns a textual representation of a haptic device.
+ *
+ * \tparam B the ownership semantics parameter for the haptic type.
+ *
+ * \param haptic the haptic device that will be converted.
+ *
+ * \return a string that represents a haptic device.
+ *
+ * \since 5.2.0
+ */
+template <typename B>
+[[nodiscard]] auto to_string(const basic_haptic<B>& haptic) -> std::string
+{
+  const auto* name = haptic.name();
+  const auto nameStr = name ? std::string{name} : std::string{"N/A"};
+  return "[haptic | data: " + detail::address_of(haptic.get()) +
+         ", name: " + nameStr + "]";
+}
+
+/**
+ * \brief Prints a textual representation of a haptic device using a stream.
+ *
+ * \tparam B the ownership semantics parameter for the haptic type.
+ *
+ * \param stream the stream that will be used.
+ * \param haptic the haptic device that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 5.2.0
+ */
+template <typename B>
+auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic)
+    -> std::ostream&
+{
+  stream << to_string(haptic);
+  return stream;
+}
+
+/// \} End of input group
 
 }  // namespace cen
 

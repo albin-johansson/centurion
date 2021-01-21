@@ -28,7 +28,7 @@
 #include <SDL.h>
 
 #include <optional>     // optional
-#include <type_traits>  // true_type, false_type
+#include <type_traits>  // true_type, false_type, enable_if_t
 
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
@@ -99,6 +99,9 @@ class haptic_effect
   template <typename T>
   using has_trigger = std::enable_if_t<T::hasTrigger, bool>;
 
+  template <typename T>
+  using has_delay = std::enable_if_t<T::hasDelay, bool>;
+
  public:
   /// \name Replay functions
   /// \{
@@ -108,6 +111,7 @@ class haptic_effect
     rep().length = ms.count();
   }
 
+  template <typename D = Derived, has_delay<D> = true>
   void set_delay(const milliseconds<u16> ms)
   {
     rep().delay = ms.count();
@@ -120,6 +124,7 @@ class haptic_effect
   }
 
   // Delay before starting effect.
+  template <typename D = Derived, has_delay<D> = true>
   [[nodiscard]] auto delay() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().delay};
@@ -262,6 +267,7 @@ class haptic_constant final : public haptic_effect<haptic_constant>
  public:
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
+  inline constexpr static bool hasDelay = true;
 
   /**
    * \brief Creates a constant haptic effect.
@@ -291,6 +297,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
  public:
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
+  inline constexpr static bool hasDelay = true;
 
   enum periodic_type : u16
   {
@@ -380,6 +387,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
  public:
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
+  inline constexpr static bool hasDelay = true;
 
   /**
    * \brief Creates a haptic ramp effect.
@@ -430,6 +438,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
  public:
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
+  inline constexpr static bool hasDelay = true;
 
   /**
    * \brief Creates a haptic custom effect.
@@ -500,6 +509,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
  public:
   inline constexpr static bool hasEnvelope = false;
   inline constexpr static bool hasTrigger = true;
+  inline constexpr static bool hasDelay = true;
 
   enum condition_type : u32
   {
@@ -621,6 +631,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
  public:
   inline constexpr static bool hasEnvelope = false;
   inline constexpr static bool hasTrigger = false;
+  inline constexpr static bool hasDelay = false;
 
   haptic_left_right() noexcept
   {

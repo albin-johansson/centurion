@@ -17,27 +17,22 @@ CENTURION_DEFINE_TYPED_TEST(HapticCommonTest, all_effects)
 {
   TypeParam effect;
 
-  if constexpr (TypeParam::hasTrigger) {
-    effect.set_button(3u);
-    EXPECT_EQ(3u, effect.button());
+  effect.set_duration(12_ms);
+  EXPECT_EQ(12_ms, effect.duration());
+}
 
-    effect.set_interval(42_ms);
-    EXPECT_EQ(42_ms, effect.interval());
-  }
+using delay_effects = testing::Types<cen::haptic_constant,
+                                     cen::haptic_periodic,
+                                     cen::haptic_condition,
+                                     cen::haptic_ramp,
+                                     cen::haptic_custom>;
 
-  if constexpr (TypeParam::hasEnvelope) {
-    effect.set_attack_duration(12_ms);
-    EXPECT_EQ(12_ms, effect.attack_duration());
+CENTURION_DEFINE_TYPED_TEST(HapticDelayTest, delay_effects)
+{
+  TypeParam effect;
 
-    effect.set_attack_level(1'000);
-    EXPECT_EQ(1'000, effect.attack_level());
-
-    effect.set_fade_duration(27_ms);
-    EXPECT_EQ(27_ms, effect.fade_duration());
-
-    effect.set_fade_level(3'000);
-    EXPECT_EQ(3'000, effect.fade_level());
-  }
+  effect.set_delay(278_ms);
+  EXPECT_EQ(278_ms, effect.delay());
 }
 
 using envelope_effects = testing::Types<cen::haptic_constant,
@@ -88,6 +83,7 @@ CENTURION_DEFINE_TYPED_TEST(HapticTriggerTest, trigger_effects)
 }
 
 CENTURION_REGISTER_TYPED_TEST(HapticCommonTest, all_effects);
+CENTURION_REGISTER_TYPED_TEST(HapticDelayTest, envelope_effects);
 CENTURION_REGISTER_TYPED_TEST(HapticEnvelopeTest, envelope_effects);
 CENTURION_REGISTER_TYPED_TEST(HapticTriggerTest, trigger_effects);
 

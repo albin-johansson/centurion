@@ -69,6 +69,14 @@ namespace cen {
 //  - ?? SDL_HAPTIC_CARTESIAN ??
 //  - ?? SDL_HAPTIC_SPHERICAL ??
 
+template <typename T>
+struct vector3 final
+{
+  T x{};
+  T y{};
+  T z{};
+};
+
 enum class haptic_feature  // TODO verify that these are all of the "features"
 {
   constant = SDL_HAPTIC_CONSTANT,
@@ -92,99 +100,124 @@ enum class haptic_feature  // TODO verify that these are all of the "features"
 template <typename Derived>
 class haptic_effect
 {
+  template <typename T>
+  using has_envelope = std::enable_if_t<T::hasEnvelope, bool>;
+
  public:
+  /// \name Replay functions
+  /// \{
 
   void set_duration(const milliseconds<u32> ms)
   {
-    representation().length = ms.count();
+    rep().length = ms.count();
   }
 
   void set_delay(const milliseconds<u16> ms)
   {
-    representation().delay = ms.count();
-  }
-
-  void set_interval(const milliseconds<u16> ms)
-  {
-    representation().interval = ms.count();
-  }
-
-  void set_attack_duration(const milliseconds<u16> ms)
-  {
-    representation().attack_length = ms.count();
-  }
-
-  void set_fade_duration(const milliseconds<u16> ms)
-  {
-    representation().fade_length = ms.count();
-  }
-
-  void set_button(const u16 button) noexcept
-  {
-    representation().button = button;
-  }
-
-  void set_attack_level(const u16 level) noexcept
-  {
-    representation().attack_level = level;
-  }
-
-  void set_fade_level(const u16 level) noexcept
-  {
-    representation().fade_level = level;
+    rep().delay = ms.count();
   }
 
   // Duration of effect (ms).
   [[nodiscard]] auto duration() const -> milliseconds<u32>
   {
-    return milliseconds<u32>{representation().length};
+    return milliseconds<u32>{rep().length};
   }
 
   // Delay before starting effect.
   [[nodiscard]] auto delay() const -> milliseconds<u16>
   {
-    return milliseconds<u16>{representation().delay};
+    return milliseconds<u16>{rep().delay};
   }
 
-  // How soon before effect can be triggered again.
-  [[nodiscard]] auto interval() const -> milliseconds<u16>
+  /// \} End of replay functions
+
+  /// \name Trigger functions
+  /// \{
+
+  void set_button(const u16 button) noexcept
   {
-    return milliseconds<u16>{representation().interval};
+    rep().button = button;
   }
 
-  // Duration of the attack.
-  [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
+  void set_interval(const milliseconds<u16> ms)
   {
-    return milliseconds<u16>{representation().attack_length};
-  }
-
-  // Duration of the fade out.
-  [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
-  {
-    return milliseconds<u16>{representation().fade_length};
+    rep().interval = ms.count();
   }
 
   // Button that triggers effect.
   [[nodiscard]] auto button() const noexcept -> u16
   {
-    return representation().button;
+    return rep().button;
+  }
+
+  // How soon before effect can be triggered again.
+  [[nodiscard]] auto interval() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{rep().interval};
+  }
+
+  /// \} End of trigger functions
+
+  /// \name Envelope functions
+  /// \{
+
+  template <typename D = Derived, has_envelope<D> = true>
+  void set_attack_level(const u16 level) noexcept
+  {
+    rep().attack_level = level;
+  }
+
+  template <typename D = Derived, has_envelope<D> = true>
+  void set_fade_level(const u16 level) noexcept
+  {
+    rep().fade_level = level;
+  }
+
+  template <typename D = Derived, has_envelope<D> = true>
+  void set_attack_duration(const milliseconds<u16> ms)
+  {
+    rep().attack_length = ms.count();
+  }
+
+  template <typename D = Derived, has_envelope<D> = true>
+  void set_fade_duration(const milliseconds<u16> ms)
+  {
+    rep().fade_length = ms.count();
   }
 
   // Level at the start of the attack.
+  template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto attack_level() const noexcept -> u16
   {
-    return representation().attack_level;
+    return rep().attack_level;
   }
 
   // Level at the end of the fade.
+  template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto fade_level() const noexcept -> u16
   {
-    return representation().fade_level;
+    return rep().fade_level;
   }
+
+  // Duration of the attack.
+  template <typename D = Derived, has_envelope<D> = true>
+  [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{rep().attack_length};
+  }
+
+  // Duration of the fade out.
+  template <typename D = Derived, has_envelope<D> = true>
+  [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{rep().fade_length};
+  }
+
+  /// \} End of envelope functions
 
   [[nodiscard]] auto type() const noexcept -> u16
   {
-    return representation().type;
+    return rep().type;
   }
 
   // TODO SDL_HapticDirection
@@ -213,12 +246,12 @@ class haptic_effect
     return static_cast<const Derived*>(this);
   }
 
-  [[nodiscard]] auto representation() noexcept -> auto&
+  [[nodiscard]] auto rep() noexcept -> auto&
   {
     return derived()->representation();
   }
 
-  [[nodiscard]] auto representation() const noexcept -> const auto&
+  [[nodiscard]] auto rep() const noexcept -> const auto&
   {
     return derived()->representation();
   }
@@ -227,6 +260,8 @@ class haptic_effect
 class haptic_constant final : public haptic_effect<haptic_constant>
 {
  public:
+  inline constexpr static bool hasEnvelope = true;
+
   /**
    * \brief Creates a constant haptic effect.
    *
@@ -253,6 +288,8 @@ class haptic_constant final : public haptic_effect<haptic_constant>
 class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
  public:
+  inline constexpr static bool hasEnvelope = true;
+
   enum periodic_type : u16
   {
     sine = SDL_HAPTIC_SINE,
@@ -339,6 +376,8 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
 class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
  public:
+  inline constexpr static bool hasEnvelope = true;
+
   /**
    * \brief Creates a haptic ramp effect.
    *
@@ -386,6 +425,8 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
 class haptic_custom final : public haptic_effect<haptic_custom>
 {
  public:
+  inline constexpr static bool hasEnvelope = true;
+
   /**
    * \brief Creates a haptic custom effect.
    *
@@ -447,6 +488,126 @@ class haptic_custom final : public haptic_effect<haptic_custom>
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCustom&
   {
     return m_effect.custom;
+  }
+};
+
+class haptic_condition final : public haptic_effect<haptic_condition>
+{
+ public:
+  inline constexpr static bool hasEnvelope = false;
+
+  enum condition_type : u32
+  {
+    spring = SDL_HAPTIC_SPRING,     ///< Based on axes position.
+    damper = SDL_HAPTIC_DAMPER,     ///< Based on axes velocity.
+    inertia = SDL_HAPTIC_INERTIA,   ///< Based on axes acceleration.
+    friction = SDL_HAPTIC_FRICTION  ///< Based on axes movement.
+  };
+
+  explicit haptic_condition(const condition_type type = spring) noexcept
+  {
+    m_effect.condition = {};
+    set_type(type);
+  }
+
+  void set_type(const condition_type type) noexcept
+  {
+    representation().type = type;
+  }
+
+  /// Level when joystick is to the positive side; max 0xFFFF.
+  void set_joystick_positive_level(const vector3<u16>& level) noexcept
+  {
+    representation().right_sat[0] = level.x;
+    representation().right_sat[1] = level.y;
+    representation().right_sat[2] = level.z;
+  }
+
+  /// Level when joystick is to the negative side; max 0xFFFF.
+  void set_joystick_negative_level(const vector3<u16>& level) noexcept
+  {
+    representation().left_sat[0] = level.x;
+    representation().left_sat[1] = level.y;
+    representation().left_sat[2] = level.z;
+  }
+
+  /// How fast to increase the force towards the positive side.
+  void set_force_rate_positive(const vector3<i16>& rate) noexcept
+  {
+    representation().right_coeff[0] = rate.x;
+    representation().right_coeff[1] = rate.y;
+    representation().right_coeff[2] = rate.z;
+  }
+
+  // How fast to increase the force towards the negative side.
+  void set_force_rate_negative(const vector3<i16>& rate) noexcept
+  {
+    representation().left_coeff[0] = rate.x;
+    representation().left_coeff[1] = rate.y;
+    representation().left_coeff[2] = rate.z;
+  }
+
+  /// Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.
+  void set_deadband(const vector3<u16>& size) noexcept
+  {
+    representation().deadband[0] = size.x;
+    representation().deadband[1] = size.y;
+    representation().deadband[2] = size.z;
+  }
+
+  /// Position of the dead zone.
+  void set_center(const vector3<i16>& center) noexcept
+  {
+    representation().center[0] = center.x;
+    representation().center[1] = center.y;
+    representation().center[2] = center.z;
+  }
+
+  [[nodiscard]] auto joystick_positive_level() const noexcept -> vector3<u16>
+  {
+    const auto& level = representation().right_sat;
+    return {level[0], level[1], level[2]};
+  }
+
+  [[nodiscard]] auto joystick_negative_level() const noexcept -> vector3<u16>
+  {
+    const auto& level = representation().left_sat;
+    return {level[0], level[1], level[2]};
+  }
+
+  [[nodiscard]] auto force_rate_positive() const noexcept -> vector3<i16>
+  {
+    const auto& rate = representation().right_coeff;
+    return {rate[0], rate[1], rate[2]};
+  }
+
+  [[nodiscard]] auto force_rate_negative() const noexcept -> vector3<i16>
+  {
+    const auto& rate = representation().left_coeff;
+    return {rate[0], rate[1], rate[2]};
+  }
+
+  [[nodiscard]] auto deadband() const noexcept -> vector3<u16>
+  {
+    const auto& band = representation().deadband;
+    return {band[0], band[1], band[2]};
+  }
+
+  [[nodiscard]] auto center() const noexcept -> vector3<i16>
+  {
+    const auto& center = representation().center;
+    return {center[0], center[1], center[2]};
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticCondition&
+  {
+    return m_effect.condition;
+  }
+
+  [[nodiscard]] auto representation() const noexcept
+      -> const SDL_HapticCondition&
+  {
+    return m_effect.condition;
   }
 };
 

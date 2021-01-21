@@ -4,21 +4,6 @@
 
 #include <string>
 
-TEST(Platform, Id)
-{
-  EXPECT_NO_THROW(cen::platform::id());
-
-#ifdef __WIN32
-  EXPECT_EQ(cen::platform::platform_id::windows, cen::platform::id());
-#elif __APPLE__
-  EXPECT_EQ(cen::platform::platform_id::mac_osx, cen::platform::id());
-#elif __linux__
-  EXPECT_EQ(cen::platform::platform_id::linuxx, cen::platform::id());
-#elif __ANDROID__
-  EXPECT_EQ(cen::platform::platform_id::android, cen::platform::id());
-#endif
-}
-
 TEST(Platform, IsWindows)
 {
   EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::windows,

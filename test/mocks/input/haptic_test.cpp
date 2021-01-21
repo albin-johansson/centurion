@@ -3,7 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include <array>  // array
+#include <array>     // array
+#include <iostream>  // cout
 
 #include "core_mocks.hpp"
 
@@ -526,4 +527,10 @@ TEST_F(HapticTest, IsSupported)
   EXPECT_TRUE(m_haptic.is_supported(effect));
 
   EXPECT_EQ(3, SDL_HapticEffectSupported_fake.call_count);
+}
+
+TEST_F(HapticTest, StreamOperator)
+{
+  SDL_HapticName_fake.return_val = "foo";
+  std::cout << "COUT: " << m_haptic << '\n';
 }

@@ -33,6 +33,7 @@
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
 #include "detail/clamp.hpp"
+#include "detail/max.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"
 #include "integers.hpp"
@@ -211,7 +212,7 @@ class haptic_constant final : public haptic_effect<haptic_constant>
   haptic_constant() noexcept
   {
     m_effect.constant = {};
-    m_effect.constant.type = SDL_HAPTIC_CONSTANT;
+    representation().type = SDL_HAPTIC_CONSTANT;
   }
 
   [[nodiscard]] auto representation() noexcept -> SDL_HapticConstant&
@@ -241,14 +242,14 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \brief Creates a periodic haptic effect.
    *
-   * \details The type of the effects defaults to `SDL_HAPTIC_SINE`.
+   * \details The type of the effects defaults to `sine`.
    *
    * \since 5.2.0
    */
   haptic_periodic() noexcept
   {
     m_effect.periodic = {};
-    m_effect.periodic.type = SDL_HAPTIC_SINE;
+    representation().type = SDL_HAPTIC_SINE;
   }
 
   void set_type(const periodic_type type) noexcept
@@ -323,7 +324,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
   haptic_ramp() noexcept
   {
     m_effect.ramp = {};
-    m_effect.ramp.type = SDL_HAPTIC_RAMP;
+    representation().type = SDL_HAPTIC_RAMP;
   }
 
   // Beginning strength level.
@@ -358,6 +359,74 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
     return m_effect.ramp;
   }
 };
+
+class haptic_custom final : public haptic_effect<haptic_custom>
+{
+ public:
+  /**
+   * \brief Creates a haptic custom effect.
+   *
+   * \since 5.2.0
+   */
+  haptic_custom() noexcept
+  {
+    m_effect.custom = {};
+    representation().type = SDL_HAPTIC_CUSTOM;
+  }
+
+  // Axes to use, minimum of one.
+  void set_axis_count(const u8 count) noexcept
+  {
+    representation().channels = detail::max(u8{1}, count);
+  }
+
+  void set_sample_period(const milliseconds<u16> ms)
+  {
+    representation().period = ms.count();
+  }
+
+  // Amount of samples.
+  void set_sample_count(const u16 count) noexcept
+  {
+    representation().samples = count;
+  }
+
+  void set_data(u16* data) noexcept
+  {
+    representation().data = data;
+  }
+
+  [[nodiscard]] auto axis_count() const noexcept -> u8
+  {
+    return representation().channels;
+  }
+
+  [[nodiscard]] auto sample_period() const -> milliseconds<u16>
+  {
+    return milliseconds<u16>{representation().period};
+  }
+
+  [[nodiscard]] auto sample_count() const noexcept -> u16
+  {
+    return representation().samples;
+  }
+
+  [[nodiscard]] auto data() const noexcept -> u16*
+  {
+    return representation().data;
+  }
+
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticCustom&
+  {
+    return m_effect.custom;
+  }
+
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCustom&
+  {
+    return m_effect.custom;
+  }
+};
+
 template <typename B>
 class basic_haptic;
 

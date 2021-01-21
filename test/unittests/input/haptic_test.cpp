@@ -139,3 +139,25 @@ TEST(HapticRamp, Defaults)
   effect.set_end_strength(4'321);
   EXPECT_EQ(4'321, effect.end_strength());
 }
+
+TEST(HapticCustom, Defaults)
+{
+  test_common<cen::haptic_custom>();
+
+  cen::haptic_custom effect;
+  EXPECT_EQ(SDL_HAPTIC_CUSTOM, effect.type());
+
+  effect.set_axis_count(123u);
+  EXPECT_EQ(123u, effect.axis_count());
+
+  effect.set_sample_period(27_ms);
+  EXPECT_EQ(27_ms, effect.sample_period());
+
+  effect.set_sample_count(42);
+  EXPECT_EQ(42, effect.sample_count());
+
+  cen::u16 data{12};
+  effect.set_data(&data);
+  ASSERT_TRUE(effect.data());
+  EXPECT_EQ(data, *effect.data());
+}

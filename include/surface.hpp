@@ -285,6 +285,23 @@ class basic_surface final
   }
 
   /**
+   * \brief Sets the value of the RLE acceleration hint.
+   *
+   * \param enabled `true` if the RLE optimization hint should be enabled;
+   * `false` otherwise.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \see is_rle_enabled()
+   *
+   * \since 5.2.0
+   */
+  auto set_rle_hint(const bool enabled) noexcept -> bool
+  {
+    return SDL_SetSurfaceRLE(m_surface, enabled ? 1 : 0) == 0;
+  }
+
+  /**
    * \brief Returns the alpha component modulation of the surface.
    *
    * \return the alpha modulation value, in the range [0, 255].
@@ -452,6 +469,22 @@ class basic_surface final
     const auto rect = m_surface->clip_rect;
     return {{rect.x, rect.y}, {rect.w, rect.h}};
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the surface is RLE-enabled.
+   *
+   * \return `true` if the surface is RLE-enabled; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto is_rle_enabled() const noexcept -> bool
+  {
+    return SDL_HasSurfaceRLE(m_surface) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Returns a pointer to the associated `SDL_Surface`.

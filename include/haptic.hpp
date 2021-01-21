@@ -464,7 +464,7 @@ using haptic_handle = basic_haptic<std::false_type>;
  * \headerfile haptic.hpp
  */
 template <typename B>
-class basic_haptic final
+class basic_haptic final  // TODO RtD entry
 {
  public:
   /// \name Construction

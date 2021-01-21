@@ -49,7 +49,6 @@
 
 namespace cen {
 
-// Features:
 //  - SDL_HAPTIC_CONSTANT
 //  - SDL_HAPTIC_SINE
 //  - SDL_HAPTIC_LEFTRIGHT
@@ -62,10 +61,12 @@ namespace cen {
 //  - SDL_HAPTIC_INERTIA
 //  - SDL_HAPTIC_FRICTION
 //  - SDL_HAPTIC_CUSTOM
+
 //  - SDL_HAPTIC_GAIN
 //  - SDL_HAPTIC_AUTOCENTER
 //  - SDL_HAPTIC_STATUS
 //  - SDL_HAPTIC_PAUSE
+
 //  - ?? SDL_HAPTIC_POLAR ??
 //  - ?? SDL_HAPTIC_CARTESIAN ??
 //  - ?? SDL_HAPTIC_SPHERICAL ??

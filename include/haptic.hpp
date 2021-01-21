@@ -166,6 +166,8 @@ class haptic_effect
     return representation().type;
   }
 
+  // TODO SDL_HapticDirection
+
   [[nodiscard]] auto get() noexcept -> SDL_HapticEffect&
   {
     return m_effect;

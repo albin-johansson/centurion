@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-unittests LANGUAGES CXX)
 
 set(SOURCE_FILES
+    typed_test_macros.hpp
     test_main.cpp
     log_test.cpp
     sdl_string_test.cpp
@@ -120,6 +121,7 @@ if (CEN_AUDIO)
 endif ()
 
 target_include_directories(${CENTURION_TEST_TARGET}
+    PUBLIC .
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}

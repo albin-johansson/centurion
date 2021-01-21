@@ -8,6 +8,7 @@
 #include "core_mocks.hpp"
 
 extern "C" {
+// clang-format off
 FAKE_VOID_FUNC(SDL_HapticClose, SDL_Haptic*)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpen, int)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpenFromMouse)
@@ -26,6 +27,12 @@ FAKE_VALUE_FUNC(int, SDL_JoystickIsHaptic, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumEffects, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumEffectsPlaying, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumAxes, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_HapticNewEffect, SDL_Haptic*, SDL_HapticEffect*)
+FAKE_VALUE_FUNC(int, SDL_HapticRunEffect, SDL_Haptic*, int, Uint32)
+FAKE_VALUE_FUNC(int, SDL_HapticStopEffect, SDL_Haptic*, int)
+FAKE_VALUE_FUNC(int, SDL_HapticEffectSupported, SDL_Haptic*, SDL_HapticEffect*)
+FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
+// clang-format on
 }
 
 class HapticTest : public testing::Test
@@ -52,6 +59,11 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticNumEffects);
     RESET_FAKE(SDL_HapticNumEffectsPlaying);
     RESET_FAKE(SDL_HapticNumAxes);
+    RESET_FAKE(SDL_HapticNewEffect);
+    RESET_FAKE(SDL_HapticRunEffect);
+    RESET_FAKE(SDL_HapticStopEffect);
+    RESET_FAKE(SDL_HapticEffectSupported);
+    RESET_FAKE(SDL_HapticUpdateEffect);
   }
 
   cen::haptic_handle m_haptic{nullptr};
@@ -442,4 +454,76 @@ TEST_F(HapticTest, IsMouseHaptic)
 {
   const auto isHaptic [[maybe_unused]] = cen::haptic::is_mouse_haptic();
   EXPECT_EQ(1, SDL_MouseIsHaptic_fake.call_count);
+}
+
+TEST_F(HapticTest, Add)
+{
+  std::array values{-1, 7};
+  SET_RETURN_SEQ(SDL_HapticNewEffect,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  cen::haptic_constant effect;
+  EXPECT_FALSE(m_haptic.add(effect));
+  EXPECT_EQ(7, m_haptic.add(effect));
+
+  EXPECT_EQ(2, SDL_HapticNewEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, Update)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticUpdateEffect,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  cen::haptic_constant effect;
+  EXPECT_FALSE(m_haptic.update(42, effect));
+  EXPECT_TRUE(m_haptic.update(42, effect));
+
+  EXPECT_EQ(2, SDL_HapticUpdateEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, Run)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticRunEffect,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.run(42));
+  EXPECT_EQ(1, SDL_HapticRunEffect_fake.arg2_val);
+
+  EXPECT_TRUE(m_haptic.run(42, 7));
+  EXPECT_EQ(7, SDL_HapticRunEffect_fake.arg2_val);
+
+  EXPECT_EQ(2, SDL_HapticRunEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, Stop)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticStopEffect,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.stop(42));
+  EXPECT_TRUE(m_haptic.stop(42));
+
+  EXPECT_EQ(2, SDL_HapticStopEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, IsSupported)
+{
+  std::array values{-1, 0, 1};
+  SET_RETURN_SEQ(SDL_HapticEffectSupported,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  cen::haptic_constant effect;
+  EXPECT_FALSE(m_haptic.is_supported(effect));
+  EXPECT_FALSE(m_haptic.is_supported(effect));
+  EXPECT_TRUE(m_haptic.is_supported(effect));
+
+  EXPECT_EQ(3, SDL_HapticEffectSupported_fake.call_count);
 }

@@ -494,11 +494,21 @@ class haptic_constant final : public haptic_effect<haptic_constant>
     representation().type = SDL_HAPTIC_CONSTANT;
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticConstant&
   {
     return m_effect.constant;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept
       -> const SDL_HapticConstant&
   {
@@ -584,11 +594,21 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
     return representation().phase;
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticPeriodic&
   {
     return m_effect.periodic;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept
       -> const SDL_HapticPeriodic&
   {
@@ -636,11 +656,21 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
     return representation().end;
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticRamp&
   {
     return m_effect.ramp;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticRamp&
   {
     return m_effect.ramp;
@@ -707,11 +737,21 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     return representation().data;
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticCustom&
   {
     return m_effect.custom;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCustom&
   {
     return m_effect.custom;
@@ -828,11 +868,21 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     return {center[0], center[1], center[2]};
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticCondition&
   {
     return m_effect.condition;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept
       -> const SDL_HapticCondition&
   {
@@ -875,11 +925,21 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
     return representation().small_magnitude;
   }
 
+  /**
+   * \brief Returns the internal representation.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto representation() noexcept -> SDL_HapticLeftRight&
   {
     return m_effect.leftright;
   }
 
+  /**
+   * \copydoc representation();
+   */
   [[nodiscard]] auto representation() const noexcept
       -> const SDL_HapticLeftRight&
   {

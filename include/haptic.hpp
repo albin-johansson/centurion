@@ -90,6 +90,39 @@ enum class haptic_feature  // TODO verify that these are all of the "features"
   pause = SDL_HAPTIC_PAUSE
 };
 
+/**
+ * \class haptic_effect
+ *
+ * \brief Represents a haptic effect.
+ *
+ * \details The following is an illustration of the different stages of a haptic
+ * effect, copied from the SDL documentation, albeit with tweaked terms.
+ * \verbatim
+    Strength
+    ^
+    |
+    |    effect level -->  _________________
+    |                     /                 \
+    |                    /                   \
+    |                   /                     \
+    |                  /                       \
+    | attack_level --> |                        \
+    |                  |                        |  <---  fade_level
+    |
+    +--------------------------------------------------> Time
+                       [--]                 [---]
+                       attack_length        fade_length
+
+    [------------------][-----------------------]
+    delay               duration
+    \endverbatim
+ *
+ * \tparam Derived the type of the subclass for CRTP.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
 template <typename Derived>
 class haptic_effect
 {
@@ -106,24 +139,62 @@ class haptic_effect
   /// \name Replay functions
   /// \{
 
+  /**
+   * \brief Sets the duration of the effect.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param ms the duration of the effect.
+   *
+   * \since 5.2.0
+   */
   void set_duration(const milliseconds<u32> ms)
   {
     rep().length = ms.count();
   }
 
+  /**
+   * \brief Sets the delay before before the effect is started.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param ms the delay before before the effect is started.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_delay<D> = true>
   void set_delay(const milliseconds<u16> ms)
   {
     rep().delay = ms.count();
   }
 
-  // Duration of effect (ms).
+  /**
+   * \brief Returns the duration of the effect.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the duration of the effect.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto duration() const -> milliseconds<u32>
   {
     return milliseconds<u32>{rep().length};
   }
 
-  // Delay before starting effect.
+  /**
+   * \brief Returns the delay before before the effect is started.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the delay before before the effect is started.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_delay<D> = true>
   [[nodiscard]] auto delay() const -> milliseconds<u16>
   {
@@ -135,26 +206,68 @@ class haptic_effect
   /// \name Trigger functions
   /// \{
 
+  /**
+   * \brief Sets the button that triggers the effect.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param level the button that triggers the effect.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_trigger<D> = true>
   void set_button(const u16 button) noexcept
   {
     rep().button = button;
   }
 
+  /**
+   * \brief Sets the minimum interval in between activations of the effect.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param ms the minimum interval in between activations of the effect.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_trigger<D> = true>
   void set_interval(const milliseconds<u16> ms)
   {
     rep().interval = ms.count();
   }
 
-  // Button that triggers effect.
+  /**
+   * \brief Returns the button that triggers the effect.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the button that triggers the effect.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_trigger<D> = true>
   [[nodiscard]] auto button() const noexcept -> u16
   {
     return rep().button;
   }
 
-  // How soon before effect can be triggered again.
+  /**
+   * \brief Returns the minimum interval in between activations of the effect.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the minimum interval in between activations of the effect.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_trigger<D> = true>
   [[nodiscard]] auto interval() const -> milliseconds<u16>
   {
@@ -166,52 +279,136 @@ class haptic_effect
   /// \name Envelope functions
   /// \{
 
+  /**
+   * \brief Sets the level at the *start* of the attack.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param level the level at the start of the attack.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   void set_attack_level(const u16 level) noexcept
   {
     rep().attack_level = level;
   }
 
+  /**
+   * \brief Sets the level at the *end* of the fade out.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param level the level at the *end* of the fade out.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   void set_fade_level(const u16 level) noexcept
   {
     rep().fade_level = level;
   }
 
+  /**
+   * \brief Sets the duration of the attack.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param level the duration of the attack.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   void set_attack_duration(const milliseconds<u16> ms)
   {
     rep().attack_length = ms.count();
   }
 
+  /**
+   * \brief Sets the duration of the fade out.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param level the duration of the fade out.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   void set_fade_duration(const milliseconds<u16> ms)
   {
     rep().fade_length = ms.count();
   }
 
-  // Level at the start of the attack.
+  /**
+   * \brief Returns the level at the *start* of the attack.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the the level at the *start* of the attack.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto attack_level() const noexcept -> u16
   {
     return rep().attack_level;
   }
 
-  // Level at the end of the fade.
+  /**
+   * \brief Returns the level at the *end* of the fade.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the level at the *end* of the fade.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto fade_level() const noexcept -> u16
   {
     return rep().fade_level;
   }
 
-  // Duration of the attack.
+  /**
+   * \brief Returns the duration of the attack.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the duration of the attack.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().attack_length};
   }
 
-  // Duration of the fade out.
+  /**
+   * \brief Returns the duration of the fade out.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the duration of the fade out.
+   *
+   * \since 5.2.0
+   */
   template <typename D = Derived, has_envelope<D> = true>
   [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
   {
@@ -220,6 +417,13 @@ class haptic_effect
 
   /// \} End of envelope functions
 
+  /**
+   * \brief Returns the type associated with the haptic effect.
+   *
+   * \return the associated effect type.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto type() const noexcept -> u16
   {
     return rep().type;
@@ -227,11 +431,21 @@ class haptic_effect
 
   // TODO SDL_HapticDirection
 
+  /**
+   * \brief Returns the internal effect representation.
+   *
+   * \return the internal effect representation.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto get() noexcept -> SDL_HapticEffect&
   {
     return m_effect;
   }
 
+  /**
+   * \copydoc get()
+   */
   [[nodiscard]] auto get() const noexcept -> const SDL_HapticEffect&
   {
     return m_effect;

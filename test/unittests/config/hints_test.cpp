@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "typed_test_macros.hpp"
 #include "window.hpp"
 
 using boolean_hints =
@@ -121,30 +122,7 @@ class HintTest : public testing::Test
   }
 };
 
-using BasicHintTest = HintTest<void>;
-
-template <typename T>
-using BoolHintTest = HintTest<T>;
-
-template <typename T>
-using IntHintTest = HintTest<T>;
-
-template <typename T>
-using UnsignedHintTest = HintTest<T>;
-
-template <typename T>
-using FloatHintTest = HintTest<T>;
-
-template <typename T>
-using StringHintTest = HintTest<T>;
-
-TYPED_TEST_SUITE_P(BoolHintTest);
-TYPED_TEST_SUITE_P(IntHintTest);
-TYPED_TEST_SUITE_P(UnsignedHintTest);
-TYPED_TEST_SUITE_P(FloatHintTest);
-TYPED_TEST_SUITE_P(StringHintTest);
-
-TYPED_TEST_P(BoolHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(BoolHintTest, HintTest, boolean_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(true));
@@ -155,7 +133,7 @@ TYPED_TEST_P(BoolHintTest, SetHint)
   });
 }
 
-TYPED_TEST_P(IntHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1));
@@ -166,18 +144,9 @@ TYPED_TEST_P(IntHintTest, SetHint)
   });
 }
 
-TYPED_TEST_P(FloatHintTest, SetHint)
-{
-  test_hint<TypeParam>([] {
-    ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
-    EXPECT_EQ(1.0f, cen::get_hint<TypeParam>().value());
-
-    ASSERT_TRUE(cen::set_hint<TypeParam>(0.75f));
-    EXPECT_EQ(0.75f, cen::get_hint<TypeParam>().value());
-  });
-}
-
-TYPED_TEST_P(UnsignedHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest,
+                                       HintTest,
+                                       unsigned_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));
@@ -188,15 +157,23 @@ TYPED_TEST_P(UnsignedHintTest, SetHint)
   });
 }
 
-REGISTER_TYPED_TEST_SUITE_P(BoolHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(IntHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(UnsignedHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(FloatHintTest, SetHint);
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(FloatHintTest, HintTest, float_hints)
+{
+  test_hint<TypeParam>([] {
+    ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
+    EXPECT_EQ(1.0f, cen::get_hint<TypeParam>().value());
 
-INSTANTIATE_TYPED_TEST_SUITE_P(BooleanHints, BoolHintTest, boolean_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(IntegerHints, IntHintTest, integer_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedHints, UnsignedHintTest, unsigned_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(FloatHints, FloatHintTest, float_hints);
+    ASSERT_TRUE(cen::set_hint<TypeParam>(0.75f));
+    EXPECT_EQ(0.75f, cen::get_hint<TypeParam>().value());
+  });
+}
+
+CENTURION_REGISTER_TYPED_TEST(BoolHintTest, boolean_hints);
+CENTURION_REGISTER_TYPED_TEST(IntHintTest, integer_hints);
+CENTURION_REGISTER_TYPED_TEST(UnsignedHintTest, unsigned_hints);
+CENTURION_REGISTER_TYPED_TEST(FloatHintTest, float_hints);
+
+using BasicHintTest = HintTest<void>;
 
 TEST_F(BasicHintTest, DisplayUsableBounds)
 {

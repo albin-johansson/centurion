@@ -39,6 +39,7 @@
 #include "integers.hpp"
 #include "joystick.hpp"
 #include "time.hpp"
+#include "vector3.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -68,14 +69,6 @@ namespace cen {
 //  - ?? SDL_HAPTIC_POLAR ??
 //  - ?? SDL_HAPTIC_CARTESIAN ??
 //  - ?? SDL_HAPTIC_SPHERICAL ??
-
-template <typename T>
-struct vector3 final
-{
-  T x{};
-  T y{};
-  T z{};
-};
 
 enum class haptic_feature  // TODO verify that these are all of the "features"
 {

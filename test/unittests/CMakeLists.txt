@@ -6,6 +6,7 @@ set(SOURCE_FILES
     test_main.cpp
     log_test.cpp
     sdl_string_test.cpp
+    vector3_test.cpp
 
     config/hints_test.cpp
 

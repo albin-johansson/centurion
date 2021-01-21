@@ -19,6 +19,8 @@ CENTURION_DEFINE_TYPED_TEST(HapticCommonTest, all_effects)
 
   effect.set_duration(12_ms);
   EXPECT_EQ(12_ms, effect.duration());
+
+  const auto type [[maybe_unused]] = effect.type();
 }
 
 using delay_effects = testing::Types<cen::haptic_constant,

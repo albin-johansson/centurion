@@ -57,8 +57,8 @@ before_script:
   - lcov --version
 
   # Install core SDL2
-  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.12.tar.gz | tar xz
-  - cd SDL2-2.0.12
+  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.14.tar.gz | tar xz
+  - cd SDL2-2.0.14
   - ./configure
   - make
   - sudo make install

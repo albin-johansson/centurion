@@ -173,38 +173,29 @@ TEST(HapticCustom, Defaults)
 
 TEST(HapticCondition, Defaults)
 {
+  using u16vector = cen::vector3<cen::u16>;
+  using i16vector = cen::vector3<cen::i16>;
+
   cen::haptic_condition effect;
   EXPECT_EQ(cen::haptic_condition::spring, effect.type());
 
   effect.set_joystick_positive_level({1, 2, 3});
-  EXPECT_EQ(1, effect.joystick_positive_level().x);
-  EXPECT_EQ(2, effect.joystick_positive_level().y);
-  EXPECT_EQ(3, effect.joystick_positive_level().z);
+  EXPECT_EQ((u16vector{1, 2, 3}), effect.joystick_positive_level());
 
   effect.set_joystick_negative_level({4, 5, 6});
-  EXPECT_EQ(4, effect.joystick_negative_level().x);
-  EXPECT_EQ(5, effect.joystick_negative_level().y);
-  EXPECT_EQ(6, effect.joystick_negative_level().z);
+  EXPECT_EQ((u16vector{4, 5, 6}), effect.joystick_negative_level());
 
   effect.set_force_rate_positive({7, 8, 9});
-  EXPECT_EQ(7, effect.force_rate_positive().x);
-  EXPECT_EQ(8, effect.force_rate_positive().y);
-  EXPECT_EQ(9, effect.force_rate_positive().z);
+  EXPECT_EQ((i16vector{7, 8, 9}), effect.force_rate_positive());
 
   effect.set_force_rate_negative({10, 11, 12});
-  EXPECT_EQ(10, effect.force_rate_negative().x);
-  EXPECT_EQ(11, effect.force_rate_negative().y);
-  EXPECT_EQ(12, effect.force_rate_negative().z);
+  EXPECT_EQ((i16vector{10, 11, 12}), effect.force_rate_negative());
 
   effect.set_deadband({13, 14, 15});
-  EXPECT_EQ(13, effect.deadband().x);
-  EXPECT_EQ(14, effect.deadband().y);
-  EXPECT_EQ(15, effect.deadband().z);
+  EXPECT_EQ((u16vector{13, 14, 15}), effect.deadband());
 
   effect.set_center({16, 17, 18});
-  EXPECT_EQ(16, effect.center().x);
-  EXPECT_EQ(17, effect.center().y);
-  EXPECT_EQ(18, effect.center().z);
+  EXPECT_EQ((i16vector{16, 17, 18}), effect.center());
 
   EXPECT_EQ(SDL_HAPTIC_SPRING, cen::haptic_condition::spring);
   EXPECT_EQ(SDL_HAPTIC_DAMPER, cen::haptic_condition::damper);

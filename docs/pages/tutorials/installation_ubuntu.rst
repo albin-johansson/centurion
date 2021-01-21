@@ -21,9 +21,9 @@ be executed where you'd like to install your libraries, e.g. ``~/sdl2/``.
 
 .. code-block::
 
-  wget -c https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
-  tar -xf SDL2-2.0.12.tar.gz
-  cd SDL2-2.0.12
+  wget -c https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
+  tar -xf SDL2-2.0.14.tar.gz
+  cd SDL2-2.0.14
   ./configure
   make
   sudo make install

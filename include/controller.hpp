@@ -501,7 +501,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(czstring str) noexcept
+  [[nodiscard]] static auto get_button(const czstring str) noexcept
       -> controller_button
   {
     return static_cast<controller_button>(

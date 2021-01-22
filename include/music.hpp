@@ -243,7 +243,7 @@ class music final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms, const int nLoops = 0) noexcept
+  void fade_in(const milliseconds<int> ms, const int nLoops = 0)
   {
     assert(ms.count() > 0);
     Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count());
@@ -263,7 +263,7 @@ class music final
    *
    * \since 3.0.0
    */
-  static void fade_out(const milliseconds<int> ms) noexcept
+  static void fade_out(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
     if (!is_fading()) {

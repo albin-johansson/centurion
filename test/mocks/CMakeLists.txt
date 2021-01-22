@@ -25,6 +25,7 @@ set(SOURCE_FILES
     input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_state_test.cpp
+    input/sensor_test.cpp
     input/touch_test.cpp
 
     system/base_path_test.cpp

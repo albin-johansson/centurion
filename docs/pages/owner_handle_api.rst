@@ -107,6 +107,7 @@ names are dedicated to the owning versions, and handles feature the ``_handle`` 
  ``basic_joystick``            ``joystick``            ``joystick_handle``
  ``basic_pixel_format_info``   ``pixel_format_info``   ``pixel_format_info_handle``
  ``basic_renderer``            ``renderer``            ``renderer_handle``
+ ``basic_sensor``              ``sensor``              ``sensor_handle``
  ``basic_surface``             ``surface``             ``surface_handle``
  ``basic_texture``             ``texture``             ``texture_handle``
  ``basic_window``              ``window``              ``window_handle``

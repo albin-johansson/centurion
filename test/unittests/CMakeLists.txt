@@ -86,6 +86,7 @@ set(SOURCE_FILES
     input/key_state_test.cpp
     input/mouse_state_test.cpp
     input/scan_code_tests.cpp
+    input/sensor_test.cpp
     input/touch_test.cpp
 
     system/base_path_test.cpp

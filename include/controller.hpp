@@ -140,11 +140,11 @@ enum class controller_button
      capture button */
   misc1 = SDL_CONTROLLER_BUTTON_MISC1,
 
-  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,   /* Xbox Elite paddle P1 */
-  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,   /* Xbox Elite paddle P3 */
-  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,   /* Xbox Elite paddle P2 */
-  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,   /* Xbox Elite paddle P4 */
-  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD, /* PS4/PS5 touchpad button */
+  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
+  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
+  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
+  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
+  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

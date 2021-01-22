@@ -5,6 +5,7 @@
 
 #include <array>  // array
 
+#include "colors.hpp"
 #include "core_mocks.hpp"
 #include "exception.hpp"
 
@@ -20,6 +21,7 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
+FAKE_VALUE_FUNC(int, SDL_GameControllerRumbleTriggers, SDL_GameController*, Uint16, Uint16, Uint32)
 
 FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
@@ -57,6 +59,12 @@ FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
 FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSetSensorEnabled, SDL_GameController*, SDL_SensorType, SDL_bool)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasSensor, SDL_GameController*, SDL_SensorType)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerIsSensorEnabled, SDL_GameController*, SDL_SensorType)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetSensorData, SDL_GameController*, SDL_SensorType, float*, int)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
 }
 // clang-format on
 
@@ -65,58 +73,48 @@ class ControllerTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
     RESET_FAKE(SDL_GameControllerUpdate);
     RESET_FAKE(SDL_GameControllerSetPlayerIndex);
-
     RESET_FAKE(SDL_GameControllerGetProduct);
     RESET_FAKE(SDL_GameControllerGetVendor);
     RESET_FAKE(SDL_GameControllerGetProductVersion);
     RESET_FAKE(SDL_GameControllerGetSerial);
-
     RESET_FAKE(SDL_GameControllerGetPlayerIndex);
     RESET_FAKE(SDL_GameControllerRumble);
-
+    RESET_FAKE(SDL_GameControllerRumbleTriggers);
     RESET_FAKE(SDL_GameControllerGetAttached);
     RESET_FAKE(SDL_IsGameController);
-
     RESET_FAKE(SDL_GameControllerGetType);
     RESET_FAKE(SDL_GameControllerTypeForIndex);
-
     RESET_FAKE(SDL_GameControllerGetButton);
     RESET_FAKE(SDL_GameControllerName);
-
     RESET_FAKE(SDL_GameControllerGetAxis);
     RESET_FAKE(SDL_GameControllerHasAxis);
     RESET_FAKE(SDL_GameControllerHasButton);
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
-
     RESET_FAKE(SDL_GameControllerGetButtonFromString);
-
     RESET_FAKE(SDL_GameControllerGetStringForAxis);
     RESET_FAKE(SDL_GameControllerGetStringForButton);
-
     RESET_FAKE(SDL_GameControllerGetBindForAxis);
     RESET_FAKE(SDL_GameControllerGetBindForButton);
-
     RESET_FAKE(SDL_GameControllerGetJoystick);
     RESET_FAKE(SDL_GameControllerGetNumTouchpads);
     RESET_FAKE(SDL_GameControllerGetNumTouchpadFingers);
     RESET_FAKE(SDL_GameControllerGetTouchpadFinger);
-
     RESET_FAKE(SDL_GameControllerAddMapping);
     RESET_FAKE(SDL_GameControllerAddMappingsFromRW);
-
     RESET_FAKE(SDL_GameControllerMapping);
     RESET_FAKE(SDL_GameControllerMappingForDeviceIndex);
     RESET_FAKE(SDL_GameControllerMappingForGUID);
     RESET_FAKE(SDL_GameControllerMappingForIndex);
-
     RESET_FAKE(SDL_GameControllerEventState);
-
-    RESET_FAKE(SDL_RWFromFile);
-
-    RESET_FAKE(SDL_GetError);
-    RESET_FAKE(SDL_free);
+    RESET_FAKE(SDL_GameControllerSetSensorEnabled);
+    RESET_FAKE(SDL_GameControllerHasSensor);
+    RESET_FAKE(SDL_GameControllerIsSensorEnabled);
+    RESET_FAKE(SDL_GameControllerGetSensorData);
+    RESET_FAKE(SDL_GameControllerSetLED);
+    RESET_FAKE(SDL_GameControllerHasLED);
   }
 
   /**
@@ -124,18 +122,26 @@ class ControllerTest : public testing::Test
    * null, this doesn't matter that much since they share implementations of all
    * relevant functions.
    */
-  cen::controller_handle m_handle{nullptr};
+  cen::controller_handle m_controller{nullptr};
 };
+
+using namespace cen::literals;
 
 TEST_F(ControllerTest, Rumble)
 {
-  m_handle.rumble(0, 10, cen::milliseconds<cen::u32>{1});
+  m_controller.rumble(0, 10, 1_ms);
   EXPECT_EQ(1, SDL_GameControllerRumble_fake.call_count);
+}
+
+TEST_F(ControllerTest, RumbleTriggers)
+{
+  m_controller.rumble_triggers(0, 10, 1_ms);
+  EXPECT_EQ(1, SDL_GameControllerRumbleTriggers_fake.call_count);
 }
 
 TEST_F(ControllerTest, StopRumble)
 {
-  m_handle.stop_rumble();
+  m_controller.stop_rumble();
   EXPECT_EQ(0, SDL_GameControllerRumble_fake.arg1_val);
   EXPECT_EQ(0, SDL_GameControllerRumble_fake.arg2_val);
   EXPECT_EQ(0, SDL_GameControllerRumble_fake.arg3_val);
@@ -143,7 +149,7 @@ TEST_F(ControllerTest, StopRumble)
 
 TEST_F(ControllerTest, SetPlayerIndex)
 {
-  m_handle.set_player_index(7);
+  m_controller.set_player_index(7);
   EXPECT_EQ(1, SDL_GameControllerSetPlayerIndex_fake.call_count);
   EXPECT_EQ(7, SDL_GameControllerSetPlayerIndex_fake.arg1_val);
 }
@@ -155,8 +161,8 @@ TEST_F(ControllerTest, Product)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.product().has_value());
-  EXPECT_EQ(3, m_handle.product().value());
+  EXPECT_FALSE(m_controller.product().has_value());
+  EXPECT_EQ(3, m_controller.product().value());
 }
 
 TEST_F(ControllerTest, Vendor)
@@ -166,8 +172,8 @@ TEST_F(ControllerTest, Vendor)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.vendor().has_value());
-  EXPECT_EQ(7, m_handle.vendor().value());
+  EXPECT_FALSE(m_controller.vendor().has_value());
+  EXPECT_EQ(7, m_controller.vendor().value());
 }
 
 TEST_F(ControllerTest, ProductVersion)
@@ -177,13 +183,13 @@ TEST_F(ControllerTest, ProductVersion)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.product_version().has_value());
-  EXPECT_EQ(4, m_handle.product_version().value());
+  EXPECT_FALSE(m_controller.product_version().has_value());
+  EXPECT_EQ(4, m_controller.product_version().value());
 }
 
 TEST_F(ControllerTest, Serial)
 {
-  const auto serial [[maybe_unused]] = m_handle.serial();
+  const auto serial [[maybe_unused]] = m_controller.serial();
   EXPECT_EQ(1, SDL_GameControllerGetSerial_fake.call_count);
 }
 
@@ -194,8 +200,8 @@ TEST_F(ControllerTest, Index)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.index().has_value());
-  EXPECT_EQ(6, m_handle.index().value());
+  EXPECT_FALSE(m_controller.index().has_value());
+  EXPECT_EQ(6, m_controller.index().value());
 }
 
 TEST_F(ControllerTest, IsConnected)
@@ -205,8 +211,8 @@ TEST_F(ControllerTest, IsConnected)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.is_connected());
-  EXPECT_TRUE(m_handle.is_connected());
+  EXPECT_FALSE(m_controller.is_connected());
+  EXPECT_TRUE(m_controller.is_connected());
 }
 
 TEST_F(ControllerTest, Name)
@@ -216,8 +222,8 @@ TEST_F(ControllerTest, Name)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_EQ(nullptr, m_handle.name());
-  EXPECT_STREQ("foobar", m_handle.name());
+  EXPECT_EQ(nullptr, m_controller.name());
+  EXPECT_STREQ("foobar", m_controller.name());
 }
 
 TEST_F(ControllerTest, Type)
@@ -229,9 +235,9 @@ TEST_F(ControllerTest, Type)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_EQ(cen::controller_type::unknown, m_handle.type());
-  EXPECT_EQ(cen::controller_type::xbox_360, m_handle.type());
-  EXPECT_EQ(cen::controller_type::ps4, m_handle.type());
+  EXPECT_EQ(cen::controller_type::unknown, m_controller.type());
+  EXPECT_EQ(cen::controller_type::xbox_360, m_controller.type());
+  EXPECT_EQ(cen::controller_type::ps4, m_controller.type());
 }
 
 TEST_F(ControllerTest, TypeWithIndex)
@@ -254,9 +260,9 @@ TEST_F(ControllerTest, GetState)
                  static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::button_state::released,
-            m_handle.get_state(cen::controller_button::a));
+            m_controller.get_state(cen::controller_button::a));
   EXPECT_EQ(cen::button_state::pressed,
-            m_handle.get_state(cen::controller_button::a));
+            m_controller.get_state(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, IsPressed)
@@ -266,8 +272,8 @@ TEST_F(ControllerTest, IsPressed)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.is_pressed(cen::controller_button::a));
-  EXPECT_TRUE(m_handle.is_pressed(cen::controller_button::a));
+  EXPECT_FALSE(m_controller.is_pressed(cen::controller_button::a));
+  EXPECT_TRUE(m_controller.is_pressed(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, IsReleased)
@@ -277,8 +283,8 @@ TEST_F(ControllerTest, IsReleased)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_TRUE(m_handle.is_released(cen::controller_button::a));
-  EXPECT_FALSE(m_handle.is_released(cen::controller_button::a));
+  EXPECT_TRUE(m_controller.is_released(cen::controller_button::a));
+  EXPECT_FALSE(m_controller.is_released(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, GetAxisFromString)
@@ -300,8 +306,8 @@ TEST_F(ControllerTest, GetAxis)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
-  EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
+  EXPECT_EQ(123, m_controller.get_axis(cen::controller_axis::left_x));
+  EXPECT_EQ(321, m_controller.get_axis(cen::controller_axis::left_x));
 }
 
 TEST_F(ControllerTest, HasAxis)
@@ -311,8 +317,8 @@ TEST_F(ControllerTest, HasAxis)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.has_axis(cen::controller_axis::left_x));
-  EXPECT_TRUE(m_handle.has_axis(cen::controller_axis::left_x));
+  EXPECT_FALSE(m_controller.has_axis(cen::controller_axis::left_x));
+  EXPECT_TRUE(m_controller.has_axis(cen::controller_axis::left_x));
   EXPECT_EQ(2, SDL_GameControllerHasAxis_fake.call_count);
 }
 
@@ -323,25 +329,26 @@ TEST_F(ControllerTest, HasButton)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.has_button(cen::controller_button::x));
-  EXPECT_TRUE(m_handle.has_button(cen::controller_button::x));
+  EXPECT_FALSE(m_controller.has_button(cen::controller_button::x));
+  EXPECT_TRUE(m_controller.has_button(cen::controller_button::x));
   EXPECT_EQ(2, SDL_GameControllerHasButton_fake.call_count);
 }
 
 TEST_F(ControllerTest, GetJoystick)
 {
-  EXPECT_NO_THROW(m_handle.get_joystick());
+  EXPECT_NO_THROW(m_controller.get_joystick());
 }
 
 TEST_F(ControllerTest, TouchpadCount)
 {
-  const auto count [[maybe_unused]] = m_handle.touchpad_count();
+  const auto count [[maybe_unused]] = m_controller.touchpad_count();
   EXPECT_EQ(1, SDL_GameControllerGetNumTouchpads_fake.call_count);
 }
 
 TEST_F(ControllerTest, TouchpadFingerCapacity)
 {
-  const auto capacity [[maybe_unused]] = m_handle.touchpad_finger_capacity(0);
+  const auto capacity [[maybe_unused]] =
+      m_controller.touchpad_finger_capacity(0);
   EXPECT_EQ(1, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
 }
 
@@ -352,9 +359,82 @@ TEST_F(ControllerTest, TouchpadFingerState)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.touchpad_finger_state(0, 0));
-  EXPECT_TRUE(m_handle.touchpad_finger_state(0, 0));
+  EXPECT_FALSE(m_controller.touchpad_finger_state(0, 0));
+  EXPECT_TRUE(m_controller.touchpad_finger_state(0, 0));
   EXPECT_EQ(2, SDL_GameControllerGetTouchpadFinger_fake.call_count);
+}
+
+TEST_F(ControllerTest, SetSensorEnabled)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  const auto type = cen::sensor_type::gyroscope;
+  EXPECT_FALSE(m_controller.set_sensor_enabled(type, true));
+  EXPECT_TRUE(m_controller.set_sensor_enabled(type, true));
+  EXPECT_EQ(2, SDL_GameControllerSetSensorEnabled_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasSensor)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasSensor,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_controller.has_sensor(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.has_sensor(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerHasSensor_fake.call_count);
+}
+
+TEST_F(ControllerTest, IsSensorEnabled)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerIsSensorEnabled_fake.call_count);
+}
+
+TEST_F(ControllerTest, GetSensorData)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerGetSensorData,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerGetSensorData_fake.call_count);
+}
+
+TEST_F(ControllerTest, SetLEDColor)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSetLED,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_controller.set_led_color(cen::colors::red));
+  EXPECT_TRUE(m_controller.set_led_color(cen::colors::red));
+  EXPECT_EQ(2, SDL_GameControllerSetLED_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasLED)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasLED,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_controller.has_led());
+  EXPECT_TRUE(m_controller.has_led());
+  EXPECT_EQ(2, SDL_GameControllerHasLED_fake.call_count);
 }
 
 TEST_F(ControllerTest, AddMapping)
@@ -365,13 +445,13 @@ TEST_F(ControllerTest, AddMapping)
                  static_cast<int>(values.size()));
 
   EXPECT_EQ(cen::controller_handle::mapping_result::added,
-            m_handle.add_mapping("foo"));
+            m_controller.add_mapping("foo"));
 
   EXPECT_EQ(cen::controller_handle::mapping_result::updated,
-            m_handle.add_mapping("foo"));
+            m_controller.add_mapping("foo"));
 
   EXPECT_EQ(cen::controller_handle::mapping_result::error,
-            m_handle.add_mapping("foo"));
+            m_controller.add_mapping("foo"));
 }
 
 TEST_F(ControllerTest, LoadMappings)
@@ -387,23 +467,23 @@ TEST_F(ControllerTest, LoadMappings)
 
 TEST_F(ControllerTest, Mapping)
 {
-  EXPECT_EQ(nullptr, m_handle.mapping().get());
+  EXPECT_EQ(nullptr, m_controller.mapping().get());
 }
 
 TEST_F(ControllerTest, MappingJoystickIndex)
 {
-  EXPECT_EQ(nullptr, m_handle.mapping(0).get());
+  EXPECT_EQ(nullptr, m_controller.mapping(0).get());
 }
 
 TEST_F(ControllerTest, MappingJoystickGUID)
 {
   SDL_JoystickGUID id{};
-  EXPECT_EQ(nullptr, m_handle.mapping(id).get());
+  EXPECT_EQ(nullptr, m_controller.mapping(id).get());
 }
 
 TEST_F(ControllerTest, MappingByIndex)
 {
-  EXPECT_EQ(nullptr, m_handle.mapping_by_index(0).get());
+  EXPECT_EQ(nullptr, m_controller.mapping_by_index(0).get());
 }
 
 TEST_F(ControllerTest, GetButton)
@@ -453,8 +533,10 @@ TEST_F(ControllerTest, GetBindingWithAxis)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
-  EXPECT_TRUE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
+  EXPECT_FALSE(
+      m_controller.get_binding(cen::controller_axis::right_x).has_value());
+  EXPECT_TRUE(
+      m_controller.get_binding(cen::controller_axis::right_x).has_value());
 }
 
 TEST_F(ControllerTest, GetBindingWithButton)
@@ -470,8 +552,8 @@ TEST_F(ControllerTest, GetBindingWithButton)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_handle.get_binding(cen::controller_button::x).has_value());
-  EXPECT_TRUE(m_handle.get_binding(cen::controller_button::x).has_value());
+  EXPECT_FALSE(m_controller.get_binding(cen::controller_button::x).has_value());
+  EXPECT_TRUE(m_controller.get_binding(cen::controller_button::x).has_value());
 }
 
 TEST_F(ControllerTest, Update)

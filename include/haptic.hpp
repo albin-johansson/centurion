@@ -158,8 +158,6 @@ class haptic_effect
   /**
    * \brief Sets the duration of the effect.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param ms the duration of the effect.
    *
    * \since 5.2.0
@@ -188,8 +186,6 @@ class haptic_effect
 
   /**
    * \brief Returns the duration of the effect.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the duration of the effect.
    *

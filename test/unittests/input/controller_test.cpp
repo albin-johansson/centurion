@@ -42,6 +42,18 @@ TEST(Controller, NumMappings)
   EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::num_mappings());
 }
 
+TEST(Controller, Count)
+{
+  auto nControllers = 0;
+  for (auto i = 0, count = cen::joystick::count().value(); i < count; ++i) {
+    if (SDL_IsGameController(i)) {
+      ++nControllers;
+    }
+  }
+
+  EXPECT_EQ(nControllers, cen::controller::count());
+}
+
 TEST(Controller, ControllerTypeEnum)
 {
   using type = cen::controller_type;

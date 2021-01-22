@@ -473,6 +473,27 @@ class basic_controller final
   }
 
   /**
+   * \brief Returns the amount of available game controllers on the system.
+   *
+   * \return the amount of available game controllers.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto count() noexcept -> int
+  {
+    const auto joysticks = SDL_NumJoysticks();
+
+    auto amount = 0;
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
+        ++amount;
+      }
+    }
+
+    return amount;
+  }
+
+  /**
    * \brief Returns the axis associated with the specified string.
    *
    * \note You don't need this function unless you are parsing game controller

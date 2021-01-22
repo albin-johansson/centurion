@@ -716,6 +716,23 @@ class basic_controller final
     return SDL_GameControllerHasAxis(m_controller, value) == SDL_TRUE;
   }
 
+  /**
+   * \brief Indicates whether or not the controller has the specified button.
+   *
+   * \param button the button that will be checked.
+   *
+   * \return `true` if the controller features the specified button; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_button(const controller_button button) const noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerButton>(button);
+    return SDL_GameControllerHasButton(m_controller, value) == SDL_TRUE;
+  }
+
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**

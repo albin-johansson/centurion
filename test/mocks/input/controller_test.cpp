@@ -31,6 +31,7 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
 FAKE_VALUE_FUNC(Sint16, SDL_GameControllerGetAxis, SDL_GameController*, SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasAxis, SDL_GameController*, SDL_GameControllerAxis)
 
 FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 
@@ -79,6 +80,7 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerName);
 
     RESET_FAKE(SDL_GameControllerGetAxis);
+    RESET_FAKE(SDL_GameControllerHasAxis);
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
 
     RESET_FAKE(SDL_GameControllerGetButtonFromString);
@@ -284,6 +286,17 @@ TEST_F(ControllerTest, GetAxis)
 
   EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
   EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
+}
+
+TEST_F(ControllerTest, HasAxis)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasAxis,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_handle.has_axis(cen::controller_axis::left_x));
+  EXPECT_TRUE(m_handle.has_axis(cen::controller_axis::left_x));
 }
 
 TEST_F(ControllerTest, GetJoystick)

@@ -684,6 +684,23 @@ class basic_controller final
                                      static_cast<SDL_GameControllerAxis>(axis));
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the controller has the specified axis.
+   *
+   * \return `true` if the controller has the specified axis; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_axis(const controller_axis axis) const noexcept -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerAxis>(axis);
+    return SDL_GameControllerHasAxis(m_controller, value) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Returns a handle to the associated joystick.
    *

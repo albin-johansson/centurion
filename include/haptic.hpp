@@ -1133,6 +1133,19 @@ class basic_haptic final  // TODO RtD entry
   }
 
   /**
+   * \brief Creates a handle based on an owning haptic instance.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param owner the associated owning haptic device.
+   *
+   * \since 5.2.0
+   */
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
+  {}
+
+  /**
    * \brief Creates a haptic device based on a joystick.
    *
    * \note This function is only available for owning haptic instances.

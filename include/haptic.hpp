@@ -1549,6 +1549,21 @@ class basic_haptic final  // TODO RtD entry
   }
 
   /**
+   * \brief Indicates whether or not the handle holds a non-null pointer.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit operator bool() const noexcept
+  {
+    return m_haptic != nullptr;
+  }
+
+  /**
    * \brief Returns a pointer to the internal representation.
    *
    * \warning Don't claim ownership of the returned pointer!

@@ -971,6 +971,9 @@ class basic_controller final
 
   /// \}
 
+  /// \name LED functions
+  /// \{
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
@@ -1003,6 +1006,8 @@ class basic_controller final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \} End of LED functions
 
   /// \name Mapping functions
   /// \{

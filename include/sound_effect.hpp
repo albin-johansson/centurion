@@ -163,7 +163,7 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms) noexcept
+  void fade_in(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
     if (!is_playing()) {
@@ -183,7 +183,7 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_out(const milliseconds<int> ms) noexcept  // NOLINT not const
+  void fade_out(const milliseconds<int> ms)  // NOLINT not const
   {
     assert(ms.count() > 0);
     if (is_playing()) {

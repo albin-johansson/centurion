@@ -80,7 +80,7 @@ class common_event
   /**
    * \brief Creates a zero-initialized `common_event`.
    *
-   * \deprecated Use `common_event(event_type)` instead.
+   * \deprecated Since 5.1.0, use `common_event(event_type)` instead.
    *
    * \since 4.0.0
    */
@@ -3863,7 +3863,7 @@ class event final
    *
    * \return `true` if there is no internal event; `false` otherwise.
    *
-   * \deprecated Use `is_empty()` instead.
+   * \deprecated Since 5.1.0, use `is_empty()` instead.
    *
    * \since 5.0.0
    */

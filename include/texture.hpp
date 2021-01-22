@@ -432,7 +432,7 @@ class basic_texture final
    *
    * \return `true` if the texture has static texture access.
    *
-   * \deprecated Use `is_no_lock()` instead.
+   * \deprecated Since 5.1.0, use `is_no_lock()` instead.
    *
    * \since 3.0.0
    */

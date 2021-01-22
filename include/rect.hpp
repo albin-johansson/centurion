@@ -281,7 +281,7 @@ class basic_rect final
    *
    * \param pos the new position of the rectangle.
    *
-   * \deprecated Use `set_position()` instead.
+   * \deprecated Since 5.1.0, use `set_position()` instead.
    *
    * \since 4.2.0
    */
@@ -332,7 +332,7 @@ class basic_rect final
    *
    * \param size the new size of the rectangle.
    *
-   * \deprecated Use `set_size()` instead.
+   * \deprecated Since 5.1.0, use `set_size()` instead.
    *
    * \since 4.2.0
    */

@@ -133,7 +133,7 @@ class music final
    * \brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
-   * \deprecated Use `music::forever` instead.
+   * \deprecated Since 5.1.0, use `music::forever` instead.
    *
    * \since 4.0.0
    */

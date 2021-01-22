@@ -97,7 +97,7 @@ class sound_effect final
   /**
    * \brief Indicates that an audio snippet should be looped indefinitely.
    *
-   * \deprecated Use `sound_effect::forever` instead.
+   * \deprecated Since 5.1.0, use `sound_effect::forever` instead.
    *
    * \since 4.0.0
    */

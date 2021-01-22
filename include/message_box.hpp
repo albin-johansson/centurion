@@ -425,7 +425,7 @@ class message_box final
    *
    * \return the title of the message box.
    *
-   * \deprecated Use `title()` instead.
+   * \deprecated Since 5.1.0, use `title()` instead.
    *
    * \since 5.0.0
    */
@@ -455,7 +455,7 @@ class message_box final
    *
    * \return the message of the message box.
    *
-   * \deprecated Use `message()` instead.
+   * \deprecated Since 5.1.0, use `message()` instead.
    *
    * \since 5.0.0
    */

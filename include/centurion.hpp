@@ -357,7 +357,7 @@ class library final
  *
  * \return the compile-time version of SDL2_ttf that is being used.
  *
- * \deprecated Use `sdl_ttf_version()` instead.
+ * \deprecated Since 5.1.0, use `sdl_ttf_version()` instead.
  *
  * \since 4.0.0
  */

@@ -411,6 +411,23 @@ class basic_controller final
     }
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the serial number associated with the controller.
+   *
+   * \return the serial number associated with the controller; a null pointer if
+   * no serial number is available.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto serial() const noexcept -> czstring
+  {
+    return SDL_GameControllerGetSerial(m_controller);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Returns the player index associated with the controller.
    *

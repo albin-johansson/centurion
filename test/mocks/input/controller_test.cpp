@@ -16,6 +16,7 @@ FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
@@ -66,6 +67,7 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetProduct);
     RESET_FAKE(SDL_GameControllerGetVendor);
     RESET_FAKE(SDL_GameControllerGetProductVersion);
+    RESET_FAKE(SDL_GameControllerGetSerial);
 
     RESET_FAKE(SDL_GameControllerGetPlayerIndex);
     RESET_FAKE(SDL_GameControllerRumble);
@@ -169,6 +171,12 @@ TEST_F(ControllerTest, ProductVersion)
 
   EXPECT_FALSE(m_handle.product_version().has_value());
   EXPECT_EQ(4, m_handle.product_version().value());
+}
+
+TEST_F(ControllerTest, Serial)
+{
+  const auto serial [[maybe_unused]] = m_handle.serial();
+  EXPECT_EQ(1, SDL_GameControllerGetSerial_fake.call_count);
 }
 
 TEST_F(ControllerTest, Index)

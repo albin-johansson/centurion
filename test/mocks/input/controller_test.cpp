@@ -16,6 +16,7 @@ FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
@@ -31,6 +32,8 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
 FAKE_VALUE_FUNC(Sint16, SDL_GameControllerGetAxis, SDL_GameController*, SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasAxis, SDL_GameController*, SDL_GameControllerAxis)
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasButton, SDL_GameController*, SDL_GameControllerButton)
 
 FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 
@@ -65,6 +68,7 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetProduct);
     RESET_FAKE(SDL_GameControllerGetVendor);
     RESET_FAKE(SDL_GameControllerGetProductVersion);
+    RESET_FAKE(SDL_GameControllerGetSerial);
 
     RESET_FAKE(SDL_GameControllerGetPlayerIndex);
     RESET_FAKE(SDL_GameControllerRumble);
@@ -79,6 +83,8 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerName);
 
     RESET_FAKE(SDL_GameControllerGetAxis);
+    RESET_FAKE(SDL_GameControllerHasAxis);
+    RESET_FAKE(SDL_GameControllerHasButton);
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
 
     RESET_FAKE(SDL_GameControllerGetButtonFromString);
@@ -167,6 +173,12 @@ TEST_F(ControllerTest, ProductVersion)
 
   EXPECT_FALSE(m_handle.product_version().has_value());
   EXPECT_EQ(4, m_handle.product_version().value());
+}
+
+TEST_F(ControllerTest, Serial)
+{
+  const auto serial [[maybe_unused]] = m_handle.serial();
+  EXPECT_EQ(1, SDL_GameControllerGetSerial_fake.call_count);
 }
 
 TEST_F(ControllerTest, Index)
@@ -277,13 +289,37 @@ TEST_F(ControllerTest, GetAxisFromString)
 
 TEST_F(ControllerTest, GetAxis)
 {
-  std::array<Sint16, 2> values{123, 321};
+  std::array<cen::i16, 2> values{123, 321};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis,
                  values.data(),
                  static_cast<int>(values.size()));
 
   EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
   EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
+}
+
+TEST_F(ControllerTest, HasAxis)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasAxis,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_handle.has_axis(cen::controller_axis::left_x));
+  EXPECT_TRUE(m_handle.has_axis(cen::controller_axis::left_x));
+  EXPECT_EQ(2, SDL_GameControllerHasAxis_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasButton)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasButton,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_handle.has_button(cen::controller_button::x));
+  EXPECT_TRUE(m_handle.has_button(cen::controller_button::x));
+  EXPECT_EQ(2, SDL_GameControllerHasButton_fake.call_count);
 }
 
 TEST_F(ControllerTest, GetJoystick)

@@ -70,6 +70,14 @@ enum class controller_type
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
   ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
   ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
+  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   nintendo_switch_pro =
       SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro
                                                ///< controller.
@@ -125,6 +133,21 @@ enum class controller_button
   dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
   dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
   dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro
+     capture button */
+  misc1 = SDL_CONTROLLER_BUTTON_MISC1,
+
+  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,   /* Xbox Elite paddle P1 */
+  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,   /* Xbox Elite paddle P3 */
+  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,   /* Xbox Elite paddle P2 */
+  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,   /* Xbox Elite paddle P4 */
+  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD, /* PS4/PS5 touchpad button */
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
@@ -411,6 +434,23 @@ class basic_controller final
     }
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the serial number associated with the controller.
+   *
+   * \return the serial number associated with the controller; a null pointer if
+   * no serial number is available.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto serial() const noexcept -> czstring
+  {
+    return SDL_GameControllerGetSerial(m_controller);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Returns the player index associated with the controller.
    *
@@ -473,6 +513,27 @@ class basic_controller final
   }
 
   /**
+   * \brief Returns the amount of available game controllers on the system.
+   *
+   * \return the amount of available game controllers.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto count() noexcept -> int
+  {
+    const auto joysticks = SDL_NumJoysticks();
+
+    auto amount = 0;
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
+        ++amount;
+      }
+    }
+
+    return amount;
+  }
+
+  /**
    * \brief Returns the axis associated with the specified string.
    *
    * \note You don't need this function unless you are parsing game controller
@@ -501,7 +562,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(czstring str) noexcept
+  [[nodiscard]] static auto get_button(const czstring str) noexcept
       -> controller_button
   {
     return static_cast<controller_button>(
@@ -662,6 +723,40 @@ class basic_controller final
     return SDL_GameControllerGetAxis(m_controller,
                                      static_cast<SDL_GameControllerAxis>(axis));
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the controller has the specified axis.
+   *
+   * \return `true` if the controller has the specified axis; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_axis(const controller_axis axis) const noexcept -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerAxis>(axis);
+    return SDL_GameControllerHasAxis(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller has the specified button.
+   *
+   * \param button the button that will be checked.
+   *
+   * \return `true` if the controller features the specified button; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_button(const controller_button button) const noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerButton>(button);
+    return SDL_GameControllerHasButton(m_controller, value) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Returns a handle to the associated joystick.

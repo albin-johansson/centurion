@@ -86,7 +86,7 @@ namespace detail {
 
 struct string_compare final
 {
-  auto operator()(czstring lhs, czstring rhs) const noexcept
+  auto operator()(const czstring lhs, const czstring rhs) const noexcept
   {
     return detail::czstring_eq(lhs, rhs);
   }
@@ -164,7 +164,7 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring>
     }
   }
 
-  [[nodiscard]] static auto to_string(czstring value) -> std::string
+  [[nodiscard]] static auto to_string(const czstring value) -> std::string
   {
     return value;
   }

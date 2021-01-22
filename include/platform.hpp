@@ -124,7 +124,7 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
  */
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
-  czstring platform = SDL_GetPlatform();
+  const czstring platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows")) {
     return platform_id::windows;
 

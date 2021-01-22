@@ -27,7 +27,9 @@
 
 #include <SDL.h>
 
+#include <array>        // array
 #include <cassert>      // assert
+#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
@@ -35,6 +37,7 @@
 
 #include "button_state.hpp"
 #include "centurion_cfg.hpp"
+#include "color.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
@@ -43,6 +46,8 @@
 #include "joystick.hpp"
 #include "not_null.hpp"
 #include "sdl_string.hpp"
+#include "sensor.hpp"
+#include "time.hpp"
 #include "touch.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -339,7 +344,7 @@ class basic_controller final
   }
 
   /**
-   * \brief Triggers a rumble effect.
+   * \brief Starts a rumble effect.
    *
    * \details Calls to this function cancels any previously active rumble
    * effect. Furthermore, supplying 0 as intensities will stop the rumble
@@ -348,18 +353,54 @@ class basic_controller final
    * \note This function has no effect if rumbling isn't supported by the
    * controller.
    *
-   * \param lo the intensity of the low frequency rumble.
-   * \param hi the intensity of the high frequency rumble.
+   * \param lo the intensity of the low frequency motor.
+   * \param hi the intensity of the high frequency motor.
    * \param duration the duration of the rumble effect.
+   *
+   * \return `true` on success; `false` otherwise.
    *
    * \since 5.0.0
    */
-  void rumble(const u16 lo,
-              const u16 hi,
-              const milliseconds<u32> duration) noexcept
+  auto rumble(const u16 lo, const u16 hi, const milliseconds<u32> duration)
+      -> bool
   {
-    SDL_GameControllerRumble(m_controller, lo, hi, duration.count());
+    const auto res =
+        SDL_GameControllerRumble(m_controller, lo, hi, duration.count());
+    return res == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Starts a rumble effect in the controller's triggers.
+   *
+   * \details Calls to this function cancels any previously active rumble
+   * effect. Furthermore, supplying 0 as intensities will stop the rumble
+   * effect.
+   *
+   * \note This function has no effect if rumbling isn't supported by the
+   * controller.
+   *
+   * \param lo the intensity of the low frequency motor.
+   * \param hi the intensity of the high frequency motor.
+   * \param duration the duration of the rumble effect.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto rumble_triggers(const u16 lo,
+                       const u16 hi,
+                       const milliseconds<u32> duration) -> bool
+  {
+    const auto res = SDL_GameControllerRumbleTriggers(m_controller,
+                                                      lo,
+                                                      hi,
+                                                      duration.count());
+    return res == 0;
+  }
+
+#endif  // SDL_VERSION(2, 0, 14)
 
   /**
    * \brief Stops any currently active rumble effect.
@@ -839,6 +880,129 @@ class basic_controller final
   }
 
   /// \}
+
+  /// \name Sensor functions
+  /// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Sets whether or not data reporting is enabled for a sensor.
+   *
+   * \param type the type of the sensor that will be changed.
+   * \param enabled `true` if data reporting should be enabled; `false`
+   * otherwise.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    const auto state = enabled ? SDL_TRUE : SDL_FALSE;
+    return SDL_GameControllerSetSensorEnabled(m_controller, value, state) == 0;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller has a sensor.
+   *
+   * \param type the type of the sensor to look for.
+   *
+   * \return `true` if the controller has the specified sensor; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_sensor(const sensor_type type) const noexcept -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    return SDL_GameControllerHasSensor(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether or not data reporting is enabled for a sensor.
+   *
+   * \param type the type of the sensor that will be queried.
+   *
+   * \return `true` if data reporting is enabled for the sensor; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto is_sensor_enabled(const sensor_type type) const noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    return SDL_GameControllerIsSensorEnabled(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Returns the state of the specified sensor.
+   *
+   * \tparam size the amount of data elements.
+   *
+   * \param type the type of the sensor that will be queried.
+   *
+   * \return the sensor data; `std::nullopt` if something went wrong.
+   *
+   * \since 5.2.0
+   */
+  template <std::size_t size>
+  [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
+      -> std::optional<std::array<float, size>>
+  {
+    std::array<float, size> array{};
+    const auto value = static_cast<SDL_SensorType>(type);
+    const auto res =
+        SDL_GameControllerGetSensorData(m_controller,
+                                        value,
+                                        array.data(),
+                                        static_cast<int>(array.size()));
+    if (res != -1) {
+      return array;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Sets the color of the associated LED light.
+   *
+   * \param color the new color of the controller's LED.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_led_color(const color& color) noexcept -> bool
+  {
+    return SDL_GameControllerSetLED(m_controller,
+                                    color.red(),
+                                    color.green(),
+                                    color.blue()) == 0;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller features a LED light.
+   *
+   * \return `true` if the controller features a LED light; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_led() const noexcept -> bool
+  {
+    return SDL_GameControllerHasLED(m_controller) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /// \name Mapping functions
   /// \{

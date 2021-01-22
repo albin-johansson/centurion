@@ -29,6 +29,7 @@
 
 #include <optional>  // optional
 
+#include "button_state.hpp"
 #include "centurion_cfg.hpp"
 #include "integers.hpp"
 
@@ -46,6 +47,23 @@
  * \since 4.3.0
  */
 namespace cen::touch {
+
+/**
+ * \struct finger_state
+ *
+ * \brief Represents the state of a finger.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile touch.hpp
+ */
+struct finger_state final
+{
+  button_state state;  ///< Whether or not the finger is pressed or release.
+  float x;             ///< The current x-coordinate.
+  float y;             ///< The current y-coordinate.
+  float pressure;      ///< The current applied pressure.
+};
 
 /**
  * \enum device_type

@@ -44,6 +44,9 @@ FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForAxis, 
 FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForButton, SDL_GameController*, SDL_GameControllerButton)
 
 FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpads, SDL_GameController*)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpadFingers, SDL_GameController*, int)
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetTouchpadFinger, SDL_GameController*, int, int, Uint8*, float*, float*, float*)
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
@@ -96,6 +99,9 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetBindForButton);
 
     RESET_FAKE(SDL_GameControllerGetJoystick);
+    RESET_FAKE(SDL_GameControllerGetNumTouchpads);
+    RESET_FAKE(SDL_GameControllerGetNumTouchpadFingers);
+    RESET_FAKE(SDL_GameControllerGetTouchpadFinger);
 
     RESET_FAKE(SDL_GameControllerAddMapping);
     RESET_FAKE(SDL_GameControllerAddMappingsFromRW);
@@ -325,6 +331,30 @@ TEST_F(ControllerTest, HasButton)
 TEST_F(ControllerTest, GetJoystick)
 {
   EXPECT_NO_THROW(m_handle.get_joystick());
+}
+
+TEST_F(ControllerTest, TouchpadCount)
+{
+  const auto count [[maybe_unused]] = m_handle.touchpad_count();
+  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpads_fake.call_count);
+}
+
+TEST_F(ControllerTest, TouchpadFingerCapacity)
+{
+  const auto capacity [[maybe_unused]] = m_handle.touchpad_finger_capacity(0);
+  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
+}
+
+TEST_F(ControllerTest, TouchpadFingerState)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_handle.touchpad_finger_state(0, 0));
+  EXPECT_TRUE(m_handle.touchpad_finger_state(0, 0));
+  EXPECT_EQ(2, SDL_GameControllerGetTouchpadFinger_fake.call_count);
 }
 
 TEST_F(ControllerTest, AddMapping)

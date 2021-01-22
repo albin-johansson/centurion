@@ -39,9 +39,11 @@
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
 #include "joystick.hpp"
 #include "not_null.hpp"
 #include "sdl_string.hpp"
+#include "touch.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -769,6 +771,74 @@ class basic_controller final
   {
     return joystick_handle{SDL_GameControllerGetJoystick(m_controller)};
   }
+
+  /// \name Touchpad functions
+  /// \{
+
+  /**
+   * \brief Returns the amount of touchpads on the controller.
+   *
+   * \return the amount of touchpads on the controller.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_count() const noexcept -> int
+  {
+    return SDL_GameControllerGetNumTouchpads(m_controller);
+  }
+
+  /**
+   * \brief Returns the amount of supported simultaneous fingers for a touchpad.
+   *
+   * \param touchpad the index associated with the touchpad that will be
+   * queried.
+   *
+   * \return the maximum amount of supported simultaneous fingers for the
+   * specified touchpad.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_finger_capacity(const int touchpad) const noexcept
+      -> int
+  {
+    return SDL_GameControllerGetNumTouchpadFingers(m_controller, touchpad);
+  }
+
+  /**
+   * \brief Returns the state of a finger on a touchpad.
+   *
+   * \param touchpad the touchpad to query.
+   * \param finger the index of the finger that will be queried.
+   *
+   * \return the current state of a touchpad finger; `std::nullopt` if something
+   * goes wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_finger_state(const int touchpad,
+                                           const int finger) const noexcept
+      -> std::optional<touch::finger_state>
+  {
+    touch::finger_state result;
+    u8 state;
+
+    const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
+                                                         touchpad,
+                                                         finger,
+                                                         &state,
+                                                         &result.x,
+                                                         &result.y,
+                                                         &result.pressure);
+    result.state = static_cast<button_state>(state);
+
+    if (res != -1) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /// \}
 
   /// \name Mapping functions
   /// \{

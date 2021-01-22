@@ -89,7 +89,7 @@ using joystick_handle = basic_joystick<std::false_type>;
  * \headerfile joystick.hpp
  */
 template <typename B>
-class basic_joystick final
+class basic_joystick final  // TODO cover new 2.0.14 functions
 {
   inline static constexpr bool isOwner = std::is_same_v<B, std::true_type>;
   inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;
@@ -181,6 +181,9 @@ class basic_joystick final
     int dy;
   };
 
+  /// \name Construction
+  /// \{
+
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
       : m_joystick{joystick}
   {
@@ -243,6 +246,8 @@ class basic_joystick final
     return joystick_handle{SDL_JoystickFromPlayerIndex(playerIndex)};
   }
 
+  /// \} End of construction
+
   /**
    * \brief Makes the joystick rumble.
    *
@@ -274,6 +279,9 @@ class basic_joystick final
     SDL_JoystickSetPlayerIndex(m_joystick, index);
   }
 
+  /// \name Instance-based queries
+  /// \{
+
   /**
    * \brief Returns the player index of the joystick, if available.
    *
@@ -295,30 +303,6 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the player index of the joystick associated with the
-   * specified device index.
-   *
-   * \note This method can be called before any joysticks are opened.
-   *
-   * \param deviceIndex the device index of the joystick that will be queried.
-   *
-   * \return the player index of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
-      -> std::optional<int>
-  {
-    const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1) {
-      return std::nullopt;
-    } else {
-      return index;
-    }
-  }
-
-  /**
    * \brief Returns the type associated with the joystick.
    *
    * \return a `joystick::Type` value that represents the type of the joystick.
@@ -328,21 +312,6 @@ class basic_joystick final
   [[nodiscard]] auto get_type() const noexcept -> type
   {
     return static_cast<type>(SDL_JoystickGetType(m_joystick));
-  }
-
-  /**
-   * \brief Returns the type of the joystick associated with the specified
-   * device index.
-   *
-   * \param deviceIndex the device index of the joystick that will be queried.
-   *
-   * \return the type of the specified joystick.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept -> type
-  {
-    return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
   }
 
   /**
@@ -356,28 +325,6 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0) {
-      return std::nullopt;
-    } else {
-      return vendor;
-    }
-  }
-
-  /**
-   * \brief Returns the USB vendor ID for the joystick associated with the
-   * specified device index.
-   *
-   * \param deviceIndex the device index of the joystick that will be queried.
-   *
-   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] static auto vendor(const int deviceIndex) noexcept
-      -> std::optional<u16>
-  {
-    const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
     if (vendor == 0) {
       return std::nullopt;
     } else {
@@ -404,6 +351,130 @@ class basic_joystick final
   }
 
   /**
+   * \brief Returns the product version of the joystick, if available.
+   *
+   * \return the product version of the joystick; `std::nullopt` if it isn't
+   * available.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
+  {
+    const auto version = SDL_JoystickGetProductVersion(m_joystick);
+    if (version == 0) {
+      return std::nullopt;
+    } else {
+      return version;
+    }
+  }
+
+  /**
+   * \brief Returns the GUID associated with the joystick.
+   *
+   * \note The GUID is implementation-dependent.
+   *
+   * \return the GUID associated with the joystick.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] auto guid() noexcept -> SDL_JoystickGUID
+  {
+    return SDL_JoystickGetGUID(m_joystick);
+  }
+
+  /**
+   * \brief Returns the name associated with the joystick.
+   *
+   * \note If no name can be found, this method returns a null string.
+   *
+   * \return the name of the joystick; `nullptr` if no name is found.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] auto name() const noexcept -> czstring
+  {
+    return SDL_JoystickName(m_joystick);
+  }
+
+  /**
+   * \brief Returns the instance ID associated with the joystick.
+   *
+   * \return the instance ID associated with the joystick.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] auto instance_id() const noexcept -> SDL_JoystickID
+  {
+    return SDL_JoystickInstanceID(m_joystick);
+  }
+
+  /// \} End of instance-based queries
+
+  /// \name Index-based queries
+  /// \{
+
+  /**
+   * \brief Returns the player index of the joystick associated with the
+   * specified device index.
+   *
+   * \note This method can be called before any joysticks are opened.
+   *
+   * \param deviceIndex the device index of the joystick that will be queried.
+   *
+   * \return the player index of the desired joystick; `std::nullopt` if it
+   * can't be obtained.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
+      -> std::optional<int>
+  {
+    const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
+    if (index == -1) {
+      return std::nullopt;
+    } else {
+      return index;
+    }
+  }
+
+  /**
+   * \brief Returns the type of the joystick associated with the specified
+   * device index.
+   *
+   * \param deviceIndex the device index of the joystick that will be queried.
+   *
+   * \return the type of the specified joystick.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept -> type
+  {
+    return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
+  }
+
+  /**
+   * \brief Returns the USB vendor ID for the joystick associated with the
+   * specified device index.
+   *
+   * \param deviceIndex the device index of the joystick that will be queried.
+   *
+   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
+   * can't be obtained.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto vendor(const int deviceIndex) noexcept
+      -> std::optional<u16>
+  {
+    const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
+    if (vendor == 0) {
+      return std::nullopt;
+    } else {
+      return vendor;
+    }
+  }
+
+  /**
    * \brief Returns the USB product ID for the joystick associated with the
    * specified device index.
    *
@@ -422,24 +493,6 @@ class basic_joystick final
       return std::nullopt;
     } else {
       return product;
-    }
-  }
-
-  /**
-   * \brief Returns the product version of the joystick, if available.
-   *
-   * \return the product version of the joystick; `std::nullopt` if it isn't
-   * available.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
-  {
-    const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0) {
-      return std::nullopt;
-    } else {
-      return version;
     }
   }
 
@@ -464,6 +517,67 @@ class basic_joystick final
       return version;
     }
   }
+
+  /**
+   * \brief Returns the GUID for the joystick associated with the specified
+   * device index.
+   *
+   * \note The GUID is implementation-dependent.
+   * \note This function can be called before any joysticks are opened.
+   *
+   * \param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   *
+   * \return the GUID of the joystick associated with the device index.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto guid(const int deviceIndex) noexcept
+      -> SDL_JoystickGUID
+  {
+    return SDL_JoystickGetDeviceGUID(deviceIndex);
+  }
+
+  /**
+   * \brief Returns the associated with the joystick with the specified
+   * device index.
+   *
+   * \param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   *
+   * \return the name associated with the joystick; `nullptr` if no name is
+   * found.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> czstring
+  {
+    return SDL_JoystickNameForIndex(deviceIndex);
+  }
+
+  /**
+   * \brief Returns the instance ID for the joystick associated with the
+   * specified device index.
+   *
+   * \param deviceIndex the device index of the joystick that will be queried.
+   *
+   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
+   * be obtained.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard]] static auto instance_id(const int deviceIndex) noexcept
+      -> std::optional<SDL_JoystickID>
+  {
+    const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
+    if (id == -1) {
+      return std::nullopt;
+    } else {
+      return id;
+    }
+  }
+
+  /// \} End of index-based queries
 
   /**
    * \brief Returns the ball axis change since the last poll.
@@ -558,11 +672,25 @@ class basic_joystick final
    *
    * \return the amount of hats on the joystick.
    *
-   * \since 4.2.0
+   * \since 5.2.0
    */
-  [[nodiscard]] auto num_hats() const noexcept -> int
+  [[nodiscard]] auto hat_count() const noexcept -> int
   {
     return SDL_JoystickNumHats(m_joystick);
+  }
+
+  /**
+   * \brief Returns the amount of hats on the joystick.
+   *
+   * \return the amount of hats on the joystick.
+   *
+   * \deprecated Since 5.2.0, use `hat_count()` instead.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard, deprecated]] auto num_hats() const noexcept -> int
+  {
+    return hat_count();
   }
 
   /**
@@ -570,11 +698,25 @@ class basic_joystick final
    *
    * \return the amount of general axis controls on the joystick.
    *
-   * \since 4.2.0
+   * \since 5.2.0
    */
-  [[nodiscard]] auto num_axes() const noexcept -> int
+  [[nodiscard]] auto axis_count() const noexcept -> int
   {
     return SDL_JoystickNumAxes(m_joystick);
+  }
+
+  /**
+   * \brief Returns the amount of general axis controls on the joystick.
+   *
+   * \return the amount of general axis controls on the joystick.
+   *
+   * \deprecated Since 5.2.0, use `axis_count()` instead.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard, deprecated]] auto num_axes() const noexcept -> int
+  {
+    return axis_count();
   }
 
   /**
@@ -582,11 +724,25 @@ class basic_joystick final
    *
    * \return the amount of trackballs on the joystick.
    *
-   * \since 4.2.0
+   * \since 5.2.0
    */
-  [[nodiscard]] auto num_trackballs() const noexcept -> int
+  [[nodiscard]] auto trackball_count() const noexcept -> int
   {
     return SDL_JoystickNumBalls(m_joystick);
+  }
+
+  /**
+   * \brief Returns the amount of trackballs on the joystick.
+   *
+   * \return the amount of trackballs on the joystick.
+   *
+   * \deprecated Since 5.2.0, use `trackball_count()` instead.
+   *
+   * \since 4.2.0
+   */
+  [[nodiscard, deprecated]] auto num_trackballs() const noexcept -> int
+  {
+    return trackball_count();
   }
 
   /**
@@ -594,110 +750,25 @@ class basic_joystick final
    *
    * \return the amount of buttons on the joystick.
    *
-   * \since 4.2.0
+   * \since 5.2.0
    */
-  [[nodiscard]] auto num_buttons() const noexcept -> int
+  [[nodiscard]] auto button_count() const noexcept -> int
   {
     return SDL_JoystickNumButtons(m_joystick);
   }
 
   /**
-   * \brief Returns the instance ID associated with the joystick.
+   * \brief Returns the amount of buttons on the joystick.
    *
-   * \return the instance ID associated with the joystick.
+   * \return the amount of buttons on the joystick.
    *
-   * \since 4.2.0
-   */
-  [[nodiscard]] auto instance_id() const noexcept -> SDL_JoystickID
-  {
-    return SDL_JoystickInstanceID(m_joystick);
-  }
-
-  /**
-   * \brief Returns the instance ID for the joystick associated with the
-   * specified device index.
-   *
-   * \param deviceIndex the device index of the joystick that will be queried.
-   *
-   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
-   * be obtained.
+   * \deprecated Since 5.2.0, use `button_count()` instead.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto instance_id(const int deviceIndex) noexcept
-      -> std::optional<SDL_JoystickID>
+  [[nodiscard, deprecated]] auto num_buttons() const noexcept -> int
   {
-    const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1) {
-      return std::nullopt;
-    } else {
-      return id;
-    }
-  }
-
-  /**
-   * \brief Returns the GUID associated with the joystick.
-   *
-   * \note The GUID is implementation-dependent.
-   *
-   * \return the GUID associated with the joystick.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] auto guid() noexcept -> SDL_JoystickGUID
-  {
-    return SDL_JoystickGetGUID(m_joystick);
-  }
-
-  /**
-   * \brief Returns the GUID for the joystick associated with the specified
-   * device index.
-   *
-   * \note The GUID is implementation-dependent.
-   * \note This function can be called before any joysticks are opened.
-   *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
-   *
-   * \return the GUID of the joystick associated with the device index.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] static auto guid(const int deviceIndex) noexcept
-      -> SDL_JoystickGUID
-  {
-    return SDL_JoystickGetDeviceGUID(deviceIndex);
-  }
-
-  /**
-   * \brief Returns the name associated with the joystick.
-   *
-   * \note If no name can be found, this method returns a null string.
-   *
-   * \return the name of the joystick; `nullptr` if no name is found.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] auto name() const noexcept -> czstring
-  {
-    return SDL_JoystickName(m_joystick);
-  }
-
-  /**
-   * \brief Returns the associated with the joystick with the specified
-   * device index.
-   *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
-   *
-   * \return the name associated with the joystick; `nullptr` if no name is
-   * found.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> czstring
-  {
-    return SDL_JoystickNameForIndex(deviceIndex);
+    return button_count();
   }
 
   /**
@@ -840,7 +911,7 @@ class basic_joystick final
    * \return the current amount of available joysticks; `std::nullopt` if
    * something goes wrong.
    *
-   * \deprecated Use `count()` instead.
+   * \deprecated Since 5.1.0, use `count()` instead.
    *
    * \since 4.2.0
    */

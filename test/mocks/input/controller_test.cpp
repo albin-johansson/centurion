@@ -287,7 +287,7 @@ TEST_F(ControllerTest, GetAxisFromString)
 
 TEST_F(ControllerTest, GetAxis)
 {
-  std::array<Sint16, 2> values{123, 321};
+  std::array<cen::i16, 2> values{123, 321};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis,
                  values.data(),
                  static_cast<int>(values.size()));

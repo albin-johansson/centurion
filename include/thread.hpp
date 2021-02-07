@@ -305,7 +305,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  static void sleep(const milliseconds<u32> ms) noexcept
+  static void sleep(const milliseconds<u32> ms)
   {
     SDL_Delay(ms.count());
   }

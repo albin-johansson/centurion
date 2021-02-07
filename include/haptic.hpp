@@ -1381,6 +1381,8 @@ template <typename B>
 class basic_haptic final  // TODO RtD entry
 {
  public:
+  using effect_id = int;
+
   /// \name Construction
   /// \{
 
@@ -1578,20 +1580,37 @@ class basic_haptic final  // TODO RtD entry
   }
 
   template <typename D>
-  auto update(const int id, const haptic_effect<D>& effect) -> bool
+  auto update(const effect_id id, const haptic_effect<D>& effect) -> bool
   {
     auto copy = effect.get();
     return SDL_HapticUpdateEffect(m_haptic, id, &copy) == 0;
   }
 
-  auto run(const int id, const u32 iterations = 1) -> bool
+  auto run(const effect_id id, const u32 iterations = 1) -> bool
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }
 
-  auto stop(const int id) -> bool
+  auto stop(const effect_id id) -> bool
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;
+  }
+
+  /**
+   * \brief Destroys the effect associated with the specified ID.
+   *
+   * \note This is done automatically when the device is destructed.
+   *
+   * \details The effect will be destroyed will be stopped if it is running
+   * by the time this function is invoked.
+   *
+   * \param id the ID associated with the effect that will be destroyed.
+   *
+   * \since 5.2.0
+   */
+  void destroy(const effect_id id)
+  {
+    SDL_HapticDestroyEffect(m_haptic, id);
   }
 
   template <typename D>

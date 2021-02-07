@@ -11,6 +11,7 @@
 extern "C" {
 // clang-format off
 FAKE_VOID_FUNC(SDL_HapticClose, SDL_Haptic*)
+FAKE_VOID_FUNC(SDL_HapticDestroyEffect, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpen, int)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpenFromMouse)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpenFromJoystick, SDL_Joystick*)
@@ -43,6 +44,7 @@ class HapticTest : public testing::Test
   {
     mocks::reset_core();
     RESET_FAKE(SDL_HapticClose);
+    RESET_FAKE(SDL_HapticDestroyEffect);
     RESET_FAKE(SDL_HapticOpen);
     RESET_FAKE(SDL_HapticOpenFromMouse);
     RESET_FAKE(SDL_HapticOpenFromJoystick);
@@ -512,6 +514,13 @@ TEST_F(HapticTest, Stop)
   EXPECT_TRUE(m_haptic.stop(42));
 
   EXPECT_EQ(2, SDL_HapticStopEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, Destroy)
+{
+  m_haptic.destroy(12);
+  EXPECT_EQ(1, SDL_HapticDestroyEffect_fake.call_count);
+  EXPECT_EQ(12, SDL_HapticDestroyEffect_fake.arg1_val);
 }
 
 TEST_F(HapticTest, IsSupported)

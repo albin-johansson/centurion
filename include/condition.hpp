@@ -120,7 +120,7 @@ class condition final
    *
    * \since 5.0.0
    */
-  auto wait(mutex& mutex, const milliseconds<u32> ms) noexcept -> lock_status
+  auto wait(mutex& mutex, const milliseconds<u32> ms) -> lock_status
   {
     return static_cast<lock_status>(
         SDL_CondWaitTimeout(m_cond.get(), mutex.get(), ms.count()));

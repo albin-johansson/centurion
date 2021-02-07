@@ -1625,7 +1625,8 @@ class basic_haptic final  // TODO RtD entry
    * \since 5.2.0
    */
   template <typename D>
-  auto update(const effect_id id, const haptic_effect<D>& effect) -> bool
+  auto update(const effect_id id, const haptic_effect<D>& effect) noexcept
+      -> bool
   {
     auto internal = effect.get();
     return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
@@ -1645,7 +1646,7 @@ class basic_haptic final  // TODO RtD entry
    *
    * \since 5.2.0
    */
-  auto run(const effect_id id, const u32 iterations = 1) -> bool
+  auto run(const effect_id id, const u32 iterations = 1) noexcept -> bool
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }
@@ -1659,7 +1660,7 @@ class basic_haptic final  // TODO RtD entry
    *
    * \since 5.2.0
    */
-  auto stop(const effect_id id) -> bool
+  auto stop(const effect_id id) noexcept -> bool
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;
   }
@@ -1688,7 +1689,7 @@ class basic_haptic final  // TODO RtD entry
    *
    * \since 5.2.0
    */
-  void destroy(const effect_id id)
+  void destroy(const effect_id id) noexcept
   {
     SDL_HapticDestroyEffect(m_haptic, id);
   }

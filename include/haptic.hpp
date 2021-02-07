@@ -1651,6 +1651,15 @@ class basic_haptic final  // TODO RtD entry
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }
 
+  /**
+   * \brief Stops a currently running effect.
+   *
+   * \param id the ID associated with the effect that will be stopped.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   auto stop(const effect_id id) -> bool
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;

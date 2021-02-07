@@ -262,7 +262,7 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
    */
   void rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration) noexcept
+              const milliseconds<u32> duration)
   {
     SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count());
   }

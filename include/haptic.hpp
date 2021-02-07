@@ -1567,11 +1567,22 @@ class basic_haptic final  // TODO RtD entry
   // TODO SDL_HapticUnpause           -> unpause
   // TODO SDL_HapticStopAll           -> stop_all
 
+  /**
+   * \brief Uploads an effect to the device.
+   *
+   * \param effect the effect that will be uploaded to the device.
+   *
+   * \return the ID associated with the uploaded effect; `std::nullopt` if
+   * something went wrong.
+   *
+   * \since 5.2.0
+   */
   template <typename D>
-  auto add(const haptic_effect<D>& effect) noexcept -> std::optional<int>
+  auto upload(const haptic_effect<D>& effect) noexcept
+      -> std::optional<effect_id>
   {
-    auto copy = effect.get();
-    const auto id = SDL_HapticNewEffect(m_haptic, &copy);
+    auto internal = effect.get();
+    const auto id = SDL_HapticNewEffect(m_haptic, &internal);
     if (id != -1) {
       return id;
     } else {

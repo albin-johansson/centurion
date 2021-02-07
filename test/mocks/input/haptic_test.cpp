@@ -459,7 +459,7 @@ TEST_F(HapticTest, IsMouseHaptic)
   EXPECT_EQ(1, SDL_MouseIsHaptic_fake.call_count);
 }
 
-TEST_F(HapticTest, Add)
+TEST_F(HapticTest, Upload)
 {
   std::array values{-1, 7};
   SET_RETURN_SEQ(SDL_HapticNewEffect,
@@ -467,8 +467,8 @@ TEST_F(HapticTest, Add)
                  static_cast<int>(values.size()));
 
   cen::haptic_constant effect;
-  EXPECT_FALSE(m_haptic.add(effect));
-  EXPECT_EQ(7, m_haptic.add(effect));
+  EXPECT_FALSE(m_haptic.upload(effect));
+  EXPECT_EQ(7, m_haptic.upload(effect));
 
   EXPECT_EQ(2, SDL_HapticNewEffect_fake.call_count);
 }

@@ -32,6 +32,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticNumAxes, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNewEffect, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticRunEffect, SDL_Haptic*, int, Uint32)
 FAKE_VALUE_FUNC(int, SDL_HapticStopEffect, SDL_Haptic*, int)
+FAKE_VALUE_FUNC(int, SDL_HapticStopAll, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticEffectSupported, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
 // clang-format on
@@ -65,6 +66,7 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticNewEffect);
     RESET_FAKE(SDL_HapticRunEffect);
     RESET_FAKE(SDL_HapticStopEffect);
+    RESET_FAKE(SDL_HapticStopAll);
     RESET_FAKE(SDL_HapticEffectSupported);
     RESET_FAKE(SDL_HapticUpdateEffect);
   }
@@ -514,6 +516,19 @@ TEST_F(HapticTest, Stop)
   EXPECT_TRUE(m_haptic.stop(42));
 
   EXPECT_EQ(2, SDL_HapticStopEffect_fake.call_count);
+}
+
+TEST_F(HapticTest, StopAll)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticStopAll,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.stop_all());
+  EXPECT_TRUE(m_haptic.stop_all());
+
+  EXPECT_EQ(2, SDL_HapticStopAll_fake.call_count);
 }
 
 TEST_F(HapticTest, Destroy)

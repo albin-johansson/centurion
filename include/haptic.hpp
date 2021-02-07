@@ -1584,7 +1584,6 @@ class basic_haptic final  // TODO RtD entry
   // TODO SDL_HapticSetAutocenter     -> set_autocenter
   // TODO SDL_HapticPause             -> pause
   // TODO SDL_HapticUnpause           -> unpause
-  // TODO SDL_HapticStopAll           -> stop_all
 
   /**
    * \brief Uploads an effect to the device.
@@ -1663,6 +1662,18 @@ class basic_haptic final  // TODO RtD entry
   auto stop(const effect_id id) -> bool
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;
+  }
+
+  /**
+   * \brief Stops all currently running effects on the device.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto stop_all() noexcept -> bool
+  {
+    return SDL_HapticStopAll(m_haptic) == 0;
   }
 
   /**

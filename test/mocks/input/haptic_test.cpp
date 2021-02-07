@@ -29,6 +29,8 @@ FAKE_VALUE_FUNC(int, SDL_JoystickIsHaptic, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumEffects, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumEffectsPlaying, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNumAxes, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_HapticPause, SDL_Haptic*)
+FAKE_VALUE_FUNC(int, SDL_HapticUnpause, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticNewEffect, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticRunEffect, SDL_Haptic*, int, Uint32)
 FAKE_VALUE_FUNC(int, SDL_HapticStopEffect, SDL_Haptic*, int)
@@ -63,6 +65,8 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticNumEffects);
     RESET_FAKE(SDL_HapticNumEffectsPlaying);
     RESET_FAKE(SDL_HapticNumAxes);
+    RESET_FAKE(SDL_HapticPause);
+    RESET_FAKE(SDL_HapticUnpause);
     RESET_FAKE(SDL_HapticNewEffect);
     RESET_FAKE(SDL_HapticRunEffect);
     RESET_FAKE(SDL_HapticStopEffect);
@@ -459,6 +463,35 @@ TEST_F(HapticTest, IsMouseHaptic)
 {
   const auto isHaptic [[maybe_unused]] = cen::haptic::is_mouse_haptic();
   EXPECT_EQ(1, SDL_MouseIsHaptic_fake.call_count);
+}
+
+TEST_F(HapticTest, Pause)
+{
+  std::array features{SDL_HAPTIC_PAUSE};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 features.data(),
+                 static_cast<int>(features.size()));
+
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticPause,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.pause());
+  EXPECT_TRUE(m_haptic.pause());
+  EXPECT_EQ(2, SDL_HapticPause_fake.call_count);
+}
+
+TEST_F(HapticTest, Unpause)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticUnpause,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.unpause());
+  EXPECT_TRUE(m_haptic.unpause());
+  EXPECT_EQ(2, SDL_HapticUnpause_fake.call_count);
 }
 
 TEST_F(HapticTest, Upload)

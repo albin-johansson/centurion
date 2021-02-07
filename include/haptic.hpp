@@ -1582,8 +1582,36 @@ class basic_haptic final  // TODO RtD entry
   // TODO SDL_HapticGetEffectStatus   -> effect_status
   // TODO SDL_HapticSetGain           -> set_gain
   // TODO SDL_HapticSetAutocenter     -> set_autocenter
-  // TODO SDL_HapticPause             -> pause
-  // TODO SDL_HapticUnpause           -> unpause
+
+  /**
+   * \brief Pauses the device.
+   *
+   * \pre The device must support the `pause` feature.
+   * \post You must call `unpause()` before calling `upload()` or `update()`.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto pause() noexcept -> bool
+  {
+    assert(has_feature_pause());
+    return SDL_HapticPause(m_haptic) == 0;
+  }
+
+  /**
+   * \brief Unpauses the device.
+   *
+   * \pre `pause()` must have been called before this function is invoked.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto unpause() noexcept -> bool
+  {
+    return SDL_HapticUnpause(m_haptic) == 0;
+  }
 
   /**
    * \brief Uploads an effect to the device.

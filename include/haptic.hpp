@@ -77,6 +77,13 @@ namespace cen {
 //  - ?? SDL_HAPTIC_SPHERICAL ??
 
 /**
+ * \brief A constant that can be used to play an effect indefinitely.
+ *
+ * \since 5.2.0
+ */
+inline constexpr u32 haptic_infinity = SDL_HAPTIC_INFINITY;
+
+/**
  * \enum haptic_feature
  *
  * \brief Provides values that represent all of the haptic features.
@@ -153,6 +160,19 @@ class haptic_effect
  public:
   /// \name Replay functions
   /// \{
+
+  /**
+   * \brief Sets the effect to be repeated indefinitely when run.
+   *
+   * \details This function makes the effect repeat forever when run, but the
+   * attack and fade are not repeated.
+   *
+   * \since 5.2.0
+   */
+  void set_repeat_forever() noexcept
+  {
+    rep().length = haptic_infinity;
+  }
 
   /**
    * \brief Sets the duration of the effect.
@@ -1559,7 +1579,6 @@ class basic_haptic final  // TODO RtD entry
   /// \name Effects
   /// \{
 
-  // TODO SDL_HapticDestroyEffect     -> destroy_effect
   // TODO SDL_HapticGetEffectStatus   -> effect_status
   // TODO SDL_HapticSetGain           -> set_gain
   // TODO SDL_HapticSetAutocenter     -> set_autocenter
@@ -1613,6 +1632,20 @@ class basic_haptic final  // TODO RtD entry
     return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
   }
 
+  /**
+   * \brief Runs the specified effect.
+   *
+   * \note If you want to repeat the effect indefinitely without repeating the
+   * attack and fade, see `haptic_effect::set_repeat_forever()`.
+   *
+   * \param id the ID associated with the effect that will be run.
+   * \param iterations the number of iterations, can be `haptic_infinity` to
+   * repeat the effect forever (including the attack and fade).
+   *
+   * \return `true` on success; `false` if something went wrong.
+   *
+   * \since 5.2.0
+   */
   auto run(const effect_id id, const u32 iterations = 1) -> bool
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;

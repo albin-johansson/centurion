@@ -1590,11 +1590,27 @@ class basic_haptic final  // TODO RtD entry
     }
   }
 
+  /**
+   * \brief Attempts to update the effect associated with the specified ID.
+   *
+   * \note It is not possible to change the type of the effect through this
+   * function.
+   *
+   * \note You might experience strange results if you call this function for an
+   * effect that is currently playing, but it is possible.
+   *
+   * \param id the ID associated with the effect that will be updated.
+   * \param effect the new properties that will be associated with the effect.
+   *
+   * \return `true` on success; `false` if something went wrong.
+   *
+   * \since 5.2.0
+   */
   template <typename D>
   auto update(const effect_id id, const haptic_effect<D>& effect) -> bool
   {
-    auto copy = effect.get();
-    return SDL_HapticUpdateEffect(m_haptic, id, &copy) == 0;
+    auto internal = effect.get();
+    return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
   }
 
   auto run(const effect_id id, const u32 iterations = 1) -> bool

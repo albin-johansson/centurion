@@ -1607,87 +1607,240 @@ class basic_haptic final  // TODO RtD entry
   /// \name Feature checks
   /// \{
 
+  /**
+   * \brief Indicates whether or not the device supports the specified feature.
+   *
+   * \param feature the haptic feature to be checked.
+   *
+   * \return `true` if the feature is supported; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept
       -> bool
   {
     return has_feature(static_cast<unsigned>(feature));
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `constant` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_constant() const noexcept -> bool
   {
     return has_feature(haptic_feature::constant);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `sine` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_sine() const noexcept -> bool
   {
     return has_feature(haptic_feature::sine);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `left_right` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_left_right() const noexcept -> bool
   {
     return has_feature(haptic_feature::left_right);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `triangle` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_triangle() const noexcept -> bool
   {
     return has_feature(haptic_feature::triangle);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `sawtooth_up` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_sawtooth_up() const noexcept -> bool
   {
     return has_feature(haptic_feature::sawtooth_up);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `sawtooth_down` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_sawtooth_down() const noexcept -> bool
   {
     return has_feature(haptic_feature::sawtooth_down);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `ramp` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_ramp() const noexcept -> bool
   {
     return has_feature(haptic_feature::ramp);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `spring` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_spring() const noexcept -> bool
   {
     return has_feature(haptic_feature::spring);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `damper` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_damper() const noexcept -> bool
   {
     return has_feature(haptic_feature::damper);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `inertia` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_inertia() const noexcept -> bool
   {
     return has_feature(haptic_feature::inertia);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `friction` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_friction() const noexcept -> bool
   {
     return has_feature(haptic_feature::friction);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `gain` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_gain() const noexcept -> bool
   {
     return has_feature(haptic_feature::gain);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `autocenter` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_autocenter() const noexcept -> bool
   {
     return has_feature(haptic_feature::autocenter);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `status` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_status() const noexcept -> bool
   {
     return has_feature(haptic_feature::status);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `pause` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_pause() const noexcept -> bool
   {
     return has_feature(haptic_feature::pause);
   }
 
+  /**
+   * \brief Indicates whether or not the device has the `custom` feature.
+   *
+   * \note This is a convenience function that calls `has_feature()`.
+   *
+   * \return `true` if the device has the feature; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto has_feature_custom() const noexcept -> bool
   {
     return has_feature(haptic_feature::custom);

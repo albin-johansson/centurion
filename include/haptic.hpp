@@ -564,7 +564,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   inline constexpr static bool hasDelay = true;
 
   /**
-   * \enum haptic_periodic::periodic_type
+   * \enum periodic_type
    *
    * \brief Provides values that serve as identifiers for the different kinds of
    * "periodic" haptic effects.
@@ -1009,7 +1009,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
   inline constexpr static bool hasDelay = true;
 
   /**
-   * \enum haptic_condition::condition_type
+   * \enum condition_type
    *
    * \brief Provides values that serve as identifiers for the different kinds of
    * "condition" haptic effects.
@@ -1081,7 +1081,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    * \brief Sets of quickly the force should increase towards the "positive"
    * side.
    *
-   * \param level the x-, y- and z-axis rates.
+   * \param rate the x-, y- and z-axis rates.
    *
    * \since 5.2.0
    */
@@ -1096,7 +1096,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    * \brief Sets of quickly the force should increase towards the "negative"
    * side.
    *
-   * \param level the x-, y- and z-axis rates.
+   * \param rate the x-, y- and z-axis rates.
    *
    * \since 5.2.0
    */
@@ -1110,7 +1110,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
   /**
    * \brief Sets the size of the dead zone.
    *
-   * \param level the x-, y- and z-axis sizes.
+   * \param size the x-, y- and z-axis sizes.
    *
    * \since 5.2.0
    */

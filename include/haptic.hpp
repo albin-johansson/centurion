@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cassert>      // assert
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
@@ -562,6 +563,14 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
 
+  /**
+   * \enum haptic_periodic::periodic_type
+   *
+   * \brief Provides values that serve as identifiers for the different kinds of
+   * "periodic" haptic effects.
+   *
+   * \since 5.2.0
+   */
   enum periodic_type : u16
   {
     sine = SDL_HAPTIC_SINE,
@@ -578,57 +587,122 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  haptic_periodic() noexcept
+  explicit haptic_periodic(const periodic_type type = sine) noexcept
   {
     m_effect.periodic = {};
-    representation().type = SDL_HAPTIC_SINE;
+    set_type(type);
   }
 
+  /**
+   * \brief Sets the type of the effect.
+   *
+   * \param type the periodic effect type.
+   *
+   * \since 5.2.0
+   */
   void set_type(const periodic_type type) noexcept
   {
     representation().type = static_cast<u16>(type);
   }
 
   // Period of the wave.
+
+  /**
+   * \brief Sets the period of the wave.
+   *
+   * \param ms the period duration of the wave.
+   *
+   * \since 5.2.0
+   */
   void set_period(const milliseconds<u16> ms)
   {
     representation().period = ms.count();
   }
 
-  // Peak value; if negative, equivalent to 180 degrees extra phase shift.
+  /**
+   * \brief Sets the magnitude (peak value) of the wave.
+   *
+   * \note If the supplied magnitude is negative, that is interpreted as an
+   * extra phase_shift shift of 180 degrees.
+   *
+   * \param magnitude the magnitude of the wave, can be negative.
+   *
+   * \since 5.2.0
+   */
   void set_magnitude(const i16 magnitude) noexcept
   {
     representation().magnitude = magnitude;
   }
 
-  // Mean value of the wave.
-  void set_offset(const i16 offset) noexcept
+  /**
+   * \brief Sets the mean value of the wave.
+   *
+   * \param mean the mean value of the wave.
+   *
+   * \since 5.2.0
+   */
+  void set_mean(const i16 mean) noexcept
   {
-    representation().offset = offset;
+    representation().offset = mean;
   }
 
-  // Positive phase shift given by hundredth of a degree.
-  void set_phase(const u16 phase) noexcept
+  /**
+   * \brief Sets the phase_shift shift.
+   *
+   * \param shift the positive phase_shift shift, interpreted as hundredths of a
+   * degree.
+   *
+   * \since 5.2.0
+   */
+  void set_phase_shift(const u16 shift) noexcept
   {
-    representation().phase = phase;
+    representation().phase = shift;
   }
 
+  /**
+   * \brief Returns the current period of the wave.
+   *
+   * \return the period of the wave.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto period() const -> milliseconds<u16>
   {
     return milliseconds<u16>{representation().period};
   }
 
+  /**
+   * \brief Returns the current magnitude (peak value) of the wave.
+   *
+   * \return the magnitude of the wave.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto magnitude() const noexcept -> i16
   {
     return representation().magnitude;
   }
 
-  [[nodiscard]] auto offset() const noexcept -> i16
+  /**
+   * \brief Returns the current mean value of the wave.
+   *
+   * \return the mean value of the wave.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto mean() const noexcept -> i16
   {
     return representation().offset;
   }
 
-  [[nodiscard]] auto phase() const noexcept -> u16
+  /**
+   * \brief Returns the current positive phase shift of the wave.
+   *
+   * \return the positive phase shift of the wave, in hundredths of a degree.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto phase_shift() const noexcept -> u16
   {
     return representation().phase;
   }
@@ -687,23 +761,49 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
     representation().type = SDL_HAPTIC_RAMP;
   }
 
-  // Beginning strength level.
+  /**
+   * \brief Sets the initial strength level.
+   *
+   * \param start the initial strength level.
+   *
+   * \since 5.2.0
+   */
   void set_start_strength(const i16 start) noexcept
   {
     representation().start = start;
   }
 
-  // Ending strength level.
+  /**
+   * \brief Sets the strength level at the end of the effect.
+   *
+   * \param end the strength level at the end of the effect.
+   *
+   * \since 5.2.0
+   */
   void set_end_strength(const i16 end) noexcept
   {
     representation().end = end;
   }
 
+  /**
+   * \brief Returns the initial strength level.
+   *
+   * \return the initial strength level.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto start_strength() const noexcept -> i16
   {
     return representation().start;
   }
 
+  /**
+   * \brief Returns the strength level at the end of the effect.
+   *
+   * \return the final strength level.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto end_strength() const noexcept -> i16
   {
     return representation().end;
@@ -762,43 +862,105 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     representation().type = SDL_HAPTIC_CUSTOM;
   }
 
-  // Axes to use, minimum of one.
+  /**
+   * \brief Sets the number of axes that are used.
+   *
+   * \pre `count` must be greater than zero.
+   *
+   * \param count the number of axes that will be used.
+   *
+   * \since 5.2.0
+   */
   void set_axis_count(const u8 count) noexcept
   {
+    assert(count > 0);
     representation().channels = detail::max(u8{1}, count);
   }
 
+  /**
+   * \brief Sets the duration of the sample periods.
+   *
+   * \param ms duration of sample periods.
+   *
+   * \since 5.2.0
+   */
   void set_sample_period(const milliseconds<u16> ms)
   {
     representation().period = ms.count();
   }
 
-  // Amount of samples.
+  /**
+   * \brief Sets the number of samples.
+   *
+   * \param count the number of samples.
+   *
+   * \since 5.2.0
+   */
   void set_sample_count(const u16 count) noexcept
   {
     representation().samples = count;
   }
 
+  /**
+   * \brief Sets the associated custom data.
+   *
+   * \note The data must be allocated and managed by you.
+   *
+   * \details The data should consist of `sample_count()` * `axis_count()`
+   * sample items.
+   *
+   * \param data a pointer to the custom sample data.
+   *
+   * \since 5.2.0
+   */
   void set_data(u16* data) noexcept
   {
     representation().data = data;
   }
 
+  /**
+   * \brief Returns the number of axes that are used.
+   *
+   * \return the number of used axes.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto axis_count() const noexcept -> u8
   {
     return representation().channels;
   }
 
+  /**
+   * \brief Returns the duration of samples.
+   *
+   * \return the duration of samples.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto sample_period() const -> milliseconds<u16>
   {
     return milliseconds<u16>{representation().period};
   }
 
+  /**
+   * \brief Returns the number of samples.
+   *
+   * \return the number of samples.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto sample_count() const noexcept -> u16
   {
     return representation().samples;
   }
 
+  /**
+   * \brief Returns a pointer to user-provided data.
+   *
+   * \return a pointer to custom user-provided data, might be null.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto data() const noexcept -> u16*
   {
     return representation().data;
@@ -846,6 +1008,14 @@ class haptic_condition final : public haptic_effect<haptic_condition>
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
 
+  /**
+   * \enum haptic_condition::condition_type
+   *
+   * \brief Provides values that serve as identifiers for the different kinds of
+   * "condition" haptic effects.
+   *
+   * \since 5.2.0
+   */
   enum condition_type : u32
   {
     spring = SDL_HAPTIC_SPRING,     ///< Based on axes position.
@@ -854,18 +1024,38 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     friction = SDL_HAPTIC_FRICTION  ///< Based on axes movement.
   };
 
+  /**
+   * \brief Creates a haptic "condition" effect.
+   *
+   * \param type the type of the effect.
+   *
+   * \since 5.2.0
+   */
   explicit haptic_condition(const condition_type type = spring) noexcept
   {
     m_effect.condition = {};
     set_type(type);
   }
 
+  /**
+   * \brief Sets the type of the effect.
+   *
+   * \param type the type of the effect.
+   *
+   * \since 5.2.0
+   */
   void set_type(const condition_type type) noexcept
   {
     representation().type = type;
   }
 
-  /// Level when joystick is to the positive side; max 0xFFFF.
+  /**
+   * \brief Sets the effect level when the joystick is to the "positive" side.
+   *
+   * \param level the x-, y- and z-axis levels.
+   *
+   * \since 5.2.0
+   */
   void set_joystick_positive_level(const vector3<u16>& level) noexcept
   {
     representation().right_sat[0] = level.x;
@@ -873,7 +1063,13 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().right_sat[2] = level.z;
   }
 
-  /// Level when joystick is to the negative side; max 0xFFFF.
+  /**
+   * \brief Sets the effect level when the joystick is to the "negative" side.
+   *
+   * \param level the x-, y- and z-axis levels.
+   *
+   * \since 5.2.0
+   */
   void set_joystick_negative_level(const vector3<u16>& level) noexcept
   {
     representation().left_sat[0] = level.x;
@@ -881,7 +1077,14 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().left_sat[2] = level.z;
   }
 
-  /// How fast to increase the force towards the positive side.
+  /**
+   * \brief Sets of quickly the force should increase towards the "positive"
+   * side.
+   *
+   * \param level the x-, y- and z-axis rates.
+   *
+   * \since 5.2.0
+   */
   void set_force_rate_positive(const vector3<i16>& rate) noexcept
   {
     representation().right_coeff[0] = rate.x;
@@ -889,7 +1092,14 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().right_coeff[2] = rate.z;
   }
 
-  // How fast to increase the force towards the negative side.
+  /**
+   * \brief Sets of quickly the force should increase towards the "negative"
+   * side.
+   *
+   * \param level the x-, y- and z-axis rates.
+   *
+   * \since 5.2.0
+   */
   void set_force_rate_negative(const vector3<i16>& rate) noexcept
   {
     representation().left_coeff[0] = rate.x;
@@ -897,7 +1107,13 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().left_coeff[2] = rate.z;
   }
 
-  /// Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.
+  /**
+   * \brief Sets the size of the dead zone.
+   *
+   * \param level the x-, y- and z-axis sizes.
+   *
+   * \since 5.2.0
+   */
   void set_deadband(const vector3<u16>& size) noexcept
   {
     representation().deadband[0] = size.x;
@@ -905,7 +1121,13 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().deadband[2] = size.z;
   }
 
-  /// Position of the dead zone.
+  /**
+   * \brief Sets the "center", i.e. the position of the dead zone.
+   *
+   * \param center the position of the dead zone.
+   *
+   * \since 5.2.0
+   */
   void set_center(const vector3<i16>& center) noexcept
   {
     representation().center[0] = center.x;
@@ -913,36 +1135,80 @@ class haptic_condition final : public haptic_effect<haptic_condition>
     representation().center[2] = center.z;
   }
 
+  /**
+   * \brief Returns the effect level when the joystick is to the "positive"
+   * side.
+   *
+   * \return the positive side effect level.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto joystick_positive_level() const noexcept -> vector3<u16>
   {
     const auto& level = representation().right_sat;
     return {level[0], level[1], level[2]};
   }
 
+  /**
+   * \brief Returns the effect level when the joystick is to the "negative"
+   * side.
+   *
+   * \return the negative side effect level.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto joystick_negative_level() const noexcept -> vector3<u16>
   {
     const auto& level = representation().left_sat;
     return {level[0], level[1], level[2]};
   }
 
+  /**
+   * \brief Returns how fast the force increases towards to the "positive" side.
+   *
+   * \return the positive side force increase rate.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto force_rate_positive() const noexcept -> vector3<i16>
   {
     const auto& rate = representation().right_coeff;
     return {rate[0], rate[1], rate[2]};
   }
 
+  /**
+   * \brief Returns how fast the force increases towards to the "negative" side.
+   *
+   * \return the negative side force increase rate.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto force_rate_negative() const noexcept -> vector3<i16>
   {
     const auto& rate = representation().left_coeff;
     return {rate[0], rate[1], rate[2]};
   }
 
+  /**
+   * \brief Returns the size of the dead zone.
+   *
+   * \return the size of the dead zone.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto deadband() const noexcept -> vector3<u16>
   {
     const auto& band = representation().deadband;
     return {band[0], band[1], band[2]};
   }
 
+  /**
+   * \brief Returns the position of the dead zone.
+   *
+   * \return the position of the dead zone.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto center() const noexcept -> vector3<i16>
   {
     const auto& center = representation().center;
@@ -993,29 +1259,61 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
   inline constexpr static bool hasTrigger = false;
   inline constexpr static bool hasDelay = false;
 
+  /**
+   * \brief Creates a "left/right" haptic effect.
+   *
+   * \since 5.2.0
+   */
   haptic_left_right() noexcept
   {
     m_effect.leftright = {};
     representation().type = SDL_HAPTIC_LEFTRIGHT;
   }
 
-  // Control of the large controller motor.
+  /**
+   * \brief Sets the magnitude of the large (low frequency) controller motor.
+   *
+   * \param magnitude the magnitude of the large motor.
+   *
+   * \since 5.2.0
+   */
   void set_large_magnitude(const u16 magnitude) noexcept
   {
     representation().large_magnitude = magnitude;
   }
 
-  // Control of the small controller motor.
+  /**
+   * \brief Sets the magnitude of the small (high frequency) controller motor.
+   *
+   * \param magnitude the magnitude of the small motor.
+   *
+   * \since 5.2.0
+   */
   void set_small_magnitude(const u16 magnitude) noexcept
   {
     representation().small_magnitude = magnitude;
   }
 
+  /**
+   * \brief Returns the magnitude of the large (low frequency) controller motor.
+   *
+   * \return the magnitude of the large motor.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto large_magnitude() const noexcept -> u16
   {
     return representation().large_magnitude;
   }
 
+  /**
+   * \brief Returns the magnitude of the small (high frequency) controller
+   * motor.
+   *
+   * \return the magnitude of the small motor.
+   *
+   * \since 5.2.0
+   */
   [[nodiscard]] auto small_magnitude() const noexcept -> u16
   {
     return representation().small_magnitude;

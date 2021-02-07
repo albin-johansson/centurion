@@ -128,11 +128,11 @@ TEST(HapticPeriodic, Defaults)
   effect.set_magnitude(42);
   EXPECT_EQ(42, effect.magnitude());
 
-  effect.set_offset(321);
-  EXPECT_EQ(321, effect.offset());
+  effect.set_mean(321);
+  EXPECT_EQ(321, effect.mean());
 
-  effect.set_phase(101u);
-  EXPECT_EQ(101u, effect.phase());
+  effect.set_phase_shift(101u);
+  EXPECT_EQ(101u, effect.phase_shift());
 
   EXPECT_EQ(SDL_HAPTIC_SINE, cen::haptic_periodic::sine);
   EXPECT_EQ(SDL_HAPTIC_LEFTRIGHT, cen::haptic_periodic::left_right);

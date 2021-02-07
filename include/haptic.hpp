@@ -48,8 +48,6 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-// TODO consistency: noexcept-specifier when using duration::count()?
-
 namespace cen {
 
 /// \addtogroup input

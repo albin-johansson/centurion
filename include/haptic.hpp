@@ -1682,12 +1682,21 @@ class basic_haptic final  // TODO RtD entry
     SDL_HapticDestroyEffect(m_haptic, id);
   }
 
+  /**
+   * \brief Indicates whether or not the device can run the specified effect.
+   *
+   * \param effect the effect that will be checked.
+   *
+   * \return `true` if the device supports the effect; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
   template <typename D>
   [[nodiscard]] auto is_supported(const haptic_effect<D>& effect) const noexcept
       -> bool
   {
-    auto copy = effect.get();
-    return SDL_HapticEffectSupported(m_haptic, &copy) == SDL_TRUE;
+    auto internal = effect.get();
+    return SDL_HapticEffectSupported(m_haptic, &internal) == SDL_TRUE;
   }
 
   /// \}

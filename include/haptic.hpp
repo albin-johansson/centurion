@@ -1579,7 +1579,6 @@ class basic_haptic final  // TODO RtD entry
   /// \name Effects
   /// \{
 
-  // TODO SDL_HapticSetGain           -> set_gain
   // TODO SDL_HapticSetAutocenter     -> set_autocenter
 
   /**
@@ -1719,6 +1718,27 @@ class basic_haptic final  // TODO RtD entry
   void destroy(const effect_id id) noexcept
   {
     SDL_HapticDestroyEffect(m_haptic, id);
+  }
+
+  /**
+   * \brief Sets the gain the is used.
+   *
+   * \pre The device must support the `gain` feature.
+   * \pre `gain` must be greater or equal to zero.
+   * \pre `gain` must be less than or equal to zero.
+   *
+   * \param gain the gain that will be used, in the interval [0, 100].
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_gain(const int gain) noexcept -> bool
+  {
+    assert(has_feature_gain());
+    assert(gain >= 0);
+    assert(gain <= 100);
+    return SDL_HapticSetGain(m_haptic, gain) == 0;
   }
 
   /**

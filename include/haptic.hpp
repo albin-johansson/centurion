@@ -1579,7 +1579,6 @@ class basic_haptic final  // TODO RtD entry
   /// \name Effects
   /// \{
 
-  // TODO SDL_HapticGetEffectStatus   -> effect_status
   // TODO SDL_HapticSetGain           -> set_gain
   // TODO SDL_HapticSetAutocenter     -> set_autocenter
 
@@ -1737,6 +1736,23 @@ class basic_haptic final  // TODO RtD entry
   {
     auto internal = effect.get();
     return SDL_HapticEffectSupported(m_haptic, &internal) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified effect is playing on the
+   * device.
+   *
+   * \pre The device must support the `status` feature.
+   *
+   * \return `true` on if the effect is playing on the device; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto is_playing(const effect_id id) const noexcept -> bool
+  {
+    assert(has_feature_status());
+    return SDL_HapticGetEffectStatus(m_haptic, id) == 1;
   }
 
   /// \}

@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "colors.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_JoystickUpdate)
@@ -13,6 +15,7 @@ FAKE_VOID_FUNC(SDL_UnlockJoysticks)
 FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
 
 FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
+FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
 
 FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
 FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
@@ -40,6 +43,7 @@ FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetDeviceGUID, int)
 
 FAKE_VALUE_FUNC(int, SDL_NumJoysticks)
 FAKE_VALUE_FUNC(int, SDL_JoystickGetBall, SDL_Joystick*, int, int*, int*)
+FAKE_VALUE_FUNC(int, SDL_JoystickSetLED, SDL_Joystick*, Uint8, Uint8, Uint8)
 FAKE_VALUE_FUNC(int, SDL_JoystickNumHats, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_JoystickNumAxes, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_JoystickNumBalls, SDL_Joystick*)
@@ -49,8 +53,10 @@ FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetButton, SDL_Joystick*, int)
 FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetHat, SDL_Joystick*, int)
 FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAxisInitialState, SDL_Joystick*, int, Sint16*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAttached, SDL_Joystick*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
 FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
 FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
+FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
 FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
 }
@@ -67,6 +73,7 @@ class JoystickTest : public testing::Test
     RESET_FAKE(SDL_LockJoysticks);
     RESET_FAKE(SDL_UnlockJoysticks);
     RESET_FAKE(SDL_JoystickRumble);
+    RESET_FAKE(SDL_JoystickRumbleTriggers);
     RESET_FAKE(SDL_JoystickSetPlayerIndex);
 
     RESET_FAKE(SDL_JoystickFromInstanceID);
@@ -95,17 +102,20 @@ class JoystickTest : public testing::Test
 
     RESET_FAKE(SDL_NumJoysticks);
     RESET_FAKE(SDL_JoystickGetBall);
+    RESET_FAKE(SDL_JoystickSetLED);
     RESET_FAKE(SDL_JoystickGetAxis);
     RESET_FAKE(SDL_JoystickGetHat);
     RESET_FAKE(SDL_JoystickGetButton);
     RESET_FAKE(SDL_JoystickGetAxisInitialState);
     RESET_FAKE(SDL_JoystickGetAttached);
+    RESET_FAKE(SDL_JoystickHasLED);
     RESET_FAKE(SDL_JoystickCurrentPowerLevel);
     RESET_FAKE(SDL_JoystickNumHats);
     RESET_FAKE(SDL_JoystickNumAxes);
     RESET_FAKE(SDL_JoystickNumBalls);
     RESET_FAKE(SDL_JoystickNumButtons);
     RESET_FAKE(SDL_JoystickName);
+    RESET_FAKE(SDL_JoystickGetSerial);
     RESET_FAKE(SDL_JoystickEventState);
     RESET_FAKE(SDL_JoystickGetGUIDFromString);
   }
@@ -138,11 +148,41 @@ TEST_F(JoystickTest, Rumble)
   EXPECT_EQ(5, SDL_JoystickRumble_fake.arg3_val);
 }
 
+TEST_F(JoystickTest, RumbleTriggers)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_JoystickRumbleTriggers,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_joystick.rumble_triggers(12, 34, 56_ms));
+  EXPECT_TRUE(m_joystick.rumble_triggers(12, 34, 56_ms));
+
+  EXPECT_EQ(12, SDL_JoystickRumbleTriggers_fake.arg1_val);
+  EXPECT_EQ(34, SDL_JoystickRumbleTriggers_fake.arg2_val);
+  EXPECT_EQ(56, SDL_JoystickRumbleTriggers_fake.arg3_val);
+
+  EXPECT_EQ(2, SDL_JoystickRumbleTriggers_fake.call_count);
+}
+
 TEST_F(JoystickTest, SetPlayerIndex)
 {
   m_joystick.set_player_index(7);
   EXPECT_EQ(1, SDL_JoystickSetPlayerIndex_fake.call_count);
   EXPECT_EQ(7, SDL_JoystickSetPlayerIndex_fake.arg1_val);
+}
+
+TEST_F(JoystickTest, SetLED)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_JoystickSetLED,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  const auto color = cen::colors::magenta;
+  EXPECT_FALSE(m_joystick.set_led(color));
+  EXPECT_TRUE(m_joystick.set_led(color));
+  EXPECT_EQ(2, SDL_JoystickSetLED_fake.call_count);
 }
 
 TEST_F(JoystickTest, PlayerIndex)
@@ -359,6 +399,24 @@ TEST_F(JoystickTest, GuidStatic)
 {
   const auto name [[maybe_unused]] = cen::joystick::guid(0);
   EXPECT_EQ(1, SDL_JoystickGetDeviceGUID_fake.call_count);
+}
+
+TEST_F(JoystickTest, Serial)
+{
+  const auto name [[maybe_unused]] = m_joystick.serial();
+  EXPECT_EQ(1, SDL_JoystickGetSerial_fake.call_count);
+}
+
+TEST_F(JoystickTest, HasLED)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_JoystickHasLED,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_joystick.has_led());
+  EXPECT_TRUE(m_joystick.has_led());
+  EXPECT_EQ(2, SDL_JoystickHasLED_fake.call_count);
 }
 
 TEST_F(JoystickTest, Name)

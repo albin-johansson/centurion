@@ -33,6 +33,7 @@
 
 #include "button_state.hpp"
 #include "centurion_cfg.hpp"
+#include "color.hpp"
 #include "czstring.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"
@@ -144,6 +145,8 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
    * \brief Mirrors the `SDL_JoystickType` enum.
    *
    * \since 4.2.0
+   *
+   * \todo Centurion 6.0.0: Rename to joystick_type and move out of class.
    *
    * \headerfile joystick.hpp
    */
@@ -267,6 +270,53 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
     SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count());
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Starts a rumble effect in the joystick's triggers.
+   *
+   * \details Calls to this function cancels any previously active rumble
+   * effect. Furthermore, supplying 0 as intensities will stop the rumble
+   * effect.
+   *
+   * \param left the intensity used by the left rumble motor.
+   * \param right the intensity used by the right rumble motor.
+   * \param duration the duration of the rumble.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto rumble_triggers(const u16 left,
+                       const u16 right,
+                       const milliseconds<u32> duration) -> bool
+  {
+    return SDL_JoystickRumbleTriggers(m_joystick,
+                                      left,
+                                      right,
+                                      duration.count()) == 0;
+  }
+
+  /**
+   * \brief Sets the color of the LED light, if the joystick has one.
+   *
+   * \param color the color that will be used by the LED, note that the alpha
+   * component is ignored.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_led(const color& color) noexcept -> bool
+  {
+    return SDL_JoystickSetLED(m_joystick,
+                              color.red(),
+                              color.green(),
+                              color.blue()) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Sets the player index to be associated with the joystick.
    *
@@ -387,7 +437,7 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
    *
    * \note If no name can be found, this method returns a null string.
    *
-   * \return the name of the joystick; `nullptr` if no name is found.
+   * \return the name of the joystick; a null pointer if no name is found.
    *
    * \since 4.2.0
    */
@@ -407,6 +457,35 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
   {
     return SDL_JoystickInstanceID(m_joystick);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the serial number associated with the joystick.
+   *
+   * \return the serial number of the joystick; a null pointer is returned if
+   * the serial number isn't available.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto serial() const noexcept -> czstring
+  {
+    return SDL_JoystickGetSerial(m_joystick);
+  }
+
+  /**
+   * \brief Indicates whether or not the joystick features a LED light.
+   *
+   * \return `true` if the joystick features a LED light; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_led() const noexcept -> bool
+  {
+    return SDL_JoystickHasLED(m_joystick) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /// \} End of instance-based queries
 

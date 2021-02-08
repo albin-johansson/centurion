@@ -1579,8 +1579,6 @@ class basic_haptic final  // TODO RtD entry
   /// \name Effects
   /// \{
 
-  // TODO SDL_HapticSetAutocenter     -> set_autocenter
-
   /**
    * \brief Pauses the device.
    *
@@ -1739,6 +1737,28 @@ class basic_haptic final  // TODO RtD entry
     assert(gain >= 0);
     assert(gain <= 100);
     return SDL_HapticSetGain(m_haptic, gain) == 0;
+  }
+
+  /**
+   * \brief Sets the autocenter value that will be used.
+   *
+   * \pre The device must support the `autocenter` feature.
+   * \pre `autocenter` must be greater or equal to zero.
+   * \pre `autocenter` must be less than or equal to zero.
+   *
+   * \param autocenter the value of the autocenter that will be used, in the
+   * interval [0, 100]. Autocentering will be disabled if this value is zero.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_autocenter(const int autocenter) noexcept -> bool
+  {
+    assert(has_feature_autocenter());
+    assert(autocenter >= 0);
+    assert(autocenter <= 100);
+    return SDL_HapticSetAutocenter(m_haptic, autocenter) == 0;
   }
 
   /**

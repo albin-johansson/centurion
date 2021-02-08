@@ -36,6 +36,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticRunEffect, SDL_Haptic*, int, Uint32)
 FAKE_VALUE_FUNC(int, SDL_HapticStopEffect, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(int, SDL_HapticGetEffectStatus, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(int, SDL_HapticSetGain, SDL_Haptic*, int)
+FAKE_VALUE_FUNC(int, SDL_HapticSetAutocenter, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(int, SDL_HapticStopAll, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticEffectSupported, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
@@ -74,6 +75,7 @@ class HapticTest : public testing::Test
     RESET_FAKE(SDL_HapticStopEffect);
     RESET_FAKE(SDL_HapticGetEffectStatus);
     RESET_FAKE(SDL_HapticSetGain);
+    RESET_FAKE(SDL_HapticSetAutocenter);
     RESET_FAKE(SDL_HapticStopAll);
     RESET_FAKE(SDL_HapticEffectSupported);
     RESET_FAKE(SDL_HapticUpdateEffect);
@@ -597,6 +599,29 @@ TEST_F(HapticTest, SetGain)
   EXPECT_NO_FATAL_FAILURE(m_haptic.set_gain(100));
 
   EXPECT_EQ(4, SDL_HapticSetGain_fake.call_count);
+}
+
+TEST_F(HapticTest, SetAutocenter)
+{
+  // Must feature autocenter support
+  std::array features{SDL_HAPTIC_AUTOCENTER};
+  SET_RETURN_SEQ(SDL_HapticQuery,
+                 features.data(),
+                 static_cast<int>(features.size()));
+
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_HapticSetAutocenter,
+                 values.data(),
+                 static_cast<int>(values.size()));
+
+  EXPECT_FALSE(m_haptic.set_autocenter(3));
+  EXPECT_TRUE(m_haptic.set_autocenter(24));
+  EXPECT_EQ(24, SDL_HapticSetAutocenter_fake.arg1_val);
+
+  EXPECT_NO_FATAL_FAILURE(m_haptic.set_autocenter(0));
+  EXPECT_NO_FATAL_FAILURE(m_haptic.set_autocenter(100));
+
+  EXPECT_EQ(4, SDL_HapticSetAutocenter_fake.call_count);
 }
 
 TEST_F(HapticTest, IsSupported)

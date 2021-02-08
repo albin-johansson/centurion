@@ -195,8 +195,8 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
   }
 
   template <typename BB = B, detail::is_owner<BB> = true>
-  explicit basic_joystick(const int deviceIndex)
-      : m_joystick{SDL_JoystickOpen(deviceIndex)}
+  explicit basic_joystick(const int index = 0)
+      : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick) {
       throw sdl_error{};

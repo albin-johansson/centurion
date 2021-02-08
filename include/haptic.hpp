@@ -54,27 +54,9 @@ namespace cen {
 /// \addtogroup input
 /// \{
 
-//  - SDL_HAPTIC_CONSTANT
-//  - SDL_HAPTIC_SINE
-//  - SDL_HAPTIC_LEFTRIGHT
-//  - SDL_HAPTIC_TRIANGLE
-//  - SDL_HAPTIC_SAWTOOTHUP
-//  - SDL_HAPTIC_SAWTOOTHDOWN
-//  - SDL_HAPTIC_RAMP
-//  - SDL_HAPTIC_SPRING
-//  - SDL_HAPTIC_DAMPER
-//  - SDL_HAPTIC_INERTIA
-//  - SDL_HAPTIC_FRICTION
-//  - SDL_HAPTIC_CUSTOM
-
-//  - SDL_HAPTIC_GAIN
-//  - SDL_HAPTIC_AUTOCENTER
-//  - SDL_HAPTIC_STATUS
-//  - SDL_HAPTIC_PAUSE
-
-//  - ?? SDL_HAPTIC_POLAR ??
-//  - ?? SDL_HAPTIC_CARTESIAN ??
-//  - ?? SDL_HAPTIC_SPHERICAL ??
+// TODO what is SDL_HAPTIC_POLAR used for?
+// TODO what is SDL_HAPTIC_CARTESIAN used for?
+// TODO what is SDL_HAPTIC_SPHERICAL used for?
 
 /**
  * \brief A constant that can be used to play an effect indefinitely.
@@ -92,7 +74,7 @@ inline constexpr u32 haptic_infinity = SDL_HAPTIC_INFINITY;
  *
  * \headerfile haptic_feature
  */
-enum class haptic_feature  // TODO verify that these are all of the "features"
+enum class haptic_feature
 {
   constant = SDL_HAPTIC_CONSTANT,
   sine = SDL_HAPTIC_SINE,
@@ -1398,7 +1380,7 @@ using haptic_handle = basic_haptic<std::false_type>;
  * \headerfile haptic.hpp
  */
 template <typename B>
-class basic_haptic final  // TODO RtD entry
+class basic_haptic final
 {
  public:
   using effect_id = int;
@@ -1478,8 +1460,8 @@ class basic_haptic final  // TODO RtD entry
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] static auto from_joystick(joystick_handle joystick)
+  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
       -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {

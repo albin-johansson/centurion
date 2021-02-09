@@ -187,6 +187,18 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
   /// \name Construction
   /// \{
 
+  /**
+   * \brief Creates a joystick instance based on an existing SDL joystick.
+   *
+   * \note The created instance will only claim ownership of the supplied
+   * pointer if the class has owning semantics, i.e. if it's a ``joystick``
+   * instance.
+   *
+   * \param joystick a pointer to the existing joystick.
+   *
+   * \throws exception if the supplied pointer is null and the joystick is
+   * owning.
+   */
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
       : m_joystick{joystick}
   {
@@ -197,6 +209,15 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
     }
   }
 
+  /**
+   * \brief Creates an owning joystick based on a joystick device index.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param index the device index of the joystick.
+   *
+   * \throws sdl_error if the joystick couldn't be opened.
+   */
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
@@ -206,6 +227,13 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
     }
   }
 
+  /**
+   * \brief Creates a handle to an owning joystick.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param owner the owning joystick instance.
+   */
   template <typename BB = B, detail::is_handle<BB> = true>
   explicit basic_joystick(const joystick& owner) noexcept
       : m_joystick{owner.get()}

@@ -420,8 +420,8 @@ TEST_F(ControllerTest, SetLED)
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(m_controller.set_led_color(cen::colors::red));
-  EXPECT_TRUE(m_controller.set_led_color(cen::colors::red));
+  EXPECT_FALSE(m_controller.set_led(cen::colors::red));
+  EXPECT_TRUE(m_controller.set_led(cen::colors::red));
   EXPECT_EQ(2, SDL_GameControllerSetLED_fake.call_count);
 }
 

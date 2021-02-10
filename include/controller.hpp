@@ -985,7 +985,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  auto set_led_color(const color& color) noexcept -> bool
+  auto set_led(const color& color) noexcept -> bool
   {
     return SDL_GameControllerSetLED(m_controller,
                                     color.red(),

@@ -413,7 +413,7 @@ TEST_F(ControllerTest, GetSensorData)
   EXPECT_EQ(2, SDL_GameControllerGetSensorData_fake.call_count);
 }
 
-TEST_F(ControllerTest, SetLEDColor)
+TEST_F(ControllerTest, SetLED)
 {
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GameControllerSetLED,

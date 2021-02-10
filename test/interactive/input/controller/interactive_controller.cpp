@@ -42,7 +42,7 @@ class interactive_controller final
     while (m_running) {
       m_dispatcher.poll();
 
-      controller.set_led_color(m_currentColor);
+      controller.set_led(m_currentColor);
 
       m_rect.set_x(m_rect.x() + m_dx);
       m_rect.set_y(m_rect.y() + m_dy);

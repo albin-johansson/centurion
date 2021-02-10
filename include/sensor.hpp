@@ -342,6 +342,8 @@ class basic_sensor final
     SDL_SensorUpdate();
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Locks access to the sensors for multi-threading.
    *
@@ -369,6 +371,8 @@ class basic_sensor final
   {
     SDL_UnlockSensors();
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Returns the amount of sensors currently attached to the system.

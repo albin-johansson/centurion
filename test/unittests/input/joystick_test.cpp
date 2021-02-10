@@ -87,3 +87,28 @@ TEST(Joystick, TypeEnum)
   EXPECT_EQ(SDL_JOYSTICK_TYPE_ARCADE_PAD, type::arcade_pad);
   EXPECT_EQ(SDL_JOYSTICK_TYPE_THROTTLE, type::throttle);
 }
+
+TEST(Joystick, VirtualAPI)
+{
+  const auto type = cen::joystick::type::game_controller;
+  const auto nAxes = 2;
+  const auto nButtons = 3;
+  const auto nHats = 4;
+
+  const auto index =
+      cen::joystick::attach_virtual(type, nAxes, nButtons, nHats);
+  ASSERT_TRUE(index);
+  ASSERT_TRUE(cen::joystick::is_virtual(*index));
+
+  cen::joystick joystick{*index};
+  EXPECT_EQ(type, joystick.get_type());
+  EXPECT_EQ(nAxes, joystick.axis_count());
+  EXPECT_EQ(nButtons, joystick.button_count());
+  EXPECT_EQ(nHats, joystick.hat_count());
+
+  EXPECT_TRUE(joystick.set_virtual_axis(0, 123));
+  EXPECT_TRUE(joystick.set_virtual_button(0, cen::button_state::pressed));
+  EXPECT_TRUE(joystick.set_virtual_hat(0, cen::joystick::hat_state::centered));
+
+  EXPECT_TRUE(cen::joystick::detach_virtual(*index));
+}

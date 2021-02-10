@@ -357,6 +357,124 @@ class basic_joystick final  // TODO cover new 2.0.14 functions
     SDL_JoystickSetPlayerIndex(m_joystick, index);
   }
 
+  /// \name Virtual joystick API
+  /// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Attaches a new virtual joystick.
+   *
+   * \param type the type of the virtual joystick.
+   * \param nAxes the number of axes.
+   * \param nButtons the number of buttons.
+   * \param nHats the number of joystick hats.
+   *
+   * \return the device index of the virtual joystick; `std::nullopt` if
+   * something went wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto attach_virtual(const type type,
+                                           const int nAxes,
+                                           const int nButtons,
+                                           const int nHats) noexcept
+      -> std::optional<int>
+  {
+    const auto index =
+        SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type),
+                                  nAxes,
+                                  nButtons,
+                                  nHats);
+    if (index != -1) {
+      return index;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Detaches a virtual joystick.
+   *
+   * \param index the device index of the virtual joystick.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  static auto detach_virtual(const int index) noexcept -> bool
+  {
+    return SDL_JoystickDetachVirtual(index) == 0;
+  }
+
+  /**
+   * \brief Sets the value of a virtual joystick axis.
+   *
+   * \param axis the axis that will be modified.
+   * \param value the new value of the axis.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_virtual_axis(const int axis, const i16 value) noexcept -> bool
+  {
+    return SDL_JoystickSetVirtualAxis(m_joystick, axis, value) == 0;
+  }
+
+  /**
+   * \brief Sets the state of a virtual button.
+   *
+   * \param button the index of the button that will be set.
+   * \param state the new button state.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_virtual_button(const int button, const button_state state) noexcept
+      -> bool
+  {
+    return SDL_JoystickSetVirtualButton(m_joystick,
+                                        button,
+                                        static_cast<u8>(state)) == 0;
+  }
+
+  /**
+   * \brief Sets the state of a virtual joystick hat.
+   *
+   * \param hat the index of the hat that will be changed.
+   * \param state the new state of the virtual joystick hat.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_virtual_hat(const int hat, const hat_state state) noexcept -> bool
+  {
+    // clang-format off
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;
+    // clang-format on
+  }
+
+  /**
+   * \brief Indicates whether or not a joystick is virtual.
+   *
+   * \param index the device index of the joystick that will be queried.
+   *
+   * \return `true` if the specified joystick is virtual; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto is_virtual(const int index) noexcept -> bool
+  {
+    return SDL_JoystickIsVirtual(index) == SDL_TRUE;
+  }
+
+#endif  // #if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \} End of virtual joystick API
+
   /// \name Instance-based queries
   /// \{
 

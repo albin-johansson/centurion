@@ -2,7 +2,7 @@
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
 #include <array>            // array
-#include <cstddef>          // byte
+#include <cstddef>          // byte, size_t
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 #include "../centurion_cfg.hpp"

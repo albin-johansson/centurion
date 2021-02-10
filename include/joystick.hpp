@@ -90,7 +90,7 @@ using joystick_handle = basic_joystick<std::false_type>;
  * \headerfile joystick.hpp
  */
 template <typename B>
-class basic_joystick final  // TODO cover new 2.0.14 functions
+class basic_joystick final
 {
   inline static constexpr bool isOwner = std::is_same_v<B, std::true_type>;
   inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;

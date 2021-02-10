@@ -816,6 +816,8 @@ class basic_controller final
   /// \name Touchpad functions
   /// \{
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
   /**
    * \brief Returns the amount of touchpads on the controller.
    *
@@ -878,6 +880,8 @@ class basic_controller final
       return std::nullopt;
     }
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /// \}
 

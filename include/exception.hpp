@@ -66,7 +66,7 @@ class exception : public std::exception
    *
    * \since 3.0.0
    */
-  explicit exception(not_null<czstring> what) noexcept : m_what{what}
+  explicit exception(const not_null<czstring> what) noexcept : m_what{what}
   {
     assert(what && "Cannot supply null exception message!");
   }
@@ -108,7 +108,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(not_null<czstring> what) noexcept : exception{what}
+  explicit sdl_error(const not_null<czstring> what) noexcept : exception{what}
   {}
 };
 
@@ -140,7 +140,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(not_null<czstring> what) noexcept : exception{what}
+  explicit img_error(const not_null<czstring> what) noexcept : exception{what}
   {}
 };
 
@@ -172,7 +172,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(not_null<czstring> what) noexcept : exception{what}
+  explicit ttf_error(const not_null<czstring> what) noexcept : exception{what}
   {}
 };
 
@@ -204,7 +204,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(not_null<czstring> what) noexcept : exception{what}
+  explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
   {}
 };
 

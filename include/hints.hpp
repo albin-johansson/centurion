@@ -639,6 +639,56 @@ struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct preferred_locales final : detail::string_hint<preferred_locales>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_PREFERRED_LOCALES;
+  }
+};
+
+struct thread_priority_policy final
+    : detail::string_hint<thread_priority_policy>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    // This hint could be enum-based, but it isn't clear whether or not there
+    // may be implementation specific identifiers other than those of the listed
+    // pthread identifiers. So, we let this be a string-based hint.
+    return SDL_HINT_THREAD_PRIORITY_POLICY;
+  }
+};
+
+struct treat_time_critical_as_real_time final
+    : detail::bool_hint<treat_time_critical_as_real_time>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL;
+  }
+};
+
+struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_APP_NAME;
+  }
+};
+
+struct audio_device_stream_name final
+    : detail::string_hint<audio_device_stream_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_NAME;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 namespace raspberrypi {
 
 struct video_layer final : detail::int_hint<video_layer>
@@ -701,6 +751,18 @@ struct keyboard_element final : detail::string_hint<keyboard_element>
     return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct asyncify final : detail::bool_hint<asyncify>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_ASYNCIFY;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace emscripten
 
@@ -780,6 +842,18 @@ struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct relative_scaling final : detail::bool_hint<relative_scaling>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SCALING;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace mouse
 
@@ -1006,6 +1080,18 @@ struct apk_expansion_patch_file_version final
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct pause_background_audio final : detail::bool_hint<pause_background_audio>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 }  // namespace android
 
 namespace joystick {
@@ -1042,6 +1128,43 @@ struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
     return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct use_hidapi_ps5 final : detail::bool_hint<use_hidapi_ps5>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS5;
+  }
+};
+
+struct use_raw_input final : detail::bool_hint<use_raw_input>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_RAWINPUT;
+  }
+};
+
+struct hidapi_correlate_xinput final
+    : detail::bool_hint<hidapi_correlate_xinput>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
+  }
+};
+
+struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_LINUX_JOYSTICK_DEADZONES;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
 {

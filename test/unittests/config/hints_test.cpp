@@ -28,12 +28,15 @@ using boolean_hints =
                    cen::hint::return_key_hides_ime,
                    cen::hint::touch_mouse_events,
                    cen::hint::tv_remote_as_joystick,
+                   cen::hint::treat_time_critical_as_real_time,
                    cen::hint::appletv::controller_ui_events,
                    cen::hint::appletv::remote_allow_rotation,
+                   cen::hint::emscripten::asyncify,
                    cen::hint::xinput::is_enabled,
                    cen::hint::xinput::use_old_joystick_mapping,
                    cen::hint::mouse::focus_clickthrough,
                    cen::hint::mouse::relative_mode_warp,
+                   cen::hint::mouse::relative_scaling,
                    cen::hint::d3d::v11_debug,
                    cen::hint::d3d::thread_safe,
                    cen::hint::gamecontroller::use_button_labels,
@@ -46,14 +49,19 @@ using boolean_hints =
                    cen::hint::mac::fullscreen_spaces,
                    cen::hint::android::block_on_pause,
                    cen::hint::android::trap_back_button,
+                   cen::hint::android::pause_background_audio,
                    cen::hint::joystick::allow_background_events,
                    cen::hint::joystick::use_hidapi,
+                   cen::hint::joystick::use_hidapi_ps5,
                    cen::hint::joystick::use_hidapi_ps4,
                    cen::hint::joystick::use_hidapi_ps4_rumble,
                    cen::hint::joystick::use_hidapi_steam,
                    cen::hint::joystick::use_hidapi_switch,
                    cen::hint::joystick::use_hidapi_xbox,
                    cen::hint::joystick::use_hidapi_game_cube,
+                   cen::hint::joystick::use_raw_input,
+                   cen::hint::joystick::hidapi_correlate_xinput,
+                   cen::hint::joystick::linux_use_deadzones,
                    cen::hint::x11::net_wm_ping,
                    cen::hint::x11::net_wm_bypass_compositor,
                    cen::hint::x11::force_egl,
@@ -254,6 +262,30 @@ TEST_F(BasicHintTest, WindowVisualID)
 {
   using cen::hint::x11::window_visual_id;
   test_string_hint<window_visual_id>("foo");
+}
+
+TEST_F(BasicHintTest, PreferredLocales)
+{
+  using cen::hint::preferred_locales;
+  test_string_hint<preferred_locales>("en_GB,en_US,se");
+}
+
+TEST_F(BasicHintTest, ThreadPriorityPolicy)
+{
+  using cen::hint::thread_priority_policy;
+  test_string_hint<thread_priority_policy>("current");
+}
+
+TEST_F(BasicHintTest, AudioDeviceAppName)
+{
+  using cen::hint::audio_device_app_name;
+  test_string_hint<audio_device_app_name>("Centurion");
+}
+
+TEST_F(BasicHintTest, AudioDeviceStreamName)
+{
+  using cen::hint::audio_device_stream_name;
+  test_string_hint<audio_device_stream_name>("Audio Stream");
 }
 
 TEST_F(BasicHintTest, RenderDriver)

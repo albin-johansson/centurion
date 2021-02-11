@@ -8,7 +8,9 @@ TEST(CZStringEq, Correctness)
 {
   ASSERT_NO_THROW(czstring_eq(nullptr, ""));
   ASSERT_NO_THROW(czstring_eq("", nullptr));
+  ASSERT_NO_THROW(czstring_eq(nullptr, nullptr));
 
+  EXPECT_FALSE(czstring_eq(nullptr, nullptr));
   EXPECT_FALSE(czstring_eq(nullptr, ""));
   EXPECT_FALSE(czstring_eq("", nullptr));
 

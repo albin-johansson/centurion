@@ -13,6 +13,5 @@ TEST(Locale, GetPreferred)
   EXPECT_LT(0, locale.count());
   EXPECT_TRUE(locale.has_language("en"));
   EXPECT_FALSE(locale.has_language("se"));
-  EXPECT_TRUE(locale.has_language("en", "GB"));
   EXPECT_FALSE(locale.has_language("foo", "bar"));
 }

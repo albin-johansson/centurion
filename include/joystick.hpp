@@ -103,6 +103,8 @@ class basic_joystick final
    *
    * \since 4.2.0
    *
+   * \todo Centurion 6: Rename to joystick_power and move out of class.
+   *
    * \headerfile joystick.hpp
    */
   enum class power
@@ -123,6 +125,8 @@ class basic_joystick final
    * \brief Represents the various states of a joystick hat.
    *
    * \since 4.2.0
+   *
+   * \todo Centurion 6: Rename to joystick_hat_state and move out of class.
    *
    * \headerfile joystick.hpp
    */

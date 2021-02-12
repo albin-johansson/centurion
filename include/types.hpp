@@ -26,6 +26,8 @@
  * \file types.hpp
  *
  * \deprecated Since 5.1.0, use more explicit includes instead.
+ *
+ * \todo Centurion 6: Remove this file.
  */
 
 #ifndef CENTURION_TYPES_HEADER
@@ -53,6 +55,7 @@
 
 namespace cen {
 
+// TODO Centurion 6: Remove this alias.
 using font_id [[deprecated]] = std::size_t;
 
 /**
@@ -62,6 +65,8 @@ using font_id [[deprecated]] = std::size_t;
  * `pmr` containers.
  *
  * \deprecated Since 5.1.0.
+ *
+ * \todo Centurion 6: Remove this alias.
  *
  * \since 5.0.0
  */

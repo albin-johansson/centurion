@@ -54,10 +54,6 @@ namespace cen {
 /// \addtogroup input
 /// \{
 
-// TODO what is SDL_HAPTIC_POLAR used for?
-// TODO what is SDL_HAPTIC_CARTESIAN used for?
-// TODO what is SDL_HAPTIC_SPHERICAL used for?
-
 /**
  * \brief A constant that can be used to play an effect indefinitely.
  *
@@ -92,6 +88,126 @@ enum class haptic_feature
   autocenter = SDL_HAPTIC_AUTOCENTER,
   status = SDL_HAPTIC_STATUS,
   pause = SDL_HAPTIC_PAUSE
+};
+
+/**
+ * \enum haptic_direction_type
+ *
+ * \brief Represents the different types of haptic directions.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
+enum class haptic_direction_type
+{
+  polar = SDL_HAPTIC_POLAR,
+  cartesian = SDL_HAPTIC_CARTESIAN,
+  spherical = SDL_HAPTIC_SPHERICAL
+};
+
+/**
+ * \class haptic_direction
+ *
+ * \brief Represents a haptic direction, used by haptic effects.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile haptic.hpp
+ */
+class haptic_direction final
+{
+ public:
+  using direction_type = vector3<i32>;
+
+  /**
+   * \brief Creates a haptic direction of the specified type.
+   *
+   * \param type the type of the direction.
+   *
+   * \since 5.2.0
+   */
+  explicit haptic_direction(const haptic_direction_type type) noexcept
+  {
+    set_type(type);
+  }
+
+  /**
+   * \brief Creates a haptic direction based on an `SDL_HapticDirection`
+   * instance.
+   *
+   * \param direction the direction that will be copied.
+   *
+   * \since 5.2.0
+   */
+  explicit haptic_direction(const SDL_HapticDirection& direction) noexcept
+      : m_direction{direction}
+  {}
+
+  /**
+   * \brief Sets the type of the direction.
+   *
+   * \param type the new type of the direction.
+   *
+   * \since 5.2.0
+   */
+  void set_type(const haptic_direction_type type) noexcept
+  {
+    m_direction.type = static_cast<u8>(type);
+  }
+
+  /**
+   * \brief Sets the value of direction.
+   *
+   * \param direction the new value of the direction.
+   *
+   * \since 5.2.0
+   */
+  void set_value(const direction_type& direction) noexcept
+  {
+    m_direction.dir[0] = direction.x;
+    m_direction.dir[1] = direction.y;
+    m_direction.dir[2] = direction.z;
+  }
+
+  /**
+   * \brief Returns the type associated with the direction.
+   *
+   * \return the current type of the direction.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto type() const noexcept -> haptic_direction_type
+  {
+    return static_cast<haptic_direction_type>(m_direction.type);
+  }
+
+  /**
+   * \brief Returns the value of the direction.
+   *
+   * \return the current value of the direction.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto value() const noexcept -> direction_type
+  {
+    return {m_direction.dir[0], m_direction.dir[1], m_direction.dir[2]};
+  }
+
+  /**
+   * \brief Returns the internal representation of the direction.
+   *
+   * \return the internal representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto get() const noexcept -> const SDL_HapticDirection&
+  {
+    return m_direction;
+  }
+
+ private:
+  SDL_HapticDirection m_direction{};
 };
 
 /**
@@ -131,6 +247,9 @@ template <typename Derived>
 class haptic_effect
 {
   template <typename T>
+  using has_direction = std::enable_if_t<T::hasDirection, bool>;
+
+  template <typename T>
   using has_envelope = std::enable_if_t<T::hasEnvelope, bool>;
 
   template <typename T>
@@ -140,6 +259,43 @@ class haptic_effect
   using has_delay = std::enable_if_t<T::hasDelay, bool>;
 
  public:
+  /// \name Direction functions
+  /// \{
+
+  /**
+   * \brief Sets the haptic direction associated with the effect.
+   *
+   * \note This function is not available for all haptic effects.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \param direction the new direction of the effect.
+   *
+   * \since 5.2.0
+   */
+  template <typename D = Derived, has_direction<D> = true>
+  void set_direction(const haptic_direction& direction) noexcept
+  {
+    rep().direction = direction.get();
+  }
+
+  /**
+   * \brief Returns the haptic direction associated with the effect.
+   *
+   * \tparam D dummy parameter for SFINAE.
+   *
+   * \return the current direction associated with the effect.
+   *
+   * \since 5.2.0
+   */
+  template <typename D = Derived, has_direction<D> = true>
+  [[nodiscard]] auto direction() const noexcept -> haptic_direction
+  {
+    return haptic_direction{rep().direction};
+  }
+
+  /// \} End of direction functions
+
   /// \name Replay functions
   /// \{
 
@@ -442,8 +598,6 @@ class haptic_effect
     return rep().type;
   }
 
-  // TODO SDL_HapticDirection
-
   /**
    * \brief Returns the internal effect representation.
    *
@@ -507,6 +661,7 @@ class haptic_effect
 class haptic_constant final : public haptic_effect<haptic_constant>
 {
  public:
+  inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
@@ -561,6 +716,7 @@ class haptic_constant final : public haptic_effect<haptic_constant>
 class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
  public:
+  inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
@@ -606,8 +762,6 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   {
     representation().type = static_cast<u16>(type);
   }
-
-  // Period of the wave.
 
   /**
    * \brief Sets the period of the wave.
@@ -748,6 +902,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
 class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
  public:
+  inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
@@ -849,6 +1004,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
 class haptic_custom final : public haptic_effect<haptic_custom>
 {
  public:
+  inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
@@ -1006,6 +1162,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
 class haptic_condition final : public haptic_effect<haptic_condition>
 {
  public:
+  inline constexpr static bool hasDirection = false;
   inline constexpr static bool hasEnvelope = false;
   inline constexpr static bool hasTrigger = true;
   inline constexpr static bool hasDelay = true;
@@ -1257,6 +1414,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
 class haptic_left_right final : public haptic_effect<haptic_left_right>
 {
  public:
+  inline constexpr static bool hasDirection = false;
   inline constexpr static bool hasEnvelope = false;
   inline constexpr static bool hasTrigger = false;
   inline constexpr static bool hasDelay = false;

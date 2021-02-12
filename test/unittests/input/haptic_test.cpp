@@ -26,6 +26,22 @@ CENTURION_DEFINE_TYPED_TEST(HapticCommonTest, all_effects)
   EXPECT_EQ(cen::haptic_infinity, effect.representation().length);
 }
 
+using direction_effects = testing::Types<cen::haptic_constant,
+                                         cen::haptic_periodic,
+                                         cen::haptic_ramp,
+                                         cen::haptic_custom>;
+
+CENTURION_DEFINE_TYPED_TEST(HapticDirectionTest, direction_effects)
+{
+  TypeParam effect;
+
+  cen::haptic_direction direction{cen::haptic_direction_type::cartesian};
+  direction.set_value({12, 34, 56});
+
+  effect.set_direction(direction);
+  EXPECT_EQ(direction.value(), effect.direction().value());
+}
+
 using delay_effects = testing::Types<cen::haptic_constant,
                                      cen::haptic_periodic,
                                      cen::haptic_condition,
@@ -88,6 +104,7 @@ CENTURION_DEFINE_TYPED_TEST(HapticTriggerTest, trigger_effects)
 }
 
 CENTURION_REGISTER_TYPED_TEST(HapticCommonTest, all_effects);
+CENTURION_REGISTER_TYPED_TEST(HapticDirectionTest, direction_effects);
 CENTURION_REGISTER_TYPED_TEST(HapticDelayTest, envelope_effects);
 CENTURION_REGISTER_TYPED_TEST(HapticEnvelopeTest, envelope_effects);
 CENTURION_REGISTER_TYPED_TEST(HapticTriggerTest, trigger_effects);
@@ -218,4 +235,41 @@ TEST(HapticLeftRight, Defaults)
 
   effect.set_small_magnitude(182u);
   EXPECT_EQ(182u, effect.small_magnitude());
+}
+
+TEST(HapticDirection, TypeConstructor)
+{
+  cen::haptic_direction direction{cen::haptic_direction_type::spherical};
+  EXPECT_EQ(cen::haptic_direction::direction_type{}, direction.value());
+  EXPECT_EQ(cen::haptic_direction_type::spherical, direction.type());
+
+  const cen::haptic_direction::direction_type value{12, 34, 56};
+  direction.set_value(value);
+  EXPECT_EQ(value, direction.value());
+}
+
+TEST(HapticDirection, SDLDirectionConstructor)
+{
+  SDL_HapticDirection source;
+  source.type = SDL_HAPTIC_POLAR;
+  source.dir[0] = 11;
+  source.dir[1] = 22;
+  source.dir[2] = 33;
+
+  const cen::haptic_direction direction{source};
+  EXPECT_EQ(static_cast<cen::haptic_direction_type>(source.type),
+            direction.type());
+  EXPECT_EQ(source.dir[0], direction.value().x);
+  EXPECT_EQ(source.dir[1], direction.value().y);
+  EXPECT_EQ(source.dir[2], direction.value().z);
+}
+
+TEST(HapticDirectionType, EnumValues)
+{
+  EXPECT_EQ(SDL_HAPTIC_POLAR,
+            static_cast<int>(cen::haptic_direction_type::polar));
+  EXPECT_EQ(SDL_HAPTIC_CARTESIAN,
+            static_cast<int>(cen::haptic_direction_type::cartesian));
+  EXPECT_EQ(SDL_HAPTIC_SPHERICAL,
+            static_cast<int>(cen::haptic_direction_type::spherical));
 }

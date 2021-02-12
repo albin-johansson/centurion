@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "typed_test_macros.hpp"
 #include "window.hpp"
 
 using boolean_hints =
@@ -27,12 +28,15 @@ using boolean_hints =
                    cen::hint::return_key_hides_ime,
                    cen::hint::touch_mouse_events,
                    cen::hint::tv_remote_as_joystick,
+                   cen::hint::treat_time_critical_as_real_time,
                    cen::hint::appletv::controller_ui_events,
                    cen::hint::appletv::remote_allow_rotation,
+                   cen::hint::emscripten::asyncify,
                    cen::hint::xinput::is_enabled,
                    cen::hint::xinput::use_old_joystick_mapping,
                    cen::hint::mouse::focus_clickthrough,
                    cen::hint::mouse::relative_mode_warp,
+                   cen::hint::mouse::relative_scaling,
                    cen::hint::d3d::v11_debug,
                    cen::hint::d3d::thread_safe,
                    cen::hint::gamecontroller::use_button_labels,
@@ -45,14 +49,19 @@ using boolean_hints =
                    cen::hint::mac::fullscreen_spaces,
                    cen::hint::android::block_on_pause,
                    cen::hint::android::trap_back_button,
+                   cen::hint::android::pause_background_audio,
                    cen::hint::joystick::allow_background_events,
                    cen::hint::joystick::use_hidapi,
+                   cen::hint::joystick::use_hidapi_ps5,
                    cen::hint::joystick::use_hidapi_ps4,
                    cen::hint::joystick::use_hidapi_ps4_rumble,
                    cen::hint::joystick::use_hidapi_steam,
                    cen::hint::joystick::use_hidapi_switch,
                    cen::hint::joystick::use_hidapi_xbox,
                    cen::hint::joystick::use_hidapi_game_cube,
+                   cen::hint::joystick::use_raw_input,
+                   cen::hint::joystick::hidapi_correlate_xinput,
+                   cen::hint::joystick::linux_use_deadzones,
                    cen::hint::x11::net_wm_ping,
                    cen::hint::x11::net_wm_bypass_compositor,
                    cen::hint::x11::force_egl,
@@ -121,30 +130,7 @@ class HintTest : public testing::Test
   }
 };
 
-using BasicHintTest = HintTest<void>;
-
-template <typename T>
-using BoolHintTest = HintTest<T>;
-
-template <typename T>
-using IntHintTest = HintTest<T>;
-
-template <typename T>
-using UnsignedHintTest = HintTest<T>;
-
-template <typename T>
-using FloatHintTest = HintTest<T>;
-
-template <typename T>
-using StringHintTest = HintTest<T>;
-
-TYPED_TEST_SUITE_P(BoolHintTest);
-TYPED_TEST_SUITE_P(IntHintTest);
-TYPED_TEST_SUITE_P(UnsignedHintTest);
-TYPED_TEST_SUITE_P(FloatHintTest);
-TYPED_TEST_SUITE_P(StringHintTest);
-
-TYPED_TEST_P(BoolHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(BoolHintTest, HintTest, boolean_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(true));
@@ -155,7 +141,7 @@ TYPED_TEST_P(BoolHintTest, SetHint)
   });
 }
 
-TYPED_TEST_P(IntHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1));
@@ -166,18 +152,9 @@ TYPED_TEST_P(IntHintTest, SetHint)
   });
 }
 
-TYPED_TEST_P(FloatHintTest, SetHint)
-{
-  test_hint<TypeParam>([] {
-    ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
-    EXPECT_EQ(1.0f, cen::get_hint<TypeParam>().value());
-
-    ASSERT_TRUE(cen::set_hint<TypeParam>(0.75f));
-    EXPECT_EQ(0.75f, cen::get_hint<TypeParam>().value());
-  });
-}
-
-TYPED_TEST_P(UnsignedHintTest, SetHint)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest,
+                                       HintTest,
+                                       unsigned_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));
@@ -188,15 +165,23 @@ TYPED_TEST_P(UnsignedHintTest, SetHint)
   });
 }
 
-REGISTER_TYPED_TEST_SUITE_P(BoolHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(IntHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(UnsignedHintTest, SetHint);
-REGISTER_TYPED_TEST_SUITE_P(FloatHintTest, SetHint);
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(FloatHintTest, HintTest, float_hints)
+{
+  test_hint<TypeParam>([] {
+    ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
+    EXPECT_EQ(1.0f, cen::get_hint<TypeParam>().value());
 
-INSTANTIATE_TYPED_TEST_SUITE_P(BooleanHints, BoolHintTest, boolean_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(IntegerHints, IntHintTest, integer_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedHints, UnsignedHintTest, unsigned_hints);
-INSTANTIATE_TYPED_TEST_SUITE_P(FloatHints, FloatHintTest, float_hints);
+    ASSERT_TRUE(cen::set_hint<TypeParam>(0.75f));
+    EXPECT_EQ(0.75f, cen::get_hint<TypeParam>().value());
+  });
+}
+
+CENTURION_REGISTER_TYPED_TEST(BoolHintTest, boolean_hints);
+CENTURION_REGISTER_TYPED_TEST(IntHintTest, integer_hints);
+CENTURION_REGISTER_TYPED_TEST(UnsignedHintTest, unsigned_hints);
+CENTURION_REGISTER_TYPED_TEST(FloatHintTest, float_hints);
+
+using BasicHintTest = HintTest<void>;
 
 TEST_F(BasicHintTest, DisplayUsableBounds)
 {
@@ -277,6 +262,30 @@ TEST_F(BasicHintTest, WindowVisualID)
 {
   using cen::hint::x11::window_visual_id;
   test_string_hint<window_visual_id>("foo");
+}
+
+TEST_F(BasicHintTest, PreferredLocales)
+{
+  using cen::hint::preferred_locales;
+  test_string_hint<preferred_locales>("en_GB,en_US,se");
+}
+
+TEST_F(BasicHintTest, ThreadPriorityPolicy)
+{
+  using cen::hint::thread_priority_policy;
+  test_string_hint<thread_priority_policy>("current");
+}
+
+TEST_F(BasicHintTest, AudioDeviceAppName)
+{
+  using cen::hint::audio_device_app_name;
+  test_string_hint<audio_device_app_name>("Centurion");
+}
+
+TEST_F(BasicHintTest, AudioDeviceStreamName)
+{
+  using cen::hint::audio_device_stream_name;
+  test_string_hint<audio_device_stream_name>("Audio Stream");
 }
 
 TEST_F(BasicHintTest, RenderDriver)

@@ -22,9 +22,8 @@ Default constructible    Only ``controller``
 Copyable                 Only ``controller_handle``
 Movable                  Both ``controller`` and ``controller_handle``
 Implicit conversions     None
-Explicit conversions     None
+Explicit conversions     ``bool`` (only ``controller_handle``)
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``controller.hpp``
 Since                    5.0.0

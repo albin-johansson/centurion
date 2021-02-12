@@ -27,14 +27,15 @@
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <memory>       // unique_ptr
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
-#include <utility>      // pair
+#include <cassert>        // assert
+#include <cstddef>        // size_t
+#include <memory>         // unique_ptr
+#include <optional>       // optional
+#include <ostream>        // ostream
+#include <string>         // string
+#include <type_traits>    // enable_if_t, true_type, false_type, conditional_t
+#include <unordered_map>  // unordered_map
+#include <utility>        // move, forward, pair
 
 #include "blend_mode.hpp"
 #include "centurion_cfg.hpp"
@@ -62,12 +63,33 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
+template <typename B>
+class basic_renderer;
+
+/**
+ * \typedef renderer
+ *
+ * \brief Represents an owning renderer.
+ *
+ * \since 5.0.0
+ */
+using renderer = basic_renderer<std::true_type>;
+
+/**
+ * \typedef renderer_handle
+ *
+ * \brief Represents a non-owning renderer.
+ *
+ * \since 5.0.0
+ */
+using renderer_handle = basic_renderer<std::false_type>;
+
 /**
  * \class basic_renderer
  *
  * \brief Provides hardware-accelerated 2D-rendering.
  *
- * \tparam T `std::true_type` for owning renderers; `std::false_type` for
+ * \tparam B `std::true_type` for owning renderers; `std::false_type` for
  * non-owning renderers.
  *
  * \since 5.0.0
@@ -77,11 +99,9 @@ namespace cen {
  *
  * \headerfile renderer.hpp
  */
-template <typename T>
+template <typename B>
 class basic_renderer final
 {
-  using owner_t = basic_renderer<std::true_type>;
-
   [[nodiscard]] constexpr static auto default_flags() noexcept
       -> SDL_RendererFlags
   {
@@ -101,10 +121,10 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
+  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<B>())
       : m_renderer{renderer}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       if (!get()) {
         throw exception{"Cannot create renderer from null pointer!"};
       }
@@ -122,7 +142,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename Window, typename BB = B, detail::is_owner<BB> = true>
   explicit basic_renderer(const Window& window,
                           const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -136,9 +156,9 @@ class basic_renderer final
     set_logical_integer_scale(false);
   }
 
-  template <typename T_ = T, detail::is_handle<T_> = true>
-  explicit basic_renderer(const owner_t& renderer) noexcept
-      : m_renderer{renderer.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_renderer(const renderer& owner) noexcept
+      : m_renderer{owner.get()}
   {}
 
   /**
@@ -154,7 +174,7 @@ class basic_renderer final
   /**
    * \brief Clears the rendering target with the specified color.
    *
-   * \note This method doesn't change the currently selected color.
+   * \note This function doesn't change the currently selected color.
    *
    * \param color the color that will be used to clear the rendering target.
    *
@@ -199,9 +219,9 @@ class basic_renderer final
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
-      SDL_RenderDrawRect(get(), static_cast<const SDL_Rect*>(rect));
+      SDL_RenderDrawRect(get(), rect.data());
     } else {
-      SDL_RenderDrawRectF(get(), static_cast<const SDL_FRect*>(rect));
+      SDL_RenderDrawRectF(get(), rect.data());
     }
   }
 
@@ -218,9 +238,9 @@ class basic_renderer final
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
-      SDL_RenderFillRect(get(), static_cast<const SDL_Rect*>(rect));
+      SDL_RenderFillRect(get(), rect.data());
     } else {
-      SDL_RenderFillRectF(get(), static_cast<const SDL_FRect*>(rect));
+      SDL_RenderFillRectF(get(), rect.data());
     }
   }
 
@@ -281,14 +301,14 @@ class basic_renderer final
   /**
    * \brief Renders a collection of lines.
    *
-   * \details This method requires the the `Container` type provides the
+   * \details This function requires the the `Container` type provides the
    * public member `value_type` and subsequently, that the `value_type`
    * in turn provides a `value_type` member. The former would correspond to
    * the actual point type, and the latter corresponds to either `int` or
    * `float`.
    *
    * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this method is undefined if this condition
+   * contiguously! The behaviour of this function is undefined if this condition
    * isn't met.
    *
    * \tparam Container the container type. Must store its elements
@@ -307,13 +327,13 @@ class basic_renderer final
 
     if (!container.empty()) {
       const auto& front = container.front();
+      const auto* first = front.data();
+      const auto count = static_cast<int>(container.size());
 
       if constexpr (std::is_same_v<value_t, int>) {
-        const auto* first = static_cast<const SDL_Point*>(front);
-        SDL_RenderDrawLines(get(), first, static_cast<int>(container.size()));
+        SDL_RenderDrawLines(get(), first, count);
       } else {
-        const auto* first = static_cast<const SDL_FPoint*>(front);
-        SDL_RenderDrawLinesF(get(), first, static_cast<int>(container.size()));
+        SDL_RenderDrawLinesF(get(), first, count);
       }
     }
   }
@@ -336,7 +356,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -354,9 +374,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderUTF8_Blended(font.get(),
-                               str,
-                               static_cast<SDL_Color>(get_color())));
+        TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
   }
 
   /**
@@ -369,9 +387,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -392,11 +410,10 @@ class basic_renderer final
                                                  const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Blended_Wrapped(font.get(),
-                                       str,
-                                       static_cast<SDL_Color>(get_color()),
-                                       wrap));
+    return render_text(TTF_RenderUTF8_Blended_Wrapped(font.get(),
+                                                      str,
+                                                      get_color().get(),
+                                                      wrap));
   }
 
   /**
@@ -409,10 +426,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -429,11 +446,10 @@ class basic_renderer final
                                         const color& background) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Shaded(font.get(),
-                              str,
-                              static_cast<SDL_Color>(get_color()),
-                              static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderUTF8_Shaded(font.get(),
+                                             str,
+                                             get_color().get(),
+                                             background.get()));
   }
 
   /**
@@ -446,8 +462,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the UTF-8 text that will be rendered.
@@ -464,9 +480,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderUTF8_Solid(font.get(),
-                             str,
-                             static_cast<SDL_Color>(get_color())));
+        TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
   }
 
   /**
@@ -479,7 +493,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -497,9 +511,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderText_Blended(font.get(),
-                               str,
-                               static_cast<SDL_Color>(get_color())));
+        TTF_RenderText_Blended(font.get(), str, get_color().get()));
   }
 
   /**
@@ -512,9 +524,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -535,11 +547,10 @@ class basic_renderer final
                                                    const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Blended_Wrapped(font.get(),
-                                       str,
-                                       static_cast<SDL_Color>(get_color()),
-                                       wrap));
+    return render_text(TTF_RenderText_Blended_Wrapped(font.get(),
+                                                      str,
+                                                      get_color().get(),
+                                                      wrap));
   }
 
   /**
@@ -552,10 +563,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -572,11 +583,10 @@ class basic_renderer final
                                           const color& background) -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Shaded(font.get(),
-                              str,
-                              static_cast<SDL_Color>(get_color()),
-                              static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderText_Shaded(font.get(),
+                                             str,
+                                             get_color().get(),
+                                             background.get()));
   }
 
   /**
@@ -589,8 +599,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the Latin-1 text that will be rendered.
@@ -607,9 +617,7 @@ class basic_renderer final
   {
     assert(str);
     return render_text(
-        TTF_RenderText_Solid(font.get(),
-                             str,
-                             static_cast<SDL_Color>(get_color())));
+        TTF_RenderText_Solid(font.get(), str, get_color().get()));
   }
 
   /**
@@ -620,7 +628,7 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
@@ -637,9 +645,7 @@ class basic_renderer final
                                             const font& font) -> texture
   {
     return render_text(
-        TTF_RenderUNICODE_Blended(font.get(),
-                                  str.data(),
-                                  static_cast<SDL_Color>(get_color())));
+        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -650,9 +656,9 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text at the highest quality and uses
+   * This function renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
+   * this is the slowest alternative. This function will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
@@ -672,11 +678,10 @@ class basic_renderer final
                                                     const font& font,
                                                     const u32 wrap) -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                          str.data(),
-                                          static_cast<SDL_Color>(get_color()),
-                                          wrap));
+    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
+                                                         str.data(),
+                                                         get_color().get(),
+                                                         wrap));
   }
 
   /**
@@ -687,10 +692,10 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method renders the text using anti-aliasing and with a box
+   * This function renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
+   * function when you want nice text, and can live with a box around it.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -706,11 +711,10 @@ class basic_renderer final
                                            const font& font,
                                            const color& background) -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Shaded(font.get(),
-                                 str.data(),
-                                 static_cast<SDL_Color>(get_color()),
-                                 static_cast<SDL_Color>(background)));
+    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
+                                                str.data(),
+                                                get_color().get(),
+                                                background.get()));
   }
 
   /**
@@ -721,8 +725,8 @@ class basic_renderer final
    * result. Use the returned texture to actually render the text to the
    * screen.
    *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
    * when quality isn't as big of a concern and speed is important.
    *
    * \param str the Unicode text that will be rendered.
@@ -738,24 +742,20 @@ class basic_renderer final
                                           const font& font) -> texture
   {
     return render_text(
-        TTF_RenderUNICODE_Solid(font.get(),
-                                str.data(),
-                                static_cast<SDL_Color>(get_color())));
+        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
   }
 
   /**
    * \brief Renders a glyph at the specified position.
    *
-   * \pre the specified glyph **must** have been cached.
-   *
-   * \tparam U the font key type that the renderer uses.
+   * \note This function has no effect if the glyph doesn't exist in the cache.
    *
    * \param cache the font cache that will be used.
    * \param glyph the glyph, in unicode, that will be rendered.
    * \param position the position of the rendered glyph.
    *
    * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph.
+   * current glyph, or the same x-coordinate if no glyph was rendered.
    *
    * \since 5.0.0
    */
@@ -763,32 +763,34 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    const auto& [texture, glyphMetrics] = cache.at(glyph);
+    if (const auto* data = cache.try_at(glyph)) {
+      const auto& [texture, metrics] = *data;
 
-    const auto outline = cache.get_font().outline();
+      const auto outline = cache.get_font().outline();
 
-    // SDL_ttf handles the y-axis alignment
-    const auto x = position.x() + glyphMetrics.minX - outline;
-    const auto y = position.y() - outline;
+      // SDL_ttf handles the y-axis alignment
+      const auto x = position.x() + metrics.minX - outline;
+      const auto y = position.y() - outline;
 
-    render(texture, ipoint{x, y});
+      render(texture, ipoint{x, y});
 
-    return x + glyphMetrics.advance;
+      return x + metrics.advance;
+    } else {
+      return position.x();
+    }
   }
 
   /**
    * \brief Renders a string.
    *
-   * \details This method will not apply any clever conversions on the
-   * supplied string. The string is literally iterated,
-   * character-by-character, and each character is rendered using
-   * the `render_glyph` function.
+   * \details This function will not apply any clever conversions on the
+   * supplied string. The string is literally iterated, character-by-character,
+   * and each character is rendered using the `render_glyph` function.
    *
    * \pre Every character in the string must correspond to a valid Unicode
    * glyph.
-   * \pre Every character must have been previously cached.
    *
-   * \note This method is sensitive to newline-characters, and will render
+   * \note This function is sensitive to newline-characters, and will render
    * strings that contain such characters appropriately.
    *
    * \tparam String the type of the string, must be iterable and provide
@@ -803,11 +805,15 @@ class basic_renderer final
   template <typename String>
   void render_text(const font_cache& cache, const String& str, ipoint position)
   {
+    const auto& font = cache.get_font();
+
     const auto originalX = position.x();
+    const auto lineSkip = font.line_skip();
+
     for (const unicode glyph : str) {
       if (glyph == '\n') {
         position.set_x(originalX);
-        position.set_y(position.y() + cache.get_font().line_skip());
+        position.set_y(position.y() + lineSkip);
       } else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
@@ -839,10 +845,8 @@ class basic_renderer final
               const basic_point<P>& position) noexcept
   {
     if constexpr (basic_point<P>::isFloating) {
-      const SDL_FRect dst{position.x(),
-                          position.y(),
-                          static_cast<float>(texture.width()),
-                          static_cast<float>(texture.height())};
+      const auto size = cast<cen::farea>(texture.size());
+      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
     } else {
       const SDL_Rect dst{position.x(),
@@ -869,23 +873,17 @@ class basic_renderer final
               const basic_rect<P>& destination) noexcept
   {
     if constexpr (basic_rect<P>::isFloating) {
-      SDL_RenderCopyF(get(),
-                      texture.get(),
-                      nullptr,
-                      static_cast<const SDL_FRect*>(destination));
+      SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
     } else {
-      SDL_RenderCopy(get(),
-                     texture.get(),
-                     nullptr,
-                     static_cast<const SDL_Rect*>(destination));
+      SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
     }
   }
 
   /**
    * \brief Renders a texture.
    *
-   * \remarks This should be your preferred method of rendering textures. This
-   * method is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
@@ -902,15 +900,9 @@ class basic_renderer final
               const basic_rect<P>& destination) noexcept
   {
     if constexpr (basic_rect<P>::isFloating) {
-      SDL_RenderCopyF(get(),
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination));
+      SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
     } else {
-      SDL_RenderCopy(get(),
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination));
+      SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
     }
   }
 
@@ -937,16 +929,16 @@ class basic_renderer final
     if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
                         nullptr,
                         SDL_FLIP_NONE);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
                        nullptr,
                        SDL_FLIP_NONE);
@@ -985,18 +977,18 @@ class basic_renderer final
     if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
-                        static_cast<const SDL_FPoint*>(center),
+                        center.data(),
                         SDL_FLIP_NONE);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
-                       static_cast<const SDL_Point*>(center),
+                       center.data(),
                        SDL_FLIP_NONE);
     }
   }
@@ -1035,18 +1027,18 @@ class basic_renderer final
     if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
+                        source.data(),
+                        destination.data(),
                         angle,
-                        static_cast<const SDL_FPoint*>(center),
+                        center.data(),
                         flip);
     } else {
       SDL_RenderCopyEx(get(),
                        texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
+                       source.data(),
+                       destination.data(),
                        angle,
-                       static_cast<const SDL_Point*>(center),
+                       center.data(),
                        flip);
     }
   }
@@ -1062,7 +1054,7 @@ class basic_renderer final
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * \details This method should be called before calling any of the `_t`
+   * \details This function should be called before calling any of the `_t`
    * rendering methods, for automatic translation.
    *
    * \param viewport the rectangle that will be used as the translation
@@ -1070,7 +1062,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -1085,7 +1077,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -1103,7 +1095,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = true>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
@@ -1121,7 +1113,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = true>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
@@ -1143,8 +1135,8 @@ class basic_renderer final
    */
   template <typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -1168,8 +1160,8 @@ class basic_renderer final
    */
   template <typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -1182,8 +1174,8 @@ class basic_renderer final
    * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * \remarks This should be your preferred method of rendering textures. This
-   * method is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
@@ -1197,8 +1189,8 @@ class basic_renderer final
    */
   template <typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -1226,8 +1218,8 @@ class basic_renderer final
    */
   template <typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
@@ -1260,8 +1252,8 @@ class basic_renderer final
   template <typename R,
             typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1293,8 +1285,8 @@ class basic_renderer final
   template <typename R,
             typename P,
             typename U,
-            typename T_ = T,
-            detail::is_owner<T_> = true>
+            typename BB = B,
+            detail::is_owner<BB> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1324,7 +1316,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -1347,27 +1339,27 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename... Args, typename BB = B, detail::is_owner<BB> = true>
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
       remove_font(id);
     }
-    fonts.emplace(id, font{std::forward<Args>(args)...});
+    fonts.try_emplace(id, std::forward<Args>(args)...);
   }
 
   /**
    * \brief Removes the font associated with the specified key.
    *
-   * \details This method has no effect if there is no font associated with
+   * \details This function has no effect if there is no font associated with
    * the specified key.
    *
    * \param id the key associated with the font that will be removed.
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
@@ -1384,7 +1376,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -1393,7 +1385,7 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -1410,7 +1402,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] auto has_font(const std::size_t id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -1446,7 +1438,7 @@ class basic_renderer final
   void set_clip(const std::optional<irect> area) noexcept
   {
     if (area) {
-      SDL_RenderSetClipRect(get(), static_cast<const SDL_Rect*>(*area));
+      SDL_RenderSetClipRect(get(), area->data());
     } else {
       SDL_RenderSetClipRect(get(), nullptr);
     }
@@ -1461,7 +1453,7 @@ class basic_renderer final
    */
   void set_viewport(const irect& viewport) noexcept
   {
-    SDL_RenderSetViewport(get(), static_cast<const SDL_Rect*>(viewport));
+    SDL_RenderSetViewport(get(), viewport.data());
   }
 
   /**
@@ -1480,7 +1472,7 @@ class basic_renderer final
    * \brief Sets the rendering target of the renderer.
    *
    * \details The supplied texture must support being a render target.
-   * Otherwise, this method will reset the render target.
+   * Otherwise, this function will reset the render target.
    *
    * \param target a pointer to the new target texture; `nullptr` indicates
    * that the default rendering target should be used.
@@ -1499,7 +1491,7 @@ class basic_renderer final
   /**
    * \brief Sets the rendering scale.
    *
-   * \note This method has no effect if any of the arguments aren't
+   * \note This function has no effect if any of the arguments aren't
    * greater than zero.
    *
    * \param xScale the x-axis scale that will be used.
@@ -1517,11 +1509,11 @@ class basic_renderer final
   /**
    * \brief Sets the logical size used by the renderer.
    *
-   * \details This method is useful for resolution-independent rendering.
+   * \details This function is useful for resolution-independent rendering.
    *
    * \remarks This is also known as *virtual size* in other frameworks.
    *
-   * \note This method has no effect if either of the supplied dimensions
+   * \note This function has no effect if either of the supplied dimensions
    * aren't greater than zero.
    *
    * \param size the logical width and height that will be used.
@@ -1539,7 +1531,7 @@ class basic_renderer final
    * \brief Sets whether or not to force integer scaling for the logical
    * viewport.
    *
-   * \details By default, this property is set to false. This method can be
+   * \details By default, this property is set to false. This function can be
    * useful to combat visual artefacts when doing floating-point rendering.
    *
    * \param enabled `true` if integer scaling should be used; `false` otherwise.
@@ -1603,7 +1595,7 @@ class basic_renderer final
   /**
    * \brief Returns the size of the logical (virtual) viewport.
    *
-   * \note calling this method once is faster than calling both
+   * \note calling this function once is faster than calling both
    * `logical_width` and `logical_height` for obtaining the size.
    *
    * \return the size of the logical (virtual) viewport.
@@ -1649,7 +1641,7 @@ class basic_renderer final
   /**
    * \brief Returns the x- and y-scale used by the renderer.
    *
-   * \note calling this method once is faster than calling both `x_scale`
+   * \note calling this function once is faster than calling both `x_scale`
    * and `y_scale` for obtaining the scale.
    *
    * \return the x- and y-scale used by the renderer.
@@ -1674,7 +1666,7 @@ class basic_renderer final
   [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
   {
     irect rect{};
-    SDL_RenderGetClipRect(get(), static_cast<SDL_Rect*>(rect));
+    SDL_RenderGetClipRect(get(), rect.data());
     if (!rect.has_area()) {
       return std::nullopt;
     } else {
@@ -1732,7 +1724,7 @@ class basic_renderer final
   /**
    * \brief Returns the output size of the renderer.
    *
-   * \note calling this method once is faster than calling `output_width`
+   * \note calling this function once is faster than calling `output_width`
    * and `output_height` for obtaining the output size.
    *
    * \return the current output size of the renderer.
@@ -1773,7 +1765,7 @@ class basic_renderer final
    *
    * \note There are multiple other methods for checking if a flag is set,
    * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
-   * this method.
+   * this function.
    *
    * \return a bit mask of the current renderer flags.
    *
@@ -1789,7 +1781,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the `present` method is synced with
+   * \brief Indicates whether or not the `present` function is synced with
    * the refresh rate of the screen.
    *
    * \return `true` if vsync is enabled; `false` otherwise.
@@ -1901,7 +1893,7 @@ class basic_renderer final
   [[nodiscard]] auto viewport() const noexcept -> irect
   {
     irect viewport{};
-    SDL_RenderGetViewport(get(), static_cast<SDL_Rect*>(viewport));
+    SDL_RenderGetViewport(get(), viewport.data());
     return viewport;
   }
 
@@ -1915,7 +1907,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -1932,7 +1924,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       return m_renderer.ptr.get();
     } else {
       return m_renderer;
@@ -1958,7 +1950,7 @@ class basic_renderer final
     std::unordered_map<std::size_t, font> fonts{};
   };
 
-  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
+  using rep_t = std::conditional_t<B::value, owning_data, SDL_Renderer*>;
 
   rep_t m_renderer;
 
@@ -1969,53 +1961,35 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
+  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
+      -> basic_point<T>
   {
-    using value_type = typename basic_point<U>::value_type;
+    using value_type = typename basic_point<T>::value_type;
 
     const auto& translation = m_renderer.translation;
     const auto x = point.x() - static_cast<value_type>(translation.x());
     const auto y = point.y() - static_cast<value_type>(translation.y());
 
-    return basic_point<U>{x, y};
+    return basic_point<T>{x, y};
   }
 
-  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
-      -> basic_rect<U>
+  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
+      -> basic_rect<T>
   {
-    return basic_rect<U>{translate(rect.position()), rect.size()};
+    return basic_rect<T>{translate(rect.position()), rect.size()};
   }
 };
 
-/**
- * \typedef renderer
- *
- * \brief Represents an owning renderer.
- *
- * \since 5.0.0
- */
-using renderer = basic_renderer<std::true_type>;
-
-/**
- * \typedef renderer_handle
- *
- * \brief Represents a non-owning renderer.
- *
- * \since 5.0.0
- */
-using renderer_handle = basic_renderer<std::false_type>;
-
-template <typename T>
-[[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
+template <typename B>
+[[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
 {
   return "[renderer | data: " + detail::address_of(renderer.get()) + "]";
 }
 
-template <typename T>
-auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer)
+template <typename B>
+auto operator<<(std::ostream& stream, const basic_renderer<B>& renderer)
     -> std::ostream&
 {
   stream << to_string(renderer);

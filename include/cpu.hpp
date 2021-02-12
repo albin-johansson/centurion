@@ -28,6 +28,7 @@
 #include <SDL.h>
 
 #include <cstddef>  // size_t
+#include <memory>   // unique_ptr
 
 #include "centurion_cfg.hpp"
 
@@ -278,6 +279,122 @@ namespace cen::cpu {
 {
   return SDL_BYTEORDER == SDL_LIL_ENDIAN;
 }
+
+/**
+ * \class simd_block
+ *
+ * \brief Represents a block of memory, allocated in SIMD-friendly way.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile cpu.hpp
+ */
+class simd_block final
+{
+ public:
+  /**
+   * \brief Allocates a block of SIMD-friendly memory.
+   *
+   * \note The allocation might fail, in which case the internal pointer is
+   * null.
+   *
+   * \param size the size of the memory block.
+   *
+   * \since 5.2.0
+   */
+  explicit simd_block(const std::size_t size) noexcept
+      : m_data{SDL_SIMDAlloc(size)}
+  {}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Reallocates the associated memory block.
+   *
+   * \param size the size of the new memory block.
+   *
+   * \since 5.2.0
+   */
+  void reallocate(const std::size_t size) noexcept
+  {
+    // We temporarily release the ownership of the pointer in order to avoid a
+    // double delete, since the reallocation will free the previously allocated
+    // memory.
+    auto* ptr = m_data.release();
+    m_data.reset(SDL_SIMDRealloc(ptr, size));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns a pointer to the associated memory block.
+   *
+   * \return a pointer to the memory block.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> void*
+  {
+    return m_data.get();
+  }
+
+  /**
+   * \copydoc data()
+   */
+  [[nodiscard]] auto data() const noexcept -> const void*
+  {
+    return m_data.get();
+  }
+
+  /**
+   * \brief Returns a reinterpreted pointer to the associated memory block.
+   *
+   * \warning It's your responsibility to make sure to avoid any potential
+   * undefined behaviour using this function, since it uses `reinterpret_cast`.
+   *
+   * \tparam T the type used when reinterpreting the internal pointer.
+   *
+   * \return a pointer to the associated memory block.
+   *
+   * \since 5.2.0
+   */
+  template <typename T>
+  [[nodiscard]] auto cast_data() noexcept -> T*
+  {
+    return reinterpret_cast<T*>(data());
+  }
+
+  /**
+   * \copydoc cast_data()
+   */
+  template <typename T>
+  [[nodiscard]] auto cast_data() const noexcept -> const T*
+  {
+    return reinterpret_cast<const T*>(data());
+  }
+
+  /**
+   * \brief Indicates whether or not the internal pointer isn't null.
+   *
+   * \return `true` if the internal pointer is non-null; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  explicit operator bool() const noexcept
+  {
+    return m_data.operator bool();
+  }
+
+ private:
+  struct deleter final
+  {
+    void operator()(void* ptr) noexcept
+    {
+      SDL_SIMDFree(ptr);
+    }
+  };
+  std::unique_ptr<void, deleter> m_data;
+};
 
 }  // namespace cen::cpu
 

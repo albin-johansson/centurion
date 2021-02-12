@@ -29,10 +29,10 @@
 #include <SDL_image.h>
 
 #include <cassert>      // assert
-#include <memory>       // unique_ptr
+#include <cstddef>      // size_t
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // true_type, false_type, enable_if_t
+#include <type_traits>  // true_type, false_type
 
 #include "area.hpp"
 #include "blend_mode.hpp"
@@ -60,6 +60,12 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
+template <typename T>
+class basic_texture;
+
+using texture = basic_texture<std::true_type>;
+using texture_handle = basic_texture<std::false_type>;
+
 /**
  * \class basic_texture
  *
@@ -73,11 +79,9 @@ namespace cen {
  *
  * \headerfile texture.hpp
  */
-template <typename T>
+template <typename B>
 class basic_texture final
 {
-  using owner_t = basic_texture<std::true_type>;
-
  public:
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
@@ -89,10 +93,10 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<B>())
       : m_texture{src}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       if (!m_texture) {
         throw exception{"Cannot create texture from null pointer!"};
       }
@@ -106,8 +110,8 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
-  explicit basic_texture(owner_t& owner) noexcept : m_texture{owner.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
   /**
@@ -123,7 +127,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   basic_texture(const Renderer& renderer, not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -145,7 +149,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -169,7 +173,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -205,7 +209,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       not_null<czstring> path,
                                       const pixel_format format)
@@ -214,29 +218,21 @@ class basic_texture final
     assert(path);
 
     constexpr auto blendMode = blend_mode::blend;
+    const auto surface = cen::surface::with_format(path, blendMode, format);
 
-    const auto createSurface = [blendMode](czstring path,
-                                           const pixel_format format) {
-      surface source{path};
-      source.set_blend_mode(blendMode);
-      return source.convert(format);
-    };
-
-    const auto surface = createSurface(path, format);
     basic_texture texture{renderer,
                           format,
                           texture_access::streaming,
-                          {surface.width(), surface.height()}};
+                          surface.size()};
     texture.set_blend_mode(blendMode);
 
-    u32* pixels = nullptr;
-    const auto success = texture.lock(&pixels);
-    if (!success) {
-      throw exception{"Failed to lock texture!"};
+    u32* pixels{};
+    if (!texture.lock(&pixels)) {
+      throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<size_t>(surface.pitch()) *
-                          static_cast<size_t>(surface.height());
+    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
+                          static_cast<std::size_t>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -255,17 +251,16 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  void set_pixel(const ipoint& pixel, const color& color)
   {
-    if (access() != texture_access::streaming || pixel.x() < 0 ||
-        pixel.y() < 0 || pixel.x() >= width() || pixel.y() >= height()) {
+    if (access() != texture_access::streaming || (pixel.x() < 0) ||
+        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height())) {
       return;
     }
 
-    u32* pixels = nullptr;
-    int pitch;
-    const auto success = lock(&pixels, &pitch);
-    if (!success) {
+    u32* pixels{};
+    int pitch{};
+    if (!lock(&pixels, &pitch)) {
       return;
     }
 
@@ -273,16 +268,8 @@ class basic_texture final
     const int index = (pixel.y() * width()) + pixel.x();
 
     if ((index >= 0) && (index < nPixels)) {
-      auto* pixelFormat = SDL_AllocFormat(static_cast<u32>(format()));
-      const auto value = SDL_MapRGBA(pixelFormat,
-                                     color.red(),
-                                     color.green(),
-                                     color.blue(),
-                                     color.alpha());
-
-      SDL_FreeFormat(pixelFormat);
-
-      pixels[index] = value;
+      const pixel_format_info info{format()};
+      pixels[index] = info.rgba_to_pixel(color);
     }
 
     unlock();
@@ -297,7 +284,7 @@ class basic_texture final
    */
   void set_alpha(const u8 alpha) noexcept
   {
-    SDL_SetTextureAlphaMod(get(), alpha);
+    SDL_SetTextureAlphaMod(m_texture, alpha);
   }
 
   /**
@@ -309,7 +296,7 @@ class basic_texture final
    */
   void set_blend_mode(const blend_mode mode) noexcept
   {
-    SDL_SetTextureBlendMode(get(), static_cast<SDL_BlendMode>(mode));
+    SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
   }
 
   /**
@@ -324,7 +311,7 @@ class basic_texture final
    */
   void set_color_mod(const color& color) noexcept
   {
-    SDL_SetTextureColorMod(get(), color.red(), color.green(), color.blue());
+    SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
   }
 
   /**
@@ -336,7 +323,7 @@ class basic_texture final
    */
   void set_scale_mode(const scale_mode mode) noexcept
   {
-    SDL_SetTextureScaleMode(get(), static_cast<SDL_ScaleMode>(mode));
+    SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
   }
 
   /**
@@ -352,6 +339,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
     return m_texture.release();
@@ -367,7 +355,7 @@ class basic_texture final
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
     u32 format{};
-    SDL_QueryTexture(get(), &format, nullptr, nullptr, nullptr);
+    SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
     return static_cast<pixel_format>(format);
   }
 
@@ -381,7 +369,7 @@ class basic_texture final
   [[nodiscard]] auto access() const noexcept -> texture_access
   {
     int access{};
-    SDL_QueryTexture(get(), nullptr, &access, nullptr, nullptr);
+    SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
     return static_cast<texture_access>(access);
   }
 
@@ -422,7 +410,7 @@ class basic_texture final
   {
     int width{};
     int height{};
-    SDL_QueryTexture(get(), nullptr, nullptr, &width, &height);
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
     return {width, height};
   }
 
@@ -444,7 +432,7 @@ class basic_texture final
    *
    * \return `true` if the texture has static texture access.
    *
-   * \deprecated Use `is_no_lock()` instead.
+   * \deprecated Since 5.1.0, use `is_no_lock()` instead.
    *
    * \since 3.0.0
    */
@@ -488,7 +476,7 @@ class basic_texture final
   [[nodiscard]] auto alpha() const noexcept -> u8
   {
     u8 alpha{};
-    SDL_GetTextureAlphaMod(get(), &alpha);
+    SDL_GetTextureAlphaMod(m_texture, &alpha);
     return alpha;
   }
 
@@ -502,7 +490,7 @@ class basic_texture final
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
-    SDL_GetTextureBlendMode(get(), &mode);
+    SDL_GetTextureBlendMode(m_texture, &mode);
     return static_cast<blend_mode>(mode);
   }
 
@@ -518,7 +506,7 @@ class basic_texture final
     u8 red{};
     u8 green{};
     u8 blue{};
-    SDL_GetTextureColorMod(get(), &red, &green, &blue);
+    SDL_GetTextureColorMod(m_texture, &red, &green, &blue);
     return {red, green, blue, 0xFF};
   }
 
@@ -532,20 +520,20 @@ class basic_texture final
   [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
     SDL_ScaleMode mode{};
-    SDL_GetTextureScaleMode(get(), &mode);
+    SDL_GetTextureScaleMode(m_texture, &mode);
     return static_cast<scale_mode>(mode);
   }
 
   /**
    * \brief Indicates whether or not a texture handle holds a non-null pointer.
    *
-   * \tparam T_ dummy parameter for SFINAE.
+   * \tparam BB dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;
@@ -560,11 +548,7 @@ class basic_texture final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Texture*
   {
-    if constexpr (detail::is_owning<T>()) {
-      return m_texture.get();
-    } else {
-      return m_texture;
-    }
+    return m_texture.get();
   }
 
   /**
@@ -576,7 +560,7 @@ class basic_texture final
    */
   [[nodiscard]] explicit operator SDL_Texture*() noexcept
   {
-    return get();
+    return m_texture;
   }
 
   /**
@@ -588,7 +572,7 @@ class basic_texture final
    */
   [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
   {
-    return get();
+    return m_texture;
   }
 
  private:
@@ -599,10 +583,7 @@ class basic_texture final
       SDL_DestroyTexture(texture);
     }
   };
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_Texture, deleter>,
-                                   SDL_Texture*>;
-  rep_t m_texture;
+  detail::pointer_manager<B, SDL_Texture, deleter> m_texture;
 
   /**
    * \brief Locks the texture for write-only pixel access.
@@ -621,14 +602,14 @@ class basic_texture final
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
   {
     if (pitch) {
-      const auto result = SDL_LockTexture(get(),
+      const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
                                           reinterpret_cast<void**>(pixels),
                                           pitch);
       return result == 0;
     } else {
       int dummyPitch;
-      const auto result = SDL_LockTexture(get(),
+      const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
                                           reinterpret_cast<void**>(pixels),
                                           &dummyPitch);
@@ -643,12 +624,9 @@ class basic_texture final
    */
   void unlock() noexcept
   {
-    SDL_UnlockTexture(get());
+    SDL_UnlockTexture(m_texture);
   }
 };
-
-using texture = basic_texture<std::true_type>;
-using texture_handle = basic_texture<std::false_type>;
 
 /**
  * \brief Returns a textual representation of a texture.

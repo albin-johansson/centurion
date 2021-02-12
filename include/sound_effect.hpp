@@ -97,7 +97,7 @@ class sound_effect final
   /**
    * \brief Indicates that an audio snippet should be looped indefinitely.
    *
-   * \deprecated Use `sound_effect::forever` instead.
+   * \deprecated Since 5.1.0, use `sound_effect::forever` instead.
    *
    * \since 4.0.0
    */
@@ -163,7 +163,7 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms) noexcept
+  void fade_in(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
     if (!is_playing()) {
@@ -183,7 +183,7 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_out(const milliseconds<int> ms) noexcept  // NOLINT not const
+  void fade_out(const milliseconds<int> ms)  // NOLINT not const
   {
     assert(ms.count() > 0);
     if (is_playing()) {

@@ -31,6 +31,7 @@
 #include <string>  // string
 
 #include "centurion_cfg.hpp"
+#include "detail/sdl_deleter.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -106,14 +107,7 @@ class sdl_string final
   }
 
  private:
-  struct deleter final
-  {
-    void operator()(zstring text) noexcept
-    {
-      SDL_free(text);
-    }
-  };
-  std::unique_ptr<char, deleter> m_str;
+  std::unique_ptr<char, detail::sdl_deleter<char>> m_str;
 };
 
 }  // namespace cen

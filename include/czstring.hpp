@@ -53,7 +53,7 @@ using zstring = char*;
  *
  * \brief Alias for a C-style null-terminated string that cannot be null.
  *
- * \deprecated Prefer `not_null` alias template.
+ * \deprecated Since 5.1.0, prefer `not_null` alias template.
  *
  * \since 5.0.0
  */

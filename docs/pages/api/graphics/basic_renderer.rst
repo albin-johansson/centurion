@@ -14,9 +14,10 @@ General information
 ----------------------  -----------------------------------------
 Default constructible    No
 Copyable                 Only ``renderer_handle``
-Movable                  Yes
+Movable                  Both ``renderer`` and ``renderer_handle``
 Implicit conversions     None
-Explicit conversions     None
+Explicit conversions     ``bool`` (only ``renderer_handle``)
+Overloaded operators     ``<<``
 Namespace                ``::cen``
 Header                   ``renderer.hpp``
 ======================  =========================================

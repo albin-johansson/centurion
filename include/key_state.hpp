@@ -265,7 +265,7 @@ class key_state final
    *
    * \return the total amount of keys.
    *
-   * \deprecated Use `key_count()` instead.
+   * \deprecated Since 5.1.0, use `key_count()` instead.
    *
    * \since 3.0.0
    */

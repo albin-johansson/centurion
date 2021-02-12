@@ -16,7 +16,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``TTF_Font*``, ``const TTF_Font*``
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``font.hpp``
 ======================  =========================================

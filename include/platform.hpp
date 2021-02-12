@@ -33,11 +33,14 @@
 
 #include <SDL.h>
 
+#include <cassert>   // assert
 #include <optional>  // optional
 #include <string>    // string
 
 #include "centurion_cfg.hpp"
+#include "czstring.hpp"
 #include "detail/czstring_eq.hpp"
+#include "not_null.hpp"
 #include "pixel_format.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -83,6 +86,35 @@ enum class platform_id
   android   ///< Represents the Android platform.
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/**
+ * \brief Attempts to open a URL using a web browser or even a file manager for
+ * local files.
+ *
+ * \note This function will return `true` if there was at least an "attempt" to
+ * open the specified URL, but it doesn't mean that the URL was successfully
+ * loaded.
+ *
+ * \remarks This function will differ greatly in its effects depending on the
+ * current platform.
+ *
+ * \param url the URL that should be opened, cannot be null.
+ *
+ * \return `true` on success; `false` otherwise.
+ *
+ * \see SDL_OpenURL
+ *
+ * \since 5.2.0
+ */
+inline auto open_url(const not_null<czstring> url) noexcept -> bool
+{
+  assert(url);
+  return SDL_OpenURL(url) == 0;
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 /**
  * \brief Returns the value that represents the current platform.
  *
@@ -92,7 +124,7 @@ enum class platform_id
  */
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
-  czstring platform = SDL_GetPlatform();
+  const czstring platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows")) {
     return platform_id::windows;
 
@@ -189,6 +221,18 @@ enum class platform_id
   } else {
     return std::nullopt;
   }
+}
+
+/**
+ * \brief Indicates whether or not the current system is a tablet.
+ *
+ * \return `true` if the current system is a tablet; `false` otherwise.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto is_tablet() noexcept -> bool
+{
+  return static_cast<bool>(SDL_IsTablet());
 }
 
 /// \}

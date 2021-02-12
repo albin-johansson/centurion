@@ -28,10 +28,9 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // conditional_t, true_type, false_type, enable_if_t
+#include <type_traits>  // true_type, false_type, is_same_v
 
 #include "area.hpp"
 #include "centurion_cfg.hpp"
@@ -57,12 +56,33 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
+template <typename B>
+class basic_window;
+
+/**
+ * \typedef window
+ *
+ * \brief Represents an owning window.
+ *
+ * \since 5.0.0
+ */
+using window = basic_window<std::true_type>;
+
+/**
+ * \typedef window_handle
+ *
+ * \brief Represents a non-owning window.
+ *
+ * \since 5.0.0
+ */
+using window_handle = basic_window<std::false_type>;
+
 /**
  * \class basic_window
  *
  * \brief Represents an operating system window.
  *
- * \tparam T `std::true_type` for owning windows; `std::false_type` for
+ * \tparam B `std::true_type` for owning windows; `std::false_type` for
  * non-owning windows.
  *
  * \since 5.0.0
@@ -72,10 +92,11 @@ namespace cen {
  *
  * \headerfile window.hpp
  */
-template <typename T>
+template <typename B>
 class basic_window final
 {
-  using owner_t = basic_window<std::true_type>;
+  inline static constexpr bool isOwner = std::is_same_v<B, std::true_type>;
+  inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;
 
  public:
   /**
@@ -90,10 +111,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(SDL_Window* window) noexcept(isHandle)
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (isOwner) {
       if (!m_window) {
         throw exception{"Cannot create window from null pointer!"};
       }
@@ -114,14 +135,18 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_window(not_null<czstring> title,
                         const iarea& size = default_size())
   {
     assert(title);
 
-    if ((size.width < 1) || (size.height < 1)) {
-      throw exception{"Invalid width or height!"};
+    if (size.width < 1) {
+      throw exception{"Bad window width!"};
+    }
+
+    if (size.height < 1) {
+      throw exception{"Bad window height!"};
     }
 
     m_window.reset(SDL_CreateWindow(title,
@@ -145,19 +170,19 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   basic_window() : basic_window{"Centurion window"}
   {}
 
   /**
    * \brief Creates a window handle based on an owning window.
    *
-   * \param window the owning window to base the handle on.
+   * \param owner the owning window to base the handle on.
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
-  explicit basic_window(const owner_t& window) noexcept : m_window{window.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
   /**
@@ -167,7 +192,7 @@ class basic_window final
    */
   void show() noexcept
   {
-    SDL_ShowWindow(get());
+    SDL_ShowWindow(m_window);
   }
 
   /**
@@ -177,7 +202,7 @@ class basic_window final
    */
   void hide() noexcept
   {
-    SDL_HideWindow(get());
+    SDL_HideWindow(m_window);
   }
 
   /**
@@ -199,7 +224,7 @@ class basic_window final
    */
   void raise() noexcept
   {
-    SDL_RaiseWindow(get());
+    SDL_RaiseWindow(m_window);
   }
 
   /**
@@ -209,7 +234,7 @@ class basic_window final
    */
   void maximize() noexcept
   {
-    SDL_MaximizeWindow(get());
+    SDL_MaximizeWindow(m_window);
   }
 
   /**
@@ -219,7 +244,7 @@ class basic_window final
    */
   void minimize() noexcept
   {
-    SDL_MinimizeWindow(get());
+    SDL_MinimizeWindow(m_window);
   }
 
   /**
@@ -232,7 +257,7 @@ class basic_window final
    */
   auto update_surface() noexcept -> bool
   {
-    return SDL_UpdateWindowSurface(get()) == 0;
+    return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
   /**
@@ -246,7 +271,7 @@ class basic_window final
   void set_fullscreen(const bool fullscreen) noexcept
   {
     constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-    SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
+    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
   }
 
   /**
@@ -262,7 +287,7 @@ class basic_window final
   void set_fullscreen_desktop(const bool fullscreen) noexcept
   {
     const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
-    SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
+    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
   }
 
   /**
@@ -277,7 +302,7 @@ class basic_window final
    */
   void set_decorated(const bool decorated) noexcept
   {
-    SDL_SetWindowBordered(get(), detail::convert_bool(decorated));
+    SDL_SetWindowBordered(m_window, detail::convert_bool(decorated));
   }
 
   /**
@@ -290,7 +315,7 @@ class basic_window final
    */
   void set_resizable(const bool resizable) noexcept
   {
-    SDL_SetWindowResizable(get(), detail::convert_bool(resizable));
+    SDL_SetWindowResizable(m_window, detail::convert_bool(resizable));
   }
 
   /**
@@ -304,7 +329,7 @@ class basic_window final
    */
   void set_width(const int width) noexcept
   {
-    SDL_SetWindowSize(get(), detail::max(width, 1), height());
+    SDL_SetWindowSize(m_window, detail::max(width, 1), height());
   }
 
   /**
@@ -318,7 +343,7 @@ class basic_window final
    */
   void set_height(const int height) noexcept
   {
-    SDL_SetWindowSize(get(), width(), detail::max(height, 1));
+    SDL_SetWindowSize(m_window, width(), detail::max(height, 1));
   }
 
   /**
@@ -335,7 +360,7 @@ class basic_window final
   {
     const auto width = detail::max(size.width, 1);
     const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(get(), width, height);
+    SDL_SetWindowSize(m_window, width, height);
   }
 
   /**
@@ -347,7 +372,7 @@ class basic_window final
    */
   void set_icon(const surface& icon) noexcept
   {
-    SDL_SetWindowIcon(get(), icon.get());
+    SDL_SetWindowIcon(m_window, icon.get());
   }
 
   /**
@@ -360,7 +385,7 @@ class basic_window final
   void set_title(not_null<czstring> title) noexcept
   {
     assert(title);
-    SDL_SetWindowTitle(get(), title);
+    SDL_SetWindowTitle(m_window, title);
   }
 
   /**
@@ -375,7 +400,7 @@ class basic_window final
    */
   void set_opacity(const float opacity) noexcept
   {
-    SDL_SetWindowOpacity(get(), opacity);
+    SDL_SetWindowOpacity(m_window, opacity);
   }
 
   /**
@@ -391,7 +416,7 @@ class basic_window final
    */
   void set_min_size(const iarea& size) noexcept
   {
-    SDL_SetWindowMinimumSize(get(), size.width, size.height);
+    SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
@@ -407,7 +432,7 @@ class basic_window final
    */
   void set_max_size(const iarea& size) noexcept
   {
-    SDL_SetWindowMaximumSize(get(), size.width, size.height);
+    SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
   /**
@@ -422,7 +447,7 @@ class basic_window final
    */
   void set_position(const ipoint& position) noexcept
   {
-    SDL_SetWindowPosition(get(), position.x(), position.y());
+    SDL_SetWindowPosition(m_window, position.x(), position.y());
   }
 
   /**
@@ -437,7 +462,7 @@ class basic_window final
    */
   void set_grab_mouse(const bool grabMouse) noexcept
   {
-    SDL_SetWindowGrab(get(), detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
   }
 
   /**
@@ -455,7 +480,8 @@ class basic_window final
   auto set_brightness(const float brightness) noexcept -> bool
   {
     const auto res =
-        SDL_SetWindowBrightness(get(), detail::clamp(brightness, 0.0f, 1.0f));
+        SDL_SetWindowBrightness(m_window,
+                                detail::clamp(brightness, 0.0f, 1.0f));
     return res == 0;
   }
 
@@ -487,7 +513,7 @@ class basic_window final
    */
   [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
   {
-    return SDL_GetWindowGrab(get());
+    return SDL_GetWindowGrab(m_window);
   }
 
   /**
@@ -681,7 +707,7 @@ class basic_window final
    */
   [[nodiscard]] auto brightness() const noexcept -> float
   {
-    return SDL_GetWindowBrightness(get());
+    return SDL_GetWindowBrightness(m_window);
   }
 
   /**
@@ -694,7 +720,7 @@ class basic_window final
   [[nodiscard]] auto opacity() const noexcept -> float
   {
     float opacity{1};
-    SDL_GetWindowOpacity(get(), &opacity);
+    SDL_GetWindowOpacity(m_window, &opacity);
     return opacity;
   }
 
@@ -708,7 +734,7 @@ class basic_window final
   [[nodiscard]] auto x() const noexcept -> int
   {
     int x{};
-    SDL_GetWindowPosition(get(), &x, nullptr);
+    SDL_GetWindowPosition(m_window, &x, nullptr);
     return x;
   }
 
@@ -722,7 +748,7 @@ class basic_window final
   [[nodiscard]] auto y() const noexcept -> int
   {
     int y{};
-    SDL_GetWindowPosition(get(), nullptr, &y);
+    SDL_GetWindowPosition(m_window, nullptr, &y);
     return y;
   }
 
@@ -735,7 +761,7 @@ class basic_window final
    */
   [[nodiscard]] auto id() const noexcept -> u32
   {
-    return SDL_GetWindowID(get());
+    return SDL_GetWindowID(m_window);
   }
 
   /**
@@ -748,7 +774,7 @@ class basic_window final
    */
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
-    const auto index = SDL_GetWindowDisplayIndex(get());
+    const auto index = SDL_GetWindowDisplayIndex(m_window);
     if (index != -1) {
       return index;
     } else {
@@ -769,7 +795,7 @@ class basic_window final
   {
     int x{};
     int y{};
-    SDL_GetWindowPosition(get(), &x, &y);
+    SDL_GetWindowPosition(m_window, &x, &y);
     return {x, y};
   }
 
@@ -784,7 +810,7 @@ class basic_window final
   {
     int width{};
     int height{};
-    SDL_GetWindowMinimumSize(get(), &width, &height);
+    SDL_GetWindowMinimumSize(m_window, &width, &height);
     return {width, height};
   }
 
@@ -799,7 +825,7 @@ class basic_window final
   {
     int width{};
     int height{};
-    SDL_GetWindowMaximumSize(get(), &width, &height);
+    SDL_GetWindowMaximumSize(m_window, &width, &height);
     return {width, height};
   }
 
@@ -813,7 +839,7 @@ class basic_window final
   [[nodiscard]] auto width() const noexcept -> int
   {
     int width{};
-    SDL_GetWindowSize(get(), &width, nullptr);
+    SDL_GetWindowSize(m_window, &width, nullptr);
     return width;
   }
 
@@ -827,7 +853,7 @@ class basic_window final
   [[nodiscard]] auto height() const noexcept -> int
   {
     int height{};
-    SDL_GetWindowSize(get(), nullptr, &height);
+    SDL_GetWindowSize(m_window, nullptr, &height);
     return height;
   }
 
@@ -844,7 +870,7 @@ class basic_window final
   [[nodiscard]] auto size() const noexcept -> iarea
   {
     iarea size{};
-    SDL_GetWindowSize(get(), &size.width, &size.height);
+    SDL_GetWindowSize(m_window, &size.width, &size.height);
     return size;
   }
 
@@ -880,7 +906,7 @@ class basic_window final
    */
   [[nodiscard]] auto flags() const noexcept -> u32
   {
-    return SDL_GetWindowFlags(get());
+    return SDL_GetWindowFlags(m_window);
   }
 
   /**
@@ -892,7 +918,7 @@ class basic_window final
    */
   [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format
   {
-    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(get()));
+    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(m_window));
   }
 
   /**
@@ -908,7 +934,7 @@ class basic_window final
    */
   [[nodiscard]] auto get_surface() noexcept -> surface_handle
   {
-    return surface_handle{SDL_GetWindowSurface(get())};
+    return surface_handle{SDL_GetWindowSurface(m_window)};
   }
 
   /**
@@ -920,7 +946,7 @@ class basic_window final
    */
   [[nodiscard]] auto title() const -> std::string
   {
-    return SDL_GetWindowTitle(get());
+    return SDL_GetWindowTitle(m_window);
   }
 
   /**
@@ -959,7 +985,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_handle<U> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -976,11 +1002,7 @@ class basic_window final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Window*
   {
-    if constexpr (detail::is_owning<T>()) {
-      return m_window.get();
-    } else {
-      return m_window;
-    }
+    return m_window.get();
   }
 
   /**
@@ -992,7 +1014,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, detail::is_owner<U> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] constexpr static auto default_size() -> iarea
   {
     return {800, 600};
@@ -1006,31 +1028,8 @@ class basic_window final
       SDL_DestroyWindow(window);
     }
   };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_Window, deleter>,
-                                   SDL_Window*>;
-
-  rep_t m_window;
+  detail::pointer_manager<B, SDL_Window, deleter> m_window;
 };
-
-/**
- * \typedef window
- *
- * \brief Represents an owning window.
- *
- * \since 5.0.0
- */
-using window = basic_window<std::true_type>;
-
-/**
- * \typedef window_handle
- *
- * \brief Represents a non-owning window.
- *
- * \since 5.0.0
- */
-using window_handle = basic_window<std::false_type>;
 
 /**
  * \brief Returns a textual representation of a window.

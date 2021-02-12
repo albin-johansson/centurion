@@ -1,7 +1,12 @@
 base_path
 =========
 
-The ``base_path`` class is used to obtain the file path to the current executable.
+The ``base_path`` class is used to obtain the path to directory from which the application 
+was run.
+
+.. note:: 
+
+  This class is deprecated since Centurion 5.2.0. Use the ``get_base_path()`` function instead.
 
 General information
 -------------------
@@ -15,7 +20,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``bool``
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``base_path.hpp``
 Since                    3.0.0
@@ -27,6 +31,13 @@ Interface
 .. doxygenclass:: cen::base_path
   :members:
   :undoc-members:
+  :outline:
+  :no-link:
+
+Related functions
+-----------------
+
+.. doxygenfunction:: get_base_path() -> sdl_string
   :outline:
   :no-link:
 

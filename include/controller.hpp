@@ -27,22 +27,28 @@
 
 #include <SDL.h>
 
+#include <array>        // array
 #include <cassert>      // assert
-#include <memory>       // unique_ptr
-#include <optional>     // optional, nullopt
+#include <cstddef>      // size_t
+#include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_same_v, ...
+#include <type_traits>  // true_type, false_type
 
 #include "button_state.hpp"
 #include "centurion_cfg.hpp"
+#include "color.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
 #include "joystick.hpp"
 #include "not_null.hpp"
 #include "sdl_string.hpp"
+#include "sensor.hpp"
+#include "time.hpp"
+#include "touch.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -71,6 +77,14 @@ enum class controller_type
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
   ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
   ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
+  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   nintendo_switch_pro =
       SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro
                                                ///< controller.
@@ -126,6 +140,21 @@ enum class controller_button
   dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
   dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
   dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro
+     capture button */
+  misc1 = SDL_CONTROLLER_BUTTON_MISC1,
+
+  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
+  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
+  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
+  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
+  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
@@ -146,12 +175,33 @@ enum class controller_bind_type
   hat = SDL_CONTROLLER_BINDTYPE_HAT
 };
 
+template <typename B>
+class basic_controller;
+
+/**
+ * \typedef controller
+ *
+ * \brief Represents an owning game controller.
+ *
+ * \since 5.0.0
+ */
+using controller = basic_controller<std::true_type>;
+
+/**
+ * \typedef controller_handle
+ *
+ * \brief Represents a non-owning game controller.
+ *
+ * \since 5.0.0
+ */
+using controller_handle = basic_controller<std::false_type>;
+
 /**
  * \class basic_controller
  *
  * \brief Represents a game controller, e.g. an xbox-controller.
  *
- * \tparam T `std::true_type` for owning controllers; `std::false_type` for
+ * \tparam B `std::true_type` for owning controllers; `std::false_type` for
  * non-owning controllers.
  *
  * \since 5.0.0
@@ -161,11 +211,9 @@ enum class controller_bind_type
  *
  * \headerfile controller.hpp
  */
-template <typename T>
+template <typename B>
 class basic_controller final
 {
-  using owner_t = basic_controller<std::true_type>;
-
  public:
   using mapping_index = int;
   using joystick_index = int;
@@ -195,10 +243,10 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<B>())
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) {
+    if constexpr (detail::is_owning<B>()) {
       if (!m_controller) {
         throw exception{"Cannot create controller from null pointer!"};
       }
@@ -210,14 +258,13 @@ class basic_controller final
   /**
    * \brief Creates a handle to an existing controller instance.
    *
-   * \param controller the controller that owns the `SDL_GameController`
-   * pointer.
+   * \param owner the controller that owns the `SDL_GameController` pointer.
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
-  explicit basic_controller(const owner_t& controller) noexcept
-      : m_controller{controller.get()}
+  template <typename BB = B, detail::is_handle<BB> = true>
+  explicit basic_controller(const controller& owner) noexcept
+      : m_controller{owner.get()}
   {}
 
   /**
@@ -240,7 +287,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -263,7 +310,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
@@ -285,7 +332,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_owner<T_> = true>
+  template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
@@ -297,7 +344,7 @@ class basic_controller final
   }
 
   /**
-   * \brief Triggers a rumble effect.
+   * \brief Starts a rumble effect.
    *
    * \details Calls to this function cancels any previously active rumble
    * effect. Furthermore, supplying 0 as intensities will stop the rumble
@@ -306,18 +353,54 @@ class basic_controller final
    * \note This function has no effect if rumbling isn't supported by the
    * controller.
    *
-   * \param lo the intensity of the low frequency rumble.
-   * \param hi the intensity of the high frequency rumble.
+   * \param lo the intensity of the low frequency motor.
+   * \param hi the intensity of the high frequency motor.
    * \param duration the duration of the rumble effect.
+   *
+   * \return `true` on success; `false` otherwise.
    *
    * \since 5.0.0
    */
-  void rumble(const u16 lo,
-              const u16 hi,
-              const milliseconds<u32> duration) noexcept
+  auto rumble(const u16 lo, const u16 hi, const milliseconds<u32> duration)
+      -> bool
   {
-    SDL_GameControllerRumble(get(), lo, hi, duration.count());
+    const auto res =
+        SDL_GameControllerRumble(m_controller, lo, hi, duration.count());
+    return res == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Starts a rumble effect in the controller's triggers.
+   *
+   * \details Calls to this function cancels any previously active rumble
+   * effect. Furthermore, supplying 0 as intensities will stop the rumble
+   * effect.
+   *
+   * \note This function has no effect if rumbling isn't supported by the
+   * controller.
+   *
+   * \param lo the intensity of the low frequency motor.
+   * \param hi the intensity of the high frequency motor.
+   * \param duration the duration of the rumble effect.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto rumble_triggers(const u16 lo,
+                       const u16 hi,
+                       const milliseconds<u32> duration) -> bool
+  {
+    const auto res = SDL_GameControllerRumbleTriggers(m_controller,
+                                                      lo,
+                                                      hi,
+                                                      duration.count());
+    return res == 0;
+  }
+
+#endif  // SDL_VERSION(2, 0, 14)
 
   /**
    * \brief Stops any currently active rumble effect.
@@ -338,7 +421,7 @@ class basic_controller final
    */
   void set_player_index(const player_index index) noexcept
   {
-    SDL_GameControllerSetPlayerIndex(get(), index);
+    SDL_GameControllerSetPlayerIndex(m_controller, index);
   }
 
   /**
@@ -351,7 +434,7 @@ class basic_controller final
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetProduct(get());
+    const auto id = SDL_GameControllerGetProduct(m_controller);
     if (id != 0) {
       return id;
     } else {
@@ -368,7 +451,7 @@ class basic_controller final
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetVendor(get());
+    const auto id = SDL_GameControllerGetVendor(m_controller);
     if (id != 0) {
       return id;
     } else {
@@ -386,13 +469,30 @@ class basic_controller final
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
-    const auto id = SDL_GameControllerGetProductVersion(get());
+    const auto id = SDL_GameControllerGetProductVersion(m_controller);
     if (id != 0) {
       return id;
     } else {
       return std::nullopt;
     }
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the serial number associated with the controller.
+   *
+   * \return the serial number associated with the controller; a null pointer if
+   * no serial number is available.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto serial() const noexcept -> czstring
+  {
+    return SDL_GameControllerGetSerial(m_controller);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Returns the player index associated with the controller.
@@ -407,7 +507,7 @@ class basic_controller final
    */
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
-    const auto result = SDL_GameControllerGetPlayerIndex(get());
+    const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
     if (result != -1) {
       return result;
     } else {
@@ -424,7 +524,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(get()));
+    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
   }
 
   /**
@@ -439,7 +539,7 @@ class basic_controller final
    */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
-    return SDL_GameControllerName(get());
+    return SDL_GameControllerName(m_controller);
   }
 
   /**
@@ -451,7 +551,29 @@ class basic_controller final
    */
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
-    return static_cast<controller_type>(SDL_GameControllerGetType(get()));
+    return static_cast<controller_type>(
+        SDL_GameControllerGetType(m_controller));
+  }
+
+  /**
+   * \brief Returns the amount of available game controllers on the system.
+   *
+   * \return the amount of available game controllers.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto count() noexcept -> int
+  {
+    const auto joysticks = SDL_NumJoysticks();
+
+    auto amount = 0;
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
+        ++amount;
+      }
+    }
+
+    return amount;
   }
 
   /**
@@ -483,7 +605,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(czstring str) noexcept
+  [[nodiscard]] static auto get_button(const czstring str) noexcept
       -> controller_button
   {
     return static_cast<controller_button>(
@@ -535,7 +657,7 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForAxis(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerAxis>(axis));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
@@ -557,7 +679,7 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForButton(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerButton>(button));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
@@ -595,7 +717,7 @@ class basic_controller final
       -> button_state
   {
     const auto state = SDL_GameControllerGetButton(
-        get(),
+        m_controller,
         static_cast<SDL_GameControllerButton>(button));
     return static_cast<button_state>(state);
   }
@@ -641,9 +763,43 @@ class basic_controller final
    */
   [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
-    return SDL_GameControllerGetAxis(get(),
+    return SDL_GameControllerGetAxis(m_controller,
                                      static_cast<SDL_GameControllerAxis>(axis));
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the controller has the specified axis.
+   *
+   * \return `true` if the controller has the specified axis; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_axis(const controller_axis axis) const noexcept -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerAxis>(axis);
+    return SDL_GameControllerHasAxis(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller has the specified button.
+   *
+   * \param button the button that will be checked.
+   *
+   * \return `true` if the controller features the specified button; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_button(const controller_button button) const noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_GameControllerButton>(button);
+    return SDL_GameControllerHasButton(m_controller, value) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Returns a handle to the associated joystick.
@@ -654,8 +810,208 @@ class basic_controller final
    */
   [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
   {
-    return joystick_handle{SDL_GameControllerGetJoystick(get())};
+    return joystick_handle{SDL_GameControllerGetJoystick(m_controller)};
   }
+
+  /// \name Touchpad functions
+  /// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the amount of touchpads on the controller.
+   *
+   * \return the amount of touchpads on the controller.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_count() const noexcept -> int
+  {
+    return SDL_GameControllerGetNumTouchpads(m_controller);
+  }
+
+  /**
+   * \brief Returns the amount of supported simultaneous fingers for a touchpad.
+   *
+   * \param touchpad the index associated with the touchpad that will be
+   * queried.
+   *
+   * \return the maximum amount of supported simultaneous fingers for the
+   * specified touchpad.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_finger_capacity(const int touchpad) const noexcept
+      -> int
+  {
+    return SDL_GameControllerGetNumTouchpadFingers(m_controller, touchpad);
+  }
+
+  /**
+   * \brief Returns the state of a finger on a touchpad.
+   *
+   * \param touchpad the touchpad to query.
+   * \param finger the index of the finger that will be queried.
+   *
+   * \return the current state of a touchpad finger; `std::nullopt` if something
+   * goes wrong.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto touchpad_finger_state(const int touchpad,
+                                           const int finger) const noexcept
+      -> std::optional<touch::finger_state>
+  {
+    touch::finger_state result;
+    u8 state;
+
+    const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
+                                                         touchpad,
+                                                         finger,
+                                                         &state,
+                                                         &result.x,
+                                                         &result.y,
+                                                         &result.pressure);
+    result.state = static_cast<button_state>(state);
+
+    if (res != -1) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \}
+
+  /// \name Sensor functions
+  /// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Sets whether or not data reporting is enabled for a sensor.
+   *
+   * \param type the type of the sensor that will be changed.
+   * \param enabled `true` if data reporting should be enabled; `false`
+   * otherwise.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    const auto state = enabled ? SDL_TRUE : SDL_FALSE;
+    return SDL_GameControllerSetSensorEnabled(m_controller, value, state) == 0;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller has a sensor.
+   *
+   * \param type the type of the sensor to look for.
+   *
+   * \return `true` if the controller has the specified sensor; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_sensor(const sensor_type type) const noexcept -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    return SDL_GameControllerHasSensor(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Indicates whether or not data reporting is enabled for a sensor.
+   *
+   * \param type the type of the sensor that will be queried.
+   *
+   * \return `true` if data reporting is enabled for the sensor; `false`
+   * otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto is_sensor_enabled(const sensor_type type) const noexcept
+      -> bool
+  {
+    const auto value = static_cast<SDL_SensorType>(type);
+    return SDL_GameControllerIsSensorEnabled(m_controller, value) == SDL_TRUE;
+  }
+
+  /**
+   * \brief Returns the state of the specified sensor.
+   *
+   * \tparam size the amount of data elements.
+   *
+   * \param type the type of the sensor that will be queried.
+   *
+   * \return the sensor data; `std::nullopt` if something went wrong.
+   *
+   * \since 5.2.0
+   */
+  template <std::size_t size>
+  [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
+      -> std::optional<std::array<float, size>>
+  {
+    std::array<float, size> array{};
+    const auto value = static_cast<SDL_SensorType>(type);
+    const auto res =
+        SDL_GameControllerGetSensorData(m_controller,
+                                        value,
+                                        array.data(),
+                                        static_cast<int>(array.size()));
+    if (res != -1) {
+      return array;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \}
+
+  /// \name LED functions
+  /// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Sets the color of the associated LED light.
+   *
+   * \param color the new color of the controller's LED.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  auto set_led(const color& color) noexcept -> bool
+  {
+    return SDL_GameControllerSetLED(m_controller,
+                                    color.red(),
+                                    color.green(),
+                                    color.blue()) == 0;
+  }
+
+  /**
+   * \brief Indicates whether or not the controller features a LED light.
+   *
+   * \return `true` if the controller features a LED light; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto has_led() const noexcept -> bool
+  {
+    return SDL_GameControllerHasLED(m_controller) == SDL_TRUE;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /// \} End of LED functions
 
   /// \name Mapping functions
   /// \{
@@ -725,7 +1081,7 @@ class basic_controller final
    */
   [[nodiscard]] auto mapping() const noexcept -> sdl_string
   {
-    return sdl_string{SDL_GameControllerMapping(get())};
+    return sdl_string{SDL_GameControllerMapping(m_controller)};
   }
 
   /**
@@ -851,7 +1207,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, detail::is_handle<T_> = true>
+  template <typename BB = B, detail::is_handle<BB> = true>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -868,11 +1224,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_GameController*
   {
-    if constexpr (detail::is_owning<T>()) {
-      return m_controller.get();
-    } else {
-      return m_controller;
-    }
+    return m_controller.get();
   }
 
  private:
@@ -883,30 +1235,8 @@ class basic_controller final
       SDL_GameControllerClose(controller);
     }
   };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_GameController, deleter>,
-                                   SDL_GameController*>;
-  rep_t m_controller;
+  detail::pointer_manager<B, SDL_GameController, deleter> m_controller;
 };
-
-/**
- * \typedef controller
- *
- * \brief Represents an owning game controller.
- *
- * \since 5.0.0
- */
-using controller = basic_controller<std::true_type>;
-
-/**
- * \typedef controller_handle
- *
- * \brief Represents a non-owning game controller.
- *
- * \since 5.0.0
- */
-using controller_handle = basic_controller<std::false_type>;
 
 /**
  * \brief Returns a textual representation of a game controller.
@@ -922,9 +1252,9 @@ template <typename T>
     -> std::string
 {
   using namespace std::string_literals;
-  const auto ptr = detail::address_of(controller.get());
   const auto name = controller.name() ? controller.name() : "N/A";
-  return "[controller | data: "s + ptr + ", name: "s + name + "]"s;
+  return "[controller | data: " + detail::address_of(controller.get()) +
+         ", name: "s + name + "]";
 }
 
 /**

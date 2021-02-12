@@ -62,15 +62,13 @@
 
 #include <SDL.h>
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
-#include <string>       // string, stoi, stoul, stof
+#include <string>       // string
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair
 
 #include "centurion_cfg.hpp"
-#include "detail/czstring_eq.hpp"
-#include "detail/static_bimap.hpp"
+#include "detail/hints_impl.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 
@@ -79,167 +77,6 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
-
-/// \cond FALSE
-
-namespace detail {
-
-struct string_compare final
-{
-  auto operator()(czstring lhs, czstring rhs) const noexcept
-  {
-    return detail::czstring_eq(lhs, rhs);
-  }
-};
-
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, string_compare, size>;
-
-template <typename Derived, typename Arg>
-class crtp_hint
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Arg>;
-  }
-
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return Derived::name();
-  }
-
-  [[nodiscard]] static auto value() noexcept -> std::optional<Arg>
-  {
-    return Derived::current_value();
-  }
-
-  [[nodiscard]] static auto to_string(Arg value) -> std::string
-  {
-    return std::to_string(value);
-  }
-};
-
-// A hint class that only accepts booleans
-template <typename Hint>
-class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, bool>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
-  {
-    return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
-  }
-
-  [[nodiscard]] static auto to_string(const bool value) -> std::string
-  {
-    return value ? "1" : "0";
-  }
-};
-
-// A hint class that only accepts strings
-template <typename Hint>
-class string_hint : public crtp_hint<string_hint<Hint>, czstring>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_convertible_v<T, czstring>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return std::nullopt;
-    } else {
-      return value;
-    }
-  }
-
-  [[nodiscard]] static auto to_string(czstring value) -> std::string
-  {
-    return value;
-  }
-};
-
-// A hint class that only accepts integers
-template <typename Hint>
-class int_hint : public crtp_hint<int_hint<Hint>, int>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, int>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return std::nullopt;
-    } else {
-      return std::stoi(value);
-    }
-  }
-};
-
-// A hint class that only accepts unsigned integers
-template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, unsigned int>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept
-      -> std::optional<unsigned int>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return std::nullopt;
-    } else {
-      return static_cast<unsigned int>(std::stoul(value));
-    }
-  }
-};
-
-// A hint class that only accepts floats
-template <typename Hint>
-class float_hint : public crtp_hint<float_hint<Hint>, float>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, float>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return std::nullopt;
-    } else {
-      return std::stof(value);
-    }
-  }
-};
-
-}  // namespace detail
-
-/// \endcond
 
 /// \addtogroup configuration
 /// \{
@@ -802,6 +639,56 @@ struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct preferred_locales final : detail::string_hint<preferred_locales>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_PREFERRED_LOCALES;
+  }
+};
+
+struct thread_priority_policy final
+    : detail::string_hint<thread_priority_policy>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    // This hint could be enum-based, but it isn't clear whether or not there
+    // may be implementation specific identifiers other than those of the listed
+    // pthread identifiers. So, we let this be a string-based hint.
+    return SDL_HINT_THREAD_PRIORITY_POLICY;
+  }
+};
+
+struct treat_time_critical_as_real_time final
+    : detail::bool_hint<treat_time_critical_as_real_time>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL;
+  }
+};
+
+struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_APP_NAME;
+  }
+};
+
+struct audio_device_stream_name final
+    : detail::string_hint<audio_device_stream_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_NAME;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 namespace raspberrypi {
 
 struct video_layer final : detail::int_hint<video_layer>
@@ -864,6 +751,18 @@ struct keyboard_element final : detail::string_hint<keyboard_element>
     return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct asyncify final : detail::bool_hint<asyncify>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_ASYNCIFY;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace emscripten
 
@@ -943,6 +842,18 @@ struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct relative_scaling final : detail::bool_hint<relative_scaling>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SCALING;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace mouse
 
@@ -1169,6 +1080,18 @@ struct apk_expansion_patch_file_version final
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct pause_background_audio final : detail::bool_hint<pause_background_audio>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
 }  // namespace android
 
 namespace joystick {
@@ -1205,6 +1128,43 @@ struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
     return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct use_hidapi_ps5 final : detail::bool_hint<use_hidapi_ps5>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS5;
+  }
+};
+
+struct use_raw_input final : detail::bool_hint<use_raw_input>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_RAWINPUT;
+  }
+};
+
+struct hidapi_correlate_xinput final
+    : detail::bool_hint<hidapi_correlate_xinput>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
+  }
+};
+
+struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_LINUX_JOYSTICK_DEADZONES;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
 {

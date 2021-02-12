@@ -124,7 +124,7 @@ class font_cache final
   {}
 
   /// \name String caching
-  /// \brief Methods related to caching strings as textures.
+  /// \brief Functions related to caching strings as textures.
   /// \{
 
   /**
@@ -508,13 +508,13 @@ class font_cache final
   /// \}  // end of string caching
 
   /// \name Glyph caching
-  /// \brief Methods related to cached Unicode glyph textures.
+  /// \brief Functions related to cached Unicode glyph textures.
   /// \{
 
   /**
    * \brief Adds a glyph to the font cache.
    *
-   * \details This method has no effect if the supplied glyph isn't provided
+   * \details This function has no effect if the supplied glyph isn't provided
    * by the associated font, or if the supplied glyph has already been cached.
    *
    * \tparam Renderer the type of the renderer.
@@ -531,9 +531,9 @@ class font_cache final
       return;
     }
 
-    m_glyphs.emplace(glyph,
-                     glyph_data{create_glyph_texture(renderer, glyph),
-                                m_font.get_metrics(glyph).value()});
+    glyph_data data{create_glyph_texture(renderer, glyph),
+                    m_font.get_metrics(glyph).value()};
+    m_glyphs.try_emplace(glyph, std::move(data));
   }
 
   /**
@@ -566,7 +566,7 @@ class font_cache final
    * \brief Attempts to cache all printable basic latin characters.
    *
    * \details The basic latin set provides the most common characters, such as
-   * upper- and lower-case latin letters, numbers and symbols. This method
+   * upper- and lower-case latin letters, numbers and symbols. This function
    * might throw if something goes wrong when creating the textures.
    *
    * \tparam Renderer the type of the renderer.
@@ -603,7 +603,7 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable Latin-1 characters.
    *
-   * \note This method is effectively equivalent to calling both
+   * \note This function is effectively equivalent to calling both
    * `add_basic_latin` and `add_latin1_supplement`.
    *
    * \tparam Renderer the type of the renderer.
@@ -668,6 +668,31 @@ class font_cache final
     return at(glyph);
   }
 
+  /**
+   * \brief Returns the data associated with the specified glyph, if it exists.
+   *
+   * \details This function is a non-throwing alternative to the `at()` and
+   * `operator[]` functions.
+   *
+   * \note Do not store the returned pointer for longer than absolutely
+   * necessary, it may get invalidated upon modification of the font cache.
+   *
+   * \param glyph the desired glyph to lookup the data for.
+   *
+   * \return a pointer to the associated glyph data; a null pointer if no
+   * matching data was found.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
+  {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
+      return &it->second;
+    } else {
+      return nullptr;
+    }
+  }
+
   ///\}  // end of glyph caching
 
   /**
@@ -711,11 +736,9 @@ class font_cache final
   [[nodiscard]] auto create_glyph_texture(Renderer& renderer,
                                           const unicode glyph) -> texture
   {
-    const surface surf{
-        TTF_RenderGlyph_Blended(m_font.get(),
-                                glyph,
-                                static_cast<SDL_Color>(renderer.get_color()))};
-    return texture{renderer, surf};
+    const auto color = renderer.get_color().get();
+    const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
+    return texture{renderer, src};
   }
 
   void store(const id_type id, texture&& texture)
@@ -723,7 +746,7 @@ class font_cache final
     if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);
     }
-    m_strings.emplace(id, std::move(texture));
+    m_strings.try_emplace(id, std::move(texture));
   }
 };
 

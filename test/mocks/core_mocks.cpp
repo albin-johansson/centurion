@@ -49,7 +49,7 @@ void reset_core()
 
   // Exception classes can't handle null message
   std::array values{"dummy"};
-  SET_RETURN_SEQ(SDL_GetError, values.data(), values.size());
+  SET_RETURN_SEQ(SDL_GetError, values.data(), static_cast<int>(values.size()));
 }
 
 }  // namespace mocks

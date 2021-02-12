@@ -3,8 +3,12 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>  // array
+
 extern "C" {
 FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
+FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
+FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }
 
 class PlatformTest : public testing::Test
@@ -14,8 +18,21 @@ class PlatformTest : public testing::Test
   void SetUp() override
   {
     RESET_FAKE(SDL_GetPlatform);
+    RESET_FAKE(SDL_IsTablet);
+    RESET_FAKE(SDL_OpenURL);
   }
 };
+
+TEST_F(PlatformTest, OpenURL)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_OpenURL, values.data(), static_cast<int>(values.size()));
+
+  EXPECT_FALSE(cen::platform::open_url("https://www.google.com"));
+  EXPECT_TRUE(cen::platform::open_url("https://www.google.com"));
+
+  EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
+}
 
 TEST_F(PlatformTest, ID)
 {
@@ -87,4 +104,10 @@ TEST_F(PlatformTest, Name)
 
   SDL_GetPlatform_fake.return_val = "Unknown";
   EXPECT_FALSE(cen::platform::name().has_value());
+}
+
+TEST_F(PlatformTest, IsTablet)
+{
+  const auto isTablet [[maybe_unused]] = cen::platform::is_tablet();
+  EXPECT_EQ(1, SDL_IsTablet_fake.call_count);
 }

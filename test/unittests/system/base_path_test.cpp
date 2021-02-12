@@ -15,6 +15,11 @@ static_assert(std::is_nothrow_move_assignable_v<cen::base_path>);
 static_assert(!std::is_copy_constructible_v<cen::base_path>);
 static_assert(!std::is_copy_assignable_v<cen::base_path>);
 
+TEST(GetBasePath, NoExceptions)
+{
+  EXPECT_NO_THROW(cen::get_base_path());  // NOLINT
+}
+
 TEST(BasePath, Constructor)
 {
   EXPECT_NO_THROW(cen::base_path{});

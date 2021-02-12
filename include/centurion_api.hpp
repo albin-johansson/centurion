@@ -26,6 +26,8 @@
  * \file centurion_api.hpp
  *
  * \deprecated Since 5.1.0, this header only includes `centurion_cfg`.
+ *
+ * \todo Centurion 6: Remove this file.
  */
 
 #ifndef CENTURION_API_HEADER

@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-unittests LANGUAGES CXX)
 
 set(SOURCE_FILES
+    typed_test_macros.hpp
     test_main.cpp
     log_test.cpp
     sdl_string_test.cpp
+    vector3_test.cpp
 
     config/hints_test.cpp
 
@@ -19,6 +21,7 @@ set(SOURCE_FILES
     detail/czstring_eq_test.cpp
     detail/max_test.cpp
     detail/min_test.cpp
+    detail/owner_handle_api_test.cpp
     detail/to_string_test.cpp
 
     event/audio_device_event_test.cpp
@@ -77,11 +80,13 @@ set(SOURCE_FILES
     input/controller_axis_test.cpp
     input/controller_button_test.cpp
     input/controller_test.cpp
+    input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_code_tests.cpp
     input/key_state_test.cpp
     input/mouse_state_test.cpp
     input/scan_code_tests.cpp
+    input/sensor_test.cpp
     input/touch_test.cpp
 
     system/base_path_test.cpp
@@ -89,6 +94,8 @@ set(SOURCE_FILES
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
+    system/simd_block_test.cpp
+    system/locale_test.cpp
     system/platform_test.cpp
     system/pref_path_test.cpp
     system/ram_test.cpp
@@ -117,6 +124,7 @@ if (CEN_AUDIO)
 endif ()
 
 target_include_directories(${CENTURION_TEST_TARGET}
+    PUBLIC .
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}

@@ -335,7 +335,7 @@ class font final
    *
    * \return `true` if kerning is being used by the font; `false` otherwise.
    *
-   * \deprecated Use `has_kerning()` instead.
+   * \deprecated Since 5.1.0, use `has_kerning()` instead.
    *
    * \since 4.0.0
    */
@@ -361,7 +361,7 @@ class font final
    *
    * \return `true` if the font is bold; `false` otherwise.
    *
-   * \deprecated Use `is_bold()` instead.
+   * \deprecated Since 5.1.0, use `is_bold()` instead.
    *
    * \since 3.0.0
    */
@@ -387,7 +387,7 @@ class font final
    *
    * \return `true` if the font is italic; `false` otherwise.
    *
-   * \deprecated Use `is_italic()` instead.
+   * \deprecated Since 5.1.0, use `is_italic()` instead.
    *
    * \since 3.0.0
    */
@@ -413,7 +413,7 @@ class font final
    *
    * \return `true` if the font is underlined; `false` otherwise.
    *
-   * \deprecated Use `is_underlined()` instead.
+   * \deprecated Since 5.1.0, use `is_underlined()` instead.
    *
    * \since 3.0.0
    */
@@ -439,7 +439,7 @@ class font final
    *
    * \return `true` if the font is a strikethrough font; `false` otherwise.
    *
-   * \deprecated Use `is_strikethrough()` instead.
+   * \deprecated Since 5.1.0, use `is_strikethrough()` instead.
    *
    * \since 3.0.0
    */
@@ -465,7 +465,7 @@ class font final
    *
    * \return `true` if the font is outlined; `false` otherwise.
    *
-   * \deprecated Use `is_outlined()` instead.
+   * \deprecated Since 5.1.0, use `is_outlined()` instead.
    *
    * \since 3.0.0
    */

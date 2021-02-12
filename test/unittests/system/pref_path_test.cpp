@@ -13,6 +13,11 @@ static_assert(std::is_nothrow_move_assignable_v<cen::pref_path>);
 static_assert(!std::is_copy_constructible_v<cen::pref_path>);
 static_assert(!std::is_copy_assignable_v<cen::pref_path>);
 
+TEST(GetPrefPath, NoExceptions)
+{
+  EXPECT_NO_THROW(cen::get_pref_path("centurion", "tests"));  // NOLINT
+}
+
 TEST(PrefPath, Constructor)
 {
   EXPECT_NO_THROW(cen::pref_path("centurion", "tests"));

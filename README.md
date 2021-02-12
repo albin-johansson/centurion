@@ -1,5 +1,5 @@
 # <img src="meta/centurion.png" alt="Centurion" width="200"/> 
-[![version](https://img.shields.io/badge/version-5.1.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![version](https://img.shields.io/badge/version-5.2.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 |  Build           |  Status       |
 | ---------------- | ------------- |
@@ -26,11 +26,11 @@ Happy coding! :heart:
 
 ## Requirements
 
-* C++17 (C++20 should work just as fine as well)
-* SDL2 (2.0.12 or later)
-* SDL2_image (2.0.5 or later)
-* SDL2_ttf (2.0.4 or later)
-* SDL2_mixer (2.0.4 or later)
+* C++17 or C++20
+* SDL2 2.0.12 or 2.0.14
+* SDL2_image 2.0.5
+* SDL2_ttf 2.0.4
+* SDL2_mixer 2.0.4
 
 ## Relevant resources
 

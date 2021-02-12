@@ -15,9 +15,8 @@ Default constructible    No
 Copyable                 Only ``texture_handle``
 Movable                  Both ``texture`` and ``texture_handle``
 Implicit conversions     None
-Explicit conversions     ``SDL_Texture*``, ``const SDL_Texture*``
+Explicit conversions     ``SDL_Texture*``, ``const SDL_Texture*``, ``bool`` (only ``texture_handle``)
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``texture.hpp``
 Since                    3.0.0

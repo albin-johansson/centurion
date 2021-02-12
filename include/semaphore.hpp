@@ -97,7 +97,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  auto acquire(const milliseconds<u32> ms) noexcept -> lock_status
+  auto acquire(const milliseconds<u32> ms) -> lock_status
   {
     return static_cast<lock_status>(
         SDL_SemWaitTimeout(m_semaphore.get(), ms.count()));

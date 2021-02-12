@@ -22,18 +22,21 @@ set(SOURCE_FILES
     graphics/window_utils_test.cpp
 
     input/controller_test.cpp
+    input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_state_test.cpp
+    input/sensor_test.cpp
     input/touch_test.cpp
 
+    system/base_path_test.cpp
     system/battery_test.cpp
     system/platform_test.cpp
+    system/pref_path_test.cpp
 
     thread/condition_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
-    thread/semaphore_test.cpp
-    )
+    thread/semaphore_test.cpp)
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(SOURCE_FILES

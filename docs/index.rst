@@ -8,6 +8,7 @@ Welcome to Centurion's documentation!
    pages/introduction
    pages/centurion_101
    pages/faq
+   pages/owner_handle_api
 
 .. toctree::
    :maxdepth: 2
@@ -58,6 +59,7 @@ Welcome to Centurion's documentation!
    :caption: Input
 
    pages/api/input/basic_controller
+   pages/api/input/basic_haptic
    pages/api/input/button_state
    pages/api/input/key_code
    pages/api/input/key_codes

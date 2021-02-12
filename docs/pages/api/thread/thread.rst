@@ -16,7 +16,6 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``
-Printable                Yes
 Namespace                ``::cen``
 Header                   ``thread.hpp``
 ======================  =========================================

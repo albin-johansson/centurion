@@ -55,6 +55,8 @@ namespace cen {
  * \see `farea`
  * \see `darea`
  *
+ * \todo Centurion 6: Mark this struct as final.
+ *
  * \var basic_area::width
  * The width of the area. Defaults to 0.
  * \var basic_area::height

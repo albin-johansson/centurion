@@ -50,7 +50,7 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \todo Centurion 6.0.0: Rename to cen_error, similar to sdl_error, etc.
+ * \todo Centurion 6: Rename to cen_error, similar to sdl_error, etc.
  *
  * \headerfile exception.hpp
  *

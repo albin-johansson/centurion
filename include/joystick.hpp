@@ -146,7 +146,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    *
-   * \todo Centurion 6.0.0: Rename to joystick_type and move out of class.
+   * \todo Centurion 6: Rename to joystick_type and move out of class.
    *
    * \headerfile joystick.hpp
    */

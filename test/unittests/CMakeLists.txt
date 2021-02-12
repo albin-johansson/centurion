@@ -94,12 +94,13 @@ set(SOURCE_FILES
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
-    system/simd_block_test.cpp
     system/locale_test.cpp
     system/platform_test.cpp
     system/pref_path_test.cpp
     system/ram_test.cpp
     system/screen_test.cpp
+    system/shared_object_test.cpp
+    system/simd_block_test.cpp
 
     thread/condition_test.cpp
     thread/mutex_test.cpp

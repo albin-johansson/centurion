@@ -32,6 +32,7 @@ set(SOURCE_FILES
     system/battery_test.cpp
     system/platform_test.cpp
     system/pref_path_test.cpp
+    system/shared_object_test.cpp
 
     thread/condition_test.cpp
     thread/mutex_test.cpp

@@ -2,7 +2,18 @@
 
 #include <gtest/gtest.h>
 
-TEST(CenturionHeader, SdlVersion)
+TEST(CenturionHeader, SDLLinkedVersion)
+{
+  SDL_version expected{};
+  SDL_GetVersion(&expected);
+
+  const auto version = cen::sdl_linked_version();
+  EXPECT_EQ(expected.major, version.major);
+  EXPECT_EQ(expected.minor, version.minor);
+  EXPECT_EQ(expected.patch, version.patch);
+}
+
+TEST(CenturionHeader, SDLVersion)
 {
   constexpr auto version = cen::sdl_version();
   EXPECT_EQ(SDL_MAJOR_VERSION, version.major);
@@ -10,7 +21,7 @@ TEST(CenturionHeader, SdlVersion)
   EXPECT_EQ(SDL_PATCHLEVEL, version.patch);
 }
 
-TEST(CenturionHeader, SdlImageVersion)
+TEST(CenturionHeader, SDLImageVersion)
 {
   constexpr auto version = cen::sdl_image_version();
   EXPECT_EQ(SDL_IMAGE_MAJOR_VERSION, version.major);
@@ -18,7 +29,7 @@ TEST(CenturionHeader, SdlImageVersion)
   EXPECT_EQ(SDL_IMAGE_PATCHLEVEL, version.patch);
 }
 
-TEST(CenturionHeader, SdlMixerVersion)
+TEST(CenturionHeader, SDLMixerVersion)
 {
   constexpr auto version = cen::sdl_mixer_version();
   EXPECT_EQ(SDL_MIXER_MAJOR_VERSION, version.major);
@@ -26,7 +37,7 @@ TEST(CenturionHeader, SdlMixerVersion)
   EXPECT_EQ(SDL_MIXER_PATCHLEVEL, version.patch);
 }
 
-TEST(CenturionHeader, SdlTtfVersion)
+TEST(CenturionHeader, SDLTTFVersion)
 {
   constexpr auto version = cen::ttf_version();
   EXPECT_EQ(SDL_TTF_MAJOR_VERSION, version.major);

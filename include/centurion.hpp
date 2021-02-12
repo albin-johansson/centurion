@@ -301,6 +301,23 @@ class library final
 };
 
 /**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL
+ * that the program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version;
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
  * \brief Returns the compile-time version of SDL2 that is being used.
  *
  * \return the compile-time version of SDL2 that is being used.

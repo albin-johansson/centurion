@@ -317,7 +317,11 @@ class simd_block final
    */
   void reallocate(const std::size_t size) noexcept
   {
-    m_data.reset(SDL_SIMDRealloc(m_data.get(), size));
+    // We temporarily release the ownership of the pointer in order to avoid a
+    // double delete, since the reallocation will free the previously allocated
+    // memory.
+    auto* ptr = m_data.release();
+    m_data.reset(SDL_SIMDRealloc(ptr, size));
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

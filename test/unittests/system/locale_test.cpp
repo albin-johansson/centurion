@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
-
 TEST(Locale, GetPreferred)
 {
   // We assume that the systems that run these tests have English as an

@@ -8,6 +8,9 @@
 #include "colors.hpp"
 #include "core_mocks.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
+
+using namespace cen::literals;
 
 // clang-format off
 extern "C" {
@@ -156,7 +159,7 @@ TEST_F(ControllerTest, SetPlayerIndex)
 
 TEST_F(ControllerTest, Product)
 {
-  std::array<Uint16, 2> values{0, 3};
+  std::array values{0_u16, 3_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetProduct,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -167,7 +170,7 @@ TEST_F(ControllerTest, Product)
 
 TEST_F(ControllerTest, Vendor)
 {
-  std::array<Uint16, 2> values{0, 7};
+  std::array values{0_u16, 7_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetVendor,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -178,7 +181,7 @@ TEST_F(ControllerTest, Vendor)
 
 TEST_F(ControllerTest, ProductVersion)
 {
-  std::array<Uint16, 2> values{0, 4};
+  std::array values{0_u16, 4_u16};
   SET_RETURN_SEQ(SDL_GameControllerGetProductVersion,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -195,7 +198,7 @@ TEST_F(ControllerTest, Serial)
 
 TEST_F(ControllerTest, Index)
 {
-  std::array<int, 2> values{-1, 6};
+  std::array values{-1, 6};
   SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -206,7 +209,7 @@ TEST_F(ControllerTest, Index)
 
 TEST_F(ControllerTest, IsConnected)
 {
-  std::array<SDL_bool, 2> values{SDL_FALSE, SDL_TRUE};
+  std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_GameControllerGetAttached,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -228,9 +231,9 @@ TEST_F(ControllerTest, Name)
 
 TEST_F(ControllerTest, Type)
 {
-  std::array<SDL_GameControllerType, 3> values{SDL_CONTROLLER_TYPE_UNKNOWN,
-                                               SDL_CONTROLLER_TYPE_XBOX360,
-                                               SDL_CONTROLLER_TYPE_PS4};
+  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN,
+                    SDL_CONTROLLER_TYPE_XBOX360,
+                    SDL_CONTROLLER_TYPE_PS4};
   SET_RETURN_SEQ(SDL_GameControllerGetType,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -242,8 +245,7 @@ TEST_F(ControllerTest, Type)
 
 TEST_F(ControllerTest, TypeWithIndex)
 {
-  std::array<SDL_GameControllerType, 2> values{SDL_CONTROLLER_TYPE_UNKNOWN,
-                                               SDL_CONTROLLER_TYPE_XBOXONE};
+  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
   SET_RETURN_SEQ(SDL_GameControllerTypeForIndex,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -289,8 +291,7 @@ TEST_F(ControllerTest, IsReleased)
 
 TEST_F(ControllerTest, GetAxisFromString)
 {
-  std::array<SDL_GameControllerAxis, 2> values{SDL_CONTROLLER_AXIS_INVALID,
-                                               SDL_CONTROLLER_AXIS_RIGHTX};
+  std::array values{SDL_CONTROLLER_AXIS_INVALID, SDL_CONTROLLER_AXIS_RIGHTX};
   SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -301,7 +302,7 @@ TEST_F(ControllerTest, GetAxisFromString)
 
 TEST_F(ControllerTest, GetAxis)
 {
-  std::array<cen::i16, 2> values{123, 321};
+  std::array values{123_i16, 321_i16};
   SET_RETURN_SEQ(SDL_GameControllerGetAxis,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -439,7 +440,7 @@ TEST_F(ControllerTest, HasLED)
 
 TEST_F(ControllerTest, AddMapping)
 {
-  std::array<int, 3> values{1, 0, -1};
+  std::array values{1, 0, -1};
   SET_RETURN_SEQ(SDL_GameControllerAddMapping,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -456,7 +457,7 @@ TEST_F(ControllerTest, AddMapping)
 
 TEST_F(ControllerTest, LoadMappings)
 {
-  std::array<int, 3> values{-1, 7};
+  std::array values{-1, 7};
   SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -488,8 +489,7 @@ TEST_F(ControllerTest, MappingByIndex)
 
 TEST_F(ControllerTest, GetButton)
 {
-  std::array<SDL_GameControllerButton, 2> values{SDL_CONTROLLER_BUTTON_INVALID,
-                                                 SDL_CONTROLLER_BUTTON_B};
+  std::array values{SDL_CONTROLLER_BUTTON_INVALID, SDL_CONTROLLER_BUTTON_B};
   SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -528,7 +528,7 @@ TEST_F(ControllerTest, GetBindingWithAxis)
   SDL_GameControllerButtonBind second{};
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
-  std::array<SDL_GameControllerButtonBind, 2> values{first, second};
+  std::array values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -547,7 +547,7 @@ TEST_F(ControllerTest, GetBindingWithButton)
   SDL_GameControllerButtonBind second{};
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
-  std::array<SDL_GameControllerButtonBind, 2> values{first, second};
+  std::array values{first, second};
   SET_RETURN_SEQ(SDL_GameControllerGetBindForButton,
                  values.data(),
                  static_cast<int>(values.size()));

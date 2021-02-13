@@ -6,6 +6,9 @@
 #include <array>  // array
 
 #include "colors.hpp"
+#include "integers.hpp"
+
+using namespace cen::literals;
 
 // clang-format off
 extern "C" {
@@ -225,7 +228,7 @@ TEST_F(JoystickTest, GetTypeStatic)
 
 TEST_F(JoystickTest, Vendor)
 {
-  std::array values{cen::u16{0}, cen::u16{4}};
+  std::array values{0_u16, 4_u16};
   SET_RETURN_SEQ(SDL_JoystickGetVendor,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -238,7 +241,7 @@ TEST_F(JoystickTest, Vendor)
 
 TEST_F(JoystickTest, VendorStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{4}};
+  std::array values{0_u16, 4_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -251,7 +254,7 @@ TEST_F(JoystickTest, VendorStatic)
 
 TEST_F(JoystickTest, Product)
 {
-  std::array values{cen::u16{0}, cen::u16{6}};
+  std::array values{0_u16, 6_u16};
   SET_RETURN_SEQ(SDL_JoystickGetProduct,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -264,7 +267,7 @@ TEST_F(JoystickTest, Product)
 
 TEST_F(JoystickTest, ProductStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{8}};
+  std::array values{0_u16, 8_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -277,7 +280,7 @@ TEST_F(JoystickTest, ProductStatic)
 
 TEST_F(JoystickTest, ProductVersion)
 {
-  std::array values{cen::u16{0}, cen::u16{54}};
+  std::array values{0_u16, 54_u16};
   SET_RETURN_SEQ(SDL_JoystickGetProductVersion,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -290,7 +293,7 @@ TEST_F(JoystickTest, ProductVersion)
 
 TEST_F(JoystickTest, ProductVersionStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{12}};
+  std::array values{0_u16, 12_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion,
                  values.data(),
                  static_cast<int>(values.size()));
@@ -316,7 +319,7 @@ TEST_F(JoystickTest, GetBallAxisChange)
 
 TEST_F(JoystickTest, AxisPos)
 {
-  std::array values{cen::i16{0}, cen::i16{123}};
+  std::array values{0_i16, 123_i16};
   SET_RETURN_SEQ(SDL_JoystickGetAxis,
                  values.data(),
                  static_cast<int>(values.size()));

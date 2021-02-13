@@ -91,6 +91,7 @@ set(SOURCE_FILES
 
     system/base_path_test.cpp
     system/battery_test.cpp
+    system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp

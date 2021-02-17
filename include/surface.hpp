@@ -434,9 +434,9 @@ class basic_surface final
   }
 
   /**
-   * \brief Returns a const pointer to the pixel data of the surface.
+   * \brief Returns a pointer to the pixel data of the surface.
    *
-   * \return a const pointer to the pixel data of the surface.
+   * \return a pointer to the pixel data of the surface.
    *
    * \since 4.0.0
    */

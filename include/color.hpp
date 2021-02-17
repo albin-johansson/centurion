@@ -299,6 +299,25 @@ class color final
     return 0xFF;
   }
 
+  /**
+   * \brief Serializes the color.
+   *
+   * \details This function expects that the archive provides an overloaded
+   * `operator()`, used for serializing data. This API is based on the Cereal
+   * serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the color.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_color.r, m_color.g, m_color.b, m_color.a);
+  }
+
  private:
   SDL_Color m_color{0, 0, 0, max()};
 };

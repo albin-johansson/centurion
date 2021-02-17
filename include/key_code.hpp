@@ -274,6 +274,25 @@ class key_code final
     return to_scan_code();
   }
 
+  /**
+   * \brief Serializes the key code.
+   *
+   * \details This function expects that the archive provides an overloaded
+   * `operator()`, used for serializing data. This API is based on the Cereal
+   * serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the key code.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_key);
+  }
+
  private:
   SDL_KeyCode m_key{SDLK_UNKNOWN};
 };

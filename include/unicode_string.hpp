@@ -338,6 +338,25 @@ class unicode_string final
     return m_data[index];
   }
 
+  /**
+   * \brief Serializes the string.
+   *
+   * \details This function expects that the archive provides an overloaded
+   * `operator()`, used for serializing data. This API is based on the Cereal
+   * serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the string.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_data);
+  }
+
  private:
   std::vector<unicode> m_data;
 };

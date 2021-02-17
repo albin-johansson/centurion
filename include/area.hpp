@@ -107,6 +107,27 @@ using farea = basic_area<float>;
  */
 using darea = basic_area<double>;
 
+/**
+ * \brief Serializes an area instance.
+ *
+ * \details This function expects that the archive provides an overloaded
+ * `operator()`, used for serializing data. This API is based on the Cereal
+ * serialization library.
+ *
+ * \tparam Archive the type of the archive.
+ * \tparam T the type of the area components.
+ *
+ * \param archive the archive used to serialize the area.
+ * \param area the area that will be serialized.
+ *
+ * \since 5.3.0
+ */
+template <typename Archive, typename T>
+void serialize(Archive& archive, basic_area<T>& area)
+{
+  archive(area.width, area.height);
+}
+
 template <>
 [[nodiscard]] constexpr auto cast(const iarea& from) noexcept -> darea
 {

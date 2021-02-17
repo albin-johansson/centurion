@@ -587,6 +587,25 @@ class basic_rect final
     return &m_rect;
   }
 
+  /**
+   * \brief Serializes the rectangle.
+   *
+   * \details This function expects that the archive provides an overloaded
+   * `operator()`, used for serializing data. This API is based on the Cereal
+   * serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the rectangle.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_rect.x, m_rect.y, m_rect.w, m_rect.h);
+  }
+
  private:
   rect_type m_rect{0, 0, 0, 0};
 };

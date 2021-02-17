@@ -183,6 +183,14 @@ TEST_F(SurfaceTest, Pixels)
   EXPECT_TRUE(cSurface.pixels());
 }
 
+TEST_F(SurfaceTest, Data)
+{
+  EXPECT_TRUE(m_surface->data());
+
+  const auto& cSurface = *m_surface;
+  EXPECT_TRUE(cSurface.data());
+}
+
 TEST_F(SurfaceTest, Convert)
 {
   cen::surface source{m_path};

@@ -67,6 +67,8 @@ namespace cen {
 template <typename T>
 struct basic_area
 {
+  using value_type = T;
+
   T width{0};
   T height{0};
 

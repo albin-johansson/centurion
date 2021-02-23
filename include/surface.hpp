@@ -248,6 +248,55 @@ class basic_surface final
   }
 
   /**
+   * \brief Indicates whether or not the surface must be locked before modifying
+   * the pixel data associated with the surface.
+   *
+   * \return `true` if the surface must be locked before modification; `false`
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto must_lock() const noexcept -> bool
+  {
+    return SDL_MUSTLOCK(m_surface);
+  }
+
+  /**
+   * \brief Attempts to lock the surface, so that the associated pixel data can
+   * be modified.
+   *
+   * \details This method has no effect if `must_lock()` returns `false`.
+   *
+   * \return `true` if the locking of the surface was successful or if locking
+   * isn't required for modifying the surface; `false` if something went wrong.
+   *
+   * \since 4.0.0
+   */
+  auto lock() noexcept -> bool
+  {
+    if (must_lock()) {
+      const auto result = SDL_LockSurface(m_surface);
+      return result == 0;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * \brief Unlocks the surface.
+   *
+   * \details This method has no effect if `must_lock()` returns `false`.
+   *
+   * \since 4.0.0
+   */
+  void unlock() noexcept
+  {
+    if (must_lock()) {
+      SDL_UnlockSurface(m_surface);
+    }
+  }
+
+  /**
    * \brief Sets the alpha component modulation value.
    *
    * \param alpha the new alpha component value, in the range [0, 255].
@@ -600,55 +649,6 @@ class basic_surface final
   {
     return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
              point.y() >= height());
-  }
-
-  /**
-   * \brief Indicates whether or not the surface must be locked before modifying
-   * the pixel data associated with the surface.
-   *
-   * \return `true` if the surface must be locked before modification; `false`
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto must_lock() const noexcept -> bool
-  {
-    return SDL_MUSTLOCK(m_surface);
-  }
-
-  /**
-   * \brief Attempts to lock the surface, so that the associated pixel data can
-   * be modified.
-   *
-   * \details This method has no effect if `must_lock()` returns `false`.
-   *
-   * \return `true` if the locking of the surface was successful or if locking
-   * isn't required for modifying the surface; `false` if something went wrong.
-   *
-   * \since 4.0.0
-   */
-  auto lock() noexcept -> bool
-  {
-    if (must_lock()) {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
-    } else {
-      return true;
-    }
-  }
-
-  /**
-   * \brief Unlocks the surface.
-   *
-   * \details This method has no effect if `must_lock()` returns `false`.
-   *
-   * \since 4.0.0
-   */
-  void unlock() noexcept
-  {
-    if (must_lock()) {
-      SDL_UnlockSurface(m_surface);
-    }
   }
 
   /**

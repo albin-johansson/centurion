@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include "types.hpp"
-
 TEST(SDLString, Constructor)
 {
   EXPECT_NO_THROW(cen::sdl_string{nullptr});

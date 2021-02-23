@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "types.hpp"
-
 TEST_CASE("mouse_button enum values", "[mouse_button]")
 {
   CHECK(static_cast<cen::u32>(cen::mouse_button::left) == SDL_BUTTON_LEFT);

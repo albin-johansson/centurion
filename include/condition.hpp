@@ -31,9 +31,10 @@
 
 #include "centurion_cfg.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
 #include "mutex.hpp"
 #include "scoped_lock.hpp"
-#include "types.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -138,7 +138,6 @@ set(CENTURION_HEADERS
     include/time.hpp
     include/touch.hpp
     include/try_lock.hpp
-    include/types.hpp
 
     include/unicode_string.hpp
 

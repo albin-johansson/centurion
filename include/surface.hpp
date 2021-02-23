@@ -42,6 +42,7 @@
 #include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
+#include "integers.hpp"
 #include "not_null.hpp"
 #include "owner.hpp"
 #include "pixel_format.hpp"
@@ -130,6 +131,31 @@ class basic_surface final
   {
     if (!m_surface) {
       throw img_error{};
+    }
+  }
+
+  /**
+   * \brief Creates a surface with the specified dimensions and pixel format.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param size the size of the surface.
+   * \param pixelFormat the pixel format that will be used by the surface.
+   *
+   * \throws sdl_error if the surface cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  basic_surface(const iarea size, const pixel_format pixelFormat)
+      : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
+                                                 size.width,
+                                                 size.height,
+                                                 0,
+                                                 static_cast<u32>(pixelFormat))}
+  {
+    if (!m_surface) {
+      throw sdl_error{};
     }
   }
 

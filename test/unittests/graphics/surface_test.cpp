@@ -55,6 +55,17 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
   EXPECT_THROW(cen::surface{ptr}, cen::exception);
 }
 
+TEST_F(SurfaceTest, SizePixelFormatConstructor)
+{
+  EXPECT_THROW(cen::surface({-1, -1}, cen::pixel_format::rgba8888),
+               cen::sdl_error);
+
+  cen::surface surface{{10, 10}, cen::pixel_format::rgba8888};
+  EXPECT_EQ(10, surface.width());
+  EXPECT_EQ(10, surface.height());
+  EXPECT_EQ(cen::pixel_format::rgba8888, surface.format_info().format());
+}
+
 TEST_F(SurfaceTest, CopyConstructor)
 {
   const cen::surface copy{*m_surface};

@@ -187,6 +187,27 @@ class basic_surface final
   }
 
   /**
+   * \brief Creates and returns a surface based on a BMP file.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param file the path to the BMP file that contains the surface data.
+   *
+   * \return the created surface.
+   *
+   * \throws sdl_error if the surface couldn't be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
+      -> basic_surface
+  {
+    assert(file);
+    return basic_surface{SDL_LoadBMP(file)};
+  }
+
+  /**
    * \brief Creates a copy of the supplied surface.
    *
    * \param other the surface that will be copied.
@@ -243,6 +264,22 @@ class basic_surface final
    * \since 4.0.0
    */
   auto operator=(basic_surface&& other) noexcept -> basic_surface& = default;
+
+  /**
+   * \brief Saves the surface as a BMP file.
+   *
+   * \param file the file path that the surface data will be saved at.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
+  auto save_as_bmp(const not_null<czstring> file) const noexcept -> bool
+  {
+    assert(file);
+    const auto result = SDL_SaveBMP(get(), file);
+    return result != -1;
+  }
 
   /**
    * \brief Sets the color of the pixel at the specified coordinate.

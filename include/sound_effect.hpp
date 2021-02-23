@@ -95,15 +95,6 @@ class sound_effect final
   inline constexpr static int forever = -1;
 
   /**
-   * \brief Indicates that an audio snippet should be looped indefinitely.
-   *
-   * \deprecated Since 5.1.0, use `sound_effect::forever` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated]] inline constexpr static int loopForever = forever;
-
-  /**
    * \brief Creates a sound effect based on the audio file at the specified
    * location.
    *
@@ -113,7 +104,8 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  explicit sound_effect(not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
+  explicit sound_effect(const not_null<czstring> file)
+      : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk) {
       throw mix_error{};

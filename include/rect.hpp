@@ -191,6 +191,16 @@ class basic_rect final
   constexpr basic_rect() noexcept = default;
 
   /**
+   * \brief Creates a rectangle based on an SDL rectangle.
+   *
+   * \param rect the rectangle that will be copied.
+   *
+   * \since 5.3.0
+   */
+  constexpr explicit basic_rect(const rect_type& rect) noexcept : m_rect{rect}
+  {}
+
+  /**
    * \brief Creates a rectangle with the supplied position and size.
    *
    * \param position the position of the rectangle.

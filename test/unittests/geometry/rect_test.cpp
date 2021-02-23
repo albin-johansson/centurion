@@ -35,6 +35,18 @@ TEST(Rect, DefaultConstructor)
   EXPECT_FALSE(rect.has_area());
 }
 
+TEST(Rect, SDLRectConstructor)
+{
+  const SDL_FRect source{12.0f, 34.0f, 56.0f, 78.0f};
+  const cen::frect rect{source};
+
+  EXPECT_EQ(source.x, rect.x());
+  EXPECT_EQ(source.y, rect.y());
+  EXPECT_EQ(source.w, rect.width());
+  EXPECT_EQ(source.h, rect.height());
+  EXPECT_TRUE(rect.has_area());
+}
+
 TEST(Rect, ValueConstructor)
 {
   const cen::fpoint pos{123.5f, 81.4f};

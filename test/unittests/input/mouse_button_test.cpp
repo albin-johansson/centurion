@@ -1,12 +1,15 @@
 #include "mouse_button.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("mouse_button enum values", "[mouse_button]")
+#include "integers.hpp"
+
+TEST(MouseButton, EnumValues)
 {
-  CHECK(static_cast<cen::u32>(cen::mouse_button::left) == SDL_BUTTON_LEFT);
-  CHECK(static_cast<cen::u32>(cen::mouse_button::middle) == SDL_BUTTON_MIDDLE);
-  CHECK(static_cast<cen::u32>(cen::mouse_button::right) == SDL_BUTTON_RIGHT);
-  CHECK(static_cast<cen::u32>(cen::mouse_button::x1) == SDL_BUTTON_X1);
-  CHECK(static_cast<cen::u32>(cen::mouse_button::x2) == SDL_BUTTON_X2);
+  EXPECT_EQ(SDL_BUTTON_LEFT, static_cast<cen::u32>(cen::mouse_button::left));
+  EXPECT_EQ(SDL_BUTTON_MIDDLE,
+            static_cast<cen::u32>(cen::mouse_button::middle));
+  EXPECT_EQ(SDL_BUTTON_RIGHT, static_cast<cen::u32>(cen::mouse_button::right));
+  EXPECT_EQ(SDL_BUTTON_X1, static_cast<cen::u32>(cen::mouse_button::x1));
+  EXPECT_EQ(SDL_BUTTON_X2, static_cast<cen::u32>(cen::mouse_button::x2));
 }

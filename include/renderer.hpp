@@ -200,11 +200,8 @@ class basic_renderer final
     SDL_RenderPresent(get());
   }
 
-  /**
-   * \name Primitive rendering
-   * Methods for rendering rectangles and lines.
-   */
-  ///\{
+  /// \name Primitive rendering
+  /// \{
 
   /**
    * \brief Renders the outline of a rectangle in the currently selected color.
@@ -338,13 +335,10 @@ class basic_renderer final
     }
   }
 
-  ///\}  // end of primitive rendering
+  /// \} End of primitive rendering
 
-  /**
-   * \name Text rendering
-   * Methods for rendering text encoded in UTF-8, LATIN-1 or UNICODE.
-   */
-  ///\{
+  /// \name Text rendering
+  /// \{
 
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
@@ -821,13 +815,10 @@ class basic_renderer final
     }
   }
 
-  ///\}  // end of text rendering
+  /// \} End of text rendering
 
-  /**
-   * \name Texture rendering
-   * Methods for rendering hardware-accelerated textures.
-   */
-  ///\{
+  /// \name Texture rendering
+  /// \{
 
   /**
    * \brief Renders a texture at the specified position.
@@ -1043,13 +1034,10 @@ class basic_renderer final
     }
   }
 
-  ///\}  // end of texture rendering
+  /// \} End of texture rendering
 
-  /**
-   * \name Translated rendering
-   * \brief Translated rendering API, only available for owning renderers.
-   */
-  ///\{
+  /// \name Translated rendering.
+  /// \{
 
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
@@ -1297,13 +1285,10 @@ class basic_renderer final
     render(texture, source, translate(destination), angle, center, flip);
   }
 
-  ///\} // end of translated rendering
+  /// \} End of translated rendering
 
-  /**
-   * \name Font handling
-   * \brief Font handling API, only available for owning renderers.
-   */
-  ///\{
+  /// \name Font handling
+  /// \{
 
   /**
    * \brief Adds a font to the renderer.
@@ -1408,7 +1393,7 @@ class basic_renderer final
     return static_cast<bool>(m_renderer.fonts.count(id));
   }
 
-  ///\} // end of font handling
+  /// \} // end of font handling
 
   /**
    * \brief Sets the color that will be used by the renderer.
@@ -1753,12 +1738,8 @@ class basic_renderer final
     return static_cast<blend_mode>(mode);
   }
 
-  /**
-   * \name Flag-related queries.
-   *
-   * \brief Methods for obtaining information about the window flags.
-   */
-  ///\{
+  /// \name Flag-related queries.
+  /// \{
 
   /**
    * \brief Returns a bit mask of the current renderer flags.
@@ -1832,7 +1813,7 @@ class basic_renderer final
     return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
   }
 
-  ///\} // end of flag queries
+  /// \} End of flag queries
 
   /**
    * \brief Indicates whether or not the renderer uses integer scaling values

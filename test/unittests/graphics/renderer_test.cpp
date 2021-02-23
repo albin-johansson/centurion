@@ -365,7 +365,10 @@ TEST_F(RendererTest, Capture)
   m_renderer->present();
 
   const auto snapshot = m_renderer->capture(m_window->get_pixel_format());
-  snapshot.save_as_bmp("snapshot.bmp");
+  EXPECT_TRUE(snapshot.save_as_bmp("snapshot.bmp"));
+
+  // We take the opportunity to check if we can load the BMP file
+  EXPECT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"));
 
   m_window->hide();
 }

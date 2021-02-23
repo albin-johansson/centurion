@@ -200,6 +200,38 @@ class basic_renderer final
     SDL_RenderPresent(get());
   }
 
+  /**
+   * \brief Captures a snapshot of the current rendering target as a surface.
+   *
+   * \note The correct pixel format supplied to this function can easily be
+   * obtained using the `basic_window::get_pixel_format()` function.
+   *
+   * \param format the pixel format that will be used by the surface.
+   *
+   * \return a surface that mirrors the pixel data of the current render target.
+   *
+   * \throws sdl_error if something goes wrong.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto capture(const pixel_format format) const -> cen::surface
+  {
+    surface image{output_size(), format};
+
+    if (!image.lock()) {
+      throw sdl_error{};
+    }
+
+    const auto result =
+        SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
+    if (result == -1) {
+      throw sdl_error{};
+    }
+
+    image.unlock();
+    return image;
+  }
+
   /// \name Primitive rendering
   /// \{
 

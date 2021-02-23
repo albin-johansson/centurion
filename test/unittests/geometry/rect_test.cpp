@@ -148,12 +148,12 @@ TEST(Rect, SetHeight)
   EXPECT_EQ(rect.height(), height);
 }
 
-TEST(Rect, Resize)
+TEST(Rect, SetSize)
 {
   cen::frect rect;
 
   const cen::farea size{345.8f, 289.7f};
-  rect.resize(size);
+  rect.set_size(size);
 
   EXPECT_EQ(rect.size(), size);
 }

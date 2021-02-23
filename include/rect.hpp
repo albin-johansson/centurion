@@ -355,20 +355,6 @@ class basic_rect final
   };
 
   /**
-   * \brief Changes the size of the rectangle.
-   *
-   * \param size the new size of the rectangle.
-   *
-   * \deprecated Since 5.1.0, use `set_size()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[deprecated]] constexpr void resize(const area_type& size) noexcept
-  {
-    set_size(size);
-  };
-
-  /**
    * \brief Indicates whether or not the rectangle contains the point.
    *
    * \param point the point that will be checked.

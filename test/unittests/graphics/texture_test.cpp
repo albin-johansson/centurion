@@ -179,13 +179,13 @@ TEST_F(TextureTest, Release)
   SDL_DestroyTexture(ptr);
 }
 
-TEST_F(TextureTest, IsStatic)
+TEST_F(TextureTest, IsNoLock)
 {
   const cen::texture texture{*m_renderer,
                              m_window->get_pixel_format(),
                              cen::texture_access::no_lock,
                              {10, 10}};
-  EXPECT_TRUE(texture.is_static());
+  EXPECT_TRUE(texture.is_no_lock());
 }
 
 TEST_F(TextureTest, IsStreaming)

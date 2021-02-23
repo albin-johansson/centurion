@@ -47,7 +47,7 @@ TEST(Rect, SDLRectConstructor)
   EXPECT_TRUE(rect.has_area());
 }
 
-TEST(Rect, ValueConstructor)
+TEST(Rect, PositionAndSizeConstructor)
 {
   const cen::fpoint pos{123.5f, 81.4f};
   const cen::farea size{921.8f, 512.6f};
@@ -60,6 +60,20 @@ TEST(Rect, ValueConstructor)
 
   EXPECT_NO_THROW(cen::frect({{0, 0}, {0, 0}}));
   EXPECT_NO_THROW(cen::frect({{0, 0}, {-1, -1}}));
+}
+
+TEST(Rect, ValueConstructor)
+{
+  const auto x = 123.0f;
+  const auto y = 711.3f;
+  const auto width = 231.9f;
+  const auto height = 365.1f;
+  const cen::frect rect{x, y, width, height};
+
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height, rect.height());
 }
 
 TEST(Rect, SetX)

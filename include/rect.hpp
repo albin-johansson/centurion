@@ -214,6 +214,23 @@ class basic_rect final
   {}
 
   /**
+   * \brief Creates a rectangle with the supplied position and size.
+   *
+   * \param x the x-coordinate of the rectangle.
+   * \param y the y-coordinate of the rectangle.
+   * \param width the width of the rectangle.
+   * \param height the height of the rectangle.
+   *
+   * \since 5.3.0
+   */
+  constexpr basic_rect(const value_type x,
+                       const value_type y,
+                       const value_type width,
+                       const value_type height) noexcept
+      : m_rect{x, y, width, height}
+  {}
+
+  /**
    * \brief Sets the x-coordinate of the rectangle.
    *
    * \param x the new x-coordinate of the rectangle.

@@ -300,24 +300,6 @@ class basic_rect final
   }
 
   /**
-   * \brief Moves the rectangle to the specified position.
-   *
-   * \note Some frameworks have this kind of method change the size of the
-   * rectangle. However, this method does *not* change the size of the
-   * rectangle.
-   *
-   * \param pos the new position of the rectangle.
-   *
-   * \deprecated Since 5.1.0, use `set_position()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[deprecated]] constexpr void move_to(const point_type& pos) noexcept
-  {
-    set_position(pos);
-  }
-
-  /**
    * \brief Sets the width of the rectangle.
    *
    * \param width the new width of the rectangle.

@@ -118,12 +118,12 @@ TEST(Rect, SetMaxY)
   EXPECT_FLOAT_EQ(393, rect.height());
 }
 
-TEST(Rect, MoveTo)
+TEST(Rect, SetPosition)
 {
   cen::frect rect;
 
   const cen::fpoint pos{742.3f, 377.2f};
-  rect.move_to(pos);
+  rect.set_position(pos);
 
   EXPECT_EQ(rect.position(), pos);
 }

@@ -78,15 +78,6 @@ class common_event
 {
  public:
   /**
-   * \brief Creates a zero-initialized `common_event`.
-   *
-   * \deprecated Since 5.1.0, use `common_event(event_type)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated]] common_event() noexcept = default;
-
-  /**
    * \brief Creates a `common_event` and zero-initializes the internal event
    * except for the timestamp and the supplied type.
    *

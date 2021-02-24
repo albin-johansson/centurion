@@ -130,16 +130,6 @@ class music final
   inline constexpr static int forever = -1;
 
   /**
-   * \brief A constant that indicates that an audio snippet should be looped
-   * indefinitely.
-   *
-   * \deprecated Since 5.1.0, use `music::forever` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated]] inline constexpr static int loopForever = forever;
-
-  /**
    * \brief Creates a `music` instance based on the file at the specified path.
    *
    * \param file the file path of the music file that will be loaded, cannot
@@ -149,7 +139,7 @@ class music final
    *
    * \since 3.0.0
    */
-  explicit music(not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
+  explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
   {
     if (!m_music) {
       throw mix_error{};

@@ -73,7 +73,6 @@ set(CENTURION_HEADERS
 
     include/cast.hpp
     include/centurion.hpp
-    include/centurion_api.hpp
     include/centurion_cfg.hpp
     include/clipboard.hpp
     include/color.hpp

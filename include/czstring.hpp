@@ -48,17 +48,6 @@ using czstring = const char*;
  */
 using zstring = char*;
 
-/**
- * \typedef nn_czstring
- *
- * \brief Alias for a C-style null-terminated string that cannot be null.
- *
- * \deprecated Since 5.1.0, prefer `not_null` alias template.
- *
- * \since 5.0.0
- */
-using nn_czstring [[deprecated]] = not_null<czstring>;
-
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER

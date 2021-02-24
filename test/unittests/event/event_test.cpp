@@ -160,13 +160,13 @@ TEST(Event, Type)
   cen::event::flush_all();
 }
 
-TEST(Event, Empty)
+TEST(Event, IsEmpty)
 {
   cen::event empty;
-  EXPECT_TRUE(empty.empty());
+  EXPECT_TRUE(empty.is_empty());
 
   const auto notEmpty = create_event(SDL_AUDIODEVICEADDED);
-  EXPECT_FALSE(notEmpty.empty());
+  EXPECT_FALSE(notEmpty.is_empty());
 }
 
 TEST(Event, Is)

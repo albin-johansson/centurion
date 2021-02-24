@@ -1135,21 +1135,6 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the amount of currently available joysticks.
-   *
-   * \return the current amount of available joysticks; `std::nullopt` if
-   * something goes wrong.
-   *
-   * \deprecated Since 5.1.0, use `count()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard, deprecated]] static auto amount() noexcept -> std::optional<int>
-  {
-    return count();
-  }
-
-  /**
    * \brief Returns a joystick GUID based on the supplied string.
    *
    * \param str the string used to obtain the GUID, can't be null.

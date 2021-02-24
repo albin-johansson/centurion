@@ -483,15 +483,15 @@ TEST_F(JoystickTest, IsPolling)
   EXPECT_EQ(1, SDL_JoystickEventState_fake.call_count);
 }
 
-TEST_F(JoystickTest, Amount)
+TEST_F(JoystickTest, Count)
 {
   std::array values{-1, 7};
   SET_RETURN_SEQ(SDL_NumJoysticks,
                  values.data(),
                  static_cast<int>(values.size()));
 
-  EXPECT_FALSE(cen::joystick::amount().has_value());
-  EXPECT_EQ(7, cen::joystick::amount());
+  EXPECT_FALSE(cen::joystick::count().has_value());
+  EXPECT_EQ(7, cen::joystick::count());
 
   EXPECT_EQ(2, SDL_NumJoysticks_fake.call_count);
 }

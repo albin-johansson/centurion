@@ -13,7 +13,7 @@ TEST(MessageBox, TitleMessageConstructor)
 {
   const cen::message_box mb{"foo", "bar"};
   EXPECT_EQ("foo", mb.get_title());
-  EXPECT_EQ("bar", mb.get_message());
+  EXPECT_EQ("bar", mb.message());
 }
 
 TEST(MessageBox, AddButton)
@@ -39,7 +39,7 @@ TEST(MessageBox, SetMessage)
   cen::message_box mb;
 
   mb.set_message("barfoo");
-  EXPECT_EQ("barfoo", mb.get_message());
+  EXPECT_EQ("barfoo", mb.message());
 }
 
 TEST(MessageBox, SetColorScheme)
@@ -93,10 +93,10 @@ TEST(MessageBox, GetTitle)
   EXPECT_EQ("Message box", mb.get_title());
 }
 
-TEST(MessageBox, GetMessage)
+TEST(MessageBox, Message)
 {
   const cen::message_box mb;
-  EXPECT_EQ("N/A", mb.get_message());
+  EXPECT_EQ("N/A", mb.message());
 }
 
 TEST(MessageBox, GetType)

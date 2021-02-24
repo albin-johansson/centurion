@@ -449,22 +449,6 @@ class message_box final
   }
 
   /**
-   * \brief Returns the message of the message box.
-   *
-   * \details The default message is "N/A".
-   *
-   * \return the message of the message box.
-   *
-   * \deprecated Since 5.1.0, use `message()` instead.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard, deprecated]] auto get_message() const -> std::string_view
-  {
-    return message();
-  }
-
-  /**
    * \brief Returns the type of the message box.
    *
    * \details The default type is "information".

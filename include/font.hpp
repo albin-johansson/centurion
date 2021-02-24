@@ -113,7 +113,7 @@ class font final
    *
    * \since 3.0.0
    */
-  font(not_null<czstring> file, const int size) : m_size{size}
+  font(const not_null<czstring> file, const int size) : m_size{size}
   {
     assert(file);
 
@@ -616,7 +616,8 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(not_null<czstring> str) const noexcept -> int
+  [[nodiscard]] auto string_width(const not_null<czstring> str) const noexcept
+      -> int
   {
     assert(str);
     int width{};
@@ -635,7 +636,8 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_height(not_null<czstring> str) const noexcept -> int
+  [[nodiscard]] auto string_height(const not_null<czstring> str) const noexcept
+      -> int
   {
     assert(str);
     int height{};
@@ -653,7 +655,8 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto string_size(not_null<czstring> str) const noexcept -> iarea
+  [[nodiscard]] auto string_size(const not_null<czstring> str) const noexcept
+      -> iarea
   {
     assert(str);
     int width{};

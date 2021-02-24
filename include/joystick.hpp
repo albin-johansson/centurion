@@ -1144,8 +1144,8 @@ class basic_joystick final
    * \see `SDL_JoystickGetGUIDFromString`
    * \since 4.2.0
    */
-  [[nodiscard]] static auto guid_from_string(not_null<czstring> str) noexcept
-      -> SDL_JoystickGUID
+  [[nodiscard]] static auto guid_from_string(
+      const not_null<czstring> str) noexcept -> SDL_JoystickGUID
   {
     assert(str);
     return SDL_JoystickGetGUIDFromString(str);

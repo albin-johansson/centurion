@@ -588,7 +588,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_axis(not_null<czstring> str) noexcept
+  [[nodiscard]] static auto get_axis(const not_null<czstring> str) noexcept
       -> controller_axis
   {
     assert(str);
@@ -1026,7 +1026,8 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto add_mapping(not_null<czstring> mapping) noexcept -> mapping_result
+  static auto add_mapping(const not_null<czstring> mapping) noexcept
+      -> mapping_result
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
@@ -1060,7 +1061,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto load_mappings(not_null<czstring> file) noexcept
+  static auto load_mappings(const not_null<czstring> file) noexcept
       -> std::optional<int>
   {
     assert(file);

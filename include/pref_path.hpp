@@ -63,8 +63,9 @@ namespace cen {
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto get_pref_path(not_null<czstring> org,
-                                        not_null<czstring> app) -> sdl_string
+[[nodiscard]] inline auto get_pref_path(const not_null<czstring> org,
+                                        const not_null<czstring> app)
+    -> sdl_string
 {
   assert(org);
   assert(app);
@@ -103,7 +104,7 @@ class [[deprecated]] pref_path final
    *
    * \since 3.0.0
    */
-  pref_path(not_null<czstring> org, not_null<czstring> app)
+  pref_path(const not_null<czstring> org, const not_null<czstring> app)
       : m_path{get_pref_path(org, app)}
   {}
 

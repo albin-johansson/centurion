@@ -92,7 +92,7 @@ namespace cen::clipboard {
  *
  * \since 5.0.0
  */
-inline auto set_text(not_null<czstring> text) noexcept -> bool
+inline auto set_text(const not_null<czstring> text) noexcept -> bool
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;

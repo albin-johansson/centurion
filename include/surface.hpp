@@ -127,7 +127,8 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename BB = B, detail::is_owner<BB> = true>
-  explicit basic_surface(not_null<czstring> file) : m_surface{IMG_Load(file)}
+  explicit basic_surface(const not_null<czstring> file)
+      : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
       throw img_error{};
@@ -173,7 +174,7 @@ class basic_surface final
    * \since 5.2.0
    */
   template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] static auto with_format(not_null<czstring> file,
+  [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
       -> basic_surface

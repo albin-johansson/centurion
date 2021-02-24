@@ -3705,14 +3705,14 @@ class event final
   }
 
   /**
-   * \brief Returns the number of events in the event queue.
+   * \brief Returns the current amount of events in the event queue.
    *
    * \return the current number of events in the event queue; `std::nullopt`
    * if something goes wrong.
    *
-   * \since 5.0.0
+   * \since 5.3.0
    */
-  [[nodiscard]] static auto num_queued() noexcept -> std::optional<int>
+  [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
     const auto num = SDL_PeepEvents(nullptr,
                                     0,
@@ -3735,9 +3735,9 @@ class event final
    * \return the current number of events of the specified type that are in
    * the event queue; `std::nullopt` if something goes wrong.
    *
-   * \since 5.0.0
+   * \since 5.3.0
    */
-  [[nodiscard]] static auto num_queued(const event_type type) noexcept
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept
       -> std::optional<int>
   {
     const auto id = static_cast<u32>(type);
@@ -3747,6 +3747,41 @@ class event final
     } else {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Returns the number of events in the event queue.
+   *
+   * \return the current number of events in the event queue; `std::nullopt`
+   * if something goes wrong.
+   *
+   * \deprecated Since 5.3.0, use `queue_count()` instead.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard, deprecated]] static auto num_queued() noexcept
+      -> std::optional<int>
+  {
+    return queue_count();
+  }
+
+  /**
+   * \brief Returns the number of events of a particular type that are in the
+   * event queue.
+   *
+   * \param type the type of event to count.
+   *
+   * \return the current number of events of the specified type that are in
+   * the event queue; `std::nullopt` if something goes wrong.
+   *
+   * \deprecated Since 5.3.0, use `queue_count()` instead.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard, deprecated]] static auto num_queued(
+      const event_type type) noexcept -> std::optional<int>
+  {
+    return queue_count(type);
   }
 
   /**

@@ -295,15 +295,3 @@ TEST(Font, StreamOperator)
   const cen::font font{typeWriterPath, 12};
   std::cout << "COUT: " << font << '\n';
 }
-
-TEST(Font, TTFVersion)
-{
-  SDL_version ttf;
-  SDL_TTF_VERSION(&ttf);
-
-  constexpr auto version = cen::ttf_version();
-
-  EXPECT_EQ(ttf.major, version.major);
-  EXPECT_EQ(ttf.minor, version.minor);
-  EXPECT_EQ(ttf.patch, version.patch);
-}

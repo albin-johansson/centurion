@@ -369,20 +369,6 @@ class library final
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
 
-/**
- * \brief Returns the compile-time version of SDL2_ttf that is being used.
- *
- * \return the compile-time version of SDL2_ttf that is being used.
- *
- * \deprecated Since 5.1.0, use `sdl_ttf_version()` instead.
- *
- * \since 4.0.0
- */
-[[nodiscard, deprecated]] constexpr auto ttf_version() noexcept -> SDL_version
-{
-  return sdl_ttf_version();
-}
-
 }  // namespace cen
 
 #endif  // CENTURION_CORE_HEADER

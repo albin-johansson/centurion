@@ -40,77 +40,77 @@ TEST(Font, Reset)
   font.set_strikethrough(true);
 
   font.reset();
-  EXPECT_FALSE(font.bold());
-  EXPECT_FALSE(font.italic());
-  EXPECT_FALSE(font.underlined());
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_bold());
+  EXPECT_FALSE(font.is_italic());
+  EXPECT_FALSE(font.is_underlined());
+  EXPECT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetBold)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.bold());
+  EXPECT_FALSE(font.is_bold());
 
   font.set_bold(true);
-  EXPECT_TRUE(font.bold());
+  EXPECT_TRUE(font.is_bold());
 
   font.set_bold(false);
-  EXPECT_FALSE(font.bold());
+  EXPECT_FALSE(font.is_bold());
 }
 
 TEST(Font, SetItalic)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.italic());
+  EXPECT_FALSE(font.is_italic());
 
   font.set_italic(true);
-  EXPECT_TRUE(font.italic());
+  EXPECT_TRUE(font.is_italic());
 
   font.set_italic(false);
-  EXPECT_FALSE(font.italic());
+  EXPECT_FALSE(font.is_italic());
 }
 
 TEST(Font, SetUnderlined)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.underlined());
+  EXPECT_FALSE(font.is_underlined());
 
   font.set_underlined(true);
-  EXPECT_TRUE(font.underlined());
+  EXPECT_TRUE(font.is_underlined());
 
   font.set_underlined(false);
-  EXPECT_FALSE(font.underlined());
+  EXPECT_FALSE(font.is_underlined());
 }
 
 TEST(Font, SetStrikethrough)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_strikethrough());
 
   font.set_strikethrough(true);
-  EXPECT_TRUE(font.strikethrough());
+  EXPECT_TRUE(font.is_strikethrough());
 
   font.set_strikethrough(false);
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetOutline)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.outlined());
+  EXPECT_FALSE(font.is_outlined());
 
   font.set_outline(2);
   EXPECT_EQ(font.outline(), 2);
-  EXPECT_TRUE(font.outlined());
+  EXPECT_TRUE(font.is_outlined());
 
   font.set_outline(0);
   EXPECT_EQ(font.outline(), 0);
-  EXPECT_FALSE(font.outlined());
+  EXPECT_FALSE(font.is_outlined());
 }
 
 TEST(Font, SetFontHinting)
@@ -135,10 +135,10 @@ TEST(Font, SetKerning)
   cen::font font{danielPath, 12};
 
   font.set_kerning(true);
-  EXPECT_TRUE(font.kerning());
+  EXPECT_TRUE(font.has_kerning());
 
   font.set_kerning(false);
-  EXPECT_FALSE(font.kerning());
+  EXPECT_FALSE(font.has_kerning());
 }
 
 TEST(Font, Size)
@@ -239,10 +239,10 @@ TEST(Font, FontHinting)
   EXPECT_EQ(font.font_hinting(), cen::font::hint::normal);
 }
 
-TEST(Font, Kerning)
+TEST(Font, HasKerning)
 {
   const cen::font font{danielPath, 12};
-  EXPECT_TRUE(font.kerning());
+  EXPECT_TRUE(font.has_kerning());
 }
 
 TEST(Font, LineSkip)

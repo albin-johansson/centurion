@@ -335,39 +335,11 @@ class font final
    *
    * \return `true` if kerning is being used by the font; `false` otherwise.
    *
-   * \deprecated Since 5.1.0, use `has_kerning()` instead.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard, deprecated]] auto kerning() const noexcept -> bool
-  {
-    return has_kerning();
-  }
-
-  /**
-   * \brief Indicates whether or not kerning is being used.
-   *
-   * \return `true` if kerning is being used by the font; `false` otherwise.
-   *
    * \since 5.1.0
    */
   [[nodiscard]] auto has_kerning() const noexcept -> bool
   {
     return TTF_GetFontKerning(m_font.get());
-  }
-
-  /**
-   * \brief Indicates whether or not the font is bold.
-   *
-   * \return `true` if the font is bold; `false` otherwise.
-   *
-   * \deprecated Since 5.1.0, use `is_bold()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto bold() const noexcept -> bool
-  {
-    return is_bold();
   }
 
   /**
@@ -387,39 +359,11 @@ class font final
    *
    * \return `true` if the font is italic; `false` otherwise.
    *
-   * \deprecated Since 5.1.0, use `is_italic()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto italic() const noexcept -> bool
-  {
-    return is_italic();
-  }
-
-  /**
-   * \brief Indicates whether or not the font is italic.
-   *
-   * \return `true` if the font is italic; `false` otherwise.
-   *
    * \since 5.1.0
    */
   [[nodiscard]] auto is_italic() const noexcept -> bool
   {
     return m_style & TTF_STYLE_ITALIC;
-  }
-
-  /**
-   * \brief Indicates whether or not the font is underlined.
-   *
-   * \return `true` if the font is underlined; `false` otherwise.
-   *
-   * \deprecated Since 5.1.0, use `is_underlined()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto underlined() const noexcept -> bool
-  {
-    return is_underlined();
   }
 
   /**
@@ -439,39 +383,11 @@ class font final
    *
    * \return `true` if the font is a strikethrough font; `false` otherwise.
    *
-   * \deprecated Since 5.1.0, use `is_strikethrough()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto strikethrough() const noexcept -> bool
-  {
-    return is_strikethrough();
-  }
-
-  /**
-   * \brief Indicates whether or not the font is a strikethrough font.
-   *
-   * \return `true` if the font is a strikethrough font; `false` otherwise.
-   *
    * \since 5.1.0
    */
   [[nodiscard]] auto is_strikethrough() const noexcept -> bool
   {
     return m_style & TTF_STYLE_STRIKETHROUGH;
-  }
-
-  /**
-   * \brief Indicates whether or not the font is outlined.
-   *
-   * \return `true` if the font is outlined; `false` otherwise.
-   *
-   * \deprecated Since 5.1.0, use `is_outlined()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto outlined() const noexcept -> bool
-  {
-    return is_outlined();
   }
 
   /**

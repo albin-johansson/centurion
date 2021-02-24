@@ -248,6 +248,17 @@ class basic_window final
   }
 
   /**
+   * \brief Restores the position and size of the window if it's minimized or
+   * maximized.
+   *
+   * \since 5.3.0
+   */
+  void restore() noexcept
+  {
+    SDL_RestoreWindow(m_window);
+  }
+
+  /**
    * \brief Updates the window surface.
    *
    * \return `true` if the window surface was successfully updated; `false`

@@ -13,6 +13,7 @@ FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_MaximizeWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_MinimizeWindow, SDL_Window*)
+FAKE_VOID_FUNC(SDL_RestoreWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_SetWindowBordered, SDL_Window*, SDL_bool)
 FAKE_VOID_FUNC(SDL_SetWindowResizable, SDL_Window*, SDL_bool)
 FAKE_VOID_FUNC(SDL_SetWindowGrab, SDL_Window*, SDL_bool)
@@ -55,6 +56,7 @@ class WindowTest : public testing::Test
     RESET_FAKE(SDL_RaiseWindow);
     RESET_FAKE(SDL_MaximizeWindow);
     RESET_FAKE(SDL_MinimizeWindow);
+    RESET_FAKE(SDL_RestoreWindow);
     RESET_FAKE(SDL_SetWindowBordered);
     RESET_FAKE(SDL_SetWindowResizable);
     RESET_FAKE(SDL_SetWindowGrab);
@@ -129,6 +131,12 @@ TEST_F(WindowTest, Minimize)
 {
   m_window.minimize();
   EXPECT_EQ(1, SDL_MinimizeWindow_fake.call_count);
+}
+
+TEST_F(WindowTest, Restore)
+{
+  m_window.restore();
+  EXPECT_EQ(1, SDL_RestoreWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, UpdateSurface)

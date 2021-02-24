@@ -265,20 +265,6 @@ class key_state final
    *
    * \return the total amount of keys.
    *
-   * \deprecated Since 5.1.0, use `key_count()` instead.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard, deprecated]] auto amount_of_keys() const noexcept -> int
-  {
-    return key_count();
-  }
-
-  /**
-   * \brief Returns the total amount of keys.
-   *
-   * \return the total amount of keys.
-   *
    * \since 5.1.0
    */
   [[nodiscard]] auto key_count() const noexcept -> int

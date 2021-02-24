@@ -79,8 +79,8 @@ TEST(KeyState, ModifierActive)
   EXPECT_TRUE(state.modifier_active(cen::key_modifier::caps));
 }
 
-TEST(KeyState, AmountOfkeys)
+TEST(KeyState, KeyCount)
 {
   cen::key_state state;
-  EXPECT_EQ(static_cast<int>(SDL_NUM_SCANCODES), state.amount_of_keys());
+  EXPECT_EQ(static_cast<int>(SDL_NUM_SCANCODES), state.key_count());
 }

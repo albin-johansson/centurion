@@ -12,7 +12,7 @@ static_assert(std::is_default_constructible_v<cen::message_box>);
 TEST(MessageBox, TitleMessageConstructor)
 {
   const cen::message_box mb{"foo", "bar"};
-  EXPECT_EQ("foo", mb.get_title());
+  EXPECT_EQ("foo", mb.title());
   EXPECT_EQ("bar", mb.message());
 }
 
@@ -31,7 +31,7 @@ TEST(MessageBox, SetTitle)
   cen::message_box mb;
 
   mb.set_title("foobar");
-  EXPECT_EQ("foobar", mb.get_title());
+  EXPECT_EQ("foobar", mb.title());
 }
 
 TEST(MessageBox, SetMessage)
@@ -87,10 +87,10 @@ TEST(MessageBox, HasButton)
   EXPECT_TRUE(mb.has_button(id));
 }
 
-TEST(MessageBox, GetTitle)
+TEST(MessageBox, Title)
 {
   const cen::message_box mb;
-  EXPECT_EQ("Message box", mb.get_title());
+  EXPECT_EQ("Message box", mb.title());
 }
 
 TEST(MessageBox, Message)

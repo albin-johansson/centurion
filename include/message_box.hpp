@@ -419,22 +419,6 @@ class message_box final
   }
 
   /**
-   * \brief Returns the title of the message box.
-   *
-   * \details The default title is "Message box".
-   *
-   * \return the title of the message box.
-   *
-   * \deprecated Since 5.1.0, use `title()` instead.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard, deprecated]] auto get_title() const -> std::string_view
-  {
-    return title();
-  }
-
-  /**
    * \brief Returns the message of the message box.
    *
    * \details The default message is "N/A".

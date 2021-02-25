@@ -110,6 +110,9 @@ class basic_renderer final
   }
 
  public:
+  /// \name Construction
+  /// \{
+
   // clang-format off
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
@@ -160,6 +163,8 @@ class basic_renderer final
   explicit basic_renderer(const renderer& owner) noexcept
       : m_renderer{owner.get()}
   {}
+
+  /// \} End of construction
 
   /**
    * \brief Clears the rendering target with the currently selected color.
@@ -1427,6 +1432,9 @@ class basic_renderer final
 
   /// \} // end of font handling
 
+  /// \name Setters
+  /// \{
+
   /**
    * \brief Sets the color that will be used by the renderer.
    *
@@ -1559,6 +1567,11 @@ class basic_renderer final
   {
     SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
   }
+
+  /// \} End of setters
+
+  /// \name Queries
+  /// \{
 
   /**
    * \brief Returns a handle to the current render target.
@@ -1770,6 +1783,71 @@ class basic_renderer final
     return static_cast<blend_mode>(mode);
   }
 
+  /**
+   * \brief Indicates whether or not the renderer uses integer scaling values
+   * for logical viewports.
+   *
+   * \details By default, this property is set to false.
+   *
+   * \return `true` if the renderer uses integer scaling for logical
+   * viewports; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
+  {
+    return SDL_RenderGetIntegerScale(get());
+  }
+
+  /**
+   * \brief Indicates whether or not clipping is enabled.
+   *
+   * \details This is disabled by default.
+   *
+   * \return `true` if clipping is enabled; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
+  {
+    return SDL_RenderIsClipEnabled(get());
+  }
+
+  /**
+   * \brief Returns the currently selected rendering color.
+   *
+   * \details The default color is black.
+   *
+   * \return the currently selected rendering color.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto get_color() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    u8 alpha{};
+    SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
+    return {red, green, blue, alpha};
+  }
+
+  /**
+   * \brief Returns the viewport that the renderer uses.
+   *
+   * \return the viewport that the renderer uses.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto viewport() const noexcept -> irect
+  {
+    irect viewport{};
+    SDL_RenderGetViewport(get(), viewport.data());
+    return viewport;
+  }
+
+  /// \} End of queries
+
   /// \name Flag-related queries.
   /// \{
 
@@ -1846,69 +1924,6 @@ class basic_renderer final
   }
 
   /// \} End of flag queries
-
-  /**
-   * \brief Indicates whether or not the renderer uses integer scaling values
-   * for logical viewports.
-   *
-   * \details By default, this property is set to false.
-   *
-   * \return `true` if the renderer uses integer scaling for logical
-   * viewports; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
-  {
-    return SDL_RenderGetIntegerScale(get());
-  }
-
-  /**
-   * \brief Indicates whether or not clipping is enabled.
-   *
-   * \details This is disabled by default.
-   *
-   * \return `true` if clipping is enabled; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
-  {
-    return SDL_RenderIsClipEnabled(get());
-  }
-
-  /**
-   * \brief Returns the currently selected rendering color.
-   *
-   * \details The default color is black.
-   *
-   * \return the currently selected rendering color.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto get_color() const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
-    SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
-    return {red, green, blue, alpha};
-  }
-
-  /**
-   * \brief Returns the viewport that the renderer uses.
-   *
-   * \return the viewport that the renderer uses.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto viewport() const noexcept -> irect
-  {
-    irect viewport{};
-    SDL_RenderGetViewport(get(), viewport.data());
-    return viewport;
-  }
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.

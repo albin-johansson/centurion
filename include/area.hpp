@@ -39,10 +39,11 @@
 
 namespace cen {
 
+/// \addtogroup geometry
+/// \{
+
 /**
  * \struct basic_area
- *
- * \ingroup geometry
  *
  * \brief Simply represents an area with a width and height.
  *
@@ -57,11 +58,6 @@ namespace cen {
  *
  * \todo Centurion 6: Mark this struct as final.
  *
- * \var basic_area::width
- * The width of the area. Defaults to 0.
- * \var basic_area::height
- * The height of the area. Defaults to 0.
- *
  * \headerfile area.hpp
  */
 template <typename T>
@@ -69,17 +65,32 @@ struct basic_area
 {
   using value_type = T;
 
-  T width{0};
-  T height{0};
+  T width{0};   ///< The width of the area.
+  T height{0};  ///< The height of the area.
 
   static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
   static_assert(!std::is_same_v<T, bool>);
 };
 
 /**
- * \typedef iarea
+ * \brief Returns the size (width x height) of an area.
  *
- * \ingroup geometry
+ * \tparam T the representation type.
+ *
+ * \param area the area instance that will be calculated.
+ *
+ * \return the size of the area.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+{
+  return area.width * area.height;
+}
+
+/**
+ * \typedef iarea
  *
  * \brief An alias for `int` areas.
  *
@@ -90,8 +101,6 @@ using iarea = basic_area<int>;
 /**
  * \typedef farea
  *
- * \ingroup geometry
- *
  * \brief An alias for `float` areas.
  *
  * \since 4.1.0
@@ -100,8 +109,6 @@ using farea = basic_area<float>;
 
 /**
  * \typedef darea
- *
- * \ingroup geometry
  *
  * \brief An alias for `double` areas.
  *
@@ -169,8 +176,6 @@ template <>
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
- * \ingroup geometry
- *
  * \param lhs the left-hand side area.
  * \param rhs the right-hand side area.
  *
@@ -188,8 +193,6 @@ template <typename T>
 
 /**
  * \brief Indicates whether or not two areas aren't considered to be equal.
- *
- * \ingroup geometry
  *
  * \param lhs the left-hand side area.
  * \param rhs the right-hand side area.
@@ -209,8 +212,6 @@ template <typename T>
 /**
  * \brief Returns a textual representation of an area.
  *
- * \ingroup geometry
- *
  * \tparam T the type of the area components.
  *
  * \param area the area that will be converted.
@@ -229,8 +230,6 @@ template <typename T>
 /**
  * \brief Prints a textual representation of an area using a stream.
  *
- * \ingroup geometry
- *
  * \tparam T the type of the area components.
  *
  * \param stream the stream that will be used.
@@ -247,6 +246,8 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
   stream << to_string(area);
   return stream;
 }
+
+/// \} End of geometry group
 
 }  // namespace cen
 

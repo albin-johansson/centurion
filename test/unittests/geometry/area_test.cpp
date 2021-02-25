@@ -128,3 +128,9 @@ TEST(Area, Cast)
     EXPECT_EQ(static_cast<float>(area.height), res.height);
   }
 }
+
+TEST(Area, AreaOf)
+{
+  const cen::farea area{123, 456};
+  EXPECT_FLOAT_EQ(cen::area_of(area), area.width * area.height);
+}

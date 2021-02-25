@@ -49,16 +49,15 @@
 /**
  * \namespace cen
  *
- * \ingroup core
- *
  * \brief The top-level namespace that all components of the library reside in.
  */
 namespace cen {
 
+/// \addtogroup core
+/// \{
+
 /**
  * \struct config
- *
- * \ingroup core
  *
  * \brief Used to specify how the library is initialized.
  *
@@ -129,8 +128,6 @@ struct config final
 
 /**
  * \class library
- *
- * \ingroup core
  *
  * \brief Used to initialize and de-initialize the library.
  *
@@ -300,6 +297,9 @@ class library final
   }
 };
 
+/// \name SDL version queries
+/// \{
+
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
@@ -368,6 +368,9 @@ class library final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+/// \} End of SDL version queries
+/// \} End of group core
 
 }  // namespace cen
 

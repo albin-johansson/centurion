@@ -22,16 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup thread Threads
- *
- * \brief Provides threading utilities for dealing with threads, mutexes, locks,
- * etc.
- *
- * \details SDL provides three basic synchronization primitives: mutex,
- * semaphore and condition variables.
- */
-
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 

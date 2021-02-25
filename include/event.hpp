@@ -22,12 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup event Events
- *
- * \brief Contains entities related to events.
- */
-
 #ifndef CENTURION_EVENT_HEADER
 #define CENTURION_EVENT_HEADER
 

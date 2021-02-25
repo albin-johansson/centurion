@@ -51,12 +51,6 @@
  * \copyright MIT License
  */
 
-/**
- * \defgroup configuration Configuration
- *
- * \brief Contains the API related to hints/configuration variables.
- */
-
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 

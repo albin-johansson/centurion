@@ -22,13 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup input Input
- *
- * \brief Contains components related to input from mice, keyboards,
- * controllers, etc.
- */
-
 #ifndef CENTURION_KEY_STATE_HEADER
 #define CENTURION_KEY_STATE_HEADER
 

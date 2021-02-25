@@ -22,12 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup system System
- *
- * \brief Contains various utilities related to system resources.
- */
-
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 

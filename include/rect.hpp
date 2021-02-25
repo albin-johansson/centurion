@@ -22,12 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup geometry Geometry
- *
- * \brief Contains basic geometric components, used throughout the library.
- */
-
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 

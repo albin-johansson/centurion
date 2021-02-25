@@ -24,8 +24,55 @@
 
 /**
  * \defgroup core Core
- *
  * \brief Contains entities considered to be fundamental for the library.
+ */
+
+/**
+ * \defgroup configuration Configuration
+ * \brief Contains the API related to hints/configuration variables.
+ */
+
+/**
+ * \defgroup event Events
+ * \brief Contains entities related to events.
+ */
+
+/**
+ * \defgroup thread Threads
+ * \brief Provides threading utilities for dealing with threads, mutexes, locks,
+ * etc.
+ */
+
+/**
+ * \defgroup input Input
+ * \brief Contains components related to input from mice, keyboards,
+ * controllers, etc.
+ */
+
+/**
+ * \defgroup graphics Graphics
+ * \brief Contains components related to window-management, rendering, fonts,
+ * etc.
+ */
+
+/**
+ * \defgroup system System
+ * \brief Contains various utilities related to system resources.
+ */
+
+/**
+ * \defgroup geometry Geometry
+ * \brief Contains basic geometric components, used throughout the library.
+ */
+
+/**
+ * \defgroup audio Audio
+ * \brief Contains the audio API, for playing as sound effects and music.
+ */
+
+/**
+ * \defgroup misc Misc
+ * \brief Contains miscellaneous components.
  */
 
 #ifndef CENTURION_CORE_HEADER

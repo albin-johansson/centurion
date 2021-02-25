@@ -72,11 +72,10 @@
 
 namespace cen {
 
-/// \addtogroup configuration
-/// \{
-
 /**
  * \namespace cen::hint
+ *
+ * \ingroup configuration
  *
  * \brief Contains all hint types.
  *
@@ -84,10 +83,8 @@ namespace cen {
  */
 namespace hint {
 
-/// \cond FALSE
-
-template <class Hint>
-struct enum_hint_traits;
+/// \addtogroup configuration
+/// \{
 
 struct render_driver;
 struct audio_resampling_mode;
@@ -106,6 +103,13 @@ struct content_orientation;
 namespace windows {
 struct d3d_compiler;
 }
+
+/// \} End of group configuration
+
+/// \cond FALSE
+
+template <class Hint>
+struct enum_hint_traits;
 
 template <>
 struct enum_hint_traits<render_driver> final
@@ -268,6 +272,9 @@ class enum_hint
     return Derived::map.find(value);
   }
 };
+
+/// \addtogroup configuration
+/// \{
 
 /**
  * \class render_driver
@@ -1482,7 +1489,7 @@ inline void clear_hints() noexcept
   SDL_ClearHints();
 }
 
-/// \}
+/// \} End of group configuration
 
 }  // namespace cen
 

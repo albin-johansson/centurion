@@ -49,6 +49,9 @@
  */
 namespace cen::battery {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \enum power_state
  *
@@ -251,6 +254,8 @@ enum class power_state
 {
   return rhs != lhs;
 }
+
+/// \} End of group system
 
 }  // namespace cen::battery
 

@@ -128,6 +128,27 @@ class rect_traits final
   using rect_type = std::conditional_t<isIntegral, SDL_Rect, SDL_FRect>;
 };
 
+template <typename T>
+class basic_rect;
+
+/**
+ * \typedef irect
+ *
+ * \brief Alias for an `int`-based rectangle.
+ *
+ * \since 5.0.0
+ */
+using irect = basic_rect<int>;
+
+/**
+ * \typedef frect
+ *
+ * \brief Alias for a `float`-based rectangle.
+ *
+ * \since 5.0.0
+ */
+using frect = basic_rect<float>;
+
 /**
  * \class basic_rect
  *
@@ -598,24 +619,6 @@ class basic_rect final
  private:
   rect_type m_rect{0, 0, 0, 0};
 };
-
-/**
- * \typedef irect
- *
- * \brief Alias for an `int`-based rectangle.
- *
- * \since 5.0.0
- */
-using irect = basic_rect<int>;
-
-/**
- * \typedef frect
- *
- * \brief Alias for a `float`-based rectangle.
- *
- * \since 5.0.0
- */
-using frect = basic_rect<float>;
 
 /**
  * \brief Indicates whether or not two rectangles are equal.

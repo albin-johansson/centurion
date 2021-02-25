@@ -48,6 +48,9 @@
  */
 namespace cen::touch {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \struct finger_state
  *
@@ -250,6 +253,8 @@ enum class device_type
 {
   return SDL_MOUSE_TOUCHID;
 }
+
+/// \} End of group input
 
 }  // namespace cen::touch
 

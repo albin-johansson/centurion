@@ -25,10 +25,11 @@
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 
+/// \addtogroup core
+/// \{
+
 /**
  * \def CENTURION_USE_PRAGMA_ONCE
- *
- * \ingroup core
  *
  * \brief This macro indicates whether or not Centurion headers will use
  * `#pragma once` in addition with the traditional include guards. By
@@ -41,8 +42,6 @@
 /**
  * \def CENTURION_USE_DEBUG_LOGGING_MACROS
  *
- * \ingroup core
- *
  * \brief This macro indicates whether or not debug-only logging macros will
  * be defined. These can be found in the `log.hpp` header. By default, this
  * macro is defined.
@@ -50,5 +49,7 @@
  * \since 5.0.0
  */
 #define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/// \} End of group core
 
 #endif  // CENTURION_CFG_HEADER

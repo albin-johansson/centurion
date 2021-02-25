@@ -246,8 +246,6 @@ class basic_joystick final
   /**
    * \brief Returns a handle to the joystick associated with the specified ID.
    *
-   * \ingroup input
-   *
    * \param id the joystick ID associated with the desired joystick.
    *
    * \return a handle to the joystick associated with the supplied ID, might be
@@ -265,8 +263,6 @@ class basic_joystick final
   /**
    * \brief Returns a handle to the joystick associated with the specified
    * player index.
-   *
-   * \ingroup input
    *
    * \param playerIndex the player index of the desired joystick.
    *
@@ -1356,7 +1352,7 @@ class basic_joystick final
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 

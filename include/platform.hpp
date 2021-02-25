@@ -229,7 +229,7 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
   return static_cast<bool>(SDL_IsTablet());
 }
 
-/// \}
+/// \} End of group system
 
 }  // namespace cen::platform
 

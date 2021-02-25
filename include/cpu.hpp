@@ -49,6 +49,9 @@
  */
 namespace cen::cpu {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \brief Returns the CPU L1 cache line size.
  *
@@ -395,6 +398,8 @@ class simd_block final
   };
   std::unique_ptr<void, deleter> m_data;
 };
+
+/// \} End of group system
 
 }  // namespace cen::cpu
 

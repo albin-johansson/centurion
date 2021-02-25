@@ -43,10 +43,11 @@
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \class exception
- *
- * \ingroup misc
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
@@ -207,6 +208,8 @@ class mix_error final : public exception
   explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
   {}
 };
+
+/// \} End of group misc
 
 }  // namespace cen
 

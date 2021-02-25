@@ -327,8 +327,6 @@ class basic_point final
 /**
  * \typedef ipoint
  *
- * \ingroup geometry
- *
  * \brief Alias for an `int`-based point.
  *
  * \details This type corresponds to `SDL_Point`.
@@ -339,8 +337,6 @@ using ipoint = basic_point<int>;
 
 /**
  * \typedef fpoint
- *
- * \ingroup geometry
  *
  * \brief Alias for a `float`-based point.
  *
@@ -533,7 +529,7 @@ inline auto operator<<(std::ostream& stream, const fpoint& point)
   return stream;
 }
 
-/// \}
+/// \} End of group geometry
 
 }  // namespace cen
 

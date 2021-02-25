@@ -272,8 +272,6 @@ class enum_hint
 /**
  * \class render_driver
  *
- * \ingroup configuration
- *
  * \brief Used to specify the render driver that will be used.
  *
  * \headerfile hints.hpp

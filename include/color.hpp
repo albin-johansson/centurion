@@ -325,8 +325,6 @@ class color final
 /**
  * \brief Returns a textual representation of the color.
  *
- * \ingroup graphics
- *
  * \param color the color that will be converted.
  *
  * \return a textual representation of the color.
@@ -343,8 +341,6 @@ class color final
 
 /**
  * \brief Prints a textual representation of a color.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param color the color that will be printed.
@@ -363,8 +359,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 /**
  * \brief Indicates whether or not the two colors are equal.
  *
- * \ingroup graphics
- *
  * \param lhs the left-hand side color.
  * \param rhs the right-hand side color.
  *
@@ -381,8 +375,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator==(const color&, const color&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator==(const color& lhs,
                                         const SDL_Color& rhs) noexcept -> bool
@@ -393,8 +385,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator==(const color&, const color&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator==(const SDL_Color& lhs,
                                         const color& rhs) noexcept -> bool
@@ -404,8 +394,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copybrief operator==(const color&, const color&)
- *
- * \ingroup graphics
  *
  * \note The alpha components are not taken into account.
  *
@@ -426,8 +414,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator==(const color&, const SDL_MessageBoxColor&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator==(const SDL_MessageBoxColor& lhs,
                                         const color& rhs) noexcept -> bool
@@ -437,8 +423,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \brief Indicates whether or not the two colors aren't equal.
- *
- * \ingroup graphics
  *
  * \param lhs the left-hand side color.
  * \param rhs the right-hand side color.
@@ -455,8 +439,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator!=(const color&, const color&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator!=(const color& lhs,
                                         const SDL_Color& rhs) noexcept -> bool
@@ -466,8 +448,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator!=(const color&, const color&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs,
                                         const color& rhs) noexcept -> bool
@@ -477,8 +457,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copybrief operator!=(const color&, const color&)
- *
- * \ingroup graphics
  *
  * \note The alpha components are not taken into account.
  *
@@ -498,8 +476,6 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 /**
  * \copydoc operator!=(const color&, const SDL_MessageBoxColor&)
- *
- * \ingroup graphics
  */
 [[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
                                         const color& rhs) noexcept -> bool
@@ -507,7 +483,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of group graphics
 
 }  // namespace cen
 

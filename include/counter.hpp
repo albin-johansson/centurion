@@ -47,6 +47,9 @@
  */
 namespace cen::counter {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \brief Returns the frequency of the system high-performance counter.
  *
@@ -101,6 +104,8 @@ template <typename T>
 {
   return milliseconds<u32>{SDL_GetTicks()};
 }
+
+/// \} End of group system
 
 }  // namespace cen::counter
 

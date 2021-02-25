@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \class base_path
- *
- * \ingroup system
  *
  * \brief A wrapper for the application path obtained through `SDL_GetBasePath`.
  *
@@ -122,8 +123,6 @@ class [[deprecated]] base_path final
 /**
  * \brief Returns a textual representation of a base path.
  *
- * \ingroup system
- *
  * \param path the base path that will be converted.
  *
  * \return a string that represents a base path.
@@ -142,8 +141,6 @@ class [[deprecated]] base_path final
 /**
  * \brief Prints a textual representation of a base path.
  *
- * \ingroup system
- *
  * \param stream the stream that will be used.
  * \param path the base path that will be printed.
  *
@@ -159,6 +156,8 @@ class [[deprecated]] base_path final
   stream << to_string(path);
   return stream;
 }
+
+/// \} End of group system
 
 }  // namespace cen
 

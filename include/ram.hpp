@@ -46,6 +46,9 @@
  */
 namespace cen::ram {
 
+/// \addtogroup system
+/// \{
+
 /**
  * \brief Returns the total amount of system RAM in megabytes.
  *
@@ -69,6 +72,8 @@ namespace cen::ram {
 {
   return amount_mb() / 1'000;
 }
+
+/// \} End of group system
 
 }  // namespace cen::ram
 

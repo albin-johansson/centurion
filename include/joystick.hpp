@@ -260,6 +260,8 @@ class basic_joystick final
     return joystick_handle{SDL_JoystickFromInstanceID(id)};
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Returns a handle to the joystick associated with the specified
    * player index.
@@ -276,6 +278,8 @@ class basic_joystick final
   {
     return joystick_handle{SDL_JoystickFromPlayerIndex(playerIndex)};
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /// \} End of construction
 
@@ -345,6 +349,8 @@ class basic_joystick final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Sets the player index to be associated with the joystick.
    *
@@ -356,6 +362,8 @@ class basic_joystick final
   {
     SDL_JoystickSetPlayerIndex(m_joystick, index);
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /// \name Virtual joystick API
   /// \{

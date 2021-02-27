@@ -3115,6 +3115,8 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
     m_event.fingerId = id;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Sets the window ID of the window under the finger.
    *
@@ -3126,6 +3128,8 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
   {
     m_event.windowID = id;
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Sets the normalized x-coordinate of the location of the event.
@@ -3226,6 +3230,8 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
     return m_event.fingerId;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Returns the window ID of the window under the finger.
    *
@@ -3237,6 +3243,8 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
   {
     return m_event.windowID;
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Returns the normalized x-coordinate of the location of the event.

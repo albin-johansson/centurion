@@ -314,6 +314,8 @@ class basic_texture final
     SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Sets the scale mode that will be used by the texture.
    *
@@ -325,6 +327,8 @@ class basic_texture final
   {
     SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Releases ownership of the associated SDL texture and returns a
@@ -496,6 +500,8 @@ class basic_texture final
     return {red, green, blue, 0xFF};
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Returns the scale mode that is used by the texture.
    *
@@ -509,6 +515,8 @@ class basic_texture final
     SDL_GetTextureScaleMode(m_texture, &mode);
     return static_cast<scale_mode>(mode);
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Indicates whether or not a texture handle holds a non-null pointer.

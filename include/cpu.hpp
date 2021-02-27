@@ -232,6 +232,8 @@ namespace cen::cpu {
   return SDL_HasNEON();
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 /**
  * \brief Indicates whether or not the CPU has ARM SIMD (ARMv6+) features.
  *
@@ -243,6 +245,8 @@ namespace cen::cpu {
 {
   return SDL_HasARMSIMD();
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \brief Returns the minimum number of bytes to which a pointer must be

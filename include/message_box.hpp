@@ -78,14 +78,22 @@ class message_box final
    * \brief Provides hints for how the buttons in a message box should be
    * aligned, either left-to-right or right-to-left.
    *
+   * \note This enum has no effect and shouldn't be used if you're using
+   * SDL 2.0.10.
+   *
    * \since 4.0.0
    *
    * \headerfile message_box.hpp
    */
   enum class button_order
   {
+#if SDL_VERSION_ATLEAST(2, 0, 12)
     left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
     right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+#else
+    left_to_right,
+    right_to_left
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
   };
 
   /**

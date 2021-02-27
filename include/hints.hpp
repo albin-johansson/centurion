@@ -516,6 +516,8 @@ struct allow_screensaver final : detail::bool_hint<allow_screensaver>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct video_external_context final : detail::bool_hint<video_external_context>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -523,6 +525,8 @@ struct video_external_context final : detail::bool_hint<video_external_context>
     return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
 {
@@ -589,6 +593,8 @@ struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -596,6 +602,8 @@ struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
     return SDL_HINT_DISPLAY_USABLE_BOUNDS;
   }
 };
+
+#endif  // #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 struct orientations final : detail::string_hint<orientations>
 {
@@ -878,6 +886,8 @@ struct thread_safe final : detail::bool_hint<thread_safe>
 
 namespace gamecontroller {
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct use_button_labels final : detail::bool_hint<use_button_labels>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -893,6 +903,8 @@ struct type final : detail::string_hint<type>
     return SDL_HINT_GAMECONTROLLERTYPE;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 struct config final : detail::string_hint<config>
 {
@@ -1189,6 +1201,8 @@ struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -1196,6 +1210,8 @@ struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
     return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 }  // namespace joystick
 
@@ -1218,6 +1234,8 @@ struct net_wm_bypass_compositor final
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct force_egl final : detail::bool_hint<force_egl>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -1225,6 +1243,8 @@ struct force_egl final : detail::bool_hint<force_egl>
     return SDL_HINT_VIDEO_X11_FORCE_EGL;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 struct xinerama final : detail::bool_hint<xinerama>
 {
@@ -1250,6 +1270,8 @@ struct xvidmode final : detail::bool_hint<xvidmode>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 struct window_visual_id final : detail::string_hint<window_visual_id>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -1257,6 +1279,8 @@ struct window_visual_id final : detail::string_hint<window_visual_id>
     return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 }  // namespace x11
 

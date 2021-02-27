@@ -38,6 +38,8 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 /**
  * \enum scale_mode
  *
@@ -107,6 +109,8 @@ enum class scale_mode
 {
   return !(lhs == rhs);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /// \}
 

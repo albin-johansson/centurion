@@ -49,11 +49,17 @@ namespace cen {
  */
 enum class blend_mode
 {
-  none = SDL_BLENDMODE_NONE,       ///< Represents no blending.
-  blend = SDL_BLENDMODE_BLEND,     ///< Represents alpha blending.
-  add = SDL_BLENDMODE_ADD,         ///< Represents additive blending.
-  mod = SDL_BLENDMODE_MOD,         ///< Represents color modulation.
-  mul = SDL_BLENDMODE_MUL,         ///< Represents color multiplication.
+  none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
+  blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
+  add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
+  mod = SDL_BLENDMODE_MOD,      ///< Represents color modulation.
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  mul = SDL_BLENDMODE_MUL,  ///< Represents color multiplication.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 

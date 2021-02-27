@@ -59,6 +59,8 @@ namespace cen {
 /// \addtogroup input
 /// \{
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 /**
  * \enum controller_type
  *
@@ -89,6 +91,8 @@ enum class controller_type
       SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro
                                                ///< controller.
 };
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \enum controller_axis
@@ -321,6 +325,8 @@ class basic_controller final
     }
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Creates a controller based on a player index.
    *
@@ -342,6 +348,8 @@ class basic_controller final
       throw sdl_error{};
     }
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Starts a rumble effect.
@@ -412,6 +420,8 @@ class basic_controller final
     rumble(0, 0, milliseconds<u32>::zero());
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Sets the player index associated with the controller.
    *
@@ -423,6 +433,8 @@ class basic_controller final
   {
     SDL_GameControllerSetPlayerIndex(m_controller, index);
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Returns the USB product ID of the controller.
@@ -542,6 +554,8 @@ class basic_controller final
     return SDL_GameControllerName(m_controller);
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Returns the type of the controller.
    *
@@ -554,6 +568,8 @@ class basic_controller final
     return static_cast<controller_type>(
         SDL_GameControllerGetType(m_controller));
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Returns the amount of available game controllers on the system.
@@ -688,6 +704,8 @@ class basic_controller final
     }
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
   /**
    * \brief Returns the type of the controller associated with the specified
    * joystick index.
@@ -703,6 +721,8 @@ class basic_controller final
   {
     return static_cast<controller_type>(SDL_GameControllerTypeForIndex(index));
   }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
    * \brief Returns the state of the specified game controller button.
@@ -1276,6 +1296,8 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return stream;
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 /**
  * \brief Indicates whether or not to controller type values are the same.
  *
@@ -1330,6 +1352,8 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 {
   return !(lhs == rhs);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \brief Indicates whether or not two game controller axis values are the same.

@@ -96,6 +96,7 @@ set(SOURCE_FILES
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
+    system/file_test.cpp
     system/locale_test.cpp
     system/platform_test.cpp
     system/pref_path_test.cpp

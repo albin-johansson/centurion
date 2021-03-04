@@ -35,6 +35,7 @@
 
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
+#include "exception.hpp"
 #include "integers.hpp"
 #include "not_null.hpp"
 
@@ -47,22 +48,48 @@ namespace cen {
 /// \addtogroup system
 /// \{
 
+/**
+ * \enum file_mode
+ *
+ * \brief Provides values that represent different file modes.
+ *
+ * \details This enum provides values that directly correspond to each of the
+ * possible SDL file mode strings, such as "r" or "rb".
+ *
+ * \since 5.3.0
+ *
+ * \headerfile file.hpp
+ */
 enum class file_mode
 {
-  read,                        ///< "r"
-  read_binary,                 ///< "rb"
-  write,                       ///< "w"
-  write_binary,                ///< "wb"
-  append,                      ///< "a"
-  append_binary,               ///< "ab"
-  read_existing,               ///< "r+"
-  read_existing_binary,        ///< "rb+"
-  write_replace,               ///< "w+"
-  write_replace_binary,        ///< "wb+"
-  append_read_anywhere,        ///< "a+"
-  append_read_anywhere_binary  ///< "ab+"
+  read_existing,         ///< "r"
+  read_existing_binary,  ///< "rb"
+
+  write,         ///< "w"
+  write_binary,  ///< "wb"
+
+  append_or_create,         ///< "a"
+  append_or_create_binary,  ///< "ab"
+
+  read_write_existing,         ///< "r+"
+  read_write_existing_binary,  ///< "rb+"
+
+  read_write_replace,         ///< "w+"
+  read_write_replace_binary,  ///< "wb+"
+
+  read_append,        ///< "a+"
+  read_append_binary  ///< "ab+"
 };
 
+/**
+ * \enum seek_mode
+ *
+ * \brief Provides values that represent various file seek modes.
+ *
+ * \since 5.3.0
+ *
+ * \headerfile file.hpp
+ */
 enum class seek_mode
 {
   from_beginning = RW_SEEK_SET,       ///< From the beginning.
@@ -70,19 +97,39 @@ enum class seek_mode
   relative_to_end = RW_SEEK_END       ///< Relative to the end.
 };
 
+/**
+ * \enum file_type
+ *
+ * \brief Provides values that represent different file types.
+ *
+ * \since 5.3.0
+ *
+ * \headerfile file_type.hpp
+ */
 enum class file_type : unsigned
 {
-  unknown = SDL_RWOPS_UNKNOWN,
-  win32 = SDL_RWOPS_WINFILE,
-  stdio = SDL_RWOPS_STDFILE,
-  jni = SDL_RWOPS_JNIFILE,
-  memory = SDL_RWOPS_MEMORY,
-  memory_ro = SDL_RWOPS_MEMORY_RO
+  unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
+  win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.
+  stdio = SDL_RWOPS_STDFILE,       ///< A STDIO file.
+  jni = SDL_RWOPS_JNIFILE,         ///< An Android asset file.
+  memory = SDL_RWOPS_MEMORY,       ///< A memory stream file.
+  memory_ro = SDL_RWOPS_MEMORY_RO  ///< A read-only memory stream file.
 };
 
+/**
+ * \class file
+ *
+ * \brief
+ *
+ * \since 5.3.0
+ *
+ * \headerfile file.hpp
+ */
 class file final
 {
  public:
+  using size_type = std::size_t;
+
   /// \name Construction
   /// \{
 
@@ -106,14 +153,14 @@ class file final
    * \brief Opens the file at the specified file path.
    *
    * \details Be sure to check the validity of the file, after construction.
-   * \verbatim
-   *  cen::file file{"foo", cen::file_mode::read_existing_binary};
-   *  if (file) {
-   *    // File was opened successfully!
-   *  }
-   * \endverbatim
+     \verbatim
+       cen::file file{"foo", cen::file_mode::read_existing_binary};
+       if (file) {
+         // File was opened successfully!
+       }
+     \endverbatim
    *
-   * \param path the file path of the file.
+   * \param path the path of the file.
    * \param mode the mode that will be used to open the file.
    *
    * \since 5.3.0
@@ -122,11 +169,17 @@ class file final
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
+  /**
+   * \copydoc file(not_null<czstring>, file_mode)
+   */
   explicit file(const std::string& path, const file_mode mode) noexcept
       : file{path.c_str(), mode}
   {}
 
   /// \} End of construction
+
+  /// \name Write API
+  /// \{
 
   /**
    * \brief Writes to the file.
@@ -141,13 +194,13 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto write(const T* data, const std::size_t count) noexcept -> std::size_t
+  auto write(const T* data, const size_type count) noexcept -> size_type
   {
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
-  template <typename T, std::size_t size>
-  auto write(const T (&data)[size]) noexcept -> std::size_t
+  template <typename T, size_type size>
+  auto write(const T (&data)[size]) noexcept -> size_type
   {
     return write(data, size);
   }
@@ -157,12 +210,52 @@ class file final
   template <typename Container>
   auto write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
-      -> std::size_t
+      -> size_type
   {
     return write(container.data(), container.size());
   }
 
   // clang-format on
+
+  auto write_byte(const u8 value) noexcept -> bool
+  {
+    return SDL_WriteU8(m_context.get(), value) == 1;
+  }
+
+  auto write_as_little_endian(const u16 value) noexcept -> bool
+  {
+    return SDL_WriteLE16(m_context.get(), value) == 1;
+  }
+
+  auto write_as_little_endian(const u32 value) noexcept -> bool
+  {
+    return SDL_WriteLE32(m_context.get(), value) == 1;
+  }
+
+  auto write_as_little_endian(const u64 value) noexcept -> bool
+  {
+    return SDL_WriteLE64(m_context.get(), value) == 1;
+  }
+
+  auto write_as_big_endian(const u16 value) noexcept -> bool
+  {
+    return SDL_WriteBE16(m_context.get(), value) == 1;
+  }
+
+  auto write_as_big_endian(const u32 value) noexcept -> bool
+  {
+    return SDL_WriteBE32(m_context.get(), value) == 1;
+  }
+
+  auto write_as_big_endian(const u64 value) noexcept -> bool
+  {
+    return SDL_WriteBE64(m_context.get(), value) == 1;
+  }
+
+  /// \} End of write API
+
+  /// \name Read API
+  /// \{
 
   /**
    * \brief Reads data from the file.
@@ -177,19 +270,74 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto read(T* data, const std::size_t maxCount) noexcept -> std::size_t
+  auto read_to(T* data, const size_type maxCount) noexcept -> size_type
   {
-    return SDL_RWread(get(), data, sizeof(T), maxCount);
+    return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
   }
+
+  template <typename T, size_type size>
+  auto read_to(T (&data)[size]) noexcept -> size_type
+  {
+    return read_to(data, size);
+  }
+
+  // clang-format off
+
+  template <typename Container>
+  auto read_to(Container& container) noexcept(noexcept(container.data()) &&
+                                              noexcept(container.size()))
+      -> size_type
+  {
+    return read_to(container.data(), container.size());
+  }
+
+  // clang-format on
 
   // Reads a value of type T, where T must be default-constructible
   template <typename T>
   auto read() noexcept(noexcept(T{})) -> T
   {
     T value{};
-    read(&value, 1);
+    read_to(&value, 1);
     return value;
   }
+
+  auto read_byte() noexcept -> u8
+  {
+    return SDL_ReadU8(m_context.get());
+  }
+
+  auto read_little_endian_u16() noexcept -> u16
+  {
+    return SDL_ReadLE16(m_context.get());
+  }
+
+  auto read_little_endian_u32() noexcept -> u32
+  {
+    return SDL_ReadLE32(m_context.get());
+  }
+
+  auto read_little_endian_u64() noexcept -> u64
+  {
+    return SDL_ReadLE64(m_context.get());
+  }
+
+  auto read_big_endian_u16() noexcept -> u16
+  {
+    return SDL_ReadBE16(m_context.get());
+  }
+
+  auto read_big_endian_u32() noexcept -> u32
+  {
+    return SDL_ReadBE32(m_context.get());
+  }
+
+  auto read_big_endian_u64() noexcept -> u64
+  {
+    return SDL_ReadBE64(m_context.get());
+  }
+
+  /// \} End of read API
 
   /**
    * \brief Seeks to the specified offset, using the specified seek mode.
@@ -202,10 +350,11 @@ class file final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto seek(const i64 offset,  // NOLINT not const
-                          const seek_mode mode) noexcept -> std::optional<i64>
+  [[nodiscard]] auto seek(const i64 offset, const seek_mode mode) noexcept
+      -> std::optional<i64>
   {
-    const auto result = SDL_RWseek(get(), offset, static_cast<int>(mode));
+    const auto result =
+        SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
     if (result != -1) {
       return result;
     } else {
@@ -222,9 +371,16 @@ class file final
    */
   [[nodiscard]] auto offset() const noexcept -> i64
   {
-    return SDL_RWtell(get());
+    return SDL_RWtell(m_context.get());
   }
 
+  /**
+   * \brief Returns the file type associated with the instance.
+   *
+   * \return the associated file type.
+   *
+   * \since 5.3.0
+   */
   [[nodiscard]] auto type() const noexcept -> file_type
   {
     return static_cast<file_type>(m_context->type);
@@ -237,14 +393,19 @@ class file final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto size() const noexcept -> std::optional<std::size_t>
+  [[nodiscard]] auto size() const noexcept -> std::optional<size_type>
   {
-    const auto result = SDL_RWsize(get());
+    const auto result = SDL_RWsize(m_context.get());
     if (result != -1) {
       return result;
     } else {
       return std::nullopt;
     }
+  }
+
+  [[nodiscard]] auto get() const noexcept -> SDL_RWops*
+  {
+    return m_context.get();
   }
 
   /**
@@ -259,17 +420,12 @@ class file final
     return m_context != nullptr;
   }
 
-  [[nodiscard]] auto get() const noexcept -> SDL_RWops*
-  {
-    return m_context.get();
-  }
-
  private:
   struct deleter final
   {
-    void operator()(SDL_RWops* data) noexcept
+    void operator()(SDL_RWops* context) noexcept
     {
-      SDL_RWclose(data);
+      SDL_RWclose(context);
     }
   };
   std::unique_ptr<SDL_RWops, deleter> m_context;
@@ -280,10 +436,10 @@ class file final
       default:
         assert(false);
 
-      case file_mode::read:
+      case file_mode::read_existing:
         return "r";
 
-      case file_mode::read_binary:
+      case file_mode::read_existing_binary:
         return "rb";
 
       case file_mode::write:
@@ -292,28 +448,28 @@ class file final
       case file_mode::write_binary:
         return "wb";
 
-      case file_mode::append:
+      case file_mode::append_or_create:
         return "a";
 
-      case file_mode::append_binary:
+      case file_mode::append_or_create_binary:
         return "ab";
 
-      case file_mode::read_existing:
+      case file_mode::read_write_existing:
         return "r+";
 
-      case file_mode::read_existing_binary:
+      case file_mode::read_write_existing_binary:
         return "rb+";
 
-      case file_mode::write_replace:
+      case file_mode::read_write_replace:
         return "w+";
 
-      case file_mode::write_replace_binary:
+      case file_mode::read_write_replace_binary:
         return "wb+";
 
-      case file_mode::append_read_anywhere:
+      case file_mode::read_append:
         return "a+";
 
-      case file_mode::append_read_anywhere_binary:
+      case file_mode::read_append_binary:
         return "ab+";
     }
   }

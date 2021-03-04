@@ -27,7 +27,7 @@ Happy coding! :heart:
 ## Requirements
 
 * C++17 or C++20
-* SDL2 2.0.12 or 2.0.14
+* SDL2 2.0.10, 2.0.12 or 2.0.14
 * SDL2_image 2.0.5
 * SDL2_ttf 2.0.4
 * SDL2_mixer 2.0.4

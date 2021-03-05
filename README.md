@@ -22,7 +22,24 @@ No matter how well-written a library is, there's always a need for great documen
 
 Furthermore, the library features a Read-the-Docs site that features tutorials, examples and various tips-and-tricks for an overview of the library. It can be found [here](https://centurion.readthedocs.io/en/latest/)!
 
-Happy coding! :heart:
+## Installation
+
+The library is provided as a *single* header file, located in the `include` folder. Download the `centurion.hpp` header and include it in your project, and it's ready to be used! You will of course also need to install SDL2.
+
+### Minimal program
+
+```C++
+#include <centurion.hpp> // Amalgamated header, includes everything in the library!
+
+int main(int argc, char** argv)  // The signature of main must be this!
+{
+  cen::library library;  // Initialize the library
+
+  // The Centurion library is now ready to be used!
+
+  return 0;
+}
+```
 
 ## Requirements
 

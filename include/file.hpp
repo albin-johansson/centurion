@@ -35,7 +35,6 @@
 
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
-#include "exception.hpp"
 #include "integers.hpp"
 #include "not_null.hpp"
 
@@ -138,16 +137,10 @@ class file final
    *
    * \param context the context that will be used.
    *
-   * \throws exception if the supplied pointer is null.
-   *
    * \since 5.3.0
    */
-  explicit file(SDL_RWops* context) : m_context{context}
-  {
-    if (!m_context) {
-      throw exception{"Null RWops context supplied to file constructor!"};
-    }
-  }
+  explicit file(SDL_RWops* context) noexcept : m_context{context}
+  {}
 
   /**
    * \brief Opens the file at the specified file path.
@@ -196,6 +189,7 @@ class file final
   template <typename T>
   auto write(const T* data, const size_type count) noexcept -> size_type
   {
+    assert(m_context);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
@@ -219,36 +213,43 @@ class file final
 
   auto write_byte(const u8 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteU8(m_context.get(), value) == 1;
   }
 
   auto write_as_little_endian(const u16 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteLE16(m_context.get(), value) == 1;
   }
 
   auto write_as_little_endian(const u32 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteLE32(m_context.get(), value) == 1;
   }
 
   auto write_as_little_endian(const u64 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteLE64(m_context.get(), value) == 1;
   }
 
   auto write_as_big_endian(const u16 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteBE16(m_context.get(), value) == 1;
   }
 
   auto write_as_big_endian(const u32 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteBE32(m_context.get(), value) == 1;
   }
 
   auto write_as_big_endian(const u64 value) noexcept -> bool
   {
+    assert(m_context);
     return SDL_WriteBE64(m_context.get(), value) == 1;
   }
 
@@ -272,6 +273,7 @@ class file final
   template <typename T>
   auto read_to(T* data, const size_type maxCount) noexcept -> size_type
   {
+    assert(m_context);
     return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
   }
 
@@ -304,36 +306,43 @@ class file final
 
   auto read_byte() noexcept -> u8
   {
+    assert(m_context);
     return SDL_ReadU8(m_context.get());
   }
 
   auto read_little_endian_u16() noexcept -> u16
   {
+    assert(m_context);
     return SDL_ReadLE16(m_context.get());
   }
 
   auto read_little_endian_u32() noexcept -> u32
   {
+    assert(m_context);
     return SDL_ReadLE32(m_context.get());
   }
 
   auto read_little_endian_u64() noexcept -> u64
   {
+    assert(m_context);
     return SDL_ReadLE64(m_context.get());
   }
 
   auto read_big_endian_u16() noexcept -> u16
   {
+    assert(m_context);
     return SDL_ReadBE16(m_context.get());
   }
 
   auto read_big_endian_u32() noexcept -> u32
   {
+    assert(m_context);
     return SDL_ReadBE32(m_context.get());
   }
 
   auto read_big_endian_u64() noexcept -> u64
   {
+    assert(m_context);
     return SDL_ReadBE64(m_context.get());
   }
 
@@ -353,6 +362,7 @@ class file final
   [[nodiscard]] auto seek(const i64 offset, const seek_mode mode) noexcept
       -> std::optional<i64>
   {
+    assert(m_context);
     const auto result =
         SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
     if (result != -1) {
@@ -371,6 +381,7 @@ class file final
    */
   [[nodiscard]] auto offset() const noexcept -> i64
   {
+    assert(m_context);
     return SDL_RWtell(m_context.get());
   }
 
@@ -383,6 +394,7 @@ class file final
    */
   [[nodiscard]] auto type() const noexcept -> file_type
   {
+    assert(m_context);
     return static_cast<file_type>(m_context->type);
   }
 
@@ -395,6 +407,7 @@ class file final
    */
   [[nodiscard]] auto size() const noexcept -> std::optional<size_type>
   {
+    assert(m_context);
     const auto result = SDL_RWsize(m_context.get());
     if (result != -1) {
       return result;

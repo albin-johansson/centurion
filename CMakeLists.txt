@@ -12,7 +12,7 @@ include(Utilities)
 set(CEN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CEN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)
 set(CEN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
-set(CEN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(CEN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CEN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(CEN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
@@ -64,101 +64,101 @@ if (CEN_COVERAGE MATCHES ON)
 endif ()
 
 set(CENTURION_HEADERS
-    include/area.hpp
+    src/area.hpp
 
-    include/base_path.hpp
-    include/battery.hpp
-    include/blend_mode.hpp
-    include/button_state.hpp
+    src/base_path.hpp
+    src/battery.hpp
+    src/blend_mode.hpp
+    src/button_state.hpp
 
-    include/cast.hpp
-    include/centurion.hpp
-    include/centurion_cfg.hpp
-    include/clipboard.hpp
-    include/color.hpp
-    include/colors.hpp
-    include/condition.hpp
-    include/controller.hpp
-    include/counter.hpp
-    include/cpu.hpp
-    include/cursor.hpp
-    include/czstring.hpp
+    src/cast.hpp
+    src/centurion.hpp
+    src/centurion_cfg.hpp
+    src/clipboard.hpp
+    src/color.hpp
+    src/colors.hpp
+    src/condition.hpp
+    src/controller.hpp
+    src/counter.hpp
+    src/cpu.hpp
+    src/cursor.hpp
+    src/czstring.hpp
 
-    include/event_type.hpp
-    include/event.hpp
-    include/exception.hpp
+    src/event_type.hpp
+    src/event.hpp
+    src/exception.hpp
 
-    include/font.hpp
-    include/font_cache.hpp
+    src/font.hpp
+    src/font_cache.hpp
 
-    include/graphics_drivers.hpp
+    src/graphics_drivers.hpp
 
-    include/hints.hpp
+    src/hints.hpp
 
-    include/integers.hpp
+    src/integers.hpp
 
-    include/joystick.hpp
+    src/joystick.hpp
 
-    include/key_code.hpp
-    include/key_modifier.hpp
-    include/key_state.hpp
+    src/key_code.hpp
+    src/key_modifier.hpp
+    src/key_state.hpp
 
-    include/log.hpp
+    src/log.hpp
 
-    include/message_box.hpp
-    include/mouse_button.hpp
-    include/mouse_state.hpp
-    include/mutex.hpp
+    src/message_box.hpp
+    src/mouse_button.hpp
+    src/mouse_state.hpp
+    src/mutex.hpp
 
-    include/not_null.hpp
+    src/not_null.hpp
 
-    include/owner.hpp
+    src/owner.hpp
 
-    include/pixel_format.hpp
-    include/platform.hpp
-    include/point.hpp
-    include/pref_path.hpp
+    src/pixel_format.hpp
+    src/platform.hpp
+    src/point.hpp
+    src/pref_path.hpp
 
-    include/ram.hpp
-    include/rect.hpp
-    include/renderer.hpp
+    src/ram.hpp
+    src/rect.hpp
+    src/renderer.hpp
 
-    include/scale_mode.hpp
-    include/scan_code.hpp
-    include/scoped_lock.hpp
-    include/screen.hpp
-    include/sdl_string.hpp
-    include/semaphore.hpp
-    include/surface.hpp
+    src/scale_mode.hpp
+    src/scan_code.hpp
+    src/scoped_lock.hpp
+    src/screen.hpp
+    src/sdl_string.hpp
+    src/semaphore.hpp
+    src/surface.hpp
 
-    include/texture.hpp
-    include/texture_access.hpp
-    include/thread.hpp
-    include/time.hpp
-    include/touch.hpp
-    include/try_lock.hpp
+    src/texture.hpp
+    src/texture_access.hpp
+    src/thread.hpp
+    src/time.hpp
+    src/touch.hpp
+    src/try_lock.hpp
 
-    include/unicode_string.hpp
+    src/unicode_string.hpp
 
-    include/window.hpp
-    include/window_utils.hpp
+    src/window.hpp
+    src/window_utils.hpp
 
-    include/detail/address_of.hpp
-    include/detail/any_eq.hpp
-    include/detail/clamp.hpp
-    include/detail/convert_bool.hpp
-    include/detail/czstring_eq.hpp
-    include/detail/max.hpp
-    include/detail/owner_handle_api.hpp
-    include/detail/stack_resource.hpp
-    include/detail/static_bimap.hpp
-    include/detail/to_string.hpp)
+    src/detail/address_of.hpp
+    src/detail/any_eq.hpp
+    src/detail/clamp.hpp
+    src/detail/convert_bool.hpp
+    src/detail/czstring_eq.hpp
+    src/detail/max.hpp
+    src/detail/owner_handle_api.hpp
+    src/detail/stack_resource.hpp
+    src/detail/static_bimap.hpp
+    src/detail/to_string.hpp)
 
 if (CEN_AUDIO MATCHES ON)
   set(CENTURION_HEADERS
       ${CENTURION_HEADERS}
-      include/sound_effect.hpp
-      include/music.hpp)
+      src/sound_effect.hpp
+      src/music.hpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} INTERFACE)

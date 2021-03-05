@@ -22,15 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
-#define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
+#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
+#define CENTURION_DETAIL_ANY_EQ_HEADER
 
-#include <cstddef>      // size_t
-#include <tuple>        // tuple
-#include <type_traits>  // is_same_v
-#include <utility>      // index_sequence, index_sequence_for
-
-#include "../centurion_cfg.hpp"
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -39,26 +34,34 @@
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Target, typename Tuple>
-class tuple_type_index;
+// clang-format off
 
-template <typename Target, typename... T>
-class tuple_type_index<Target, std::tuple<T...>>
+/**
+ * \brief Indicates whether or not any of the supplied values are equal to a
+ * specific value.
+ *
+ * \tparam T the type of the value to look for.
+ *
+ * \tparam Args the type of the arguments that will be checked.
+ *
+ * \param value the value to look for.
+ * \param args the arguments that will be compared with the value.
+ *
+ * \return `true` if any of the supplied values are equal to `value`; `false`
+ * otherwise.
+ *
+ * \since 5.1.0
+ */
+template <typename T, typename... Args>
+[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
+    noexcept(noexcept( ((value == args) || ...) )) -> bool
 {
-  template <std::size_t... index>
-  static constexpr int find(std::index_sequence<index...>)
-  {
-    return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
-  }
+  return ((value == args) || ...);
+}
 
- public:
-  inline static constexpr auto value = find(std::index_sequence_for<T...>{});
-};
-
-template <typename Target, typename... T>
-inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
+// clang-format on
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
+#endif  // CENTURION_DETAIL_ANY_EQ_HEADER

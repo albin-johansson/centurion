@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
-#define CENTURION_DETAIL_ANY_EQ_HEADER
+#ifndef CENTURION_DETAIL_MIN_HEADER
+#define CENTURION_DETAIL_MIN_HEADER
 
-#include "../centurion_cfg.hpp"
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -36,27 +36,11 @@ namespace cen::detail {
 
 // clang-format off
 
-/**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
- *
- * \tparam T the type of the value to look for.
- *
- * \tparam Args the type of the arguments that will be checked.
- *
- * \param value the value to look for.
- * \param args the arguments that will be compared with the value.
- *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
- *
- * \since 5.1.0
- */
-template <typename T, typename... Args>
-[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
-    noexcept(noexcept( ((value == args) || ...) )) -> bool
+template <typename T>
+[[nodiscard]] constexpr auto min(const T& left, const T& right)
+    noexcept(noexcept(left < right)) -> T
 {
-  return ((value == args) || ...);
+  return (left < right) ? left : right;
 }
 
 // clang-format on
@@ -64,4 +48,4 @@ template <typename T, typename... Args>
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_ANY_EQ_HEADER
+#endif  // CENTURION_DETAIL_MIN_HEADER

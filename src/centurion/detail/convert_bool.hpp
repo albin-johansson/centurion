@@ -22,13 +22,12 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
-#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
+#define CENTURION_DETAIL_CONVERT_BOOL_HEADER
 
-#include <cstring>  // strcmp
+#include <SDL.h>
 
-#include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -38,26 +37,21 @@
 namespace cen::detail {
 
 /**
- * \brief Indicates whether or not two C-style strings are equal.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
+ * value.
  *
- * \param lhs the left-hand side string, can safely be null.
- * \param rhs the right-hand side string, can safely be null.
+ * \param b the boolean value that will be converted.
  *
- * \return `true` if the strings are equal; `false` otherwise.
+ * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
  *
- * \since 4.1.0
+ * \since 3.0.0
  */
-[[nodiscard]] inline auto czstring_eq(const czstring lhs,
-                                      const czstring rhs) noexcept -> bool
+[[nodiscard]] constexpr auto convert_bool(const bool b) noexcept -> SDL_bool
 {
-  if (lhs && rhs) {
-    return std::strcmp(lhs, rhs) == 0;
-  } else {
-    return false;
-  }
+  return b ? SDL_TRUE : SDL_FALSE;
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#endif  // CENTURION_DETAIL_CONVERT_BOOL_HEADER

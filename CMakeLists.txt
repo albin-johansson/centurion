@@ -64,101 +64,101 @@ if (CEN_COVERAGE MATCHES ON)
 endif ()
 
 set(CENTURION_HEADERS
-    src/area.hpp
+    src/centurion/area.hpp
 
-    src/base_path.hpp
-    src/battery.hpp
-    src/blend_mode.hpp
-    src/button_state.hpp
+    src/centurion/base_path.hpp
+    src/centurion/battery.hpp
+    src/centurion/blend_mode.hpp
+    src/centurion/button_state.hpp
 
-    src/cast.hpp
-    src/centurion.hpp
-    src/centurion_cfg.hpp
-    src/clipboard.hpp
-    src/color.hpp
-    src/colors.hpp
-    src/condition.hpp
-    src/controller.hpp
-    src/counter.hpp
-    src/cpu.hpp
-    src/cursor.hpp
-    src/czstring.hpp
+    src/centurion/cast.hpp
+    src/centurion/centurion.hpp
+    src/centurion/centurion_cfg.hpp
+    src/centurion/clipboard.hpp
+    src/centurion/color.hpp
+    src/centurion/colors.hpp
+    src/centurion/condition.hpp
+    src/centurion/controller.hpp
+    src/centurion/counter.hpp
+    src/centurion/cpu.hpp
+    src/centurion/cursor.hpp
+    src/centurion/czstring.hpp
 
-    src/event_type.hpp
-    src/event.hpp
-    src/exception.hpp
+    src/centurion/event_type.hpp
+    src/centurion/event.hpp
+    src/centurion/exception.hpp
 
-    src/font.hpp
-    src/font_cache.hpp
+    src/centurion/font.hpp
+    src/centurion/font_cache.hpp
 
-    src/graphics_drivers.hpp
+    src/centurion/graphics_drivers.hpp
 
-    src/hints.hpp
+    src/centurion/hints.hpp
 
-    src/integers.hpp
+    src/centurion/integers.hpp
 
-    src/joystick.hpp
+    src/centurion/joystick.hpp
 
-    src/key_code.hpp
-    src/key_modifier.hpp
-    src/key_state.hpp
+    src/centurion/key_code.hpp
+    src/centurion/key_modifier.hpp
+    src/centurion/key_state.hpp
 
-    src/log.hpp
+    src/centurion/log.hpp
 
-    src/message_box.hpp
-    src/mouse_button.hpp
-    src/mouse_state.hpp
-    src/mutex.hpp
+    src/centurion/message_box.hpp
+    src/centurion/mouse_button.hpp
+    src/centurion/mouse_state.hpp
+    src/centurion/mutex.hpp
 
-    src/not_null.hpp
+    src/centurion/not_null.hpp
 
-    src/owner.hpp
+    src/centurion/owner.hpp
 
-    src/pixel_format.hpp
-    src/platform.hpp
-    src/point.hpp
-    src/pref_path.hpp
+    src/centurion/pixel_format.hpp
+    src/centurion/platform.hpp
+    src/centurion/point.hpp
+    src/centurion/pref_path.hpp
 
-    src/ram.hpp
-    src/rect.hpp
-    src/renderer.hpp
+    src/centurion/ram.hpp
+    src/centurion/rect.hpp
+    src/centurion/renderer.hpp
 
-    src/scale_mode.hpp
-    src/scan_code.hpp
-    src/scoped_lock.hpp
-    src/screen.hpp
-    src/sdl_string.hpp
-    src/semaphore.hpp
-    src/surface.hpp
+    src/centurion/scale_mode.hpp
+    src/centurion/scan_code.hpp
+    src/centurion/scoped_lock.hpp
+    src/centurion/screen.hpp
+    src/centurion/sdl_string.hpp
+    src/centurion/semaphore.hpp
+    src/centurion/surface.hpp
 
-    src/texture.hpp
-    src/texture_access.hpp
-    src/thread.hpp
-    src/time.hpp
-    src/touch.hpp
-    src/try_lock.hpp
+    src/centurion/texture.hpp
+    src/centurion/texture_access.hpp
+    src/centurion/thread.hpp
+    src/centurion/time.hpp
+    src/centurion/touch.hpp
+    src/centurion/try_lock.hpp
 
-    src/unicode_string.hpp
+    src/centurion/unicode_string.hpp
 
-    src/window.hpp
-    src/window_utils.hpp
+    src/centurion/window.hpp
+    src/centurion/window_utils.hpp
 
-    src/detail/address_of.hpp
-    src/detail/any_eq.hpp
-    src/detail/clamp.hpp
-    src/detail/convert_bool.hpp
-    src/detail/czstring_eq.hpp
-    src/detail/max.hpp
-    src/detail/owner_handle_api.hpp
-    src/detail/stack_resource.hpp
-    src/detail/static_bimap.hpp
-    src/detail/to_string.hpp)
+    src/centurion/detail/address_of.hpp
+    src/centurion/detail/any_eq.hpp
+    src/centurion/detail/clamp.hpp
+    src/centurion/detail/convert_bool.hpp
+    src/centurion/detail/czstring_eq.hpp
+    src/centurion/detail/max.hpp
+    src/centurion/detail/owner_handle_api.hpp
+    src/centurion/detail/stack_resource.hpp
+    src/centurion/detail/static_bimap.hpp
+    src/centurion/detail/to_string.hpp)
 
 if (CEN_AUDIO MATCHES ON)
   set(CENTURION_HEADERS
       ${CENTURION_HEADERS}
-      src/sound_effect.hpp
-      src/music.hpp)
+      src/centurion/sound_effect.hpp
+      src/centurion/music.hpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} INTERFACE)

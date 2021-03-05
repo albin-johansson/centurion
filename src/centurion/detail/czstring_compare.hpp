@@ -1,8 +1,8 @@
 #ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 
-#include "../centurion_cfg.hpp"
-#include "czstring.hpp"
+#include "centurion/centurion_cfg.hpp"
+#include "centurion/czstring.hpp"
 #include "czstring_eq.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

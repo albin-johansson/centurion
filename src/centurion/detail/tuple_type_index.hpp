@@ -22,10 +22,15 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_MAX_HEADER
-#define CENTURION_DETAIL_MAX_HEADER
+#ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
+#define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
-#include "../centurion_cfg.hpp"
+#include <cstddef>      // size_t
+#include <tuple>        // tuple
+#include <type_traits>  // is_same_v
+#include <utility>      // index_sequence, index_sequence_for
+
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -34,18 +39,26 @@
 /// \cond FALSE
 namespace cen::detail {
 
-// clang-format off
+template <typename Target, typename Tuple>
+class tuple_type_index;
 
-template <typename T>
-[[nodiscard]] constexpr auto max(const T& left, const T& right)
-    noexcept(noexcept(left < right)) -> T
+template <typename Target, typename... T>
+class tuple_type_index<Target, std::tuple<T...>>
 {
-  return (left < right) ? right : left;
-}
+  template <std::size_t... index>
+  static constexpr int find(std::index_sequence<index...>)
+  {
+    return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
+  }
 
-// clang-format on
+ public:
+  inline static constexpr auto value = find(std::index_sequence_for<T...>{});
+};
+
+template <typename Target, typename... T>
+inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_MAX_HEADER
+#endif  // CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER

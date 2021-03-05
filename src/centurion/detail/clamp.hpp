@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
-#define CENTURION_DETAIL_CONVERT_BOOL_HEADER
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
 
-#include <SDL.h>
+#include <cassert>  // assert
 
-#include "../centurion_cfg.hpp"
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -36,22 +36,46 @@
 /// \cond FALSE
 namespace cen::detail {
 
+// clang-format off
+
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Clamps a value to be within the range [min, max].
  *
- * \param b the boolean value that will be converted.
+ * \pre `min` must be less than or equal to `max`.
  *
- * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
+ * this function exists.
  *
- * \since 3.0.0
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
  */
-[[nodiscard]] constexpr auto convert_bool(const bool b) noexcept -> SDL_bool
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
 {
-  return b ? SDL_TRUE : SDL_FALSE;
+  assert(min <= max);
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  } else {
+    return value;
+  }
 }
+
+// clang-format on
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_CONVERT_BOOL_HEADER
+#endif  // CENTURION_DETAIL_CLAMP_HEADER

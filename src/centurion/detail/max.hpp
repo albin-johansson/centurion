@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DETAIL_MIN_HEADER
-#define CENTURION_DETAIL_MIN_HEADER
+#ifndef CENTURION_DETAIL_MAX_HEADER
+#define CENTURION_DETAIL_MAX_HEADER
 
-#include "../centurion_cfg.hpp"
+#include "centurion/centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -37,10 +37,10 @@ namespace cen::detail {
 // clang-format off
 
 template <typename T>
-[[nodiscard]] constexpr auto min(const T& left, const T& right)
+[[nodiscard]] constexpr auto max(const T& left, const T& right)
     noexcept(noexcept(left < right)) -> T
 {
-  return (left < right) ? left : right;
+  return (left < right) ? right : left;
 }
 
 // clang-format on
@@ -48,4 +48,4 @@ template <typename T>
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_MIN_HEADER
+#endif  // CENTURION_DETAIL_MAX_HEADER

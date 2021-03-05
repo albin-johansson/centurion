@@ -17,6 +17,11 @@ class FileTest : public testing::Test
   inline static const auto path = prefs + "file";
 };
 
+TEST_F(FileTest, PointerConstructor)
+{
+  EXPECT_NO_THROW(cen::file{nullptr});
+}
+
 TEST_F(FileTest, WriteAndRead)
 {
   {
@@ -93,3 +98,27 @@ TEST_F(FileTest, WriteAndRead)
   }
 }
 
+TEST_F(FileTest, Queries)
+{
+  const cen::file file{path, cen::file_mode::read_existing_binary};
+  EXPECT_EQ(SDL_RWtell(file.get()), file.offset());
+  EXPECT_EQ(SDL_RWsize(file.get()), file.size());
+  EXPECT_EQ(file.get()->type, static_cast<cen::u32>(file.type()));
+}
+
+TEST_F(FileTest, SeekModeEnum)
+{
+  EXPECT_EQ(RW_SEEK_SET, static_cast<int>(cen::seek_mode::from_beginning));
+  EXPECT_EQ(RW_SEEK_CUR, static_cast<int>(cen::seek_mode::relative_to_current));
+  EXPECT_EQ(RW_SEEK_END, static_cast<int>(cen::seek_mode::relative_to_end));
+}
+
+TEST_F(FileTest, FileTypeEnum)
+{
+  EXPECT_EQ(SDL_RWOPS_UNKNOWN, static_cast<int>(cen::file_type::unknown));
+  EXPECT_EQ(SDL_RWOPS_WINFILE, static_cast<int>(cen::file_type::win32));
+  EXPECT_EQ(SDL_RWOPS_STDFILE, static_cast<int>(cen::file_type::stdio));
+  EXPECT_EQ(SDL_RWOPS_JNIFILE, static_cast<int>(cen::file_type::jni));
+  EXPECT_EQ(SDL_RWOPS_MEMORY, static_cast<int>(cen::file_type::memory));
+  EXPECT_EQ(SDL_RWOPS_MEMORY_RO, static_cast<int>(cen::file_type::memory_ro));
+}

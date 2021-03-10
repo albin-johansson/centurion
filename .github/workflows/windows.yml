@@ -90,19 +90,19 @@ jobs:
       
       - name: Unzip SDL2 runtime binaries
         working-directory: ./build
-        run: - 7z e -y SDL2-${{SDL_VERSION}}-win32-x64.zip
+        run: 7z e -y SDL2-${{SDL_VERSION}}-win32-x64.zip
       
       - name: Unzip SDL2_image runtime binaries
         working-directory: ./build
-        run: - 7z e -y SDL2_image-${{IMG_VERSION}}-win32-x64.zip
+        run: 7z e -y SDL2_image-${{IMG_VERSION}}-win32-x64.zip
       
       - name: Unzip SDL2_mixer runtime binaries
         working-directory: ./build
-        run: - 7z e -y SDL2_mixer-${{MIX_VERSION}}-win32-x64.zip
+        run: 7z e -y SDL2_mixer-${{MIX_VERSION}}-win32-x64.zip
       
       - name: Unzip SDL2_ttf runtime binaries
         working-directory: ./build
-        run: - 7z e -y SDL2_ttf-${{TTF_VERSION}}-win32-x64.zip
+        run: 7z e -y SDL2_ttf-${{TTF_VERSION}}-win32-x64.zip
 
       - name: Create build folder
         run: cmake -E make_directory ./build

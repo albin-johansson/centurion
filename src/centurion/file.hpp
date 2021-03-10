@@ -94,7 +94,12 @@ enum class file_type : unsigned
 /**
  * \class file
  *
- * \brief
+ * \brief Represents a file "context" or handle.
+ *
+ * \note This class differs slightly from other library classes in that it is
+ * owning, but it does *not* throw if the internal pointer can't be created,
+ * etc. This is because file operations are error-prone, so we want to avoid
+ * throwing a bunch of exceptions, for performance reasons.
  *
  * \since 5.3.0
  *
@@ -151,7 +156,7 @@ class file final
   /// \{
 
   /**
-   * \brief Writes to the file.
+   * \brief Writes the supplied data to the file.
    *
    * \tparam T the type of the data.
    *
@@ -163,12 +168,26 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto write(const T* data, const size_type count) noexcept -> size_type
+  auto write(not_null<const T*> data, const size_type count) noexcept
+      -> size_type
   {
     assert(m_context);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
+  /**
+   * \brief Writes the contents of an array to the file, whose size is known at
+   * compile-time.
+   *
+   * \tparam T the type of the array elements.
+   * \tparam size the size of the array.
+   *
+   * \param data the data that will be written.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto write(const T (&data)[size]) noexcept -> size_type
   {
@@ -177,6 +196,20 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Writes the contents of a container to the file.
+   *
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
+   *
+   * \param container the container that will be written to the file.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
@@ -187,42 +220,125 @@ class file final
 
   // clang-format on
 
+  /**
+   * \brief Writes an unsigned 8-bit integer to the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_byte(const u8 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteU8(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE64(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
@@ -236,6 +352,8 @@ class file final
 
   /**
    * \brief Reads data from the file.
+   *
+   * \pre the internal file context must not be null.
    *
    * \tparam T the type of the data that will be read.
    *
@@ -253,6 +371,22 @@ class file final
     return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
   }
 
+  /**
+   * \brief Reads data from the file to an array whose size is known at
+   * compile-time. This function uses the size of the supplied array to
+   * determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \tparam T the type of the data that will be read.
+   * \tparam size the size of the array.
+   *
+   * \param[out] data the pointer to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto read_to(T (&data)[size]) noexcept -> size_type
   {
@@ -261,6 +395,23 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Reads data from the file to a container. This function uses the size
+   * of the supplied container to determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container the type of the data that will be read, e.g.
+   * `std::vector` or `std::array`.
+   *
+   * \param[out] data the pointer to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto read_to(Container& container) noexcept(noexcept(container.data()) &&
                                               noexcept(container.size()))
@@ -272,6 +423,20 @@ class file final
   // clang-format on
 
   // Reads a value of type T, where T must be default-constructible
+
+  /**
+   * \brief Reads a single value from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \note `T` must be default-constructible in order to use this function.
+   *
+   * \tparam T the type of the value, which must be default-constructible.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   template <typename T>
   auto read() noexcept(noexcept(T{})) -> T
   {
@@ -280,42 +445,111 @@ class file final
     return value;
   }
 
+  /**
+   * \brief Reads an unsigned 8-bit integer from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_byte() noexcept -> u8
   {
     assert(m_context);
     return SDL_ReadU8(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadLE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadLE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u64() noexcept -> u64
   {
     assert(m_context);
     return SDL_ReadLE64(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadBE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadBE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u64() noexcept -> u64
   {
     assert(m_context);
@@ -392,6 +626,13 @@ class file final
     }
   }
 
+  /**
+   * \brief Returns a pointer to the internal file context.
+   *
+   * \return a pointer to the internal file context, can be null.
+   *
+   * \since 5.3.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_RWops*
   {
     return m_context.get();

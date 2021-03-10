@@ -1,4 +1,4 @@
-name: CI (Windows)
+name: CI (Windows with MSVC)
 
 on: [push, pull_request]
 
@@ -7,12 +7,17 @@ env:
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
+  SDL2DIR: $GITHUB_WORKSPACE/SDL2-$SDL_VERSION
+  SDL2IMAGEDIR: $GITHUB_WORKSPACE/SDL2_image-$IMG_VERSION
+  SDL2MIXERDIR: $GITHUB_WORKSPACE/SDL2_mixer-$MIX_VERSION
+  SDL2TTFDIR: $GITHUB_WORKSPACE/SDL2_ttf-$TTF_VERSION
 
 jobs:
   windows-latest-test:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
@@ -24,7 +29,40 @@ jobs:
         id: DownloadSDL2
         with:
           url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
-          target: sdl2/
+          target: SDL2/
+
+      - name: Download SDL2_image
+        uses: suisei-cn/actions-download-file@v1
+        id: DownloadSDL2
+        with:
+          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-%IMG_VERSION%-VC.zip"
+          target: SDL2_image/
+
+      - name: Download SDL2_mixer
+        uses: suisei-cn/actions-download-file@v1
+        id: DownloadSDL2
+        with:
+          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip"
+          target: SDL2_mixer/
+
+      - name: Download SDL2_ttf
+        uses: suisei-cn/actions-download-file@v1
+        id: DownloadSDL2
+        with:
+          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip"
+          target: SDL2_ttf/
+
+      - name: Unzip SDL2
+        run: 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
+
+      - name: Unzip SDL2_image
+        run: 7z x -y SDL2_image-devel-%IMG_VERSION%-VC.zip
+
+      - name: Unzip SDL2_mixer
+        run: 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
+
+      - name: Unzip SDL2_ttf
+        run: 7z x -y SDL2_ttf-devel-%TTF_VERSION%-VC.zip
 
       - name: Build
         working-directory: ./build
@@ -34,7 +72,7 @@ jobs:
           ninja
 
       - name: Run tests
-        working-directory: ${{runner.workspace}}/centurion/build/test/unittests
+        working-directory: ./build/test/unittests
         run: |
           echo Running tests...
           CenturionTests.exe

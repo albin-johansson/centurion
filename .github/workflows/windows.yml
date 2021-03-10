@@ -84,12 +84,12 @@ jobs:
           7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
 
       - name: Unzip archives (runtime binaries)
-        working-directory: ./build
+        # working-directory: ./build
         run: |
-          7z e -y SDL2-${{env.SDL_VERSION}}-win32-x64.zip
-          7z e -y SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip
-          7z e -y SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip
-          7z e -y SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip
+          7z e -y ./bin/SDL2-${{env.SDL_VERSION}}-win32-x64.zip
+          7z e -y ./bin/SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip
+          7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip
+          7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip
 
       - name: Print information (2)
         run: dir

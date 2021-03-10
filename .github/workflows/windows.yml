@@ -52,6 +52,9 @@ jobs:
           url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip"
           target: .
 
+      - name: Print information
+        run: dir
+
       - name: Unzip SDL2
         run: 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
 

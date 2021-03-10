@@ -45,21 +45,6 @@ jobs:
           url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip"
           target: .
 
-      - name: Print information
-        run: dir
-
-      - name: Unzip SDL2
-        run: 7z x -y SDL2-devel-${{env.SDL_VERSION}}-VC.zip
-
-      - name: Unzip SDL2_image
-        run: 7z x -y SDL2_image-devel-${{env.IMG_VERSION}}-VC.zip
-
-      - name: Unzip SDL2_mixer
-        run: 7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
-
-      - name: Unzip SDL2_ttf
-        run: 7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
-
       - name: Download SDL2 runtime binaries
         uses: suisei-cn/actions-download-file@v1
         id: download_sdl2_runtime_binaries
@@ -87,22 +72,27 @@ jobs:
         with:
           url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip"
           target: ./bin
-      
-      - name: Unzip SDL2 runtime binaries
+
+      - name: Print information (1)
+        run: dir
+
+      - name: Unzip archives (sources)
+        run: |
+          7z x -y SDL2-devel-${{env.SDL_VERSION}}-VC.zip
+          7z x -y SDL2_image-devel-${{env.IMG_VERSION}}-VC.zip
+          7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
+          7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
+
+      - name: Unzip archives (runtime binaries)
         working-directory: ./build
-        run: 7z e -y SDL2-${{env.SDL_VERSION}}-win32-x64.zip
-      
-      - name: Unzip SDL2_image runtime binaries
-        working-directory: ./build
-        run: 7z e -y SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip
-      
-      - name: Unzip SDL2_mixer runtime binaries
-        working-directory: ./build
-        run: 7z e -y SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip
-      
-      - name: Unzip SDL2_ttf runtime binaries
-        working-directory: ./build
-        run: 7z e -y SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip
+        run: |
+          7z e -y SDL2-${{env.SDL_VERSION}}-win32-x64.zip
+          7z e -y SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip
+          7z e -y SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip
+          7z e -y SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip
+
+      - name: Print information (2)
+        run: dir
 
       - name: Create build folder
         run: cmake -E make_directory ./build

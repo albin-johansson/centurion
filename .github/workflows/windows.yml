@@ -28,41 +28,41 @@ jobs:
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2
         with:
-          url: "https://libsdl.org/release/SDL2-devel-$SDL_VERSION-VC.zip"
+          url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
           target: .
 
       - name: Download SDL2_image
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_image
         with:
-          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$IMG_VERSION-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-%IMG_VERSION%-VC.zip"
           target: .
 
       - name: Download SDL2_mixer
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_mixer
         with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$MIX_VERSION-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip"
           target: .
 
       - name: Download SDL2_ttf
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_ttf
         with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$TTF_VERSION-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip"
           target: .
 
       - name: Unzip SDL2
-        run: 7z x -y SDL2_mixer-devel-$MIX_VERSION-VC.zip
+        run: 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
 
       - name: Unzip SDL2_image
-        run: 7z x -y SDL2_image-devel-$IMG_VERSION-VC.zip
+        run: 7z x -y SDL2_image-devel-%IMG_VERSION%-VC.zip
 
       - name: Unzip SDL2_mixer
-        run: 7z x -y SDL2_mixer-devel-$MIX_VERSION-VC.zip
+        run: 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
 
       - name: Unzip SDL2_ttf
-        run: 7z x -y SDL2_ttf-devel-$TTF_VERSION-VC.zip
+        run: 7z x -y SDL2_ttf-devel-%TTF_VERSION%-VC.zip
 
       - name: Build
         working-directory: ./build

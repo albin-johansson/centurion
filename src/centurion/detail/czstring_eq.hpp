@@ -3,8 +3,8 @@
 
 #include <cstring>  // strcmp
 
-#include "centurion/centurion_cfg.hpp"
-#include "centurion/czstring.hpp"
+#include "../centurion_cfg.hpp"
+#include "../czstring.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

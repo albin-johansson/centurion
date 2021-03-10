@@ -5,8 +5,8 @@
 #include <array>      // array
 #include <utility>    // pair
 
-#include "centurion/centurion_cfg.hpp"
-#include "centurion/exception.hpp"
+#include "../centurion_cfg.hpp"
+#include "../exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -5,7 +5,7 @@
 #include <cstddef>          // byte, size_t
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
-#include "centurion/centurion_cfg.hpp"
+#include "../centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -1,7 +1,7 @@
 #ifndef CENTURION_DETAIL_MIN_HEADER
 #define CENTURION_DETAIL_MIN_HEADER
 
-#include "centurion/centurion_cfg.hpp"
+#include "../centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

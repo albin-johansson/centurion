@@ -86,10 +86,10 @@ jobs:
       - name: Unzip archives (runtime binaries)
         # working-directory: ./build
         run: |
-          7z e -y ./bin/SDL2-${{env.SDL_VERSION}}-win32-x64.zip -o ./bin
-          7z e -y ./bin/SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip -o ./bin
-          7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -o ./bin
-          7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -o ./bin
+          7z e -y ./bin/SDL2-${{env.SDL_VERSION}}-win32-x64.zip -obin
+          7z e -y ./bin/SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip -obin
+          7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
+          7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -obin
 
       - name: Print information (2)
         run: dir

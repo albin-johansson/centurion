@@ -21,8 +21,7 @@ jobs:
 
       - name: Download SDL2
         uses: suisei-cn/actions-download-file@v1
-        id: downloadfile  # Remember to give an ID if you need the output
-        name: Download the file
+        id: DownloadSDL2
         with:
           url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
           target: sdl2/

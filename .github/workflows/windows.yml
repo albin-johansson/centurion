@@ -53,7 +53,7 @@ jobs:
         run: dir
 
       - name: Unzip SDL2
-        run: 7z x -y SDL2_mixer-devel-${{env.SDL_VERSION}}-VC.zip
+        run: 7z x -y SDL2-devel-${{env.SDL_VERSION}}-VC.zip
 
       - name: Unzip SDL2_image
         run: 7z x -y SDL2_image-devel-${{env.IMG_VERSION}}-VC.zip

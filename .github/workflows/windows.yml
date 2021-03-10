@@ -29,28 +29,28 @@ jobs:
         id: DownloadSDL2
         with:
           url: "https://libsdl.org/release/SDL2-devel-$SDL_VERSION-VC.zip"
-          target: SDL2/
+          target: .
 
       - name: Download SDL2_image
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_image
         with:
           url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$IMG_VERSION-VC.zip"
-          target: SDL2_image/
+          target: .
 
       - name: Download SDL2_mixer
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_mixer
         with:
           url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$MIX_VERSION-VC.zip"
-          target: SDL2_mixer/
+          target: .
 
       - name: Download SDL2_ttf
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_ttf
         with:
           url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$TTF_VERSION-VC.zip"
-          target: SDL2_ttf/
+          target: .
 
       - name: Unzip SDL2
         run: 7z x -y SDL2_mixer-devel-$MIX_VERSION-VC.zip

@@ -94,11 +94,11 @@ endfunction()
 #   target: the associated target.
 function(cen_include_centurion_headers target)
   target_include_directories(${target}
+      PUBLIC ${CEN_SOURCE_DIR}
       SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
       SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
       SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-      SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-      SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
+      SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 endfunction()
 
 # Links against the SDL2 libraries.

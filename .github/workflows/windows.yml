@@ -108,6 +108,6 @@ jobs:
         run: tree ./build
 
       - name: Run tests
-        working-directory: ./build/test/unittests
         run: |
+          cd build/test/unittests
           CenturionTests.exe

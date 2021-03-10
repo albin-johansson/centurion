@@ -17,7 +17,7 @@ jobs:
       - uses: lukka/get-cmake@v3.18.3
 
       - name: Create build folder
-        run: cmake -E make_directory ${{runner.workspace}}/centurion/build
+        run: cmake -E make_directory ./build
 
       - name: Download SDL2
         uses: suisei-cn/actions-download-file@v1
@@ -27,10 +27,10 @@ jobs:
           target: sdl2/
 
       - name: Build
-        working-directory: ${{runner.workspace}}/centurion/build
+        working-directory: ./build
         run: |
           echo Building project...
-          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -GNinja
           ninja
 
       - name: Run tests

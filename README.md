@@ -1,4 +1,5 @@
-# <img src="meta/centurion.png" alt="Centurion" width="200"/> 
+# centurion
+
 [![version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 |  Build           |  Status       |

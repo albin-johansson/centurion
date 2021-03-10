@@ -60,6 +60,50 @@ jobs:
       - name: Unzip SDL2_ttf
         run: 7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
 
+      - name: Download SDL2 runtime binaries
+        uses: suisei-cn/actions-download-file@v1
+        id: download_sdl2_runtime_binaries
+        with:
+          url: "https://www.libsdl.org/release/SDL2-${{SDL_VERSION}}-win32-x64.zip"
+          target: ./bin
+
+      - name: Download SDL2_image runtime binaries
+        uses: suisei-cn/actions-download-file@v1
+        id: download_sdl2_image_runtime_binaries
+        with:
+          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-${{IMG_VERSION}}-win32-x64.zip"
+          target: ./bin
+
+      - name: Download SDL2_mixer runtime binaries
+        uses: suisei-cn/actions-download-file@v1
+        id: download_sdl2_mixer_runtime_binaries
+        with:
+          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{MIX_VERSION}}-win32-x64.zip"
+          target: ./bin
+
+      - name: Download SDL2_ttf runtime binaries
+        uses: suisei-cn/actions-download-file@v1
+        id: download_sdl2_ttf_runtime_binaries
+        with:
+          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${{TTF_VERSION}}-win32-x64.zip"
+          target: ./bin
+      
+      - name: Unzip SDL2 runtime binaries
+        working-directory: ./build
+        run: - 7z e -y SDL2-${{SDL_VERSION}}-win32-x64.zip
+      
+      - name: Unzip SDL2_image runtime binaries
+        working-directory: ./build
+        run: - 7z e -y SDL2_image-${{IMG_VERSION}}-win32-x64.zip
+      
+      - name: Unzip SDL2_mixer runtime binaries
+        working-directory: ./build
+        run: - 7z e -y SDL2_mixer-${{MIX_VERSION}}-win32-x64.zip
+      
+      - name: Unzip SDL2_ttf runtime binaries
+        working-directory: ./build
+        run: - 7z e -y SDL2_ttf-${{TTF_VERSION}}-win32-x64.zip
+
       - name: Create build folder
         run: cmake -E make_directory ./build
 

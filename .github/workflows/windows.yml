@@ -25,7 +25,6 @@ jobs:
         with:
           url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
           target: sdl2/
-          auto-match: true
 
       - name: Build
         working-directory: ${{runner.workspace}}/centurion/build

@@ -1,0 +1,73 @@
+name: CI (Windows)
+
+on: [push, pull_request]
+
+env:
+  SDL_VERSION: 2.0.14
+  IMG_VERSION: 2.0.5
+  MIX_VERSION: 2.0.4
+  TTF_VERSION: 2.0.15
+
+jobs:
+  windows-latest-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: lukka/get-cmake@v3.18.3
+
+      - name: Create build folder
+        run: cmake -E make_directory ${{runner.workspace}}/centurion/build
+
+      - name: Install SDL2 core
+        working-directory: ${{runner.workspace}}/Wanderer/build
+        run: |
+          echo Installing SDL2 core...
+          curl -L https://www.libsdl.org/release/SDL2-$SDL_VERSION.tar.gz | tar xz
+          cd SDL2-$SDL_VERSION
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_image
+        working-directory: ${{runner.workspace}}/Wanderer/build
+        run: |
+          echo Installing SDL2_image...
+          curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$IMG_VERSION.tar.gz | tar xz
+          cd SDL2_image-$IMG_VERSION
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_ttf
+        working-directory: ${{runner.workspace}}/Wanderer/build
+        run: |
+          echo Installing SDL2_ttf...
+          curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$TTF_VERSION.tar.gz | tar xz
+          cd SDL2_ttf-$TTF_VERSION
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_mixer
+        working-directory: ${{runner.workspace}}/Wanderer/build
+        run: |
+          echo Installing SDL2_mixer...
+          curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$MIX_VERSION.tar.gz | tar xz
+          cd SDL2_mixer-$MIX_VERSION
+          ./configure
+          make
+          sudo make install
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/centurion/build
+        run: |
+          echo Building project...
+          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -GNinja
+          ninja
+
+      - name: Run tests
+        working-directory: ${{runner.workspace}}/centurion/build/test/unittests
+        run: |
+          echo Running tests...
+          CenturionTests.exe

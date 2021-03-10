@@ -21,35 +21,32 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
-      - name: Create build folder
-        run: cmake -E make_directory ./build
-
       - name: Download SDL2
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2
         with:
-          url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
+          url: "https://libsdl.org/release/SDL2-devel-$SDL_VERSION-VC.zip"
           target: .
 
       - name: Download SDL2_image
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_image
         with:
-          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-%IMG_VERSION%-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$IMG_VERSION-VC.zip"
           target: .
 
       - name: Download SDL2_mixer
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_mixer
         with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$MIX_VERSION-VC.zip"
           target: .
 
       - name: Download SDL2_ttf
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_ttf
         with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip"
+          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$TTF_VERSION-VC.zip"
           target: .
 
       - name: Print information
@@ -66,6 +63,9 @@ jobs:
 
       - name: Unzip SDL2_ttf
         run: 7z x -y SDL2_ttf-devel-%TTF_VERSION%-VC.zip
+
+      - name: Create build folder
+        run: cmake -E make_directory ./build
 
       - name: Build
         working-directory: ./build

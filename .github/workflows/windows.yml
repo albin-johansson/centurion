@@ -19,45 +19,14 @@ jobs:
       - name: Create build folder
         run: cmake -E make_directory ${{runner.workspace}}/centurion/build
 
-      - name: Install SDL2 core
-        working-directory: ${{runner.workspace}}/Wanderer/build
-        run: |
-          echo Installing SDL2 core...
-          curl -L https://www.libsdl.org/release/SDL2-$SDL_VERSION.tar.gz | tar xz
-          cd SDL2-$SDL_VERSION
-          ./configure
-          make
-          sudo make install
-
-      - name: Install SDL2_image
-        working-directory: ${{runner.workspace}}/Wanderer/build
-        run: |
-          echo Installing SDL2_image...
-          curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$IMG_VERSION.tar.gz | tar xz
-          cd SDL2_image-$IMG_VERSION
-          ./configure
-          make
-          sudo make install
-
-      - name: Install SDL2_ttf
-        working-directory: ${{runner.workspace}}/Wanderer/build
-        run: |
-          echo Installing SDL2_ttf...
-          curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$TTF_VERSION.tar.gz | tar xz
-          cd SDL2_ttf-$TTF_VERSION
-          ./configure
-          make
-          sudo make install
-
-      - name: Install SDL2_mixer
-        working-directory: ${{runner.workspace}}/Wanderer/build
-        run: |
-          echo Installing SDL2_mixer...
-          curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$MIX_VERSION.tar.gz | tar xz
-          cd SDL2_mixer-$MIX_VERSION
-          ./configure
-          make
-          sudo make install
+      - name: Download SDL2
+        uses: suisei-cn/actions-download-file@v1
+        id: downloadfile  # Remember to give an ID if you need the output
+        name: Download the file
+        with:
+          url: "https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip"
+          target: sdl2/
+          auto-match: true
 
       - name: Build
         working-directory: ${{runner.workspace}}/centurion/build

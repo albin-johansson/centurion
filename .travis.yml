@@ -114,7 +114,7 @@ script:
   - ./CenturionTests
 
   # Only run Valgrind on unit test executable
-  - valgrind --leak-check=yes --gen-suppressions=all --suppressions=resources/suppressions.sup ./CenturionTests
+  #- valgrind --leak-check=yes --gen-suppressions=all --suppressions=resources/suppressions.sup ./CenturionTests
 
 deploy:
   provider: pages

@@ -51,13 +51,6 @@ jobs:
           url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip"
           target: .
 
-      - name: Download SDL2 runtime binaries
-        uses: suisei-cn/actions-download-file@v1
-        id: download_sdl2_runtime_binaries
-        with:
-          url: "https://www.libsdl.org/release/SDL2-${{env.SDL_VERSION}}-win32-x64.zip"
-          target: ./bin
-
       - name: Download SDL2_image runtime binaries
         uses: suisei-cn/actions-download-file@v1
         id: download_sdl2_image_runtime_binaries
@@ -81,14 +74,12 @@ jobs:
 
       - name: Unzip archives (sources)
         run: |
-          7z x -y SDL2-devel-${{env.SDL_VERSION}}-VC.zip
           7z x -y SDL2_image-devel-${{env.IMG_VERSION}}-VC.zip
           7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
           7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
 
       - name: Unzip archives (runtime binaries)
         run: |
-          7z e -y ./bin/SDL2-${{env.SDL_VERSION}}-win32-x64.zip -obin
           7z e -y ./bin/SDL2_image-${{env.IMG_VERSION}}-win32-x64.zip -obin
           7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
           7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -obin

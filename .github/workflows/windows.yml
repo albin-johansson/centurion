@@ -79,8 +79,8 @@ jobs:
       - name: Build
         working-directory: ./build
         env:
-          SDL2DIR: ${{github.workspace}}/SDL2-${{env.SDL_VERSION}}
-          SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{env.IMG_VERSION}}
+          SDL2DIR: ${{github.workspace}}/SDL2-devel-${{env.SDL_VERSION}}
+          SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-devel-${{env.IMG_VERSION}}
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}
         run: |

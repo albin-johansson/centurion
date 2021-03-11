@@ -104,10 +104,8 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Debug -GNinja
           ninja
 
-      - name: Show info
-        run: tree ./build
-
       - name: Run tests
+        working-directory: ./build/test/unittests
         run: |
-          cd build/test/unittests
+          dir
           CenturionTests.exe

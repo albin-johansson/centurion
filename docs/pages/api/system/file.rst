@@ -21,7 +21,7 @@ General information
  Copyable                 No
  Movable                  Yes
  Implicit conversions     None
- Explicit conversions     None
+ Explicit conversions     ``bool``
  Overloaded operators     None
  Namespace                ``::cen``
  Since                    5.3.0

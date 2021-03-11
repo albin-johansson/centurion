@@ -102,9 +102,9 @@ jobs:
           ninja
 
       - name: Run unit tests
-        working-directory: ./build/test/unittests
-        run: start CenturionTests
+        run: %cd%/build/test/unittests/CenturionTests
+        shell: cmd
 
       - name: Run mocked test suite
-        working-directory: ./build/test/mocks
-        run: start CenturionMocks
+        run: %cd%/build/test/mocks/CenturionMocks
+        shell: cmd

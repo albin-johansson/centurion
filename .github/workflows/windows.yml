@@ -17,12 +17,25 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
+      - name: Create SDL2 directories
+        run: |
+          mkdir bin
+          mkdir SDL2-${{env.SDL_VERSION}}
+        shell: cmd
+
       - name: Download SDL2
-        uses: suisei-cn/actions-download-file@v1
-        id: DownloadSDL2
+        uses: albin-johansson/download-sdl2@v0.1-alpha.4
         with:
-          url: "https://libsdl.org/release/SDL2-devel-${{env.SDL_VERSION}}-VC.zip"
-          target: .
+          version: ${{env.SDL_VERSION}}
+          sources_destination: SDL2-${{env.SDL_VERSION}}
+          binaries_destination: bin
+
+#      - name: Download SDL2
+#        uses: suisei-cn/actions-download-file@v1
+#        id: DownloadSDL2
+#        with:
+#          url: "https://libsdl.org/release/SDL2-devel-${{env.SDL_VERSION}}-VC.zip"
+#          target: .
 
       - name: Download SDL2_image
         uses: suisei-cn/actions-download-file@v1

@@ -76,6 +76,10 @@ jobs:
       - name: Create build folder
         run: cmake -E make_directory ./build
 
+      - name: Print info
+        run: dir
+        shell: cmd
+
       - name: Build
         working-directory: ./build
         env:

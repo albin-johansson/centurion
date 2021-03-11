@@ -24,18 +24,11 @@ jobs:
         shell: cmd
 
       - name: Download SDL2
-        uses: albin-johansson/download-sdl2@v0.1-alpha.4
+        uses: albin-johansson/download-sdl2@v1
         with:
           version: ${{env.SDL_VERSION}}
           sources_destination: .
           binaries_destination: bin
-
-#      - name: Download SDL2
-#        uses: suisei-cn/actions-download-file@v1
-#        id: DownloadSDL2
-#        with:
-#          url: "https://libsdl.org/release/SDL2-devel-${{env.SDL_VERSION}}-VC.zip"
-#          target: .
 
       - name: Download SDL2_image
         uses: suisei-cn/actions-download-file@v1

@@ -29,7 +29,7 @@ jobs:
           binaries_destination: bin
 
       - name: Download SDL2_image
-        uses: albin-johansson/download-sdl2-image@v0.1
+        uses: albin-johansson/download-sdl2-image@v0.2
         with:
           version: ${{env.IMG_VERSION}}
           sources_destination: .

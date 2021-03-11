@@ -101,11 +101,6 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Debug -GNinja
           ninja
 
-      - name: Run unit tests
-        working-directory: ./build/test/unittests
-        run: CenturionTests
-        shell: cmd
-
       - name: Run mocked test suite
         working-directory: ./build/test/mocks
         run: CenturionMocks

@@ -106,5 +106,4 @@ jobs:
 
       - name: Run mocked test suite
         working-directory: ./build/test/mocks
-        run: |
-          CenturionMocks
+        run: start CenturionMocks

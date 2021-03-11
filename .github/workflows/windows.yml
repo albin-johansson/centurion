@@ -87,9 +87,6 @@ jobs:
           7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
           7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -obin
 
-      - name: Print information (2)
-        run: dir
-
       - name: Create build folder
         run: cmake -E make_directory ./build
 

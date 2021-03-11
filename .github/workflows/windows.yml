@@ -27,7 +27,7 @@ jobs:
         uses: albin-johansson/download-sdl2@v0.1-alpha.4
         with:
           version: ${{env.SDL_VERSION}}
-          sources_destination: SDL2-${{env.SDL_VERSION}}
+          sources_destination: .
           binaries_destination: bin
 
 #      - name: Download SDL2

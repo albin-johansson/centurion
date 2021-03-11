@@ -16,7 +16,6 @@ Implicit conversions     None
 Explicit conversions     ``SDL_Window*``, ``const SDL_Window*``, ``bool`` (only ``window_handle``)
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``window.hpp``
 ======================  =========================================
 
 Interface 

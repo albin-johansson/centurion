@@ -25,7 +25,6 @@ Implicit conversions     None
 Explicit conversions     ``bool`` (only ``controller_handle``)
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``controller.hpp``
 Since                    5.0.0
 ======================  =========================================
 

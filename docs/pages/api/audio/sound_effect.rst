@@ -18,7 +18,6 @@ Implicit conversions     None
 Explicit conversions     ``Mix_Chunk*``, ``const Mix_Chunk*``
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``sound_effect.hpp``
 Since                    3.0.0
 ======================  =========================================
 

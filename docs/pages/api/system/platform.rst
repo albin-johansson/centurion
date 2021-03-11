@@ -11,7 +11,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen::platform``
-Header                   ``platform.hpp``
 Since                    3.0.0
 ======================  =========================================
 

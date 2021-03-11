@@ -19,7 +19,6 @@ Implicit conversions     None
 Explicit conversions     ``SDL_Color``, ``SDL_MessageBoxColor``, ``SDL_Color*``, ``const SDL_Color*``
 Overloaded operators     ``<<``, ``==``, ``!=``
 Namespace                ``::cen``
-Header                   ``color.hpp``
 Since                    3.0.0
 ======================  =========================================
 

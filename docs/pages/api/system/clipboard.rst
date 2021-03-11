@@ -12,7 +12,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen::clipboard``
-Header                   ``clipboard.hpp``
 Since                    5.0.0
 ======================  =========================================
 

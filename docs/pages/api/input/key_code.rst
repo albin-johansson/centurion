@@ -20,7 +20,6 @@ Implicit conversions     None
 Explicit conversions     ``SDL_KeyCode``, ``SDL_Keycode``, ``SDL_Scancode``
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``key_code.hpp``
 ======================  =========================================
 
 Interface 

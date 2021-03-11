@@ -19,7 +19,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Namespace                ``::cen``
-Header                   ``font_cache.hpp``
 Since                    5.0.0
 ======================  =========================================
 

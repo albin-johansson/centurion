@@ -70,7 +70,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``event_dispatcher.hpp``
 Since                    5.1.0
 ======================  =========================================
 

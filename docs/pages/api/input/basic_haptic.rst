@@ -17,7 +17,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``, ``bool`` (only ``haptic_handle``)
 Namespace                ``::cen``
-Header                   ``haptic.hpp``
 Since                    5.2.0
 ======================  =========================================
 

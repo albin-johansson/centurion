@@ -13,7 +13,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen::counter``
-Header                   ``counter.hpp``
 Since                    5.0.0
 ======================  =========================================
 

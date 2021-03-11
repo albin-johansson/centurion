@@ -16,7 +16,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Namespace                ``::cen``
-Header                   ``semaphore.hpp``
 ======================  =========================================
 
 Interface 

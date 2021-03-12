@@ -28,11 +28,16 @@ TEST(Font, Constructor)
 {
   EXPECT_THROW(cen::font("", 1), cen::ttf_error);
   EXPECT_THROW(cen::font(danielPath, 0), cen::exception);
+
+  using namespace std::string_literals;
+  EXPECT_THROW(cen::font(""s, 1), cen::ttf_error);
+  EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::exception);
 }
 
 TEST(Font, Reset)
 {
-  cen::font font{typeWriterPath, 12};
+  // We use the std::string constructor here to make sure it works
+  cen::font font{std::string{typeWriterPath}, 12};
 
   font.set_bold(true);
   font.set_italic(true);

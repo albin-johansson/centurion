@@ -84,7 +84,7 @@ class font final
    * \param file the file path of the TrueType font file, mustn't be null.
    * \param size the font size, must be greater than zero.
    *
-   * \throws exception if the supplied size is <= 0.
+   * \throws exception if the supplied size is not greater than zero.
    * \throws ttf_error if the font cannot be loaded.
    *
    * \since 3.0.0
@@ -104,6 +104,20 @@ class font final
 
     m_style = TTF_GetFontStyle(m_font.get());
   }
+
+  /**
+   * \brief Creates a font based on the `.ttf`-file at the specified path.
+   *
+   * \param file the file path of the TrueType font file.
+   * \param size the font size, must be greater than zero.
+   *
+   * \throws exception if the supplied size is not greater than zero.
+   * \throws ttf_error if the font cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  font(const std::string& file, const int size) : font{file.c_str(), size}
+  {}
 
   /**
    * \brief Resets the style of the font.

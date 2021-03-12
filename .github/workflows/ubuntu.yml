@@ -7,6 +7,8 @@ env:
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
+  SDL_VIDEODRIVER: x11
+  DISPLAY: :99.0
 
 jobs:
   ubuntu-20-04-test:
@@ -24,9 +26,7 @@ jobs:
         run: |
           sudo apt install xvfb
           /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
-          export SDL_VIDEODRIVER=x11;
-          export DISPLAY=:99.0;
-          sleep 3 # give xvfb some time to start
+          sleep 3
 
       - name: Install SDL2
         shell: bash
@@ -82,9 +82,6 @@ jobs:
         run: |
           ninja CenturionTests
           ninja CenturionMocks
-        env:
-          SDL_VIDEODRIVER: x11
-          DISPLAY: :99.0
 
       - name: Run unit tests
         if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}

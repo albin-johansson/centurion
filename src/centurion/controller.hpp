@@ -589,6 +589,24 @@ class basic_controller final
   }
 
   /**
+   * \brief Returns the axis associated with the specified string.
+   *
+   * \note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * \param str the string that represents a game controller axis, e.g "rightx".
+   *
+   * \return a game controller axis value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_axis(const std::string& str) noexcept
+      -> controller_axis
+  {
+    return get_axis(str.c_str());
+  }
+
+  /**
    * \brief Returns the button associated with the specified string.
    *
    * \param str the string that represents a controller button, e.g "a".
@@ -597,11 +615,27 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const czstring str) noexcept
+  [[nodiscard]] static auto get_button(const not_null<czstring> str) noexcept
       -> controller_button
   {
+    assert(str);
     return static_cast<controller_button>(
         SDL_GameControllerGetButtonFromString(str));
+  }
+
+  /**
+   * \brief Returns the button associated with the specified string.
+   *
+   * \param str the string that represents a controller button, e.g "a".
+   *
+   * \return a game controller button value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept
+      -> controller_button
+  {
+    return get_button(str.c_str());
   }
 
   /**

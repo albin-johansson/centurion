@@ -298,6 +298,9 @@ TEST_F(ControllerTest, GetAxisFromString)
 
   EXPECT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
   EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
+
+  using namespace std::string_literals;
+  EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""s));
 }
 
 TEST_F(ControllerTest, GetAxis)
@@ -496,6 +499,9 @@ TEST_F(ControllerTest, GetButton)
 
   EXPECT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
   EXPECT_EQ(cen::controller_button::b, cen::controller::get_button(""));
+
+  using namespace std::string_literals;
+  EXPECT_EQ(cen::controller_button::b, cen::controller::get_button(""s));
 }
 
 TEST_F(ControllerTest, StringifyWithAxis)

@@ -82,6 +82,9 @@ jobs:
         run: |
           ninja CenturionTests
           ninja CenturionMocks
+        with:
+          SDL_VIDEODRIVER: x11
+          DISPLAY: :99.0
 
       - name: Run unit tests
         if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}

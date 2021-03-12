@@ -406,7 +406,7 @@ class file final
    * \tparam Container the type of the data that will be read, e.g.
    * `std::vector` or `std::array`.
    *
-   * \param[out] data the pointer to which the read data will be written to.
+   * \param[out] container the container to which the read data will be written to.
    *
    * \return the number of objects that were read.
    *

@@ -74,6 +74,20 @@ inline auto set_text(const not_null<czstring> text) noexcept -> bool
   return SDL_SetClipboardText(text) == 0;
 }
 
+/**
+ * \brief Sets the current clipboard text.
+ *
+ * \param text the text that will be stored in the clipboard.
+ *
+ * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+inline auto set_text(const std::string& text) noexcept -> bool
+{
+  return set_text(text.c_str());
+}
+
 }  // namespace cen::clipboard
 
 /// \}

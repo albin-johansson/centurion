@@ -15,4 +15,8 @@ TEST(Clipboard, SetText)
 {
   EXPECT_TRUE(cen::clipboard::set_text("foo"));
   EXPECT_EQ(cen::clipboard::get_text(), "foo");
+
+  using namespace std::string_literals;
+  EXPECT_TRUE(cen::clipboard::set_text("bar"s));
+  EXPECT_EQ(cen::clipboard::get_text(), "bar");
 }

@@ -2791,6 +2791,20 @@ inline auto set_text(const not_null<czstring> text) noexcept -> bool
   return SDL_SetClipboardText(text) == 0;
 }
 
+/**
+ * \brief Sets the current clipboard text.
+ *
+ * \param text the text that will be stored in the clipboard.
+ *
+ * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+inline auto set_text(const std::string& text) noexcept -> bool
+{
+  return set_text(text.c_str());
+}
+
 }  // namespace cen::clipboard
 
 /// \}
@@ -4296,6 +4310,7 @@ class pointer_manager final
 
 #include <cassert>      // assert
 #include <optional>     // optional
+#include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
 // #include "button_state.hpp"
@@ -5422,6 +5437,7 @@ class basic_joystick final
    * \return the obtained GUID.
    *
    * \see `SDL_JoystickGetGUIDFromString`
+   *
    * \since 4.2.0
    */
   [[nodiscard]] static auto guid_from_string(
@@ -5429,6 +5445,23 @@ class basic_joystick final
   {
     assert(str);
     return SDL_JoystickGetGUIDFromString(str);
+  }
+
+  /**
+   * \brief Returns a joystick GUID based on the supplied string.
+   *
+   * \param str the string used to obtain the GUID.
+   *
+   * \return the obtained GUID.
+   *
+   * \see `SDL_JoystickGetGUIDFromString`
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto guid_from_string(const std::string& str) noexcept
+      -> SDL_JoystickGUID
+  {
+    return guid_from_string(str.c_str());
   }
 
   /**
@@ -6974,6 +7007,24 @@ class basic_controller final
   }
 
   /**
+   * \brief Returns the axis associated with the specified string.
+   *
+   * \note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * \param str the string that represents a game controller axis, e.g "rightx".
+   *
+   * \return a game controller axis value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_axis(const std::string& str) noexcept
+      -> controller_axis
+  {
+    return get_axis(str.c_str());
+  }
+
+  /**
    * \brief Returns the button associated with the specified string.
    *
    * \param str the string that represents a controller button, e.g "a".
@@ -6982,11 +7033,27 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const czstring str) noexcept
+  [[nodiscard]] static auto get_button(const not_null<czstring> str) noexcept
       -> controller_button
   {
+    assert(str);
     return static_cast<controller_button>(
         SDL_GameControllerGetButtonFromString(str));
+  }
+
+  /**
+   * \brief Returns the button associated with the specified string.
+   *
+   * \param str the string that represents a controller button, e.g "a".
+   *
+   * \return a game controller button value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept
+      -> controller_button
+  {
+    return get_button(str.c_str());
   }
 
   /**
@@ -7422,6 +7489,21 @@ class basic_controller final
   }
 
   /**
+   * \brief Adds a game controller mapping.
+   *
+   * \param mapping the string that encodes the game controller mapping.
+   *
+   * \return `added` if a new mapping was added; `updated` if a previous mapping
+   * was updated; `error` if something went wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto add_mapping(const std::string& mapping) noexcept -> mapping_result
+  {
+    return add_mapping(mapping.c_str());
+  }
+
+  /**
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
@@ -7452,6 +7534,33 @@ class basic_controller final
     } else {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Loads a set of game controller mappings from a file.
+   *
+   * \details A collection of game controller mappings can be found at <a
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
+   * mappings for previously known GUIDs will overwrite the previous mappings.
+   * Furthermore, mappings for different platforms than the current platform
+   * will be ignored.
+   *
+   * \remarks It's possible to call this function several times to use multiple
+   * mapping files.
+   *
+   * \note The text database is stored entirely in memory during processing.
+   *
+   * \param file the path of the mapping file.
+   *
+   * \return the amount of mappings added; `std::nullopt` if something went
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto load_mappings(const std::string& file) noexcept
+      -> std::optional<int>
+  {
+    return load_mappings(file.c_str());
   }
 
   /**
@@ -11651,6 +11760,19 @@ class key_code final
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
+  /**
+   * \brief Creates a `key_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit key_code(const std::string& name) noexcept : key_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
   constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
@@ -11704,6 +11826,24 @@ class key_code final
     assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
+  }
+
+  /**
+   * \brief Sets the key code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `key_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> key_code&
+  {
+    return this->operator=(name.c_str());  // NOLINT
   }
 
   /**
@@ -18196,7 +18336,12 @@ enum class file_type : unsigned
 /**
  * \class file
  *
- * \brief
+ * \brief Represents a file "context" or handle.
+ *
+ * \note This class differs slightly from other library classes in that it is
+ * owning, but it does *not* throw if the internal pointer can't be created,
+ * etc. This is because file operations are error-prone, so we want to avoid
+ * throwing a bunch of exceptions, for performance reasons.
  *
  * \since 5.3.0
  *
@@ -18236,14 +18381,14 @@ class file final
    *
    * \since 5.3.0
    */
-  explicit file(const not_null<czstring> path, const file_mode mode) noexcept
+  file(const not_null<czstring> path, const file_mode mode) noexcept
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
   /**
    * \copydoc file(not_null<czstring>, file_mode)
    */
-  explicit file(const std::string& path, const file_mode mode) noexcept
+  file(const std::string& path, const file_mode mode) noexcept
       : file{path.c_str(), mode}
   {}
 
@@ -18253,7 +18398,7 @@ class file final
   /// \{
 
   /**
-   * \brief Writes to the file.
+   * \brief Writes the supplied data to the file.
    *
    * \tparam T the type of the data.
    *
@@ -18265,12 +18410,26 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto write(const T* data, const size_type count) noexcept -> size_type
+  auto write(not_null<const T*> data, const size_type count) noexcept
+      -> size_type
   {
     assert(m_context);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
+  /**
+   * \brief Writes the contents of an array to the file, whose size is known at
+   * compile-time.
+   *
+   * \tparam T the type of the array elements.
+   * \tparam size the size of the array.
+   *
+   * \param data the data that will be written.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto write(const T (&data)[size]) noexcept -> size_type
   {
@@ -18279,6 +18438,20 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Writes the contents of a container to the file.
+   *
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
+   *
+   * \param container the container that will be written to the file.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
@@ -18289,42 +18462,125 @@ class file final
 
   // clang-format on
 
+  /**
+   * \brief Writes an unsigned 8-bit integer to the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_byte(const u8 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteU8(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE64(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
@@ -18338,6 +18594,8 @@ class file final
 
   /**
    * \brief Reads data from the file.
+   *
+   * \pre the internal file context must not be null.
    *
    * \tparam T the type of the data that will be read.
    *
@@ -18355,6 +18613,22 @@ class file final
     return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
   }
 
+  /**
+   * \brief Reads data from the file to an array whose size is known at
+   * compile-time. This function uses the size of the supplied array to
+   * determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \tparam T the type of the data that will be read.
+   * \tparam size the size of the array.
+   *
+   * \param[out] data the pointer to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto read_to(T (&data)[size]) noexcept -> size_type
   {
@@ -18363,6 +18637,23 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Reads data from the file to a container. This function uses the size
+   * of the supplied container to determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container the type of the data that will be read, e.g.
+   * `std::vector` or `std::array`.
+   *
+   * \param[out] container the container to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto read_to(Container& container) noexcept(noexcept(container.data()) &&
                                               noexcept(container.size()))
@@ -18374,6 +18665,20 @@ class file final
   // clang-format on
 
   // Reads a value of type T, where T must be default-constructible
+
+  /**
+   * \brief Reads a single value from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \note `T` must be default-constructible in order to use this function.
+   *
+   * \tparam T the type of the value, which must be default-constructible.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   template <typename T>
   auto read() noexcept(noexcept(T{})) -> T
   {
@@ -18382,42 +18687,111 @@ class file final
     return value;
   }
 
+  /**
+   * \brief Reads an unsigned 8-bit integer from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_byte() noexcept -> u8
   {
     assert(m_context);
     return SDL_ReadU8(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadLE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadLE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u64() noexcept -> u64
   {
     assert(m_context);
     return SDL_ReadLE64(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadBE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadBE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u64() noexcept -> u64
   {
     assert(m_context);
@@ -18494,6 +18868,13 @@ class file final
     }
   }
 
+  /**
+   * \brief Returns a pointer to the internal file context.
+   *
+   * \return a pointer to the internal file context, can be null.
+   *
+   * \since 5.3.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_RWops*
   {
     return m_context.get();
@@ -19088,7 +19469,7 @@ class font final
    * \param file the file path of the TrueType font file, mustn't be null.
    * \param size the font size, must be greater than zero.
    *
-   * \throws exception if the supplied size is <= 0.
+   * \throws exception if the supplied size is not greater than zero.
    * \throws ttf_error if the font cannot be loaded.
    *
    * \since 3.0.0
@@ -19108,6 +19489,20 @@ class font final
 
     m_style = TTF_GetFontStyle(m_font.get());
   }
+
+  /**
+   * \brief Creates a font based on the `.ttf`-file at the specified path.
+   *
+   * \param file the file path of the TrueType font file.
+   * \param size the font size, must be greater than zero.
+   *
+   * \throws exception if the supplied size is not greater than zero.
+   * \throws ttf_error if the font cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  font(const std::string& file, const int size) : font{file.c_str(), size}
+  {}
 
   /**
    * \brief Resets the style of the font.
@@ -19522,6 +19917,22 @@ class font final
   }
 
   /**
+   * \brief Returns the width of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the width of.
+   *
+   * \return the width of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> int
+  {
+    return string_width(str.c_str());
+  }
+
+  /**
    * \brief Returns the height of the supplied string, if it was rendered
    * using the font.
    *
@@ -19542,6 +19953,22 @@ class font final
   }
 
   /**
+   * \brief Returns the height of the supplied string, if it was rendered
+   * using the font.
+   *
+   * \param str the string to determine the height of.
+   *
+   * \return the height of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> int
+  {
+    return string_height(str.c_str());
+  }
+
+  /**
    * \brief Returns the size of the supplied string, if it was rendered using
    * the font.
    *
@@ -19559,6 +19986,21 @@ class font final
     int height{};
     TTF_SizeText(m_font.get(), str, &width, &height);
     return {width, height};
+  }
+
+  /**
+   * \brief Returns the size of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the size of.
+   *
+   * \return the size of the string, if it was rendered using the font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> iarea
+  {
+    return string_size(str.c_str());
   }
 
   /**
@@ -19702,6 +20144,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
+#include <string>         // string
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
@@ -20685,6 +21128,18 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_utf8(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_blended_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -20710,6 +21165,19 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
+  }
+
+  /**
+   * \see store_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_utf8(const id_type id,
+                                  const std::string& string,
+                                  Renderer& renderer,
+                                  const u32 wrap)
+  {
+    store_blended_wrapped_utf8(id, string.c_str(), renderer, wrap);
   }
 
   /**
@@ -20741,6 +21209,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_utf8(const id_type id,
+                         const std::string& string,
+                         Renderer& renderer,
+                         const color& background)
+  {
+    store_shaded_utf8(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -20767,6 +21248,18 @@ class font_cache final
   }
 
   /**
+   * \see store_solid_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_utf8(const id_type id,
+                        const std::string& string,
+                        Renderer& renderer)
+  {
+    store_solid_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -20790,6 +21283,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_blended_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_latin1(const id_type id,
+                            const std::string& string,
+                            Renderer& renderer)
+  {
+    store_blended_latin1(id, string.c_str(), renderer);
   }
 
   /**
@@ -20821,6 +21326,19 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_latin1(const id_type id,
+                                    const std::string& string,
+                                    Renderer& renderer,
+                                    const u32 wrap)
+  {
+    store_blended_wrapped_latin1(id, string.c_str(), renderer, wrap);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -20849,6 +21367,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_latin1(const id_type id,
+                           const std::string& string,
+                           Renderer& renderer,
+                           const color& background)
+  {
+    store_shaded_latin1(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -20872,6 +21403,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_solid_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_latin1(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_solid_latin1(id, string.c_str(), renderer);
   }
 
   /**
@@ -35356,6 +35899,20 @@ inline auto set_text(const not_null<czstring> text) noexcept -> bool
   return SDL_SetClipboardText(text) == 0;
 }
 
+/**
+ * \brief Sets the current clipboard text.
+ *
+ * \param text the text that will be stored in the clipboard.
+ *
+ * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+inline auto set_text(const std::string& text) noexcept -> bool
+{
+  return set_text(text.c_str());
+}
+
 }  // namespace cen::clipboard
 
 /// \}
@@ -37640,6 +38197,24 @@ class basic_controller final
   }
 
   /**
+   * \brief Returns the axis associated with the specified string.
+   *
+   * \note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * \param str the string that represents a game controller axis, e.g "rightx".
+   *
+   * \return a game controller axis value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_axis(const std::string& str) noexcept
+      -> controller_axis
+  {
+    return get_axis(str.c_str());
+  }
+
+  /**
    * \brief Returns the button associated with the specified string.
    *
    * \param str the string that represents a controller button, e.g "a".
@@ -37648,11 +38223,27 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const czstring str) noexcept
+  [[nodiscard]] static auto get_button(const not_null<czstring> str) noexcept
       -> controller_button
   {
+    assert(str);
     return static_cast<controller_button>(
         SDL_GameControllerGetButtonFromString(str));
+  }
+
+  /**
+   * \brief Returns the button associated with the specified string.
+   *
+   * \param str the string that represents a controller button, e.g "a".
+   *
+   * \return a game controller button value.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept
+      -> controller_button
+  {
+    return get_button(str.c_str());
   }
 
   /**
@@ -38088,6 +38679,21 @@ class basic_controller final
   }
 
   /**
+   * \brief Adds a game controller mapping.
+   *
+   * \param mapping the string that encodes the game controller mapping.
+   *
+   * \return `added` if a new mapping was added; `updated` if a previous mapping
+   * was updated; `error` if something went wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto add_mapping(const std::string& mapping) noexcept -> mapping_result
+  {
+    return add_mapping(mapping.c_str());
+  }
+
+  /**
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
@@ -38118,6 +38724,33 @@ class basic_controller final
     } else {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Loads a set of game controller mappings from a file.
+   *
+   * \details A collection of game controller mappings can be found at <a
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
+   * mappings for previously known GUIDs will overwrite the previous mappings.
+   * Furthermore, mappings for different platforms than the current platform
+   * will be ignored.
+   *
+   * \remarks It's possible to call this function several times to use multiple
+   * mapping files.
+   *
+   * \note The text database is stored entirely in memory during processing.
+   *
+   * \param file the path of the mapping file.
+   *
+   * \return the amount of mappings added; `std::nullopt` if something went
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto load_mappings(const std::string& file) noexcept
+      -> std::optional<int>
+  {
+    return load_mappings(file.c_str());
   }
 
   /**
@@ -44368,7 +45001,12 @@ enum class file_type : unsigned
 /**
  * \class file
  *
- * \brief
+ * \brief Represents a file "context" or handle.
+ *
+ * \note This class differs slightly from other library classes in that it is
+ * owning, but it does *not* throw if the internal pointer can't be created,
+ * etc. This is because file operations are error-prone, so we want to avoid
+ * throwing a bunch of exceptions, for performance reasons.
  *
  * \since 5.3.0
  *
@@ -44408,14 +45046,14 @@ class file final
    *
    * \since 5.3.0
    */
-  explicit file(const not_null<czstring> path, const file_mode mode) noexcept
+  file(const not_null<czstring> path, const file_mode mode) noexcept
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
   /**
    * \copydoc file(not_null<czstring>, file_mode)
    */
-  explicit file(const std::string& path, const file_mode mode) noexcept
+  file(const std::string& path, const file_mode mode) noexcept
       : file{path.c_str(), mode}
   {}
 
@@ -44425,7 +45063,7 @@ class file final
   /// \{
 
   /**
-   * \brief Writes to the file.
+   * \brief Writes the supplied data to the file.
    *
    * \tparam T the type of the data.
    *
@@ -44437,12 +45075,26 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto write(const T* data, const size_type count) noexcept -> size_type
+  auto write(not_null<const T*> data, const size_type count) noexcept
+      -> size_type
   {
     assert(m_context);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
+  /**
+   * \brief Writes the contents of an array to the file, whose size is known at
+   * compile-time.
+   *
+   * \tparam T the type of the array elements.
+   * \tparam size the size of the array.
+   *
+   * \param data the data that will be written.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto write(const T (&data)[size]) noexcept -> size_type
   {
@@ -44451,6 +45103,20 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Writes the contents of a container to the file.
+   *
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
+   *
+   * \param container the container that will be written to the file.
+   *
+   * \return the number of objects that were written.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
@@ -44461,42 +45127,125 @@ class file final
 
   // clang-format on
 
+  /**
+   * \brief Writes an unsigned 8-bit integer to the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_byte(const u8 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteU8(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_little_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteLE64(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 16-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u16 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE16(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 32-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u32 value) noexcept -> bool
   {
     assert(m_context);
     return SDL_WriteBE32(m_context.get(), value) == 1;
   }
 
+  /**
+   * \brief Writes an unsigned 64-bit integer to the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \param value the value that will be written, in the native endianness.
+   *
+   * \return `true` if the value was written to the file; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
   auto write_as_big_endian(const u64 value) noexcept -> bool
   {
     assert(m_context);
@@ -44510,6 +45259,8 @@ class file final
 
   /**
    * \brief Reads data from the file.
+   *
+   * \pre the internal file context must not be null.
    *
    * \tparam T the type of the data that will be read.
    *
@@ -44527,6 +45278,22 @@ class file final
     return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
   }
 
+  /**
+   * \brief Reads data from the file to an array whose size is known at
+   * compile-time. This function uses the size of the supplied array to
+   * determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \tparam T the type of the data that will be read.
+   * \tparam size the size of the array.
+   *
+   * \param[out] data the pointer to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename T, size_type size>
   auto read_to(T (&data)[size]) noexcept -> size_type
   {
@@ -44535,6 +45302,23 @@ class file final
 
   // clang-format off
 
+  /**
+   * \brief Reads data from the file to a container. This function uses the size
+   * of the supplied container to determine the amount of elements to read.
+   *
+   * \pre the internal file context must not be null.
+   * \pre `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined otherwise.
+   *
+   * \tparam Container the type of the data that will be read, e.g.
+   * `std::vector` or `std::array`.
+   *
+   * \param[out] container the container to which the read data will be written to.
+   *
+   * \return the number of objects that were read.
+   *
+   * \since 5.3.0
+   */
   template <typename Container>
   auto read_to(Container& container) noexcept(noexcept(container.data()) &&
                                               noexcept(container.size()))
@@ -44546,6 +45330,20 @@ class file final
   // clang-format on
 
   // Reads a value of type T, where T must be default-constructible
+
+  /**
+   * \brief Reads a single value from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \note `T` must be default-constructible in order to use this function.
+   *
+   * \tparam T the type of the value, which must be default-constructible.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   template <typename T>
   auto read() noexcept(noexcept(T{})) -> T
   {
@@ -44554,42 +45352,111 @@ class file final
     return value;
   }
 
+  /**
+   * \brief Reads an unsigned 8-bit integer from the file.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_byte() noexcept -> u8
   {
     assert(m_context);
     return SDL_ReadU8(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadLE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadLE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a little endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_little_endian_u64() noexcept -> u64
   {
     assert(m_context);
     return SDL_ReadLE64(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 16-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u16() noexcept -> u16
   {
     assert(m_context);
     return SDL_ReadBE16(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 32-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u32() noexcept -> u32
   {
     assert(m_context);
     return SDL_ReadBE32(m_context.get());
   }
 
+  /**
+   * \brief Reads an unsigned 64-bit integer from the file, as a big endian
+   * value.
+   *
+   * \pre the internal file context must not be null.
+   *
+   * \return the read value.
+   *
+   * \since 5.3.0
+   */
   auto read_big_endian_u64() noexcept -> u64
   {
     assert(m_context);
@@ -44666,6 +45533,13 @@ class file final
     }
   }
 
+  /**
+   * \brief Returns a pointer to the internal file context.
+   *
+   * \return a pointer to the internal file context, can be null.
+   *
+   * \since 5.3.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_RWops*
   {
     return m_context.get();
@@ -44839,7 +45713,7 @@ class font final
    * \param file the file path of the TrueType font file, mustn't be null.
    * \param size the font size, must be greater than zero.
    *
-   * \throws exception if the supplied size is <= 0.
+   * \throws exception if the supplied size is not greater than zero.
    * \throws ttf_error if the font cannot be loaded.
    *
    * \since 3.0.0
@@ -44859,6 +45733,20 @@ class font final
 
     m_style = TTF_GetFontStyle(m_font.get());
   }
+
+  /**
+   * \brief Creates a font based on the `.ttf`-file at the specified path.
+   *
+   * \param file the file path of the TrueType font file.
+   * \param size the font size, must be greater than zero.
+   *
+   * \throws exception if the supplied size is not greater than zero.
+   * \throws ttf_error if the font cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  font(const std::string& file, const int size) : font{file.c_str(), size}
+  {}
 
   /**
    * \brief Resets the style of the font.
@@ -45273,6 +46161,22 @@ class font final
   }
 
   /**
+   * \brief Returns the width of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the width of.
+   *
+   * \return the width of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> int
+  {
+    return string_width(str.c_str());
+  }
+
+  /**
    * \brief Returns the height of the supplied string, if it was rendered
    * using the font.
    *
@@ -45293,6 +46197,22 @@ class font final
   }
 
   /**
+   * \brief Returns the height of the supplied string, if it was rendered
+   * using the font.
+   *
+   * \param str the string to determine the height of.
+   *
+   * \return the height of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> int
+  {
+    return string_height(str.c_str());
+  }
+
+  /**
    * \brief Returns the size of the supplied string, if it was rendered using
    * the font.
    *
@@ -45310,6 +46230,21 @@ class font final
     int height{};
     TTF_SizeText(m_font.get(), str, &width, &height);
     return {width, height};
+  }
+
+  /**
+   * \brief Returns the size of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the size of.
+   *
+   * \return the size of the string, if it was rendered using the font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> iarea
+  {
+    return string_size(str.c_str());
   }
 
   /**
@@ -45453,6 +46388,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
+#include <string>         // string
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
@@ -45586,6 +46522,18 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_utf8(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_blended_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -45611,6 +46559,19 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
+  }
+
+  /**
+   * \see store_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_utf8(const id_type id,
+                                  const std::string& string,
+                                  Renderer& renderer,
+                                  const u32 wrap)
+  {
+    store_blended_wrapped_utf8(id, string.c_str(), renderer, wrap);
   }
 
   /**
@@ -45642,6 +46603,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_utf8(const id_type id,
+                         const std::string& string,
+                         Renderer& renderer,
+                         const color& background)
+  {
+    store_shaded_utf8(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -45668,6 +46642,18 @@ class font_cache final
   }
 
   /**
+   * \see store_solid_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_utf8(const id_type id,
+                        const std::string& string,
+                        Renderer& renderer)
+  {
+    store_solid_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -45691,6 +46677,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_blended_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_latin1(const id_type id,
+                            const std::string& string,
+                            Renderer& renderer)
+  {
+    store_blended_latin1(id, string.c_str(), renderer);
   }
 
   /**
@@ -45722,6 +46720,19 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_latin1(const id_type id,
+                                    const std::string& string,
+                                    Renderer& renderer,
+                                    const u32 wrap)
+  {
+    store_blended_wrapped_latin1(id, string.c_str(), renderer, wrap);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -45750,6 +46761,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_latin1(const id_type id,
+                           const std::string& string,
+                           Renderer& renderer,
+                           const color& background)
+  {
+    store_shaded_latin1(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -45773,6 +46797,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_solid_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_latin1(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_solid_latin1(id, string.c_str(), renderer);
   }
 
   /**
@@ -50414,6 +51450,7 @@ namespace literals {
 
 #include <cassert>      // assert
 #include <optional>     // optional
+#include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
 // #include "button_state.hpp"
@@ -51540,6 +52577,7 @@ class basic_joystick final
    * \return the obtained GUID.
    *
    * \see `SDL_JoystickGetGUIDFromString`
+   *
    * \since 4.2.0
    */
   [[nodiscard]] static auto guid_from_string(
@@ -51547,6 +52585,23 @@ class basic_joystick final
   {
     assert(str);
     return SDL_JoystickGetGUIDFromString(str);
+  }
+
+  /**
+   * \brief Returns a joystick GUID based on the supplied string.
+   *
+   * \param str the string used to obtain the GUID.
+   *
+   * \return the obtained GUID.
+   *
+   * \see `SDL_JoystickGetGUIDFromString`
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto guid_from_string(const std::string& str) noexcept
+      -> SDL_JoystickGUID
+  {
+    return guid_from_string(str.c_str());
   }
 
   /**
@@ -51869,6 +52924,19 @@ class key_code final
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
+  /**
+   * \brief Creates a `key_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit key_code(const std::string& name) noexcept : key_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
   constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
@@ -51922,6 +52990,24 @@ class key_code final
     assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
+  }
+
+  /**
+   * \brief Sets the key code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `key_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> key_code&
+  {
+    return this->operator=(name.c_str());  // NOLINT
   }
 
   /**

@@ -3,7 +3,6 @@ name: CI (Ubuntu with GCC)
 on: [ push, pull_request ]
 
 env:
-  SDL_VERSION: 2.0.14
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
@@ -11,6 +10,9 @@ env:
 jobs:
   ubuntu-20-04-test:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
@@ -19,8 +21,8 @@ jobs:
       - name: Install SDL2
         shell: bash
         run: |
-          curl -L https://www.libsdl.org/release/SDL2-${{env.SDL_VERSION}}.tar.gz | tar xz
-          cd SDL2-${{env.SDL_VERSION}}
+          curl -L https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz | tar xz
+          cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
           make
           sudo make install

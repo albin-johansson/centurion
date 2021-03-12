@@ -1,6 +1,6 @@
 name: CI (Windows with MSVC)
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 env:
   SDL_VERSION: 2.0.14

@@ -5,6 +5,7 @@
 
 #include <cassert>      // assert
 #include <optional>     // optional
+#include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
 #include "button_state.hpp"
@@ -1122,6 +1123,7 @@ class basic_joystick final
    * \return the obtained GUID.
    *
    * \see `SDL_JoystickGetGUIDFromString`
+   *
    * \since 4.2.0
    */
   [[nodiscard]] static auto guid_from_string(
@@ -1129,6 +1131,23 @@ class basic_joystick final
   {
     assert(str);
     return SDL_JoystickGetGUIDFromString(str);
+  }
+
+  /**
+   * \brief Returns a joystick GUID based on the supplied string.
+   *
+   * \param str the string used to obtain the GUID.
+   *
+   * \return the obtained GUID.
+   *
+   * \see `SDL_JoystickGetGUIDFromString`
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto guid_from_string(const std::string& str) noexcept
+      -> SDL_JoystickGUID
+  {
+    return guid_from_string(str.c_str());
   }
 
   /**

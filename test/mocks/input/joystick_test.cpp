@@ -498,6 +498,14 @@ TEST_F(JoystickTest, Count)
 
 TEST_F(JoystickTest, GuidFromString)
 {
-  const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
-  EXPECT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
+  {
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
+    EXPECT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
+
+  {
+    using namespace std::string_literals;
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string(""s);
+    EXPECT_EQ(2, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
 }

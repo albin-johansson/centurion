@@ -139,14 +139,14 @@ class file final
    *
    * \since 5.3.0
    */
-  explicit file(const not_null<czstring> path, const file_mode mode) noexcept
+  file(const not_null<czstring> path, const file_mode mode) noexcept
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
   /**
    * \copydoc file(not_null<czstring>, file_mode)
    */
-  explicit file(const std::string& path, const file_mode mode) noexcept
+  file(const std::string& path, const file_mode mode) noexcept
       : file{path.c_str(), mode}
   {}
 

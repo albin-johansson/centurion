@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
+#include <string>         // string
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
@@ -130,6 +131,18 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_utf8(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_blended_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -155,6 +168,19 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
+  }
+
+  /**
+   * \see store_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_utf8(const id_type id,
+                                  const std::string& string,
+                                  Renderer& renderer,
+                                  const u32 wrap)
+  {
+    store_blended_wrapped_utf8(id, string.c_str(), renderer, wrap);
   }
 
   /**
@@ -186,6 +212,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_utf8(const id_type id,
+                         const std::string& string,
+                         Renderer& renderer,
+                         const color& background)
+  {
+    store_shaded_utf8(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -212,6 +251,18 @@ class font_cache final
   }
 
   /**
+   * \see store_solid_utf8()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_utf8(const id_type id,
+                        const std::string& string,
+                        Renderer& renderer)
+  {
+    store_solid_utf8(id, string.c_str(), renderer);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -235,6 +286,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_blended_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_latin1(const id_type id,
+                            const std::string& string,
+                            Renderer& renderer)
+  {
+    store_blended_latin1(id, string.c_str(), renderer);
   }
 
   /**
@@ -266,6 +329,19 @@ class font_cache final
   }
 
   /**
+   * \see store_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_latin1(const id_type id,
+                                    const std::string& string,
+                                    Renderer& renderer,
+                                    const u32 wrap)
+  {
+    store_blended_wrapped_latin1(id, string.c_str(), renderer, wrap);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -294,6 +370,19 @@ class font_cache final
   }
 
   /**
+   * \see store_shaded_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_shaded_latin1(const id_type id,
+                           const std::string& string,
+                           Renderer& renderer,
+                           const color& background)
+  {
+    store_shaded_latin1(id, string.c_str(), renderer, background);
+  }
+
+  /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
    * \details This function respects the kerning of the font. Any previous
@@ -317,6 +406,18 @@ class font_cache final
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
+  }
+
+  /**
+   * \see store_solid_latin1()
+   * \since 5.3.0
+   */
+  template <typename Renderer>
+  void store_solid_latin1(const id_type id,
+                          const std::string& string,
+                          Renderer& renderer)
+  {
+    store_solid_latin1(id, string.c_str(), renderer);
   }
 
   /**

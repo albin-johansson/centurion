@@ -83,6 +83,19 @@ class sound_effect final
   }
 
   /**
+   * \brief Creates a sound effect based on the audio file at the specified
+   * location.
+   *
+   * \param file the file path of the audio file.
+   *
+   * \throws mix_error if the audio file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit sound_effect(const std::string& file) : sound_effect{file.c_str()}
+  {}
+
+  /**
    * \brief Plays the sound effect.
    *
    * \note A negative value indicates that the sound effect should be looped

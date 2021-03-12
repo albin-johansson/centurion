@@ -67,7 +67,6 @@ function(cen_set_compiler_options target)
         -Wdouble-promotion
         -Wswitch-default
         -Wswitch-enum
-        -Wunused
         -Wuninitialized
         -Wsuggest-final-types
         -Wsuggest-final-methods

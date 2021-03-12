@@ -16,9 +16,11 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
-      - name: Print version information
-        run: |
-          g++ --version
-          cmake --version
-          ninja --version
+      - name: Install SDL2
         shell: bash
+        run: |
+          curl -L https://www.libsdl.org/release/SDL2-${{env.SDL_VERSION}}.tar.gz | tar xz
+          cd SDL2-${{env.SDL_VERSION}}
+          ./configure
+          make
+          sudo make install

@@ -1,0 +1,24 @@
+name: CI (Ubuntu with GCC)
+
+on: [ push, pull_request ]
+
+env:
+  SDL_VERSION: 2.0.14
+  IMG_VERSION: 2.0.5
+  MIX_VERSION: 2.0.4
+  TTF_VERSION: 2.0.15
+
+jobs:
+  ubuntu-20-04-test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Print version information
+        run: |
+          g++ --version
+          cmake --version
+          ninja --version
+          doxygen --version
+          lcov --version
+        shell: bash

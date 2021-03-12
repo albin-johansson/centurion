@@ -1,0 +1,17 @@
+name: CI (MacOS with Clang)
+
+on: [ push, pull_request ]
+
+env:
+  SDL_VERSION: 2.0.14
+  IMG_VERSION: 2.0.5
+  MIX_VERSION: 2.0.4
+  TTF_VERSION: 2.0.15
+
+jobs:
+  macos-latest-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: lukka/get-cmake@v3.18.3

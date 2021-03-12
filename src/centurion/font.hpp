@@ -532,6 +532,22 @@ class font final
   }
 
   /**
+   * \brief Returns the width of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the width of.
+   *
+   * \return the width of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> int
+  {
+    return string_width(str.c_str());
+  }
+
+  /**
    * \brief Returns the height of the supplied string, if it was rendered
    * using the font.
    *
@@ -549,6 +565,22 @@ class font final
     int height{};
     TTF_SizeText(m_font.get(), str, nullptr, &height);
     return height;
+  }
+
+  /**
+   * \brief Returns the height of the supplied string, if it was rendered
+   * using the font.
+   *
+   * \param str the string to determine the height of.
+   *
+   * \return the height of the supplied string, if it was rendered using the
+   * font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> int
+  {
+    return string_height(str.c_str());
   }
 
   /**

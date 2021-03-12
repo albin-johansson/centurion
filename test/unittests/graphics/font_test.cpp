@@ -215,12 +215,18 @@ TEST(Font, StringWidth)
 {
   const cen::font font{typeWriterPath, 12};
   EXPECT_GT(font.string_width("foo"), 0);
+
+  using namespace std::string_literals;
+  EXPECT_GT(font.string_width("foo"s), 0);
 }
 
 TEST(Font, StringHeight)
 {
   const cen::font font{typeWriterPath, 12};
   EXPECT_GT(font.string_height("foo"), 0);
+
+  using namespace std::string_literals;
+  EXPECT_GT(font.string_height("foo"s), 0);
 }
 
 TEST(Font, StringSize)

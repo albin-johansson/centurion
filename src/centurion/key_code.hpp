@@ -104,6 +104,19 @@ class key_code final
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
+  /**
+   * \brief Creates a `key_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit key_code(const std::string& name) noexcept : key_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
   constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
@@ -157,6 +170,24 @@ class key_code final
     assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
+  }
+
+  /**
+   * \brief Sets the key code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * the key code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `key_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> key_code&
+  {
+    return this->operator=(name.c_str());  // NOLINT
   }
 
   /**

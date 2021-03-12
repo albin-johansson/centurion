@@ -25,19 +25,37 @@ TEST(KeyCode, SDLScancodeContructor)
   EXPECT_EQ(scan, code.operator SDL_Scancode());
 }
 
-TEST(KeyCode, StringConstructor)
+TEST(KeyCode, CZStringConstructor)
 {
   {  // Good name
-    const auto name = "5";
-    const cen::key_code code{name};
+    const cen::key_code code{"5"};
     EXPECT_EQ(SDLK_5, code.get());
     EXPECT_EQ(cen::keycodes::five, code);
-    EXPECT_EQ(name, code.name());
+    EXPECT_EQ("5", code.name());
   }
 
   {  // Bad name
-    const auto name = "foobar";
-    const cen::key_code code{name};
+    const cen::key_code code{"foobar"};
+    EXPECT_EQ(SDLK_UNKNOWN, code.get());
+    EXPECT_EQ(cen::keycodes::unknown, code);
+    EXPECT_TRUE(code.name().empty());
+    EXPECT_TRUE(code.unknown());
+  }
+}
+
+TEST(KeyCode, StdStringConstructor)
+{
+  using namespace std::string_literals;
+
+  {  // Good name
+    const cen::key_code code{"5"s};
+    EXPECT_EQ(SDLK_5, code.get());
+    EXPECT_EQ(cen::keycodes::five, code);
+    EXPECT_EQ("5", code.name());
+  }
+
+  {  // Bad name
+    const cen::key_code code{"foobar"s};
     EXPECT_EQ(SDLK_UNKNOWN, code.get());
     EXPECT_EQ(cen::keycodes::unknown, code);
     EXPECT_TRUE(code.name().empty());
@@ -62,7 +80,7 @@ TEST(KeyCode, SDLScancodeAssignmentOperator)
   EXPECT_EQ(SDL_GetKeyFromScancode(SDL_SCANCODE_U), code.get());
 }
 
-TEST(KeyCode, StringAssignmentOperator)
+TEST(KeyCode, CZStringAssignmentOperator)
 {
   {  // Good name
     cen::key_code code;
@@ -76,6 +94,29 @@ TEST(KeyCode, StringAssignmentOperator)
   {  // Bad name
     cen::key_code code;
     code = "qwerty";
+
+    EXPECT_EQ(SDLK_UNKNOWN, code.get());
+    EXPECT_EQ(cen::keycodes::unknown, code);
+    EXPECT_TRUE(code.unknown());
+  }
+}
+
+TEST(KeyCode, StrStringAssignmentOperator)
+{
+  using namespace std::string_literals;
+
+  {  // Good name
+    cen::key_code code;
+    code = "Tab"s;
+
+    EXPECT_EQ(SDLK_TAB, code.get());
+    EXPECT_EQ(cen::keycodes::tab, code);
+    EXPECT_EQ("Tab", code.name());
+  }
+
+  {  // Bad name
+    cen::key_code code;
+    code = "qwerty"s;
 
     EXPECT_EQ(SDLK_UNKNOWN, code.get());
     EXPECT_EQ(cen::keycodes::unknown, code);

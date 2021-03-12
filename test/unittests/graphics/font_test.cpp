@@ -233,9 +233,18 @@ TEST(Font, StringSize)
 {
   const cen::font font{typeWriterPath, 12};
 
-  const auto [width, height] = font.string_size("bar");
-  EXPECT_GT(width, 0);
-  EXPECT_GT(height, 0);
+  {
+    const auto [width, height] = font.string_size("bar");
+    EXPECT_GT(width, 0);
+    EXPECT_GT(height, 0);
+  }
+
+  {
+    using namespace std::string_literals;
+    const auto [width, height] = font.string_size("bar"s);
+    EXPECT_GT(width, 0);
+    EXPECT_GT(height, 0);
+  }
 }
 
 TEST(Font, FontFaces)

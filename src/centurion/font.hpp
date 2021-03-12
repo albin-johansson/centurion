@@ -604,6 +604,21 @@ class font final
   }
 
   /**
+   * \brief Returns the size of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the size of.
+   *
+   * \return the size of the string, if it was rendered using the font.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> iarea
+  {
+    return string_size(str.c_str());
+  }
+
+  /**
    * \brief Returns the size of the font.
    *
    * \return the size of the font.

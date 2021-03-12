@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: lukka/get-cmake@v3.18.3
 
       - name: Print version information
         run: |
           g++ --version
           cmake --version
           ninja --version
-          doxygen --version
-          lcov --version
         shell: bash

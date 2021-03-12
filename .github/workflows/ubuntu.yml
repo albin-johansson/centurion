@@ -18,6 +18,15 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
+      - name: Emulate video device
+        shell: bash
+        run: |
+          sudo apt install xvfb
+          /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
+          export SDL_VIDEODRIVER=x11;
+          export DISPLAY=:99.0;
+          sleep 3 # give xvfb some time to start
+
       - name: Install SDL2
         shell: bash
         run: |

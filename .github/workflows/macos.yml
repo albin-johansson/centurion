@@ -2,12 +2,6 @@ name: CI (MacOS with Clang)
 
 on: [ push, pull_request ]
 
-env:
-  SDL_VERSION: 2.0.14
-  IMG_VERSION: 2.0.5
-  MIX_VERSION: 2.0.4
-  TTF_VERSION: 2.0.15
-
 jobs:
   macos-latest-test:
     runs-on: macos-latest
@@ -15,3 +9,40 @@ jobs:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
+
+      - name: Install SDL2
+        shell: bash
+        run: brew install SDL2
+
+      - name: Install SDL2_image
+        shell: bash
+        run: brew install SDL2_image
+
+      - name: Install SDL2_mixer
+        shell: bash
+        run: brew install SDL2_mixer
+
+      - name: Install SDL2_ttf
+        shell: bash
+        run: brew install SDL2_ttf
+
+      - name: Make build directory
+        shell: bash
+        run: mkdir build
+
+      - name: Build
+        working-directory: ./build
+        shell: bash
+        run: |
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -GNinja
+          ninja
+
+      - name: Run unit tests
+        working-directory: ./build/test/unittests
+        shell: bash
+        run: ./CenturionTests
+
+      - name: Run mocked test suite
+        working-directory: ./build/test/mocks
+        shell: bash
+        run: ./CenturionMocks

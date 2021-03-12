@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
+        SDL_VERSION: [ 2.0.14 ] # TODO add 2.0.10, 2.0.12
     steps:
       - uses: actions/checkout@v2
       - uses: ilammy/msvc-dev-cmd@v1

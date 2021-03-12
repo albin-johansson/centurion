@@ -3,6 +3,7 @@ name: CI (Ubuntu with GCC)
 on: [ push, pull_request ]
 
 env:
+  SDL_LATEST: 2.0.14
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
@@ -12,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
+        SDL_VERSION: [ 2.0.14 ] # TODO add 2.0.10, 2.0.12
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
@@ -64,23 +65,32 @@ jobs:
           sudo make install
 
       - name: Create build directory
+        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         shell: bash
         run: mkdir -p build
 
-      - name: Build
+      - name: Generate build files
         working-directory: ./build
         shell: bash
         run: |
           cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -GNinja
+
+      - name: Build
+        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
+        working-directory: ./build
+        shell: bash
+        run: |
           ninja CenturionTests
           ninja CenturionMocks
 
       - name: Run unit tests
+        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build/test/unittests
         shell: bash
         run: ./CenturionTests
 
       - name: Run mocked test suite
+        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build/test/mocks
         shell: bash
         run: ./CenturionMocks

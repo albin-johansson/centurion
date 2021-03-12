@@ -1071,6 +1071,21 @@ class basic_controller final
   }
 
   /**
+   * \brief Adds a game controller mapping.
+   *
+   * \param mapping the string that encodes the game controller mapping.
+   *
+   * \return `added` if a new mapping was added; `updated` if a previous mapping
+   * was updated; `error` if something went wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto add_mapping(const std::string& mapping) noexcept -> mapping_result
+  {
+    return add_mapping(mapping.c_str());
+  }
+
+  /**
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
@@ -1101,6 +1116,33 @@ class basic_controller final
     } else {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Loads a set of game controller mappings from a file.
+   *
+   * \details A collection of game controller mappings can be found at <a
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
+   * mappings for previously known GUIDs will overwrite the previous mappings.
+   * Furthermore, mappings for different platforms than the current platform
+   * will be ignored.
+   *
+   * \remarks It's possible to call this function several times to use multiple
+   * mapping files.
+   *
+   * \note The text database is stored entirely in memory during processing.
+   *
+   * \param file the path of the mapping file.
+   *
+   * \return the amount of mappings added; `std::nullopt` if something went
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  static auto load_mappings(const std::string& file) noexcept
+      -> std::optional<int>
+  {
+    return load_mappings(file.c_str());
   }
 
   /**

@@ -456,6 +456,10 @@ TEST_F(ControllerTest, AddMapping)
 
   EXPECT_EQ(cen::controller_handle::mapping_result::error,
             m_controller.add_mapping("foo"));
+
+  using namespace std::string_literals;
+  EXPECT_EQ(cen::controller_handle::mapping_result::error,
+            m_controller.add_mapping("foo"s));
 }
 
 TEST_F(ControllerTest, LoadMappings)
@@ -467,6 +471,9 @@ TEST_F(ControllerTest, LoadMappings)
 
   EXPECT_FALSE(cen::controller::load_mappings("foo").has_value());
   EXPECT_EQ(7, cen::controller::load_mappings("foo"));
+
+  using namespace std::string_literals;
+  EXPECT_EQ(7, cen::controller::load_mappings("foo"s));
 }
 
 TEST_F(ControllerTest, Mapping)

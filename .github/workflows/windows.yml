@@ -3,7 +3,6 @@ name: CI (Windows with MSVC)
 on: [ push, pull_request ]
 
 env:
-  SDL_VERSION: 2.0.14
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
@@ -11,6 +10,9 @@ env:
 jobs:
   windows-latest-test:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
     steps:
       - uses: actions/checkout@v2
       - uses: ilammy/msvc-dev-cmd@v1
@@ -24,7 +26,7 @@ jobs:
       - name: Download SDL2
         uses: albin-johansson/download-sdl2@v1
         with:
-          version: ${{env.SDL_VERSION}}
+          version: ${{matrix.SDL_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
@@ -83,7 +85,7 @@ jobs:
       - name: Build
         working-directory: ./build
         env:
-          SDL2DIR: ${{github.workspace}}/SDL2-${{env.SDL_VERSION}}
+          SDL2DIR: ${{github.workspace}}/SDL2-${{matrix.SDL_VERSION}}
           SDL2IMAGEDIR: ${{github.workspace}}/SDL2_image-${{env.IMG_VERSION}}
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}

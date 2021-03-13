@@ -1,23 +1,22 @@
 # centurion
 
-[![version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://semver.org) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![CI: Windows](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml) [![CI: Ubuntu](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml) [![CI: MacOS](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml)
+[![version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://semver.org) 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CI: Windows](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml) 
+[![CI: Ubuntu](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml) 
+[![CI: MacOS](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml)
 [![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/albin-johansson/centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/centurion)
 
-## What is Centurion?
-
-Centurion is a multimedia-library built on top of SDL2, written in modern C++. It provides abstractions for window-management, 2D hardware-accelerated rendering, sound effects, music, game controllers, keyboard and mouse input, multi-threading, system information and much more. The overall goal of Centurion is to serve as an easy-to-use alternative to SDL2 that provides much better type- and memory-safety.
+Centurion is a multimedia-library built on top of SDL2, written in modern C++, which provides abstractions for window-management, hardware-accelerated rendering, sound effects, music, game controllers, keyboard and mouse input, multi-threading, system information, etc. The aim of Centurion is to serve as an easy-to-use and intuitive alternative to raw SDL2, that provides much improved type- and memory-safety.
 
 ## Why Centurion?
 
-As a result of Centurion utilizing the power of C++17, the library is much more intuitive and easy to use that raw SDL2. Centurion will take care of the memory management for you and protect you from silly type-errors. Furthermore, unlike other wrapper libraries for SDL2, Centurion actively tries to improve the SDL APIs, instead of just mirroring them.
+Centurion is written in C++17, enabling far more expressive and intuitive APIs compared to plain C. For instance, Centurion performs automatic memory management and provides type safe APIs, which are designed to be hard to use incorrectly. However, Centurion is not just a wrapper library that mirrors the underlying SDL APIs. Instead, a lot of effort has been put into improving the APIs by making them utilise idiomatic modern C++.
 
 ## Documentation
 
-No matter how well-written a library is, there's always a need for great documentation. Centurion features detailed in-source documentation using Doxygen, which should be detected by any modern IDE. The Doxygen documentation for the latest stable version is hosted [here](https://albin-johansson.github.io/centurion/).
-
-Furthermore, the library features a Read-the-Docs site that features tutorials, examples and various tips-and-tricks for an overview of the library. It can be found [here](https://centurion.readthedocs.io/en/latest/)!
+The library features rich in-source documentation using Doxygen, which provides detailed information about the different APIs. The Doxygen documentation for the latest stable release is hosted [here](https://albin-johansson.github.io/centurion/). Furthermore, there's a Read-the-Docs site aimed to provide an overview of the library, with examples and some tips for using Centurion, which you can find [here](https://centurion.readthedocs.io/en/latest/).
 
 ## Installation
 

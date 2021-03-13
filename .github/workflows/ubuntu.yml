@@ -11,7 +11,7 @@ env:
   DISPLAY: :99.0
 
 jobs:
-  ubuntu-20-04-test:
+  ubuntu-test:
     runs-on: ubuntu-20.04
     strategy:
       matrix:

@@ -1,11 +1,13 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+#include "../centurion_cfg.hpp"
+
+#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+
 #include <array>            // array
 #include <cstddef>          // byte, size_t
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
-
-#include "../centurion_cfg.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -34,4 +36,5 @@ class stack_resource final
 }  // namespace cen::detail
 /// \endcond
 
+#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER

@@ -24,7 +24,7 @@ jobs:
 
       - name: Install SDL2_mixer
         shell: bash
-        run: brew install SDL2_mixer --enable-music-mod-mikmod --enable-music-mod-modplug --enable-music-ogg
+        run: brew install SDL2_mixer --enable-music-ogg
 
       - name: Install SDL2_ttf
         shell: bash

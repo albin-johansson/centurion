@@ -11,9 +11,17 @@
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup compiler
 /// \{
 
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
 [[nodiscard]] constexpr auto on_msvc() noexcept -> bool
 {
 #ifdef _MSC_VER
@@ -23,6 +31,14 @@ namespace cen {
 #endif  // _MSC_VER
 }
 
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
 [[nodiscard]] constexpr auto on_gcc() noexcept -> bool
 {
 #ifdef __GNUC__
@@ -32,6 +48,14 @@ namespace cen {
 #endif  // __GNUC__
 }
 
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
 [[nodiscard]] constexpr auto on_clang() noexcept -> bool
 {
 #ifdef __clang__
@@ -41,6 +65,14 @@ namespace cen {
 #endif  // __clang__
 }
 
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
 [[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
 {
 #ifdef __EMSCRIPTEN__
@@ -50,6 +82,14 @@ namespace cen {
 #endif  // __EMSCRIPTEN__
 }
 
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
 [[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
 {
 #ifdef __INTEL_COMPILER
@@ -59,7 +99,7 @@ namespace cen {
 #endif  // __INTEL_COMPILER
 }
 
-/// \} End of system group
+/// \} End of compiler group
 
 }  // namespace cen
 

@@ -37,6 +37,12 @@
  */
 
 /**
+ * \defgroup compiler Compiler
+ * \brief Provides `constexpr` utilities for querying the current compiler.
+ * \note There is no guarantee that the compiler checks are mutually exclusive.
+ */
+
+/**
  * \defgroup geometry Geometry
  * \brief Contains basic geometric components, used throughout the library.
  */

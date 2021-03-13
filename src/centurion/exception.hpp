@@ -6,12 +6,10 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <cassert>    // assert
 #include <exception>  // exception
 
 #include "centurion_cfg.hpp"
 #include "czstring.hpp"
-#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -43,10 +41,9 @@ class exception : public std::exception
    *
    * \since 3.0.0
    */
-  explicit exception(const not_null<czstring> what) noexcept : m_what{what}
-  {
-    assert(what && "Cannot supply null exception message!");
-  }
+  explicit exception(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
@@ -85,7 +82,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit sdl_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -117,7 +114,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit img_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -149,7 +146,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit ttf_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -181,7 +178,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit mix_error(const czstring what) noexcept : exception{what}
   {}
 };
 

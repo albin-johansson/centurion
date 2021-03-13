@@ -49,7 +49,6 @@ void reset_core()
   RESET_FAKE(SDL_GetError);
   RESET_FAKE(SDL_RWFromFile);
 
-  // Exception classes can't handle null message
   std::array values{"dummy"};
   SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values));
 }

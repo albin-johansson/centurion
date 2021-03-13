@@ -83,6 +83,15 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
   return SDL_OpenURL(url) == 0;
 }
 
+/**
+ * \see open_url()
+ * \since 5.3.0
+ */
+inline auto open_url(const std::string& url) noexcept -> bool
+{
+  return open_url(url.c_str());
+}
+
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /**

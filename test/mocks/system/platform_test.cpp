@@ -32,8 +32,11 @@ TEST_F(PlatformTest, OpenURL)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(cen::platform::open_url("https://www.google.com"));
-  EXPECT_TRUE(cen::platform::open_url("https://www.google.com"));
+  using namespace std::string_literals;
+  const auto url = "https://www.google.com"s;
+
+  EXPECT_FALSE(cen::platform::open_url(url));
+  EXPECT_TRUE(cen::platform::open_url(url));
 
   EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
 }

@@ -34,6 +34,7 @@
 #include "centurion/clipboard.hpp"
 #include "centurion/color.hpp"
 #include "centurion/colors.hpp"
+#include "centurion/compiler.hpp"
 #include "centurion/condition.hpp"
 #include "centurion/controller.hpp"
 #include "centurion/counter.hpp"

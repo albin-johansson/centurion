@@ -73,6 +73,18 @@ class mouse_state final
   }
 
   /**
+   * \brief Updates the mouse state.
+   *
+   * \param size the size of the window.
+   *
+   * \since 5.3.0
+   */
+  void update(const iarea size) noexcept
+  {
+    update(size.width, size.height);
+  }
+
+  /**
    * \brief Resets the screen and logical dimensions of the mouse state
    * instance.
    *
@@ -113,7 +125,21 @@ class mouse_state final
    */
   void set_logical_height(const int logicalHeight) noexcept
   {
-    this->m_logicalHeight = detail::max(logicalHeight, 1);
+    m_logicalHeight = detail::max(logicalHeight, 1);
+  }
+
+  /**
+   * \brief Sets the current logical window size.
+   *
+   * \param size the logical size that will be used to determine the mouse
+   * position.
+   *
+   * \since 5.3.0
+   */
+  void set_logical_size(const iarea size) noexcept
+  {
+    set_logical_width(size.width);
+    set_logical_height(size.height);
   }
 
   /**

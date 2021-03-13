@@ -77,6 +77,24 @@
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
 
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
 /// \} End of group core
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
@@ -181,6 +199,24 @@ template <typename To, typename From>
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
 
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
 /// \} End of group core
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
@@ -193,6 +229,186 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #endif
 
 #endif  // CENTURION_CFG_HEADER
+// #include "compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+// #include "centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -220,19 +436,20 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-#if (defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER))
-  // GCC are a bit behind on implementing the charconv header
-  return std::to_string(value);
-#else
-  std::array<char, bufferSize> buffer{};
-  const auto [ptr, err] =
-      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-  if (err == std::errc{}) {
-    return std::string{buffer.data(), ptr};
+  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>)) {
+    return std::to_string(value);
+
   } else {
-    return std::nullopt;
+    std::array<char, bufferSize> buffer{};
+    const auto [ptr, err] =
+        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+
+    if (err == std::errc{}) {
+      return std::string{buffer.data(), ptr};
+    } else {
+      return std::nullopt;
+    }
   }
-#endif
 }
 
 }  // namespace cen::detail
@@ -954,6 +1171,28 @@ using i16 = Sint16;
  * \brief Alias for an 8-bit signed integer.
  */
 using i8 = Sint8;
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
 
 namespace literals {
 
@@ -1766,6 +2005,12 @@ template <typename To, typename From>
 /**
  * \defgroup system System
  * \brief Contains various utilities related to system resources.
+ */
+
+/**
+ * \defgroup compiler Compiler
+ * \brief Provides `constexpr` utilities for querying the current compiler.
+ * \note There is no guarantee that the compiler checks are mutually exclusive.
  */
 
 /**
@@ -3301,14 +3546,11 @@ inline auto operator<<(std::ostream& stream, const color& color)
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <cassert>    // assert
 #include <exception>  // exception
 
 // #include "centurion_cfg.hpp"
 
 // #include "czstring.hpp"
-
-// #include "not_null.hpp"
 
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -3341,10 +3583,9 @@ class exception : public std::exception
    *
    * \since 3.0.0
    */
-  explicit exception(const not_null<czstring> what) noexcept : m_what{what}
-  {
-    assert(what && "Cannot supply null exception message!");
-  }
+  explicit exception(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
@@ -3383,7 +3624,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit sdl_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -3415,7 +3656,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit img_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -3447,7 +3688,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit ttf_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -3479,7 +3720,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit mix_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -3900,7 +4141,6 @@ template <typename T>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <cassert>    // assert
 #include <exception>  // exception
 
 // #include "centurion_cfg.hpp"
@@ -3945,6 +4185,24 @@ template <typename T>
 #define CENTURION_SDL_VERSION_IS(x, y, z)                      \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
 
 /// \} End of group core
 
@@ -4022,8 +4280,6 @@ using zstring = char*;
 
 #endif  // CENTURION_CZSTRING_HEADER
 
-// #include "not_null.hpp"
-
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -4055,10 +4311,9 @@ class exception : public std::exception
    *
    * \since 3.0.0
    */
-  explicit exception(const not_null<czstring> what) noexcept : m_what{what}
-  {
-    assert(what && "Cannot supply null exception message!");
-  }
+  explicit exception(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
@@ -4097,7 +4352,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit sdl_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -4129,7 +4384,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit img_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -4161,7 +4416,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit ttf_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -4193,7 +4448,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit mix_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -10412,6 +10667,21 @@ class basic_surface final
   }
 
   /**
+   * \brief Creates a surface based on the image at the specified path.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param file the file path of the image file that will be loaded.
+   *
+   * \throws img_error if the surface cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
+  {}
+
+  /**
    * \brief Creates a surface with the specified dimensions and pixel format.
    *
    * \tparam BB dummy parameter for SFINAE.
@@ -12867,6 +13137,19 @@ class scan_code final
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
+  /**
+   * \brief Creates a `scan_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
   constexpr auto operator=(scan_code&&) noexcept -> scan_code& = default;
@@ -12920,6 +13203,24 @@ class scan_code final
     assert(name);
     m_code = SDL_GetScancodeFromName(name);
     return *this;
+  }
+
+  /**
+   * \brief Sets the scan code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `scan_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> scan_code&
+  {
+    return operator=(name.c_str());  // NOLINT
   }
 
   /**
@@ -20476,13 +20777,31 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
-  basic_texture(const Renderer& renderer, not_null<czstring> path)
+  basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
       throw img_error{};
     }
   }
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
+  {}
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -20559,7 +20878,7 @@ class basic_texture final
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      not_null<czstring> path,
+                                      const not_null<czstring> path,
                                       const pixel_format format)
       -> basic_texture
   {
@@ -20586,6 +20905,19 @@ class basic_texture final
     texture.unlock();
 
     return texture;
+  }
+
+  /**
+   * \see streaming()
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      const pixel_format format)
+      -> basic_texture
+  {
+    return streaming(renderer, path.c_str(), format);
   }
 
   /**
@@ -28613,12 +28945,14 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// #include "../centurion_cfg.hpp"
+
+
+#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+
 #include <array>            // array
 #include <cstddef>          // byte, size_t
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
-
-// #include "../centurion_cfg.hpp"
-
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -28647,6 +28981,7 @@ class stack_resource final
 }  // namespace cen::detail
 /// \endcond
 
+#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
 // #include "exception.hpp"
@@ -28837,6 +29172,26 @@ class basic_window final
       throw sdl_error{};
     }
   }
+
+  /**
+   * \brief Creates an owning window with the specified title and size.
+   *
+   * \details The window will be hidden by default.
+   *
+   * \param title the title of the window.
+   * \param size the size of the window, components must be greater than zero.
+   *
+   * \throws exception if the supplied width or height aren't
+   * greater than zero.
+   * \throws sdl_error if the window cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  explicit basic_window(const std::string& title,
+                        const iarea& size = default_size())
+      : basic_window{title.c_str(), size}
+  {}
 
   /**
    * \brief Creates a window.
@@ -29075,6 +29430,18 @@ class basic_window final
   {
     assert(title);
     SDL_SetWindowTitle(m_window, title);
+  }
+
+  /**
+   * \brief Sets the title of the window.
+   *
+   * \param title the title of the window.
+   *
+   * \since 5.3.0
+   */
+  void set_title(const std::string& title) noexcept
+  {
+    set_title(title.c_str());
   }
 
   /**
@@ -30296,9 +30663,14 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
+#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
+#else
+    std::vector<SDL_MessageBoxButtonData> buttonData;
+    buttonData.reserve(8);
+#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
     if (m_buttons.empty()) {
       add_button(0, "OK", default_button::return_key);
@@ -30521,6 +30893,18 @@ class mouse_state final
   }
 
   /**
+   * \brief Updates the mouse state.
+   *
+   * \param size the size of the window.
+   *
+   * \since 5.3.0
+   */
+  void update(const iarea size) noexcept
+  {
+    update(size.width, size.height);
+  }
+
+  /**
    * \brief Resets the screen and logical dimensions of the mouse state
    * instance.
    *
@@ -30561,7 +30945,21 @@ class mouse_state final
    */
   void set_logical_height(const int logicalHeight) noexcept
   {
-    this->m_logicalHeight = detail::max(logicalHeight, 1);
+    m_logicalHeight = detail::max(logicalHeight, 1);
+  }
+
+  /**
+   * \brief Sets the current logical window size.
+   *
+   * \param size the logical size that will be used to determine the mouse
+   * position.
+   *
+   * \since 5.3.0
+   */
+  void set_logical_size(const iarea size) noexcept
+  {
+    set_logical_width(size.width);
+    set_logical_height(size.height);
   }
 
   /**
@@ -30851,6 +31249,18 @@ class music final
       throw mix_error{};
     }
   }
+
+  /**
+   * \brief Creates a `music` instance based on the file at the specified path.
+   *
+   * \param file the file path of the music file that will be loaded.
+   *
+   * \throws mix_error if the music file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit music(const std::string& file) : music{file.c_str()}
+  {}
 
   /**
    * \brief Plays the music associated with this instance.
@@ -31368,6 +31778,15 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
   return SDL_OpenURL(url) == 0;
 }
 
+/**
+ * \see open_url()
+ * \since 5.3.0
+ */
+inline auto open_url(const std::string& url) noexcept -> bool
+{
+  return open_url(url.c_str());
+}
+
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /**
@@ -31488,6 +31907,89 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
 [[nodiscard]] inline auto is_tablet() noexcept -> bool
 {
   return static_cast<bool>(SDL_IsTablet());
+}
+
+/**
+ * \brief Indicates whether or not the current OS is 32-bit Windows.
+ *
+ * \note This function should return `true` on 64-bit Windows as well.
+ *
+ * \return `true` if the current OS is 32-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win32() noexcept -> bool
+{
+#ifdef _WIN32
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is 64-bit Windows.
+ *
+ *
+ * \return `true` if the current OS is 64-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win64() noexcept -> bool
+{
+#ifdef _WIN64
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is derived from Linux.
+ *
+ * \return `true` if the current OS is derived from Linux; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_linux() noexcept -> bool
+{
+#ifdef __linux__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is Android.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_android() noexcept -> bool
+{
+#ifdef __ANDROID__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is either MacOS or iOS.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_apple() noexcept -> bool
+{
+#ifdef __APPLE__
+  return true;
+#else
+  return false;
+#endif
 }
 
 /// \} End of group system
@@ -32122,6 +32624,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_utf8(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_blended_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -32161,6 +32673,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
+                                                 const font& font,
+                                                 const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_utf8(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -32197,6 +32720,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(const std::string& str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    return render_shaded_utf8(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -32228,6 +32762,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_solid_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_solid_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -32256,6 +32800,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Blended(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_blended_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_latin1(const std::string& str,
+                                           const font& font) -> texture
+  {
+    return render_blended_latin1(str.c_str(), font);
   }
 
   /**
@@ -32298,6 +32852,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
+                                                   const font& font,
+                                                   const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_latin1(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -32334,6 +32899,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    return render_shaded_latin1(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -32362,6 +32938,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Solid(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_solid_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_latin1(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_solid_latin1(str.c_str(), font);
   }
 
   /**
@@ -34275,6 +34861,7 @@ class semaphore final
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
+#include <string>   // string
 
 // #include "centurion_cfg.hpp"
 
@@ -34325,6 +34912,19 @@ class shared_object final
   }
 
   /**
+   * \brief Loads a shared object.
+   *
+   * \param object the name of the shared object that will be loaded.
+   *
+   * \throws sdl_error if the shared object cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit shared_object(const std::string& object)
+      : shared_object{object.c_str()}
+  {}
+
+  /**
    * \brief Attempts to load a function from the shared object.
    *
    * \note The function must be a C-function!
@@ -34344,6 +34944,26 @@ class shared_object final
   {
     assert(name);
     return reinterpret_cast<T*>(SDL_LoadFunction(m_object.get(), name));
+  }
+
+  /**
+   * \brief Attempts to load a function from the shared object.
+   *
+   * \note The function must be a C-function!
+   *
+   * \tparam T the signature of the function, e.g. `void(int, float)`.
+   *
+   * \param name the name of the function in the shared object.
+   *
+   * \return the loaded function; a null pointer is returned if something goes
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  template <typename T>
+  [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
+  {
+    return load_function<T>(name.c_str());
   }
 
  private:
@@ -34461,6 +35081,19 @@ class sound_effect final
       throw mix_error{};
     }
   }
+
+  /**
+   * \brief Creates a sound effect based on the audio file at the specified
+   * location.
+   *
+   * \param file the file path of the audio file.
+   *
+   * \throws mix_error if the audio file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit sound_effect(const std::string& file) : sound_effect{file.c_str()}
+  {}
 
   /**
    * \brief Plays the sound effect.
@@ -35805,6 +36438,24 @@ class library final
 #define CENTURION_SDL_VERSION_IS(x, y, z)                      \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
 
 /// \} End of group core
 
@@ -37460,6 +38111,115 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 }  // namespace cen::colors
 
 #endif  // CENTURION_COLORS_HEADER
+
+// #include "centurion/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false`
+ * otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
 
 // #include "centurion/condition.hpp"
 #ifndef CENTURION_CONDITION_HEADER
@@ -44712,14 +45472,11 @@ enum class event_type
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <cassert>    // assert
 #include <exception>  // exception
 
 // #include "centurion_cfg.hpp"
 
 // #include "czstring.hpp"
-
-// #include "not_null.hpp"
 
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -44752,10 +45509,9 @@ class exception : public std::exception
    *
    * \since 3.0.0
    */
-  explicit exception(const not_null<czstring> what) noexcept : m_what{what}
-  {
-    assert(what && "Cannot supply null exception message!");
-  }
+  explicit exception(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
@@ -44794,7 +45550,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit sdl_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -44826,7 +45582,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit img_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -44858,7 +45614,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit ttf_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -44890,7 +45646,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(const not_null<czstring> what) noexcept : exception{what}
+  explicit mix_error(const czstring what) noexcept : exception{what}
   {}
 };
 
@@ -51315,6 +52071,28 @@ using i16 = Sint16;
  */
 using i8 = Sint8;
 
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
 namespace literals {
 
 /**
@@ -55556,9 +56334,14 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
+#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
+#else
+    std::vector<SDL_MessageBoxButtonData> buttonData;
+    buttonData.reserve(8);
+#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
     if (m_buttons.empty()) {
       add_button(0, "OK", default_button::return_key);
@@ -55779,6 +56562,18 @@ class mouse_state final
   }
 
   /**
+   * \brief Updates the mouse state.
+   *
+   * \param size the size of the window.
+   *
+   * \since 5.3.0
+   */
+  void update(const iarea size) noexcept
+  {
+    update(size.width, size.height);
+  }
+
+  /**
    * \brief Resets the screen and logical dimensions of the mouse state
    * instance.
    *
@@ -55819,7 +56614,21 @@ class mouse_state final
    */
   void set_logical_height(const int logicalHeight) noexcept
   {
-    this->m_logicalHeight = detail::max(logicalHeight, 1);
+    m_logicalHeight = detail::max(logicalHeight, 1);
+  }
+
+  /**
+   * \brief Sets the current logical window size.
+   *
+   * \param size the logical size that will be used to determine the mouse
+   * position.
+   *
+   * \since 5.3.0
+   */
+  void set_logical_size(const iarea size) noexcept
+  {
+    set_logical_width(size.width);
+    set_logical_height(size.height);
   }
 
   /**
@@ -56109,6 +56918,18 @@ class music final
       throw mix_error{};
     }
   }
+
+  /**
+   * \brief Creates a `music` instance based on the file at the specified path.
+   *
+   * \param file the file path of the music file that will be loaded.
+   *
+   * \throws mix_error if the music file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit music(const std::string& file) : music{file.c_str()}
+  {}
 
   /**
    * \brief Plays the music associated with this instance.
@@ -57235,6 +58056,15 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
   return SDL_OpenURL(url) == 0;
 }
 
+/**
+ * \see open_url()
+ * \since 5.3.0
+ */
+inline auto open_url(const std::string& url) noexcept -> bool
+{
+  return open_url(url.c_str());
+}
+
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /**
@@ -57355,6 +58185,89 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
 [[nodiscard]] inline auto is_tablet() noexcept -> bool
 {
   return static_cast<bool>(SDL_IsTablet());
+}
+
+/**
+ * \brief Indicates whether or not the current OS is 32-bit Windows.
+ *
+ * \note This function should return `true` on 64-bit Windows as well.
+ *
+ * \return `true` if the current OS is 32-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win32() noexcept -> bool
+{
+#ifdef _WIN32
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is 64-bit Windows.
+ *
+ *
+ * \return `true` if the current OS is 64-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win64() noexcept -> bool
+{
+#ifdef _WIN64
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is derived from Linux.
+ *
+ * \return `true` if the current OS is derived from Linux; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_linux() noexcept -> bool
+{
+#ifdef __linux__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is Android.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_android() noexcept -> bool
+{
+#ifdef __ANDROID__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is either MacOS or iOS.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_apple() noexcept -> bool
+{
+#ifdef __APPLE__
+  return true;
+#else
+  return false;
+#endif
 }
 
 /// \} End of group system
@@ -59303,6 +60216,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_utf8(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_blended_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -59342,6 +60265,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
+                                                 const font& font,
+                                                 const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_utf8(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -59378,6 +60312,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(const std::string& str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    return render_shaded_utf8(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -59409,6 +60354,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_solid_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_solid_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -59437,6 +60392,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Blended(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_blended_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_latin1(const std::string& str,
+                                           const font& font) -> texture
+  {
+    return render_blended_latin1(str.c_str(), font);
   }
 
   /**
@@ -59479,6 +60444,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
+                                                   const font& font,
+                                                   const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_latin1(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -59515,6 +60491,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    return render_shaded_latin1(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -59543,6 +60530,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Solid(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_solid_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_latin1(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_solid_latin1(str.c_str(), font);
   }
 
   /**
@@ -61125,6 +62122,19 @@ class scan_code final
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
+  /**
+   * \brief Creates a `scan_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
   constexpr auto operator=(scan_code&&) noexcept -> scan_code& = default;
@@ -61178,6 +62188,24 @@ class scan_code final
     assert(name);
     m_code = SDL_GetScancodeFromName(name);
     return *this;
+  }
+
+  /**
+   * \brief Sets the scan code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `scan_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> scan_code&
+  {
+    return operator=(name.c_str());  // NOLINT
   }
 
   /**
@@ -63225,6 +64253,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<B>& sensor)
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
+#include <string>   // string
 
 // #include "centurion_cfg.hpp"
 
@@ -63275,6 +64304,19 @@ class shared_object final
   }
 
   /**
+   * \brief Loads a shared object.
+   *
+   * \param object the name of the shared object that will be loaded.
+   *
+   * \throws sdl_error if the shared object cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit shared_object(const std::string& object)
+      : shared_object{object.c_str()}
+  {}
+
+  /**
    * \brief Attempts to load a function from the shared object.
    *
    * \note The function must be a C-function!
@@ -63294,6 +64336,26 @@ class shared_object final
   {
     assert(name);
     return reinterpret_cast<T*>(SDL_LoadFunction(m_object.get(), name));
+  }
+
+  /**
+   * \brief Attempts to load a function from the shared object.
+   *
+   * \note The function must be a C-function!
+   *
+   * \tparam T the signature of the function, e.g. `void(int, float)`.
+   *
+   * \param name the name of the function in the shared object.
+   *
+   * \return the loaded function; a null pointer is returned if something goes
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  template <typename T>
+  [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
+  {
+    return load_function<T>(name.c_str());
   }
 
  private:
@@ -63411,6 +64473,19 @@ class sound_effect final
       throw mix_error{};
     }
   }
+
+  /**
+   * \brief Creates a sound effect based on the audio file at the specified
+   * location.
+   *
+   * \param file the file path of the audio file.
+   *
+   * \throws mix_error if the audio file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit sound_effect(const std::string& file) : sound_effect{file.c_str()}
+  {}
 
   /**
    * \brief Plays the sound effect.
@@ -63837,6 +64912,21 @@ class basic_surface final
       throw img_error{};
     }
   }
+
+  /**
+   * \brief Creates a surface based on the image at the specified path.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param file the file path of the image file that will be loaded.
+   *
+   * \throws img_error if the surface cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
+  {}
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -64606,13 +65696,31 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
-  basic_texture(const Renderer& renderer, not_null<czstring> path)
+  basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
       throw img_error{};
     }
   }
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
+  {}
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -64689,7 +65797,7 @@ class basic_texture final
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      not_null<czstring> path,
+                                      const not_null<czstring> path,
                                       const pixel_format format)
       -> basic_texture
   {
@@ -64716,6 +65824,19 @@ class basic_texture final
     texture.unlock();
 
     return texture;
+  }
+
+  /**
+   * \see streaming()
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      const pixel_format format)
+      -> basic_texture
+  {
+    return streaming(renderer, path.c_str(), format);
   }
 
   /**
@@ -66862,6 +67983,26 @@ class basic_window final
   }
 
   /**
+   * \brief Creates an owning window with the specified title and size.
+   *
+   * \details The window will be hidden by default.
+   *
+   * \param title the title of the window.
+   * \param size the size of the window, components must be greater than zero.
+   *
+   * \throws exception if the supplied width or height aren't
+   * greater than zero.
+   * \throws sdl_error if the window cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  explicit basic_window(const std::string& title,
+                        const iarea& size = default_size())
+      : basic_window{title.c_str(), size}
+  {}
+
+  /**
    * \brief Creates a window.
    *
    * \details The window will use the size obtained from `default_size()` as its
@@ -67098,6 +68239,18 @@ class basic_window final
   {
     assert(title);
     SDL_SetWindowTitle(m_window, title);
+  }
+
+  /**
+   * \brief Sets the title of the window.
+   *
+   * \param title the title of the window.
+   *
+   * \since 5.3.0
+   */
+  void set_title(const std::string& title) noexcept
+  {
+    set_title(title.c_str());
   }
 
   /**

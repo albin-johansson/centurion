@@ -23,6 +23,7 @@ class SoundEffectTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(Mix_FreeChunk);
     RESET_FAKE(Mix_Pause);
     RESET_FAKE(Mix_PlayChannelTimed);

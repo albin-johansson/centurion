@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
+
 extern "C" {
 FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
@@ -17,6 +19,8 @@ class PlatformTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetPlatform);
     RESET_FAKE(SDL_IsTablet);
     RESET_FAKE(SDL_OpenURL);

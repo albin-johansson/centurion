@@ -49,6 +49,7 @@ class HapticTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_HapticClose);
     RESET_FAKE(SDL_HapticDestroyEffect);
     RESET_FAKE(SDL_HapticOpen);

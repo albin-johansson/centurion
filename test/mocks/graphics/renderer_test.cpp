@@ -7,6 +7,8 @@
 #include <tuple>        // tuple, make_tuple
 #include <type_traits>  // is_same_v
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_RenderPresent, SDL_Renderer*)
@@ -41,6 +43,8 @@ class RendererTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_RenderPresent);
     RESET_FAKE(SDL_RenderClear);
     RESET_FAKE(SDL_SetRenderDrawColor);

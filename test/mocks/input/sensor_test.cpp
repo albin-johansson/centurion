@@ -34,6 +34,7 @@ class SensorTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_SensorUpdate);
     RESET_FAKE(SDL_LockSensors);
     RESET_FAKE(SDL_UnlockSensors);

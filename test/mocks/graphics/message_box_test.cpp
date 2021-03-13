@@ -17,6 +17,8 @@ class MessageBoxTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_DestroyWindow);
     RESET_FAKE(SDL_CreateWindow);
     RESET_FAKE(SDL_ShowSimpleMessageBox);

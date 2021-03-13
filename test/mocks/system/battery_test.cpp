@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
+
 extern "C" {
 FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)
 }
@@ -36,6 +38,8 @@ class BatteryTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetPowerInfo);
   }
 };

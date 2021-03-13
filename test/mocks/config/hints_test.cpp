@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_ClearHints)
@@ -17,6 +19,8 @@ class HintsTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_ClearHints);
     RESET_FAKE(SDL_SetHintWithPriority);
     RESET_FAKE(SDL_GetHint);

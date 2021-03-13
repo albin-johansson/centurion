@@ -77,6 +77,7 @@ class ControllerTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_GameControllerUpdate);
     RESET_FAKE(SDL_GameControllerSetPlayerIndex);
     RESET_FAKE(SDL_GameControllerGetProduct);

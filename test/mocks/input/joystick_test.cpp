@@ -6,6 +6,7 @@
 #include <array>  // array
 
 #include "colors.hpp"
+#include "core_mocks.hpp"
 #include "integers.hpp"
 
 using namespace cen::literals;
@@ -72,6 +73,8 @@ class JoystickTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_JoystickUpdate);
     RESET_FAKE(SDL_LockJoysticks);
     RESET_FAKE(SDL_UnlockJoysticks);

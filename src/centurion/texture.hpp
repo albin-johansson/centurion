@@ -104,13 +104,31 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
-  basic_texture(const Renderer& renderer, not_null<czstring> path)
+  basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
       throw img_error{};
     }
   }
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
+  {}
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -187,7 +205,7 @@ class basic_texture final
    */
   template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      not_null<czstring> path,
+                                      const not_null<czstring> path,
                                       const pixel_format format)
       -> basic_texture
   {
@@ -214,6 +232,19 @@ class basic_texture final
     texture.unlock();
 
     return texture;
+  }
+
+  /**
+   * \see streaming()
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      const pixel_format format)
+      -> basic_texture
+  {
+    return streaming(renderer, path.c_str(), format);
   }
 
   /**

@@ -97,6 +97,19 @@ class scan_code final
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
+  /**
+   * \brief Creates a `scan_code` instance based on the specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \since 5.3.0
+   */
+  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()}
+  {}
+
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
   constexpr auto operator=(scan_code&&) noexcept -> scan_code& = default;
@@ -150,6 +163,24 @@ class scan_code final
     assert(name);
     m_code = SDL_GetScancodeFromName(name);
     return *this;
+  }
+
+  /**
+   * \brief Sets the scan code used to be the one associated with the
+   * specified name.
+   *
+   * \details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * \param name the name of the key.
+   *
+   * \return the `scan_code` instance.
+   *
+   * \since 5.3.0
+   */
+  auto operator=(const std::string& name) noexcept -> scan_code&
+  {
+    return operator=(name.c_str());  // NOLINT
   }
 
   /**

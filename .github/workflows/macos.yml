@@ -13,6 +13,10 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
+      - name: Install mpg123
+        shell: bash
+        run: brew install mpg123
+
       - name: Install SDL2
         shell: bash
         run: brew install SDL2

@@ -1,4 +1,4 @@
-name: CI (MacOS with Clang)
+name: "CI: MacOS"
 
 on: [ push, pull_request ]
 
@@ -6,7 +6,7 @@ env:
   MIX_VERSION: 2.0.4
 
 jobs:
-  macos-latest-test:
+  macos-test:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2

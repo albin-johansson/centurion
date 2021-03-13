@@ -9,6 +9,7 @@
 #include <type_traits>   // is_floating_point_v
 
 #include "../centurion_cfg.hpp"
+#include "compiler.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -36,19 +37,21 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-#if (defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER))
-  // GCC are a bit behind on implementing the charconv header
-  return std::to_string(value);
-#else
-  std::array<char, bufferSize> buffer{};
-  const auto [ptr, err] =
-      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-  if (err == std::errc{}) {
-    return std::string{buffer.data(), ptr};
+  if constexpr (on_gcc() /*&& !on_clang() && !on_intel_cpp()*/ ||
+                on_clang() && std::is_floating_point_v<T>) {
+    return std::to_string(value);
+
   } else {
-    return std::nullopt;
+    std::array<char, bufferSize> buffer{};
+    const auto [ptr, err] =
+        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+
+    if (err == std::errc{}) {
+      return std::string{buffer.data(), ptr};
+    } else {
+      return std::nullopt;
+    }
   }
-#endif
 }
 
 }  // namespace cen::detail

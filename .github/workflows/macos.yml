@@ -2,6 +2,9 @@ name: CI (MacOS with Clang)
 
 on: [ push, pull_request ]
 
+env:
+  MIX_VERSION: 2.0.4
+
 jobs:
   macos-latest-test:
     runs-on: macos-latest

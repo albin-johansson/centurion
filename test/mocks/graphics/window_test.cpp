@@ -49,6 +49,7 @@ class WindowTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_FreeSurface);
     RESET_FAKE(SDL_ShowWindow);
     RESET_FAKE(SDL_HideWindow);
@@ -221,7 +222,10 @@ TEST_F(WindowTest, SetIcon)
 
 TEST_F(WindowTest, SetTitle)
 {
-  m_window.set_title("foobar");
+  using namespace std::string_literals;
+  const auto title = "foobar"s;
+
+  m_window.set_title(title);
   EXPECT_EQ(1, SDL_SetWindowTitle_fake.call_count);
   EXPECT_STREQ("foobar", SDL_SetWindowTitle_fake.arg1_val);
 }

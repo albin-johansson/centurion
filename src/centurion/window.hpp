@@ -137,6 +137,26 @@ class basic_window final
   }
 
   /**
+   * \brief Creates an owning window with the specified title and size.
+   *
+   * \details The window will be hidden by default.
+   *
+   * \param title the title of the window.
+   * \param size the size of the window, components must be greater than zero.
+   *
+   * \throws exception if the supplied width or height aren't
+   * greater than zero.
+   * \throws sdl_error if the window cannot be created.
+   *
+   * \since 5.3.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  explicit basic_window(const std::string& title,
+                        const iarea& size = default_size())
+      : basic_window{title.c_str(), size}
+  {}
+
+  /**
    * \brief Creates a window.
    *
    * \details The window will use the size obtained from `default_size()` as its
@@ -373,6 +393,18 @@ class basic_window final
   {
     assert(title);
     SDL_SetWindowTitle(m_window, title);
+  }
+
+  /**
+   * \brief Sets the title of the window.
+   *
+   * \param title the title of the window.
+   *
+   * \since 5.3.0
+   */
+  void set_title(const std::string& title) noexcept
+  {
+    set_title(title.c_str());
   }
 
   /**

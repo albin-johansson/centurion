@@ -51,12 +51,14 @@ TEST_F(WindowTest, ConstructFromPointer)
 
 TEST_F(WindowTest, ContructorFromStringAndArea)
 {
-  EXPECT_THROW(cen::window("", {0, 10}), cen::exception);
-  EXPECT_THROW(cen::window("", {10, 0}), cen::exception);
+  using namespace std::string_literals;
+
+  EXPECT_THROW(cen::window(""s, {0, 10}), cen::exception);
+  EXPECT_THROW(cen::window(""s, {10, 0}), cen::exception);
 
   const auto width = 123;
   const auto height = 321;
-  const auto title = "foobar";
+  const auto title = "foobar"s;
   const cen::window window{title, {width, height}};
 
   EXPECT_EQ(title, window.title());

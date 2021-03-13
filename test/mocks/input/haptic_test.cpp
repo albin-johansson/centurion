@@ -118,9 +118,7 @@ TEST_F(HapticTest, FromMouse)
 TEST_F(HapticTest, InitRumble)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticRumbleInit,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticRumbleInit, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.init_rumble());
   EXPECT_TRUE(m_haptic.init_rumble());
@@ -131,9 +129,7 @@ TEST_F(HapticTest, InitRumble)
 TEST_F(HapticTest, PlayRumble)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticRumblePlay,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticRumblePlay, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.play_rumble(0.5f, 100_ms));
   EXPECT_TRUE(m_haptic.play_rumble(0.5f, 100_ms));
@@ -146,9 +142,7 @@ TEST_F(HapticTest, PlayRumble)
 TEST_F(HapticTest, StopRumble)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticRumbleStop,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticRumbleStop, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.stop_rumble());
   EXPECT_TRUE(m_haptic.stop_rumble());
@@ -159,9 +153,7 @@ TEST_F(HapticTest, StopRumble)
 TEST_F(HapticTest, IsRumbleSupported)
 {
   std::array values{-1, 0, 1};
-  SET_RETURN_SEQ(SDL_HapticRumbleSupported,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticRumbleSupported, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.is_rumble_supported());
   EXPECT_FALSE(m_haptic.is_rumble_supported());
@@ -172,9 +164,7 @@ TEST_F(HapticTest, IsRumbleSupported)
 TEST_F(HapticTest, HasFeatureConstant)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_CONSTANT};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_constant());
   EXPECT_TRUE(m_haptic.has_feature_constant());
@@ -185,9 +175,7 @@ TEST_F(HapticTest, HasFeatureConstant)
 TEST_F(HapticTest, HasFeatureSine)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_SINE};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_sine());
   EXPECT_TRUE(m_haptic.has_feature_sine());
@@ -198,9 +186,7 @@ TEST_F(HapticTest, HasFeatureSine)
 TEST_F(HapticTest, HasFeatureLeftRight)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_LEFTRIGHT};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_left_right());
   EXPECT_TRUE(m_haptic.has_feature_left_right());
@@ -211,9 +197,7 @@ TEST_F(HapticTest, HasFeatureLeftRight)
 TEST_F(HapticTest, HasFeatureTriangle)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_TRIANGLE};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_triangle());
   EXPECT_TRUE(m_haptic.has_feature_triangle());
@@ -224,9 +208,7 @@ TEST_F(HapticTest, HasFeatureTriangle)
 TEST_F(HapticTest, HasFeatureSawtoothUp)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_SAWTOOTHUP};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_sawtooth_up());
   EXPECT_TRUE(m_haptic.has_feature_sawtooth_up());
@@ -237,9 +219,7 @@ TEST_F(HapticTest, HasFeatureSawtoothUp)
 TEST_F(HapticTest, HasFeatureSawtoothDown)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_SAWTOOTHDOWN};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_sawtooth_down());
   EXPECT_TRUE(m_haptic.has_feature_sawtooth_down());
@@ -250,9 +230,7 @@ TEST_F(HapticTest, HasFeatureSawtoothDown)
 TEST_F(HapticTest, HasFeatureRamp)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_RAMP};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_ramp());
   EXPECT_TRUE(m_haptic.has_feature_ramp());
@@ -263,9 +241,7 @@ TEST_F(HapticTest, HasFeatureRamp)
 TEST_F(HapticTest, HasFeatureSpring)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_SPRING};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_spring());
   EXPECT_TRUE(m_haptic.has_feature_spring());
@@ -276,9 +252,7 @@ TEST_F(HapticTest, HasFeatureSpring)
 TEST_F(HapticTest, HasFeatureDamper)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_DAMPER};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_damper());
   EXPECT_TRUE(m_haptic.has_feature_damper());
@@ -289,9 +263,7 @@ TEST_F(HapticTest, HasFeatureDamper)
 TEST_F(HapticTest, HasFeatureInertia)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_INERTIA};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_inertia());
   EXPECT_TRUE(m_haptic.has_feature_inertia());
@@ -302,9 +274,7 @@ TEST_F(HapticTest, HasFeatureInertia)
 TEST_F(HapticTest, HasFeatureFriction)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_FRICTION};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_friction());
   EXPECT_TRUE(m_haptic.has_feature_friction());
@@ -315,9 +285,7 @@ TEST_F(HapticTest, HasFeatureFriction)
 TEST_F(HapticTest, HasFeatureGain)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_GAIN};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_gain());
   EXPECT_TRUE(m_haptic.has_feature_gain());
@@ -328,9 +296,7 @@ TEST_F(HapticTest, HasFeatureGain)
 TEST_F(HapticTest, HasFeatureAutocenter)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_AUTOCENTER};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_autocenter());
   EXPECT_TRUE(m_haptic.has_feature_autocenter());
@@ -341,9 +307,7 @@ TEST_F(HapticTest, HasFeatureAutocenter)
 TEST_F(HapticTest, HasFeatureStatus)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_STATUS};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_status());
   EXPECT_TRUE(m_haptic.has_feature_status());
@@ -354,9 +318,7 @@ TEST_F(HapticTest, HasFeatureStatus)
 TEST_F(HapticTest, HasFeaturePause)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_PAUSE};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_pause());
   EXPECT_TRUE(m_haptic.has_feature_pause());
@@ -367,9 +329,7 @@ TEST_F(HapticTest, HasFeaturePause)
 TEST_F(HapticTest, HasFeatureCustom)
 {
   std::array<unsigned, 2> values{0, SDL_HAPTIC_CUSTOM};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticQuery, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.has_feature_custom());
   EXPECT_TRUE(m_haptic.has_feature_custom());
@@ -380,9 +340,7 @@ TEST_F(HapticTest, HasFeatureCustom)
 TEST_F(HapticTest, Index)
 {
   std::array values{-1, 1};
-  SET_RETURN_SEQ(SDL_HapticIndex,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.index());
   EXPECT_EQ(1, m_haptic.index());
@@ -393,9 +351,7 @@ TEST_F(HapticTest, Index)
 TEST_F(HapticTest, Name)
 {
   std::array values{-1, 1};
-  SET_RETURN_SEQ(SDL_HapticIndex,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.name());
   EXPECT_EQ(0, SDL_HapticName_fake.call_count);
@@ -415,9 +371,7 @@ TEST_F(HapticTest, IsOpened)
 TEST_F(HapticTest, IsJoystickHaptic)
 {
   std::array values{-1, 0, 1};
-  SET_RETURN_SEQ(SDL_JoystickIsHaptic,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickIsHaptic, values.data(), cen::isize(values));
 
   const cen::joystick_handle joystick{nullptr};
 
@@ -431,9 +385,7 @@ TEST_F(HapticTest, IsJoystickHaptic)
 TEST_F(HapticTest, EffectCapacity)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_HapticNumEffects,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticNumEffects, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.effect_capacity());
   EXPECT_EQ(7, m_haptic.effect_capacity());
@@ -446,7 +398,7 @@ TEST_F(HapticTest, ConcurrentCapacity)
   std::array values{-1, 4};
   SET_RETURN_SEQ(SDL_HapticNumEffectsPlaying,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(m_haptic.concurrent_capacity());
   EXPECT_EQ(4, m_haptic.concurrent_capacity());
@@ -478,12 +430,10 @@ TEST_F(HapticTest, Pause)
   std::array features{SDL_HAPTIC_PAUSE};
   SET_RETURN_SEQ(SDL_HapticQuery,
                  features.data(),
-                 static_cast<int>(features.size()));
+                 cen::isize(features));
 
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticPause,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticPause, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.pause());
   EXPECT_TRUE(m_haptic.pause());
@@ -493,9 +443,7 @@ TEST_F(HapticTest, Pause)
 TEST_F(HapticTest, Unpause)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticUnpause,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticUnpause, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.unpause());
   EXPECT_TRUE(m_haptic.unpause());
@@ -505,9 +453,7 @@ TEST_F(HapticTest, Unpause)
 TEST_F(HapticTest, Upload)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_HapticNewEffect,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticNewEffect, values.data(), cen::isize(values));
 
   cen::haptic_constant effect;
   EXPECT_FALSE(m_haptic.upload(effect));
@@ -519,9 +465,7 @@ TEST_F(HapticTest, Upload)
 TEST_F(HapticTest, Update)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticUpdateEffect,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticUpdateEffect, values.data(), cen::isize(values));
 
   cen::haptic_constant effect;
   EXPECT_FALSE(m_haptic.update(42, effect));
@@ -533,9 +477,7 @@ TEST_F(HapticTest, Update)
 TEST_F(HapticTest, Run)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticRunEffect,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticRunEffect, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.run(42));
   EXPECT_EQ(1, SDL_HapticRunEffect_fake.arg2_val);
@@ -549,9 +491,7 @@ TEST_F(HapticTest, Run)
 TEST_F(HapticTest, Stop)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticStopEffect,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticStopEffect, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.stop(42));
   EXPECT_TRUE(m_haptic.stop(42));
@@ -562,9 +502,7 @@ TEST_F(HapticTest, Stop)
 TEST_F(HapticTest, StopAll)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticStopAll,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticStopAll, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.stop_all());
   EXPECT_TRUE(m_haptic.stop_all());
@@ -585,12 +523,10 @@ TEST_F(HapticTest, SetGain)
   std::array features{SDL_HAPTIC_GAIN};
   SET_RETURN_SEQ(SDL_HapticQuery,
                  features.data(),
-                 static_cast<int>(features.size()));
+                 cen::isize(features));
 
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticSetGain,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticSetGain, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.set_gain(3));
   EXPECT_TRUE(m_haptic.set_gain(24));
@@ -608,12 +544,10 @@ TEST_F(HapticTest, SetAutocenter)
   std::array features{SDL_HAPTIC_AUTOCENTER};
   SET_RETURN_SEQ(SDL_HapticQuery,
                  features.data(),
-                 static_cast<int>(features.size()));
+                 cen::isize(features));
 
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_HapticSetAutocenter,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticSetAutocenter, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.set_autocenter(3));
   EXPECT_TRUE(m_haptic.set_autocenter(24));
@@ -628,9 +562,7 @@ TEST_F(HapticTest, SetAutocenter)
 TEST_F(HapticTest, IsSupported)
 {
   std::array values{-1, 0, 1};
-  SET_RETURN_SEQ(SDL_HapticEffectSupported,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticEffectSupported, values.data(), cen::isize(values));
 
   cen::haptic_constant effect;
   EXPECT_FALSE(m_haptic.is_supported(effect));
@@ -646,12 +578,10 @@ TEST_F(HapticTest, IsPlaying)
   std::array features{SDL_HAPTIC_STATUS};
   SET_RETURN_SEQ(SDL_HapticQuery,
                  features.data(),
-                 static_cast<int>(features.size()));
+                 cen::isize(features));
 
   std::array values{-1, 0, 1};
-  SET_RETURN_SEQ(SDL_HapticGetEffectStatus,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_HapticGetEffectStatus, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.is_playing(0));  // Error
   EXPECT_FALSE(m_haptic.is_playing(0));

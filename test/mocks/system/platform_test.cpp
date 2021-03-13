@@ -30,7 +30,7 @@ class PlatformTest : public testing::Test
 TEST_F(PlatformTest, OpenURL)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_OpenURL, values.data(), static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::platform::open_url("https://www.google.com"));
   EXPECT_TRUE(cen::platform::open_url("https://www.google.com"));

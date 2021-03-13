@@ -1,13 +1,9 @@
 # centurion
 
-[![version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
-|  Build           |  Status       |
-| ---------------- | ------------- |
-| Ubuntu 20.04 w/ GCC 9.3.0 | [![Build Status](https://travis-ci.org/albin-johansson/centurion.svg?branch=main)](https://travis-ci.org/albin-johansson/centurion) |
-| Windows 10 w/ MSVC 19.28 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |
-| Read-the-Docs | [![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest) |
-| Code coverage | [![codecov](https://codecov.io/gh/albin-johansson/centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/centurion) |
+[![version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://semver.org) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CI: Windows](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/windows.yml) [![CI: Ubuntu](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/ubuntu.yml) [![CI: MacOS](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml/badge.svg?branch=dev)](https://github.com/albin-johansson/centurion/actions/workflows/macos.yml)
+[![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/albin-johansson/centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/centurion)
 
 ## What is Centurion?
 
@@ -25,16 +21,16 @@ Furthermore, the library features a Read-the-Docs site that features tutorials, 
 
 ## Installation
 
-The library is provided as a *single* header file, located in the `include` folder. Download the `centurion.hpp` header and include it in your project, and it's ready to be used! You will of course also need to install SDL2.
+The library is distributed as a *single* header file, located in the `include` folder. Download the `centurion.hpp` header and include it in your project, and it's ready to be used! You will of course also need to install SDL2.
 
 ### Minimal program
 
 ```C++
-#include <centurion.hpp> // Amalgamated header, includes everything in the library!
+#include <centurion.hpp>         // Amalgamated header, includes everything in the library!
 
 int main(int argc, char** argv)  // The signature of main must be this!
 {
-  cen::library library;  // Initialize the library
+  cen::library library;          // Initializes the library (i.e. SDL2, SDL2_image, SDL2_mixer and SDL_ttf)
 
   // The Centurion library is now ready to be used!
 

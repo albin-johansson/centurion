@@ -40,7 +40,7 @@
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
 
-#if defined(_MSC_VER) || defined(__GNUC__)
+#if !defined(__clang__) //&& (defined(_MSC_VER) || defined(__GNUC__))
 
 /**
  * \def CENTURION_HAS_STD_MEMORY_RESOURCE
@@ -56,7 +56,7 @@
  */
 #define CENTURION_HAS_STD_MEMORY_RESOURCE
 
-#endif  // defined(_MSC_VER) || defined(__GNUC__)
+#endif  // !defined(__clang__) //&& (defined(_MSC_VER) || defined(__GNUC__))
 
 /// \} End of group core
 

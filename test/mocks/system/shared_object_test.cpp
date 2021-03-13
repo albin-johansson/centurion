@@ -26,8 +26,11 @@ class SharedObjectTest : public testing::Test
 
 TEST_F(SharedObjectTest, LoadFunction)
 {
-  auto* ptr [[maybe_unused]] = m_object.load_function<void(int, float)>("foo");
+  using namespace std::string_literals;
+  const auto name = "foo"s;
+
+  auto* ptr [[maybe_unused]] = m_object.load_function<void(int, float)>(name);
 
   EXPECT_EQ(1, SDL_LoadFunction_fake.call_count);
-  EXPECT_STREQ("foo", SDL_LoadFunction_fake.arg1_val);
+  EXPECT_EQ(name, SDL_LoadFunction_fake.arg1_val);
 }

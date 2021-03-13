@@ -8,6 +8,10 @@ TEST(Platform, IsWindows)
 {
   EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::windows,
             cen::platform::is_windows());
+
+  constexpr auto isWindows =
+      cen::platform::ifdef_win32() || cen::platform::ifdef_win64();
+  EXPECT_EQ(cen::platform::is_windows(), isWindows);
 }
 
 TEST(Platform, IsMacOSX)

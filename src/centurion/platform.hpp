@@ -205,6 +205,89 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
   return static_cast<bool>(SDL_IsTablet());
 }
 
+/**
+ * \brief Indicates whether or not the current OS is 32-bit Windows.
+ *
+ * \note This function should return `true` on 64-bit Windows as well.
+ *
+ * \return `true` if the current OS is 32-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win32() noexcept -> bool
+{
+#ifdef _WIN32
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is 64-bit Windows.
+ *
+ *
+ * \return `true` if the current OS is 64-bit Windows; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_win64() noexcept -> bool
+{
+#ifdef _WIN64
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is derived from Linux.
+ *
+ * \return `true` if the current OS is derived from Linux; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_linux() noexcept -> bool
+{
+#ifdef __linux__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is Android.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_android() noexcept -> bool
+{
+#ifdef __ANDROID__
+  return true;
+#else
+  return false;
+#endif
+}
+
+/**
+ * \brief Indicates whether or not the current OS is either MacOS or iOS.
+ *
+ * \return `true` if the current OS is Android; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto ifdef_apple() noexcept -> bool
+{
+#ifdef __APPLE__
+  return true;
+#else
+  return false;
+#endif
+}
+
 /// \} End of group system
 
 }  // namespace cen::platform

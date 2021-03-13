@@ -24,7 +24,7 @@ jobs:
 
       - name: Install SDL2_mixer
         shell: bash
-        run: brew install SDL2_mixer
+        run: brew install SDL2_mixer --with-flac --with-fluid-synth --with-libmikmod --with-libmodplug --with-libvorbis --with-smpeg2
 
       - name: Install SDL2_ttf
         shell: bash

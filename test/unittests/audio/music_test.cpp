@@ -21,7 +21,8 @@ class MusicTest : public testing::Test
  protected:
   static void SetUpTestSuite()
   {
-    m_music = std::make_unique<cen::music>("resources/hiddenPond.mp3");
+    using namespace std::string_literals;
+    m_music = std::make_unique<cen::music>("resources/hiddenPond.mp3"s);
   }
 
   static void TearDownTestSuite()
@@ -39,7 +40,8 @@ TEST_F(MusicTest, Forever)
 
 TEST_F(MusicTest, Constructor)
 {
-  EXPECT_THROW(cen::music{"foobar"}, cen::mix_error);
+  using namespace std::string_literals;
+  EXPECT_THROW(cen::music{"foobar"s}, cen::mix_error);
 }
 
 TEST_F(MusicTest, Play)

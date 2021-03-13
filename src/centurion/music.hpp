@@ -123,6 +123,18 @@ class music final
   }
 
   /**
+   * \brief Creates a `music` instance based on the file at the specified path.
+   *
+   * \param file the file path of the music file that will be loaded.
+   *
+   * \throws mix_error if the music file cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit music(const std::string& file) : music{file.c_str()}
+  {}
+
+  /**
    * \brief Plays the music associated with this instance.
    *
    * \details Any previously playing music will be halted. However, this

@@ -40,6 +40,24 @@
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
 
+#if defined(_MSC_VER) || defined(__GNUC__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // defined(_MSC_VER) || defined(__GNUC__)
+
 /// \} End of group core
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)

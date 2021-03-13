@@ -41,8 +41,9 @@ TEST(Platform, IsIOS)
   EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::ios,
             cen::platform::is_ios());
 
-  constexpr auto isApple = cen::platform::ifdef_apple();
-  EXPECT_EQ(cen::platform::is_ios(), isApple);
+  // Check that iOS -> Apple
+  EXPECT_TRUE(!cen::platform::is_ios() ||
+              (cen::platform::is_ios() && cen::platform::ifdef_apple()));
 }
 
 TEST(Platform, IsAndroid)

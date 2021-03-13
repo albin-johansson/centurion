@@ -43,7 +43,9 @@ class SurfaceTest : public testing::Test
 
 TEST_F(SurfaceTest, PathConstructor)
 {
+  using namespace std::string_literals;
   EXPECT_THROW(cen::surface(""), cen::exception);
+  EXPECT_THROW(cen::surface(""s), cen::exception);
   EXPECT_NO_THROW(cen::surface{m_path});
 }
 

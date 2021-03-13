@@ -37,8 +37,7 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-  if constexpr (on_gcc() /*&& !on_clang() && !on_intel_cpp()*/ ||
-                on_clang() && std::is_floating_point_v<T>) {
+  if constexpr (on_gcc() || on_clang() && std::is_floating_point_v<T>) {
     return std::to_string(value);
 
   } else {

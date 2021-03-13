@@ -385,6 +385,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_utf8(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_blended_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -424,6 +434,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
+                                                 const font& font,
+                                                 const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_utf8(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -460,6 +481,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(const std::string& str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    return render_shaded_utf8(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid UTF-8 text.
    *
    * \pre `str` can't be null.
@@ -491,6 +523,16 @@ class basic_renderer final
   }
 
   /**
+   * \see render_solid_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_solid_utf8(str.c_str(), font);
+  }
+
+  /**
    * \brief Creates and returns a texture of blended Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -519,6 +561,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Blended(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_blended_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_latin1(const std::string& str,
+                                           const font& font) -> texture
+  {
+    return render_blended_latin1(str.c_str(), font);
   }
 
   /**
@@ -561,6 +613,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
+                                                   const font& font,
+                                                   const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_latin1(str.c_str(), font, wrap);
+  }
+
+  /**
    * \brief Creates and returns a texture of shaded Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -597,6 +660,17 @@ class basic_renderer final
   }
 
   /**
+   * \see render_shaded_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    return render_shaded_latin1(str.c_str(), font, background);
+  }
+
+  /**
    * \brief Creates and returns a texture of solid Latin-1 text.
    *
    * \pre `str` can't be null.
@@ -625,6 +699,16 @@ class basic_renderer final
     assert(str);
     return render_text(
         TTF_RenderText_Solid(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_solid_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_latin1(const std::string& str,
+                                         const font& font) -> texture
+  {
+    return render_solid_latin1(str.c_str(), font);
   }
 
   /**

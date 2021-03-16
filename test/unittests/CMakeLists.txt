@@ -9,6 +9,8 @@ set(SOURCE_FILES
     sdl_string_test.cpp
     vector3_test.cpp
 
+    compiler/compiler_test.cpp
+
     config/hints_test.cpp
 
     core/centurion_test.cpp

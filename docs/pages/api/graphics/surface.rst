@@ -18,7 +18,6 @@ Implicit conversions     None
 Explicit conversions     ``SDL_Surface*``, ``const SDL_Surface*``
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``surface.hpp``
 ======================  =========================================
 
 Interface 

@@ -3,7 +3,7 @@
 #include "event.hpp"
 
 using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing
-using common_event = cen::common_event<sdl_event>;
+using common_event = cen::quit_event;
 
 TEST(CommonEvent, SetTime)
 {

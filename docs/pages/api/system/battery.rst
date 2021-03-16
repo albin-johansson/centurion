@@ -13,7 +13,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen::battery``
-Header                   ``battery.hpp``
 Since                    3.0.0
 ======================  =========================================
 

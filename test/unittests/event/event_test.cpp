@@ -145,6 +145,21 @@ TEST(Event, NumQueued)
   EXPECT_EQ(0, cen::event::num_queued(cen::event_type::window));
 }
 
+TEST(Event, InQueue)
+{
+  cen::event::flush_all();
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::quit));
+
+  cen::quit_event qe;
+  cen::event::push(qe);
+
+  EXPECT_TRUE(cen::event::in_queue(cen::event_type::quit));
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::window));
+
+  cen::event::flush_all();
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::quit));
+}
+
 TEST(Event, Type)
 {
   SDL_Event sdl{};
@@ -160,13 +175,13 @@ TEST(Event, Type)
   cen::event::flush_all();
 }
 
-TEST(Event, Empty)
+TEST(Event, IsEmpty)
 {
   cen::event empty;
-  EXPECT_TRUE(empty.empty());
+  EXPECT_TRUE(empty.is_empty());
 
   const auto notEmpty = create_event(SDL_AUDIODEVICEADDED);
-  EXPECT_FALSE(notEmpty.empty());
+  EXPECT_FALSE(notEmpty.is_empty());
 }
 
 TEST(Event, Is)

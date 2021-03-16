@@ -23,7 +23,8 @@ class CenturionTest : public testing::Test
 
 TEST_F(CenturionTest, NoFailureDefaultConfiguration)
 {
-  try {
+  try
+  {
     const cen::library library;
 
     EXPECT_EQ(1, SDL_Init_fake.call_count);
@@ -40,7 +41,8 @@ TEST_F(CenturionTest, NoFailureDefaultConfiguration)
     EXPECT_EQ(cfg.mixerFormat, Mix_OpenAudio_fake.arg1_val);
     EXPECT_EQ(cfg.mixerChannels, Mix_OpenAudio_fake.arg2_val);
     EXPECT_EQ(cfg.mixerChunkSize, Mix_OpenAudio_fake.arg3_val);
-  } catch (...) {
+  } catch (...)
+  {
     FAIL();
   }
 }

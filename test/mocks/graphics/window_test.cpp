@@ -13,6 +13,7 @@ FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_MaximizeWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_MinimizeWindow, SDL_Window*)
+FAKE_VOID_FUNC(SDL_RestoreWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_SetWindowBordered, SDL_Window*, SDL_bool)
 FAKE_VOID_FUNC(SDL_SetWindowResizable, SDL_Window*, SDL_bool)
 FAKE_VOID_FUNC(SDL_SetWindowGrab, SDL_Window*, SDL_bool)
@@ -48,6 +49,7 @@ class WindowTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_FreeSurface);
     RESET_FAKE(SDL_ShowWindow);
     RESET_FAKE(SDL_HideWindow);
@@ -55,6 +57,7 @@ class WindowTest : public testing::Test
     RESET_FAKE(SDL_RaiseWindow);
     RESET_FAKE(SDL_MaximizeWindow);
     RESET_FAKE(SDL_MinimizeWindow);
+    RESET_FAKE(SDL_RestoreWindow);
     RESET_FAKE(SDL_SetWindowBordered);
     RESET_FAKE(SDL_SetWindowResizable);
     RESET_FAKE(SDL_SetWindowGrab);
@@ -129,6 +132,12 @@ TEST_F(WindowTest, Minimize)
 {
   m_window.minimize();
   EXPECT_EQ(1, SDL_MinimizeWindow_fake.call_count);
+}
+
+TEST_F(WindowTest, Restore)
+{
+  m_window.restore();
+  EXPECT_EQ(1, SDL_RestoreWindow_fake.call_count);
 }
 
 TEST_F(WindowTest, UpdateSurface)
@@ -213,7 +222,10 @@ TEST_F(WindowTest, SetIcon)
 
 TEST_F(WindowTest, SetTitle)
 {
-  m_window.set_title("foobar");
+  using namespace std::string_literals;
+  const auto title = "foobar"s;
+
+  m_window.set_title(title);
   EXPECT_EQ(1, SDL_SetWindowTitle_fake.call_count);
   EXPECT_STREQ("foobar", SDL_SetWindowTitle_fake.arg1_val);
 }
@@ -263,9 +275,7 @@ TEST_F(WindowTest, SetGrabMouse)
 TEST_F(WindowTest, SetBrightness)
 {
   std::array values{-1, -1, 0};
-  SET_RETURN_SEQ(SDL_SetWindowBrightness,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_SetWindowBrightness, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.set_brightness(-0.1f));
   EXPECT_EQ(1, SDL_SetWindowBrightness_fake.call_count);
@@ -301,9 +311,7 @@ TEST_F(WindowTest, HasInputFocus)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_MOUSE_FOCUS),
                     static_cast<cen::u32>(SDL_WINDOW_INPUT_FOCUS)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.has_input_focus());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -316,9 +324,7 @@ TEST_F(WindowTest, HasMouseFocus)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN),
                     static_cast<cen::u32>(SDL_WINDOW_MOUSE_FOCUS)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.has_mouse_focus());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -331,9 +337,7 @@ TEST_F(WindowTest, IsDecorated)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN_DESKTOP),
                     static_cast<cen::u32>(SDL_WINDOW_BORDERLESS)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_TRUE(m_window.is_decorated());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -346,9 +350,7 @@ TEST_F(WindowTest, IsResizable)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_OPENGL),
                     static_cast<cen::u32>(SDL_WINDOW_RESIZABLE)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_resizable());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -361,9 +363,7 @@ TEST_F(WindowTest, IsFullscreen)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_OPENGL),
                     static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_fullscreen());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -376,9 +376,7 @@ TEST_F(WindowTest, IsFullscreenDesktop)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_OPENGL),
                     static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN_DESKTOP)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_fullscreen_desktop());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -391,9 +389,7 @@ TEST_F(WindowTest, IsVisible)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_OPENGL),
                     static_cast<cen::u32>(SDL_WINDOW_SHOWN)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_visible());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -406,9 +402,7 @@ TEST_F(WindowTest, IsOpenGL)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_HIDDEN),
                     static_cast<cen::u32>(SDL_WINDOW_OPENGL)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_opengl());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -421,9 +415,7 @@ TEST_F(WindowTest, IsVulkan)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_SHOWN),
                     static_cast<cen::u32>(SDL_WINDOW_VULKAN)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_vulkan());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -436,9 +428,7 @@ TEST_F(WindowTest, IsForeign)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_SHOWN),
                     static_cast<cen::u32>(SDL_WINDOW_FOREIGN)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_foreign());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -451,9 +441,7 @@ TEST_F(WindowTest, IsCapturingMouse)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_VULKAN),
                     static_cast<cen::u32>(SDL_WINDOW_MOUSE_CAPTURE)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_capturing_mouse());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -466,9 +454,7 @@ TEST_F(WindowTest, IsMinimized)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_OPENGL),
                     static_cast<cen::u32>(SDL_WINDOW_MINIMIZED)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_minimized());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -481,9 +467,7 @@ TEST_F(WindowTest, IsMaximized)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_HIDDEN),
                     static_cast<cen::u32>(SDL_WINDOW_MAXIMIZED)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_maximized());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -496,9 +480,7 @@ TEST_F(WindowTest, AlwaysOnTop)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN),
                     static_cast<cen::u32>(SDL_WINDOW_ALWAYS_ON_TOP)};
-  SET_RETURN_SEQ(SDL_GetWindowFlags,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.always_on_top());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
@@ -544,9 +526,7 @@ TEST_F(WindowTest, Id)
 TEST_F(WindowTest, DisplayIndex)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_GetWindowDisplayIndex,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetWindowDisplayIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.display_index().has_value());
   EXPECT_EQ(1, SDL_GetWindowDisplayIndex_fake.call_count);

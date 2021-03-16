@@ -9,6 +9,8 @@ set(SOURCE_FILES
     sdl_string_test.cpp
     vector3_test.cpp
 
+    compiler/compiler_test.cpp
+
     config/hints_test.cpp
 
     core/centurion_test.cpp
@@ -84,6 +86,7 @@ set(SOURCE_FILES
     input/joystick_test.cpp
     input/key_code_tests.cpp
     input/key_state_test.cpp
+    input/mouse_button_test.cpp
     input/mouse_state_test.cpp
     input/scan_code_tests.cpp
     input/sensor_test.cpp
@@ -91,15 +94,18 @@ set(SOURCE_FILES
 
     system/base_path_test.cpp
     system/battery_test.cpp
+    system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
-    system/simd_block_test.cpp
+    system/file_test.cpp
     system/locale_test.cpp
     system/platform_test.cpp
     system/pref_path_test.cpp
     system/ram_test.cpp
     system/screen_test.cpp
+    system/shared_object_test.cpp
+    system/simd_block_test.cpp
 
     thread/condition_test.cpp
     thread/mutex_test.cpp
@@ -125,11 +131,11 @@ endif ()
 
 target_include_directories(${CENTURION_TEST_TARGET}
     PUBLIC .
+    PUBLIC ${CEN_SOURCE_DIR}
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${CEN_INCLUDE_DIR}
     SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
     SYSTEM PUBLIC ${gtest_SOURCE_DIR}
     SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include

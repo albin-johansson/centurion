@@ -17,7 +17,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``thread.hpp``
 ======================  =========================================
 
 Interface 

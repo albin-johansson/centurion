@@ -7,6 +7,7 @@
 #include <iostream>  // cout
 
 #include "core_mocks.hpp"
+#include "integers.hpp"
 
 extern "C" {
 FAKE_VOID_FUNC(SDL_SensorUpdate)
@@ -34,6 +35,7 @@ class SensorTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+
     RESET_FAKE(SDL_SensorUpdate);
     RESET_FAKE(SDL_LockSensors);
     RESET_FAKE(SDL_UnlockSensors);
@@ -79,9 +81,7 @@ TEST_F(SensorTest, NonPortableType)
 TEST_F(SensorTest, Data)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_SensorGetData,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_SensorGetData, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_sensor.data<3>());
   EXPECT_TRUE(m_sensor.data<3>());
@@ -93,7 +93,7 @@ TEST_F(SensorTest, IDFromIndex)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetDeviceInstanceID,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::sensor::id(0));
   EXPECT_TRUE(cen::sensor::id(0));
@@ -117,7 +117,7 @@ TEST_F(SensorTest, NonPortableTypeFromIndex)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SensorGetDeviceNonPortableType,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::sensor::non_portable_type(0));
   EXPECT_TRUE(cen::sensor::non_portable_type(0));

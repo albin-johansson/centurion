@@ -81,6 +81,55 @@ TEST(Color, FromSDLMessageBoxColor)
   EXPECT_EQ(color.alpha(), cen::color::max());
 }
 
+TEST(Color, FromHSV)
+{
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(0, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(359, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(0, 100, 0));
+  EXPECT_EQ(cen::colors::white, cen::color::from_hsv(0, 0, 100));
+
+  EXPECT_EQ(cen::colors::red, cen::color::from_hsv(0, 100, 100));
+  EXPECT_EQ(cen::colors::lime, cen::color::from_hsv(120, 100, 100));
+  EXPECT_EQ(cen::colors::blue, cen::color::from_hsv(240, 100, 100));
+
+  // Random colors
+  EXPECT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280, 75.5, 80));
+  EXPECT_EQ(cen::colors::turquoise, cen::color::from_hsv(174, 71.4, 87.8));
+  EXPECT_EQ(cen::colors::crimson, cen::color::from_hsv(348, 90.9, 86.3));
+  EXPECT_EQ(cen::colors::light_pink, cen::color::from_hsv(351, 28.6, 100));
+  EXPECT_EQ(cen::colors::thistle, cen::color::from_hsv(300, 11.6, 84.7));
+
+  {  // Maxed out
+    const auto color = cen::color::from_hsv(359, 100, 100);
+    EXPECT_EQ(255, color.red());
+    EXPECT_EQ(0, color.green());
+    EXPECT_EQ(4, color.blue());
+    EXPECT_EQ(255, color.alpha());
+  }
+}
+
+TEST(Color, FromHSL)
+{
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
+  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
+
+  EXPECT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
+  EXPECT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
+  EXPECT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
+
+  // Random colors
+  EXPECT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6, 49.8));
+  EXPECT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1, 56.5));
+  EXPECT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3, 47.1));
+  EXPECT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7));
+  EXPECT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3, 79.8));
+
+  // Maxed out
+  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
+}
+
 TEST(Color, EqualityOperatorReflexivity)
 {
   const cen::color color{10, 20, 30, 40};

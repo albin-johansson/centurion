@@ -20,7 +20,6 @@ Implicit conversions     None
 Explicit conversions     ``rect_type*``, ``const rect_type*``
 Overloaded operators     ``<<``, ``==``, ``!=``
 Namespace                ``::cen``
-Header                   ``rect.hpp``
 ======================  =======================================================
 
 Public member types/constants

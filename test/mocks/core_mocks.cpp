@@ -2,6 +2,8 @@
 
 #include <array>  // array
 
+#include "integers.hpp"
+
 // clang-format off
 extern "C" {
 DEFINE_FAKE_VALUE_FUNC(int, SDL_Init, Uint32)
@@ -47,9 +49,8 @@ void reset_core()
   RESET_FAKE(SDL_GetError);
   RESET_FAKE(SDL_RWFromFile);
 
-  // Exception classes can't handle null message
   std::array values{"dummy"};
-  SET_RETURN_SEQ(SDL_GetError, values.data(), static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values));
 }
 
 }  // namespace mocks

@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_PumpEvents)
@@ -18,6 +20,8 @@ class EventTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_PumpEvents);
     RESET_FAKE(SDL_FlushEvents);
     RESET_FAKE(SDL_PushEvent);

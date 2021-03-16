@@ -44,7 +44,8 @@ class interactive_font_cache final
   {
     m_window.show();
 
-    while (m_running) {
+    while (m_running)
+    {
       m_dispatcher.poll();
       render();
     }
@@ -86,11 +87,14 @@ class interactive_font_cache final
 
   void on_keyboard_event(const cen::keyboard_event& event)
   {
-    if (event.released() && event.is_active(cen::scancodes::escape)) {
+    if (event.released() && event.is_active(cen::scancodes::escape))
+    {
       m_running = false;
-
-    } else if (event.pressed() && event.is_active(cen::scancodes::backspace)) {
-      if (!m_text.empty()) {
+    }
+    else if (event.pressed() && event.is_active(cen::scancodes::backspace))
+    {
+      if (!m_text.empty())
+      {
         m_text.pop_back();
       }
     }
@@ -99,8 +103,10 @@ class interactive_font_cache final
   void on_text_input_event(const cen::text_input_event& event)
   {
     const std::string str{event.text_utf8()};
-    for (const auto ch : str) {
-      if (m_cache.has(ch)) {
+    for (const auto ch : str)
+    {
+      if (m_cache.has(ch))
+      {
         m_text += ch;
       }
     }

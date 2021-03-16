@@ -26,11 +26,15 @@ TEST(ScanCode, KeycodeConstructor)
 
 TEST(ScanCode, StringConstructor)
 {
+  using namespace std::string_literals;
+
   {  // Good name
-    const cen::scan_code code{"Escape"};
+    const auto name = "Escape"s;
+    const cen::scan_code code{name};
+
     EXPECT_EQ(cen::scancodes::escape, code);
     EXPECT_EQ(SDL_SCANCODE_ESCAPE, code.get());
-    EXPECT_EQ("Escape", code.name());
+    EXPECT_EQ(name, code.name());
   }
 
   {  // Bad name
@@ -60,13 +64,16 @@ TEST(ScanCode, SDLKeycodeAssignmentOperator)
 
 TEST(ScanCode, StringAssignmentOperator)
 {
+  using namespace std::string_literals;
+
   {  // Good name
+    const auto name = "A"s;
     cen::scan_code code;
-    code = "A";
+    code = name;
 
     EXPECT_EQ(cen::scancodes::a, code);
     EXPECT_EQ(SDL_SCANCODE_A, code.get());
-    EXPECT_EQ("A", code.name());
+    EXPECT_EQ(name, code.name());
   }
 
   {  // Bad name

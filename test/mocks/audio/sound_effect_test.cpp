@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(Mix_FreeChunk, Mix_Chunk*)
@@ -20,6 +22,8 @@ class SoundEffectTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(Mix_FreeChunk);
     RESET_FAKE(Mix_Pause);
     RESET_FAKE(Mix_PlayChannelTimed);
@@ -52,7 +56,7 @@ TEST_F(SoundEffectTest, Pause)
   cen::sound_effect sound;
 
   std::array values{0, 1};
-  SET_RETURN_SEQ(Mix_Playing, values.data(), static_cast<int>(values.size()));
+  SET_RETURN_SEQ(Mix_Playing, values.data(), cen::isize(values));
 
   sound.stop();  // Does not invoke Mix_Playing
   EXPECT_EQ(0, Mix_Pause_fake.call_count);

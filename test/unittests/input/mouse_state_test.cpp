@@ -27,7 +27,7 @@ TEST(MouseState, Defaults)
 TEST(MouseState, Update)
 {
   cen::mouse_state state;
-  EXPECT_NO_THROW(state.update(12, 632));
+  EXPECT_NO_THROW(state.update({12, 632}));
 }
 
 TEST(MouseState, Reset)
@@ -61,6 +61,15 @@ TEST(MouseState, SetLogicalHeight)
   state.set_logical_height(height);
 
   EXPECT_EQ(height, state.logical_height());
+}
+
+TEST(MouseState, SetLogicalSize)
+{
+  cen::mouse_state state;
+  const cen::iarea size{823, 569};
+
+  state.set_logical_size(size);
+  EXPECT_EQ(size, state.logical_size());
 }
 
 TEST(MouseState, LogicalSize)

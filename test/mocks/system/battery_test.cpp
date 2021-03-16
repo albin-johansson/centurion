@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
+
 extern "C" {
 FAKE_VALUE_FUNC(SDL_PowerState, SDL_GetPowerInfo, int*, int*)
 }
@@ -18,11 +20,13 @@ inline constexpr auto percentage = 27;
 
 auto power_delegate(int* outSeconds, int* outPercentage) -> SDL_PowerState
 {
-  if (outSeconds) {
+  if (outSeconds)
+  {
     *outSeconds = seconds.count();
   }
 
-  if (outPercentage) {
+  if (outPercentage)
+  {
     *outPercentage = percentage;
   }
 
@@ -36,6 +40,8 @@ class BatteryTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetPowerInfo);
   }
 };

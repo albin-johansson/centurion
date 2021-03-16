@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VALUE_FUNC(int, SDL_GetNumTouchDevices)
@@ -18,6 +20,8 @@ class TouchTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetNumTouchDevices);
     RESET_FAKE(SDL_GetTouchDevice);
     RESET_FAKE(SDL_GetTouchDeviceType);

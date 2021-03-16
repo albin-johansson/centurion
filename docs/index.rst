@@ -84,6 +84,7 @@ Welcome to Centurion's documentation!
    pages/api/system/counter
    pages/api/system/cpu
    pages/api/system/clipboard
+   pages/api/system/file
    pages/api/system/platform
    pages/api/system/ram
    pages/api/system/screen
@@ -118,6 +119,4 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Tutorials
 
-   pages/tutorials/installation_ubuntu
-   pages/tutorials/installation_windows
    pages/tutorials/hello_centurion

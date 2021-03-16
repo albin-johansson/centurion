@@ -17,7 +17,6 @@ Implicit conversions     None
 Explicit conversions     ``TTF_Font*``, ``const TTF_Font*``
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``font.hpp``
 ======================  =========================================
 
 Interface 

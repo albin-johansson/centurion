@@ -57,7 +57,9 @@ TEST_F(TextureTest, PointerConstructor)
 
 TEST_F(TextureTest, PathConstructor)
 {
+  using namespace std::string_literals;
   EXPECT_THROW(cen::texture(*m_renderer, "badpath"), cen::img_error);
+  EXPECT_THROW(cen::texture(*m_renderer, "badpath"s), cen::img_error);
 
   EXPECT_EQ(m_imgWidth, m_texture->width());
   EXPECT_EQ(m_imgHeight, m_texture->height());
@@ -88,9 +90,10 @@ TEST_F(TextureTest, CustomizationConstructor)
 
 TEST_F(TextureTest, Streaming)
 {
+  using namespace std::string_literals;
   const auto format = m_window->get_pixel_format();
 
-  EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc", format),
+  EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format),
                cen::exception);
 
   auto texture = cen::texture::streaming(*m_renderer, m_path, format);
@@ -179,13 +182,13 @@ TEST_F(TextureTest, Release)
   SDL_DestroyTexture(ptr);
 }
 
-TEST_F(TextureTest, IsStatic)
+TEST_F(TextureTest, IsNoLock)
 {
   const cen::texture texture{*m_renderer,
                              m_window->get_pixel_format(),
                              cen::texture_access::no_lock,
                              {10, 10}};
-  EXPECT_TRUE(texture.is_static());
+  EXPECT_TRUE(texture.is_no_lock());
 }
 
 TEST_F(TextureTest, IsStreaming)

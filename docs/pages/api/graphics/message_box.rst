@@ -17,7 +17,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Namespace                ``::cen``
-Header                   ``message_box.hpp``
 ======================  =========================================
 
 Interface

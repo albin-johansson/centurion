@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "core_mocks.hpp"
+
 extern "C" {
 FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
@@ -17,6 +19,8 @@ class PlatformTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetPlatform);
     RESET_FAKE(SDL_IsTablet);
     RESET_FAKE(SDL_OpenURL);
@@ -26,10 +30,13 @@ class PlatformTest : public testing::Test
 TEST_F(PlatformTest, OpenURL)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_OpenURL, values.data(), static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(cen::platform::open_url("https://www.google.com"));
-  EXPECT_TRUE(cen::platform::open_url("https://www.google.com"));
+  using namespace std::string_literals;
+  const auto url = "https://www.google.com"s;
+
+  EXPECT_FALSE(cen::platform::open_url(url));
+  EXPECT_TRUE(cen::platform::open_url(url));
 
   EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
 }

@@ -35,7 +35,19 @@ TEST(Rect, DefaultConstructor)
   EXPECT_FALSE(rect.has_area());
 }
 
-TEST(Rect, ValueConstructor)
+TEST(Rect, SDLRectConstructor)
+{
+  const SDL_FRect source{12.0f, 34.0f, 56.0f, 78.0f};
+  const cen::frect rect{source};
+
+  EXPECT_EQ(source.x, rect.x());
+  EXPECT_EQ(source.y, rect.y());
+  EXPECT_EQ(source.w, rect.width());
+  EXPECT_EQ(source.h, rect.height());
+  EXPECT_TRUE(rect.has_area());
+}
+
+TEST(Rect, PositionAndSizeConstructor)
 {
   const cen::fpoint pos{123.5f, 81.4f};
   const cen::farea size{921.8f, 512.6f};
@@ -48,6 +60,20 @@ TEST(Rect, ValueConstructor)
 
   EXPECT_NO_THROW(cen::frect({{0, 0}, {0, 0}}));
   EXPECT_NO_THROW(cen::frect({{0, 0}, {-1, -1}}));
+}
+
+TEST(Rect, ValueConstructor)
+{
+  const auto x = 123.0f;
+  const auto y = 711.3f;
+  const auto width = 231.9f;
+  const auto height = 365.1f;
+  const cen::frect rect{x, y, width, height};
+
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height, rect.height());
 }
 
 TEST(Rect, SetX)
@@ -92,12 +118,12 @@ TEST(Rect, SetMaxY)
   EXPECT_FLOAT_EQ(393, rect.height());
 }
 
-TEST(Rect, MoveTo)
+TEST(Rect, SetPosition)
 {
   cen::frect rect;
 
   const cen::fpoint pos{742.3f, 377.2f};
-  rect.move_to(pos);
+  rect.set_position(pos);
 
   EXPECT_EQ(rect.position(), pos);
 }
@@ -122,12 +148,12 @@ TEST(Rect, SetHeight)
   EXPECT_EQ(rect.height(), height);
 }
 
-TEST(Rect, Resize)
+TEST(Rect, SetSize)
 {
   cen::frect rect;
 
   const cen::farea size{345.8f, 289.7f};
-  rect.resize(size);
+  rect.set_size(size);
 
   EXPECT_EQ(rect.size(), size);
 }

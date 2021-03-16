@@ -41,6 +41,9 @@ class SoundEffect : public testing::Test
 TEST_F(SoundEffect, Constructor)
 {
   EXPECT_THROW(cen::sound_effect("foobar"), cen::mix_error);
+
+  using namespace std::string_literals;
+  EXPECT_THROW(cen::sound_effect("foobar"s), cen::mix_error);
 }
 
 TEST_F(SoundEffect, PlayAndStop)

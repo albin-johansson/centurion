@@ -6,6 +6,10 @@
 #include <array>  // array
 
 #include "colors.hpp"
+#include "core_mocks.hpp"
+#include "integers.hpp"
+
+using namespace cen::literals;
 
 // clang-format off
 extern "C" {
@@ -69,6 +73,8 @@ class JoystickTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_JoystickUpdate);
     RESET_FAKE(SDL_LockJoysticks);
     RESET_FAKE(SDL_UnlockJoysticks);
@@ -151,9 +157,7 @@ TEST_F(JoystickTest, Rumble)
 TEST_F(JoystickTest, RumbleTriggers)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_JoystickRumbleTriggers,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickRumbleTriggers, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.rumble_triggers(12, 34, 56_ms));
   EXPECT_TRUE(m_joystick.rumble_triggers(12, 34, 56_ms));
@@ -175,9 +179,7 @@ TEST_F(JoystickTest, SetPlayerIndex)
 TEST_F(JoystickTest, SetLED)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_JoystickSetLED,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickSetLED, values.data(), cen::isize(values));
 
   const auto color = cen::colors::magenta;
   EXPECT_FALSE(m_joystick.set_led(color));
@@ -188,9 +190,7 @@ TEST_F(JoystickTest, SetLED)
 TEST_F(JoystickTest, PlayerIndex)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_JoystickGetPlayerIndex,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickGetPlayerIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.player_index().has_value());
   EXPECT_EQ(7, m_joystick.player_index());
@@ -203,7 +203,7 @@ TEST_F(JoystickTest, PlayerIndexStatic)
   std::array values{-1, 42};
   SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::player_index(0).has_value());
   EXPECT_EQ(42, cen::joystick::player_index(0));
@@ -225,10 +225,8 @@ TEST_F(JoystickTest, GetTypeStatic)
 
 TEST_F(JoystickTest, Vendor)
 {
-  std::array values{cen::u16{0}, cen::u16{4}};
-  SET_RETURN_SEQ(SDL_JoystickGetVendor,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  std::array values{0_u16, 4_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetVendor, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.vendor().has_value());
   EXPECT_EQ(4, m_joystick.vendor());
@@ -238,10 +236,10 @@ TEST_F(JoystickTest, Vendor)
 
 TEST_F(JoystickTest, VendorStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{4}};
+  std::array values{0_u16, 4_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::vendor(0).has_value());
   EXPECT_EQ(4, cen::joystick::vendor(0));
@@ -251,10 +249,8 @@ TEST_F(JoystickTest, VendorStatic)
 
 TEST_F(JoystickTest, Product)
 {
-  std::array values{cen::u16{0}, cen::u16{6}};
-  SET_RETURN_SEQ(SDL_JoystickGetProduct,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  std::array values{0_u16, 6_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetProduct, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.product().has_value());
   EXPECT_EQ(6, m_joystick.product());
@@ -264,10 +260,10 @@ TEST_F(JoystickTest, Product)
 
 TEST_F(JoystickTest, ProductStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{8}};
+  std::array values{0_u16, 8_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::product(0).has_value());
   EXPECT_EQ(8, cen::joystick::product(0));
@@ -277,10 +273,10 @@ TEST_F(JoystickTest, ProductStatic)
 
 TEST_F(JoystickTest, ProductVersion)
 {
-  std::array values{cen::u16{0}, cen::u16{54}};
+  std::array values{0_u16, 54_u16};
   SET_RETURN_SEQ(SDL_JoystickGetProductVersion,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(m_joystick.product_version().has_value());
   EXPECT_EQ(54, m_joystick.product_version());
@@ -290,10 +286,10 @@ TEST_F(JoystickTest, ProductVersion)
 
 TEST_F(JoystickTest, ProductVersionStatic)
 {
-  std::array values{cen::u16{0}, cen::u16{12}};
+  std::array values{0_u16, 12_u16};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::product_version(0).has_value());
   EXPECT_EQ(12, cen::joystick::product_version(0));
@@ -304,9 +300,7 @@ TEST_F(JoystickTest, ProductVersionStatic)
 TEST_F(JoystickTest, GetBallAxisChange)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_JoystickGetBall,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickGetBall, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.get_ball_axis_change(0).has_value());
   EXPECT_TRUE(m_joystick.get_ball_axis_change(0).has_value());
@@ -316,10 +310,8 @@ TEST_F(JoystickTest, GetBallAxisChange)
 
 TEST_F(JoystickTest, AxisPos)
 {
-  std::array values{cen::i16{0}, cen::i16{123}};
-  SET_RETURN_SEQ(SDL_JoystickGetAxis,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  std::array values{0_i16, 123_i16};
+  SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.axis_pos(0).has_value());
   EXPECT_EQ(123, m_joystick.axis_pos(0));
@@ -332,7 +324,7 @@ TEST_F(JoystickTest, AxisInitialState)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(m_joystick.axis_initial_state(0).has_value());
   EXPECT_TRUE(m_joystick.axis_initial_state(0).has_value());
@@ -381,7 +373,7 @@ TEST_F(JoystickTest, InstanceIdStatic)
   std::array values{-1, 3};
   SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID,
                  values.data(),
-                 static_cast<int>(values.size()));
+                 cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::instance_id(0).has_value());
   EXPECT_EQ(3, cen::joystick::instance_id(0));
@@ -410,9 +402,7 @@ TEST_F(JoystickTest, Serial)
 TEST_F(JoystickTest, HasLED)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_JoystickHasLED,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_JoystickHasLED, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.has_led());
   EXPECT_TRUE(m_joystick.has_led());
@@ -480,21 +470,27 @@ TEST_F(JoystickTest, IsPolling)
   EXPECT_EQ(1, SDL_JoystickEventState_fake.call_count);
 }
 
-TEST_F(JoystickTest, Amount)
+TEST_F(JoystickTest, Count)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_NumJoysticks,
-                 values.data(),
-                 static_cast<int>(values.size()));
+  SET_RETURN_SEQ(SDL_NumJoysticks, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(cen::joystick::amount().has_value());
-  EXPECT_EQ(7, cen::joystick::amount());
+  EXPECT_FALSE(cen::joystick::count().has_value());
+  EXPECT_EQ(7, cen::joystick::count());
 
   EXPECT_EQ(2, SDL_NumJoysticks_fake.call_count);
 }
 
 TEST_F(JoystickTest, GuidFromString)
 {
-  const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
-  EXPECT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
+  {
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
+    EXPECT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
+
+  {
+    using namespace std::string_literals;
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string(""s);
+    EXPECT_EQ(2, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
 }

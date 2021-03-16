@@ -19,7 +19,6 @@ Implicit conversions     None
 Explicit conversions     ``bool`` (only ``renderer_handle``)
 Overloaded operators     ``<<``
 Namespace                ``::cen``
-Header                   ``renderer.hpp``
 ======================  =========================================
 
 Interface 

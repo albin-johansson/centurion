@@ -1,0 +1,11 @@
+{
+  "project": "centurion",
+  "target": "include/centurion.hpp",
+  "sources": [
+    "src/everything.hpp"
+  ],
+  "include_paths": [
+    "src",
+    "src/centurion"
+  ]
+}

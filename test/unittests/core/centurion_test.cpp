@@ -39,7 +39,7 @@ TEST(CenturionHeader, SDLMixerVersion)
 
 TEST(CenturionHeader, SDLTTFVersion)
 {
-  constexpr auto version = cen::ttf_version();
+  constexpr auto version = cen::sdl_ttf_version();
   EXPECT_EQ(SDL_TTF_MAJOR_VERSION, version.major);
   EXPECT_EQ(SDL_TTF_MINOR_VERSION, version.minor);
   EXPECT_EQ(SDL_TTF_PATCHLEVEL, version.patch);

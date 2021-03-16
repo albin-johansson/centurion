@@ -26,7 +26,6 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Namespace                ``::cen``
-Header                   ``centurion.hpp``
 Since                    4.0.0
 ======================  =========================================
 

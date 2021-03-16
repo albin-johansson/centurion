@@ -28,11 +28,16 @@ TEST(Font, Constructor)
 {
   EXPECT_THROW(cen::font("", 1), cen::ttf_error);
   EXPECT_THROW(cen::font(danielPath, 0), cen::exception);
+
+  using namespace std::string_literals;
+  EXPECT_THROW(cen::font(""s, 1), cen::ttf_error);
+  EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::exception);
 }
 
 TEST(Font, Reset)
 {
-  cen::font font{typeWriterPath, 12};
+  // We use the std::string constructor here to make sure it works
+  cen::font font{std::string{typeWriterPath}, 12};
 
   font.set_bold(true);
   font.set_italic(true);
@@ -40,77 +45,77 @@ TEST(Font, Reset)
   font.set_strikethrough(true);
 
   font.reset();
-  EXPECT_FALSE(font.bold());
-  EXPECT_FALSE(font.italic());
-  EXPECT_FALSE(font.underlined());
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_bold());
+  EXPECT_FALSE(font.is_italic());
+  EXPECT_FALSE(font.is_underlined());
+  EXPECT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetBold)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.bold());
+  EXPECT_FALSE(font.is_bold());
 
   font.set_bold(true);
-  EXPECT_TRUE(font.bold());
+  EXPECT_TRUE(font.is_bold());
 
   font.set_bold(false);
-  EXPECT_FALSE(font.bold());
+  EXPECT_FALSE(font.is_bold());
 }
 
 TEST(Font, SetItalic)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.italic());
+  EXPECT_FALSE(font.is_italic());
 
   font.set_italic(true);
-  EXPECT_TRUE(font.italic());
+  EXPECT_TRUE(font.is_italic());
 
   font.set_italic(false);
-  EXPECT_FALSE(font.italic());
+  EXPECT_FALSE(font.is_italic());
 }
 
 TEST(Font, SetUnderlined)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.underlined());
+  EXPECT_FALSE(font.is_underlined());
 
   font.set_underlined(true);
-  EXPECT_TRUE(font.underlined());
+  EXPECT_TRUE(font.is_underlined());
 
   font.set_underlined(false);
-  EXPECT_FALSE(font.underlined());
+  EXPECT_FALSE(font.is_underlined());
 }
 
 TEST(Font, SetStrikethrough)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_strikethrough());
 
   font.set_strikethrough(true);
-  EXPECT_TRUE(font.strikethrough());
+  EXPECT_TRUE(font.is_strikethrough());
 
   font.set_strikethrough(false);
-  EXPECT_FALSE(font.strikethrough());
+  EXPECT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetOutline)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.outlined());
+  EXPECT_FALSE(font.is_outlined());
 
   font.set_outline(2);
   EXPECT_EQ(font.outline(), 2);
-  EXPECT_TRUE(font.outlined());
+  EXPECT_TRUE(font.is_outlined());
 
   font.set_outline(0);
   EXPECT_EQ(font.outline(), 0);
-  EXPECT_FALSE(font.outlined());
+  EXPECT_FALSE(font.is_outlined());
 }
 
 TEST(Font, SetFontHinting)
@@ -135,10 +140,10 @@ TEST(Font, SetKerning)
   cen::font font{danielPath, 12};
 
   font.set_kerning(true);
-  EXPECT_TRUE(font.kerning());
+  EXPECT_TRUE(font.has_kerning());
 
   font.set_kerning(false);
-  EXPECT_FALSE(font.kerning());
+  EXPECT_FALSE(font.has_kerning());
 }
 
 TEST(Font, Size)
@@ -210,21 +215,36 @@ TEST(Font, StringWidth)
 {
   const cen::font font{typeWriterPath, 12};
   EXPECT_GT(font.string_width("foo"), 0);
+
+  using namespace std::string_literals;
+  EXPECT_GT(font.string_width("foo"s), 0);
 }
 
 TEST(Font, StringHeight)
 {
   const cen::font font{typeWriterPath, 12};
   EXPECT_GT(font.string_height("foo"), 0);
+
+  using namespace std::string_literals;
+  EXPECT_GT(font.string_height("foo"s), 0);
 }
 
 TEST(Font, StringSize)
 {
   const cen::font font{typeWriterPath, 12};
 
-  const auto [width, height] = font.string_size("bar");
-  EXPECT_GT(width, 0);
-  EXPECT_GT(height, 0);
+  {
+    const auto [width, height] = font.string_size("bar");
+    EXPECT_GT(width, 0);
+    EXPECT_GT(height, 0);
+  }
+
+  {
+    using namespace std::string_literals;
+    const auto [width, height] = font.string_size("bar"s);
+    EXPECT_GT(width, 0);
+    EXPECT_GT(height, 0);
+  }
 }
 
 TEST(Font, FontFaces)
@@ -239,10 +259,10 @@ TEST(Font, FontHinting)
   EXPECT_EQ(font.font_hinting(), cen::font::hint::normal);
 }
 
-TEST(Font, Kerning)
+TEST(Font, HasKerning)
 {
   const cen::font font{danielPath, 12};
-  EXPECT_TRUE(font.kerning());
+  EXPECT_TRUE(font.has_kerning());
 }
 
 TEST(Font, LineSkip)
@@ -294,16 +314,4 @@ TEST(Font, StreamOperator)
 {
   const cen::font font{typeWriterPath, 12};
   std::cout << "COUT: " << font << '\n';
-}
-
-TEST(Font, TTFVersion)
-{
-  SDL_version ttf;
-  SDL_TTF_VERSION(&ttf);
-
-  constexpr auto version = cen::ttf_version();
-
-  EXPECT_EQ(ttf.major, version.major);
-  EXPECT_EQ(ttf.minor, version.minor);
-  EXPECT_EQ(ttf.patch, version.patch);
 }

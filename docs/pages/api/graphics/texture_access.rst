@@ -12,7 +12,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen``
-Header                   ``texture_access.hpp``
 Since                    3.0.0
 ======================  =========================================
 

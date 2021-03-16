@@ -354,6 +354,25 @@ TEST_F(RendererTest, Info)
   EXPECT_TRUE(m_renderer->info().has_value());
 }
 
+TEST_F(RendererTest, Capture)
+{
+  m_window->show();
+  m_renderer->clear_with(cen::colors::pink);
+
+  m_renderer->set_color(cen::colors::red);
+  m_renderer->fill_rect<int>({{20, 20}, {150, 100}});
+
+  m_renderer->present();
+
+  const auto snapshot = m_renderer->capture(m_window->get_pixel_format());
+  EXPECT_TRUE(snapshot.save_as_bmp("snapshot.bmp"));
+
+  // We take the opportunity to check if we can load the BMP file
+  EXPECT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"));
+
+  m_window->hide();
+}
+
 TEST_F(RendererTest, ToString)
 {
   cen::log::put(cen::to_string(*m_renderer));

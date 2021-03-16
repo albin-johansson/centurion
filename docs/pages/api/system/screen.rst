@@ -11,7 +11,6 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Namespace                ``::cen::screen``
-Header                   ``screen.hpp``
 Since                    3.0.0
 ======================  =========================================
 

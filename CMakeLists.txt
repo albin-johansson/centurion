@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(centurion
-    VERSION 5.2.0
+    VERSION 5.3.0
     HOMEPAGE_URL "https://github.com/albin-johansson/centurion"
     LANGUAGES CXX)
 
@@ -11,8 +11,7 @@ include(Utilities)
 
 set(CEN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CEN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)
-set(CEN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
-set(CEN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(CEN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src/centurion)
 set(CEN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(CEN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
@@ -26,17 +25,6 @@ set(CXX_EXTENSIONS OFF)
 set(CENTURION_LIB_TARGET CenturionLibrary)
 set(CENTURION_TEST_TARGET CenturionTests)
 set(CENTURION_MOCK_TARGET CenturionMocks)
-
-if (UNIX)
-  set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
-  set(CENTURION_IMPORT_LIB ${CENTURION_DYNAMIC_LIB})
-else ()
-  set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
-  set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion${CMAKE_IMPORT_LIBRARY_SUFFIX})
-endif ()
-
-message("Centurion dynamic library: ${CENTURION_DYNAMIC_LIB}")
-message("Centurion import library: ${CENTURION_IMPORT_LIB}")
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
@@ -64,103 +52,101 @@ if (CEN_COVERAGE MATCHES ON)
 endif ()
 
 set(CENTURION_HEADERS
-    include/area.hpp
+    src/centurion/area.hpp
 
-    include/base_path.hpp
-    include/battery.hpp
-    include/blend_mode.hpp
-    include/button_state.hpp
+    src/centurion/base_path.hpp
+    src/centurion/battery.hpp
+    src/centurion/blend_mode.hpp
+    src/centurion/button_state.hpp
 
-    include/cast.hpp
-    include/centurion.hpp
-    include/centurion_api.hpp
-    include/centurion_cfg.hpp
-    include/clipboard.hpp
-    include/color.hpp
-    include/colors.hpp
-    include/condition.hpp
-    include/controller.hpp
-    include/counter.hpp
-    include/cpu.hpp
-    include/cursor.hpp
-    include/czstring.hpp
+    src/centurion/cast.hpp
+    src/centurion/centurion.hpp
+    src/centurion/centurion_cfg.hpp
+    src/centurion/clipboard.hpp
+    src/centurion/color.hpp
+    src/centurion/colors.hpp
+    src/centurion/condition.hpp
+    src/centurion/controller.hpp
+    src/centurion/counter.hpp
+    src/centurion/cpu.hpp
+    src/centurion/cursor.hpp
+    src/centurion/czstring.hpp
 
-    include/event_type.hpp
-    include/event.hpp
-    include/exception.hpp
+    src/centurion/event_type.hpp
+    src/centurion/event.hpp
+    src/centurion/exception.hpp
 
-    include/font.hpp
-    include/font_cache.hpp
+    src/centurion/font.hpp
+    src/centurion/font_cache.hpp
 
-    include/graphics_drivers.hpp
+    src/centurion/graphics_drivers.hpp
 
-    include/hints.hpp
+    src/centurion/hints.hpp
 
-    include/integers.hpp
+    src/centurion/integers.hpp
 
-    include/joystick.hpp
+    src/centurion/joystick.hpp
 
-    include/key_code.hpp
-    include/key_modifier.hpp
-    include/key_state.hpp
+    src/centurion/key_code.hpp
+    src/centurion/key_modifier.hpp
+    src/centurion/key_state.hpp
 
-    include/log.hpp
+    src/centurion/log.hpp
 
-    include/message_box.hpp
-    include/mouse_button.hpp
-    include/mouse_state.hpp
-    include/mutex.hpp
+    src/centurion/message_box.hpp
+    src/centurion/mouse_button.hpp
+    src/centurion/mouse_state.hpp
+    src/centurion/mutex.hpp
 
-    include/not_null.hpp
+    src/centurion/not_null.hpp
 
-    include/owner.hpp
+    src/centurion/owner.hpp
 
-    include/pixel_format.hpp
-    include/platform.hpp
-    include/point.hpp
-    include/pref_path.hpp
+    src/centurion/pixel_format.hpp
+    src/centurion/platform.hpp
+    src/centurion/point.hpp
+    src/centurion/pref_path.hpp
 
-    include/ram.hpp
-    include/rect.hpp
-    include/renderer.hpp
+    src/centurion/ram.hpp
+    src/centurion/rect.hpp
+    src/centurion/renderer.hpp
 
-    include/scale_mode.hpp
-    include/scan_code.hpp
-    include/scoped_lock.hpp
-    include/screen.hpp
-    include/sdl_string.hpp
-    include/semaphore.hpp
-    include/surface.hpp
+    src/centurion/scale_mode.hpp
+    src/centurion/scan_code.hpp
+    src/centurion/scoped_lock.hpp
+    src/centurion/screen.hpp
+    src/centurion/sdl_string.hpp
+    src/centurion/semaphore.hpp
+    src/centurion/surface.hpp
 
-    include/texture.hpp
-    include/texture_access.hpp
-    include/thread.hpp
-    include/time.hpp
-    include/touch.hpp
-    include/try_lock.hpp
-    include/types.hpp
+    src/centurion/texture.hpp
+    src/centurion/texture_access.hpp
+    src/centurion/thread.hpp
+    src/centurion/time.hpp
+    src/centurion/touch.hpp
+    src/centurion/try_lock.hpp
 
-    include/unicode_string.hpp
+    src/centurion/unicode_string.hpp
 
-    include/window.hpp
-    include/window_utils.hpp
+    src/centurion/window.hpp
+    src/centurion/window_utils.hpp
 
-    include/detail/address_of.hpp
-    include/detail/any_eq.hpp
-    include/detail/clamp.hpp
-    include/detail/convert_bool.hpp
-    include/detail/czstring_eq.hpp
-    include/detail/max.hpp
-    include/detail/owner_handle_api.hpp
-    include/detail/stack_resource.hpp
-    include/detail/static_bimap.hpp
-    include/detail/to_string.hpp)
+    src/centurion/detail/address_of.hpp
+    src/centurion/detail/any_eq.hpp
+    src/centurion/detail/clamp.hpp
+    src/centurion/detail/convert_bool.hpp
+    src/centurion/detail/czstring_eq.hpp
+    src/centurion/detail/max.hpp
+    src/centurion/detail/owner_handle_api.hpp
+    src/centurion/detail/stack_resource.hpp
+    src/centurion/detail/static_bimap.hpp
+    src/centurion/detail/to_string.hpp)
 
 if (CEN_AUDIO MATCHES ON)
   set(CENTURION_HEADERS
       ${CENTURION_HEADERS}
-      include/sound_effect.hpp
-      include/music.hpp)
+      src/centurion/sound_effect.hpp
+      src/centurion/music.hpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} INTERFACE)

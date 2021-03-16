@@ -7,6 +7,8 @@
 #include <tuple>        // tuple, make_tuple
 #include <type_traits>  // is_same_v
 
+#include "core_mocks.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_RenderPresent, SDL_Renderer*)
@@ -41,6 +43,8 @@ class RendererTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_RenderPresent);
     RESET_FAKE(SDL_RenderClear);
     RESET_FAKE(SDL_SetRenderDrawColor);
@@ -96,14 +100,16 @@ void validate_render_function(const Fake& fake, Args&&... args)
   EXPECT_EQ(dst.width(), fake.arg3_val->w);
   EXPECT_EQ(dst.height(), fake.arg3_val->h);
 
-  if constexpr (sizeof...(Args) >= 3) {
+  if constexpr (sizeof...(Args) >= 3)
+  {
     const auto angle = std::get<2>(tuple);
     static_assert(std::is_same_v<const double, decltype(angle)>);
 
     EXPECT_EQ(angle, fake.arg4_val);
   }
 
-  if constexpr (sizeof...(Args) >= 4) {
+  if constexpr (sizeof...(Args) >= 4)
+  {
     const auto& center = std::get<3>(tuple);
     static_assert(std::is_same_v<const cen::ipoint&, decltype(center)> ||
                   std::is_same_v<const cen::fpoint&, decltype(center)>);
@@ -112,7 +118,8 @@ void validate_render_function(const Fake& fake, Args&&... args)
     EXPECT_EQ(center.y(), fake.arg5_val->y);
   }
 
-  if constexpr (sizeof...(Args) >= 5) {
+  if constexpr (sizeof...(Args) >= 5)
+  {
     const auto flip = std::get<4>(tuple);
     static_assert(std::is_same_v<const SDL_RendererFlip, decltype(flip)>);
 
@@ -236,7 +243,8 @@ TEST_F(RendererTest, DrawLines)
     EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     EXPECT_EQ(0, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0u; i < points.size(); ++i) {
+    for (auto i = 0u; i < points.size(); ++i)
+    {
       EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
       EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLines_fake.arg1_val[i].y);
     }
@@ -248,7 +256,8 @@ TEST_F(RendererTest, DrawLines)
     EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     EXPECT_EQ(1, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0u; i < points.size(); ++i) {
+    for (auto i = 0u; i < points.size(); ++i)
+    {
       EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
       EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
     }

@@ -43,7 +43,9 @@ class SurfaceTest : public testing::Test
 
 TEST_F(SurfaceTest, PathConstructor)
 {
+  using namespace std::string_literals;
   EXPECT_THROW(cen::surface(""), cen::exception);
+  EXPECT_THROW(cen::surface(""s), cen::exception);
   EXPECT_NO_THROW(cen::surface{m_path});
 }
 
@@ -53,6 +55,17 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 
   SDL_Surface* ptr{};
   EXPECT_THROW(cen::surface{ptr}, cen::exception);
+}
+
+TEST_F(SurfaceTest, SizePixelFormatConstructor)
+{
+  EXPECT_THROW(cen::surface({-1, -1}, cen::pixel_format::rgba8888),
+               cen::sdl_error);
+
+  cen::surface surface{{10, 10}, cen::pixel_format::rgba8888};
+  EXPECT_EQ(10, surface.width());
+  EXPECT_EQ(10, surface.height());
+  EXPECT_EQ(cen::pixel_format::rgba8888, surface.format_info().format());
 }
 
 TEST_F(SurfaceTest, CopyConstructor)
@@ -181,6 +194,14 @@ TEST_F(SurfaceTest, Pixels)
 
   const auto& cSurface = *m_surface;
   EXPECT_TRUE(cSurface.pixels());
+}
+
+TEST_F(SurfaceTest, Data)
+{
+  EXPECT_TRUE(m_surface->data());
+
+  const auto& cSurface = *m_surface;
+  EXPECT_TRUE(cSurface.data());
 }
 
 TEST_F(SurfaceTest, Convert)

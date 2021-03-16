@@ -19,8 +19,7 @@ the library to your project very simple.
 
 Getting started
 ---------------
-Hopefully, you're at least a little bit interested in the library by know! So let's find how to
-get started with Centurion. You might want to start by looking at some of the introductory
-tutorials, such as :doc:`how to install Centurion </pages/tutorials/installation>` or
-:doc:`how to setup your first Centurion program </pages/tutorials/hello_centurion>`.
+Hopefully, you're at least a little bit interested in the library by know! If you have SDL2 
+installed, all you need to do is to download the ``centurion.hpp`` file in the ``include`` directory,
+which contains the entire Centurion library, and include it in your project!
 

@@ -21,7 +21,6 @@ Implicit conversions     None
 Explicit conversions     ``point_type``, ``point_type*``, ``const point_type*``
 Overloaded operators     ``<<``, ``+``, ``-``, ``==``, ``!=``
 Namespace                ``::cen``
-Header                   ``point.hpp``
 ======================  =======================================================
 
 Public member types/constants

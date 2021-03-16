@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include "core_mocks.hpp"
+
 extern "C" {
 FAKE_VALUE_FUNC(SDL_Window*, SDL_GetGrabbedWindow)
 FAKE_VALUE_FUNC(SDL_Window*, SDL_GetMouseFocus)
@@ -16,6 +18,8 @@ class WindowUtilsTest : public testing::Test
  protected:
   void SetUp() override
   {
+    mocks::reset_core();
+
     RESET_FAKE(SDL_GetGrabbedWindow);
     RESET_FAKE(SDL_GetMouseFocus);
     RESET_FAKE(SDL_GetKeyboardFocus);

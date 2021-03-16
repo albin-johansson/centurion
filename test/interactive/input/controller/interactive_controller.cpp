@@ -34,12 +34,12 @@ class interactive_controller final
 
   void run()
   {
-    cen::event event;
     cen::controller controller;
 
     m_window.show();
 
-    while (m_running) {
+    while (m_running)
+    {
       m_dispatcher.poll();
 
       controller.set_led(m_currentColor);
@@ -97,17 +97,22 @@ class interactive_controller final
     const auto axis = event.axis();
 
     const auto updateWith = [](float& diff, const int value) {
-      if ((value < -m_deadZone) || (value > m_deadZone)) {
+      if ((value < -m_deadZone) || (value > m_deadZone))
+      {
         diff = static_cast<float>(value) * m_step;
-      } else {
+      }
+      else
+      {
         diff = 0;
       }
     };
 
-    if (axis == cen::controller_axis::left_x) {
+    if (axis == cen::controller_axis::left_x)
+    {
       updateWith(m_dx, value);
-
-    } else if (axis == cen::controller_axis::left_y) {
+    }
+    else if (axis == cen::controller_axis::left_y)
+    {
       updateWith(m_dy, value);
     }
   }
@@ -119,7 +124,8 @@ class interactive_controller final
 
   void on_controller_button_event(const cen::controller_button_event& event)
   {
-    if (event.released()) {
+    if (event.released())
+    {
       change_color();
     }
   }

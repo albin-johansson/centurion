@@ -473,17 +473,22 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>)) {
+  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  {
     return std::to_string(value);
-
-  } else {
+  }
+  else
+  {
     std::array<char, bufferSize> buffer{};
     const auto [ptr, err] =
         std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
 
-    if (err == std::errc{}) {
+    if (err == std::errc{})
+    {
       return std::string{buffer.data(), ptr};
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -685,8 +690,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "[area | width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "]";
+  return "area{width: " + detail::to_string(area.width).value() +
+         ", height: " + detail::to_string(area.height).value() + "}";
 }
 
 /**
@@ -914,9 +919,12 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str) {
+    if (m_str)
+    {
       return std::string{get()};
-    } else {
+    }
+    else
+    {
       return std::string{};
     }
   }
@@ -1044,7 +1052,7 @@ class [[deprecated]] base_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[base_path | path: \"" + str + "\"]";
+  return "base_path{path: \"" + str + "\"}";
 }
 
 /**
@@ -1493,9 +1501,12 @@ enum class power_state
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft != -1) {
+  if (secondsLeft != -1)
+  {
     return seconds<int>{secondsLeft};
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -1510,9 +1521,12 @@ enum class power_state
  */
 [[nodiscard]] inline auto minutes_left() -> std::optional<minutes<int>>
 {
-  if (const auto secondsLeft = seconds_left()) {
+  if (const auto secondsLeft = seconds_left())
+  {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -1529,9 +1543,12 @@ enum class power_state
 {
   int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1) {
+  if (percentageLeft != -1)
+  {
     return percentageLeft;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -2280,8 +2297,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "[area | width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "]";
+  return "area{width: " + detail::to_string(area.width).value() +
+         ", height: " + detail::to_string(area.height).value() + "}";
 }
 
 /**
@@ -2425,7 +2442,7 @@ class [[deprecated]] base_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[base_path | path: \"" + str + "\"]";
+  return "base_path{path: \"" + str + "\"}";
 }
 
 /**
@@ -2518,9 +2535,12 @@ enum class power_state
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft != -1) {
+  if (secondsLeft != -1)
+  {
     return seconds<int>{secondsLeft};
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -2535,9 +2555,12 @@ enum class power_state
  */
 [[nodiscard]] inline auto minutes_left() -> std::optional<minutes<int>>
 {
-  if (const auto secondsLeft = seconds_left()) {
+  if (const auto secondsLeft = seconds_left())
+  {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -2554,9 +2577,12 @@ enum class power_state
 {
   int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1) {
+  if (percentageLeft != -1)
+  {
     return percentageLeft;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -3099,6 +3125,8 @@ inline auto set_text(const std::string& text) noexcept -> bool
 
 #include <SDL.h>
 
+#include <cassert>  // assert
+#include <cmath>    // round, fabs, fmod
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -3183,6 +3211,172 @@ class color final
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : m_color{color.r, color.g, color.b, max()}
   {}
+
+  /**
+   * \brief Creates a color from HSV-encoded values.
+   *
+   * \pre `hue` must be in the range [0, 360].
+   * \pre `saturation` must be in the range [0, 100].
+   * \pre `value` must be in the range [0, 100].
+   *
+   * \param hue the hue of the color, in the range [0, 360].
+   * \param saturation the saturation of the color, in the range [0, 100].
+   * \param value the value of the color, in the range [0, 100].
+   *
+   * \return an RGBA color converted from the HSV values.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto from_hsv(const double hue,
+                                     const double saturation,
+                                     const double value) -> color
+  {
+    assert(hue >= 0);
+    assert(hue <= 360);
+    assert(saturation >= 0);
+    assert(saturation <= 100);
+    assert(value >= 0);
+    assert(value <= 100);
+
+    const auto v = (value / 100.0);
+    const auto chroma = v * (saturation / 100.0);
+    const auto hp = hue / 60.0;
+
+    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+
+    double red{};
+    double green{};
+    double blue{};
+
+    if (0 <= hp && hp <= 1)
+    {
+      red = chroma;
+      green = x;
+      blue = 0;
+    }
+    else if (1 < hp && hp <= 2)
+    {
+      red = x;
+      green = chroma;
+      blue = 0.0;
+    }
+    else if (2 < hp && hp <= 3)
+    {
+      red = 0;
+      green = chroma;
+      blue = x;
+    }
+    else if (3 < hp && hp <= 4)
+    {
+      red = 0;
+      green = x;
+      blue = chroma;
+    }
+    else if (4 < hp && hp <= 5)
+    {
+      red = x;
+      green = 0;
+      blue = chroma;
+    }
+    else if (5 < hp && hp <= 6)
+    {
+      red = chroma;
+      green = 0;
+      blue = x;
+    }
+
+    const auto m = v - chroma;
+
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+
+    return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from HSL-encoded values.
+   *
+   * \pre `hue` must be in the range [0, 360].
+   * \pre `saturation` must be in the range [0, 100].
+   * \pre `lightness` must be in the range [0, 100].
+   *
+   * \param hue the hue of the color, in the range [0, 360].
+   * \param saturation the saturation of the color, in the range [0, 100].
+   * \param lightness the lightness of the color, in the range [0, 100].
+   *
+   * \return an RGBA color converted from the HSL values.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto from_hsl(const double hue,
+                                     const double saturation,
+                                     const double lightness) -> color
+  {
+    assert(hue >= 0);
+    assert(hue <= 360);
+    assert(saturation >= 0);
+    assert(saturation <= 100);
+    assert(lightness >= 0);
+    assert(lightness <= 100);
+
+    const auto s = saturation / 100.0;
+    const auto l = lightness / 100.0;
+
+    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
+    const auto hp = hue / 60.0;
+
+    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+
+    double red{};
+    double green{};
+    double blue{};
+
+    if (0 <= hp && hp < 1)
+    {
+      red = chroma;
+      green = x;
+      blue = 0;
+    }
+    else if (1 <= hp && hp < 2)
+    {
+      red = x;
+      green = chroma;
+      blue = 0;
+    }
+    else if (2 <= hp && hp < 3)
+    {
+      red = 0;
+      green = chroma;
+      blue = x;
+    }
+    else if (3 <= hp && hp < 4)
+    {
+      red = 0;
+      green = x;
+      blue = chroma;
+    }
+    else if (4 <= hp && hp < 5)
+    {
+      red = x;
+      green = 0;
+      blue = chroma;
+    }
+    else if (5 <= hp && hp < 6)
+    {
+      red = chroma;
+      green = 0;
+      blue = x;
+    }
+
+    const auto m = l - (chroma / 2.0);
+
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+
+    return color{r, g, b};
+  }
 
   /**
    * \brief Sets the value of the red component.
@@ -3408,10 +3602,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "[color | r: " + detail::to_string(color.red()).value() +
+  return "color{r: " + detail::to_string(color.red()).value() +
          ", g: " + detail::to_string(color.green()).value() +
          ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "]";
+         ", a: " + detail::to_string(color.alpha()).value() + "}";
 }
 
 /**
@@ -3825,7 +4019,8 @@ class mutex final
    */
   mutex() : m_mutex{SDL_CreateMutex()}
   {
-    if (!m_mutex) {
+    if (!m_mutex)
+    {
       throw sdl_error{};
     }
   }
@@ -3948,7 +4143,8 @@ class scoped_lock final
    */
   explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
-    if (!mutex.lock()) {
+    if (!mutex.lock())
+    {
       throw sdl_error{};
     }
   }
@@ -4003,7 +4199,8 @@ class condition final
  public:
   condition() : m_cond{SDL_CreateCond()}
   {
-    if (!m_cond) {
+    if (!m_cond)
+    {
       throw sdl_error{};
     }
   }
@@ -4145,11 +4342,14 @@ namespace cen::detail {
 template <typename T>
 [[nodiscard]] auto address_of(T* ptr) -> std::string
 {
-  if (ptr) {
+  if (ptr)
+  {
     std::ostringstream address;
     address << static_cast<const void*>(ptr);
     return address.str();
-  } else {
+  }
+  else
+  {
     return std::string{};
   }
 }
@@ -4574,9 +4774,12 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value) {
+    if constexpr (B::value)
+    {
       return m_ptr.get();
-    } else {
+    }
+    else
+    {
       return m_ptr;
     }
   }
@@ -4789,8 +4992,10 @@ class basic_joystick final
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
       : m_joystick{joystick}
   {
-    if constexpr (isOwner) {
-      if (!m_joystick) {
+    if constexpr (isOwner)
+    {
+      if (!m_joystick)
+      {
         throw exception{"Cannot create joystick from null pointer!"};
       }
     }
@@ -4809,7 +5014,8 @@ class basic_joystick final
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick) {
+    if (!m_joystick)
+    {
       throw sdl_error{};
     }
   }
@@ -4977,9 +5183,12 @@ class basic_joystick final
                                   nAxes,
                                   nButtons,
                                   nHats);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -5082,9 +5291,12 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -5112,9 +5324,12 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -5130,9 +5345,12 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -5148,9 +5366,12 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -5246,9 +5467,12 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -5283,9 +5507,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -5305,9 +5532,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -5327,9 +5557,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -5386,9 +5619,12 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1) {
+    if (id == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return id;
     }
   }
@@ -5414,9 +5650,12 @@ class basic_joystick final
     ball_axis_change change{};
     const auto result =
         SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0) {
+    if (result == 0)
+    {
       return change;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -5441,9 +5680,12 @@ class basic_joystick final
       -> std::optional<i16>
   {
     const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0) {
+    if (result == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -5464,9 +5706,12 @@ class basic_joystick final
     i16 state{};
     const auto hadInitialState =
         SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState) {
+    if (hadInitialState)
+    {
       return state;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -5714,9 +5959,12 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0) {
+    if (result < 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -5817,7 +6065,8 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick)) {
+      if (SDL_JoystickGetAttached(joystick))
+      {
         SDL_JoystickClose(joystick);
       }
     }
@@ -6090,8 +6339,10 @@ class basic_sensor final
   explicit basic_sensor(SDL_Sensor* sensor) noexcept(!B::value)
       : m_sensor{sensor}
   {
-    if constexpr (B::value) {
-      if (!m_sensor) {
+    if constexpr (B::value)
+    {
+      if (!m_sensor)
+      {
         throw exception{"Null sensor pointer!"};
       }
     }
@@ -6111,7 +6362,8 @@ class basic_sensor final
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor) {
+    if (!m_sensor)
+    {
       throw sdl_error{};
     }
   }
@@ -6199,9 +6451,12 @@ class basic_sensor final
   {
     std::array<float, size> array{};
     const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
-    if (result != -1) {
+    if (result != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -6225,9 +6480,12 @@ class basic_sensor final
       -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1) {
+    if (id != -1)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -6275,9 +6533,12 @@ class basic_sensor final
       -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1) {
+    if (type != -1)
+    {
       return type;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -6397,9 +6658,9 @@ template <typename B>
 {
   const auto name = sensor.name();
   const std::string nameStr = name ? name : "N/A";
-  return "[sensor | data: " + detail::address_of(sensor.get()) +
+  return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + nameStr + "]";
+         ", name: " + nameStr + "}";
 }
 
 /**
@@ -6647,9 +6908,12 @@ enum class device_type
     -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0) {
+  if (device != 0)
+  {
     return device;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -6697,9 +6961,12 @@ enum class device_type
                                      const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
+  if (const auto* finger = SDL_GetTouchFinger(id, index))
+  {
     return *finger;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -6981,7 +7248,8 @@ class basic_controller final
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller) {
+    if (!m_controller)
+    {
       throw sdl_error{};
     }
   }
@@ -7004,9 +7272,12 @@ class basic_controller final
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -7028,9 +7299,12 @@ class basic_controller final
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -7133,9 +7407,12 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7150,9 +7427,12 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7168,9 +7448,12 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7206,9 +7489,12 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7269,8 +7555,10 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i) {
-      if (is_supported(i)) {
+    for (auto i = 0; i < joysticks; ++i)
+    {
+      if (is_supported(i))
+      {
         ++amount;
       }
     }
@@ -7395,9 +7683,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForAxis(
         m_controller,
         static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7417,9 +7708,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForButton(
         m_controller,
         static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7614,9 +7908,12 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1) {
+    if (res != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7704,9 +8001,12 @@ class basic_controller final
                                         value,
                                         array.data(),
                                         static_cast<int>(array.size()));
-    if (res != -1) {
+    if (res != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -7771,11 +8071,16 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1) {
+    if (result == 1)
+    {
       return mapping_result::added;
-    } else if (result == 0) {
+    }
+    else if (result == 0)
+    {
       return mapping_result::updated;
-    } else {
+    }
+    else
+    {
       return mapping_result::error;
     }
   }
@@ -7821,9 +8126,12 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -8036,8 +8344,8 @@ template <typename T>
 {
   using namespace std::string_literals;
   const auto name = controller.name() ? controller.name() : "N/A";
-  return "[controller | data: " + detail::address_of(controller.get()) +
-         ", name: "s + name + "]";
+  return "controller{data: " + detail::address_of(controller.get()) +
+         ", name: "s + name + "}";
 }
 
 /**
@@ -9209,12 +9517,15 @@ template <typename T>
                                    const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral) {
+  if constexpr (basic_point<T>::isIntegral)
+  {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
-  } else {
+  }
+  else
+  {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -9269,14 +9580,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
 {
-  return "[ipoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "ipoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
 {
-  return "[fpoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "fpoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 inline auto operator<<(std::ostream& stream, const ipoint& point)
@@ -9521,8 +9832,10 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
       : m_format{ptr}
   {
-    if constexpr (B::value) {
-      if (!m_format) {
+    if constexpr (B::value)
+    {
+      if (!m_format)
+      {
         throw exception{"Null pixel format!"};
       }
     }
@@ -9543,7 +9856,8 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
-    if (!m_format) {
+    if (!m_format)
+    {
       throw sdl_error{};
     }
   }
@@ -10554,11 +10868,16 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea) {
+  if (!fstHasArea && !sndHasArea)
+  {
     return {};
-  } else if (!fstHasArea) {
+  }
+  else if (!fstHasArea)
+  {
     return snd;
-  } else if (!sndHasArea) {
+  }
+  else if (!sndHasArea)
+  {
     return fst;
   }
 
@@ -10584,10 +10903,10 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "[rect | x: " + detail::to_string(rect.x()).value() +
+  return "rect{x: " + detail::to_string(rect.x()).value() +
          ", y: " + detail::to_string(rect.y()).value() +
          ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "]";
+         ", height: " + detail::to_string(rect.height()).value() + "}";
 }
 
 /**
@@ -10675,8 +10994,10 @@ class basic_surface final
   explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<B>())
       : m_surface{surface}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_surface) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_surface)
+      {
         throw exception{"Cannot create surface from null pointer!"};
       }
     }
@@ -10698,7 +11019,8 @@ class basic_surface final
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw img_error{};
     }
   }
@@ -10738,7 +11060,8 @@ class basic_surface final
                                                  0,
                                                  static_cast<u32>(pixelFormat))}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw sdl_error{};
     }
   }
@@ -10800,9 +11123,12 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<B>())
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       copy(other);
-    } else {
+    }
+    else
+    {
       m_surface = other.get();
     }
   }
@@ -10828,10 +11154,14 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<B>())
       -> basic_surface&
   {
-    if (this != &other) {
-      if constexpr (detail::is_owning<B>()) {
+    if (this != &other)
+    {
+      if constexpr (detail::is_owning<B>())
+      {
         copy(other);
-      } else {
+      }
+      else
+      {
         m_surface = other.get();
       }
     }
@@ -10878,14 +11208,16 @@ class basic_surface final
    */
   void set_pixel(const ipoint& pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock()) {
+    if (!in_bounds(pixel) || !lock())
+    {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -10921,10 +11253,13 @@ class basic_surface final
    */
   auto lock() noexcept -> bool
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       const auto result = SDL_LockSurface(m_surface);
       return result == 0;
-    } else {
+    }
+    else
+    {
       return true;
     }
   }
@@ -10938,7 +11273,8 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -11057,11 +11393,14 @@ class basic_surface final
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
     const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0)) {
+    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    {
       basic_surface result{ptr};
       result.set_blend_mode(get_blend_mode());
       return result;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -11310,9 +11649,12 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
+    if (auto* copy = SDL_DuplicateSurface(m_surface))
+    {
       return copy;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -11335,9 +11677,9 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "[surface | ptr: " + detail::address_of(surface.get()) +
+  return "surface{ptr: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "]";
+         ", height: " + detail::to_string(surface.height()).value() + "}";
 }
 
 /**
@@ -11515,7 +11857,8 @@ class basic_cursor final
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }
@@ -11537,7 +11880,8 @@ class basic_cursor final
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }
@@ -12278,7 +12622,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-  return "[key_code | key: " + keyCode.name() + "]";
+  return "key_code{key: " + keyCode.name() + "}";
 }
 
 /**
@@ -13384,7 +13728,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
 {
-  return "[scan_code | key: " + scanCode.name() + "]";
+  return "scan_code{key: " + scanCode.name() + "}";
 }
 
 /**
@@ -14910,7 +15254,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
   }
@@ -14956,7 +15301,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
     m_event.file = file;
@@ -15701,9 +16047,12 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_modifier modifier, const bool active) noexcept
   {
-    if (active) {
+    if (active)
+    {
       m_event.keysym.mod |= static_cast<u16>(modifier);
-    } else {
+    }
+    else
+    {
       m_event.keysym.mod &= ~static_cast<u16>(modifier);
     }
   }
@@ -17725,9 +18074,12 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result) {
+    if (result)
+    {
       update_data(static_cast<event_type>(m_event.type));
-    } else {
+    }
+    else
+    {
       update_data(std::nullopt);
     }
 
@@ -17744,9 +18096,12 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty()) {
+    if (is_empty())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -17766,9 +18121,12 @@ class event final
                                     SDL_PEEKEVENT,
                                     SDL_FIRSTEVENT,
                                     SDL_LASTEVENT);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -17789,11 +18147,30 @@ class event final
   {
     const auto id = static_cast<u32>(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Indicates whether or not any events of the specified type is in the
+   * event queue.
+   *
+   * \param type the event type to look for in the event queue.
+   *
+   * \return `true` if there are events of the specified type in the event
+   * queue; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto in_queue(const event_type type) noexcept -> bool
+  {
+    return queue_count(type) > 0;
   }
 
   /**
@@ -17975,76 +18352,95 @@ class event final
   {
     using et = event_type;
 
-    if (t == et::quit) {
+    if (t == et::quit)
+    {
       m_data.emplace<quit_event>(m_event.quit);
-
-    } else if (t == et::audio_device_added || t == et::audio_device_removed) {
+    }
+    else if (t == et::audio_device_added || t == et::audio_device_removed)
+    {
       m_data.emplace<audio_device_event>(m_event.adevice);
-
-    } else if (t == et::controller_axis_motion) {
+    }
+    else if (t == et::controller_axis_motion)
+    {
       m_data.emplace<controller_axis_event>(m_event.caxis);
-
-    } else if (t == et::controller_button_down ||
-               t == et::controller_button_up) {
+    }
+    else if (t == et::controller_button_down || t == et::controller_button_up)
+    {
       m_data.emplace<controller_button_event>(m_event.cbutton);
-
-    } else if (t == et::controller_device_added ||
-               t == et::controller_device_removed ||
-               t == et::controller_device_remapped) {
+    }
+    else if (t == et::controller_device_added ||
+             t == et::controller_device_removed ||
+             t == et::controller_device_remapped)
+    {
       m_data.emplace<controller_device_event>(m_event.cdevice);
-
-    } else if (t == et::dollar_gesture || t == et::dollar_record) {
+    }
+    else if (t == et::dollar_gesture || t == et::dollar_record)
+    {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-
-    } else if (t == et::drop_begin || t == et::drop_complete ||
-               t == et::drop_file || t == et::drop_text) {
+    }
+    else if (t == et::drop_begin || t == et::drop_complete ||
+             t == et::drop_file || t == et::drop_text)
+    {
       m_data.emplace<drop_event>(m_event.drop);
-
-    } else if (t == et::joystick_axis_motion) {
+    }
+    else if (t == et::joystick_axis_motion)
+    {
       m_data.emplace<joy_axis_event>(m_event.jaxis);
-
-    } else if (t == et::joystick_ball_motion) {
+    }
+    else if (t == et::joystick_ball_motion)
+    {
       m_data.emplace<joy_ball_event>(m_event.jball);
-
-    } else if (t == et::joystick_button_up || t == et::joystick_button_down) {
+    }
+    else if (t == et::joystick_button_up || t == et::joystick_button_down)
+    {
       m_data.emplace<joy_button_event>(m_event.jbutton);
-
-    } else if (t == et::joystick_device_added ||
-               t == et::joystick_device_removed) {
+    }
+    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
+    {
       m_data.emplace<joy_device_event>(m_event.jdevice);
-
-    } else if (t == event_type::joystick_hat_motion) {
+    }
+    else if (t == event_type::joystick_hat_motion)
+    {
       m_data.emplace<joy_hat_event>(m_event.jhat);
-
-    } else if (t == et::key_down || t == et::key_up) {
+    }
+    else if (t == et::key_down || t == et::key_up)
+    {
       m_data.emplace<keyboard_event>(m_event.key);
-
-    } else if (t == et::mouse_button_up || t == et::mouse_button_down) {
+    }
+    else if (t == et::mouse_button_up || t == et::mouse_button_down)
+    {
       m_data.emplace<mouse_button_event>(m_event.button);
-
-    } else if (t == et::mouse_motion) {
+    }
+    else if (t == et::mouse_motion)
+    {
       m_data.emplace<mouse_motion_event>(m_event.motion);
-
-    } else if (t == et::mouse_wheel) {
+    }
+    else if (t == et::mouse_wheel)
+    {
       m_data.emplace<mouse_wheel_event>(m_event.wheel);
-
-    } else if (t == et::multi_gesture) {
+    }
+    else if (t == et::multi_gesture)
+    {
       m_data.emplace<multi_gesture_event>(m_event.mgesture);
-
-    } else if (t == et::text_editing) {
+    }
+    else if (t == et::text_editing)
+    {
       m_data.emplace<text_editing_event>(m_event.edit);
-
-    } else if (t == et::text_input) {
+    }
+    else if (t == et::text_input)
+    {
       m_data.emplace<text_input_event>(m_event.text);
-
-    } else if (t == et::touch_motion || t == et::touch_down ||
-               t == et::touch_up) {
+    }
+    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
+    {
       m_data.emplace<touch_finger_event>(m_event.tfinger);
-
-    } else if (t == et::window) {
+    }
+    else if (t == et::window)
+    {
       m_data.emplace<window_event>(m_event.window);
-
-    } else {
+    }
+    else
+    {
       m_data.emplace<std::monostate>();
     }
   }
@@ -18434,15 +18830,19 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* e = m_event.template try_get<Event>()) {
+    if (const auto* e = m_event.template try_get<Event>())
+    {
       constexpr auto index = index_of<Event>();
 
-      if (auto& func = std::get<index>(m_sinks).function()) {
+      if (auto& func = std::get<index>(m_sinks).function())
+      {
         func(*e);
       }
 
       return true;
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -18475,7 +18875,8 @@ class event_dispatcher final
    */
   void poll()
   {
-    while (m_event.poll()) {
+    while (m_event.poll())
+    {
       (check_for<E>() || ...);
     }
   }
@@ -18549,9 +18950,9 @@ template <typename... E>
     -> std::string
 {
   // clang-format off
-  return "[event_dispatcher | size: " + detail::to_string(dispatcher.size()).value()
+  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value()
          + ", #active: " + detail::to_string(dispatcher.active_count()).value()
-         + "]";
+         + "}";
   // clang-format on
 }
 
@@ -19155,9 +19556,12 @@ class file final
     assert(m_context);
     const auto result =
         SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -19199,9 +19603,12 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWsize(m_context.get());
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -19242,7 +19649,8 @@ class file final
 
   [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> czstring
   {
-    switch (mode) {
+    switch (mode)
+    {
       default:
         assert(false);
 
@@ -19466,7 +19874,8 @@ class unicode_string final
    */
   void pop_back()
   {
-    if (!empty()) {
+    if (!empty())
+    {
       m_data.erase(m_data.end() - 2);
     }
   }
@@ -19672,14 +20081,17 @@ class unicode_string final
 [[nodiscard]] inline auto operator==(const unicode_string& lhs,
                                      const unicode_string& rhs) -> bool
 {
-  if (lhs.size() != rhs.size()) {
+  if (lhs.size() != rhs.size())
+  {
     return false;
   }
 
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index)
+  {
     const auto a = lhs.at(index);
     const auto b = rhs.at(index);
-    if (a != b) {
+    if (a != b)
+    {
       return false;
     }
   }
@@ -19816,12 +20228,14 @@ class font final
   {
     assert(file);
 
-    if (size <= 0) {
+    if (size <= 0)
+    {
       throw exception{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font) {
+    if (!m_font)
+    {
       throw ttf_error{};
     }
 
@@ -19862,9 +20276,12 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold) {
+    if (bold)
+    {
       add_style(TTF_STYLE_BOLD);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -19878,9 +20295,12 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic) {
+    if (italic)
+    {
       add_style(TTF_STYLE_ITALIC);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -19895,9 +20315,12 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined) {
+    if (underlined)
+    {
       add_style(TTF_STYLE_UNDERLINE);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -19912,9 +20335,12 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough) {
+    if (strikethrough)
+    {
       add_style(TTF_STYLE_STRIKETHROUGH);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -20200,9 +20626,12 @@ class font final
                                          &metrics.minY,
                                          &metrics.maxY,
                                          &metrics.advance);
-    if (result != -1) {
+    if (result != -1)
+    {
       return metrics;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -20449,9 +20878,9 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-  return "[font | data: " + detail::address_of(font.get()) +
+  return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "]";
+         ", size: " + detail::to_string(font.size()).value() + "}";
 }
 
 /**
@@ -20782,8 +21211,10 @@ class basic_texture final
   explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<B>())
       : m_texture{src}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_texture) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_texture)
+      {
         throw exception{"Cannot create texture from null pointer!"};
       }
     }
@@ -20817,7 +21248,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw img_error{};
     }
   }
@@ -20857,7 +21289,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -20888,7 +21321,8 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -20931,7 +21365,8 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels)) {
+    if (!texture.lock(&pixels))
+    {
       throw sdl_error{};
     }
 
@@ -20971,20 +21406,23 @@ class basic_texture final
   void set_pixel(const ipoint& pixel, const color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) ||
-        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height())) {
+        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height()))
+    {
       return;
     }
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch)) {
+    if (!lock(&pixels, &pitch))
+    {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -21312,13 +21750,16 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
   {
-    if (pitch) {
+    if (pitch)
+    {
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
                                           reinterpret_cast<void**>(pixels),
                                           pitch);
       return result == 0;
-    } else {
+    }
+    else
+    {
       int dummyPitch;
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
@@ -21351,9 +21792,9 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  return "[texture | ptr: " + detail::address_of(texture.get()) +
+  return "texture{ptr: " + detail::address_of(texture.get()) +
          ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "]";
+         ", height: " + detail::to_string(texture.height()).value() + "}";
 }
 
 /**
@@ -21941,9 +22382,12 @@ class font_cache final
       -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end()) {
+    if (iterator != m_strings.end())
+    {
       return &iterator->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -21970,7 +22414,8 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph))
+    {
       return;
     }
 
@@ -22000,7 +22445,8 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch) {
+    for (auto ch = begin; ch < end; ++ch)
+    {
       add_glyph(renderer, ch);
     }
   }
@@ -22129,9 +22575,12 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
+    {
       return &it->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -22186,7 +22635,8 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end()) {
+    if (const auto it = m_strings.find(id); it != m_strings.end())
+    {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));
@@ -22259,9 +22709,12 @@ namespace cen {
 {
   SDL_RendererInfo info{};
   const auto result = SDL_GetRenderDriverInfo(index, &info);
-  if (result == 0) {
+  if (result == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -22396,9 +22849,9 @@ void serialize(Archive& archive, vector3<T>& vector)
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "[vector3 | x: " + detail::to_string(vector.x).value() +
+  return "vector3{x: " + detail::to_string(vector.x).value() +
          ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "]";
+         ", z: " + detail::to_string(vector.z).value() + "}";
 }
 
 /**
@@ -23980,8 +24433,10 @@ class basic_haptic final
   explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value)
       : m_haptic{haptic}
   {
-    if constexpr (B::value) {
-      if (!m_haptic) {
+    if constexpr (B::value)
+    {
+      if (!m_haptic)
+      {
         throw exception{"Null haptic pointer!"};
       }
     }
@@ -24003,7 +24458,8 @@ class basic_haptic final
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
-    if (!m_haptic) {
+    if (!m_haptic)
+    {
       throw sdl_error{};
     }
   }
@@ -24040,9 +24496,12 @@ class basic_haptic final
   [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
       -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
+    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
+    {
       return basic_haptic{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -24063,9 +24522,12 @@ class basic_haptic final
   template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromMouse()) {
+    if (auto* ptr = SDL_HapticOpenFromMouse())
+    {
       return basic_haptic{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -24183,9 +24645,12 @@ class basic_haptic final
   {
     auto internal = effect.get();
     const auto id = SDL_HapticNewEffect(m_haptic, &internal);
-    if (id != -1) {
+    if (id != -1)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -24613,9 +25078,12 @@ class basic_haptic final
   [[nodiscard]] auto index() const noexcept -> std::optional<int>
   {
     const auto res = SDL_HapticIndex(m_haptic);
-    if (res != -1) {
+    if (res != -1)
+    {
       return res;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -24630,9 +25098,12 @@ class basic_haptic final
    */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
-    if (const auto i = index()) {
+    if (const auto i = index())
+    {
       return SDL_HapticName(*i);
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -24651,9 +25122,12 @@ class basic_haptic final
   [[nodiscard]] auto effect_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffects(m_haptic);
-    if (capacity != -1) {
+    if (capacity != -1)
+    {
       return capacity;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -24672,9 +25146,12 @@ class basic_haptic final
   [[nodiscard]] auto concurrent_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffectsPlaying(m_haptic);
-    if (capacity != -1) {
+    if (capacity != -1)
+    {
       return capacity;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -24842,8 +25319,8 @@ template <typename B>
 {
   const auto* name = haptic.name();
   const auto nameStr = name ? std::string{name} : std::string{"N/A"};
-  return "[haptic | data: " + detail::address_of(haptic.get()) +
-         ", name: " + nameStr + "]";
+  return "haptic{data: " + detail::address_of(haptic.get()) +
+         ", name: " + nameStr + "}";
 }
 
 /**
@@ -24997,9 +25474,12 @@ namespace cen::detail {
 [[nodiscard]] inline auto czstring_eq(const czstring lhs,
                                       const czstring rhs) noexcept -> bool
 {
-  if (lhs && rhs) {
+  if (lhs && rhs)
+  {
     return std::strcmp(lhs, rhs) == 0;
-  } else {
+  }
+  else
+  {
     return false;
   }
 }
@@ -25086,9 +25566,12 @@ class static_bimap final
           return pair.first == key;
         });
 
-    if (it != data.end()) {
+    if (it != data.end())
+    {
       return it->second;
-    } else {
+    }
+    else
+    {
       throw exception{"Failed to find element in static map!"};
     }
   }
@@ -25101,9 +25584,12 @@ class static_bimap final
           return predicate(pair.second, value);
         });
 
-    if (it != data.end()) {
+    if (it != data.end())
+    {
       return it->first;
-    } else {
+    }
+    else
+    {
       throw exception{"Failed to find key in static map!"};
     }
   }
@@ -25187,9 +25673,12 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring>
   [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
   {
     const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
+    if (!value)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return value;
     }
   }
@@ -25214,9 +25703,12 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
   [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
   {
     const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
+    if (!value)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return std::stoi(value);
     }
   }
@@ -25237,9 +25729,12 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
       -> std::optional<unsigned int>
   {
     const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
+    if (!value)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return static_cast<unsigned int>(std::stoul(value));
     }
   }
@@ -25259,9 +25754,12 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
   [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
   {
     const czstring value = SDL_GetHint(Hint::name());
-    if (!value) {
+    if (!value)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return std::stof(value);
     }
   }
@@ -26157,7 +26655,8 @@ class enum_hint
   static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(Derived::name());
-    if (!hint) {
+    if (!hint)
+    {
       return std::nullopt;
     }
     return Derived::map.key_from(hint);
@@ -27289,7 +27788,8 @@ class hint_callback final
       : m_callback{callback}
       , m_userData{userData}
   {
-    if (!callback) {
+    if (!callback)
+    {
       throw exception{"Failed to create hint callback"};
     }
   }
@@ -27683,9 +28183,12 @@ class key_state final
                    Predicate&& predicate) const noexcept -> bool
   {
     const auto sc = code.get();
-    if (sc >= 0 && sc < m_nKeys) {
+    if (sc >= 0 && sc < m_nKeys)
+    {
       return predicate(sc);
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -27742,9 +28245,12 @@ namespace cen::detail {
 [[nodiscard]] inline auto czstring_eq(const czstring lhs,
                                       const czstring rhs) noexcept -> bool
 {
-  if (lhs && rhs) {
+  if (lhs && rhs)
+  {
     return std::strcmp(lhs, rhs) == 0;
-  } else {
+  }
+  else
+  {
     return false;
   }
 }
@@ -27816,17 +28322,24 @@ class locale final
   {
     assert(language);
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         const auto& item = array[index];
 
-        if (country && item.country) {
+        if (country && item.country)
+        {
           if (detail::czstring_eq(language, item.language) &&
-              detail::czstring_eq(country, item.country)) {
+              detail::czstring_eq(country, item.country))
+          {
             return true;
           }
-        } else {
-          if (detail::czstring_eq(language, item.language)) {
+        }
+        else
+        {
+          if (detail::czstring_eq(language, item.language))
+          {
             return true;
           }
         }
@@ -27847,8 +28360,10 @@ class locale final
   {
     std::size_t result{0};
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         ++result;
       }
     }
@@ -29164,8 +29679,10 @@ class basic_window final
   explicit basic_window(SDL_Window* window) noexcept(isHandle)
       : m_window{window}
   {
-    if constexpr (isOwner) {
-      if (!m_window) {
+    if constexpr (isOwner)
+    {
+      if (!m_window)
+      {
         throw exception{"Cannot create window from null pointer!"};
       }
     }
@@ -29191,11 +29708,13 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1) {
+    if (size.width < 1)
+    {
       throw exception{"Bad window width!"};
     }
 
-    if (size.height < 1) {
+    if (size.height < 1)
+    {
       throw exception{"Bad window height!"};
     }
 
@@ -29205,7 +29724,8 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     SDL_WINDOW_HIDDEN));
-    if (!m_window) {
+    if (!m_window)
+    {
       throw sdl_error{};
     }
   }
@@ -29868,9 +30388,12 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -30136,10 +30659,9 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-  using detail::to_string;
-  return "[window | ptr: " + detail::address_of(window.get()) +
-         ", width: " + to_string(window.width()).value() +
-         ", height: " + to_string(window.height()).value() + "]";
+  return "window{data: " + detail::address_of(window.get()) +
+         ", width: " + detail::to_string(window.width()).value() +
+         ", height: " + detail::to_string(window.height()).value() + "}";
 }
 
 /**
@@ -30685,7 +31207,8 @@ class message_box final
                                      title.c_str(),
                                      message.c_str(),
                                      parent);
-        result == -1) {
+        result == -1)
+    {
       throw sdl_error{};
     }
   }
@@ -30709,11 +31232,13 @@ class message_box final
     buttonData.reserve(8);
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
-    if (m_buttons.empty()) {
+    if (m_buttons.empty())
+    {
       add_button(0, "OK", default_button::return_key);
     }
 
-    for (const auto& button : m_buttons) {
+    for (const auto& button : m_buttons)
+    {
       buttonData.emplace_back(button.convert());
     }
 
@@ -30721,13 +31246,17 @@ class message_box final
     data.numbuttons = static_cast<int>(buttonData.size());
 
     button_id button{-1};
-    if (SDL_ShowMessageBox(&data, &button) == -1) {
+    if (SDL_ShowMessageBox(&data, &button) == -1)
+    {
       throw sdl_error{};
     }
 
-    if (button != -1) {
+    if (button != -1)
+    {
       return button;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -31282,7 +31811,8 @@ class music final
    */
   explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
   {
-    if (!m_music) {
+    if (!m_music)
+    {
       throw mix_error{};
     }
   }
@@ -31409,7 +31939,8 @@ class music final
   static void fade_out(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_fading()) {
+    if (!is_fading())
+    {
       Mix_FadeOutMusic(ms.count());
     }
   }
@@ -31585,8 +32116,8 @@ class music final
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
-  return "[music | data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "]";
+  return "music{data: " + detail::address_of(music.get()) +
+         ", volume: " + detail::to_string(music::volume()).value() + "}";
 }
 
 /**
@@ -31836,22 +32367,28 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
   const czstring platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows")) {
+  if (detail::czstring_eq(platform, "Windows"))
+  {
     return platform_id::windows;
-
-  } else if (detail::czstring_eq(platform, "Mac OS X")) {
+  }
+  else if (detail::czstring_eq(platform, "Mac OS X"))
+  {
     return platform_id::mac_osx;
-
-  } else if (detail::czstring_eq(platform, "Linux")) {
+  }
+  else if (detail::czstring_eq(platform, "Linux"))
+  {
     return platform_id::linuxx;
-
-  } else if (detail::czstring_eq(platform, "iOS")) {
+  }
+  else if (detail::czstring_eq(platform, "iOS"))
+  {
     return platform_id::ios;
-
-  } else if (detail::czstring_eq(platform, "Android")) {
+  }
+  else if (detail::czstring_eq(platform, "Android"))
+  {
     return platform_id::android;
-
-  } else {
+  }
+  else
+  {
     return platform_id::unknown;
   }
 }
@@ -31927,9 +32464,12 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name != "Unknown") {
+  if (name != "Unknown")
+  {
     return name;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -32170,7 +32710,7 @@ class [[deprecated]] pref_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[pref_path | path: \"" + str + "\"]";
+  return "pref_path{path: \"" + str + "\"}";
 }
 
 /**
@@ -32402,7 +32942,8 @@ class basic_renderer final
                           const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get()) {
+    if (!get())
+    {
       throw sdl_error{};
     }
 
@@ -32475,13 +33016,15 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock()) {
+    if (!image.lock())
+    {
       throw sdl_error{};
     }
 
     const auto result =
         SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1) {
+    if (result == -1)
+    {
       throw sdl_error{};
     }
 
@@ -32504,9 +33047,12 @@ class basic_renderer final
   template <typename U>
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderDrawRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawRectF(get(), rect.data());
     }
   }
@@ -32523,9 +33069,12 @@ class basic_renderer final
   template <typename U>
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderFillRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderFillRectF(get(), rect.data());
     }
   }
@@ -32577,9 +33126,12 @@ class basic_renderer final
   void draw_line(const basic_point<U>& start,
                  const basic_point<U>& end) noexcept
   {
-    if constexpr (basic_point<U>::isIntegral) {
+    if constexpr (basic_point<U>::isIntegral)
+    {
       SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
     }
   }
@@ -32611,14 +33163,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty()) {
+    if (!container.empty())
+    {
       const auto& front = container.front();
       const auto* first = front.data();
       const auto count = static_cast<int>(container.size());
 
-      if constexpr (std::is_same_v<value_t, int>) {
+      if constexpr (std::is_same_v<value_t, int>)
+      {
         SDL_RenderDrawLines(get(), first, count);
-      } else {
+      }
+      else
+      {
         SDL_RenderDrawLinesF(get(), first, count);
       }
     }
@@ -33130,7 +33686,8 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    if (const auto* data = cache.try_at(glyph)) {
+    if (const auto* data = cache.try_at(glyph))
+    {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -33142,7 +33699,9 @@ class basic_renderer final
       render(texture, ipoint{x, y});
 
       return x + metrics.advance;
-    } else {
+    }
+    else
+    {
       return position.x();
     }
   }
@@ -33177,11 +33736,15 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str) {
-      if (glyph == '\n') {
+    for (const unicode glyph : str)
+    {
+      if (glyph == '\n')
+      {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
-      } else {
+      }
+      else
+      {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -33208,11 +33771,14 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_point<P>& position) noexcept
   {
-    if constexpr (basic_point<P>::isFloating) {
+    if constexpr (basic_point<P>::isFloating)
+    {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
-    } else {
+    }
+    else
+    {
       const SDL_Rect dst{position.x(),
                          position.y(),
                          texture.width(),
@@ -33236,9 +33802,12 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
     }
   }
@@ -33263,9 +33832,12 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
     }
   }
@@ -33290,7 +33862,8 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -33298,7 +33871,9 @@ class basic_renderer final
                         angle,
                         nullptr,
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -33338,7 +33913,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -33346,7 +33922,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -33388,7 +33966,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -33396,7 +33975,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         flip);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -33678,7 +34259,8 @@ class basic_renderer final
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.emplace(id, std::move(font));
@@ -33701,7 +34283,8 @@ class basic_renderer final
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -33798,9 +34381,12 @@ class basic_renderer final
    */
   void set_clip(const std::optional<irect> area) noexcept
   {
-    if (area) {
+    if (area)
+    {
       SDL_RenderSetClipRect(get(), area->data());
-    } else {
+    }
+    else
+    {
       SDL_RenderSetClipRect(get(), nullptr);
     }
   }
@@ -33842,9 +34428,12 @@ class basic_renderer final
    */
   void set_target(const texture* target) noexcept
   {
-    if (target && target->is_target()) {
+    if (target && target->is_target())
+    {
       SDL_SetRenderTarget(get(), target->get());
-    } else {
+    }
+    else
+    {
       SDL_SetRenderTarget(get(), nullptr);
     }
   }
@@ -33862,7 +34451,8 @@ class basic_renderer final
    */
   void set_scale(const float xScale, const float yScale) noexcept
   {
-    if ((xScale > 0) && (yScale > 0)) {
+    if ((xScale > 0) && (yScale > 0))
+    {
       SDL_RenderSetScale(get(), xScale, yScale);
     }
   }
@@ -33883,7 +34473,8 @@ class basic_renderer final
    */
   void set_logical_size(const iarea& size) noexcept
   {
-    if ((size.width >= 0) && (size.height >= 0)) {
+    if ((size.width >= 0) && (size.height >= 0))
+    {
       SDL_RenderSetLogicalSize(get(), size.width, size.height);
     }
   }
@@ -34033,9 +34624,12 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area()) {
+    if (!rect.has_area())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return rect;
     }
   }
@@ -34052,9 +34646,12 @@ class basic_renderer final
   {
     SDL_RendererInfo info{};
     const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0) {
+    if (result == 0)
+    {
       return info;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -34288,9 +34885,12 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       return m_renderer.ptr.get();
-    } else {
+    }
+    else
+    {
       return m_renderer;
     }
   }
@@ -34349,7 +34949,7 @@ class basic_renderer final
 template <typename B>
 [[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
 {
-  return "[renderer | data: " + detail::address_of(renderer.get()) + "]";
+  return "renderer{data: " + detail::address_of(renderer.get()) + "}";
 }
 
 template <typename B>
@@ -34467,9 +35067,12 @@ enum class orientation
                                      &info.diagonal,
                                      &info.horizontal,
                                      &info.vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34490,9 +35093,12 @@ enum class orientation
 {
   float vertical{};
   const auto res = SDL_GetDisplayDPI(displayIndex, nullptr, nullptr, &vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return vertical;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34513,9 +35119,12 @@ enum class orientation
 {
   float diagonal{};
   const auto res = SDL_GetDisplayDPI(displayIndex, &diagonal, nullptr, nullptr);
-  if (res == 0) {
+  if (res == 0)
+  {
     return diagonal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34535,9 +35144,12 @@ enum class orientation
     -> std::optional<float>
 {
   float horizontal{};
-  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr)) {
+  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr))
+  {
     return horizontal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34559,9 +35171,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34583,9 +35198,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -34645,9 +35263,12 @@ enum class orientation
  */
 inline void set_screen_saver_enabled(const bool enabled) noexcept
 {
-  if (enabled) {
+  if (enabled)
+  {
     SDL_EnableScreenSaver();
-  } else {
+  }
+  else
+  {
     SDL_DisableScreenSaver();
   }
 }
@@ -34799,7 +35420,8 @@ class semaphore final
   explicit semaphore(const u32 tokens)
       : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
-    if (!m_semaphore) {
+    if (!m_semaphore)
+    {
       throw sdl_error{};
     }
   }
@@ -34943,7 +35565,8 @@ class shared_object final
   explicit shared_object(const not_null<czstring> object)
       : m_object{SDL_LoadObject(object)}
   {
-    if (!m_object) {
+    if (!m_object)
+    {
       throw sdl_error{};
     }
   }
@@ -35114,7 +35737,8 @@ class sound_effect final
   explicit sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
-    if (!m_chunk) {
+    if (!m_chunk)
+    {
       throw mix_error{};
     }
   }
@@ -35157,7 +35781,8 @@ class sound_effect final
    */
   void stop() noexcept
   {
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_Pause(m_channel);
       m_channel = undefined_channel();
     }
@@ -35178,7 +35803,8 @@ class sound_effect final
   void fade_in(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_playing()) {
+    if (!is_playing())
+    {
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
@@ -35198,7 +35824,8 @@ class sound_effect final
   void fade_out(const milliseconds<int> ms)  // NOLINT not const
   {
     assert(ms.count() > 0);
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -35287,9 +35914,12 @@ class sound_effect final
    */
   [[nodiscard]] auto channel() const noexcept -> std::optional<int>
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       return m_channel;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -35374,9 +36004,12 @@ class sound_effect final
    */
   void activate(const int nLoops) noexcept
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
-    } else {
+    }
+    else
+    {
       m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
     }
   }
@@ -35403,9 +36036,8 @@ class sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-  using detail::to_string;
-  return "[sound_effect | data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "]";
+  return "sound_effect{data: " + detail::address_of(sound.get()) +
+         ", volume: " + detail::to_string(sound.volume()).value() + "}";
 }
 
 /**
@@ -35553,7 +36185,8 @@ class thread final
                   void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
-    if (!m_thread) {
+    if (!m_thread)
+    {
       throw sdl_error{};
     }
   }
@@ -35569,7 +36202,8 @@ class thread final
    */
   ~thread() noexcept
   {
-    if (joinable()) {
+    if (joinable())
+    {
       join();
     }
   }
@@ -35584,7 +36218,8 @@ class thread final
    */
   void detach() noexcept
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return;
     }
 
@@ -35606,7 +36241,8 @@ class thread final
    */
   auto join() noexcept -> int
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return 0;
     }
 
@@ -35771,10 +36407,9 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-  using detail::to_string;
-  return "[thread | ptr: " + detail::address_of(thread.get()) +
+  return "thread{data: " + detail::address_of(thread.get()) +
          ", name: " + thread.name() +
-         ", id: " + to_string(thread.get_id()).value() + "]";
+         ", id: " + detail::to_string(thread.get_id()).value() + "}";
 }
 
 /**
@@ -35914,7 +36549,8 @@ class try_lock final
    */
   ~try_lock() noexcept
   {
-    if (m_status == lock_status::success) {
+    if (m_status == lock_status::success)
+    {
       m_mutex->unlock();
     }
   }
@@ -36255,7 +36891,8 @@ class library final
     explicit sdl(const u32 flags)
     {
       const auto result = SDL_Init(flags);
-      if (result < 0) {
+      if (result < 0)
+      {
         throw sdl_error{};
       }
     }
@@ -36272,7 +36909,8 @@ class library final
     explicit sdl_ttf()
     {
       const auto result = TTF_Init();
-      if (result == -1) {
+      if (result == -1)
+      {
         throw ttf_error{};
       }
     }
@@ -36292,11 +36930,13 @@ class library final
               const int nChannels,
               const int chunkSize)
     {
-      if (!Mix_Init(flags)) {
+      if (!Mix_Init(flags))
+      {
         throw mix_error{};
       }
 
-      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
+      {
         throw mix_error{};
       }
     }
@@ -36313,7 +36953,8 @@ class library final
    public:
     explicit sdl_image(const int flags)
     {
-      if (!IMG_Init(flags)) {
+      if (!IMG_Init(flags))
+      {
         throw img_error{};
       }
     }
@@ -36332,19 +36973,23 @@ class library final
 
   void init()
   {
-    if (m_cfg.initCore) {
+    if (m_cfg.initCore)
+    {
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
-    if (m_cfg.initImage) {
+    if (m_cfg.initImage)
+    {
       m_img.emplace(m_cfg.imageFlags);
     }
 
-    if (m_cfg.initTTF) {
+    if (m_cfg.initTTF)
+    {
       m_ttf.emplace();
     }
 
-    if (m_cfg.initMixer) {
+    if (m_cfg.initMixer)
+    {
       m_mixer.emplace(m_cfg.mixerFlags,
                       m_cfg.mixerFreq,
                       m_cfg.mixerFormat,
@@ -36613,6 +37258,8 @@ inline auto set_text(const std::string& text) noexcept -> bool
 
 #include <SDL.h>
 
+#include <cassert>  // assert
+#include <cmath>    // round, fabs, fmod
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -36697,6 +37344,172 @@ class color final
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : m_color{color.r, color.g, color.b, max()}
   {}
+
+  /**
+   * \brief Creates a color from HSV-encoded values.
+   *
+   * \pre `hue` must be in the range [0, 360].
+   * \pre `saturation` must be in the range [0, 100].
+   * \pre `value` must be in the range [0, 100].
+   *
+   * \param hue the hue of the color, in the range [0, 360].
+   * \param saturation the saturation of the color, in the range [0, 100].
+   * \param value the value of the color, in the range [0, 100].
+   *
+   * \return an RGBA color converted from the HSV values.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto from_hsv(const double hue,
+                                     const double saturation,
+                                     const double value) -> color
+  {
+    assert(hue >= 0);
+    assert(hue <= 360);
+    assert(saturation >= 0);
+    assert(saturation <= 100);
+    assert(value >= 0);
+    assert(value <= 100);
+
+    const auto v = (value / 100.0);
+    const auto chroma = v * (saturation / 100.0);
+    const auto hp = hue / 60.0;
+
+    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+
+    double red{};
+    double green{};
+    double blue{};
+
+    if (0 <= hp && hp <= 1)
+    {
+      red = chroma;
+      green = x;
+      blue = 0;
+    }
+    else if (1 < hp && hp <= 2)
+    {
+      red = x;
+      green = chroma;
+      blue = 0.0;
+    }
+    else if (2 < hp && hp <= 3)
+    {
+      red = 0;
+      green = chroma;
+      blue = x;
+    }
+    else if (3 < hp && hp <= 4)
+    {
+      red = 0;
+      green = x;
+      blue = chroma;
+    }
+    else if (4 < hp && hp <= 5)
+    {
+      red = x;
+      green = 0;
+      blue = chroma;
+    }
+    else if (5 < hp && hp <= 6)
+    {
+      red = chroma;
+      green = 0;
+      blue = x;
+    }
+
+    const auto m = v - chroma;
+
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+
+    return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from HSL-encoded values.
+   *
+   * \pre `hue` must be in the range [0, 360].
+   * \pre `saturation` must be in the range [0, 100].
+   * \pre `lightness` must be in the range [0, 100].
+   *
+   * \param hue the hue of the color, in the range [0, 360].
+   * \param saturation the saturation of the color, in the range [0, 100].
+   * \param lightness the lightness of the color, in the range [0, 100].
+   *
+   * \return an RGBA color converted from the HSL values.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto from_hsl(const double hue,
+                                     const double saturation,
+                                     const double lightness) -> color
+  {
+    assert(hue >= 0);
+    assert(hue <= 360);
+    assert(saturation >= 0);
+    assert(saturation <= 100);
+    assert(lightness >= 0);
+    assert(lightness <= 100);
+
+    const auto s = saturation / 100.0;
+    const auto l = lightness / 100.0;
+
+    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
+    const auto hp = hue / 60.0;
+
+    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+
+    double red{};
+    double green{};
+    double blue{};
+
+    if (0 <= hp && hp < 1)
+    {
+      red = chroma;
+      green = x;
+      blue = 0;
+    }
+    else if (1 <= hp && hp < 2)
+    {
+      red = x;
+      green = chroma;
+      blue = 0;
+    }
+    else if (2 <= hp && hp < 3)
+    {
+      red = 0;
+      green = chroma;
+      blue = x;
+    }
+    else if (3 <= hp && hp < 4)
+    {
+      red = 0;
+      green = x;
+      blue = chroma;
+    }
+    else if (4 <= hp && hp < 5)
+    {
+      red = x;
+      green = 0;
+      blue = chroma;
+    }
+    else if (5 <= hp && hp < 6)
+    {
+      red = chroma;
+      green = 0;
+      blue = x;
+    }
+
+    const auto m = l - (chroma / 2.0);
+
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+
+    return color{r, g, b};
+  }
 
   /**
    * \brief Sets the value of the red component.
@@ -36922,10 +37735,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "[color | r: " + detail::to_string(color.red()).value() +
+  return "color{r: " + detail::to_string(color.red()).value() +
          ", g: " + detail::to_string(color.green()).value() +
          ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "]";
+         ", a: " + detail::to_string(color.alpha()).value() + "}";
 }
 
 /**
@@ -38339,7 +39152,8 @@ class condition final
  public:
   condition() : m_cond{SDL_CreateCond()}
   {
-    if (!m_cond) {
+    if (!m_cond)
+    {
       throw sdl_error{};
     }
   }
@@ -38713,7 +39527,8 @@ class basic_controller final
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller) {
+    if (!m_controller)
+    {
       throw sdl_error{};
     }
   }
@@ -38736,9 +39551,12 @@ class basic_controller final
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -38760,9 +39578,12 @@ class basic_controller final
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -38865,9 +39686,12 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -38882,9 +39706,12 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -38900,9 +39727,12 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -38938,9 +39768,12 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39001,8 +39834,10 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i) {
-      if (is_supported(i)) {
+    for (auto i = 0; i < joysticks; ++i)
+    {
+      if (is_supported(i))
+      {
         ++amount;
       }
     }
@@ -39127,9 +39962,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForAxis(
         m_controller,
         static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39149,9 +39987,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForButton(
         m_controller,
         static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39346,9 +40187,12 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1) {
+    if (res != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39436,9 +40280,12 @@ class basic_controller final
                                         value,
                                         array.data(),
                                         static_cast<int>(array.size()));
-    if (res != -1) {
+    if (res != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39503,11 +40350,16 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1) {
+    if (result == 1)
+    {
       return mapping_result::added;
-    } else if (result == 0) {
+    }
+    else if (result == 0)
+    {
       return mapping_result::updated;
-    } else {
+    }
+    else
+    {
       return mapping_result::error;
     }
   }
@@ -39553,9 +40405,12 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -39768,8 +40623,8 @@ template <typename T>
 {
   using namespace std::string_literals;
   const auto name = controller.name() ? controller.name() : "N/A";
-  return "[controller | data: " + detail::address_of(controller.get()) +
-         ", name: "s + name + "]";
+  return "controller{data: " + detail::address_of(controller.get()) +
+         ", name: "s + name + "}";
 }
 
 /**
@@ -40670,7 +41525,8 @@ class basic_cursor final
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }
@@ -40692,7 +41548,8 @@ class basic_cursor final
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }
@@ -41766,7 +42623,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
   }
@@ -41812,7 +42670,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
     m_event.file = file;
@@ -42557,9 +43416,12 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_modifier modifier, const bool active) noexcept
   {
-    if (active) {
+    if (active)
+    {
       m_event.keysym.mod |= static_cast<u16>(modifier);
-    } else {
+    }
+    else
+    {
       m_event.keysym.mod &= ~static_cast<u16>(modifier);
     }
   }
@@ -44581,9 +45443,12 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result) {
+    if (result)
+    {
       update_data(static_cast<event_type>(m_event.type));
-    } else {
+    }
+    else
+    {
       update_data(std::nullopt);
     }
 
@@ -44600,9 +45465,12 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty()) {
+    if (is_empty())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -44622,9 +45490,12 @@ class event final
                                     SDL_PEEKEVENT,
                                     SDL_FIRSTEVENT,
                                     SDL_LASTEVENT);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -44645,11 +45516,30 @@ class event final
   {
     const auto id = static_cast<u32>(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Indicates whether or not any events of the specified type is in the
+   * event queue.
+   *
+   * \param type the event type to look for in the event queue.
+   *
+   * \return `true` if there are events of the specified type in the event
+   * queue; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto in_queue(const event_type type) noexcept -> bool
+  {
+    return queue_count(type) > 0;
   }
 
   /**
@@ -44831,76 +45721,95 @@ class event final
   {
     using et = event_type;
 
-    if (t == et::quit) {
+    if (t == et::quit)
+    {
       m_data.emplace<quit_event>(m_event.quit);
-
-    } else if (t == et::audio_device_added || t == et::audio_device_removed) {
+    }
+    else if (t == et::audio_device_added || t == et::audio_device_removed)
+    {
       m_data.emplace<audio_device_event>(m_event.adevice);
-
-    } else if (t == et::controller_axis_motion) {
+    }
+    else if (t == et::controller_axis_motion)
+    {
       m_data.emplace<controller_axis_event>(m_event.caxis);
-
-    } else if (t == et::controller_button_down ||
-               t == et::controller_button_up) {
+    }
+    else if (t == et::controller_button_down || t == et::controller_button_up)
+    {
       m_data.emplace<controller_button_event>(m_event.cbutton);
-
-    } else if (t == et::controller_device_added ||
-               t == et::controller_device_removed ||
-               t == et::controller_device_remapped) {
+    }
+    else if (t == et::controller_device_added ||
+             t == et::controller_device_removed ||
+             t == et::controller_device_remapped)
+    {
       m_data.emplace<controller_device_event>(m_event.cdevice);
-
-    } else if (t == et::dollar_gesture || t == et::dollar_record) {
+    }
+    else if (t == et::dollar_gesture || t == et::dollar_record)
+    {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-
-    } else if (t == et::drop_begin || t == et::drop_complete ||
-               t == et::drop_file || t == et::drop_text) {
+    }
+    else if (t == et::drop_begin || t == et::drop_complete ||
+             t == et::drop_file || t == et::drop_text)
+    {
       m_data.emplace<drop_event>(m_event.drop);
-
-    } else if (t == et::joystick_axis_motion) {
+    }
+    else if (t == et::joystick_axis_motion)
+    {
       m_data.emplace<joy_axis_event>(m_event.jaxis);
-
-    } else if (t == et::joystick_ball_motion) {
+    }
+    else if (t == et::joystick_ball_motion)
+    {
       m_data.emplace<joy_ball_event>(m_event.jball);
-
-    } else if (t == et::joystick_button_up || t == et::joystick_button_down) {
+    }
+    else if (t == et::joystick_button_up || t == et::joystick_button_down)
+    {
       m_data.emplace<joy_button_event>(m_event.jbutton);
-
-    } else if (t == et::joystick_device_added ||
-               t == et::joystick_device_removed) {
+    }
+    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
+    {
       m_data.emplace<joy_device_event>(m_event.jdevice);
-
-    } else if (t == event_type::joystick_hat_motion) {
+    }
+    else if (t == event_type::joystick_hat_motion)
+    {
       m_data.emplace<joy_hat_event>(m_event.jhat);
-
-    } else if (t == et::key_down || t == et::key_up) {
+    }
+    else if (t == et::key_down || t == et::key_up)
+    {
       m_data.emplace<keyboard_event>(m_event.key);
-
-    } else if (t == et::mouse_button_up || t == et::mouse_button_down) {
+    }
+    else if (t == et::mouse_button_up || t == et::mouse_button_down)
+    {
       m_data.emplace<mouse_button_event>(m_event.button);
-
-    } else if (t == et::mouse_motion) {
+    }
+    else if (t == et::mouse_motion)
+    {
       m_data.emplace<mouse_motion_event>(m_event.motion);
-
-    } else if (t == et::mouse_wheel) {
+    }
+    else if (t == et::mouse_wheel)
+    {
       m_data.emplace<mouse_wheel_event>(m_event.wheel);
-
-    } else if (t == et::multi_gesture) {
+    }
+    else if (t == et::multi_gesture)
+    {
       m_data.emplace<multi_gesture_event>(m_event.mgesture);
-
-    } else if (t == et::text_editing) {
+    }
+    else if (t == et::text_editing)
+    {
       m_data.emplace<text_editing_event>(m_event.edit);
-
-    } else if (t == et::text_input) {
+    }
+    else if (t == et::text_input)
+    {
       m_data.emplace<text_input_event>(m_event.text);
-
-    } else if (t == et::touch_motion || t == et::touch_down ||
-               t == et::touch_up) {
+    }
+    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
+    {
       m_data.emplace<touch_finger_event>(m_event.tfinger);
-
-    } else if (t == et::window) {
+    }
+    else if (t == et::window)
+    {
       m_data.emplace<window_event>(m_event.window);
-
-    } else {
+    }
+    else
+    {
       m_data.emplace<std::monostate>();
     }
   }
@@ -45249,15 +46158,19 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* e = m_event.template try_get<Event>()) {
+    if (const auto* e = m_event.template try_get<Event>())
+    {
       constexpr auto index = index_of<Event>();
 
-      if (auto& func = std::get<index>(m_sinks).function()) {
+      if (auto& func = std::get<index>(m_sinks).function())
+      {
         func(*e);
       }
 
       return true;
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -45290,7 +46203,8 @@ class event_dispatcher final
    */
   void poll()
   {
-    while (m_event.poll()) {
+    while (m_event.poll())
+    {
       (check_for<E>() || ...);
     }
   }
@@ -45364,9 +46278,9 @@ template <typename... E>
     -> std::string
 {
   // clang-format off
-  return "[event_dispatcher | size: " + detail::to_string(dispatcher.size()).value()
+  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value()
          + ", #active: " + detail::to_string(dispatcher.active_count()).value()
-         + "]";
+         + "}";
   // clang-format on
 }
 
@@ -46312,9 +47226,12 @@ class file final
     assert(m_context);
     const auto result =
         SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -46356,9 +47273,12 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWsize(m_context.get());
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -46399,7 +47319,8 @@ class file final
 
   [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> czstring
   {
-    switch (mode) {
+    switch (mode)
+    {
       default:
         assert(false);
 
@@ -46552,12 +47473,14 @@ class font final
   {
     assert(file);
 
-    if (size <= 0) {
+    if (size <= 0)
+    {
       throw exception{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font) {
+    if (!m_font)
+    {
       throw ttf_error{};
     }
 
@@ -46598,9 +47521,12 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold) {
+    if (bold)
+    {
       add_style(TTF_STYLE_BOLD);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -46614,9 +47540,12 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic) {
+    if (italic)
+    {
       add_style(TTF_STYLE_ITALIC);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -46631,9 +47560,12 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined) {
+    if (underlined)
+    {
       add_style(TTF_STYLE_UNDERLINE);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -46648,9 +47580,12 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough) {
+    if (strikethrough)
+    {
       add_style(TTF_STYLE_STRIKETHROUGH);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -46936,9 +47871,12 @@ class font final
                                          &metrics.minY,
                                          &metrics.maxY,
                                          &metrics.advance);
-    if (result != -1) {
+    if (result != -1)
+    {
       return metrics;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -47185,9 +48123,9 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-  return "[font | data: " + detail::address_of(font.get()) +
+  return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "]";
+         ", size: " + detail::to_string(font.size()).value() + "}";
 }
 
 /**
@@ -47796,9 +48734,12 @@ class font_cache final
       -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end()) {
+    if (iterator != m_strings.end())
+    {
       return &iterator->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -47825,7 +48766,8 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph))
+    {
       return;
     }
 
@@ -47855,7 +48797,8 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch) {
+    for (auto ch = begin; ch < end; ++ch)
+    {
       add_glyph(renderer, ch);
     }
   }
@@ -47984,9 +48927,12 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
+    {
       return &it->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -48041,7 +48987,8 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end()) {
+    if (const auto it = m_strings.find(id); it != m_strings.end())
+    {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));
@@ -48114,9 +49061,12 @@ namespace cen {
 {
   SDL_RendererInfo info{};
   const auto result = SDL_GetRenderDriverInfo(index, &info);
-  if (result == 0) {
+  if (result == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -49679,8 +50629,10 @@ class basic_haptic final
   explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value)
       : m_haptic{haptic}
   {
-    if constexpr (B::value) {
-      if (!m_haptic) {
+    if constexpr (B::value)
+    {
+      if (!m_haptic)
+      {
         throw exception{"Null haptic pointer!"};
       }
     }
@@ -49702,7 +50654,8 @@ class basic_haptic final
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
-    if (!m_haptic) {
+    if (!m_haptic)
+    {
       throw sdl_error{};
     }
   }
@@ -49739,9 +50692,12 @@ class basic_haptic final
   [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
       -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
+    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
+    {
       return basic_haptic{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -49762,9 +50718,12 @@ class basic_haptic final
   template <typename BB = B, detail::is_owner<BB> = true>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromMouse()) {
+    if (auto* ptr = SDL_HapticOpenFromMouse())
+    {
       return basic_haptic{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -49882,9 +50841,12 @@ class basic_haptic final
   {
     auto internal = effect.get();
     const auto id = SDL_HapticNewEffect(m_haptic, &internal);
-    if (id != -1) {
+    if (id != -1)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -50312,9 +51274,12 @@ class basic_haptic final
   [[nodiscard]] auto index() const noexcept -> std::optional<int>
   {
     const auto res = SDL_HapticIndex(m_haptic);
-    if (res != -1) {
+    if (res != -1)
+    {
       return res;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -50329,9 +51294,12 @@ class basic_haptic final
    */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
-    if (const auto i = index()) {
+    if (const auto i = index())
+    {
       return SDL_HapticName(*i);
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -50350,9 +51318,12 @@ class basic_haptic final
   [[nodiscard]] auto effect_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffects(m_haptic);
-    if (capacity != -1) {
+    if (capacity != -1)
+    {
       return capacity;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -50371,9 +51342,12 @@ class basic_haptic final
   [[nodiscard]] auto concurrent_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffectsPlaying(m_haptic);
-    if (capacity != -1) {
+    if (capacity != -1)
+    {
       return capacity;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -50541,8 +51515,8 @@ template <typename B>
 {
   const auto* name = haptic.name();
   const auto nameStr = name ? std::string{name} : std::string{"N/A"};
-  return "[haptic | data: " + detail::address_of(haptic.get()) +
-         ", name: " + nameStr + "]";
+  return "haptic{data: " + detail::address_of(haptic.get()) +
+         ", name: " + nameStr + "}";
 }
 
 /**
@@ -50815,7 +51789,8 @@ class enum_hint
   static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(Derived::name());
-    if (!hint) {
+    if (!hint)
+    {
       return std::nullopt;
     }
     return Derived::map.key_from(hint);
@@ -51947,7 +52922,8 @@ class hint_callback final
       : m_callback{callback}
       , m_userData{userData}
   {
-    if (!callback) {
+    if (!callback)
+    {
       throw exception{"Failed to create hint callback"};
     }
   }
@@ -52489,8 +53465,10 @@ class basic_joystick final
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
       : m_joystick{joystick}
   {
-    if constexpr (isOwner) {
-      if (!m_joystick) {
+    if constexpr (isOwner)
+    {
+      if (!m_joystick)
+      {
         throw exception{"Cannot create joystick from null pointer!"};
       }
     }
@@ -52509,7 +53487,8 @@ class basic_joystick final
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick) {
+    if (!m_joystick)
+    {
       throw sdl_error{};
     }
   }
@@ -52677,9 +53656,12 @@ class basic_joystick final
                                   nAxes,
                                   nButtons,
                                   nHats);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -52782,9 +53764,12 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -52812,9 +53797,12 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -52830,9 +53818,12 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -52848,9 +53839,12 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -52946,9 +53940,12 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -52983,9 +53980,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -53005,9 +54005,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -53027,9 +54030,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -53086,9 +54092,12 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1) {
+    if (id == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return id;
     }
   }
@@ -53114,9 +54123,12 @@ class basic_joystick final
     ball_axis_change change{};
     const auto result =
         SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0) {
+    if (result == 0)
+    {
       return change;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -53141,9 +54153,12 @@ class basic_joystick final
       -> std::optional<i16>
   {
     const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0) {
+    if (result == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -53164,9 +54179,12 @@ class basic_joystick final
     i16 state{};
     const auto hadInitialState =
         SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState) {
+    if (hadInitialState)
+    {
       return state;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -53414,9 +54432,12 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0) {
+    if (result < 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -53517,7 +54538,8 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick)) {
+      if (SDL_JoystickGetAttached(joystick))
+      {
         SDL_JoystickClose(joystick);
       }
     }
@@ -53987,7 +55009,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-  return "[key_code | key: " + keyCode.name() + "]";
+  return "key_code{key: " + keyCode.name() + "}";
 }
 
 /**
@@ -54998,9 +56020,12 @@ class key_state final
                    Predicate&& predicate) const noexcept -> bool
   {
     const auto sc = code.get();
-    if (sc >= 0 && sc < m_nKeys) {
+    if (sc >= 0 && sc < m_nKeys)
+    {
       return predicate(sc);
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -55090,17 +56115,24 @@ class locale final
   {
     assert(language);
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         const auto& item = array[index];
 
-        if (country && item.country) {
+        if (country && item.country)
+        {
           if (detail::czstring_eq(language, item.language) &&
-              detail::czstring_eq(country, item.country)) {
+              detail::czstring_eq(country, item.country))
+          {
             return true;
           }
-        } else {
-          if (detail::czstring_eq(language, item.language)) {
+        }
+        else
+        {
+          if (detail::czstring_eq(language, item.language))
+          {
             return true;
           }
         }
@@ -55121,8 +56153,10 @@ class locale final
   {
     std::size_t result{0};
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         ++result;
       }
     }
@@ -56393,7 +57427,8 @@ class message_box final
                                      title.c_str(),
                                      message.c_str(),
                                      parent);
-        result == -1) {
+        result == -1)
+    {
       throw sdl_error{};
     }
   }
@@ -56417,11 +57452,13 @@ class message_box final
     buttonData.reserve(8);
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
-    if (m_buttons.empty()) {
+    if (m_buttons.empty())
+    {
       add_button(0, "OK", default_button::return_key);
     }
 
-    for (const auto& button : m_buttons) {
+    for (const auto& button : m_buttons)
+    {
       buttonData.emplace_back(button.convert());
     }
 
@@ -56429,13 +57466,17 @@ class message_box final
     data.numbuttons = static_cast<int>(buttonData.size());
 
     button_id button{-1};
-    if (SDL_ShowMessageBox(&data, &button) == -1) {
+    if (SDL_ShowMessageBox(&data, &button) == -1)
+    {
       throw sdl_error{};
     }
 
-    if (button != -1) {
+    if (button != -1)
+    {
       return button;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -56988,7 +58029,8 @@ class music final
    */
   explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
   {
-    if (!m_music) {
+    if (!m_music)
+    {
       throw mix_error{};
     }
   }
@@ -57115,7 +58157,8 @@ class music final
   static void fade_out(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_fading()) {
+    if (!is_fading())
+    {
       Mix_FadeOutMusic(ms.count());
     }
   }
@@ -57291,8 +58334,8 @@ class music final
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
-  return "[music | data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "]";
+  return "music{data: " + detail::address_of(music.get()) +
+         ", volume: " + detail::to_string(music::volume()).value() + "}";
 }
 
 /**
@@ -57478,7 +58521,8 @@ class mutex final
    */
   mutex() : m_mutex{SDL_CreateMutex()}
   {
-    if (!m_mutex) {
+    if (!m_mutex)
+    {
       throw sdl_error{};
     }
   }
@@ -57803,8 +58847,10 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
       : m_format{ptr}
   {
-    if constexpr (B::value) {
-      if (!m_format) {
+    if constexpr (B::value)
+    {
+      if (!m_format)
+      {
         throw exception{"Null pixel format!"};
       }
     }
@@ -57825,7 +58871,8 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
-    if (!m_format) {
+    if (!m_format)
+    {
       throw sdl_error{};
     }
   }
@@ -58151,22 +59198,28 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
   const czstring platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows")) {
+  if (detail::czstring_eq(platform, "Windows"))
+  {
     return platform_id::windows;
-
-  } else if (detail::czstring_eq(platform, "Mac OS X")) {
+  }
+  else if (detail::czstring_eq(platform, "Mac OS X"))
+  {
     return platform_id::mac_osx;
-
-  } else if (detail::czstring_eq(platform, "Linux")) {
+  }
+  else if (detail::czstring_eq(platform, "Linux"))
+  {
     return platform_id::linuxx;
-
-  } else if (detail::czstring_eq(platform, "iOS")) {
+  }
+  else if (detail::czstring_eq(platform, "iOS"))
+  {
     return platform_id::ios;
-
-  } else if (detail::czstring_eq(platform, "Android")) {
+  }
+  else if (detail::czstring_eq(platform, "Android"))
+  {
     return platform_id::android;
-
-  } else {
+  }
+  else
+  {
     return platform_id::unknown;
   }
 }
@@ -58242,9 +59295,12 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name != "Unknown") {
+  if (name != "Unknown")
+  {
     return name;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -58776,12 +59832,15 @@ template <typename T>
                                    const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral) {
+  if constexpr (basic_point<T>::isIntegral)
+  {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
-  } else {
+  }
+  else
+  {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -58836,14 +59895,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
 {
-  return "[ipoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "ipoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
 {
-  return "[fpoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "fpoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 inline auto operator<<(std::ostream& stream, const ipoint& point)
@@ -58999,7 +60058,7 @@ class [[deprecated]] pref_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[pref_path | path: \"" + str + "\"]";
+  return "pref_path{path: \"" + str + "\"}";
 }
 
 /**
@@ -59825,11 +60884,16 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea) {
+  if (!fstHasArea && !sndHasArea)
+  {
     return {};
-  } else if (!fstHasArea) {
+  }
+  else if (!fstHasArea)
+  {
     return snd;
-  } else if (!sndHasArea) {
+  }
+  else if (!sndHasArea)
+  {
     return fst;
   }
 
@@ -59855,10 +60919,10 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "[rect | x: " + detail::to_string(rect.x()).value() +
+  return "rect{x: " + detail::to_string(rect.x()).value() +
          ", y: " + detail::to_string(rect.y()).value() +
          ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "]";
+         ", height: " + detail::to_string(rect.height()).value() + "}";
 }
 
 /**
@@ -60031,7 +61095,8 @@ class basic_renderer final
                           const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get()) {
+    if (!get())
+    {
       throw sdl_error{};
     }
 
@@ -60104,13 +61169,15 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock()) {
+    if (!image.lock())
+    {
       throw sdl_error{};
     }
 
     const auto result =
         SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1) {
+    if (result == -1)
+    {
       throw sdl_error{};
     }
 
@@ -60133,9 +61200,12 @@ class basic_renderer final
   template <typename U>
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderDrawRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawRectF(get(), rect.data());
     }
   }
@@ -60152,9 +61222,12 @@ class basic_renderer final
   template <typename U>
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderFillRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderFillRectF(get(), rect.data());
     }
   }
@@ -60206,9 +61279,12 @@ class basic_renderer final
   void draw_line(const basic_point<U>& start,
                  const basic_point<U>& end) noexcept
   {
-    if constexpr (basic_point<U>::isIntegral) {
+    if constexpr (basic_point<U>::isIntegral)
+    {
       SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
     }
   }
@@ -60240,14 +61316,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty()) {
+    if (!container.empty())
+    {
       const auto& front = container.front();
       const auto* first = front.data();
       const auto count = static_cast<int>(container.size());
 
-      if constexpr (std::is_same_v<value_t, int>) {
+      if constexpr (std::is_same_v<value_t, int>)
+      {
         SDL_RenderDrawLines(get(), first, count);
-      } else {
+      }
+      else
+      {
         SDL_RenderDrawLinesF(get(), first, count);
       }
     }
@@ -60759,7 +61839,8 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    if (const auto* data = cache.try_at(glyph)) {
+    if (const auto* data = cache.try_at(glyph))
+    {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -60771,7 +61852,9 @@ class basic_renderer final
       render(texture, ipoint{x, y});
 
       return x + metrics.advance;
-    } else {
+    }
+    else
+    {
       return position.x();
     }
   }
@@ -60806,11 +61889,15 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str) {
-      if (glyph == '\n') {
+    for (const unicode glyph : str)
+    {
+      if (glyph == '\n')
+      {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
-      } else {
+      }
+      else
+      {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -60837,11 +61924,14 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_point<P>& position) noexcept
   {
-    if constexpr (basic_point<P>::isFloating) {
+    if constexpr (basic_point<P>::isFloating)
+    {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
-    } else {
+    }
+    else
+    {
       const SDL_Rect dst{position.x(),
                          position.y(),
                          texture.width(),
@@ -60865,9 +61955,12 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
     }
   }
@@ -60892,9 +61985,12 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
     }
   }
@@ -60919,7 +62015,8 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -60927,7 +62024,9 @@ class basic_renderer final
                         angle,
                         nullptr,
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -60967,7 +62066,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -60975,7 +62075,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -61017,7 +62119,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -61025,7 +62128,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         flip);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -61307,7 +62412,8 @@ class basic_renderer final
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.emplace(id, std::move(font));
@@ -61330,7 +62436,8 @@ class basic_renderer final
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -61427,9 +62534,12 @@ class basic_renderer final
    */
   void set_clip(const std::optional<irect> area) noexcept
   {
-    if (area) {
+    if (area)
+    {
       SDL_RenderSetClipRect(get(), area->data());
-    } else {
+    }
+    else
+    {
       SDL_RenderSetClipRect(get(), nullptr);
     }
   }
@@ -61471,9 +62581,12 @@ class basic_renderer final
    */
   void set_target(const texture* target) noexcept
   {
-    if (target && target->is_target()) {
+    if (target && target->is_target())
+    {
       SDL_SetRenderTarget(get(), target->get());
-    } else {
+    }
+    else
+    {
       SDL_SetRenderTarget(get(), nullptr);
     }
   }
@@ -61491,7 +62604,8 @@ class basic_renderer final
    */
   void set_scale(const float xScale, const float yScale) noexcept
   {
-    if ((xScale > 0) && (yScale > 0)) {
+    if ((xScale > 0) && (yScale > 0))
+    {
       SDL_RenderSetScale(get(), xScale, yScale);
     }
   }
@@ -61512,7 +62626,8 @@ class basic_renderer final
    */
   void set_logical_size(const iarea& size) noexcept
   {
-    if ((size.width >= 0) && (size.height >= 0)) {
+    if ((size.width >= 0) && (size.height >= 0))
+    {
       SDL_RenderSetLogicalSize(get(), size.width, size.height);
     }
   }
@@ -61662,9 +62777,12 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area()) {
+    if (!rect.has_area())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return rect;
     }
   }
@@ -61681,9 +62799,12 @@ class basic_renderer final
   {
     SDL_RendererInfo info{};
     const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0) {
+    if (result == 0)
+    {
       return info;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -61917,9 +63038,12 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       return m_renderer.ptr.get();
-    } else {
+    }
+    else
+    {
       return m_renderer;
     }
   }
@@ -61978,7 +63102,7 @@ class basic_renderer final
 template <typename B>
 [[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
 {
-  return "[renderer | data: " + detail::address_of(renderer.get()) + "]";
+  return "renderer{data: " + detail::address_of(renderer.get()) + "}";
 }
 
 template <typename B>
@@ -62406,7 +63530,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
 {
-  return "[scan_code | key: " + scanCode.name() + "]";
+  return "scan_code{key: " + scanCode.name() + "}";
 }
 
 /**
@@ -63156,7 +64280,8 @@ class scoped_lock final
    */
   explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
-    if (!mutex.lock()) {
+    if (!mutex.lock())
+    {
       throw sdl_error{};
     }
   }
@@ -63280,9 +64405,12 @@ enum class orientation
                                      &info.diagonal,
                                      &info.horizontal,
                                      &info.vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63303,9 +64431,12 @@ enum class orientation
 {
   float vertical{};
   const auto res = SDL_GetDisplayDPI(displayIndex, nullptr, nullptr, &vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return vertical;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63326,9 +64457,12 @@ enum class orientation
 {
   float diagonal{};
   const auto res = SDL_GetDisplayDPI(displayIndex, &diagonal, nullptr, nullptr);
-  if (res == 0) {
+  if (res == 0)
+  {
     return diagonal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63348,9 +64482,12 @@ enum class orientation
     -> std::optional<float>
 {
   float horizontal{};
-  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr)) {
+  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr))
+  {
     return horizontal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63372,9 +64509,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63396,9 +64536,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -63458,9 +64601,12 @@ enum class orientation
  */
 inline void set_screen_saver_enabled(const bool enabled) noexcept
 {
-  if (enabled) {
+  if (enabled)
+  {
     SDL_EnableScreenSaver();
-  } else {
+  }
+  else
+  {
     SDL_DisableScreenSaver();
   }
 }
@@ -63629,9 +64775,12 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str) {
+    if (m_str)
+    {
       return std::string{get()};
-    } else {
+    }
+    else
+    {
       return std::string{};
     }
   }
@@ -63708,7 +64857,8 @@ class semaphore final
   explicit semaphore(const u32 tokens)
       : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
-    if (!m_semaphore) {
+    if (!m_semaphore)
+    {
       throw sdl_error{};
     }
   }
@@ -63917,8 +65067,10 @@ class basic_sensor final
   explicit basic_sensor(SDL_Sensor* sensor) noexcept(!B::value)
       : m_sensor{sensor}
   {
-    if constexpr (B::value) {
-      if (!m_sensor) {
+    if constexpr (B::value)
+    {
+      if (!m_sensor)
+      {
         throw exception{"Null sensor pointer!"};
       }
     }
@@ -63938,7 +65090,8 @@ class basic_sensor final
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor) {
+    if (!m_sensor)
+    {
       throw sdl_error{};
     }
   }
@@ -64026,9 +65179,12 @@ class basic_sensor final
   {
     std::array<float, size> array{};
     const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
-    if (result != -1) {
+    if (result != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -64052,9 +65208,12 @@ class basic_sensor final
       -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1) {
+    if (id != -1)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -64102,9 +65261,12 @@ class basic_sensor final
       -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1) {
+    if (type != -1)
+    {
       return type;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -64224,9 +65386,9 @@ template <typename B>
 {
   const auto name = sensor.name();
   const std::string nameStr = name ? name : "N/A";
-  return "[sensor | data: " + detail::address_of(sensor.get()) +
+  return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + nameStr + "]";
+         ", name: " + nameStr + "}";
 }
 
 /**
@@ -64372,7 +65534,8 @@ class shared_object final
   explicit shared_object(const not_null<czstring> object)
       : m_object{SDL_LoadObject(object)}
   {
-    if (!m_object) {
+    if (!m_object)
+    {
       throw sdl_error{};
     }
   }
@@ -64543,7 +65706,8 @@ class sound_effect final
   explicit sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
-    if (!m_chunk) {
+    if (!m_chunk)
+    {
       throw mix_error{};
     }
   }
@@ -64586,7 +65750,8 @@ class sound_effect final
    */
   void stop() noexcept
   {
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_Pause(m_channel);
       m_channel = undefined_channel();
     }
@@ -64607,7 +65772,8 @@ class sound_effect final
   void fade_in(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_playing()) {
+    if (!is_playing())
+    {
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
@@ -64627,7 +65793,8 @@ class sound_effect final
   void fade_out(const milliseconds<int> ms)  // NOLINT not const
   {
     assert(ms.count() > 0);
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -64716,9 +65883,12 @@ class sound_effect final
    */
   [[nodiscard]] auto channel() const noexcept -> std::optional<int>
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       return m_channel;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -64803,9 +65973,12 @@ class sound_effect final
    */
   void activate(const int nLoops) noexcept
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
-    } else {
+    }
+    else
+    {
       m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
     }
   }
@@ -64832,9 +66005,8 @@ class sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-  using detail::to_string;
-  return "[sound_effect | data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "]";
+  return "sound_effect{data: " + detail::address_of(sound.get()) +
+         ", volume: " + detail::to_string(sound.volume()).value() + "}";
 }
 
 /**
@@ -64959,8 +66131,10 @@ class basic_surface final
   explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<B>())
       : m_surface{surface}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_surface) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_surface)
+      {
         throw exception{"Cannot create surface from null pointer!"};
       }
     }
@@ -64982,7 +66156,8 @@ class basic_surface final
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw img_error{};
     }
   }
@@ -65022,7 +66197,8 @@ class basic_surface final
                                                  0,
                                                  static_cast<u32>(pixelFormat))}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw sdl_error{};
     }
   }
@@ -65084,9 +66260,12 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<B>())
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       copy(other);
-    } else {
+    }
+    else
+    {
       m_surface = other.get();
     }
   }
@@ -65112,10 +66291,14 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<B>())
       -> basic_surface&
   {
-    if (this != &other) {
-      if constexpr (detail::is_owning<B>()) {
+    if (this != &other)
+    {
+      if constexpr (detail::is_owning<B>())
+      {
         copy(other);
-      } else {
+      }
+      else
+      {
         m_surface = other.get();
       }
     }
@@ -65162,14 +66345,16 @@ class basic_surface final
    */
   void set_pixel(const ipoint& pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock()) {
+    if (!in_bounds(pixel) || !lock())
+    {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -65205,10 +66390,13 @@ class basic_surface final
    */
   auto lock() noexcept -> bool
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       const auto result = SDL_LockSurface(m_surface);
       return result == 0;
-    } else {
+    }
+    else
+    {
       return true;
     }
   }
@@ -65222,7 +66410,8 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -65341,11 +66530,14 @@ class basic_surface final
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
     const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0)) {
+    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    {
       basic_surface result{ptr};
       result.set_blend_mode(get_blend_mode());
       return result;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -65594,9 +66786,12 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
+    if (auto* copy = SDL_DuplicateSurface(m_surface))
+    {
       return copy;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -65619,9 +66814,9 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "[surface | ptr: " + detail::address_of(surface.get()) +
+  return "surface{ptr: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "]";
+         ", height: " + detail::to_string(surface.height()).value() + "}";
 }
 
 /**
@@ -65738,8 +66933,10 @@ class basic_texture final
   explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<B>())
       : m_texture{src}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_texture) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_texture)
+      {
         throw exception{"Cannot create texture from null pointer!"};
       }
     }
@@ -65773,7 +66970,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw img_error{};
     }
   }
@@ -65813,7 +67011,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -65844,7 +67043,8 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -65887,7 +67087,8 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels)) {
+    if (!texture.lock(&pixels))
+    {
       throw sdl_error{};
     }
 
@@ -65927,20 +67128,23 @@ class basic_texture final
   void set_pixel(const ipoint& pixel, const color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) ||
-        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height())) {
+        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height()))
+    {
       return;
     }
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch)) {
+    if (!lock(&pixels, &pitch))
+    {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -66268,13 +67472,16 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
   {
-    if (pitch) {
+    if (pitch)
+    {
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
                                           reinterpret_cast<void**>(pixels),
                                           pitch);
       return result == 0;
-    } else {
+    }
+    else
+    {
       int dummyPitch;
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
@@ -66307,9 +67514,9 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  return "[texture | ptr: " + detail::address_of(texture.get()) +
+  return "texture{ptr: " + detail::address_of(texture.get()) +
          ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "]";
+         ", height: " + detail::to_string(texture.height()).value() + "}";
 }
 
 /**
@@ -66553,7 +67760,8 @@ class thread final
                   void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
-    if (!m_thread) {
+    if (!m_thread)
+    {
       throw sdl_error{};
     }
   }
@@ -66569,7 +67777,8 @@ class thread final
    */
   ~thread() noexcept
   {
-    if (joinable()) {
+    if (joinable())
+    {
       join();
     }
   }
@@ -66584,7 +67793,8 @@ class thread final
    */
   void detach() noexcept
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return;
     }
 
@@ -66606,7 +67816,8 @@ class thread final
    */
   auto join() noexcept -> int
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return 0;
     }
 
@@ -66771,10 +67982,9 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-  using detail::to_string;
-  return "[thread | ptr: " + detail::address_of(thread.get()) +
+  return "thread{data: " + detail::address_of(thread.get()) +
          ", name: " + thread.name() +
-         ", id: " + to_string(thread.get_id()).value() + "]";
+         ", id: " + detail::to_string(thread.get_id()).value() + "}";
 }
 
 /**
@@ -67103,9 +68313,12 @@ enum class device_type
     -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0) {
+  if (device != 0)
+  {
     return device;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -67153,9 +68366,12 @@ enum class device_type
                                      const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
+  if (const auto* finger = SDL_GetTouchFinger(id, index))
+  {
     return *finger;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -67247,7 +68463,8 @@ class try_lock final
    */
   ~try_lock() noexcept
   {
-    if (m_status == lock_status::success) {
+    if (m_status == lock_status::success)
+    {
       m_mutex->unlock();
     }
   }
@@ -67471,7 +68688,8 @@ class unicode_string final
    */
   void pop_back()
   {
-    if (!empty()) {
+    if (!empty())
+    {
       m_data.erase(m_data.end() - 2);
     }
   }
@@ -67677,14 +68895,17 @@ class unicode_string final
 [[nodiscard]] inline auto operator==(const unicode_string& lhs,
                                      const unicode_string& rhs) -> bool
 {
-  if (lhs.size() != rhs.size()) {
+  if (lhs.size() != rhs.size())
+  {
     return false;
   }
 
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index)
+  {
     const auto a = lhs.at(index);
     const auto b = rhs.at(index);
-    if (a != b) {
+    if (a != b)
+    {
       return false;
     }
   }
@@ -67837,9 +69058,9 @@ void serialize(Archive& archive, vector3<T>& vector)
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "[vector3 | x: " + detail::to_string(vector.x).value() +
+  return "vector3{x: " + detail::to_string(vector.x).value() +
          ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "]";
+         ", z: " + detail::to_string(vector.z).value() + "}";
 }
 
 /**
@@ -68010,8 +69231,10 @@ class basic_window final
   explicit basic_window(SDL_Window* window) noexcept(isHandle)
       : m_window{window}
   {
-    if constexpr (isOwner) {
-      if (!m_window) {
+    if constexpr (isOwner)
+    {
+      if (!m_window)
+      {
         throw exception{"Cannot create window from null pointer!"};
       }
     }
@@ -68037,11 +69260,13 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1) {
+    if (size.width < 1)
+    {
       throw exception{"Bad window width!"};
     }
 
-    if (size.height < 1) {
+    if (size.height < 1)
+    {
       throw exception{"Bad window height!"};
     }
 
@@ -68051,7 +69276,8 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     SDL_WINDOW_HIDDEN));
-    if (!m_window) {
+    if (!m_window)
+    {
       throw sdl_error{};
     }
   }
@@ -68714,9 +69940,12 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -68982,10 +70211,9 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-  using detail::to_string;
-  return "[window | ptr: " + detail::address_of(window.get()) +
-         ", width: " + to_string(window.width()).value() +
-         ", height: " + to_string(window.height()).value() + "]";
+  return "window{data: " + detail::address_of(window.get()) +
+         ", width: " + detail::to_string(window.width()).value() +
+         ", height: " + detail::to_string(window.height()).value() + "}";
 }
 
 /**

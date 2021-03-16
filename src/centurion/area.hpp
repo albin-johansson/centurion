@@ -32,12 +32,10 @@ namespace cen {
  * \see `farea`
  * \see `darea`
  *
- * \todo Centurion 6: Mark this struct as final.
- *
  * \headerfile area.hpp
  */
 template <typename T>
-struct basic_area
+struct basic_area final
 {
   using value_type = T;
 

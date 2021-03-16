@@ -169,7 +169,7 @@ class basic_pixel_format_info final
    *
    * \param ptr a pointer to the associated pixel format.
    *
-   * \throws exception if the supplied pointer is null *and* the class has
+   * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
@@ -181,7 +181,7 @@ class basic_pixel_format_info final
     {
       if (!m_format)
       {
-        throw exception{"Null pixel format!"};
+        throw cen_error{"Null pixel format!"};
       }
     }
   }

@@ -21,27 +21,25 @@ namespace cen {
 /// \{
 
 /**
- * \class exception
+ * \class cen_error
  *
  * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \todo Centurion 6: Rename to cen_error, similar to sdl_error, etc.
  *
  * \headerfile exception.hpp
  *
  * \since 3.0.0
  */
-class exception : public std::exception
+class cen_error : public std::exception
 {
  public:
-  exception() noexcept = default;
+  cen_error() noexcept = default;
 
   /**
    * \param what the message of the exception.
    *
    * \since 3.0.0
    */
-  explicit exception(const czstring what) noexcept
+  explicit cen_error(const czstring what) noexcept
       : m_what{what ? what : m_what}
   {}
 
@@ -63,7 +61,7 @@ class exception : public std::exception
  *
  * \headerfile exception.hpp
  */
-class sdl_error final : public exception
+class sdl_error final : public cen_error
 {
  public:
   /**
@@ -72,7 +70,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  sdl_error() noexcept : exception{SDL_GetError()}
+  sdl_error() noexcept : cen_error{SDL_GetError()}
   {}
 
   /**
@@ -82,7 +80,7 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const czstring what) noexcept : exception{what}
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
   {}
 };
 
@@ -95,7 +93,7 @@ class sdl_error final : public exception
  *
  * \headerfile exception.hpp
  */
-class img_error final : public exception
+class img_error final : public cen_error
 {
  public:
   /**
@@ -104,7 +102,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  img_error() noexcept : exception{IMG_GetError()}
+  img_error() noexcept : cen_error{IMG_GetError()}
   {}
 
   /**
@@ -114,7 +112,7 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit img_error(const czstring what) noexcept : exception{what}
+  explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
 
@@ -127,7 +125,7 @@ class img_error final : public exception
  *
  * \headerfile exception.hpp
  */
-class ttf_error final : public exception
+class ttf_error final : public cen_error
 {
  public:
   /**
@@ -136,7 +134,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  ttf_error() noexcept : exception{TTF_GetError()}
+  ttf_error() noexcept : cen_error{TTF_GetError()}
   {}
 
   /**
@@ -146,7 +144,7 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const czstring what) noexcept : exception{what}
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
   {}
 };
 
@@ -159,7 +157,7 @@ class ttf_error final : public exception
  *
  * \headerfile exception.hpp
  */
-class mix_error final : public exception
+class mix_error final : public cen_error
 {
  public:
   /**
@@ -168,7 +166,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  mix_error() noexcept : exception{Mix_GetError()}
+  mix_error() noexcept : cen_error{Mix_GetError()}
   {}
 
   /**
@@ -178,7 +176,7 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  explicit mix_error(const czstring what) noexcept : exception{what}
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
 

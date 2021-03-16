@@ -94,7 +94,7 @@ class basic_window final
     {
       if (!m_window)
       {
-        throw exception{"Cannot create window from null pointer!"};
+        throw cen_error{"Cannot create window from null pointer!"};
       }
     }
   }
@@ -107,7 +107,7 @@ class basic_window final
    * \param title the title of the window, can't be null.
    * \param size the size of the window, components must be greater than zero.
    *
-   * \throws exception if the supplied width or height aren't
+   * \throws cen_error if the supplied width or height aren't
    * greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
@@ -121,12 +121,12 @@ class basic_window final
 
     if (size.width < 1)
     {
-      throw exception{"Bad window width!"};
+      throw cen_error{"Bad window width!"};
     }
 
     if (size.height < 1)
     {
-      throw exception{"Bad window height!"};
+      throw cen_error{"Bad window height!"};
     }
 
     m_window.reset(SDL_CreateWindow(title,
@@ -149,7 +149,7 @@ class basic_window final
    * \param title the title of the window.
    * \param size the size of the window, components must be greater than zero.
    *
-   * \throws exception if the supplied width or height aren't
+   * \throws cen_error if the supplied width or height aren't
    * greater than zero.
    * \throws sdl_error if the window cannot be created.
    *

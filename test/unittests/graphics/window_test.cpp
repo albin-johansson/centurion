@@ -39,7 +39,7 @@ TEST_F(WindowTest, ConstructFromPointer)
         cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
 
     SDL_Window* ptr{};
-    EXPECT_THROW(cen::window{ptr}, cen::exception);
+    EXPECT_THROW(cen::window{ptr}, cen::cen_error);
   }
 
   {  // window_handle
@@ -53,8 +53,8 @@ TEST_F(WindowTest, ContructorFromStringAndArea)
 {
   using namespace std::string_literals;
 
-  EXPECT_THROW(cen::window(""s, {0, 10}), cen::exception);
-  EXPECT_THROW(cen::window(""s, {10, 0}), cen::exception);
+  EXPECT_THROW(cen::window(""s, {0, 10}), cen::cen_error);
+  EXPECT_THROW(cen::window(""s, {10, 0}), cen::cen_error);
 
   const auto width = 123;
   const auto height = 321;

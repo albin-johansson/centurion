@@ -12,7 +12,7 @@
 
 TEST(Controller, PointerConstructor)
 {
-  EXPECT_THROW(cen::controller{nullptr}, cen::exception);
+  EXPECT_THROW(cen::controller{nullptr}, cen::cen_error);
 }
 
 TEST(Controller, IndexConstructor)
@@ -204,7 +204,7 @@ class controller_handler  // TODO worth adding?
     }
     else
     {
-      throw exception{"Failed to find controller!"};
+      throw cen_error{"Failed to find controller!"};
     }
   }
 

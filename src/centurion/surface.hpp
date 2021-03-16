@@ -87,7 +87,7 @@ class basic_surface final
     {
       if (!m_surface)
       {
-        throw exception{"Cannot create surface from null pointer!"};
+        throw cen_error{"Cannot create surface from null pointer!"};
       }
     }
   }

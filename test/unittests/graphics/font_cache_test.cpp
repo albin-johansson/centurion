@@ -26,7 +26,7 @@ TEST(FontCache, InPlaceConstructor)
 
   // Font constructor exceptions
   EXPECT_THROW(cen::font_cache("", 12), cen::ttf_error);
-  EXPECT_THROW(cen::font_cache(fontPath, 0), cen::exception);
+  EXPECT_THROW(cen::font_cache(fontPath, 0), cen::cen_error);
 }
 
 class FontCacheTest : public testing::Test

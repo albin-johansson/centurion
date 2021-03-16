@@ -57,7 +57,7 @@ class static_bimap final
     }
     else
     {
-      throw exception{"Failed to find element in static map!"};
+      throw cen_error{"Failed to find element in static map!"};
     }
   }
 
@@ -75,7 +75,7 @@ class static_bimap final
     }
     else
     {
-      throw exception{"Failed to find key in static map!"};
+      throw cen_error{"Failed to find key in static map!"};
     }
   }
 };

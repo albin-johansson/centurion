@@ -44,8 +44,8 @@ class SurfaceTest : public testing::Test
 TEST_F(SurfaceTest, PathConstructor)
 {
   using namespace std::string_literals;
-  EXPECT_THROW(cen::surface(""), cen::exception);
-  EXPECT_THROW(cen::surface(""s), cen::exception);
+  EXPECT_THROW(cen::surface(""), cen::cen_error);
+  EXPECT_THROW(cen::surface(""s), cen::cen_error);
   EXPECT_NO_THROW(cen::surface{m_path});
 }
 
@@ -54,7 +54,7 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
   EXPECT_NO_THROW(cen::surface(IMG_Load(m_path)));
 
   SDL_Surface* ptr{};
-  EXPECT_THROW(cen::surface{ptr}, cen::exception);
+  EXPECT_THROW(cen::surface{ptr}, cen::cen_error);
 }
 
 TEST_F(SurfaceTest, SizePixelFormatConstructor)

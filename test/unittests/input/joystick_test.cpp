@@ -4,7 +4,7 @@
 
 TEST(Joystick, PointerConstructor)
 {
-  EXPECT_THROW(cen::joystick{nullptr}, cen::exception);
+  EXPECT_THROW(cen::joystick{nullptr}, cen::cen_error);
 }
 
 TEST(Joystick, IndexConstructor)

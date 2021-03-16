@@ -43,7 +43,7 @@ class RendererTest : public testing::Test
 TEST_F(RendererTest, PointerConstructor)
 {
   SDL_Renderer* renderer{};
-  EXPECT_THROW(cen::renderer{renderer}, cen::exception);
+  EXPECT_THROW(cen::renderer{renderer}, cen::cen_error);
 }
 
 TEST_F(RendererTest, FlagsConstructor)

@@ -29,7 +29,7 @@ TEST_F(PixelFormatInfoTest, PointerConstructor)
   static_assert(!noexcept(cen::pixel_format_info{nullptr}));
   static_assert(noexcept(cen::pixel_format_info_handle{nullptr}));
 
-  EXPECT_THROW(cen::pixel_format_info{nullptr}, cen::exception);
+  EXPECT_THROW(cen::pixel_format_info{nullptr}, cen::cen_error);
   EXPECT_NO_THROW(cen::pixel_format_info_handle{nullptr});
 }
 

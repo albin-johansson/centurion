@@ -84,7 +84,7 @@ class font final
    * \param file the file path of the TrueType font file, mustn't be null.
    * \param size the font size, must be greater than zero.
    *
-   * \throws exception if the supplied size is not greater than zero.
+   * \throws cen_error if the supplied size is not greater than zero.
    * \throws ttf_error if the font cannot be loaded.
    *
    * \since 3.0.0
@@ -95,7 +95,7 @@ class font final
 
     if (size <= 0)
     {
-      throw exception{"Bad font size!"};
+      throw cen_error{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
@@ -113,7 +113,7 @@ class font final
    * \param file the file path of the TrueType font file.
    * \param size the font size, must be greater than zero.
    *
-   * \throws exception if the supplied size is not greater than zero.
+   * \throws cen_error if the supplied size is not greater than zero.
    * \throws ttf_error if the font cannot be loaded.
    *
    * \since 5.3.0

@@ -64,7 +64,7 @@ class basic_texture final
    *
    * \param src a pointer to the associated SDL texture.
    *
-   * \throws exception if the supplied pointer is null *and* the texture is
+   * \throws cen_error if the supplied pointer is null *and* the texture is
    * owning.
    *
    * \since 3.0.0
@@ -76,7 +76,7 @@ class basic_texture final
     {
       if (!m_texture)
       {
-        throw exception{"Cannot create texture from null pointer!"};
+        throw cen_error{"Cannot create texture from null pointer!"};
       }
     }
   }
@@ -202,7 +202,7 @@ class basic_texture final
    * null.
    * \param format the pixel format that will be used by the texture.
    *
-   * \throws exception if something goes wrong.
+   * \throws cen_error if something goes wrong.
    *
    * \return a texture with `streaming` texture access.
    *

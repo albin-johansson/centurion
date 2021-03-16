@@ -4,7 +4,7 @@
 
 TEST(Sensor, PointerConstructor)
 {
-  EXPECT_THROW(cen::sensor{nullptr}, cen::exception);
+  EXPECT_THROW(cen::sensor{nullptr}, cen::cen_error);
   EXPECT_NO_THROW(cen::sensor_handle{nullptr});
 }
 

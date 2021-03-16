@@ -1361,7 +1361,7 @@ class hint_callback final
    * czstring, czstring, czstring)`.
    * \param userData a pointer to some user data. Defaults to `nullptr`.
    *
-   * \throws exception if the supplied function pointer is null.
+   * \throws cen_error if the supplied function pointer is null.
    *
    * \since 4.1.0
    */
@@ -1372,7 +1372,7 @@ class hint_callback final
   {
     if (!callback)
     {
-      throw exception{"Failed to create hint callback"};
+      throw cen_error{"Failed to create hint callback"};
     }
   }
 

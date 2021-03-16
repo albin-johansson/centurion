@@ -103,7 +103,7 @@ class basic_sensor final
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws exception if the supplied pointer is null and the class has owning
+   * \throws cen_error if the supplied pointer is null and the class has owning
    * semantics.
    *
    * \since 5.2.0
@@ -115,7 +115,7 @@ class basic_sensor final
     {
       if (!m_sensor)
       {
-        throw exception{"Null sensor pointer!"};
+        throw cen_error{"Null sensor pointer!"};
       }
     }
   }

@@ -1530,7 +1530,7 @@ class basic_haptic final
    *
    * \param haptic a pointer to the haptic device data.
    *
-   * \throws exception if the supplied pointer is null and the class has owning
+   * \throws cen_error if the supplied pointer is null and the class has owning
    * semantics.
    *
    * \since 5.2.0
@@ -1542,7 +1542,7 @@ class basic_haptic final
     {
       if (!m_haptic)
       {
-        throw exception{"Null haptic pointer!"};
+        throw cen_error{"Null haptic pointer!"};
       }
     }
   }

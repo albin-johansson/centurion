@@ -228,7 +228,7 @@ class basic_controller final
   {
     if constexpr (detail::is_owning<B>()) {
       if (!m_controller) {
-        throw exception{"Cannot create controller from null pointer!"};
+        throw cen_error{"Cannot create controller from null pointer!"};
       }
     }
   }

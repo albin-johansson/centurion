@@ -27,11 +27,11 @@ static_assert(!std::is_copy_assignable_v<cen::font>);
 TEST(Font, Constructor)
 {
   EXPECT_THROW(cen::font("", 1), cen::ttf_error);
-  EXPECT_THROW(cen::font(danielPath, 0), cen::exception);
+  EXPECT_THROW(cen::font(danielPath, 0), cen::cen_error);
 
   using namespace std::string_literals;
   EXPECT_THROW(cen::font(""s, 1), cen::ttf_error);
-  EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::exception);
+  EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::cen_error);
 }
 
 TEST(Font, Reset)

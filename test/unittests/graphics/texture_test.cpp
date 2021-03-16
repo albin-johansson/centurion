@@ -49,7 +49,7 @@ class TextureTest : public testing::Test
 
 TEST_F(TextureTest, PointerConstructor)
 {
-  EXPECT_THROW(cen::texture{nullptr}, cen::exception);
+  EXPECT_THROW(cen::texture{nullptr}, cen::cen_error);
 
   cen::texture texture{IMG_LoadTexture(m_renderer->get(), m_path)};
   EXPECT_TRUE(texture.get());
@@ -94,7 +94,7 @@ TEST_F(TextureTest, Streaming)
   const auto format = m_window->get_pixel_format();
 
   EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format),
-               cen::exception);
+               cen::cen_error);
 
   auto texture = cen::texture::streaming(*m_renderer, m_path, format);
   EXPECT_EQ(format, texture.format());

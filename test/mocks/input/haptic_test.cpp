@@ -96,7 +96,7 @@ TEST_F(HapticTest, IndexConstructor)
 TEST_F(HapticTest, PointerConstructor)
 {
   static_assert(!noexcept(cen::haptic{nullptr}));
-  EXPECT_THROW(cen::haptic{nullptr}, cen::exception);
+  EXPECT_THROW(cen::haptic{nullptr}, cen::cen_error);
 
   static_assert(noexcept(cen::haptic_handle{nullptr}));
   EXPECT_NO_THROW(cen::haptic_handle{nullptr});

@@ -177,7 +177,7 @@ class basic_joystick final
    *
    * \param joystick a pointer to the existing joystick.
    *
-   * \throws exception if the supplied pointer is null and the joystick is
+   * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
@@ -187,7 +187,7 @@ class basic_joystick final
     {
       if (!m_joystick)
       {
-        throw exception{"Cannot create joystick from null pointer!"};
+        throw cen_error{"Cannot create joystick from null pointer!"};
       }
     }
   }

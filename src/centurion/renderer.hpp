@@ -105,7 +105,7 @@ class basic_renderer final
   {
     if constexpr (detail::is_owning<B>()) {
       if (!get()) {
-        throw exception{"Cannot create renderer from null pointer!"};
+        throw cen_error{"Cannot create renderer from null pointer!"};
       }
     }
   }

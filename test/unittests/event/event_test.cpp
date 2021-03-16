@@ -145,6 +145,21 @@ TEST(Event, NumQueued)
   EXPECT_EQ(0, cen::event::num_queued(cen::event_type::window));
 }
 
+TEST(Event, InQueue)
+{
+  cen::event::flush_all();
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::quit));
+
+  cen::quit_event qe;
+  cen::event::push(qe);
+
+  EXPECT_TRUE(cen::event::in_queue(cen::event_type::quit));
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::window));
+
+  cen::event::flush_all();
+  EXPECT_FALSE(cen::event::in_queue(cen::event_type::quit));
+}
+
 TEST(Event, Type)
 {
   SDL_Event sdl{};

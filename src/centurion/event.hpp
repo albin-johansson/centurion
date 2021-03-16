@@ -3745,6 +3745,22 @@ class event final
   }
 
   /**
+   * \brief Indicates whether or not any events of the specified type is in the
+   * event queue.
+   *
+   * \param type the event type to look for in the event queue.
+   *
+   * \return `true` if there are events of the specified type in the event
+   * queue; `false` otherwise.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto in_queue(const event_type type) noexcept -> bool
+  {
+    return queue_count(type) > 0;
+  }
+
+  /**
    * \brief Returns the number of events in the event queue.
    *
    * \return the current number of events in the event queue; `std::nullopt`

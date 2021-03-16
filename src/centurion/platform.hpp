@@ -104,22 +104,28 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
   const czstring platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows")) {
+  if (detail::czstring_eq(platform, "Windows"))
+  {
     return platform_id::windows;
-
-  } else if (detail::czstring_eq(platform, "Mac OS X")) {
+  }
+  else if (detail::czstring_eq(platform, "Mac OS X"))
+  {
     return platform_id::mac_osx;
-
-  } else if (detail::czstring_eq(platform, "Linux")) {
+  }
+  else if (detail::czstring_eq(platform, "Linux"))
+  {
     return platform_id::linuxx;
-
-  } else if (detail::czstring_eq(platform, "iOS")) {
+  }
+  else if (detail::czstring_eq(platform, "iOS"))
+  {
     return platform_id::ios;
-
-  } else if (detail::czstring_eq(platform, "Android")) {
+  }
+  else if (detail::czstring_eq(platform, "Android"))
+  {
     return platform_id::android;
-
-  } else {
+  }
+  else
+  {
     return platform_id::unknown;
   }
 }
@@ -195,9 +201,12 @@ inline auto open_url(const std::string& url) noexcept -> bool
 [[nodiscard]] inline auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name != "Unknown") {
+  if (name != "Unknown")
+  {
     return name;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }

@@ -251,9 +251,12 @@ class key_state final
                    Predicate&& predicate) const noexcept -> bool
   {
     const auto sc = code.get();
-    if (sc >= 0 && sc < m_nKeys) {
+    if (sc >= 0 && sc < m_nKeys)
+    {
       return predicate(sc);
-    } else {
+    }
+    else
+    {
       return false;
     }
   }

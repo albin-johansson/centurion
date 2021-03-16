@@ -111,8 +111,10 @@ class basic_sensor final
   explicit basic_sensor(SDL_Sensor* sensor) noexcept(!B::value)
       : m_sensor{sensor}
   {
-    if constexpr (B::value) {
-      if (!m_sensor) {
+    if constexpr (B::value)
+    {
+      if (!m_sensor)
+      {
         throw exception{"Null sensor pointer!"};
       }
     }
@@ -132,7 +134,8 @@ class basic_sensor final
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor) {
+    if (!m_sensor)
+    {
       throw sdl_error{};
     }
   }
@@ -220,9 +223,12 @@ class basic_sensor final
   {
     std::array<float, size> array{};
     const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
-    if (result != -1) {
+    if (result != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -246,9 +252,12 @@ class basic_sensor final
       -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1) {
+    if (id != -1)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -296,9 +305,12 @@ class basic_sensor final
       -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1) {
+    if (type != -1)
+    {
       return type;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }

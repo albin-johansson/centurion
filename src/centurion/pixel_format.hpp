@@ -177,8 +177,10 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
       : m_format{ptr}
   {
-    if constexpr (B::value) {
-      if (!m_format) {
+    if constexpr (B::value)
+    {
+      if (!m_format)
+      {
         throw exception{"Null pixel format!"};
       }
     }
@@ -199,7 +201,8 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
-    if (!m_format) {
+    if (!m_format)
+    {
       throw sdl_error{};
     }
   }

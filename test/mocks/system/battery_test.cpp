@@ -20,11 +20,13 @@ inline constexpr auto percentage = 27;
 
 auto power_delegate(int* outSeconds, int* outPercentage) -> SDL_PowerState
 {
-  if (outSeconds) {
+  if (outSeconds)
+  {
     *outSeconds = seconds.count();
   }
 
-  if (outPercentage) {
+  if (outPercentage)
+  {
     *outPercentage = percentage;
   }
 

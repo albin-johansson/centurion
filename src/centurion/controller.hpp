@@ -271,7 +271,8 @@ class basic_controller final
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller) {
+    if (!m_controller)
+    {
       throw sdl_error{};
     }
   }
@@ -294,9 +295,12 @@ class basic_controller final
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -318,9 +322,12 @@ class basic_controller final
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
+    {
       return basic_controller{ptr};
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -423,9 +430,12 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -440,9 +450,12 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -458,9 +471,12 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0) {
+    if (id != 0)
+    {
       return id;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -496,9 +512,12 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -559,8 +578,10 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i) {
-      if (is_supported(i)) {
+    for (auto i = 0; i < joysticks; ++i)
+    {
+      if (is_supported(i))
+      {
         ++amount;
       }
     }
@@ -685,9 +706,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForAxis(
         m_controller,
         static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -707,9 +731,12 @@ class basic_controller final
     const auto result = SDL_GameControllerGetBindForButton(
         m_controller,
         static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -904,9 +931,12 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1) {
+    if (res != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -994,9 +1024,12 @@ class basic_controller final
                                         value,
                                         array.data(),
                                         static_cast<int>(array.size()));
-    if (res != -1) {
+    if (res != -1)
+    {
       return array;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -1061,11 +1094,16 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1) {
+    if (result == 1)
+    {
       return mapping_result::added;
-    } else if (result == 0) {
+    }
+    else if (result == 0)
+    {
       return mapping_result::updated;
-    } else {
+    }
+    else
+    {
       return mapping_result::error;
     }
   }
@@ -1111,9 +1149,12 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1) {
+    if (result != -1)
+    {
       return result;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }

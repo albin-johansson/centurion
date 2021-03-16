@@ -134,12 +134,15 @@ TEST(PixelFormat, Values)
 
     EXPECT_EQ(cen::pixel_format::argb2101010, SDL_PIXELFORMAT_ARGB2101010);
 
-    if constexpr (cen::cpu::is_big_endian()) {
+    if constexpr (cen::cpu::is_big_endian())
+    {
       EXPECT_EQ(cen::pixel_format::rgba32, SDL_PIXELFORMAT_RGBA8888);
       EXPECT_EQ(cen::pixel_format::argb32, SDL_PIXELFORMAT_ARGB8888);
       EXPECT_EQ(cen::pixel_format::bgra32, SDL_PIXELFORMAT_BGRA8888);
       EXPECT_EQ(cen::pixel_format::abgr32, SDL_PIXELFORMAT_ABGR8888);
-    } else {
+    }
+    else
+    {
       EXPECT_EQ(cen::pixel_format::rgba32, SDL_PIXELFORMAT_ABGR8888);
       EXPECT_EQ(cen::pixel_format::argb32, SDL_PIXELFORMAT_BGRA8888);
       EXPECT_EQ(cen::pixel_format::bgra32, SDL_PIXELFORMAT_ARGB8888);
@@ -205,12 +208,15 @@ TEST(PixelFormat, Values)
 
     EXPECT_EQ(SDL_PIXELFORMAT_ARGB2101010, cen::pixel_format::argb2101010);
 
-    if constexpr (cen::cpu::is_big_endian()) {
+    if constexpr (cen::cpu::is_big_endian())
+    {
       EXPECT_EQ(SDL_PIXELFORMAT_RGBA8888, cen::pixel_format::rgba32);
       EXPECT_EQ(SDL_PIXELFORMAT_ARGB8888, cen::pixel_format::argb32);
       EXPECT_EQ(SDL_PIXELFORMAT_BGRA8888, cen::pixel_format::bgra32);
       EXPECT_EQ(SDL_PIXELFORMAT_ABGR8888, cen::pixel_format::abgr32);
-    } else {
+    }
+    else
+    {
       EXPECT_EQ(SDL_PIXELFORMAT_ABGR8888, cen::pixel_format::rgba32);
       EXPECT_EQ(SDL_PIXELFORMAT_BGRA8888, cen::pixel_format::argb32);
       EXPECT_EQ(SDL_PIXELFORMAT_ARGB8888, cen::pixel_format::bgra32);

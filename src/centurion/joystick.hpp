@@ -183,8 +183,10 @@ class basic_joystick final
   explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
       : m_joystick{joystick}
   {
-    if constexpr (isOwner) {
-      if (!m_joystick) {
+    if constexpr (isOwner)
+    {
+      if (!m_joystick)
+      {
         throw exception{"Cannot create joystick from null pointer!"};
       }
     }
@@ -203,7 +205,8 @@ class basic_joystick final
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick) {
+    if (!m_joystick)
+    {
       throw sdl_error{};
     }
   }
@@ -371,9 +374,12 @@ class basic_joystick final
                                   nAxes,
                                   nButtons,
                                   nHats);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -476,9 +482,12 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -506,9 +515,12 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -524,9 +536,12 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -542,9 +557,12 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -640,9 +658,12 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1) {
+    if (index == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return index;
     }
   }
@@ -677,9 +698,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0) {
+    if (vendor == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return vendor;
     }
   }
@@ -699,9 +723,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0) {
+    if (product == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return product;
     }
   }
@@ -721,9 +748,12 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0) {
+    if (version == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return version;
     }
   }
@@ -780,9 +810,12 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1) {
+    if (id == -1)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return id;
     }
   }
@@ -808,9 +841,12 @@ class basic_joystick final
     ball_axis_change change{};
     const auto result =
         SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0) {
+    if (result == 0)
+    {
       return change;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -835,9 +871,12 @@ class basic_joystick final
       -> std::optional<i16>
   {
     const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0) {
+    if (result == 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -858,9 +897,12 @@ class basic_joystick final
     i16 state{};
     const auto hadInitialState =
         SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState) {
+    if (hadInitialState)
+    {
       return state;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -1108,9 +1150,12 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0) {
+    if (result < 0)
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }
@@ -1211,7 +1256,8 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick)) {
+      if (SDL_JoystickGetAttached(joystick))
+      {
         SDL_JoystickClose(joystick);
       }
     }

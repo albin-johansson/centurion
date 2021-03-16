@@ -161,7 +161,8 @@ class basic_cursor final
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }
@@ -183,7 +184,8 @@ class basic_cursor final
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
-    if (!m_cursor) {
+    if (!m_cursor)
+    {
       throw sdl_error{};
     }
   }

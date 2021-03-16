@@ -30,11 +30,14 @@ namespace cen::detail {
 template <typename T>
 [[nodiscard]] auto address_of(T* ptr) -> std::string
 {
-  if (ptr) {
+  if (ptr)
+  {
     std::ostringstream address;
     address << static_cast<const void*>(ptr);
     return address.str();
-  } else {
+  }
+  else
+  {
     return std::string{};
   }
 }

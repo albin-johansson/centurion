@@ -77,7 +77,8 @@ class sound_effect final
   explicit sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
-    if (!m_chunk) {
+    if (!m_chunk)
+    {
       throw mix_error{};
     }
   }
@@ -120,7 +121,8 @@ class sound_effect final
    */
   void stop() noexcept
   {
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_Pause(m_channel);
       m_channel = undefined_channel();
     }
@@ -141,7 +143,8 @@ class sound_effect final
   void fade_in(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_playing()) {
+    if (!is_playing())
+    {
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
@@ -161,7 +164,8 @@ class sound_effect final
   void fade_out(const milliseconds<int> ms)  // NOLINT not const
   {
     assert(ms.count() > 0);
-    if (is_playing()) {
+    if (is_playing())
+    {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -250,9 +254,12 @@ class sound_effect final
    */
   [[nodiscard]] auto channel() const noexcept -> std::optional<int>
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       return m_channel;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -337,9 +344,12 @@ class sound_effect final
    */
   void activate(const int nLoops) noexcept
   {
-    if (m_channel != undefined_channel()) {
+    if (m_channel != undefined_channel())
+    {
       Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
-    } else {
+    }
+    else
+    {
       m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
     }
   }

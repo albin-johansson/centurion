@@ -83,8 +83,10 @@ class basic_surface final
   explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<B>())
       : m_surface{surface}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_surface) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_surface)
+      {
         throw exception{"Cannot create surface from null pointer!"};
       }
     }
@@ -106,7 +108,8 @@ class basic_surface final
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw img_error{};
     }
   }
@@ -146,7 +149,8 @@ class basic_surface final
                                                  0,
                                                  static_cast<u32>(pixelFormat))}
   {
-    if (!m_surface) {
+    if (!m_surface)
+    {
       throw sdl_error{};
     }
   }
@@ -208,9 +212,12 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<B>())
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       copy(other);
-    } else {
+    }
+    else
+    {
       m_surface = other.get();
     }
   }
@@ -236,10 +243,14 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<B>())
       -> basic_surface&
   {
-    if (this != &other) {
-      if constexpr (detail::is_owning<B>()) {
+    if (this != &other)
+    {
+      if constexpr (detail::is_owning<B>())
+      {
         copy(other);
-      } else {
+      }
+      else
+      {
         m_surface = other.get();
       }
     }
@@ -286,14 +297,16 @@ class basic_surface final
    */
   void set_pixel(const ipoint& pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock()) {
+    if (!in_bounds(pixel) || !lock())
+    {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -329,10 +342,13 @@ class basic_surface final
    */
   auto lock() noexcept -> bool
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       const auto result = SDL_LockSurface(m_surface);
       return result == 0;
-    } else {
+    }
+    else
+    {
       return true;
     }
   }
@@ -346,7 +362,8 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock()) {
+    if (must_lock())
+    {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -465,11 +482,14 @@ class basic_surface final
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
     const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0)) {
+    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    {
       basic_surface result{ptr};
       result.set_blend_mode(get_blend_mode());
       return result;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }
@@ -718,9 +738,12 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
+    if (auto* copy = SDL_DuplicateSurface(m_surface))
+    {
       return copy;
-    } else {
+    }
+    else
+    {
       throw sdl_error{};
     }
   }

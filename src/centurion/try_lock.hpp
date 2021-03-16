@@ -51,7 +51,8 @@ class try_lock final
    */
   ~try_lock() noexcept
   {
-    if (m_status == lock_status::success) {
+    if (m_status == lock_status::success)
+    {
       m_mutex->unlock();
     }
   }

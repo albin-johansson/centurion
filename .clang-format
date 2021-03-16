@@ -7,8 +7,11 @@ Standard: c++17
 DerivePointerAlignment: false
 PointerAlignment: Left
 AllowAllParametersOfDeclarationOnNextLine: false
-
-AlwaysBreakAfterDefinitionReturnType: None
+AllowAllArgumentsOnNextLine: false
+AllowShortLambdasOnASingleLine: None
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortEnumsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 
 BinPackParameters: false
@@ -22,14 +25,10 @@ BraceWrapping:
   AfterFunction: true
   SplitEmptyRecord: false
   SplitEmptyFunction: false
-
-AllowShortFunctionsOnASingleLine: None
-AllowShortBlocksOnASingleLine: Never
+  BeforeElse: true
+  AfterControlStatement: Always
 
 BreakConstructorInitializers: BeforeComma
 AllowAllConstructorInitializersOnNextLine: false
-
-AllowShortLambdasOnASingleLine: None
-AllowAllArgumentsOnNextLine: false
 
 BreakInheritanceList: BeforeColon

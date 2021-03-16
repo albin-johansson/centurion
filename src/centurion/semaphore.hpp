@@ -44,7 +44,8 @@ class semaphore final
   explicit semaphore(const u32 tokens)
       : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
-    if (!m_semaphore) {
+    if (!m_semaphore)
+    {
       throw sdl_error{};
     }
   }

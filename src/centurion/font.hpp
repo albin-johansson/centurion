@@ -93,12 +93,14 @@ class font final
   {
     assert(file);
 
-    if (size <= 0) {
+    if (size <= 0)
+    {
       throw exception{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font) {
+    if (!m_font)
+    {
       throw ttf_error{};
     }
 
@@ -139,9 +141,12 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold) {
+    if (bold)
+    {
       add_style(TTF_STYLE_BOLD);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -155,9 +160,12 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic) {
+    if (italic)
+    {
       add_style(TTF_STYLE_ITALIC);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -172,9 +180,12 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined) {
+    if (underlined)
+    {
       add_style(TTF_STYLE_UNDERLINE);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -189,9 +200,12 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough) {
+    if (strikethrough)
+    {
       add_style(TTF_STYLE_STRIKETHROUGH);
-    } else {
+    }
+    else
+    {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -477,9 +491,12 @@ class font final
                                          &metrics.minY,
                                          &metrics.maxY,
                                          &metrics.advance);
-    if (result != -1) {
+    if (result != -1)
+    {
       return metrics;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }

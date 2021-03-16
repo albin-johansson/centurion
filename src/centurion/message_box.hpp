@@ -535,7 +535,8 @@ class message_box final
                                      title.c_str(),
                                      message.c_str(),
                                      parent);
-        result == -1) {
+        result == -1)
+    {
       throw sdl_error{};
     }
   }
@@ -559,11 +560,13 @@ class message_box final
     buttonData.reserve(8);
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
-    if (m_buttons.empty()) {
+    if (m_buttons.empty())
+    {
       add_button(0, "OK", default_button::return_key);
     }
 
-    for (const auto& button : m_buttons) {
+    for (const auto& button : m_buttons)
+    {
       buttonData.emplace_back(button.convert());
     }
 
@@ -571,13 +574,17 @@ class message_box final
     data.numbuttons = static_cast<int>(buttonData.size());
 
     button_id button{-1};
-    if (SDL_ShowMessageBox(&data, &button) == -1) {
+    if (SDL_ShowMessageBox(&data, &button) == -1)
+    {
       throw sdl_error{};
     }
 
-    if (button != -1) {
+    if (button != -1)
+    {
       return button;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }

@@ -237,7 +237,8 @@ class enum_hint
   static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(Derived::name());
-    if (!hint) {
+    if (!hint)
+    {
       return std::nullopt;
     }
     return Derived::map.key_from(hint);
@@ -1369,7 +1370,8 @@ class hint_callback final
       : m_callback{callback}
       , m_userData{userData}
   {
-    if (!callback) {
+    if (!callback)
+    {
       throw exception{"Failed to create hint callback"};
     }
   }

@@ -291,7 +291,8 @@ class library final
     explicit sdl(const u32 flags)
     {
       const auto result = SDL_Init(flags);
-      if (result < 0) {
+      if (result < 0)
+      {
         throw sdl_error{};
       }
     }
@@ -308,7 +309,8 @@ class library final
     explicit sdl_ttf()
     {
       const auto result = TTF_Init();
-      if (result == -1) {
+      if (result == -1)
+      {
         throw ttf_error{};
       }
     }
@@ -328,11 +330,13 @@ class library final
               const int nChannels,
               const int chunkSize)
     {
-      if (!Mix_Init(flags)) {
+      if (!Mix_Init(flags))
+      {
         throw mix_error{};
       }
 
-      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
+      {
         throw mix_error{};
       }
     }
@@ -349,7 +353,8 @@ class library final
    public:
     explicit sdl_image(const int flags)
     {
-      if (!IMG_Init(flags)) {
+      if (!IMG_Init(flags))
+      {
         throw img_error{};
       }
     }
@@ -368,19 +373,23 @@ class library final
 
   void init()
   {
-    if (m_cfg.initCore) {
+    if (m_cfg.initCore)
+    {
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
-    if (m_cfg.initImage) {
+    if (m_cfg.initImage)
+    {
       m_img.emplace(m_cfg.imageFlags);
     }
 
-    if (m_cfg.initTTF) {
+    if (m_cfg.initTTF)
+    {
       m_ttf.emplace();
     }
 
-    if (m_cfg.initMixer) {
+    if (m_cfg.initMixer)
+    {
       m_mixer.emplace(m_cfg.mixerFlags,
                       m_cfg.mixerFreq,
                       m_cfg.mixerFormat,

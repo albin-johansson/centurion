@@ -57,9 +57,12 @@ namespace cen {
 {
   SDL_RendererInfo info{};
   const auto result = SDL_GetRenderDriverInfo(index, &info);
-  if (result == 0) {
+  if (result == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }

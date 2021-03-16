@@ -575,9 +575,12 @@ class font_cache final
       -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end()) {
+    if (iterator != m_strings.end())
+    {
       return &iterator->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -604,7 +607,8 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph))
+    {
       return;
     }
 
@@ -634,7 +638,8 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch) {
+    for (auto ch = begin; ch < end; ++ch)
+    {
       add_glyph(renderer, ch);
     }
   }
@@ -763,9 +768,12 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
+    {
       return &it->second;
-    } else {
+    }
+    else
+    {
       return nullptr;
     }
   }
@@ -820,7 +828,8 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end()) {
+    if (const auto it = m_strings.find(id); it != m_strings.end())
+    {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));

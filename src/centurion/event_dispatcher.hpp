@@ -220,15 +220,19 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* e = m_event.template try_get<Event>()) {
+    if (const auto* e = m_event.template try_get<Event>())
+    {
       constexpr auto index = index_of<Event>();
 
-      if (auto& func = std::get<index>(m_sinks).function()) {
+      if (auto& func = std::get<index>(m_sinks).function())
+      {
         func(*e);
       }
 
       return true;
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -261,7 +265,8 @@ class event_dispatcher final
    */
   void poll()
   {
-    while (m_event.poll()) {
+    while (m_event.poll())
+    {
       (check_for<E>() || ...);
     }
   }

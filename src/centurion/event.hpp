@@ -841,7 +841,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
   }
@@ -887,7 +888,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile) {
+    if (m_event.file && m_willFreeFile)
+    {
       SDL_free(m_event.file);
     }
     m_event.file = file;
@@ -1632,9 +1634,12 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_modifier modifier, const bool active) noexcept
   {
-    if (active) {
+    if (active)
+    {
       m_event.keysym.mod |= static_cast<u16>(modifier);
-    } else {
+    }
+    else
+    {
       m_event.keysym.mod &= ~static_cast<u16>(modifier);
     }
   }
@@ -3656,9 +3661,12 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result) {
+    if (result)
+    {
       update_data(static_cast<event_type>(m_event.type));
-    } else {
+    }
+    else
+    {
       update_data(std::nullopt);
     }
 
@@ -3675,9 +3683,12 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty()) {
+    if (is_empty())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -3697,9 +3708,12 @@ class event final
                                     SDL_PEEKEVENT,
                                     SDL_FIRSTEVENT,
                                     SDL_LASTEVENT);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -3720,9 +3734,12 @@ class event final
   {
     const auto id = static_cast<u32>(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1) {
+    if (num != -1)
+    {
       return num;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -3906,76 +3923,95 @@ class event final
   {
     using et = event_type;
 
-    if (t == et::quit) {
+    if (t == et::quit)
+    {
       m_data.emplace<quit_event>(m_event.quit);
-
-    } else if (t == et::audio_device_added || t == et::audio_device_removed) {
+    }
+    else if (t == et::audio_device_added || t == et::audio_device_removed)
+    {
       m_data.emplace<audio_device_event>(m_event.adevice);
-
-    } else if (t == et::controller_axis_motion) {
+    }
+    else if (t == et::controller_axis_motion)
+    {
       m_data.emplace<controller_axis_event>(m_event.caxis);
-
-    } else if (t == et::controller_button_down ||
-               t == et::controller_button_up) {
+    }
+    else if (t == et::controller_button_down || t == et::controller_button_up)
+    {
       m_data.emplace<controller_button_event>(m_event.cbutton);
-
-    } else if (t == et::controller_device_added ||
-               t == et::controller_device_removed ||
-               t == et::controller_device_remapped) {
+    }
+    else if (t == et::controller_device_added ||
+             t == et::controller_device_removed ||
+             t == et::controller_device_remapped)
+    {
       m_data.emplace<controller_device_event>(m_event.cdevice);
-
-    } else if (t == et::dollar_gesture || t == et::dollar_record) {
+    }
+    else if (t == et::dollar_gesture || t == et::dollar_record)
+    {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-
-    } else if (t == et::drop_begin || t == et::drop_complete ||
-               t == et::drop_file || t == et::drop_text) {
+    }
+    else if (t == et::drop_begin || t == et::drop_complete ||
+             t == et::drop_file || t == et::drop_text)
+    {
       m_data.emplace<drop_event>(m_event.drop);
-
-    } else if (t == et::joystick_axis_motion) {
+    }
+    else if (t == et::joystick_axis_motion)
+    {
       m_data.emplace<joy_axis_event>(m_event.jaxis);
-
-    } else if (t == et::joystick_ball_motion) {
+    }
+    else if (t == et::joystick_ball_motion)
+    {
       m_data.emplace<joy_ball_event>(m_event.jball);
-
-    } else if (t == et::joystick_button_up || t == et::joystick_button_down) {
+    }
+    else if (t == et::joystick_button_up || t == et::joystick_button_down)
+    {
       m_data.emplace<joy_button_event>(m_event.jbutton);
-
-    } else if (t == et::joystick_device_added ||
-               t == et::joystick_device_removed) {
+    }
+    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
+    {
       m_data.emplace<joy_device_event>(m_event.jdevice);
-
-    } else if (t == event_type::joystick_hat_motion) {
+    }
+    else if (t == event_type::joystick_hat_motion)
+    {
       m_data.emplace<joy_hat_event>(m_event.jhat);
-
-    } else if (t == et::key_down || t == et::key_up) {
+    }
+    else if (t == et::key_down || t == et::key_up)
+    {
       m_data.emplace<keyboard_event>(m_event.key);
-
-    } else if (t == et::mouse_button_up || t == et::mouse_button_down) {
+    }
+    else if (t == et::mouse_button_up || t == et::mouse_button_down)
+    {
       m_data.emplace<mouse_button_event>(m_event.button);
-
-    } else if (t == et::mouse_motion) {
+    }
+    else if (t == et::mouse_motion)
+    {
       m_data.emplace<mouse_motion_event>(m_event.motion);
-
-    } else if (t == et::mouse_wheel) {
+    }
+    else if (t == et::mouse_wheel)
+    {
       m_data.emplace<mouse_wheel_event>(m_event.wheel);
-
-    } else if (t == et::multi_gesture) {
+    }
+    else if (t == et::multi_gesture)
+    {
       m_data.emplace<multi_gesture_event>(m_event.mgesture);
-
-    } else if (t == et::text_editing) {
+    }
+    else if (t == et::text_editing)
+    {
       m_data.emplace<text_editing_event>(m_event.edit);
-
-    } else if (t == et::text_input) {
+    }
+    else if (t == et::text_input)
+    {
       m_data.emplace<text_input_event>(m_event.text);
-
-    } else if (t == et::touch_motion || t == et::touch_down ||
-               t == et::touch_up) {
+    }
+    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
+    {
       m_data.emplace<touch_finger_event>(m_event.tfinger);
-
-    } else if (t == et::window) {
+    }
+    else if (t == et::window)
+    {
       m_data.emplace<window_event>(m_event.window);
-
-    } else {
+    }
+    else
+    {
       m_data.emplace<std::monostate>();
     }
   }

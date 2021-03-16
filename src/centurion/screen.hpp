@@ -87,9 +87,12 @@ enum class orientation
                                      &info.diagonal,
                                      &info.horizontal,
                                      &info.vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return info;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -110,9 +113,12 @@ enum class orientation
 {
   float vertical{};
   const auto res = SDL_GetDisplayDPI(displayIndex, nullptr, nullptr, &vertical);
-  if (res == 0) {
+  if (res == 0)
+  {
     return vertical;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -133,9 +139,12 @@ enum class orientation
 {
   float diagonal{};
   const auto res = SDL_GetDisplayDPI(displayIndex, &diagonal, nullptr, nullptr);
-  if (res == 0) {
+  if (res == 0)
+  {
     return diagonal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -155,9 +164,12 @@ enum class orientation
     -> std::optional<float>
 {
   float horizontal{};
-  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr)) {
+  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr))
+  {
     return horizontal;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -179,9 +191,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -203,9 +218,12 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result{};
-  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0) {
+  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0)
+  {
     return result;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -265,9 +283,12 @@ enum class orientation
  */
 inline void set_screen_saver_enabled(const bool enabled) noexcept
 {
-  if (enabled) {
+  if (enabled)
+  {
     SDL_EnableScreenSaver();
-  } else {
+  }
+  else
+  {
     SDL_DisableScreenSaver();
   }
 }

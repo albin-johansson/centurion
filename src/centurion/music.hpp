@@ -117,7 +117,8 @@ class music final
    */
   explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
   {
-    if (!m_music) {
+    if (!m_music)
+    {
       throw mix_error{};
     }
   }
@@ -244,7 +245,8 @@ class music final
   static void fade_out(const milliseconds<int> ms)
   {
     assert(ms.count() > 0);
-    if (!is_fading()) {
+    if (!is_fading())
+    {
       Mix_FadeOutMusic(ms.count());
     }
   }

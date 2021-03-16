@@ -90,7 +90,8 @@ void test_hint(T&& callable)
 
   callable();
 
-  if (optPrev) {
+  if (optPrev)
+  {
     cen::set_hint<Hint, cen::hint_priority::low>(*optPrev);
   }
 }
@@ -402,9 +403,12 @@ TEST_F(BasicHintTest, AddHintCallback)
          cen::czstring oldVal,
          cen::czstring newVal) {
         static bool first = true;
-        if (first) {
+        if (first)
+        {
           first = false;
-        } else {
+        }
+        else
+        {
           const auto ptr = reinterpret_cast<int*>(data);
 
           ASSERT_TRUE(ptr);

@@ -731,11 +731,16 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea) {
+  if (!fstHasArea && !sndHasArea)
+  {
     return {};
-  } else if (!fstHasArea) {
+  }
+  else if (!fstHasArea)
+  {
     return snd;
-  } else if (!sndHasArea) {
+  }
+  else if (!sndHasArea)
+  {
     return fst;
   }
 

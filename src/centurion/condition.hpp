@@ -35,7 +35,8 @@ class condition final
  public:
   condition() : m_cond{SDL_CreateCond()}
   {
-    if (!m_cond) {
+    if (!m_cond)
+    {
       throw sdl_error{};
     }
   }

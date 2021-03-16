@@ -72,8 +72,10 @@ class basic_texture final
   explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<B>())
       : m_texture{src}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!m_texture) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!m_texture)
+      {
         throw exception{"Cannot create texture from null pointer!"};
       }
     }
@@ -107,7 +109,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw img_error{};
     }
   }
@@ -147,7 +150,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -178,7 +182,8 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture) {
+    if (!m_texture)
+    {
       throw sdl_error{};
     }
   }
@@ -221,7 +226,8 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels)) {
+    if (!texture.lock(&pixels))
+    {
       throw sdl_error{};
     }
 
@@ -261,20 +267,23 @@ class basic_texture final
   void set_pixel(const ipoint& pixel, const color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) ||
-        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height())) {
+        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height()))
+    {
       return;
     }
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch)) {
+    if (!lock(&pixels, &pitch))
+    {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels)) {
+    if ((index >= 0) && (index < nPixels))
+    {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -602,13 +611,16 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
   {
-    if (pitch) {
+    if (pitch)
+    {
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,
                                           reinterpret_cast<void**>(pixels),
                                           pitch);
       return result == 0;
-    } else {
+    }
+    else
+    {
       int dummyPitch;
       const auto result = SDL_LockTexture(m_texture,
                                           nullptr,

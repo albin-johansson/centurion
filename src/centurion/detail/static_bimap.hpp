@@ -51,9 +51,12 @@ class static_bimap final
           return pair.first == key;
         });
 
-    if (it != data.end()) {
+    if (it != data.end())
+    {
       return it->second;
-    } else {
+    }
+    else
+    {
       throw exception{"Failed to find element in static map!"};
     }
   }
@@ -66,9 +69,12 @@ class static_bimap final
           return predicate(pair.second, value);
         });
 
-    if (it != data.end()) {
+    if (it != data.end())
+    {
       return it->first;
-    } else {
+    }
+    else
+    {
       throw exception{"Failed to find key in static map!"};
     }
   }

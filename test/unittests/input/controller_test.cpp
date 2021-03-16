@@ -45,8 +45,10 @@ TEST(Controller, NumMappings)
 TEST(Controller, Count)
 {
   auto nControllers = 0;
-  for (auto i = 0, count = cen::joystick::count().value(); i < count; ++i) {
-    if (SDL_IsGameController(i)) {
+  for (auto i = 0, count = cen::joystick::count().value(); i < count; ++i)
+  {
+    if (SDL_IsGameController(i))
+    {
       ++nControllers;
     }
   }
@@ -164,8 +166,10 @@ class controller_handler  // TODO worth adding?
   void add_all()
   {
     const auto amount = cen::joystick::count().value_or(0);
-    for (int i = 0; i < amount; ++i) {
-      if (cen::controller::is_supported(i)) {
+    for (int i = 0; i < amount; ++i)
+    {
+      if (cen::controller::is_supported(i))
+      {
         emplace(i);
       }
     }
@@ -194,9 +198,12 @@ class controller_handler  // TODO worth adding?
   auto at(int index) -> controller&
   {
     const auto it = find(index);
-    if (it != end(m_controllers)) {
+    if (it != end(m_controllers))
+    {
       return *it;
-    } else {
+    }
+    else
+    {
       throw exception{"Failed to find controller!"};
     }
   }

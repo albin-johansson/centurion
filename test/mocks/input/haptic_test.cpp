@@ -428,9 +428,7 @@ TEST_F(HapticTest, Pause)
 {
   // Must feature pause support
   std::array features{SDL_HAPTIC_PAUSE};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 features.data(),
-                 cen::isize(features));
+  SET_RETURN_SEQ(SDL_HapticQuery, features.data(), cen::isize(features));
 
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_HapticPause, values.data(), cen::isize(values));
@@ -521,9 +519,7 @@ TEST_F(HapticTest, SetGain)
 {
   // Must feature gain support
   std::array features{SDL_HAPTIC_GAIN};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 features.data(),
-                 cen::isize(features));
+  SET_RETURN_SEQ(SDL_HapticQuery, features.data(), cen::isize(features));
 
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_HapticSetGain, values.data(), cen::isize(values));
@@ -542,9 +538,7 @@ TEST_F(HapticTest, SetAutocenter)
 {
   // Must feature autocenter support
   std::array features{SDL_HAPTIC_AUTOCENTER};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 features.data(),
-                 cen::isize(features));
+  SET_RETURN_SEQ(SDL_HapticQuery, features.data(), cen::isize(features));
 
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_HapticSetAutocenter, values.data(), cen::isize(values));
@@ -576,9 +570,7 @@ TEST_F(HapticTest, IsPlaying)
 {
   // Must feature status support
   std::array features{SDL_HAPTIC_STATUS};
-  SET_RETURN_SEQ(SDL_HapticQuery,
-                 features.data(),
-                 cen::isize(features));
+  SET_RETURN_SEQ(SDL_HapticQuery, features.data(), cen::isize(features));
 
   std::array values{-1, 0, 1};
   SET_RETURN_SEQ(SDL_HapticGetEffectStatus, values.data(), cen::isize(values));

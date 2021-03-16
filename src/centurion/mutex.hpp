@@ -51,7 +51,8 @@ class mutex final
    */
   mutex() : m_mutex{SDL_CreateMutex()}
   {
-    if (!m_mutex) {
+    if (!m_mutex)
+    {
       throw sdl_error{};
     }
   }

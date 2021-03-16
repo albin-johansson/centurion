@@ -80,7 +80,8 @@ class interactive_music final
     m_window.show();
 
     bool running = true;
-    while (running) {
+    while (running)
+    {
       running = handle_input();
       render(msgs);
     }
@@ -98,29 +99,38 @@ class interactive_music final
   [[nodiscard]] auto handle_input() -> bool
   {
     cen::event event;
-    while (event.poll()) {
-      if (event.is<cen::quit_event>()) {
+    while (event.poll())
+    {
+      if (event.is<cen::quit_event>())
+      {
         return false;
       }
 
       if (const auto* key = event.try_get<cen::keyboard_event>();
-          key && key->released()) {
-        if (key->is_active(cen::scancodes::zero)) {
+          key && key->released())
+      {
+        if (key->is_active(cen::scancodes::zero))
+        {
           m_click.play(0);
-
-        } else if (key->is_active(cen::scancodes::one)) {
+        }
+        else if (key->is_active(cen::scancodes::one))
+        {
           m_click.play(1);
-
-        } else if (key->is_active(cen::scancodes::two)) {
+        }
+        else if (key->is_active(cen::scancodes::two))
+        {
           m_click.play(2);
-
-        } else if (key->is_active(cen::scancodes::nine)) {
+        }
+        else if (key->is_active(cen::scancodes::nine))
+        {
           m_click.play(cen::music::forever);
-
-        } else if (key->is_active(cen::scancodes::f)) {
+        }
+        else if (key->is_active(cen::scancodes::f))
+        {
           m_song.fade_in(cen::seconds<int>{5});
-
-        } else if (key->is_active(cen::scancodes::escape)) {
+        }
+        else if (key->is_active(cen::scancodes::escape))
+        {
           cen::music::halt();
         }
       }
@@ -148,13 +158,16 @@ class interactive_music final
     m_renderer.render(msgs.infoEsc, nextPos(msgs.infoEsc));
 
     constexpr cen::ipoint offset{0, 25};
-    if (cen::music::is_playing() && !cen::music::is_fading()) {
+    if (cen::music::is_playing() && !cen::music::is_fading())
+    {
       m_renderer.render(msgs.playingMusic, nextPos(msgs.playingMusic) + offset);
-
-    } else if (cen::music::is_fading()) {
+    }
+    else if (cen::music::is_fading())
+    {
       m_renderer.render(msgs.fadingMusic, nextPos(msgs.fadingMusic) + offset);
-
-    } else {
+    }
+    else
+    {
       m_renderer.render(msgs.noMusic, nextPos(msgs.noMusic) + offset);
     }
 

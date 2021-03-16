@@ -70,17 +70,24 @@ class locale final
   {
     assert(language);
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         const auto& item = array[index];
 
-        if (country && item.country) {
+        if (country && item.country)
+        {
           if (detail::czstring_eq(language, item.language) &&
-              detail::czstring_eq(country, item.country)) {
+              detail::czstring_eq(country, item.country))
+          {
             return true;
           }
-        } else {
-          if (detail::czstring_eq(language, item.language)) {
+        }
+        else
+        {
+          if (detail::czstring_eq(language, item.language))
+          {
             return true;
           }
         }
@@ -101,8 +108,10 @@ class locale final
   {
     std::size_t result{0};
 
-    if (const auto* array = m_locales.get()) {
-      for (auto index = 0u; array[index].language; ++index) {
+    if (const auto* array = m_locales.get())
+    {
+      for (auto index = 0u; array[index].language; ++index)
+      {
         ++result;
       }
     }

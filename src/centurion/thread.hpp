@@ -106,7 +106,8 @@ class thread final
                   void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
-    if (!m_thread) {
+    if (!m_thread)
+    {
       throw sdl_error{};
     }
   }
@@ -122,7 +123,8 @@ class thread final
    */
   ~thread() noexcept
   {
-    if (joinable()) {
+    if (joinable())
+    {
       join();
     }
   }
@@ -137,7 +139,8 @@ class thread final
    */
   void detach() noexcept
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return;
     }
 
@@ -159,7 +162,8 @@ class thread final
    */
   auto join() noexcept -> int
   {
-    if (m_joined || m_detached) {
+    if (m_joined || m_detached)
+    {
       return 0;
     }
 

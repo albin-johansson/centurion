@@ -147,9 +147,12 @@ enum class device_type
     -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0) {
+  if (device != 0)
+  {
     return device;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }
@@ -197,9 +200,12 @@ enum class device_type
                                      const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
+  if (const auto* finger = SDL_GetTouchFinger(id, index))
+  {
     return *finger;
-  } else {
+  }
+  else
+  {
     return std::nullopt;
   }
 }

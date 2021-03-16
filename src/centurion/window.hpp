@@ -90,8 +90,10 @@ class basic_window final
   explicit basic_window(SDL_Window* window) noexcept(isHandle)
       : m_window{window}
   {
-    if constexpr (isOwner) {
-      if (!m_window) {
+    if constexpr (isOwner)
+    {
+      if (!m_window)
+      {
         throw exception{"Cannot create window from null pointer!"};
       }
     }
@@ -117,11 +119,13 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1) {
+    if (size.width < 1)
+    {
       throw exception{"Bad window width!"};
     }
 
-    if (size.height < 1) {
+    if (size.height < 1)
+    {
       throw exception{"Bad window height!"};
     }
 
@@ -131,7 +135,8 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     SDL_WINDOW_HIDDEN));
-    if (!m_window) {
+    if (!m_window)
+    {
       throw sdl_error{};
     }
   }
@@ -794,9 +799,12 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1) {
+    if (index != -1)
+    {
       return index;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }

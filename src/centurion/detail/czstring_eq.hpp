@@ -26,9 +26,12 @@ namespace cen::detail {
 [[nodiscard]] inline auto czstring_eq(const czstring lhs,
                                       const czstring rhs) noexcept -> bool
 {
-  if (lhs && rhs) {
+  if (lhs && rhs)
+  {
     return std::strcmp(lhs, rhs) == 0;
-  } else {
+  }
+  else
+  {
     return false;
   }
 }

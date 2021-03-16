@@ -126,7 +126,8 @@ class basic_renderer final
                           const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get()) {
+    if (!get())
+    {
       throw sdl_error{};
     }
 
@@ -199,13 +200,15 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock()) {
+    if (!image.lock())
+    {
       throw sdl_error{};
     }
 
     const auto result =
         SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1) {
+    if (result == -1)
+    {
       throw sdl_error{};
     }
 
@@ -228,9 +231,12 @@ class basic_renderer final
   template <typename U>
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderDrawRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawRectF(get(), rect.data());
     }
   }
@@ -247,9 +253,12 @@ class basic_renderer final
   template <typename U>
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
       SDL_RenderFillRect(get(), rect.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderFillRectF(get(), rect.data());
     }
   }
@@ -301,9 +310,12 @@ class basic_renderer final
   void draw_line(const basic_point<U>& start,
                  const basic_point<U>& end) noexcept
   {
-    if constexpr (basic_point<U>::isIntegral) {
+    if constexpr (basic_point<U>::isIntegral)
+    {
       SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
-    } else {
+    }
+    else
+    {
       SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
     }
   }
@@ -335,14 +347,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty()) {
+    if (!container.empty())
+    {
       const auto& front = container.front();
       const auto* first = front.data();
       const auto count = static_cast<int>(container.size());
 
-      if constexpr (std::is_same_v<value_t, int>) {
+      if constexpr (std::is_same_v<value_t, int>)
+      {
         SDL_RenderDrawLines(get(), first, count);
-      } else {
+      }
+      else
+      {
         SDL_RenderDrawLinesF(get(), first, count);
       }
     }
@@ -854,7 +870,8 @@ class basic_renderer final
                     const unicode glyph,
                     const ipoint& position) -> int
   {
-    if (const auto* data = cache.try_at(glyph)) {
+    if (const auto* data = cache.try_at(glyph))
+    {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -866,7 +883,9 @@ class basic_renderer final
       render(texture, ipoint{x, y});
 
       return x + metrics.advance;
-    } else {
+    }
+    else
+    {
       return position.x();
     }
   }
@@ -901,11 +920,15 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str) {
-      if (glyph == '\n') {
+    for (const unicode glyph : str)
+    {
+      if (glyph == '\n')
+      {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
-      } else {
+      }
+      else
+      {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -932,11 +955,14 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_point<P>& position) noexcept
   {
-    if constexpr (basic_point<P>::isFloating) {
+    if constexpr (basic_point<P>::isFloating)
+    {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
-    } else {
+    }
+    else
+    {
       const SDL_Rect dst{position.x(),
                          position.y(),
                          texture.width(),
@@ -960,9 +986,12 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
     }
   }
@@ -987,9 +1016,12 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
-    } else {
+    }
+    else
+    {
       SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
     }
   }
@@ -1014,7 +1046,8 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -1022,7 +1055,9 @@ class basic_renderer final
                         angle,
                         nullptr,
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -1062,7 +1097,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -1070,7 +1106,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         SDL_FLIP_NONE);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -1112,7 +1150,8 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating)
+    {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         source.data(),
@@ -1120,7 +1159,9 @@ class basic_renderer final
                         angle,
                         center.data(),
                         flip);
-    } else {
+    }
+    else
+    {
       SDL_RenderCopyEx(get(),
                        texture.get(),
                        source.data(),
@@ -1402,7 +1443,8 @@ class basic_renderer final
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.emplace(id, std::move(font));
@@ -1425,7 +1467,8 @@ class basic_renderer final
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end()) {
+    if (fonts.find(id) != fonts.end())
+    {
       remove_font(id);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -1522,9 +1565,12 @@ class basic_renderer final
    */
   void set_clip(const std::optional<irect> area) noexcept
   {
-    if (area) {
+    if (area)
+    {
       SDL_RenderSetClipRect(get(), area->data());
-    } else {
+    }
+    else
+    {
       SDL_RenderSetClipRect(get(), nullptr);
     }
   }
@@ -1566,9 +1612,12 @@ class basic_renderer final
    */
   void set_target(const texture* target) noexcept
   {
-    if (target && target->is_target()) {
+    if (target && target->is_target())
+    {
       SDL_SetRenderTarget(get(), target->get());
-    } else {
+    }
+    else
+    {
       SDL_SetRenderTarget(get(), nullptr);
     }
   }
@@ -1586,7 +1635,8 @@ class basic_renderer final
    */
   void set_scale(const float xScale, const float yScale) noexcept
   {
-    if ((xScale > 0) && (yScale > 0)) {
+    if ((xScale > 0) && (yScale > 0))
+    {
       SDL_RenderSetScale(get(), xScale, yScale);
     }
   }
@@ -1607,7 +1657,8 @@ class basic_renderer final
    */
   void set_logical_size(const iarea& size) noexcept
   {
-    if ((size.width >= 0) && (size.height >= 0)) {
+    if ((size.width >= 0) && (size.height >= 0))
+    {
       SDL_RenderSetLogicalSize(get(), size.width, size.height);
     }
   }
@@ -1757,9 +1808,12 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area()) {
+    if (!rect.has_area())
+    {
       return std::nullopt;
-    } else {
+    }
+    else
+    {
       return rect;
     }
   }
@@ -1776,9 +1830,12 @@ class basic_renderer final
   {
     SDL_RendererInfo info{};
     const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0) {
+    if (result == 0)
+    {
       return info;
-    } else {
+    }
+    else
+    {
       return std::nullopt;
     }
   }
@@ -2012,9 +2069,12 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<B>()) {
+    if constexpr (detail::is_owning<B>())
+    {
       return m_renderer.ptr.get();
-    } else {
+    }
+    else
+    {
       return m_renderer;
     }
   }

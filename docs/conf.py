@@ -23,7 +23,7 @@ copyright = '2019-2021, Albin Johansson'
 author = 'Albin Johansson'
 
 # The full version, including alpha/beta/rc tags
-release = '5.3.0'
+release = '6.0.0'
 
 
 # -- General configuration ---------------------------------------------------

@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include <cassert>  // assert
+#include <cmath>    // round, fabs, fmod
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -84,6 +86,88 @@ class color final
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : m_color{color.r, color.g, color.b, max()}
   {}
+
+  /**
+   * \brief Creates a color from HSV-encoded values.
+   *
+   * \pre `hue` must be in the range [0, 360].
+   * \pre `saturation` must be in the range [0, 100].
+   * \pre `value` must be in the range [0, 100].
+   *
+   * \param hue the hue of the color, in the range [0, 360].
+   * \param saturation the saturation of the color, in the range [0, 100].
+   * \param value the value of the color, in the range [0, 100].
+   *
+   * \return an RGBA color converted from the HSV values.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] static auto from_hsv(const double hue,
+                                     const double saturation,
+                                     const double value) -> color
+  {
+    assert(hue >= 0);
+    assert(hue <= 360);
+    assert(saturation >= 0);
+    assert(saturation <= 100);
+    assert(value >= 0);
+    assert(value <= 100);
+
+    const auto v = (value / 100.0);
+    const auto chroma = v * (saturation / 100.0);
+    const auto hp = hue / 60.0;
+
+    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+
+    double red{};
+    double green{};
+    double blue{};
+
+    if (0 <= hp && hp <= 1)
+    {
+      red = chroma;
+      green = x;
+      blue = 0;
+    }
+    else if (1 < hp && hp <= 2)
+    {
+      red = x;
+      green = chroma;
+      blue = 0.0;
+    }
+    else if (2 < hp && hp <= 3)
+    {
+      red = 0;
+      green = chroma;
+      blue = x;
+    }
+    else if (3 < hp && hp <= 4)
+    {
+      red = 0;
+      green = x;
+      blue = chroma;
+    }
+    else if (4 < hp && hp <= 5)
+    {
+      red = x;
+      green = 0;
+      blue = chroma;
+    }
+    else if (5 < hp && hp <= 6)
+    {
+      red = chroma;
+      green = 0;
+      blue = x;
+    }
+
+    const auto m = v - chroma;
+
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+
+    return color{r, g, b};
+  }
 
   /**
    * \brief Sets the value of the red component.

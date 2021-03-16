@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "events/event.hpp"
 
 using type = cen::event_type;
 

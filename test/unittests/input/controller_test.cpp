@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "event.hpp"
+#include "events/event.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 

@@ -1,6 +1,6 @@
 #include <utility>  // move
 
-#include "event.hpp"
+#include "events/event.hpp"
 #include "library.hpp"
 #include "music.hpp"
 #include "renderer.hpp"

@@ -72,8 +72,8 @@ set(CENTURION_HEADERS
     src/centurion/cursor.hpp
     src/centurion/czstring.hpp
 
-    src/centurion/event_type.hpp
-    src/centurion/event.hpp
+    src/centurion/events/event_type.hpp
+    src/centurion/events/event.hpp
     src/centurion/exception.hpp
 
     src/centurion/font.hpp

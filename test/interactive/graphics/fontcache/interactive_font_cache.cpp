@@ -1,5 +1,5 @@
-#include "event.hpp"
-#include "event_dispatcher.hpp"
+#include "events/event.hpp"
+#include "events/event_dispatcher.hpp"
 #include "font_cache.hpp"
 #include "library.hpp"
 #include "renderer.hpp"

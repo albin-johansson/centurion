@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "event.hpp"
+#include "events/event.hpp"
 
 using id = cen::window_event_id;
 

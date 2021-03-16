@@ -2,8 +2,8 @@
 #include <cstddef>  // size_t
 
 #include "controller.hpp"
-#include "event.hpp"
-#include "event_dispatcher.hpp"
+#include "events/event.hpp"
+#include "events/event_dispatcher.hpp"
 #include "library.hpp"
 #include "renderer.hpp"
 #include "window.hpp"

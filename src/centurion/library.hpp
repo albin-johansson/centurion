@@ -57,8 +57,8 @@
  * \brief Contains miscellaneous components.
  */
 
-#ifndef CENTURION_CORE_HEADER
-#define CENTURION_CORE_HEADER
+#ifndef CENTURION_LIBRARY_HEADER
+#define CENTURION_LIBRARY_HEADER
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -67,73 +67,8 @@
 
 #include <optional>  // optional
 
-#include "area.hpp"
-#include "base_path.hpp"
-#include "battery.hpp"
-#include "blend_mode.hpp"
-#include "button_state.hpp"
-#include "byte_order.hpp"
-#include "cast.hpp"
-#include "centurion_cfg.hpp"
-#include "clipboard.hpp"
-#include "color.hpp"
-#include "condition.hpp"
-#include "controller.hpp"
-#include "counter.hpp"
-#include "cpu.hpp"
-#include "cursor.hpp"
-#include "czstring.hpp"
-#include "event.hpp"
-#include "event_dispatcher.hpp"
-#include "event_type.hpp"
 #include "exception.hpp"
-#include "file.hpp"
-#include "font.hpp"
-#include "font_cache.hpp"
-#include "graphics_drivers.hpp"
-#include "haptic.hpp"
-#include "hints.hpp"
 #include "integers.hpp"
-#include "joystick.hpp"
-#include "key_code.hpp"
-#include "key_modifier.hpp"
-#include "key_state.hpp"
-#include "locale.hpp"
-#include "log.hpp"
-#include "message_box.hpp"
-#include "mouse_button.hpp"
-#include "mouse_state.hpp"
-#include "music.hpp"
-#include "mutex.hpp"
-#include "not_null.hpp"
-#include "owner.hpp"
-#include "pixel_format.hpp"
-#include "platform.hpp"
-#include "point.hpp"
-#include "pref_path.hpp"
-#include "ram.hpp"
-#include "rect.hpp"
-#include "renderer.hpp"
-#include "scale_mode.hpp"
-#include "scan_code.hpp"
-#include "scoped_lock.hpp"
-#include "screen.hpp"
-#include "sdl_string.hpp"
-#include "semaphore.hpp"
-#include "sensor.hpp"
-#include "shared_object.hpp"
-#include "sound_effect.hpp"
-#include "surface.hpp"
-#include "texture.hpp"
-#include "texture_access.hpp"
-#include "thread.hpp"
-#include "time.hpp"
-#include "touch.hpp"
-#include "try_lock.hpp"
-#include "unicode_string.hpp"
-#include "vector3.hpp"
-#include "window.hpp"
-#include "window_utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -476,4 +411,4 @@ class library final
 
 }  // namespace cen
 
-#endif  // CENTURION_CORE_HEADER
+#endif  // CENTURION_LIBRARY_HEADER

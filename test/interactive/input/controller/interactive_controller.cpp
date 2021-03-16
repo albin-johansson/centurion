@@ -1,10 +1,10 @@
 #include <array>    // array
 #include <cstddef>  // size_t
 
-#include "centurion.hpp"
 #include "controller.hpp"
 #include "event.hpp"
 #include "event_dispatcher.hpp"
+#include "library.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 

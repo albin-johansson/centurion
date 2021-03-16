@@ -60,7 +60,7 @@ set(CENTURION_HEADERS
     src/centurion/button_state.hpp
 
     src/centurion/cast.hpp
-    src/centurion/centurion.hpp
+    src/centurion/library.hpp
     src/centurion/centurion_cfg.hpp
     src/centurion/clipboard.hpp
     src/centurion/color.hpp

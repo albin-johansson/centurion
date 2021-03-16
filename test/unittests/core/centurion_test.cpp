@@ -1,6 +1,6 @@
-#include "centurion.hpp"
-
 #include <gtest/gtest.h>
+
+#include "library.hpp"
 
 TEST(CenturionHeader, SDLLinkedVersion)
 {

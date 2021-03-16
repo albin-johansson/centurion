@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "centurion.hpp"
+#include "library.hpp"
 
 int main(int argc, char* argv[])
 {

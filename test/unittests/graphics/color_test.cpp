@@ -108,6 +108,28 @@ TEST(Color, FromHSV)
   }
 }
 
+TEST(Color, FromHSL)
+{
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
+  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
+  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
+
+  EXPECT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
+  EXPECT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
+  EXPECT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
+
+  // Random colors
+  EXPECT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6, 49.8));
+  EXPECT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1, 56.5));
+  EXPECT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3, 47.1));
+  EXPECT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7));
+  EXPECT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3, 79.8));
+
+  // Maxed out
+  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
+}
+
 TEST(Color, EqualityOperatorReflexivity)
 {
   const cen::color color{10, 20, 30, 40};

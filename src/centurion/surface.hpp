@@ -766,9 +766,9 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "[surface | ptr: " + detail::address_of(surface.get()) +
+  return "surface{ptr: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "]";
+         ", height: " + detail::to_string(surface.height()).value() + "}";
 }
 
 /**

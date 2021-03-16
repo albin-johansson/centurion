@@ -766,10 +766,10 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "[rect | x: " + detail::to_string(rect.x()).value() +
+  return "rect{x: " + detail::to_string(rect.x()).value() +
          ", y: " + detail::to_string(rect.y()).value() +
          ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "]";
+         ", height: " + detail::to_string(rect.height()).value() + "}";
 }
 
 /**

@@ -653,9 +653,9 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  return "[texture | ptr: " + detail::address_of(texture.get()) +
+  return "texture{ptr: " + detail::address_of(texture.get()) +
          ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "]";
+         ", height: " + detail::to_string(texture.height()).value() + "}";
 }
 
 /**

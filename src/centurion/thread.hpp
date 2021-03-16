@@ -328,10 +328,9 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-  using detail::to_string;
-  return "[thread | ptr: " + detail::address_of(thread.get()) +
+  return "thread{data: " + detail::address_of(thread.get()) +
          ", name: " + thread.name() +
-         ", id: " + to_string(thread.get_id()).value() + "]";
+         ", id: " + detail::to_string(thread.get_id()).value() + "}";
 }
 
 /**

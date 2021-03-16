@@ -1070,10 +1070,9 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-  using detail::to_string;
-  return "[window | ptr: " + detail::address_of(window.get()) +
-         ", width: " + to_string(window.width()).value() +
-         ", height: " + to_string(window.height()).value() + "]";
+  return "window{data: " + detail::address_of(window.get()) +
+         ", width: " + detail::to_string(window.width()).value() +
+         ", height: " + detail::to_string(window.height()).value() + "}";
 }
 
 /**

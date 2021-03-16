@@ -477,10 +477,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "[color | r: " + detail::to_string(color.red()).value() +
+  return "color{r: " + detail::to_string(color.red()).value() +
          ", g: " + detail::to_string(color.green()).value() +
          ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "]";
+         ", a: " + detail::to_string(color.alpha()).value() + "}";
 }
 
 /**

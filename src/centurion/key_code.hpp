@@ -315,7 +315,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-  return "[key_code | key: " + keyCode.name() + "]";
+  return "key_code{key: " + keyCode.name() + "}";
 }
 
 /**

@@ -307,7 +307,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
 {
-  return "[scan_code | key: " + scanCode.name() + "]";
+  return "scan_code{key: " + scanCode.name() + "}";
 }
 
 /**

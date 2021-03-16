@@ -2424,8 +2424,8 @@ template <typename B>
 {
   const auto* name = haptic.name();
   const auto nameStr = name ? std::string{name} : std::string{"N/A"};
-  return "[haptic | data: " + detail::address_of(haptic.get()) +
-         ", name: " + nameStr + "]";
+  return "haptic{data: " + detail::address_of(haptic.get()) +
+         ", name: " + nameStr + "}";
 }
 
 /**

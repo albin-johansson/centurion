@@ -340,9 +340,9 @@ template <typename... E>
     -> std::string
 {
   // clang-format off
-  return "[event_dispatcher | size: " + detail::to_string(dispatcher.size()).value()
+  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value()
          + ", #active: " + detail::to_string(dispatcher.active_count()).value()
-         + "]";
+         + "}";
   // clang-format on
 }
 

@@ -743,9 +743,9 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-  return "[font | data: " + detail::address_of(font.get()) +
+  return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "]";
+         ", size: " + detail::to_string(font.size()).value() + "}";
 }
 
 /**

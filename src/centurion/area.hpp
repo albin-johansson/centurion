@@ -199,8 +199,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "[area | width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "]";
+  return "area{width: " + detail::to_string(area.width).value() +
+         ", height: " + detail::to_string(area.height).value() + "}";
 }
 
 /**

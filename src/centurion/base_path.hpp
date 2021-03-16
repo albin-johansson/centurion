@@ -111,7 +111,7 @@ class [[deprecated]] base_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[base_path | path: \"" + str + "\"]";
+  return "base_path{path: \"" + str + "\"}";
 }
 
 /**

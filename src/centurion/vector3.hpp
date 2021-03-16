@@ -87,9 +87,9 @@ void serialize(Archive& archive, vector3<T>& vector)
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "[vector3 | x: " + detail::to_string(vector.x).value() +
+  return "vector3{x: " + detail::to_string(vector.x).value() +
          ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "]";
+         ", z: " + detail::to_string(vector.z).value() + "}";
 }
 
 /**

@@ -2133,7 +2133,7 @@ class basic_renderer final
 template <typename B>
 [[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
 {
-  return "[renderer | data: " + detail::address_of(renderer.get()) + "]";
+  return "renderer{data: " + detail::address_of(renderer.get()) + "}";
 }
 
 template <typename B>

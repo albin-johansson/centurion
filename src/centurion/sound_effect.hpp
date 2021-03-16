@@ -376,9 +376,8 @@ class sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-  using detail::to_string;
-  return "[sound_effect | data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "]";
+  return "sound_effect{data: " + detail::address_of(sound.get()) +
+         ", volume: " + detail::to_string(sound.volume()).value() + "}";
 }
 
 /**

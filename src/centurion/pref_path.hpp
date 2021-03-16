@@ -127,7 +127,7 @@ class [[deprecated]] pref_path final
     -> std::string
 {
   const std::string str = path ? path.get() : "N/A";
-  return "[pref_path | path: \"" + str + "\"]";
+  return "pref_path{path: \"" + str + "\"}";
 }
 
 /**

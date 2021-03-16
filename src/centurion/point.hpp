@@ -484,14 +484,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
 {
-  return "[ipoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "ipoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
 {
-  return "[fpoint | X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "]";
+  return "fpoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
 inline auto operator<<(std::ostream& stream, const ipoint& point)

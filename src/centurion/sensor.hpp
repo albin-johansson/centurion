@@ -430,9 +430,9 @@ template <typename B>
 {
   const auto name = sensor.name();
   const std::string nameStr = name ? name : "N/A";
-  return "[sensor | data: " + detail::address_of(sensor.get()) +
+  return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + nameStr + "]";
+         ", name: " + nameStr + "}";
 }
 
 /**

@@ -1367,8 +1367,8 @@ template <typename T>
 {
   using namespace std::string_literals;
   const auto name = controller.name() ? controller.name() : "N/A";
-  return "[controller | data: " + detail::address_of(controller.get()) +
-         ", name: "s + name + "]";
+  return "controller{data: " + detail::address_of(controller.get()) +
+         ", name: "s + name + "}";
 }
 
 /**

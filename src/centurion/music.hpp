@@ -422,8 +422,8 @@ class music final
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
-  return "[music | data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "]";
+  return "music{data: " + detail::address_of(music.get()) +
+         ", volume: " + detail::to_string(music::volume()).value() + "}";
 }
 
 /**

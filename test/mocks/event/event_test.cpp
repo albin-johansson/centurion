@@ -68,9 +68,9 @@ TEST_F(EventTest, Poll)
   EXPECT_EQ(1, SDL_PollEvent_fake.call_count);
 }
 
-TEST_F(EventTest, NumQueued)
+TEST_F(EventTest, QueueCount)
 {
-  const auto count [[maybe_unused]] = cen::event::num_queued();
+  const auto count [[maybe_unused]] = cen::event::queue_count();
   EXPECT_EQ(1, SDL_PeepEvents_fake.call_count);
   EXPECT_EQ(nullptr, SDL_PeepEvents_fake.arg0_val);
   EXPECT_EQ(0, SDL_PeepEvents_fake.arg1_val);
@@ -79,10 +79,10 @@ TEST_F(EventTest, NumQueued)
   EXPECT_EQ(SDL_LASTEVENT, SDL_PeepEvents_fake.arg4_val);
 }
 
-TEST_F(EventTest, NumQueuedSpecific)
+TEST_F(EventTest, QueueCountSpecific)
 {
   const auto count [[maybe_unused]] =
-      cen::event::num_queued(cen::event_type::quit);
+      cen::event::queue_count(cen::event_type::quit);
 
   EXPECT_EQ(1, SDL_PeepEvents_fake.call_count);
   EXPECT_EQ(nullptr, SDL_PeepEvents_fake.arg0_val);

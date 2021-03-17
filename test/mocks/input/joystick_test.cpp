@@ -338,27 +338,27 @@ TEST_F(JoystickTest, IsAttached)
   EXPECT_EQ(1, SDL_JoystickGetAttached_fake.call_count);
 }
 
-TEST_F(JoystickTest, NumHats)
+TEST_F(JoystickTest, HatCount)
 {
-  const auto count [[maybe_unused]] = m_joystick.num_hats();
+  const auto count [[maybe_unused]] = m_joystick.hat_count();
   EXPECT_EQ(1, SDL_JoystickNumHats_fake.call_count);
 }
 
-TEST_F(JoystickTest, NumAxes)
+TEST_F(JoystickTest, AxisCount)
 {
-  const auto count [[maybe_unused]] = m_joystick.num_axes();
+  const auto count [[maybe_unused]] = m_joystick.axis_count();
   EXPECT_EQ(1, SDL_JoystickNumAxes_fake.call_count);
 }
 
-TEST_F(JoystickTest, NumTrackballs)
+TEST_F(JoystickTest, TrackballCount)
 {
-  const auto count [[maybe_unused]] = m_joystick.num_trackballs();
+  const auto count [[maybe_unused]] = m_joystick.trackball_count();
   EXPECT_EQ(1, SDL_JoystickNumBalls_fake.call_count);
 }
 
-TEST_F(JoystickTest, NumButtons)
+TEST_F(JoystickTest, ButtonCount)
 {
-  const auto count [[maybe_unused]] = m_joystick.num_buttons();
+  const auto count [[maybe_unused]] = m_joystick.button_count();
   EXPECT_EQ(1, SDL_JoystickNumButtons_fake.call_count);
 }
 

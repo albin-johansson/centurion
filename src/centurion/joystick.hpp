@@ -932,20 +932,6 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the amount of hats on the joystick.
-   *
-   * \return the amount of hats on the joystick.
-   *
-   * \deprecated Since 5.2.0, use `hat_count()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard, deprecated]] auto num_hats() const noexcept -> int
-  {
-    return hat_count();
-  }
-
-  /**
    * \brief Returns the amount of general axis controls on the joystick.
    *
    * \return the amount of general axis controls on the joystick.
@@ -955,20 +941,6 @@ class basic_joystick final
   [[nodiscard]] auto axis_count() const noexcept -> int
   {
     return SDL_JoystickNumAxes(m_joystick);
-  }
-
-  /**
-   * \brief Returns the amount of general axis controls on the joystick.
-   *
-   * \return the amount of general axis controls on the joystick.
-   *
-   * \deprecated Since 5.2.0, use `axis_count()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard, deprecated]] auto num_axes() const noexcept -> int
-  {
-    return axis_count();
   }
 
   /**
@@ -984,20 +956,6 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the amount of trackballs on the joystick.
-   *
-   * \return the amount of trackballs on the joystick.
-   *
-   * \deprecated Since 5.2.0, use `trackball_count()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard, deprecated]] auto num_trackballs() const noexcept -> int
-  {
-    return trackball_count();
-  }
-
-  /**
    * \brief Returns the amount of buttons on the joystick.
    *
    * \return the amount of buttons on the joystick.
@@ -1007,20 +965,6 @@ class basic_joystick final
   [[nodiscard]] auto button_count() const noexcept -> int
   {
     return SDL_JoystickNumButtons(m_joystick);
-  }
-
-  /**
-   * \brief Returns the amount of buttons on the joystick.
-   *
-   * \return the amount of buttons on the joystick.
-   *
-   * \deprecated Since 5.2.0, use `button_count()` instead.
-   *
-   * \since 4.2.0
-   */
-  [[nodiscard, deprecated]] auto num_buttons() const noexcept -> int
-  {
-    return button_count();
   }
 
   /**

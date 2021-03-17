@@ -1,4 +1,4 @@
-#include "scoped_lock.hpp"
+#include "thread/scoped_lock.hpp"
 
 #include <gtest/gtest.h>
 

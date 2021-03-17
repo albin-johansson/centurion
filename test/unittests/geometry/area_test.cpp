@@ -5,6 +5,7 @@
 #include <iostream>  // cout
 
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 TEST(Area, DefaultConstruction)
 {
@@ -133,4 +134,29 @@ TEST(Area, AreaOf)
 {
   const cen::farea area{123, 456};
   EXPECT_FLOAT_EQ(cen::area_of(area), area.width * area.height);
+}
+
+TEST(Area, Serialization)
+{
+  const auto width = 123;
+  const auto height = 845;
+
+  {
+    std::ofstream stream{"area.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    cen::iarea area{width, height};
+    cen::serialize(archive, area);
+  }
+
+  {
+    std::ifstream stream{"area.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    cen::iarea area;
+    cen::serialize(archive, area);
+
+    EXPECT_EQ(width, area.width);
+    EXPECT_EQ(height, area.height);
+  }
 }

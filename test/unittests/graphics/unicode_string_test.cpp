@@ -2,6 +2,10 @@
 
 #include <gtest/gtest.h>
 
+#include <cereal/types/vector.hpp>
+
+#include "serialization_utils.hpp"
+
 using namespace cen::literals;
 
 TEST(UnicodeString, Defaults)
@@ -226,5 +230,28 @@ TEST(UnicodeString, InequalityOperator)
 
     EXPECT_NE(fst, snd);
     EXPECT_NE(snd, fst);
+  }
+}
+
+TEST(UnicodeString, Serialize)
+{
+  const cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
+
+  {
+    std::ofstream stream{"unicode_string.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    auto copy = string;
+    copy.serialize(archive);
+  }
+
+  {
+    std::ifstream stream{"unicode_string.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    auto copy = string;
+    copy.serialize(archive);
+
+    EXPECT_EQ(string, copy);
   }
 }

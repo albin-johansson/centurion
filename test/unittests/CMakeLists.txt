@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-unittests LANGUAGES CXX)
 
 set(SOURCE_FILES
+    serialization_utils.hpp
+
     typed_test_macros.hpp
     test_main.cpp
     log_test.cpp
@@ -139,7 +141,8 @@ target_include_directories(${CENTURION_TEST_TARGET}
     SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
     SYSTEM PUBLIC ${gtest_SOURCE_DIR}
     SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR})
+    SYSTEM PUBLIC ${gmock_SOURCE_DIR}
+    SYSTEM PUBLIC ../lib/cereal)
 
 target_link_libraries(${CENTURION_TEST_TARGET}
     PUBLIC ${SDL2_LIBRARY}

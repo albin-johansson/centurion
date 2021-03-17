@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "cpu.hpp"
+#include "system/cpu.hpp"
 
 TEST(SIMDBlock, Usage)
 {

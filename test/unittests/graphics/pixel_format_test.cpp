@@ -4,7 +4,7 @@
 
 #include <memory>  // unique_ptr
 
-#include "cpu.hpp"
+#include "system/cpu.hpp"
 #include "video/colors.hpp"
 
 class PixelFormatInfoTest : public testing::Test

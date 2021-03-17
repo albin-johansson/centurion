@@ -1,4 +1,4 @@
-#include "battery.hpp"
+#include "system/battery.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

@@ -6,10 +6,10 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "centurion_cfg.hpp"
-#include "czstring.hpp"
-#include "not_null.hpp"
-#include "sdl_string.hpp"
+#include "../centurion_cfg.hpp"
+#include "../czstring.hpp"
+#include "../not_null.hpp"
+#include "../sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

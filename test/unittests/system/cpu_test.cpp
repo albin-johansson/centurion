@@ -1,4 +1,4 @@
-#include "cpu.hpp"
+#include "system/cpu.hpp"
 
 #include <gtest/gtest.h>
 

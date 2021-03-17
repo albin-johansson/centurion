@@ -1,4 +1,4 @@
-#include "counter.hpp"
+#include "system/counter.hpp"
 
 #include <gtest/gtest.h>
 

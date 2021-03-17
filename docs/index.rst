@@ -88,8 +88,6 @@ Welcome to Centurion's documentation!
    pages/api/system/platform
    pages/api/system/ram
    pages/api/system/screen
-   pages/api/system/base_path
-   pages/api/system/pref_path
 
 .. toctree::
    :maxdepth: 1

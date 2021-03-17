@@ -7,10 +7,10 @@
 #include <memory>   // unique_ptr
 #include <string>   // string
 
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/not_null.hpp"
 #include "centurion_cfg.hpp"
+#include "misc/czstring.hpp"
+#include "misc/exception.hpp"
+#include "misc/not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

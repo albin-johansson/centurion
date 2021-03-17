@@ -67,8 +67,8 @@
 
 #include <optional>  // optional
 
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
+#include "misc/exception.hpp"
+#include "misc/integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

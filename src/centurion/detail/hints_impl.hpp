@@ -7,7 +7,7 @@
 #include <type_traits>  // is_same_v, is_convertible_v
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "../misc/czstring.hpp"
 #include "czstring_compare.hpp"
 #include "static_bimap.hpp"
 

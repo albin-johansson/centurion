@@ -4,7 +4,7 @@
 #include <cstring>  // strcmp
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "../misc/czstring.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

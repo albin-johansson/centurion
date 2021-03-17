@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../centurion_cfg.hpp"
-#include "../time.hpp"
+#include "../misc/time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

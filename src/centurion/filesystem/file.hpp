@@ -10,9 +10,9 @@
 #include <string>    // string
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
-#include "../integers.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/integers.hpp"
+#include "../misc/not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

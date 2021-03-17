@@ -9,8 +9,8 @@
 #include <utility>        // move, forward
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/not_null.hpp"
 #include "font.hpp"
 #include "surface.hpp"
 #include "texture.hpp"

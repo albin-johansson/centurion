@@ -8,7 +8,7 @@
 
 #include "../centurion_cfg.hpp"
 #include "../detail/any_eq.hpp"
-#include "../time.hpp"
+#include "../misc/time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

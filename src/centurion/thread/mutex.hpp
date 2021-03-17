@@ -6,7 +6,7 @@
 #include <memory>  // unique_ptr
 
 #include "../centurion_cfg.hpp"
-#include "../exception.hpp"
+#include "../misc/exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -6,9 +6,9 @@
 #include <optional>  // optional
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
+#include "../misc/czstring.hpp"
 #include "pixel_format.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

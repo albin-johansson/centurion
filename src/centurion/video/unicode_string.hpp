@@ -7,7 +7,7 @@
 #include <vector>            // vector
 
 #include "../centurion_cfg.hpp"
-#include "../integers.hpp"
+#include "../misc/integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

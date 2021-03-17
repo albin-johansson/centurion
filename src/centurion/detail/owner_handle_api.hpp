@@ -6,7 +6,7 @@
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
 #include "../centurion_cfg.hpp"
-#include "../exception.hpp"
+#include "../misc/exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

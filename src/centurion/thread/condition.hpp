@@ -6,9 +6,9 @@
 #include <memory>  // unique_ptr
 
 #include "../centurion_cfg.hpp"
-#include "../exception.hpp"
-#include "../integers.hpp"
-#include "../time.hpp"
+#include "../misc/exception.hpp"
+#include "../misc/integers.hpp"
+#include "../misc/time.hpp"
 #include "mutex.hpp"
 #include "scoped_lock.hpp"
 

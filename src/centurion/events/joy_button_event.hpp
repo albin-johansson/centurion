@@ -5,7 +5,7 @@
 
 #include "../centurion_cfg.hpp"
 #include "../input/button_state.hpp"
-#include "../integers.hpp"
+#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

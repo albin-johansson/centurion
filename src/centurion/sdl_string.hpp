@@ -6,10 +6,10 @@
 #include <memory>  // unique_ptr
 #include <string>  // string
 
+#include "../misc/czstring.hpp"
+#include "../misc/owner.hpp"
 #include "centurion_cfg.hpp"
-#include "czstring.hpp"
 #include "detail/sdl_deleter.hpp"
-#include "owner.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

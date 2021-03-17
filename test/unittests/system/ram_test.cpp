@@ -1,4 +1,4 @@
-#include "ram.hpp"
+#include "system/ram.hpp"
 
 #include <gtest/gtest.h>
 

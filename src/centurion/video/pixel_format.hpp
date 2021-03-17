@@ -6,11 +6,11 @@
 #include <type_traits>  // true_type, false_type
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../exception.hpp"
-#include "../integers.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/exception.hpp"
+#include "../misc/integers.hpp"
+#include "../misc/not_null.hpp"
 #include "color.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

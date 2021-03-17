@@ -8,10 +8,10 @@
 #include <memory>   // unique_ptr
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

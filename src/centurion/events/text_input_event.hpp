@@ -6,8 +6,8 @@
 #include <string_view>  // string_view
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
-#include "../integers.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

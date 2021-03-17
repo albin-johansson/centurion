@@ -7,7 +7,7 @@
 #include <array>      // array
 
 #include "../centurion_cfg.hpp"
-#include "../integers.hpp"
+#include "../misc/integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"

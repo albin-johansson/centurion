@@ -8,9 +8,9 @@
 #include <type_traits>
 #include <utility>  // move
 
-#include "exception.hpp"
-#include "video/colors.hpp"
 #include "log.hpp"
+#include "misc/exception.hpp"
+#include "video/colors.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);
 static_assert(std::is_copy_assignable_v<cen::surface>);

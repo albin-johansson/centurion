@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../centurion_cfg.hpp"
-#include "../integers.hpp"
+#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

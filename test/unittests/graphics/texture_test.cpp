@@ -7,11 +7,11 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "exception.hpp"
+#include "log.hpp"
+#include "misc/exception.hpp"
 #include "video/colors.hpp"
 #include "video/renderer.hpp"
 #include "video/window.hpp"
-#include "log.hpp"
 
 static_assert(std::is_final_v<cen::texture>);
 

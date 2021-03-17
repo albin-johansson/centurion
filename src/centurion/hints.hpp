@@ -37,9 +37,9 @@
 #include <type_traits>  // is_same_v, ...
 #include <utility>      // pair, make_pair
 
+#include "../misc/exception.hpp"
 #include "centurion_cfg.hpp"
 #include "detail/hints_impl.hpp"
-#include "exception.hpp"
 #include "log.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

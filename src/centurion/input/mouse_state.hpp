@@ -3,9 +3,9 @@
 
 #include "../centurion_cfg.hpp"
 #include "../detail/max.hpp"
-#include "../integers.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"
+#include "../misc/integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

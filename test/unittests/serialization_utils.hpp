@@ -4,7 +4,7 @@
 #include <cereal/cereal.hpp>
 #include <fstream>
 
-#include "czstring.hpp"
+#include "misc/czstring.hpp"
 
 using input_archive = cereal::BinaryInputArchive;
 using output_archive = cereal::BinaryOutputArchive;

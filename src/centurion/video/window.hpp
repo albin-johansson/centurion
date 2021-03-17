@@ -9,17 +9,17 @@
 #include <type_traits>  // true_type, false_type, is_same_v
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
-#include "../exception.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/exception.hpp"
+#include "../misc/not_null.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
 

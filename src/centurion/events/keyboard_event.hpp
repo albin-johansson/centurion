@@ -8,7 +8,7 @@
 #include "../input/key_code.hpp"
 #include "../input/key_modifier.hpp"
 #include "../input/scan_code.hpp"
-#include "../integers.hpp"
+#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

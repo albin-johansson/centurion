@@ -1,4 +1,4 @@
-#include "exception.hpp"
+#include "misc/exception.hpp"
 
 #include <gtest/gtest.h>
 

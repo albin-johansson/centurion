@@ -12,7 +12,7 @@
 
 #include "../centurion_cfg.hpp"
 #include "../detail/stack_resource.hpp"
-#include "../exception.hpp"
+#include "../misc/exception.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "window.hpp"

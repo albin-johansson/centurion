@@ -6,8 +6,8 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
-#include "exception.hpp"
-#include "integers.hpp"
+#include "misc/exception.hpp"
+#include "misc/integers.hpp"
 #include "video/colors.hpp"
 
 using namespace cen::literals;

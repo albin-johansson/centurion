@@ -2,7 +2,7 @@
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "../misc/czstring.hpp"
 #include "czstring_eq.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

@@ -10,12 +10,12 @@
 #include <string>    // string
 
 #include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/to_string.hpp"
-#include "../exception.hpp"
 #include "../math/area.hpp"
-#include "../not_null.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/exception.hpp"
+#include "../misc/not_null.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

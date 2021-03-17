@@ -6,7 +6,7 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
-#include "integers.hpp"
+#include "misc/integers.hpp"
 #include "video/colors.hpp"
 
 using namespace cen::literals;

@@ -7,6 +7,7 @@
 #include <type_traits>
 
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);
 static_assert(std::is_nothrow_destructible_v<cen::ipoint>);
@@ -195,4 +196,29 @@ TEST(Point, StreamOperator)
 
   const cen::fpoint fp{12.3f, 45.6f};
   std::cout << "COUT: " << fp << '\n';
+}
+
+TEST(Point, Serialization)
+{
+  const auto x = 839.9f;
+  const auto y = 931.5f;
+
+  {
+    std::ofstream stream{"point.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    cen::fpoint point{x, y};
+    point.serialize(archive);
+  }
+
+  {
+    std::ifstream stream{"point.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    cen::fpoint point;
+    point.serialize(archive);
+
+    EXPECT_EQ(x, point.x());
+    EXPECT_EQ(y, point.y());
+  }
 }

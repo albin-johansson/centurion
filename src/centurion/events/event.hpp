@@ -264,41 +264,6 @@ class event final
   }
 
   /**
-   * \brief Returns the number of events in the event queue.
-   *
-   * \return the current number of events in the event queue; `std::nullopt`
-   * if something goes wrong.
-   *
-   * \deprecated Since 5.3.0, use `queue_count()` instead.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard, deprecated]] static auto num_queued() noexcept
-      -> std::optional<int>
-  {
-    return queue_count();
-  }
-
-  /**
-   * \brief Returns the number of events of a particular type that are in the
-   * event queue.
-   *
-   * \param type the type of event to count.
-   *
-   * \return the current number of events of the specified type that are in
-   * the event queue; `std::nullopt` if something goes wrong.
-   *
-   * \deprecated Since 5.3.0, use `queue_count()` instead.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard, deprecated]] static auto num_queued(
-      const event_type type) noexcept -> std::optional<int>
-  {
-    return queue_count(type);
-  }
-
-  /**
    * \brief Indicates whether or not the event is of a particular type.
    *
    * \details This method is useful for checking the event type before

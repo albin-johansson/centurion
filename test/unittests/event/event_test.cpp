@@ -131,18 +131,18 @@ TEST(Event, Poll)
   cen::event::flush_all();
 }
 
-TEST(Event, NumQueued)
+TEST(Event, QueueCount)
 {
   cen::event::flush_all();
-  EXPECT_EQ(0, cen::event::num_queued());
-  EXPECT_EQ(0, cen::event::num_queued(cen::event_type::quit));
+  EXPECT_EQ(0, cen::event::queue_count());
+  EXPECT_EQ(0, cen::event::queue_count(cen::event_type::quit));
 
   auto event = create_event(SDL_QUIT);
   cen::event::push(event);
 
-  EXPECT_EQ(1, cen::event::num_queued());
-  EXPECT_EQ(1, cen::event::num_queued(cen::event_type::quit));
-  EXPECT_EQ(0, cen::event::num_queued(cen::event_type::window));
+  EXPECT_EQ(1, cen::event::queue_count());
+  EXPECT_EQ(1, cen::event::queue_count(cen::event_type::quit));
+  EXPECT_EQ(0, cen::event::queue_count(cen::event_type::window));
 }
 
 TEST(Event, InQueue)

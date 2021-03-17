@@ -8,6 +8,7 @@
 
 #include "colors.hpp"
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 static_assert(std::is_final_v<cen::color>);
 
@@ -270,4 +271,33 @@ TEST(Color, StreamOperator)
 {
   constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
   std::cout << "COUT: " << color << '\n';
+}
+
+TEST(Color, Serialization)
+{
+  const auto red = 0xAB;
+  const auto green = 0xDE;
+  const auto blue = 0xC3;
+  const auto alpha = 0x8F;
+
+  {
+    std::ofstream stream{"color.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    cen::color color{red, green, blue, alpha};
+    color.serialize(archive);
+  }
+
+  {
+    std::ifstream stream{"color.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    cen::color color;
+    color.serialize(archive);
+
+    EXPECT_EQ(red, color.red());
+    EXPECT_EQ(green, color.green());
+    EXPECT_EQ(blue, color.blue());
+    EXPECT_EQ(alpha, color.alpha());
+  }
 }

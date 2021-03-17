@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include "../button_state.hpp"
 #include "../centurion_cfg.hpp"
+#include "../input/button_state.hpp"
 #include "../integers.hpp"
 #include "common_event.hpp"
 

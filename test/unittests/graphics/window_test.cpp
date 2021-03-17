@@ -1,12 +1,12 @@
-#include "window.hpp"
+#include "video/window.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
+#include "video/screen.hpp"
 #include "log.hpp"
-#include "screen.hpp"
 
 class WindowTest : public testing::Test
 {

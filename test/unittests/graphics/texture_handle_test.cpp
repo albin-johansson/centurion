@@ -2,9 +2,9 @@
 
 #include <memory>  // unique_ptr
 
-#include "renderer.hpp"
-#include "texture.hpp"
-#include "window.hpp"
+#include "video/renderer.hpp"
+#include "video/texture.hpp"
+#include "video/window.hpp"
 
 class TextureHandleTest : public testing::Test
 {

@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "../centurion_cfg.hpp"
-#include "../controller.hpp"
+#include "../input/controller.hpp"
 #include "../integers.hpp"
 #include "common_event.hpp"
 

@@ -1,17 +1,17 @@
-#include "renderer.hpp"
+#include "video/renderer.hpp"
 
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "colors.hpp"
 #include "exception.hpp"
-#include "font.hpp"
-#include "graphics_drivers.hpp"
 #include "log.hpp"
-#include "rect.hpp"
-#include "window.hpp"
+#include "math/rect.hpp"
+#include "video/colors.hpp"
+#include "video/font.hpp"
+#include "video/graphics_drivers.hpp"
+#include "video/window.hpp"
 
 class RendererTest : public testing::Test
 {

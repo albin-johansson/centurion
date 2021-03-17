@@ -1,4 +1,4 @@
-#include "vector3.hpp"
+#include "math/vector3.hpp"
 
 #include <gtest/gtest.h>
 

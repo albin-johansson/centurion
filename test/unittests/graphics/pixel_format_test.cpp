@@ -1,11 +1,11 @@
-#include "pixel_format.hpp"
+#include "video/pixel_format.hpp"
 
 #include <gtest/gtest.h>
 
 #include <memory>  // unique_ptr
 
-#include "colors.hpp"
 #include "cpu.hpp"
+#include "video/colors.hpp"
 
 class PixelFormatInfoTest : public testing::Test
 {

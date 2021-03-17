@@ -1,4 +1,4 @@
-#include "mouse_state.hpp"
+#include "input/mouse_state.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,4 +1,4 @@
-#include "mouse_button.hpp"
+#include "input/mouse_button.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,11 +1,11 @@
 #include <utility>  // move
 
+#include "audio/music.hpp"
 #include "events/event.hpp"
 #include "library.hpp"
-#include "music.hpp"
-#include "renderer.hpp"
-#include "texture.hpp"
-#include "window.hpp"
+#include "video/renderer.hpp"
+#include "video/texture.hpp"
+#include "video/window.hpp"
 
 namespace {
 

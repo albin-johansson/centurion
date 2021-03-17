@@ -1,4 +1,4 @@
-#include "sound_effect.hpp"
+#include "audio/sound_effect.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

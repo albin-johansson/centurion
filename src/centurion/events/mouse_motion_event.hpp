@@ -4,8 +4,8 @@
 #include <SDL.h>
 
 #include "../centurion_cfg.hpp"
+#include "../input/mouse_button.hpp"
 #include "../integers.hpp"
-#include "../mouse_button.hpp"
 #include "common_event.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

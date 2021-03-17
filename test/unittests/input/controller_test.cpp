@@ -1,4 +1,4 @@
-#include "controller.hpp"
+#include "input/controller.hpp"
 
 #include <gtest/gtest.h>
 
@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "events/event.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
+#include "video/renderer.hpp"
+#include "video/window.hpp"
 
 TEST(Controller, PointerConstructor)
 {

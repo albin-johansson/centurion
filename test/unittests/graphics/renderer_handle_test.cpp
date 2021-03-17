@@ -3,9 +3,9 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
+#include "video/renderer.hpp"
+#include "video/window.hpp"
 #include "log.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
 
 class RendererHandleTest : public testing::Test
 {

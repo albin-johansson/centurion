@@ -1,4 +1,4 @@
-#include "color.hpp"
+#include "video/color.hpp"
 
 #include <gtest/gtest.h>
 
@@ -6,7 +6,7 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "colors.hpp"
+#include "video/colors.hpp"
 #include "log.hpp"
 #include "serialization_utils.hpp"
 

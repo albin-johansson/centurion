@@ -1,4 +1,4 @@
-#include "font_cache.hpp"
+#include "video/font_cache.hpp"
 
 #include <gtest/gtest.h>
 
@@ -6,9 +6,9 @@
 #include <memory>       // unique_ptr
 #include <string_view>  // string_view
 
-#include "font.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
+#include "video/font.hpp"
+#include "video/renderer.hpp"
+#include "video/window.hpp"
 
 namespace {
 inline constexpr auto fontPath = "resources/daniel.ttf";

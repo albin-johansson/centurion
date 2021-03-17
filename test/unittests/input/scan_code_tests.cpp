@@ -2,8 +2,8 @@
 
 #include <iostream>
 
+#include "input/scan_code.hpp"
 #include "log.hpp"
-#include "scan_code.hpp"
 #include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)

@@ -1,13 +1,13 @@
-#include "joystick.hpp"
+#include "input/joystick.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
-#include "colors.hpp"
 #include "core_mocks.hpp"
 #include "integers.hpp"
+#include "video/colors.hpp"
 
 using namespace cen::literals;
 

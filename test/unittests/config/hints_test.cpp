@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include "video/window.hpp"
 #include "typed_test_macros.hpp"
-#include "window.hpp"
 
 using boolean_hints =
     testing::Types<cen::hint::double_buffer,

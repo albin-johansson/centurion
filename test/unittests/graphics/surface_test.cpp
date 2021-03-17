@@ -1,4 +1,4 @@
-#include "surface.hpp"
+#include "video/surface.hpp"
 
 #include <SDL_image.h>
 #include <gtest/gtest.h>
@@ -8,8 +8,8 @@
 #include <type_traits>
 #include <utility>  // move
 
-#include "colors.hpp"
 #include "exception.hpp"
+#include "video/colors.hpp"
 #include "log.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);

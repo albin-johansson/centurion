@@ -1,4 +1,4 @@
-#include "renderer.hpp"
+#include "video/renderer.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

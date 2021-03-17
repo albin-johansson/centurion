@@ -1,4 +1,4 @@
-#include "key_state.hpp"
+#include "input/key_state.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

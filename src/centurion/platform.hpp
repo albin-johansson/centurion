@@ -11,7 +11,7 @@
 #include "czstring.hpp"
 #include "detail/czstring_eq.hpp"
 #include "not_null.hpp"
-#include "pixel_format.hpp"
+#include "video/pixel_format.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

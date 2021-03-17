@@ -1,4 +1,4 @@
-#include "music.hpp"
+#include "audio/music.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

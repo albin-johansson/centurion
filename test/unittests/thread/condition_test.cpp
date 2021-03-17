@@ -1,8 +1,8 @@
-#include "condition.hpp"
+#include "thread/condition.hpp"
 
 #include <gtest/gtest.h>
 
-#include "thread.hpp"
+#include "thread/thread.hpp"
 
 TEST(Condition, Signal)
 {

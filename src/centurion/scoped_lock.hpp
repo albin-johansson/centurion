@@ -5,7 +5,7 @@
 
 #include "centurion_cfg.hpp"
 #include "exception.hpp"
-#include "mutex.hpp"
+#include "thread/mutex.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

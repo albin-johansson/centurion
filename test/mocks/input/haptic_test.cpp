@@ -1,4 +1,4 @@
-#include "haptic.hpp"
+#include "input/haptic.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>

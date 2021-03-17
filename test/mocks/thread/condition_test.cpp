@@ -1,4 +1,4 @@
-#include "condition.hpp"
+#include "thread/condition.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,4 +1,4 @@
-#include "touch.hpp"
+#include "input/touch.hpp"
 
 #include <gtest/gtest.h>
 

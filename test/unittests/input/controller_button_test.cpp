@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "controller.hpp"
+#include "input/controller.hpp"
 
 using button = cen::controller_button;
 

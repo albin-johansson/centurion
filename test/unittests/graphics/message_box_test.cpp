@@ -1,10 +1,10 @@
-#include "message_box.hpp"
+#include "video/message_box.hpp"
 
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-#include "colors.hpp"
+#include "video/colors.hpp"
 
 static_assert(std::is_final_v<cen::message_box>);
 static_assert(std::is_default_constructible_v<cen::message_box>);

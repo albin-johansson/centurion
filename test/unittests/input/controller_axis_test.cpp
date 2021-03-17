@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "controller.hpp"
+#include "input/controller.hpp"
 
 using axis = cen::controller_axis;
 

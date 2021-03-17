@@ -1,4 +1,4 @@
-#include "try_lock.hpp"
+#include "thread/try_lock.hpp"
 
 #include <gtest/gtest.h>
 

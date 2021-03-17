@@ -1,14 +1,14 @@
-#include "controller.hpp"
+#include "input/controller.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
-#include "colors.hpp"
 #include "core_mocks.hpp"
 #include "exception.hpp"
 #include "integers.hpp"
+#include "video/colors.hpp"
 
 using namespace cen::literals;
 

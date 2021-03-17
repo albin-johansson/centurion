@@ -1,9 +1,9 @@
 #include "events/event.hpp"
 #include "events/event_dispatcher.hpp"
-#include "font_cache.hpp"
+#include "video/font_cache.hpp"
+#include "video/renderer.hpp"
+#include "video/window.hpp"
 #include "library.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
 
 namespace {
 

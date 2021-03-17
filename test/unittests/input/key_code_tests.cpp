@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "key_code.hpp"
+#include "input/key_code.hpp"
 #include "log.hpp"
 #include "serialization_utils.hpp"
 

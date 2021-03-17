@@ -1,4 +1,4 @@
-#include "cursor.hpp"
+#include "video/cursor.hpp"
 
 #include <gtest/gtest.h>
 

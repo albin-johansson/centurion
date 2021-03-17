@@ -1,12 +1,12 @@
 #include <array>    // array
 #include <cstddef>  // size_t
 
-#include "controller.hpp"
 #include "events/event.hpp"
 #include "events/event_dispatcher.hpp"
+#include "input/controller.hpp"
 #include "library.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
+#include "video/renderer.hpp"
+#include "video/window.hpp"
 
 namespace {
 

@@ -1,4 +1,4 @@
-#include "area.hpp"
+#include "math/area.hpp"
 
 #include <gtest/gtest.h>
 

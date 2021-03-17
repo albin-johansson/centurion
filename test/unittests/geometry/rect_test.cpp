@@ -1,4 +1,4 @@
-#include "rect.hpp"
+#include "math/rect.hpp"
 
 #include <gtest/gtest.h>
 

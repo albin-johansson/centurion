@@ -1,4 +1,4 @@
-#include "joystick.hpp"
+#include "input/joystick.hpp"
 
 #include <gtest/gtest.h>
 

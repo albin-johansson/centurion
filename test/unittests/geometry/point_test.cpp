@@ -1,4 +1,4 @@
-#include "point.hpp"
+#include "math/point.hpp"
 
 #include <gtest/gtest.h>
 

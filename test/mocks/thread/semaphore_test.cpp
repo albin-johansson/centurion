@@ -1,4 +1,4 @@
-#include "semaphore.hpp"
+#include "thread/semaphore.hpp"
 
 #include <gtest/gtest.h>
 

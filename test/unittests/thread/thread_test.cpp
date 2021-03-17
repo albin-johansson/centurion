@@ -1,4 +1,4 @@
-#include "thread.hpp"
+#include "thread/thread.hpp"
 
 #include <gtest/gtest.h>
 

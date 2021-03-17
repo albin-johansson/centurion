@@ -1,4 +1,4 @@
-#include "mutex.hpp"
+#include "thread/mutex.hpp"
 
 #include <gtest/gtest.h>
 

@@ -235,23 +235,10 @@ TEST(UnicodeString, InequalityOperator)
 
 TEST(UnicodeString, Serialize)
 {
-  const cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
+  cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
+  serialize_to("unicode_string.binary", string);
 
-  {
-    std::ofstream stream{"unicode_string.binary", std::ios::binary};
-    output_archive archive{stream};
-
-    auto copy = string;
-    copy.serialize(archive);
-  }
-
-  {
-    std::ifstream stream{"unicode_string.binary", std::ios::binary};
-    input_archive archive{stream};
-
-    cen::unicode_string other;
-    other.serialize(archive);
-
-    EXPECT_EQ(string, other);
-  }
+  const auto other =
+      serialize_from<cen::unicode_string>("unicode_string.binary");
+  EXPECT_EQ(string, other);
 }

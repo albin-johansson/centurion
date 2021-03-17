@@ -578,25 +578,11 @@ TEST(Rect, Serialization)
   const auto y = 3348;
   const auto width = 412;
   const auto height = 7421;
+  serialize_to("rect.binary", cen::irect{x, y, width, height});
 
-  {
-    std::ofstream stream{"rect.binary", std::ios::binary};
-    output_archive archive{stream};
-
-    cen::irect rect{x, y, width, height};
-    rect.serialize(archive);
-  }
-
-  {
-    std::ifstream stream{"rect.binary", std::ios::binary};
-    input_archive archive{stream};
-
-    cen::irect rect;
-    rect.serialize(archive);
-
-    EXPECT_EQ(x, rect.x());
-    EXPECT_EQ(y, rect.y());
-    EXPECT_EQ(width, rect.width());
-    EXPECT_EQ(height, rect.height());
-  }
+  const auto rect = serialize_from<cen::irect>("rect.binary");
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height, rect.height());
 }

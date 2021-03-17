@@ -324,23 +324,8 @@ TEST(KeyCode, Constants)
 
 TEST(KeyCode, Serialization)
 {
-  const auto code = cen::keycodes::enter;
+  serialize_to("key_code.binary", cen::keycodes::enter);
 
-  {
-    std::ofstream stream{"key_code.binary", std::ios::binary};
-    output_archive archive{stream};
-
-    auto copy = code;
-    copy.serialize(archive);
-  }
-
-  {
-    std::ifstream stream{"key_code.binary", std::ios::binary};
-    input_archive archive{stream};
-
-    cen::key_code other;
-    other.serialize(archive);
-
-    EXPECT_EQ(code, other);
-  }
+  const auto other = serialize_from<cen::key_code>("key_code.binary");
+  EXPECT_EQ(cen::keycodes::enter, other);
 }

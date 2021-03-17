@@ -140,23 +140,9 @@ TEST(Area, Serialization)
 {
   const auto width = 123;
   const auto height = 845;
+  serialize_to("area.binary", cen::iarea{width, height});
 
-  {
-    std::ofstream stream{"area.binary", std::ios::binary};
-    output_archive archive{stream};
-
-    cen::iarea area{width, height};
-    cen::serialize(archive, area);
-  }
-
-  {
-    std::ifstream stream{"area.binary", std::ios::binary};
-    input_archive archive{stream};
-
-    cen::iarea area;
-    cen::serialize(archive, area);
-
-    EXPECT_EQ(width, area.width);
-    EXPECT_EQ(height, area.height);
-  }
+  const auto other = serialize_from<cen::iarea>("area.binary");
+  EXPECT_EQ(width, other.width);
+  EXPECT_EQ(height, other.height);
 }

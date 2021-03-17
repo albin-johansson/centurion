@@ -202,23 +202,9 @@ TEST(Point, Serialization)
 {
   const auto x = 839.9f;
   const auto y = 931.5f;
+  serialize_to("point.binary", cen::fpoint{x, y});
 
-  {
-    std::ofstream stream{"point.binary", std::ios::binary};
-    output_archive archive{stream};
-
-    cen::fpoint point{x, y};
-    point.serialize(archive);
-  }
-
-  {
-    std::ifstream stream{"point.binary", std::ios::binary};
-    input_archive archive{stream};
-
-    cen::fpoint point;
-    point.serialize(archive);
-
-    EXPECT_EQ(x, point.x());
-    EXPECT_EQ(y, point.y());
-  }
+  const auto point = serialize_from<cen::fpoint>("point.binary");
+  EXPECT_EQ(x, point.x());
+  EXPECT_EQ(y, point.y());
 }

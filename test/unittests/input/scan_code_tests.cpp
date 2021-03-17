@@ -4,6 +4,7 @@
 
 #include "log.hpp"
 #include "scan_code.hpp"
+#include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)
 {
@@ -286,4 +287,12 @@ TEST(ScanCode, Constants)
   EXPECT_EQ(SDL_SCANCODE_RALT, cen::scancodes::right_alt);
   EXPECT_EQ(SDL_SCANCODE_LGUI, cen::scancodes::left_gui);
   EXPECT_EQ(SDL_SCANCODE_RGUI, cen::scancodes::right_gui);
+}
+
+TEST(ScanCode, Serialization)
+{
+  serialize_to("scan_code.binary", cen::scancodes::u);
+
+  const auto code = serialize_from<cen::scan_code>("scan_code.binary");
+  EXPECT_EQ(cen::scancodes::u, code);
 }

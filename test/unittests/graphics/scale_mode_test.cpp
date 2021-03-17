@@ -1,4 +1,4 @@
-#include "scale_mode.hpp"
+#include "video/scale_mode.hpp"
 
 #include <gtest/gtest.h>
 

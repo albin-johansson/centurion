@@ -211,15 +211,15 @@ TEST_F(JoystickTest, PlayerIndexStatic)
   EXPECT_EQ(2, SDL_JoystickGetDevicePlayerIndex_fake.call_count);
 }
 
-TEST_F(JoystickTest, GetType)
+TEST_F(JoystickTest, Type)
 {
-  const auto type [[maybe_unused]] = m_joystick.get_type();
+  const auto type [[maybe_unused]] = m_joystick.type();
   EXPECT_EQ(1, SDL_JoystickGetType_fake.call_count);
 }
 
-TEST_F(JoystickTest, GetTypeStatic)
+TEST_F(JoystickTest, TypeStatic)
 {
-  const auto type [[maybe_unused]] = cen::joystick::get_type(0);
+  const auto type [[maybe_unused]] = cen::joystick::type(0);
   EXPECT_EQ(1, SDL_JoystickGetDeviceType_fake.call_count);
 }
 

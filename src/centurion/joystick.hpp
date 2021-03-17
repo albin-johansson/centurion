@@ -493,7 +493,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get_type() const noexcept -> joystick_type
+  [[nodiscard]] auto type() const noexcept -> joystick_type
   {
     return static_cast<joystick_type>(SDL_JoystickGetType(m_joystick));
   }
@@ -672,7 +672,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept
+  [[nodiscard]] static auto type(const int deviceIndex) noexcept
       -> joystick_type
   {
     return static_cast<joystick_type>(SDL_JoystickGetDeviceType(deviceIndex));

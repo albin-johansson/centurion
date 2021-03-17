@@ -99,7 +99,7 @@ TEST(Joystick, VirtualAPI)
   ASSERT_TRUE(cen::joystick::is_virtual(*index));
 
   cen::joystick joystick{*index};
-  EXPECT_EQ(type, joystick.get_type());
+  EXPECT_EQ(type, joystick.type());
   EXPECT_EQ(nAxes, joystick.axis_count());
   EXPECT_EQ(nButtons, joystick.button_count());
   EXPECT_EQ(nHats, joystick.hat_count());

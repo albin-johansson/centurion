@@ -63,8 +63,7 @@ enum class thread_priority
  *
  * \since 5.0.0
  *
- * \todo Centurion 6 (C++20): Support templated user data instead of just
- * `void*`.
+ * \todo C++20: Support templated user data instead of just `void*`.
  *
  * \headerfile thread.hpp
  */

@@ -1,4 +1,4 @@
-#include "shared_object.hpp"
+#include "system/shared_object.hpp"
 
 #include <gtest/gtest.h>
 

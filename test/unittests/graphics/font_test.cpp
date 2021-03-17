@@ -122,17 +122,17 @@ TEST(Font, SetFontHinting)
 {
   cen::font font{typeWriterPath, 12};
 
-  font.set_font_hinting(cen::font::hint::mono);
-  EXPECT_EQ(font.font_hinting(), cen::font::hint::mono);
+  font.set_font_hinting(cen::font_hint::mono);
+  EXPECT_EQ(font.font_hinting(), cen::font_hint::mono);
 
-  font.set_font_hinting(cen::font::hint::none);
-  EXPECT_EQ(font.font_hinting(), cen::font::hint::none);
+  font.set_font_hinting(cen::font_hint::none);
+  EXPECT_EQ(font.font_hinting(), cen::font_hint::none);
 
-  font.set_font_hinting(cen::font::hint::light);
-  EXPECT_EQ(font.font_hinting(), cen::font::hint::light);
+  font.set_font_hinting(cen::font_hint::light);
+  EXPECT_EQ(font.font_hinting(), cen::font_hint::light);
 
-  font.set_font_hinting(cen::font::hint::normal);
-  EXPECT_EQ(font.font_hinting(), cen::font::hint::normal);
+  font.set_font_hinting(cen::font_hint::normal);
+  EXPECT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, SetKerning)
@@ -256,7 +256,7 @@ TEST(Font, FontFaces)
 TEST(Font, FontHinting)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_EQ(font.font_hinting(), cen::font::hint::normal);
+  EXPECT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, HasKerning)

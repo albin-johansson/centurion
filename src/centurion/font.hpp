@@ -46,6 +46,23 @@ struct glyph_metrics final
 };
 
 /**
+ * \enum font_hint
+ *
+ * \brief Provides different possible TrueType font hint values.
+ *
+ * \since 3.1.0
+ *
+ * \headerfile font.hpp
+ */
+enum class font_hint
+{
+  normal = TTF_HINTING_NORMAL,
+  light = TTF_HINTING_LIGHT,
+  mono = TTF_HINTING_MONO,
+  none = TTF_HINTING_NONE
+};
+
+/**
  * \class font
  *
  * \brief Represents a True Type font.
@@ -59,25 +76,6 @@ struct glyph_metrics final
 class font final
 {
  public:
-  /**
-   * \enum hint
-   *
-   * \brief Provides different possible TrueType font hint values.
-   *
-   * \since 3.1.0
-   *
-   * \todo Centurion 6: Make this a normal enum?
-   *
-   * \headerfile font.hpp
-   */
-  enum class hint
-  {
-    normal = TTF_HINTING_NORMAL,
-    light = TTF_HINTING_LIGHT,
-    mono = TTF_HINTING_MONO,
-    none = TTF_HINTING_NONE
-  };
-
   /**
    * \brief Creates a font based on the `.ttf`-file at the specified path.
    *
@@ -230,7 +228,7 @@ class font final
    *
    * \since 3.1.0
    */
-  void set_font_hinting(const hint hint) noexcept
+  void set_font_hinting(const font_hint hint) noexcept
   {
     TTF_SetFontHinting(m_font.get(), static_cast<int>(hint));
   }
@@ -329,9 +327,9 @@ class font final
    *
    * \since 3.1.0
    */
-  [[nodiscard]] auto font_hinting() const noexcept -> hint
+  [[nodiscard]] auto font_hinting() const noexcept -> font_hint
   {
-    return static_cast<font::hint>(TTF_GetFontHinting(m_font.get()));
+    return static_cast<font_hint>(TTF_GetFontHinting(m_font.get()));
   }
 
   /**

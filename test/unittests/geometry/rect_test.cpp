@@ -6,6 +6,7 @@
 #include <type_traits>
 
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::frect>);
 static_assert(std::is_nothrow_default_constructible_v<cen::irect>);
@@ -569,4 +570,33 @@ TEST(Rect, InequalityOperatorComparisonDifferent)
   const cen::frect snd{{738.3f, 8.24f}, {67.3f, 89.23f}};
   EXPECT_NE(fst, snd);
   EXPECT_NE(snd, fst);
+}
+
+TEST(Rect, Serialization)
+{
+  const auto x = 845;
+  const auto y = 3348;
+  const auto width = 412;
+  const auto height = 7421;
+
+  {
+    std::ofstream stream{"rect.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    cen::irect rect{x, y, width, height};
+    rect.serialize(archive);
+  }
+
+  {
+    std::ifstream stream{"rect.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    cen::irect rect;
+    rect.serialize(archive);
+
+    EXPECT_EQ(x, rect.x());
+    EXPECT_EQ(y, rect.y());
+    EXPECT_EQ(width, rect.width());
+    EXPECT_EQ(height, rect.height());
+  }
 }

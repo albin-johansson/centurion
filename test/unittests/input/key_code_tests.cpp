@@ -4,6 +4,7 @@
 
 #include "key_code.hpp"
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)
 {
@@ -319,4 +320,27 @@ TEST(KeyCode, Constants)
   EXPECT_EQ(SDLK_RALT, cen::keycodes::right_alt);
   EXPECT_EQ(SDLK_LGUI, cen::keycodes::left_gui);
   EXPECT_EQ(SDLK_RGUI, cen::keycodes::right_gui);
+}
+
+TEST(KeyCode, Serialization)
+{
+  const auto code = cen::keycodes::enter;
+
+  {
+    std::ofstream stream{"key_code.binary", std::ios::binary};
+    output_archive archive{stream};
+
+    auto copy = code;
+    copy.serialize(archive);
+  }
+
+  {
+    std::ifstream stream{"key_code.binary", std::ios::binary};
+    input_archive archive{stream};
+
+    cen::key_code other;
+    other.serialize(archive);
+
+    EXPECT_EQ(code, other);
+  }
 }

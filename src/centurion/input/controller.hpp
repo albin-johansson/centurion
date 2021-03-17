@@ -19,11 +19,11 @@
 #include "../integers.hpp"
 #include "../not_null.hpp"
 #include "../sdl_string.hpp"
-#include "../sensor.hpp"
 #include "../time.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "joystick.hpp"
+#include "sensor.hpp"
 #include "touch.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

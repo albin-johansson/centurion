@@ -10,12 +10,12 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
-#include "centurion_cfg.hpp"
-#include "czstring.hpp"
-#include "detail/address_of.hpp"
-#include "detail/owner_handle_api.hpp"
-#include "detail/to_string.hpp"
-#include "exception.hpp"
+#include "../centurion_cfg.hpp"
+#include "../czstring.hpp"
+#include "../detail/address_of.hpp"
+#include "../detail/owner_handle_api.hpp"
+#include "../detail/to_string.hpp"
+#include "../exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

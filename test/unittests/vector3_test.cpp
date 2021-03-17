@@ -5,6 +5,7 @@
 #include <iostream>  // cout
 
 #include "log.hpp"
+#include "serialization_utils.hpp"
 
 using fvector3 = cen::vector3<float>;
 using ivector3 = cen::vector3<int>;
@@ -90,4 +91,17 @@ TEST(Vector3, InequalityOperator)
     EXPECT_NE(fst, snd);
     EXPECT_NE(snd, fst);
   }
+}
+
+TEST(Vector3, Serialization)
+{
+  const auto x = 7842;
+  const auto y = 3234;
+  const auto z = -1295;
+  serialize_to("vector3.binary", ivector3{x, y, z});
+
+  const auto vector = serialize_from<ivector3>("vector3.binary");
+  EXPECT_EQ(x, vector.x);
+  EXPECT_EQ(y, vector.y);
+  EXPECT_EQ(z, vector.z);
 }

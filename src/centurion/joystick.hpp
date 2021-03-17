@@ -27,6 +27,92 @@ namespace cen {
 /// \addtogroup input
 /// \{
 
+/**
+ * \enum joystick_power
+ *
+ * \brief Provides values that represent different power states of a joystick.
+ *
+ * \since 4.2.0
+ *
+ * \headerfile joystick.hpp
+ */
+enum class joystick_power
+{
+  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+  wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
+                                          * worry about power. */
+  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+};
+
+/**
+ * \enum hat_state
+ *
+ * \brief Represents the various states of a joystick hat.
+ *
+ * \since 4.2.0
+ *
+ * \headerfile joystick.hpp
+ */
+enum class hat_state
+{
+  centered = SDL_HAT_CENTERED,     ///< The hat is centered.
+  up = SDL_HAT_UP,                 ///< The hat is directed "north".
+  right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
+  down = SDL_HAT_DOWN,             ///< The hat is directed "south".
+  left = SDL_HAT_LEFT,             ///< The hat is directed "west".
+  right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
+  right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
+  left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
+  left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
+};
+
+/**
+ * \enum joystick_type
+ *
+ * \brief Provides values that represent different types of "joysticks".
+ *
+ * \since 4.2.0
+ *
+ * \headerfile joystick.hpp
+ */
+enum class joystick_type
+{
+  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
+  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+  wheel = SDL_JOYSTICK_TYPE_WHEEL,
+  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
+  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
+  guitar = SDL_JOYSTICK_TYPE_GUITAR,
+  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
+  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
+  throttle = SDL_JOYSTICK_TYPE_THROTTLE
+};
+
+/**
+ * \struct ball_axis_change
+ *
+ * \brief Represents the difference in a joystick ball axis position.
+ *
+ * \since 4.2.0
+ * \headerfile joystick.hpp
+ *
+ * \var ball_axis_change::dx
+ * Difference in x-axis position since last poll.
+ *
+ * \var ball_axis_change::dy
+ * Difference in y-axis position since last poll.
+ */
+struct ball_axis_change final
+{
+  int dx;
+  int dy;
+};
+
 template <typename B>
 class basic_joystick;
 
@@ -73,98 +159,6 @@ class basic_joystick final
   inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;
 
  public:
-  /**
-   * \enum power
-   *
-   * \brief Mirrors the `SDL_JoystickPowerLevel` enum.
-   *
-   * \since 4.2.0
-   *
-   * \todo Centurion 6: Rename to joystick_power and move out of class.
-   *
-   * \headerfile joystick.hpp
-   */
-  enum class power
-  {
-    unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-    empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-    low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-    medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-    full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-    wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
-                                            * worry about power. */
-    max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-  };
-
-  /**
-   * \enum hat_state
-   *
-   * \brief Represents the various states of a joystick hat.
-   *
-   * \since 4.2.0
-   *
-   * \todo Centurion 6: Rename to joystick_hat_state and move out of class.
-   *
-   * \headerfile joystick.hpp
-   */
-  enum class hat_state
-  {
-    centered = SDL_HAT_CENTERED,     ///< The hat is centered.
-    up = SDL_HAT_UP,                 ///< The hat is directed "north".
-    right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
-    down = SDL_HAT_DOWN,             ///< The hat is directed "south".
-    left = SDL_HAT_LEFT,             ///< The hat is directed "west".
-    right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
-    right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
-    left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
-    left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
-  };
-
-  /**
-   * \enum type
-   *
-   * \brief Mirrors the `SDL_JoystickType` enum.
-   *
-   * \since 4.2.0
-   *
-   * \todo Centurion 6: Rename to joystick_type and move out of class.
-   *
-   * \headerfile joystick.hpp
-   */
-  enum class type
-  {
-    unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-    game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-    wheel = SDL_JOYSTICK_TYPE_WHEEL,
-    arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-    flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-    dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-    guitar = SDL_JOYSTICK_TYPE_GUITAR,
-    drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-    arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-    throttle = SDL_JOYSTICK_TYPE_THROTTLE
-  };
-
-  /**
-   * \struct ball_axis_change
-   *
-   * \brief Represents the difference in a joystick ball axis position.
-   *
-   * \since 4.2.0
-   * \headerfile joystick.hpp
-   *
-   * \var ball_axis_change::dx
-   * Difference in x-axis position since last poll.
-   *
-   * \var ball_axis_change::dy
-   * Difference in y-axis position since last poll.
-   */
-  struct ball_axis_change final
-  {
-    int dx;
-    int dy;
-  };
-
   /// \name Construction
   /// \{
 
@@ -363,7 +357,7 @@ class basic_joystick final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto attach_virtual(const type type,
+  [[nodiscard]] static auto attach_virtual(const joystick_type type,
                                            const int nAxes,
                                            const int nButtons,
                                            const int nHats) noexcept
@@ -499,9 +493,9 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get_type() const noexcept -> type
+  [[nodiscard]] auto get_type() const noexcept -> joystick_type
   {
-    return static_cast<type>(SDL_JoystickGetType(m_joystick));
+    return static_cast<joystick_type>(SDL_JoystickGetType(m_joystick));
   }
 
   /**
@@ -678,9 +672,10 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept -> type
+  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept
+      -> joystick_type
   {
-    return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
+    return static_cast<joystick_type>(SDL_JoystickGetDeviceType(deviceIndex));
   }
 
   /**
@@ -974,9 +969,10 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get_power() const noexcept -> power
+  [[nodiscard]] auto get_power() const noexcept -> joystick_power
   {
-    return static_cast<power>(SDL_JoystickCurrentPowerLevel(m_joystick));
+    return static_cast<joystick_power>(
+        SDL_JoystickCurrentPowerLevel(m_joystick));
   }
 
   /**
@@ -1220,7 +1216,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator==(
-    const joystick::power lhs,
+    const joystick_power lhs,
     const SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
@@ -1237,7 +1233,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
-                                        const joystick::power rhs) noexcept
+                                        const joystick_power rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -1254,7 +1250,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator!=(
-    const joystick::power lhs,
+    const joystick_power lhs,
     const SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return !(lhs == rhs);
@@ -1271,7 +1267,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
-                                        const joystick::power rhs) noexcept
+                                        const joystick_power rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -1287,7 +1283,7 @@ class basic_joystick final
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator==(const joystick::type lhs,
+[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
                                         const SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -1305,7 +1301,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
-                                        const joystick::type rhs) noexcept
+                                        const joystick_type rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -1321,7 +1317,7 @@ class basic_joystick final
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator!=(const joystick::type lhs,
+[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
                                         const SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -1339,7 +1335,7 @@ class basic_joystick final
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
-                                        const joystick::type rhs) noexcept
+                                        const joystick_type rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

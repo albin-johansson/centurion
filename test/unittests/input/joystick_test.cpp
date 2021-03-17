@@ -24,31 +24,29 @@ TEST(Joystick, AxisMin)
 
 TEST(Joystick, PowerEnum)
 {
-  using power = cen::joystick::power;
+  EXPECT_EQ(cen::joystick_power::unknown, SDL_JOYSTICK_POWER_UNKNOWN);
+  EXPECT_EQ(cen::joystick_power::empty, SDL_JOYSTICK_POWER_EMPTY);
+  EXPECT_EQ(cen::joystick_power::low, SDL_JOYSTICK_POWER_LOW);
+  EXPECT_EQ(cen::joystick_power::medium, SDL_JOYSTICK_POWER_MEDIUM);
+  EXPECT_EQ(cen::joystick_power::full, SDL_JOYSTICK_POWER_FULL);
+  EXPECT_EQ(cen::joystick_power::wired, SDL_JOYSTICK_POWER_WIRED);
+  EXPECT_EQ(cen::joystick_power::max, SDL_JOYSTICK_POWER_MAX);
 
-  EXPECT_EQ(power::unknown, SDL_JOYSTICK_POWER_UNKNOWN);
-  EXPECT_EQ(power::empty, SDL_JOYSTICK_POWER_EMPTY);
-  EXPECT_EQ(power::low, SDL_JOYSTICK_POWER_LOW);
-  EXPECT_EQ(power::medium, SDL_JOYSTICK_POWER_MEDIUM);
-  EXPECT_EQ(power::full, SDL_JOYSTICK_POWER_FULL);
-  EXPECT_EQ(power::wired, SDL_JOYSTICK_POWER_WIRED);
-  EXPECT_EQ(power::max, SDL_JOYSTICK_POWER_MAX);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_UNKNOWN, cen::joystick_power::unknown);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_EMPTY, cen::joystick_power::empty);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_LOW, cen::joystick_power::low);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_MEDIUM, cen::joystick_power::medium);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_FULL, cen::joystick_power::full);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_WIRED, cen::joystick_power::wired);
+  EXPECT_EQ(SDL_JOYSTICK_POWER_MAX, cen::joystick_power::max);
 
-  EXPECT_EQ(SDL_JOYSTICK_POWER_UNKNOWN, power::unknown);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_EMPTY, power::empty);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_LOW, power::low);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_MEDIUM, power::medium);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_FULL, power::full);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_WIRED, power::wired);
-  EXPECT_EQ(SDL_JOYSTICK_POWER_MAX, power::max);
-
-  EXPECT_NE(power::max, SDL_JOYSTICK_POWER_WIRED);
-  EXPECT_NE(SDL_JOYSTICK_POWER_MEDIUM, power::low);
+  EXPECT_NE(cen::joystick_power::max, SDL_JOYSTICK_POWER_WIRED);
+  EXPECT_NE(SDL_JOYSTICK_POWER_MEDIUM, cen::joystick_power::low);
 }
 
 TEST(Joystick, HatStateEnum)
 {
-  using state = cen::joystick::hat_state;
+  using state = cen::hat_state;
 
   EXPECT_EQ(static_cast<state>(SDL_HAT_CENTERED), state::centered);
   EXPECT_EQ(static_cast<state>(SDL_HAT_UP), state::up);
@@ -63,7 +61,7 @@ TEST(Joystick, HatStateEnum)
 
 TEST(Joystick, TypeEnum)
 {
-  using type = cen::joystick::type;
+  using type = cen::joystick_type;
 
   EXPECT_EQ(type::unknown, SDL_JOYSTICK_TYPE_UNKNOWN);
   EXPECT_EQ(type::game_controller, SDL_JOYSTICK_TYPE_GAMECONTROLLER);
@@ -90,7 +88,7 @@ TEST(Joystick, TypeEnum)
 
 TEST(Joystick, VirtualAPI)
 {
-  const auto type = cen::joystick::type::game_controller;
+  const auto type = cen::joystick_type::game_controller;
   const auto nAxes = 2;
   const auto nButtons = 3;
   const auto nHats = 4;
@@ -108,7 +106,7 @@ TEST(Joystick, VirtualAPI)
 
   EXPECT_TRUE(joystick.set_virtual_axis(0, 123));
   EXPECT_TRUE(joystick.set_virtual_button(0, cen::button_state::pressed));
-  EXPECT_TRUE(joystick.set_virtual_hat(0, cen::joystick::hat_state::centered));
+  EXPECT_TRUE(joystick.set_virtual_hat(0, cen::hat_state::centered));
 
   EXPECT_TRUE(cen::joystick::detach_virtual(*index));
 }

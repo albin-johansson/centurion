@@ -1,4 +1,4 @@
-#include "blend_mode.hpp"
+#include "video/blend_mode.hpp"
 
 #include <gtest/gtest.h>
 

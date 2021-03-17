@@ -249,9 +249,9 @@ TEST(UnicodeString, Serialize)
     std::ifstream stream{"unicode_string.binary", std::ios::binary};
     input_archive archive{stream};
 
-    auto copy = string;
-    copy.serialize(archive);
+    cen::unicode_string other;
+    other.serialize(archive);
 
-    EXPECT_EQ(string, copy);
+    EXPECT_EQ(string, other);
   }
 }

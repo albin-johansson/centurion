@@ -1019,11 +1019,10 @@ class basic_controller final
   {
     std::array<float, size> array{};
     const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller,
-                                        value,
-                                        array.data(),
-                                        static_cast<int>(array.size()));
+    const auto res = SDL_GameControllerGetSensorData(m_controller,
+                                                     value,
+                                                     array.data(),
+                                                     isize(array));
     if (res != -1)
     {
       return array;

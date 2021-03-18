@@ -13,6 +13,7 @@
 #include "../centurion_cfg.hpp"
 #include "../detail/stack_resource.hpp"
 #include "../misc/exception.hpp"
+#include "../misc/integers.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "window.hpp"
@@ -571,7 +572,7 @@ class message_box final
     }
 
     data.buttons = buttonData.data();
-    data.numbuttons = static_cast<int>(buttonData.size());
+    data.numbuttons = isize(buttonData);
 
     button_id button{-1};
     if (SDL_ShowMessageBox(&data, &button) == -1)

@@ -16,6 +16,7 @@
 #include "../detail/to_string.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
+#include "../misc/integers.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -222,7 +223,7 @@ class basic_sensor final
       -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
+    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
     if (result != -1)
     {
       return array;

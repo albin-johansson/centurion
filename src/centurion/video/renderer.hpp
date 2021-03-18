@@ -351,15 +351,14 @@ class basic_renderer final
     {
       const auto& front = container.front();
       const auto* first = front.data();
-      const auto count = static_cast<int>(container.size());
 
       if constexpr (std::is_same_v<value_t, int>)
       {
-        SDL_RenderDrawLines(get(), first, count);
+        SDL_RenderDrawLines(get(), first, isize(container));
       }
       else
       {
-        SDL_RenderDrawLinesF(get(), first, count);
+        SDL_RenderDrawLinesF(get(), first, isize(container));
       }
     }
   }

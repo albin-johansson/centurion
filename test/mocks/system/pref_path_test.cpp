@@ -21,6 +21,6 @@ class PrefPathTest : public testing::Test
 
 TEST_F(PrefPathTest, FunctionCall)
 {
-  const auto path [[maybe_unused]] = cen::get_pref_path("centurion", "tests");
+  const auto path [[maybe_unused]] = cen::preferred_path("centurion", "tests");
   EXPECT_EQ(1, SDL_GetPrefPath_fake.call_count);
 }

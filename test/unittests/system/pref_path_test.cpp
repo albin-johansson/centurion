@@ -4,5 +4,6 @@
 
 TEST(GetPrefPath, NoExceptions)
 {
-  EXPECT_NO_THROW(cen::get_pref_path("centurion", "tests"));  // NOLINT
+  using namespace std::string_literals;
+  EXPECT_NO_THROW(cen::preferred_path("centurion"s, "tests"s));
 }

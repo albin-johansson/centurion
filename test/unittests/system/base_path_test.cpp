@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(GetBasePath, NoExceptions)
+TEST(BasePath, NoExceptions)
 {
-  EXPECT_NO_THROW(cen::get_base_path());  // NOLINT
+  EXPECT_NO_THROW(cen::base_path());  // NOLINT
 }

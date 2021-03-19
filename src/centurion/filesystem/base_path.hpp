@@ -26,7 +26,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto get_base_path() -> sdl_string
+[[nodiscard]] inline auto base_path() -> sdl_string
 {
   return sdl_string{SDL_GetBasePath()};
 }

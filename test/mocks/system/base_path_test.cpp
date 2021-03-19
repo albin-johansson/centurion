@@ -21,6 +21,6 @@ class BasePathTest : public testing::Test
 
 TEST_F(BasePathTest, FunctionCall)
 {
-  const auto path [[maybe_unused]] = cen::get_base_path();
+  const auto path [[maybe_unused]] = cen::base_path();
   EXPECT_EQ(1, SDL_GetBasePath_fake.call_count);
 }

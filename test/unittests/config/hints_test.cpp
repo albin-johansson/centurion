@@ -1,9 +1,25 @@
-#include "hints.hpp"
+#include "hints/hints.hpp"
 
 #include <gtest/gtest.h>
 
-#include "video/window.hpp"
+#include "hints/android_hints.hpp"
+#include "hints/apple_tv_hints.hpp"
+#include "hints/common_hints.hpp"
+#include "hints/controller_hints.hpp"
+#include "hints/d3d_hints.hpp"
+#include "hints/emscripten_hints.hpp"
+#include "hints/enum_hint.hpp"
+#include "hints/joystick_hints.hpp"
+#include "hints/mac_hints.hpp"
+#include "hints/mouse_hints.hpp"
+#include "hints/qtwayland_hints.hpp"
+#include "hints/raspberry_pi_hints.hpp"
+#include "hints/windows_hints.hpp"
+#include "hints/winrt_hints.hpp"
+#include "hints/x11_hints.hpp"
+#include "hints/xinput_hints.hpp"
 #include "typed_test_macros.hpp"
+#include "video/window.hpp"
 
 using boolean_hints =
     testing::Types<cen::hint::double_buffer,

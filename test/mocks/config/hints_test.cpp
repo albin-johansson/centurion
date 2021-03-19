@@ -1,9 +1,11 @@
-#include "hints.hpp"
+#include "hints/hints.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "hints/common_hints.hpp"
+#include "hints/mouse_hints.hpp"
 
 // clang-format off
 extern "C" {

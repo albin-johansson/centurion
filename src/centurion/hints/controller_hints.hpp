@@ -14,8 +14,7 @@
 /// \addtogroup configuration
 /// \{
 
-// TODO Centurion 6: Rename this namespace to controller for API consistency
-namespace cen::hint::gamecontroller {
+namespace cen::hint::controller {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -69,7 +68,7 @@ struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
   }
 };
 
-}  // namespace cen::hint::gamecontroller
+}  // namespace cen::hint::controller
 
 /// \} End of group configuration
 

@@ -55,7 +55,7 @@ using boolean_hints =
                    cen::hint::mouse::relative_scaling,
                    cen::hint::d3d::v11_debug,
                    cen::hint::d3d::thread_safe,
-                   cen::hint::gamecontroller::use_button_labels,
+                   cen::hint::controller::use_button_labels,
                    cen::hint::winrt::handle_back_button,
                    cen::hint::windows::no_thread_naming,
                    cen::hint::windows::enable_message_loop,
@@ -235,19 +235,19 @@ TEST_F(BasicHintTest, WindowFlags)
 
 TEST_F(BasicHintTest, ConfigFile)
 {
-  using cen::hint::gamecontroller::config_file;
+  using cen::hint::controller::config_file;
   test_string_hint<config_file>("foo");
 }
 
 TEST_F(BasicHintTest, IgnoreDevices)
 {
-  using cen::hint::gamecontroller::ignore_devices;
+  using cen::hint::controller::ignore_devices;
   test_string_hint<ignore_devices>("0xAAAA");
 }
 
 TEST_F(BasicHintTest, IgnoreDevicesExcept)
 {
-  using cen::hint::gamecontroller::ignore_devices_except;
+  using cen::hint::controller::ignore_devices_except;
   test_string_hint<ignore_devices_except>("0xBBBB, 0xCCCC");
 }
 

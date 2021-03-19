@@ -6,61 +6,58 @@
 
 TEST(Platform, IsWindows)
 {
-  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::windows,
-            cen::platform::is_windows());
+  EXPECT_EQ(cen::current_platform() == cen::platform_id::windows,
+            cen::is_windows());
 
-  constexpr auto isWindows =
-      cen::platform::ifdef_win32() || cen::platform::ifdef_win64();
-  EXPECT_EQ(cen::platform::is_windows(), isWindows);
+  constexpr auto isWindows = cen::ifdef_win32() || cen::ifdef_win64();
+  EXPECT_EQ(cen::is_windows(), isWindows);
 
   // Check that win64 -> win32
-  EXPECT_TRUE(!cen::platform::ifdef_win64() ||
-              (cen::platform::ifdef_win64() && cen::platform::ifdef_win32()));
+  EXPECT_TRUE(!cen::ifdef_win64() ||
+              (cen::ifdef_win64() && cen::ifdef_win32()));
 }
 
 TEST(Platform, IsMacOSX)
 {
-  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::mac_osx,
-            cen::platform::is_mac_osx());
+  EXPECT_EQ(cen::current_platform() == cen::platform_id::mac_osx,
+            cen::is_mac_osx());
 
-  constexpr auto isApple = cen::platform::ifdef_apple();
-  EXPECT_EQ(cen::platform::is_mac_osx(), isApple);
+  constexpr auto isApple = cen::ifdef_apple();
+  EXPECT_EQ(cen::is_mac_osx(), isApple);
 }
 
 TEST(Platform, IsLinux)
 {
-  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::linuxx,
-            cen::platform::is_linux());
+  EXPECT_EQ(cen::current_platform() == cen::platform_id::linux_os,
+            cen::is_linux());
 
-  constexpr auto isLinux = cen::platform::ifdef_linux();
-  EXPECT_EQ(cen::platform::is_linux(), isLinux);
+  constexpr auto isLinux = cen::ifdef_linux();
+  EXPECT_EQ(cen::is_linux(), isLinux);
 }
 
 TEST(Platform, IsIOS)
 {
-  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::ios,
-            cen::platform::is_ios());
+  EXPECT_EQ(cen::current_platform() == cen::platform_id::ios, cen::is_ios());
 
   // Check that iOS -> Apple
-  EXPECT_TRUE(!cen::platform::is_ios() ||
-              (cen::platform::is_ios() && cen::platform::ifdef_apple()));
+  EXPECT_TRUE(!cen::is_ios() || (cen::is_ios() && cen::ifdef_apple()));
 }
 
 TEST(Platform, IsAndroid)
 {
-  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::android,
-            cen::platform::is_android());
+  EXPECT_EQ(cen::current_platform() == cen::platform_id::android,
+            cen::is_android());
 
-  constexpr auto isAndroid = cen::platform::ifdef_android();
-  EXPECT_EQ(cen::platform::is_android(), isAndroid);
+  constexpr auto isAndroid = cen::ifdef_android();
+  EXPECT_EQ(cen::is_android(), isAndroid);
 }
 
 TEST(Platform, Name)
 {
-  EXPECT_EQ(std::string{SDL_GetPlatform()}, *cen::platform::name());
+  EXPECT_EQ(std::string{SDL_GetPlatform()}, *cen::platform_name());
 }
 
 TEST(Platform, IsTablet)
 {
-  EXPECT_EQ(SDL_IsTablet(), cen::platform::is_tablet());
+  EXPECT_EQ(SDL_IsTablet(), cen::is_tablet());
 }

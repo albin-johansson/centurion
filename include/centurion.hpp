@@ -22,1003 +22,7 @@
  * SOFTWARE.
  */
 
-// #include "../misc/cast.hpp"
-#ifndef CENTURION_CAST_HEADER
-#define CENTURION_CAST_HEADER
-
-// #include "centurion_cfg.hpp"
-#ifndef CENTURION_CFG_HEADER
-#define CENTURION_CFG_HEADER
-
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-/**
- * \def CENTURION_USE_PRAGMA_ONCE
- *
- * \brief This macro indicates whether or not Centurion headers will use
- * `#pragma once` in addition with the traditional include guards. By
- * default, this macro is defined.
- *
- * \since 5.0.0
- */
-#define CENTURION_USE_PRAGMA_ONCE
-
-/**
- * \def CENTURION_USE_DEBUG_LOGGING_MACROS
- *
- * \brief This macro indicates whether or not debug-only logging macros will
- * be defined. These can be found in the `log.hpp` header. By default, this
- * macro is defined.
- *
- * \since 5.0.0
- */
-#define CENTURION_USE_DEBUG_LOGGING_MACROS
-
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
- *
- * \since 5.3.0
- */
-#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
-   (SDL_PATCHLEVEL == (z)))
-
-#if !defined(__clang__)
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are using
- * MSVC or GCC, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // !defined(__clang__)
-
-/// \} End of group core
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
-// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
-// this definition.
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif
-
-#endif  // CENTURION_CFG_HEADER
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \brief Casts a value to a value of another type.
- *
- * \ingroup misc
- *
- * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
- *
- * \tparam To the type of the value that will be converted.
- * \tparam From the type that the value will be casted to.
- *
- * \param from the value that will be converted.
- *
- * \return the result of casting the supplied value to the specified type.
- *
- * \since 5.0.0
- */
-template <typename To, typename From>
-[[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
-{
-  return static_cast<To>(from);
-}
-
-}  // namespace cen
-
-#endif  // CENTURION_CAST_HEADER
-
-// #include "../misc/czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "centurion_cfg.hpp"
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-#include <SDL.h>
-
-#include <type_traits>  // enable_if_t, is_pointer_v
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-// #include "../misc/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
-#include <exception>  // exception
-
-// #include "centurion_cfg.hpp"
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "centurion_cfg.hpp"
-
-// #include "not_null.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/// \addtogroup misc
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \headerfile exception.hpp
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept
-      : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"N/A"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/// \} End of group misc
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
-
-// #include "../misc/integers.hpp"
-#ifndef CENTURION_INTEGERS_HEADER
-#define CENTURION_INTEGERS_HEADER
-
-#include <SDL.h>
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
-using u64 = Uint64;
-
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
-using u32 = Uint32;
-
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
-using u16 = Uint16;
-
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
-using u8 = Uint8;
-
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
-using i64 = Sint64;
-
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
-using i32 = Sint32;
-
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
-using i16 = Sint16;
-
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
-using i8 = Sint8;
-
-// clang-format off
-
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
-
-// clang-format on
-
-namespace literals {
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept
-    -> u8
-{
-  return static_cast<u8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept
-    -> u16
-{
-  return static_cast<u16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept
-    -> u32
-{
-  return static_cast<u32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept
-    -> u64
-{
-  return static_cast<u64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept
-    -> i8
-{
-  return static_cast<i8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept
-    -> i16
-{
-  return static_cast<i16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept
-    -> i32
-{
-  return static_cast<i32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept
-    -> i64
-{
-  return static_cast<i64>(value);
-}
-
-}  // namespace literals
-}  // namespace cen
-
-#endif  // CENTURION_INTEGERS_HEADER
-
-// #include "../misc/not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-#include <SDL.h>
-
-#include <type_traits>  // enable_if_t, is_pointer_v
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-// #include "../misc/owner.hpp"
-#ifndef CENTURION_OWNER_HEADER
-#define CENTURION_OWNER_HEADER
-
-#include <type_traits>  // enable_if_t, is_pointer_v
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef owner
- *
- * \brief Tag used to denote ownership of raw pointers directly in code.
- *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
- */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
-using owner = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_OWNER_HEADER
-// #include "../misc/time.hpp"
-#ifndef CENTURION_TIME_HEADER
-#define CENTURION_TIME_HEADER
-
-#include <chrono>  // duration
-#include <ratio>   // milli, micro, nano
-
-// #include "centurion_cfg.hpp"
-
-// #include "integers.hpp"
-#ifndef CENTURION_INTEGERS_HEADER
-#define CENTURION_INTEGERS_HEADER
-
-#include <SDL.h>
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
-using u64 = Uint64;
-
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
-using u32 = Uint32;
-
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
-using u16 = Uint16;
-
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
-using u8 = Uint8;
-
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
-using i64 = Sint64;
-
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
-using i32 = Sint32;
-
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
-using i16 = Sint16;
-
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
-using i8 = Sint8;
-
-// clang-format off
-
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
-
-// clang-format on
-
-namespace literals {
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept
-    -> u8
-{
-  return static_cast<u8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept
-    -> u16
-{
-  return static_cast<u16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept
-    -> u32
-{
-  return static_cast<u32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept
-    -> u64
-{
-  return static_cast<u64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept
-    -> i8
-{
-  return static_cast<i8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept
-    -> i16
-{
-  return static_cast<i16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept
-    -> i32
-{
-  return static_cast<i32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept
-    -> i64
-{
-  return static_cast<i64>(value);
-}
-
-}  // namespace literals
-}  // namespace cen
-
-#endif  // CENTURION_INTEGERS_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef seconds
- *
- * \brief Templated alias for durations in seconds.
- */
-template <typename T>
-using seconds = std::chrono::duration<T>;
-
-/**
- * \typedef milliseconds
- *
- * \brief Templated alias for durations in milliseconds.
- */
-template <typename T>
-using milliseconds = std::chrono::duration<T, std::milli>;
-
-/**
- * \typedef microseconds
- *
- * \brief Templated alias for durations in microseconds.
- */
-template <typename T>
-using microseconds = std::chrono::duration<T, std::micro>;
-
-/**
- * \typedef nanoseconds
- *
- * \brief Templated alias for durations in nanoseconds.
- */
-template <typename T>
-using nanoseconds = std::chrono::duration<T, std::nano>;
-
-/**
- * \typedef minutes
- *
- * \brief Templated alias for durations in minutes.
- */
-template <typename T>
-using minutes = std::chrono::duration<T, std::ratio<60>>;
-
-/**
- * \namespace literals
- *
- * \brief Contains suffix operators.
- *
- * \since 5.0.0
- */
-namespace literals {
-
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
-{
-  return nanoseconds<u32>{value};
-}
-
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
-{
-  return microseconds<u32>{value};
-}
-
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
-{
-  return milliseconds<u32>{value};
-}
-
-constexpr auto operator"" _s(const unsigned long long int value) noexcept
-    -> seconds<u32>
-{
-  return seconds<u32>{value};
-}
-
-}  // namespace literals
-}  // namespace cen
-
-#endif  // CENTURION_TIME_HEADER
-
-// #include "audio/music.hpp"
+// #include "centurion/audio/music.hpp"
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
@@ -1380,7 +384,78 @@ template <typename T>
 #include <SDL.h>
 
 // #include "centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
 
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -2740,7 +1815,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
 }  // namespace cen
 
 #endif  // CENTURION_MUSIC_HEADER
-// #include "audio/sound_effect.hpp"
+// #include "centurion/audio/sound_effect.hpp"
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
@@ -3444,15 +2519,11 @@ namespace cen {
 
 #endif  // CENTURION_COMPILER_HEADER
 
-// #include "centurion/events/event.hpp"
-#ifndef CENTURION_EVENT_HEADER
-#define CENTURION_EVENT_HEADER
+// #include "centurion/events/audio_device_event.hpp"
+#ifndef CENTURION_AUDIO_DEVICE_EVENT_HEADER
+#define CENTURION_AUDIO_DEVICE_EVENT_HEADER
 
 #include <SDL.h>
-
-#include <optional>  // optional
-#include <utility>   // move
-#include <variant>   // variant, holds_alternative, monostate, get, get_if
 
 // #include "../centurion_cfg.hpp"
 #ifndef CENTURION_CFG_HEADER
@@ -3527,14 +2598,6 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #endif
 
 #endif  // CENTURION_CFG_HEADER
-// #include "audio_device_event.hpp"
-#ifndef CENTURION_AUDIO_DEVICE_EVENT_HEADER
-#define CENTURION_AUDIO_DEVICE_EVENT_HEADER
-
-#include <SDL.h>
-
-// #include "../centurion_cfg.hpp"
-
 // #include "../misc/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
 #define CENTURION_INTEGERS_HEADER
@@ -4185,9 +3248,160 @@ inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event)
 
 #endif  // CENTURION_AUDIO_DEVICE_EVENT_HEADER
 
-// #include "common_event.hpp"
+// #include "centurion/events/common_event.hpp"
+#ifndef CENTURION_COMMON_EVENT_HEADER
+#define CENTURION_COMMON_EVENT_HEADER
 
-// #include "controller_axis_event.hpp"
+#include <SDL.h>
+
+#include <utility>  // move
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "event_type.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class common_event
+ *
+ * \brief The templated base class of all Centurion events.
+ *
+ * \details This class defines the common API of all events and provides the
+ * storage of the SDL2 event.
+ *
+ * \tparam T an SDL event type.
+ *
+ * \since 4.0.0
+ *
+ * \headerfile common_event.hpp
+ */
+template <typename T>
+class common_event
+{
+ public:
+  /**
+   * \brief Creates a `common_event` and zero-initializes the internal event
+   * except for the timestamp and the supplied type.
+   *
+   * \param type the type of the event.
+   *
+   * \since 5.1.0
+   */
+  explicit common_event(const event_type type) noexcept
+  {
+    set_time(SDL_GetTicks());
+    set_type(type);
+  }
+
+  /**
+   * \brief Creates a common_event and copies the supplied event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit common_event(const T& event) : m_event{event}
+  {}
+
+  /**
+   * \brief Creates a common_event and moves the contents of the supplied event.
+   *
+   * \param event the event that will be moved.
+   *
+   * \since 4.0.0
+   */
+  explicit common_event(T&& event) : m_event{std::move(event)}
+  {}
+
+  /**
+   * \brief Sets the timestamp that is associated with the creation of the
+   * event.
+   *
+   * \param timestamp the timestamp that should be associated with the creation
+   * of the event.
+   *
+   * \since 4.0.0
+   */
+  void set_time(const u32 timestamp) noexcept
+  {
+    m_event.timestamp = timestamp;
+  }
+
+  /**
+   * \brief Sets the event type value associated with the event.
+   *
+   * \param type the event type value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_type(const event_type type) noexcept
+  {
+    m_event.type = static_cast<u32>(type);
+  }
+
+  /**
+   * \brief Returns the timestamp associated with the creation of the event.
+   *
+   * \return the timestamp associated with the creation of the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto time() const noexcept -> u32
+  {
+    return m_event.timestamp;
+  }
+
+  /**
+   * \brief Returns the event type value associated with the event.
+   *
+   * \return the event type value associated with the event.
+   *
+   * \see EventType
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto type() const noexcept -> event_type
+  {
+    return static_cast<event_type>(m_event.type);
+  }
+
+  /**
+   * \brief Returns the internal event.
+   *
+   * \return the internal event.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> const T&
+  {
+    return m_event;
+  }
+
+ protected:
+  T m_event{};
+};
+
+template <typename T>
+[[nodiscard]] auto as_sdl_event(const common_event<T>& event) -> SDL_Event;
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_COMMON_EVENT_HEADER
+
+// #include "centurion/events/controller_axis_event.hpp"
 #ifndef CENTURION_CONTROLLER_AXIS_EVENT_HEADER
 #define CENTURION_CONTROLLER_AXIS_EVENT_HEADER
 
@@ -5627,10 +4841,6 @@ constexpr auto operator"" _s(const unsigned long long int value) noexcept
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/owner.hpp"
-
 // #include "centurion_cfg.hpp"
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
@@ -5805,6 +5015,100 @@ struct sdl_deleter final
 
 #endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
 
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -8440,6 +7744,8 @@ template <std::size_t bufferSize = 16, typename T>
 
 // #include "../misc/exception.hpp"
 
+// #include "../misc/integers.hpp"
+
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -8646,7 +7952,7 @@ class basic_sensor final
       -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
+    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
     if (result != -1)
     {
       return array;
@@ -10190,11 +9496,10 @@ class basic_controller final
   {
     std::array<float, size> array{};
     const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller,
-                                        value,
-                                        array.data(),
-                                        static_cast<int>(array.size()));
+    const auto res = SDL_GameControllerGetSensorData(m_controller,
+                                                     value,
+                                                     array.data(),
+                                                     isize(array));
     if (res != -1)
     {
       return array;
@@ -10792,6 +10097,1006 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 }  // namespace cen
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_axis_event
+ *
+ * \brief Represents an event triggered by game controller axis motion.
+ *
+ * \since 4.0.0
+ *
+ * \headerfile controller_axis_event.hpp
+ */
+class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
+{
+ public:
+  /**
+   * \brief Creates a controller axis event of type `controller_axis_motion`.
+   *
+   * \since 4.0.0
+   */
+  controller_axis_event() noexcept
+      : common_event{cen::event_type::controller_axis_motion}
+  {}
+
+  /**
+   * \brief Creates a controller axis event that is based on the supplied SDL
+   * controller axis event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param which the instance ID of the joystick that the event is
+   * associated with.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets the game controller axis value associated with the event.
+   *
+   * \param axis the game controller axis value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_axis(const controller_axis axis) noexcept
+  {
+    m_event.axis = static_cast<u8>(axis);
+  }
+
+  /**
+   * \brief Sets the axis value associated with the event.
+   *
+   * \param value the new axis value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_value(const i16 value) noexcept
+  {
+    m_event.value = value;
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the game controller axis value associated with the event.
+   *
+   * \return the game controller axis value associated with the event.
+   *
+   * \see `GameControllerAxis`
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto axis() const noexcept -> controller_axis
+  {
+    return static_cast<controller_axis>(m_event.axis);
+  }
+
+  /**
+   * \brief Returns the axis value associated with the event.
+   *
+   * \return the axis value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto value() const noexcept -> i16
+  {
+    return m_event.value;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.caxis = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_AXIS_EVENT_HEADER
+
+// #include "centurion/events/controller_button_event.hpp"
+#ifndef CENTURION_CONTROLLER_BUTTON_EVENT_HEADER
+#define CENTURION_CONTROLLER_BUTTON_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/controller.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_button_event
+ *
+ * \brief Represents events associated with the state of buttons of a game
+ * controller.
+ *
+ * \see `SDL_ControllerButtonEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile controller_button_event.hpp
+ */
+class controller_button_event final
+    : public common_event<SDL_ControllerButtonEvent>
+{
+ public:
+  /**
+   * \brief Creates a controller button event of type `controller_button_down`.
+   *
+   * \since 4.0.0
+   */
+  controller_button_event() noexcept
+      : common_event{event_type::controller_button_down}
+  {}
+
+  /**
+   * \brief Creates a controller button event that is based on the supplied SDL
+   * controller button event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit controller_button_event(
+      const SDL_ControllerButtonEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the game controller button associated with the event.
+   *
+   * \param button the game controller button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_button(const controller_button button) noexcept
+  {
+    m_event.button = static_cast<u8>(button);
+  }
+
+  /**
+   * \brief Sets the button state associated with the event.
+   *
+   * \param state the button state associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param id the instance ID of the joystick that the event is associated
+   * with.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Returns the game controller button associated with the event.
+   *
+   * \return the game controller button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto button() const noexcept -> controller_button
+  {
+    return static_cast<controller_button>(m_event.button);
+  }
+
+  /**
+   * \brief Returns the button state associated with the event.
+   *
+   * \return the button state associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is pressed.
+   *
+   * \return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is released.
+   *
+   * \return `true` if the associated button is released; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.cbutton = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_BUTTON_EVENT_HEADER
+
+// #include "centurion/events/controller_device_event.hpp"
+#ifndef CENTURION_CONTROLLER_DEVICE_EVENT_HEADER
+#define CENTURION_CONTROLLER_DEVICE_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_device_event
+ *
+ * \brief Represents events related to game controller devices such as adding
+ * or removing game controller devices.
+ *
+ * \see `SDL_ControllerDeviceEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile controller_device_event.hpp
+ */
+class controller_device_event final
+    : public common_event<SDL_ControllerDeviceEvent>
+{
+ public:
+  /**
+   * \brief Creates a controller device event of type `controller_device_added`.
+   *
+   * \since 4.0.0
+   */
+  controller_device_event() noexcept
+      : common_event{event_type::controller_device_added}
+  {}
+
+  /**
+   * \brief Creates a controller device event that is based on the supplied SDL
+   * controller device event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit controller_device_event(
+      const SDL_ControllerDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick device index or instance ID.
+   *
+   * \details If the event type is `Added`, then this value is the joystick
+   * device index. If the type of the event is either `Removed` or
+   * `Remapped`, then this value is the instance ID.
+   *
+   * \param which the joystick device index or instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const i32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Returns the joystick device index or instance ID.
+   *
+   * \details Returns the joystick device index if the type of the event is
+   * `Added`. Returns the instance ID if the type of the event is either
+   * `Removed` or `Remapped`.
+   *
+   * \return the joystick device index or instance ID.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.cdevice = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_DEVICE_EVENT_HEADER
+
+// #include "centurion/events/dollar_gesture_event.hpp"
+#ifndef CENTURION_DOLLAR_GESTURE_HEADER
+#define CENTURION_DOLLAR_GESTURE_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class dollar_gesture_event
+ *
+ * \brief Provides information about dollar gestures from touch events.
+ *
+ * \see `SDL_DollarGestureEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile dollar_gesture_event.hpp
+ */
+class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
+{
+ public:
+  /**
+   * \brief Creates a dollar gesture event of type `dollar_gesture`.
+   *
+   * \since 4.0.0
+   */
+  dollar_gesture_event() noexcept : common_event{event_type::dollar_gesture}
+  {
+    set_type(event_type::dollar_gesture);
+  }
+
+  /**
+   * \brief Creates a dollar gesture event that is based on the supplied SDL
+   * dollar gesture event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the touch device ID associated with the event.
+   *
+   * \param id the touch device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
+
+  /**
+   * \brief Sets the gesture ID associated with the event.
+   *
+   * \param id the gesture ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_gesture_id(const SDL_GestureID id) noexcept
+  {
+    m_event.gestureId = id;
+  }
+
+  /**
+   * \brief Sets the amount of fingers used to draw the stroke.
+   *
+   * \param fingers the amount of fingers used to draw the stroke.
+   *
+   * \since 4.0.0
+   */
+  void set_fingers(const u32 fingers) noexcept
+  {
+    m_event.numFingers = fingers;
+  }
+
+  /**
+   * \brief Sets the error value for the performed stroke compared with the
+   * gesture template associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_error(const float error) noexcept
+  {
+    m_event.error = error;
+  }
+
+  /**
+   * \brief Sets the normalized x-coordinate of the center of the gesture.
+   *
+   * \param x the normalized x-coordinate of the center of the gesture.
+   *
+   * \since 4.0.0
+   */
+  void set_x(const float x) noexcept
+  {
+    m_event.x = x;
+  }
+
+  /**
+   * \brief Sets the normalized y-coordinate of the center of the gesture.
+   *
+   * \param y the normalized y-coordinate of the center of the gesture.
+   *
+   * \since 4.0.0
+   */
+  void set_y(const float y) noexcept
+  {
+    m_event.y = y;
+  }
+
+  /**
+   * \brief Returns the touch device ID associated with the event.
+   *
+   * \return the touch device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
+
+  /**
+   * \brief Returns the unique ID of the closest gesture to the performed
+   * stroke.
+   *
+   * \return the unique ID of the closest gesture to the performed stroke.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto gesture_id() const noexcept -> SDL_GestureID
+  {
+    return m_event.gestureId;
+  }
+
+  /**
+   * \brief Returns the amount of fingers used to draw the stroke.
+   *
+   * \return the amount of fingers used to draw the stroke.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto fingers() const noexcept -> u32
+  {
+    return m_event.numFingers;
+  }
+
+  /**
+   * \brief Returns the difference between the gesture template and the
+   * performed gesture.
+   *
+   * \details The lower the error, the better the match.
+   *
+   * \return the difference between the gesture template and the performed
+   * gesture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto error() const noexcept -> float
+  {
+    return m_event.error;
+  }
+
+  /**
+   * \brief Returns the x-coordinate of the normalized center of the gesture.
+   *
+   * \return the x-coordinate of the normalized center of the gesture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the normalized center of the gesture.
+   *
+   * \return the y-coordinate of the normalized center of the gesture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.dgesture = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_DOLLAR_GESTURE_HEADER
+
+// #include "centurion/events/drop_event.hpp"
+#ifndef CENTURION_DROP_EVENT_HEADER
+#define CENTURION_DROP_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class drop_event
+ *
+ * \brief Represents the event of requesting a file to be opened.
+ *
+ * \see `SDL_DropEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile drop_event.hpp
+ */
+class drop_event final : public common_event<SDL_DropEvent>
+{
+ public:
+  /**
+   * \brief Creates a drop event of type `drop_file`.
+   *
+   * \since 4.0.0
+   */
+  drop_event() noexcept : common_event{event_type::drop_file}
+  {}
+
+  /**
+   * \brief Creates a drop event based on the supplied event.
+   *
+   * \param event the SDL drop event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit drop_event(const SDL_DropEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Destroys the drop event.
+   *
+   * \details The associated file will be freed depending on the value
+   * returned from the `will_free_file()` method.
+   *
+   * \since 4.0.0
+   */
+  ~drop_event() noexcept
+  {
+    if (m_event.file && m_willFreeFile)
+    {
+      SDL_free(m_event.file);
+    }
+  }
+
+  /**
+   * \brief Sets whether or not the associated file will be freed by this event.
+   *
+   * \details If you set this property to `false`, you **must** remember to
+   * call `SDL_free` on the file pointer by yourself. Otherwise, you'll end
+   * up with a memory leak!
+   *
+   * \param freeFile `true` if the associated file should be freed upon the
+   * destruction of the event; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  void set_will_free_file(const bool freeFile) noexcept
+  {
+    m_willFreeFile = freeFile;
+  }
+
+  /**
+   * \brief Sets the file associated with the drop event.
+   *
+   * \details The ownership of the supplied pointer will, by default, not be
+   * claimed by this event.
+   *
+   * \note The supplied pointer will be freed using `SDL_free` upon the
+   * destruction of the event *if* the `will_free_file` property is set to
+   * **true**.
+   *
+   * \note If the `will_free_file` property is `true`, then **the previously
+   * set file pointer will be freed** by calling this method. However, if the
+   * `will_free_file` property is `false`, then the old file pointer is
+   * simply overridden. Of course, this may, if you're not careful, introduce a
+   * memory leak in your program!
+   *
+   * \warning Make sure you know what you are doing when using this method.
+   *
+   * \param file a pointer to a file, can safely be null.
+   *
+   * \since 4.0.0
+   */
+  void set_file(char* file) noexcept
+  {
+    if (m_event.file && m_willFreeFile)
+    {
+      SDL_free(m_event.file);
+    }
+    m_event.file = file;
+  }
+
+  /**
+   * \brief Sets the ID of the window that is the target of the drop event.
+   *
+   * \param id the ID of the window that is the target of the drop event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Indicates whether or not the associated file will be freed by
+   * this event upon destruction.
+   *
+   * \details By default, this property is set to **false**.
+   *
+   * \return `true` if the associated file will be freed upon destruction;
+   * `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto will_free_file() const noexcept -> bool
+  {
+    return m_willFreeFile;
+  }
+
+  /**
+   * \brief Returns a pointer to the associated file.
+   *
+   * \warning Do **not** claim ownership of the returned pointer *without*
+   * setting the `will_free_file` property to **false**.
+   *
+   * \note The returned pointer is always `nullptr` for `drop_begin` and
+   * `drop_complete` drop events.
+   *
+   * \return a pointer to the file associated with the event, might be null.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto file() const noexcept -> char*
+  {
+    return m_event.file;
+  }
+
+  /**
+   * \brief Returns the ID of the window that is the target of the drop
+   * event, if there even is one.
+   *
+   * \return the ID of the window that is the target of the drop event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+ private:
+  bool m_willFreeFile{false};
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.drop = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_DROP_EVENT_HEADER
+
+// #include "centurion/events/event.hpp"
+#ifndef CENTURION_EVENT_HEADER
+#define CENTURION_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <optional>  // optional
+#include <utility>   // move
+#include <variant>   // variant, holds_alternative, monostate, get, get_if
+
+// #include "../centurion_cfg.hpp"
+
+// #include "audio_device_event.hpp"
+#ifndef CENTURION_AUDIO_DEVICE_EVENT_HEADER
+#define CENTURION_AUDIO_DEVICE_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class audio_device_event
+ *
+ * \brief Represents an event that is associated with some sort of audio
+ * device, either capture of output.
+ *
+ * \see `SDL_AudioDeviceEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile audio_device_event.hpp
+ */
+class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
+{
+ public:
+  /**
+   * \brief Creates an audio device event of type `audio_device_added`.
+   *
+   * \since 4.0.0
+   */
+  audio_device_event() noexcept : common_event{event_type::audio_device_added}
+  {}
+
+  /**
+   * \brief Creates a audio device event based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the audio device ID that is associated with the event.
+   *
+   * \param which the audio device ID that is associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets whether or not the audio device event is associated with a
+   * capture device.
+   *
+   * \param capture `true` if the event is associated with a capture device;
+   * `false` indicates that the event is associated with an output device.
+   *
+   * \since 4.0.0
+   */
+  void set_capture(const bool capture) noexcept
+  {
+    m_event.iscapture = capture;
+  }
+
+  /**
+   * \brief Returns the audio device ID associated with the event.
+   *
+   * \return the audio device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Indicates whether or not the audio device event is associated with
+   * an audio output device.
+   *
+   * \return `true` if the event is associated with an output device; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto output() const noexcept -> bool
+  {
+    return !capture();
+  }
+
+  /**
+   * \brief Indicates whether or not the audio device event is associated with
+   * an audio capture device.
+   *
+   * \return `true` if the event is associated with a capture device; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto capture() const noexcept -> bool
+  {
+    return m_event.iscapture;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.adevice = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_AUDIO_DEVICE_EVENT_HEADER
+
+// #include "common_event.hpp"
+
+// #include "controller_axis_event.hpp"
+#ifndef CENTURION_CONTROLLER_AXIS_EVENT_HEADER
+#define CENTURION_CONTROLLER_AXIS_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/controller.hpp"
 
 // #include "../misc/integers.hpp"
 
@@ -18811,4044 +19116,161 @@ enum class event_type
 }  // namespace cen
 
 #endif  // CENTURION_EVENT_TYPE_HEADER
-// #include "centurion/hints.hpp"
-/**
- * \brief Provides utilities related to managing hints.
- *
- * \details Provides utilities related to managing hints ("configuration
- * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
- * <code>SDL_hints.hpp</code> header for details regarding any specific hint
- * type.
- *
- * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
- * `X11WindowVisualID` are string hints because the types of their values
- * isn't known. Should be fixed if the type isn't actually string.
- *
- * \todo C++20: Make callback signature depend on the `UserData` and the type
- * of the associated hint, so that the values supplied to the callback aren't
- * always strings.
- *
- * \todo Document all of the hint classes.
- *
- * \file hints.hpp
- *
- * \since 4.1.0
- *
- * \author Albin Johansson
- *
- * \date 2019-2021
- *
- * \copyright MIT License
- */
-
-#ifndef CENTURION_HINTS_HEADER
-#define CENTURION_HINTS_HEADER
+// #include "centurion/events/joy_axis_event.hpp"
+#ifndef CENTURION_JOY_AXIS_EVENT_HEADER
+#define CENTURION_JOY_AXIS_EVENT_HEADER
 
 #include <SDL.h>
-
-#include <optional>     // optional
-#include <string>       // string
-#include <type_traits>  // is_same_v, ...
-#include <utility>      // pair, make_pair
-
-// #include "../misc/exception.hpp"
-
-// #include "centurion_cfg.hpp"
-
-// #include "detail/hints_impl.hpp"
-#ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
-#define CENTURION_DETAIL_HINTS_IMPL_HEADER
-
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <string>       // string, stoi, stoul, stof
-#include <type_traits>  // is_same_v, is_convertible_v
 
 // #include "../centurion_cfg.hpp"
-#ifndef CENTURION_CFG_HEADER
-#define CENTURION_CFG_HEADER
-
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-/**
- * \def CENTURION_USE_PRAGMA_ONCE
- *
- * \brief This macro indicates whether or not Centurion headers will use
- * `#pragma once` in addition with the traditional include guards. By
- * default, this macro is defined.
- *
- * \since 5.0.0
- */
-#define CENTURION_USE_PRAGMA_ONCE
-
-/**
- * \def CENTURION_USE_DEBUG_LOGGING_MACROS
- *
- * \brief This macro indicates whether or not debug-only logging macros will
- * be defined. These can be found in the `log.hpp` header. By default, this
- * macro is defined.
- *
- * \since 5.0.0
- */
-#define CENTURION_USE_DEBUG_LOGGING_MACROS
-
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
- *
- * \since 5.3.0
- */
-#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
-   (SDL_PATCHLEVEL == (z)))
-
-#if !defined(__clang__)
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are using
- * MSVC or GCC, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // !defined(__clang__)
-
-/// \} End of group core
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
-// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
-// this definition.
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif
-
-#endif  // CENTURION_CFG_HEADER
-// #include "../misc/czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "centurion_cfg.hpp"
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-#include <SDL.h>
-
-#include <type_traits>  // enable_if_t, is_pointer_v
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-// #include "czstring_compare.hpp"
-#ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-#define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-
-// #include "../centurion_cfg.hpp"
-
-// #include "../misc/czstring.hpp"
-
-// #include "czstring_eq.hpp"
-#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
-#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
-
-#include <cstring>  // strcmp
-
-// #include "../centurion_cfg.hpp"
-
-// #include "../misc/czstring.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Indicates whether or not two C-style strings are equal.
- *
- * \param lhs the left-hand side string, can safely be null.
- * \param rhs the right-hand side string, can safely be null.
- *
- * \return `true` if the strings are equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-[[nodiscard]] inline auto czstring_eq(const czstring lhs,
-                                      const czstring rhs) noexcept -> bool
-{
-  if (lhs && rhs)
-  {
-    return std::strcmp(lhs, rhs) == 0;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \cond FALSE
-namespace cen::detail {
-
-struct czstring_compare final
-{
-  auto operator()(const czstring lhs, const czstring rhs) const noexcept -> bool
-  {
-    return detail::czstring_eq(lhs, rhs);
-  }
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-
-// #include "static_bimap.hpp"
-#ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
-#define CENTURION_DETAIL_STATIC_BIMAP_HEADER
-
-#include <algorithm>  // find_if
-#include <array>      // array
-#include <utility>    // pair
-
-// #include "../centurion_cfg.hpp"
-
-// #include "../misc/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
-#include <exception>  // exception
-
-// #include "centurion_cfg.hpp"
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "centurion_cfg.hpp"
-
-// #include "not_null.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/// \addtogroup misc
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \headerfile exception.hpp
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept
-      : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"N/A"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/// \} End of group misc
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \class static_bimap
- *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
- *
- * \note This class is only meant to be used in constexpr contexts.
- *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
- *
- * \tparam Key the type of the keys, must provide an overloaded `operator==`.
- * \tparam Value the type of the values.
- * \tparam ValueCmp the predicate used to lookup values from keys.
- * \tparam size the amount of key-value pairs.
- *
- * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
- */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
-class static_bimap final
-{
-  using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
-
- public:
-  storage_type data;
-
-  constexpr auto find(const Key& key) const -> const Value&
-  {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          return pair.first == key;
-        });
-
-    if (it != data.end())
-    {
-      return it->second;
-    }
-    else
-    {
-      throw cen_error{"Failed to find element in static map!"};
-    }
-  }
-
-  constexpr auto key_from(const Value& value) const -> const Key&
-  {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          ValueCmp predicate;
-          return predicate(pair.second, value);
-        });
-
-    if (it != data.end())
-    {
-      return it->first;
-    }
-    else
-    {
-      throw cen_error{"Failed to find key in static map!"};
-    }
-  }
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
-
-template <typename Derived, typename Arg>
-class crtp_hint
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Arg>;
-  }
-
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return Derived::name();
-  }
-
-  [[nodiscard]] static auto value() noexcept -> std::optional<Arg>
-  {
-    return Derived::current_value();
-  }
-
-  [[nodiscard]] static auto to_string(Arg value) -> std::string
-  {
-    return std::to_string(value);
-  }
-};
-
-// A hint class that only accepts booleans
-template <typename Hint>
-class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, bool>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
-  {
-    return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
-  }
-
-  [[nodiscard]] static auto to_string(const bool value) -> std::string
-  {
-    return value ? "1" : "0";
-  }
-};
-
-// A hint class that only accepts strings
-template <typename Hint>
-class string_hint : public crtp_hint<string_hint<Hint>, czstring>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_convertible_v<T, czstring>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return value;
-    }
-  }
-
-  [[nodiscard]] static auto to_string(const czstring value) -> std::string
-  {
-    return value;
-  }
-};
-
-// A hint class that only accepts integers
-template <typename Hint>
-class int_hint : public crtp_hint<int_hint<Hint>, int>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, int>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return std::stoi(value);
-    }
-  }
-};
-
-// A hint class that only accepts unsigned integers
-template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, unsigned int>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept
-      -> std::optional<unsigned int>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return static_cast<unsigned int>(std::stoul(value));
-    }
-  }
-};
-
-// A hint class that only accepts floats
-template <typename Hint>
-class float_hint : public crtp_hint<float_hint<Hint>, float>
-{
- public:
-  template <typename T>
-  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, float>;
-  }
-
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
-  {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return std::stof(value);
-    }
-  }
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_HINTS_IMPL_HEADER
-
-// #include "log.hpp"
-#ifndef CENTURION_LOG_HEADER
-#define CENTURION_LOG_HEADER
-
-#include <SDL.h>
-
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
-
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/not_null.hpp"
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \addtogroup misc
-/// \{
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-/**
- * \namespace cen::log
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-namespace cen::log {
-
-/**
- * \enum priority
- *
- * \brief Mirrors the `SDL_LogPriority` enum.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-enum class priority
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum category
- *
- * \brief Mirrors the `SDL_LogCategory` enum.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-enum class category
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/**
- * \brief Logs a message with the specified priority and category.
- *
- * \details This method has no effect if the supplied string is null. Usage
- * of this method is quite bulky, so refer to the other logging methods for
- * casual logging.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param priority the priority that will be used.
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void msg(const priority priority,
-         const category category,
-         const not_null<czstring> fmt,
-         Args&&... args) noexcept
-{
-  assert(fmt);
-  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
-  const auto prio = static_cast<SDL_LogPriority>(priority);
-  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::info` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void info(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
-{
-  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::info` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void info(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::info(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::warn` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void warn(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
-{
-  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::warn` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void warn(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::warn(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::verbose` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void verbose(const category category,
-             const not_null<czstring> fmt,
-             Args&&... args) noexcept
-{
-  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::verbose` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::verbose(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::debug` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void debug(const category category,
-           const not_null<czstring> fmt,
-           Args&&... args) noexcept
-{
-  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::debug` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void debug(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::debug(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::critical` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void critical(const category category,
-              const not_null<czstring> fmt,
-              Args&&... args) noexcept
-{
-  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::critical` and `category::app` .
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void critical(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::critical(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::error` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void error(const category category, const czstring fmt, Args&&... args) noexcept
-{
-  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with the `priority::error` and `category::app`.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void error(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::error(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a string.
- *
- * \details This function is meant to be used for casual logging, where you
- * just want to log a string. The message will be logged with
- * `priority::info` and `category::app`.
- *
- * \param str the string that will be logged.
- *
- * \since 5.0.0
- */
-inline void put(const std::string& str) noexcept
-{
-  log::info("%s", str.c_str());
-}
-
-/**
- * \copydoc put(const std::string&)
- */
-inline void put(const not_null<czstring> str) noexcept
-{
-  log::info("%s", str);
-}
-
-/**
- * \brief Resets all of the logging priorities.
- *
- * \since 3.0.0
- */
-inline void reset_priorities() noexcept
-{
-  SDL_LogResetPriorities();
-}
-
-/**
- * \brief Sets the priority of all categories.
- *
- * \param prio the priority that will be used.
- *
- * \since 3.0.0
- */
-inline void set_priority(const priority prio) noexcept
-{
-  const auto p = static_cast<SDL_LogPriority>(prio);
-  SDL_LogSetAllPriority(p);
-
-  // Apparently not set by SDL
-  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
-}
-
-/**
- * \brief Sets the priority of the specified category.
- *
- * \param category the category that will have its priority changed.
- * \param prio the new priority value.
- *
- * \since 3.0.0
- */
-inline void set_priority(const category category, const priority prio) noexcept
-{
-  SDL_LogSetPriority(static_cast<int>(category),
-                     static_cast<SDL_LogPriority>(prio));
-}
-
-/**
- * \brief Returns the priority of the specified category.
- *
- * \param category the category to return the priority of.
- * \return the priority of the specified category.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto get_priority(const category category) noexcept
-    -> priority
-{
-  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
-}
-
-/**
- * \brief Returns the maximum size, i.e the maximum amount of characters that
- * a string can contain and successfully be logged without being truncated.
- *
- * \note Strings longer that this value will be truncated.
- *
- * \return the maximum amount of characters that a loggable string can
- * contain.
- *
- * \see `SDL_MAX_LOG_MESSAGE`
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto max_message_size() noexcept -> int
-{
-  return SDL_MAX_LOG_MESSAGE;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values are the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(priority, SDL_LogPriority)
- */
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values aren't the
- * same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(priority, SDL_LogPriority)
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(category, SDL_LogCategory)
- */
-[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(category, SDL_LogCategory)
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-}  // namespace cen::log
-
-#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
-
-#ifdef NDEBUG
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...)
-
-#else
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
-
-#endif  // NDEBUG
-
-#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
-
-/**
- * \def CENTURION_LOG_INFO
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_WARN
- *
- * \brief A debug-only macro that expands to `cen::log::warn`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_VERBOSE
- *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_DEBUG
- *
- * \brief A debug-only macro that expands to `cen::log::debug`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_CRITICAL
- *
- * \brief A debug-only macro that expands to `cen::log::critical`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_ERROR
- *
- * \brief A debug-only macro that expands to `cen::log::error`.
- *
- * \since 5.0.0
- */
-
-/// \}
-
-#endif  // CENTURION_LOG_HEADER
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/**
- * \namespace cen::hint
- *
- * \ingroup configuration
- *
- * \brief Contains all hint types.
- *
- * \since 4.1.0
- */
-namespace hint {
-
-/// \addtogroup configuration
-/// \{
-
-struct render_driver;
-struct audio_resampling_mode;
-struct scale_quality;
-struct framebuffer_acceleration;
-struct audio_category;
-struct wave_riff_chunk_size;
-struct wave_truncation;
-struct wave_fact_chunk;
-struct logical_size_mode;
-
-namespace qtwayland {
-struct content_orientation;
-}
-
-namespace windows {
-struct d3d_compiler;
-}
-
-/// \} End of group configuration
-
-/// \cond FALSE
-
-template <class Hint>
-struct enum_hint_traits;
-
-template <>
-struct enum_hint_traits<render_driver> final
-{
-  enum class value
-  {
-    direct3d,
-    opengl,
-    opengles,
-    opengles2,
-    metal,
-    software
-  };
-};
-
-template <>
-struct enum_hint_traits<audio_resampling_mode> final
-{
-  enum class value
-  {
-    normal = 0,
-    fast = 1,
-    medium = 2,
-    best = 3
-  };
-};
-
-template <>
-struct enum_hint_traits<scale_quality> final
-{
-  enum class value
-  {
-    nearest = 0,
-    linear = 1,
-    best = 2
-  };
-};
-
-template <>
-struct enum_hint_traits<framebuffer_acceleration> final
-{
-  enum class value
-  {
-    off,
-    on,
-    direct3d,
-    opengl,
-    opengles,
-    opengles2,
-    metal,
-    software
-  };
-};
-
-template <>
-struct enum_hint_traits<audio_category> final
-{
-  enum class value
-  {
-    ambient,
-    playback
-  };
-};
-
-template <>
-struct enum_hint_traits<wave_riff_chunk_size> final
-{
-  enum class value
-  {
-    force,
-    ignore_zero,
-    ignore,
-    maximum
-  };
-};
-
-template <>
-struct enum_hint_traits<wave_truncation> final
-{
-  enum class value
-  {
-    very_strict,
-    strict,
-    drop_frame,
-    drop_block
-  };
-};
-
-template <>
-struct enum_hint_traits<wave_fact_chunk> final
-{
-  enum class value
-  {
-    truncate,
-    strict,
-    ignore_zero,
-    ignore
-  };
-};
-
-template <>
-struct enum_hint_traits<logical_size_mode> final
-{
-  enum class value
-  {
-    letterbox,
-    overscan
-  };
-};
-
-template <>
-struct enum_hint_traits<qtwayland::content_orientation> final
-{
-  enum class value
-  {
-    primary,
-    portrait,
-    landscape,
-    inverted_portrait,
-    inverted_landscape
-  };
-};
-
-template <>
-struct enum_hint_traits<windows::d3d_compiler> final
-{
-  enum class value
-  {
-    v46,
-    v43,
-    none
-  };
-};
-
-/// \endcond
-
-template <class Derived>
-class enum_hint
-{
- public:
-  using value = typename enum_hint_traits<Derived>::value;
-
-  template <typename T>
-  constexpr static auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, value>;
-  }
-
-  static auto current_value() noexcept -> std::optional<value>
-  {
-    czstring hint = SDL_GetHint(Derived::name());
-    if (!hint)
-    {
-      return std::nullopt;
-    }
-    return Derived::map.key_from(hint);
-  }
-
-  static auto to_string(const value value) -> std::string
-  {
-    return Derived::map.find(value);
-  }
-};
-
-/// \addtogroup configuration
-/// \{
-
-/**
- * \class render_driver
- *
- * \brief Used to specify the render driver that will be used.
- *
- * \headerfile hints.hpp
- */
-struct render_driver final : enum_hint<render_driver>
-{
-  static inline constexpr detail::string_map<value, 6> map{
-      std::make_pair(value::direct3d, "direct3d"),
-      std::make_pair(value::opengl, "opengl"),
-      std::make_pair(value::opengles, "opengles"),
-      std::make_pair(value::opengles2, "opengles2"),
-      std::make_pair(value::metal, "metal"),
-      std::make_pair(value::software, "software")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_DRIVER;
-  }
-};
-
-struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
-{
-  static inline constexpr detail::string_map<value, 4> map{
-      std::make_pair(value::normal, "default"),
-      std::make_pair(value::fast, "fast"),
-      std::make_pair(value::medium, "medium"),
-      std::make_pair(value::best, "best")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_AUDIO_RESAMPLING_MODE;
-  }
-};
-
-struct scale_quality final : enum_hint<scale_quality>
-{
-  static inline constexpr detail::string_map<value, 3> map{
-      std::make_pair(value::nearest, "nearest"),
-      std::make_pair(value::linear, "linear"),
-      std::make_pair(value::best, "best")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_SCALE_QUALITY;
-  }
-};
-
-struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
-{
-  static inline constexpr detail::string_map<value, 8> map{
-      std::make_pair(value::off, "0"),
-      std::make_pair(value::on, "1"),
-      std::make_pair(value::direct3d, "direct3d"),
-      std::make_pair(value::opengl, "opengl"),
-      std::make_pair(value::opengles, "opengles"),
-      std::make_pair(value::opengles2, "opengles2"),
-      std::make_pair(value::metal, "metal"),
-      std::make_pair(value::software, "software")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_FRAMEBUFFER_ACCELERATION;
-  }
-};
-
-struct audio_category final : enum_hint<audio_category>
-{
-  static inline constexpr detail::string_map<value, 2> map{
-      std::make_pair(value::ambient, "ambient"),
-      std::make_pair(value::playback, "playback")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_AUDIO_CATEGORY;
-  }
-};
-
-struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
-{
-  static inline constexpr detail::string_map<value, 4> map{
-      std::make_pair(value::force, "force"),
-      std::make_pair(value::ignore, "ignore"),
-      std::make_pair(value::ignore_zero, "ignorezero"),
-      std::make_pair(value::maximum, "maximum")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
-  }
-};
-
-struct wave_truncation final : enum_hint<wave_truncation>
-{
-  static inline constexpr detail::string_map<value, 4> map{
-      std::make_pair(value::drop_block, "dropblock"),
-      std::make_pair(value::drop_frame, "dropframe"),
-      std::make_pair(value::strict, "strict"),
-      std::make_pair(value::very_strict, "verystrict")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WAVE_TRUNCATION;
-  }
-};
-
-struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
-{
-  static inline constexpr detail::string_map<value, 4> map{
-      std::make_pair(value::strict, "strict"),
-      std::make_pair(value::ignore_zero, "ignorezero"),
-      std::make_pair(value::ignore, "ignore"),
-      std::make_pair(value::truncate, "truncate")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WAVE_FACT_CHUNK;
-  }
-};
-
-struct logical_size_mode final : enum_hint<logical_size_mode>
-{
-  static inline constexpr detail::string_map<value, 2> map{
-      std::make_pair(value::letterbox, "letterbox"),
-      std::make_pair(value::overscan, "overscan")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
-  }
-};
-
-struct accelerometer_as_joystick final
-    : detail::bool_hint<accelerometer_as_joystick>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
-  }
-};
-
-struct allow_top_most final : detail::bool_hint<allow_top_most>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ALLOW_TOPMOST;
-  }
-};
-
-struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
-  }
-};
-
-struct double_buffer final : detail::bool_hint<double_buffer>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_DOUBLE_BUFFER;
-  }
-};
-
-struct enable_steam_controllers final
-    : detail::bool_hint<enable_steam_controllers>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
-  }
-};
-
-struct grab_keyboard final : detail::bool_hint<grab_keyboard>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GRAB_KEYBOARD;
-  }
-};
-
-struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_IDLE_TIMER_DISABLED;
-  }
-};
-
-struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_IME_INTERNAL_EDITING;
-  }
-};
-
-struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_NO_SIGNAL_HANDLERS;
-  }
-};
-
-struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_OPENGL_ES_DRIVER;
-  }
-};
-
-struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_OPENGL_SHADERS;
-  }
-};
-
-struct vsync final : detail::bool_hint<vsync>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_VSYNC;
-  }
-};
-
-struct allow_screensaver final : detail::bool_hint<allow_screensaver>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct video_external_context final : detail::bool_hint<video_external_context>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
-  }
-};
-
-struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
-  }
-};
-
-struct window_frame_usable_while_cursor_hidden final
-    : detail::bool_hint<window_frame_usable_while_cursor_hidden>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
-  }
-};
-
-struct render_batching final : detail::bool_hint<render_batching>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_BATCHING;
-  }
-};
-
-struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RETURN_KEY_HIDES_IME;
-  }
-};
-
-struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_TOUCH_MOUSE_EVENTS;
-  }
-};
-
-struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_TOUCH_EVENTS;
-  }
-};
-
-struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_DISPLAY_USABLE_BOUNDS;
-  }
-};
-
-#endif  // #if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct orientations final : detail::string_hint<orientations>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ORIENTATIONS;
-  }
-};
-
-struct window_share_pixel_format final
-    : detail::string_hint<window_share_pixel_format>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
-  }
-};
-
-struct event_logging final : detail::int_hint<event_logging>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_EVENT_LOGGING;
-  }
-};
-
-struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_THREAD_STACK_SIZE;
-  }
-};
-
-struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_TIMER_RESOLUTION;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct preferred_locales final : detail::string_hint<preferred_locales>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_PREFERRED_LOCALES;
-  }
-};
-
-struct thread_priority_policy final
-    : detail::string_hint<thread_priority_policy>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    // This hint could be enum-based, but it isn't clear whether or not there
-    // may be implementation specific identifiers other than those of the listed
-    // pthread identifiers. So, we let this be a string-based hint.
-    return SDL_HINT_THREAD_PRIORITY_POLICY;
-  }
-};
-
-struct treat_time_critical_as_real_time final
-    : detail::bool_hint<treat_time_critical_as_real_time>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL;
-  }
-};
-
-struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_AUDIO_DEVICE_APP_NAME;
-  }
-};
-
-struct audio_device_stream_name final
-    : detail::string_hint<audio_device_stream_name>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_AUDIO_DEVICE_STREAM_NAME;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-namespace raspberrypi {
-
-struct video_layer final : detail::int_hint<video_layer>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RPI_VIDEO_LAYER;
-  }
-};
-
-}  // namespace raspberrypi
-
-namespace appletv {
-
-struct controller_ui_events final : detail::bool_hint<controller_ui_events>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
-  }
-};
-
-struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
-  }
-};
-
-}  // namespace appletv
-
-namespace xinput {
-
-struct is_enabled final : detail::bool_hint<is_enabled>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_XINPUT_ENABLED;
-  }
-};
-
-struct use_old_joystick_mapping final
-    : detail::bool_hint<use_old_joystick_mapping>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
-  }
-};
-
-}  // namespace xinput
-
-namespace emscripten {
-
-struct keyboard_element final : detail::string_hint<keyboard_element>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct asyncify final : detail::bool_hint<asyncify>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_EMSCRIPTEN_ASYNCIFY;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-}  // namespace emscripten
-
-namespace qtwayland {
-
-struct content_orientation final : enum_hint<content_orientation>
-{
-  static inline constexpr detail::string_map<value, 5> map{
-      std::make_pair(value::primary, "primary"),
-      std::make_pair(value::portrait, "portrait"),
-      std::make_pair(value::landscape, "landscape"),
-      std::make_pair(value::inverted_portrait, "inverted-portrait"),
-      std::make_pair(value::inverted_landscape, "inverted-landscape")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
-  }
-};
-
-struct window_flags final : detail::string_hint<window_flags>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
-  }
-};
-
-}  // namespace qtwayland
-
-namespace mouse {
-
-struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
-  }
-};
-
-struct relative_mode_warp final : detail::bool_hint<relative_mode_warp>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
-  }
-};
-
-struct double_click_time final : detail::int_hint<double_click_time>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
-  }
-};
-
-struct double_click_radius final : detail::int_hint<double_click_radius>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
-  }
-};
-
-struct normal_speed_scale final : detail::float_hint<normal_speed_scale>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
-  }
-};
-
-struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct relative_scaling final : detail::bool_hint<relative_scaling>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_RELATIVE_SCALING;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-}  // namespace mouse
-
-namespace d3d {
-
-struct v11_debug final : detail::bool_hint<v11_debug>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
-  }
-};
-
-struct thread_safe final : detail::bool_hint<thread_safe>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
-  }
-};
-
-}  // namespace d3d
-
-namespace gamecontroller {
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct use_button_labels final : detail::bool_hint<use_button_labels>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
-  }
-};
-
-struct type final : detail::string_hint<type>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERTYPE;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct config final : detail::string_hint<config>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERCONFIG;
-  }
-};
-
-struct config_file final : detail::string_hint<config_file>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
-  }
-};
-
-struct ignore_devices final : detail::string_hint<ignore_devices>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
-  }
-};
-
-struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
-  }
-};
-
-}  // namespace gamecontroller
-
-namespace winrt {
-
-struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
-  }
-};
-
-struct privacy_policy_url final : detail::string_hint<privacy_policy_url>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
-  }
-};
-
-struct handle_back_button final : detail::bool_hint<handle_back_button>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
-  }
-};
-
-}  // namespace winrt
-
-namespace windows {
-
-struct d3d_compiler final : enum_hint<d3d_compiler>
-{
-  static inline constexpr detail::string_map<value, 3> map{
-      std::make_pair(value::v46, "d3dcompiler_46.dll"),
-      std::make_pair(value::v43, "d3dcompiler_43.dll"),
-      std::make_pair(value::none, "none")};
-
-  constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
-  }
-};
-
-struct no_thread_naming final : detail::bool_hint<no_thread_naming>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
-  }
-};
-
-struct enable_message_loop final : detail::bool_hint<enable_message_loop>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
-  }
-};
-
-struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
-  }
-};
-
-struct int_resource_icon final : detail::string_hint<int_resource_icon>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
-  }
-};
-
-struct int_resource_icon_small final
-    : detail::string_hint<int_resource_icon_small>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
-  }
-};
-
-}  // namespace windows
-
-namespace mac {
-
-struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
-  }
-};
-
-struct background_app final : detail::bool_hint<background_app>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MAC_BACKGROUND_APP;
-  }
-};
-
-struct ctrl_click_emulate_right_click final
-    : detail::bool_hint<ctrl_click_emulate_right_click>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
-  }
-};
-
-}  // namespace mac
-
-namespace android {
-
-struct block_on_pause final : detail::bool_hint<block_on_pause>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
-  }
-};
-
-struct trap_back_button final : detail::bool_hint<trap_back_button>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
-  }
-};
-
-struct apk_expansion_main_file_version final
-    : detail::int_hint<apk_expansion_main_file_version>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
-  }
-};
-
-struct apk_expansion_patch_file_version final
-    : detail::int_hint<apk_expansion_patch_file_version>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct pause_background_audio final : detail::bool_hint<pause_background_audio>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-}  // namespace android
-
-namespace joystick {
-
-struct allow_background_events final
-    : detail::bool_hint<allow_background_events>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
-  }
-};
-
-struct use_hidapi final : detail::bool_hint<use_hidapi>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI;
-  }
-};
-
-struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
-  }
-};
-
-struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct use_hidapi_ps5 final : detail::bool_hint<use_hidapi_ps5>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_PS5;
-  }
-};
-
-struct use_raw_input final : detail::bool_hint<use_raw_input>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_RAWINPUT;
-  }
-};
-
-struct hidapi_correlate_xinput final
-    : detail::bool_hint<hidapi_correlate_xinput>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
-  }
-};
-
-struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_LINUX_JOYSTICK_DEADZONES;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
-  }
-};
-
-struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
-  }
-};
-
-struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-}  // namespace joystick
-
-namespace x11 {
-
-struct net_wm_ping final : detail::bool_hint<net_wm_ping>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_NET_WM_PING;
-  }
-};
-
-struct net_wm_bypass_compositor final
-    : detail::bool_hint<net_wm_bypass_compositor>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct force_egl final : detail::bool_hint<force_egl>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_FORCE_EGL;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct xinerama final : detail::bool_hint<xinerama>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XINERAMA;
-  }
-};
-
-struct xrandr final : detail::bool_hint<xrandr>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XRANDR;
-  }
-};
-
-struct xvidmode final : detail::bool_hint<xvidmode>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XVIDMODE;
-  }
-};
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-struct window_visual_id final : detail::string_hint<window_visual_id>
-{
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
-  }
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-}  // namespace x11
-
-}  // namespace hint
-
-/**
- * \enum hint_priority
- *
- * \brief Provides three different priorities that can be specified when
- * setting the value of a hint.
- *
- * \since 4.1.0
- *
- * \see `SDL_HintPriority`
- *
- * \headerfile hints.hpp
- */
-enum class hint_priority
-{
-  low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
-  normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
-  override = SDL_HINT_OVERRIDE  ///< The highest priority.
-};
-
-/**
- * \brief Sets the value of the specified hint.
- *
- * \details This method will only accept values that are related to the
- * specified hint, supplying the wrong kind of value causes a compile-time
- * error. See the related hint class for more details about the associated
- * value type. However, whilst this method is type-safe, it doesn't ensure
- * that *correct* values are specified for the hints.
- *
- * \tparam Hint the type of the hint that will be modified.
- * \tparam priority the priority that will be used, defaults to `normal`.
- * \tparam Value the type of the hint value.
- *
- * \param value the new value that will be set for the specified hint.
- *
- * \return `true` if the hint was successfully set; `false` otherwise.
- *
- * \since 4.1.0
- */
-template <typename Hint,
-          hint_priority priority = hint_priority::normal,
-          typename Value,
-          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-auto set_hint(const Value& value) -> bool
-{
-  return static_cast<bool>(
-      SDL_SetHintWithPriority(Hint::name(),
-                              Hint::to_string(value).c_str(),
-                              static_cast<SDL_HintPriority>(priority)));
-}
-
-/**
- * \brief Returns the current value of the specified hint.
- *
- * \note The returned value is a `std::optional` of the hint value type. Many
- * hints aren't actually set by default.
- *
- * \tparam Hint the type of the Hint to obtain the value of.
- *
- * \return the current value of the specified hint; `std::nullopt` if there is
- * no value set for the hint.
- *
- * \since 4.1.0
- */
-template <typename Hint>
-[[nodiscard]] auto get_hint() noexcept
-{
-  return Hint::current_value();
-}
-
-/**
- * \class hint_callback
- *
- * \brief Represents a handle for dealing with hint callbacks.
- *
- * \details This class provides methods for easily connecting and disconnecting
- * a callback from receiving updates.
- *
- * \tparam Hint the type of the associated hint. Should be one of the hint
- * types defined in the `hints.hpp` header.
- *
- * \tparam UserData the type of the user data, defaults to `void`.
- *
- * \since 4.1.0
- *
- * \headerfile hints.hpp
- */
-template <typename Hint, typename UserData = void>
-class hint_callback final
-{
- public:
-  /**
-   * \brief Creates a `hint_callback`.
-   *
-   * \param callback the function object that will be called whenever the
-   * associated hint is updated. The signature should be `void(void*,
-   * czstring, czstring, czstring)`.
-   * \param userData a pointer to some user data. Defaults to `nullptr`.
-   *
-   * \throws cen_error if the supplied function pointer is null.
-   *
-   * \since 4.1.0
-   */
-  explicit hint_callback(SDL_HintCallback callback,
-                         UserData* userData = nullptr)
-      : m_callback{callback}
-      , m_userData{userData}
-  {
-    if (!callback)
-    {
-      throw cen_error{"Failed to create hint callback"};
-    }
-  }
-
-  /**
-   * \brief Registers the callback to be invoked whenever the associated hint is
-   * updated.
-   *
-   * \see `SDL_AddHintCallback`
-   *
-   * \since 4.1.0
-   */
-  void connect() noexcept
-  {
-    SDL_AddHintCallback(Hint::name(),
-                        m_callback,
-                        static_cast<void*>(m_userData));
-  }
-
-  /**
-   * \brief Unregisters the callback from being updated whenever the associated
-   * hint is updated.
-   *
-   * \see `SDL_DelHintCallback`
-   *
-   * \since 4.1.0
-   */
-  void disconnect() noexcept
-  {
-    SDL_DelHintCallback(Hint::name(),
-                        m_callback,
-                        static_cast<void*>(m_userData));
-  }
-
-  /**
-   * \brief Returns a pointer to the function that is invoked when the
-   * associated hint is updated.
-   *
-   * \return a pointer to the function that is invoked when the associated
-   * hint is updated.
-   *
-   * \since 4.1.0
-   */
-  [[nodiscard]] auto get() noexcept -> SDL_HintCallback
-  {
-    return m_callback;
-  }
-
-  /**
-   * \brief Returns a pointer to the user data associated with the callback.
-   *
-   * \return a pointer to the user data associated with the callback, can be
-   * null.
-   *
-   * \since 4.1.0
-   */
-  [[nodiscard]] auto user_data() const noexcept -> UserData*
-  {
-    return m_userData;
-  }
-
- private:
-  SDL_HintCallback m_callback;
-  UserData* m_userData;
-};
-
-/**
- * \brief Adds a callback to observe changes of the value of the specified hint.
- *
- * \details A callback handle object is returned, which can be used to easily
- * disconnect the callback later. This function can be used with any function
- * object that is stateless, such as traditional function pointers and lambdas.
- * The simplest way to add a callback is with a lambda and no explicit user
- * data.
- *
- * \note The callback will be immediately invoked with the current value of
- * the hint.
- *
- * \note In a future version of centurion (that supports C++20), the
- * signature of the function object will be dependent on the `UserData` type.
- * Unfortunately, this isn't really doable with C++17. Since it requires
- * default-constructible stateless lambdas.
- *
- * \tparam Hint should one of the many hint types defined in this header.
- * However, all it requires is that the type provides a static method that
- * returns a `czstring`.
- * \tparam UserData the type of the user data, defaults to void.
- *
- * \param fun the function object that will be invoked when the hint is
- * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
- * \param userData the user data to associate with the callback, defaults to
- * `nullptr`.
- *
- * \return a handle to the added callback.
- *
- * \since 4.1.0
- */
-template <typename Hint, typename UserData = void>
-auto add_hint_callback(SDL_HintCallback fun,
-                       UserData* userData = nullptr) noexcept
-    -> hint_callback<Hint, UserData>
-{
-  hint_callback<Hint, UserData> hintCallback{fun, userData};
-  hintCallback.connect();
-  return hintCallback;
-}
-
-/**
- * \brief Clears all stored hints.
- *
- * \see `SDL_ClearHints`
- *
- * \since 4.1.0
- */
-inline void clear_hints() noexcept
-{
-  SDL_ClearHints();
-}
-
-/// \} End of group configuration
-
-}  // namespace cen
-
-#undef CENTURION_BOOL_HINT
-#endif  // CENTURION_HINTS_HEADER
-
-// #include "centurion/library.hpp"
-/**
- * \defgroup core Core
- * \brief Contains entities considered to be fundamental for the library.
- */
-
-/**
- * \defgroup configuration Configuration
- * \brief Contains the API related to hints/configuration variables.
- */
-
-/**
- * \defgroup event Events
- * \brief Contains entities related to events.
- */
-
-/**
- * \defgroup thread Threads
- * \brief Provides threading utilities for dealing with threads, mutexes, locks,
- * etc.
- */
-
-/**
- * \defgroup input Input
- * \brief Contains components related to input from mice, keyboards,
- * controllers, etc.
- */
-
-/**
- * \defgroup graphics Graphics
- * \brief Contains components related to window-management, rendering, fonts,
- * etc.
- */
-
-/**
- * \defgroup system System
- * \brief Contains various utilities related to system resources.
- */
-
-/**
- * \defgroup compiler Compiler
- * \brief Provides `constexpr` utilities for querying the current compiler.
- * \note There is no guarantee that the compiler checks are mutually exclusive.
- */
-
-/**
- * \defgroup geometry Geometry
- * \brief Contains basic geometric components, used throughout the library.
- */
-
-/**
- * \defgroup audio Audio
- * \brief Contains the audio API, for playing as sound effects and music.
- */
-
-/**
- * \defgroup misc Misc
- * \brief Contains miscellaneous components.
- */
-
-#ifndef CENTURION_LIBRARY_HEADER
-#define CENTURION_LIBRARY_HEADER
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
-#include <optional>  // optional
-
-// #include "../misc/exception.hpp"
 
 // #include "../misc/integers.hpp"
 
+// #include "common_event.hpp"
+
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * \namespace cen
- *
- * \brief The top-level namespace that all components of the library reside in.
- */
 namespace cen {
 
-/// \addtogroup core
+/// \addtogroup event
 /// \{
 
 /**
- * \struct config
+ * \class joy_axis_event
  *
- * \brief Used to specify how the library is initialized.
+ * \brief Represents an event that occurs whenever a user moves an axis on a
+ * joystick.
  *
- * \details All fields are initialized to the default values used by the
- * library.
+ * \see `SDL_JoyAxisEvent`
  *
  * \since 4.0.0
  *
- * \var config::initCore
- * Indicates whether or not the SDL2 core is initialized.
- *
- * \var config::initImage
- * Indicates whether or not SDL2_image is initialized.
- *
- * \var config::initMixer
- * Indicates whether or not SDL2_mixer is initialized.
- *
- * \var config::initTTF
- * Indicates whether or not SDL2_ttf is initialized.
- *
- * \var config::coreFlags
- * Flags passed on to `SDL_Init()`, if \ref config.initCore is `true`.
- *
- * \var config::imageFlags
- * Flags passed on to `IMG_Init()`, if \ref config.initImage is
- * `true`.
- *
- * \var config::mixerFlags
- * Flags passed on to `Mix_Init()`, if \ref config.initMixer is
- * `true`.
- *
- * \var config::mixerFreq
- * The frequency used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
- *
- * \var config::mixerFormat
- * The format used by SDL2_mixer, if \ref config.initMixer is `true`.
- *
- * \var config::mixerChannels
- * The amount of channels used by SDL2_mixer, if \ref config.initMixer
- * is `true`.
- *
- * \var config::mixerChunkSize
- * The chunk size used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
- *
- * \headerfile centurion.hpp
+ * \headerfile joy_axis_event.hpp
  */
-struct config final
-{
-  bool initCore{true};
-  bool initImage{true};
-  bool initMixer{true};
-  bool initTTF{true};
-
-  u32 coreFlags{SDL_INIT_EVERYTHING};
-
-  int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
-
-  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
-                 MIX_INIT_MOD | MIX_INIT_OPUS};
-
-  int mixerFreq{MIX_DEFAULT_FREQUENCY};
-  u16 mixerFormat{MIX_DEFAULT_FORMAT};
-  int mixerChannels{MIX_DEFAULT_CHANNELS};
-  int mixerChunkSize{4096};
-};
-
-/**
- * \class library
- *
- * \brief Used to initialize and de-initialize the library.
- *
- * \note The signature of the main-method must be `ìnt(int, char**)` when
- * using the Centurion library!
- *
- * \since 3.0.0
- *
- * \headerfile centurion.hpp
- */
-class library final
+class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 {
  public:
   /**
-   * \brief Initializes the library.
-   *
-   * \note Make sure to have the `library` instance as a local variable that
-   * will outlive the duration of your main program. It's not sufficient to just
-   * call the constructor but not store the result as a variable.
-   *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
-   *
-   * \throws sdl_error if the core SDL2 library can't be initialized.
-   * \throws img_error if the SDL2_image library can't be initialized.
-   * \throws ttf_error if the SDL2_ttf library can't be initialized.
-   * \throws mix_error if the SDL2_mixer library can't be initialized.
-   *
-   * \since 3.0.0
-   */
-  library()
-  {
-    init();
-  }
-
-  /**
-   * \brief Initializes the library according to the supplied configuration.
-   *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
-   *
-   * \param cfg the configuration spec, determines what gets initialized.
-   *
-   * \throws sdl_error if the core SDL2 library can't be initialized.
-   * \throws img_error if the SDL2_image library can't be initialized.
-   * \throws ttf_error if the SDL2_ttf library can't be initialized.
-   * \throws mix_error if the SDL2_mixer library can't be initialized.
+   * \brief Creates a joy axis event.
    *
    * \since 4.0.0
    */
-  explicit library(const config& cfg) : m_cfg{cfg}
+  joy_axis_event() noexcept : common_event{event_type::joystick_axis_motion}
+  {}
+
+  /**
+   * \brief Creates a joy axis event based on the supplied SDL joy axis event.
+   *
+   * \param event the SDL joy axis event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param which the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const SDL_JoystickID which) noexcept
   {
-    init();
+    m_event.which = which;
   }
 
-  library(const library&) = delete;
-
-  library(library&&) = delete;
-
-  auto operator=(const library&) -> library& = delete;
-
-  auto operator=(library&&) -> library& = delete;
-
- private:
-  class sdl final
+  /**
+   * \brief Sets the joystick axis index associated with the event.
+   *
+   * \param axis the joystick axis index associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_axis(const u8 axis) noexcept
   {
-   public:
-    explicit sdl(const u32 flags)
-    {
-      const auto result = SDL_Init(flags);
-      if (result < 0)
-      {
-        throw sdl_error{};
-      }
-    }
+    m_event.axis = axis;
+  }
 
-    ~sdl() noexcept
-    {
-      SDL_Quit();
-    }
-  };
-
-  class sdl_ttf final
+  /**
+   * \brief Sets the joystick axis value associated with the event.
+   *
+   * \param value the joystick axis value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_value(const i16 value) noexcept
   {
-   public:
-    explicit sdl_ttf()
-    {
-      const auto result = TTF_Init();
-      if (result == -1)
-      {
-        throw ttf_error{};
-      }
-    }
+    m_event.value = value;
+  }
 
-    ~sdl_ttf() noexcept
-    {
-      TTF_Quit();
-    }
-  };
-
-  class sdl_mixer final
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
   {
-   public:
-    sdl_mixer(const int flags,
-              const int freq,
-              const u16 format,
-              const int nChannels,
-              const int chunkSize)
-    {
-      if (!Mix_Init(flags))
-      {
-        throw mix_error{};
-      }
+    return m_event.which;
+  }
 
-      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
-      {
-        throw mix_error{};
-      }
-    }
-
-    ~sdl_mixer() noexcept
-    {
-      Mix_CloseAudio();
-      Mix_Quit();
-    }
-  };
-
-  class sdl_image final
+  /**
+   * \brief Returns the joystick axis index associated with the event.
+   *
+   * \return the joystick axis index associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto axis() const noexcept -> u8
   {
-   public:
-    explicit sdl_image(const int flags)
-    {
-      if (!IMG_Init(flags))
-      {
-        throw img_error{};
-      }
-    }
+    return m_event.axis;
+  }
 
-    ~sdl_image() noexcept
-    {
-      IMG_Quit();
-    }
-  };
-
-  config m_cfg;
-  std::optional<sdl> m_sdl;
-  std::optional<sdl_image> m_img;
-  std::optional<sdl_ttf> m_ttf;
-  std::optional<sdl_mixer> m_mixer;
-
-  void init()
+  /**
+   * \brief Returns the joystick axis value associated with the event.
+   *
+   * \return the joystick axis value associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto value() const noexcept -> i16
   {
-    if (m_cfg.initCore)
-    {
-      m_sdl.emplace(m_cfg.coreFlags);
-    }
-
-    if (m_cfg.initImage)
-    {
-      m_img.emplace(m_cfg.imageFlags);
-    }
-
-    if (m_cfg.initTTF)
-    {
-      m_ttf.emplace();
-    }
-
-    if (m_cfg.initMixer)
-    {
-      m_mixer.emplace(m_cfg.mixerFlags,
-                      m_cfg.mixerFreq,
-                      m_cfg.mixerFormat,
-                      m_cfg.mixerChannels,
-                      m_cfg.mixerChunkSize);
-    }
+    return m_event.value;
   }
 };
 
-/// \name SDL version queries
-/// \{
-
-/**
- * \brief Returns the version of SDL2 that is linked against the program.
- *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
- *
- * \return the linked version of SDL2.
- *
- * \since 5.2.0
- */
-[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event)
+    -> SDL_Event
 {
-  SDL_version version;
-  SDL_GetVersion(&version);
-  return version;
+  SDL_Event e;
+  e.jaxis = event.get();
+  return e;
 }
 
-/**
- * \brief Returns the compile-time version of SDL2 that is being used.
- *
- * \return the compile-time version of SDL2 that is being used.
- *
- * \since 5.1.0
- */
-[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
-{
-  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
-}
-
-/**
- * \brief Returns the compile-time version of SDL2_image that is being used.
- *
- * \return the compile-time version of SDL2_image that is being used.
- *
- * \since 5.1.0
- */
-[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
-{
-  return {SDL_IMAGE_MAJOR_VERSION,
-          SDL_IMAGE_MINOR_VERSION,
-          SDL_IMAGE_PATCHLEVEL};
-}
-
-/**
- * \brief Returns the compile-time version of SDL2_mixer that is being used.
- *
- * \return the compile-time version of SDL2_mixer that is being used.
- *
- * \since 5.1.0
- */
-[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
-{
-  return {SDL_MIXER_MAJOR_VERSION,
-          SDL_MIXER_MINOR_VERSION,
-          SDL_MIXER_PATCHLEVEL};
-}
-
-/**
- * \brief Returns the compile-time version of SDL2_ttf that is being used.
- *
- * \return the compile-time version of SDL2_ttf that is being used.
- *
- * \since 5.1.0
- */
-[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
-{
-  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
-}
-
-/// \} End of SDL version queries
-/// \} End of group core
+/// \} End of group event
 
 }  // namespace cen
 
-#endif  // CENTURION_LIBRARY_HEADER
-
-// #include "centurion/log.hpp"
-#ifndef CENTURION_LOG_HEADER
-#define CENTURION_LOG_HEADER
-
-#include <SDL.h>
-
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
-
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/not_null.hpp"
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \addtogroup misc
-/// \{
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-/**
- * \namespace cen::log
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-namespace cen::log {
-
-/**
- * \enum priority
- *
- * \brief Mirrors the `SDL_LogPriority` enum.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-enum class priority
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum category
- *
- * \brief Mirrors the `SDL_LogCategory` enum.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-enum class category
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/**
- * \brief Logs a message with the specified priority and category.
- *
- * \details This method has no effect if the supplied string is null. Usage
- * of this method is quite bulky, so refer to the other logging methods for
- * casual logging.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param priority the priority that will be used.
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void msg(const priority priority,
-         const category category,
-         const not_null<czstring> fmt,
-         Args&&... args) noexcept
-{
-  assert(fmt);
-  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
-  const auto prio = static_cast<SDL_LogPriority>(priority);
-  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::info` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void info(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
-{
-  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::info` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void info(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::info(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::warn` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void warn(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
-{
-  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::warn` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void warn(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::warn(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::verbose` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void verbose(const category category,
-             const not_null<czstring> fmt,
-             Args&&... args) noexcept
-{
-  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::verbose` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::verbose(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::debug` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void debug(const category category,
-           const not_null<czstring> fmt,
-           Args&&... args) noexcept
-{
-  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::debug` and `category::app`.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void debug(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::debug(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::critical` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void critical(const category category,
-              const not_null<czstring> fmt,
-              Args&&... args) noexcept
-{
-  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::critical` and `category::app` .
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void critical(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::critical(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with `priority::error` and the specified category.
- *
- * \details This method has no effect if the supplied string is null.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param category the category that will be used.
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void error(const category category, const czstring fmt, Args&&... args) noexcept
-{
-  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a message with the `priority::error` and `category::app`.
- *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
- *
- * \param fmt the formatted string that will be logged, cannot be null.
- * \param args the arguments that will be used by the formatted string.
- *
- * \since 4.0.0
- */
-template <typename... Args>
-void error(const not_null<czstring> fmt, Args&&... args) noexcept
-{
-  log::error(category::app, fmt, std::forward<Args>(args)...);
-}
-
-/**
- * \brief Logs a string.
- *
- * \details This function is meant to be used for casual logging, where you
- * just want to log a string. The message will be logged with
- * `priority::info` and `category::app`.
- *
- * \param str the string that will be logged.
- *
- * \since 5.0.0
- */
-inline void put(const std::string& str) noexcept
-{
-  log::info("%s", str.c_str());
-}
-
-/**
- * \copydoc put(const std::string&)
- */
-inline void put(const not_null<czstring> str) noexcept
-{
-  log::info("%s", str);
-}
-
-/**
- * \brief Resets all of the logging priorities.
- *
- * \since 3.0.0
- */
-inline void reset_priorities() noexcept
-{
-  SDL_LogResetPriorities();
-}
-
-/**
- * \brief Sets the priority of all categories.
- *
- * \param prio the priority that will be used.
- *
- * \since 3.0.0
- */
-inline void set_priority(const priority prio) noexcept
-{
-  const auto p = static_cast<SDL_LogPriority>(prio);
-  SDL_LogSetAllPriority(p);
-
-  // Apparently not set by SDL
-  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
-}
-
-/**
- * \brief Sets the priority of the specified category.
- *
- * \param category the category that will have its priority changed.
- * \param prio the new priority value.
- *
- * \since 3.0.0
- */
-inline void set_priority(const category category, const priority prio) noexcept
-{
-  SDL_LogSetPriority(static_cast<int>(category),
-                     static_cast<SDL_LogPriority>(prio));
-}
-
-/**
- * \brief Returns the priority of the specified category.
- *
- * \param category the category to return the priority of.
- * \return the priority of the specified category.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto get_priority(const category category) noexcept
-    -> priority
-{
-  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
-}
-
-/**
- * \brief Returns the maximum size, i.e the maximum amount of characters that
- * a string can contain and successfully be logged without being truncated.
- *
- * \note Strings longer that this value will be truncated.
- *
- * \return the maximum amount of characters that a loggable string can
- * contain.
- *
- * \see `SDL_MAX_LOG_MESSAGE`
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto max_message_size() noexcept -> int
-{
-  return SDL_MAX_LOG_MESSAGE;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values are the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(priority, SDL_LogPriority)
- */
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values aren't the
- * same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(priority, SDL_LogPriority)
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(category, SDL_LogCategory)
- */
-[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(category, SDL_LogCategory)
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-}  // namespace cen::log
-
-#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
-
-#ifdef NDEBUG
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...)
-
-#else
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
-
-#endif  // NDEBUG
-
-#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
-
-/**
- * \def CENTURION_LOG_INFO
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_WARN
- *
- * \brief A debug-only macro that expands to `cen::log::warn`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_VERBOSE
- *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_DEBUG
- *
- * \brief A debug-only macro that expands to `cen::log::debug`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_CRITICAL
- *
- * \brief A debug-only macro that expands to `cen::log::critical`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_ERROR
- *
- * \brief A debug-only macro that expands to `cen::log::error`.
- *
- * \since 5.0.0
- */
-
-/// \}
-
-#endif  // CENTURION_LOG_HEADER
-
-// #include "centurion/sdl_string.hpp"
-#ifndef CENTURION_SDL_STRING_HEADER
-#define CENTURION_SDL_STRING_HEADER
-
-#include <SDL.h>
-
-#include <memory>  // unique_ptr
-#include <string>  // string
-
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/owner.hpp"
-
-// #include "centurion_cfg.hpp"
-
-// #include "detail/sdl_deleter.hpp"
-#ifndef CENTURION_DETAIL_SDL_DELETER_HEADER
-#define CENTURION_DETAIL_SDL_DELETER_HEADER
+#endif  // CENTURION_JOY_AXIS_EVENT_HEADER
+
+// #include "centurion/events/joy_ball_event.hpp"
+#ifndef CENTURION_JOY_BALL_EVENT_HEADER
+#define CENTURION_JOY_BALL_EVENT_HEADER
 
 #include <SDL.h>
 
 // #include "../centurion_cfg.hpp"
 
+// #include "../misc/integers.hpp"
 
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename T>
-struct sdl_deleter final
-{
-  void operator()(T* ptr) noexcept
-  {
-    SDL_free(ptr);
-  }
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
+// #include "common_event.hpp"
 
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -22857,220 +19279,2972 @@ struct sdl_deleter final
 
 namespace cen {
 
-/**
- * \class sdl_string
- *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
- *
- * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
- */
-class sdl_string final
-{
- public:
-  /**
-   * \brief
-   *
-   * \param str the string that will be claimed, can be null.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
-  {}
-
-  /**
-   * \brief Returns the internal string, which might be null.
-   *
-   * \return the internal string; `nullptr` if there is none.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> czstring
-  {
-    return m_str.get();
-  }
-
-  /**
-   * \brief Returns a copy of the internal string.
-   *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
-   *
-   * \return a copy of the internal string.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto copy() const -> std::string
-  {
-    if (m_str)
-    {
-      return std::string{get()};
-    }
-    else
-    {
-      return std::string{};
-    }
-  }
-
-  /**
-   * \brief Indicates whether or not the internal string is non-null.
-   *
-   * \return `true` if the internal string is non-null; `false` otherwise.
-   *
-   * \since 5.0.0
-   */
-  explicit operator bool() const noexcept
-  {
-    return m_str.operator bool();
-  }
-
- private:
-  std::unique_ptr<char, detail::sdl_deleter<char>> m_str;
-};
-
-}  // namespace cen
-
-#endif  // CENTURION_SDL_STRING_HEADER
-
-// #include "centurion/shared_object.hpp"
-#ifndef CENTURION_SHARED_OBJECT_HEADER
-#define CENTURION_SHARED_OBJECT_HEADER
-
-#include <SDL.h>
-
-#include <cassert>  // assert
-#include <memory>   // unique_ptr
-#include <string>   // string
-
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/exception.hpp"
-
-// #include "../misc/not_null.hpp"
-
-// #include "centurion_cfg.hpp"
-
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
-namespace cen {
-
-/// \addtogroup system
+/// \addtogroup event
 /// \{
 
 /**
- * \class shared_object
+ * \class joy_ball_event
  *
- * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and
- * `.dll` files).
+ * \brief Represents the event that is triggered when a user moves a
+ * trackball on a joystick.
  *
- * \since 5.3.0
+ * \see `SDL_JoyBallEvent`
  *
- * \headerfile shared_object.hpp
+ * \since 4.0.0
+ *
+ * \headerfile joy_ball_event.hpp
  */
-class shared_object final
+class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 {
  public:
   /**
-   * \brief Loads a shared object.
+   * \brief Creates a joy ball event.
    *
-   * \param object the name of the shared object that will be loaded.
-   *
-   * \throws sdl_error if the shared object cannot be loaded.
-   *
-   * \since 5.3.0
+   * \since 4.0.0
    */
-  explicit shared_object(const not_null<czstring> object)
-      : m_object{SDL_LoadObject(object)}
-  {
-    if (!m_object)
-    {
-      throw sdl_error{};
-    }
-  }
-
-  /**
-   * \brief Loads a shared object.
-   *
-   * \param object the name of the shared object that will be loaded.
-   *
-   * \throws sdl_error if the shared object cannot be loaded.
-   *
-   * \since 5.3.0
-   */
-  explicit shared_object(const std::string& object)
-      : shared_object{object.c_str()}
+  joy_ball_event() noexcept : common_event{event_type::joystick_ball_motion}
   {}
 
   /**
-   * \brief Attempts to load a function from the shared object.
+   * \brief Creates a joy ball event based on the supplied SDL joy ball event.
    *
-   * \note The function must be a C-function!
+   * \param event the SDL joy ball event that will be copied.
    *
-   * \tparam T the signature of the function, e.g. `void(int, float)`.
-   *
-   * \param name the name of the function in the shared object.
-   *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
-   *
-   * \since 5.3.0
+   * \since 4.0.0
    */
-  template <typename T>
-  [[nodiscard]] auto load_function(const not_null<czstring> name) const noexcept
-      -> T*
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param which the joystick instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const SDL_JoystickID which) noexcept
   {
-    assert(name);
-    return reinterpret_cast<T*>(SDL_LoadFunction(m_object.get(), name));
+    m_event.which = which;
   }
 
   /**
-   * \brief Attempts to load a function from the shared object.
+   * \brief Sets the joystick trackball index associated with the event.
    *
-   * \note The function must be a C-function!
+   * \param ball the joystick trackball index.
    *
-   * \tparam T the signature of the function, e.g. `void(int, float)`.
-   *
-   * \param name the name of the function in the shared object.
-   *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
-   *
-   * \since 5.3.0
+   * \since 4.0.0
    */
-  template <typename T>
-  [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
+  void set_ball(const u8 ball) noexcept
   {
-    return load_function<T>(name.c_str());
+    m_event.ball = ball;
   }
 
- private:
-  struct deleter final
+  /**
+   * \brief Sets the relative motion along the x-axis associated with the event.
+   *
+   * \param dx the relative motion along the x-axis.
+   *
+   * \since 4.0.0
+   */
+  void set_dx(const i16 dx) noexcept
   {
-    void operator()(void* object) noexcept
-    {
-      SDL_UnloadObject(object);
-    }
-  };
-  std::unique_ptr<void, deleter> m_object;
+    m_event.xrel = dx;
+  }
 
-#ifdef CENTURION_MOCK_FRIENDLY_MODE
- public:
-  shared_object() = default;
-#endif  // CENTURION_MOCK_FRIENDLY_MODE
+  /**
+   * \brief Sets the relative motion along the y-axis associated with the event.
+   *
+   * \param dy the relative motion along the y-axis.
+   *
+   * \since 4.0.0
+   */
+  void set_dy(const i16 dy) noexcept
+  {
+    m_event.yrel = dy;
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the joystick trackball index associated with the event.
+   *
+   * \return the joystick trackball index associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto ball() const noexcept -> u8
+  {
+    return m_event.ball;
+  }
+
+  /**
+   * \brief Returns the relative motion along the x-axis.
+   *
+   * \note Trackballs only return relative motion, i.e this is the change in
+   * position of the ball along the x-axis since it was last updated.
+   *
+   * \return the relative motion along the x-axis.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dx() const noexcept -> i16
+  {
+    return m_event.xrel;
+  }
+
+  /**
+   * \brief Returns the relative motion along the y-axis.
+   *
+   * \note Trackballs only return relative motion, i.e this is the change in
+   * position of the ball along the y-axis since it was last updated.
+   *
+   * \return the relative motion along the y-axis.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dy() const noexcept -> i16
+  {
+    return m_event.yrel;
+  }
 };
 
-/// \} End of system group
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jball = event.get();
+  return e;
+}
+
+/// \} End of group event
 
 }  // namespace cen
 
-#endif  // CENTURION_SHARED_OBJECT_HEADER
+#endif  // CENTURION_JOY_BALL_EVENT_HEADER
 
-// #include "filesystem/base_path.hpp"
+// #include "centurion/events/joy_button_event.hpp"
+#ifndef CENTURION_JOY_BUTTON_EVENT_HEADER
+#define CENTURION_JOY_BUTTON_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/button_state.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class joy_button_event
+ *
+ * \brief Represents an event associated with the press or release of a
+ * joystick button.
+ *
+ * \see `SDL_JoyButtonEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile joy_button_event.hpp
+ */
+class joy_button_event final : public common_event<SDL_JoyButtonEvent>
+{
+ public:
+  /**
+   * \brief Creates a joystick button event of type `joystick_button_down`.
+   *
+   * \since 4.0.0
+   */
+  joy_button_event() noexcept : common_event{event_type::joystick_button_down}
+  {}
+
+  /**
+   * \brief Creates a joy_button_event based on the supplied event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param which the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets the button index associated with the event.
+   *
+   * \param button the button index associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_button(const u8 button) noexcept
+  {
+    m_event.button = button;
+  }
+
+  /**
+   * \brief Sets the button state that is associated with the button that
+   * triggered the event.
+   *
+   * \param state the button state that is associated with the button that
+   * triggered the event.
+   *
+   * \since 4.0.0
+   */
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the joystick instance ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the index of the button that changed.
+   *
+   * \return the index of the button that changed.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto button() const noexcept -> u8
+  {
+    return m_event.button;
+  }
+
+  /**
+   * \brief Returns the state of the button associated with the event.
+   *
+   * \return the state of the button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is pressed.
+   *
+   * \return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is released.
+   *
+   * \return `true` if the associated button is released; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jbutton = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_JOY_BUTTON_EVENT_HEADER
+
+// #include "centurion/events/joy_device_event.hpp"
+#ifndef CENTURION_JOY_DEVICE_EVENT_HEADER
+#define CENTURION_JOY_DEVICE_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class joy_device_event
+ *
+ * \brief Represents an event triggered by adding or removing a joystick device.
+ *
+ * \see `SDL_JoyDeviceEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile joy_device_event.hpp
+ */
+class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
+{
+ public:
+  /**
+   * \brief Creates a joystick device event of type `joystick_device_added`.
+   *
+   * \since 4.0.0
+   */
+  joy_device_event() noexcept : common_event{event_type::joystick_device_added}
+  {}
+
+  /**
+   * \brief Creates a joy_device_event that is based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick device index or instance ID, depending on the type
+   * of the event.
+   *
+   * \param which the joystick device index or instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const i32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Returns the joystick device index or instance ID.
+   *
+   * \details The returned value is the joystick device index if the type is
+   * `JoystickDeviceAdded`, or the joystick instance ID if the type is
+   * `JoystickDeviceRemoved`.
+   *
+   * \return the joystick device index or instance ID.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jdevice = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_JOY_DEVICE_EVENT_HEADER
+
+// #include "centurion/events/joy_hat_event.hpp"
+#ifndef CENTURION_JOY_HAT_EVENT_HEADER
+#define CENTURION_JOY_HAT_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \enum joy_hat_position
+ *
+ * \brief Serves as a wrapper for the `SDL_HAT_x` macro values.
+ *
+ * \since 4.0.0
+ */
+enum class joy_hat_position
+{
+  left_up = SDL_HAT_LEFTUP,
+  left = SDL_HAT_LEFT,
+  left_down = SDL_HAT_LEFTDOWN,
+  up = SDL_HAT_UP,
+  centered = SDL_HAT_CENTERED,
+  down = SDL_HAT_DOWN,
+  right_up = SDL_HAT_RIGHTUP,
+  right = SDL_HAT_RIGHT,
+  right_down = SDL_HAT_RIGHTDOWN
+};
+
+/**
+ * \class joy_hat_event
+ *
+ * \brief Represents an event that is triggered whenever a user moves a hat
+ * on a joystick.
+ *
+ * \see `SDL_JoyHatEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile joy_hat_event.hpp
+ */
+class joy_hat_event final : public common_event<SDL_JoyHatEvent>
+{
+ public:
+  /**
+   * \brief Creates a joy hat event.
+   *
+   * \since 4.0.0
+   */
+  joy_hat_event() noexcept : common_event{event_type::joystick_hat_motion}
+  {}
+
+  /**
+   * \brief Creates a joy hat event based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the hat index associated with the event.
+   *
+   * \param hat the hat index.
+   *
+   * \since 4.0.0
+   */
+  void set_hat(const u8 hat) noexcept
+  {
+    m_event.hat = hat;
+  }
+
+  /**
+   * \brief Sets the joystick hat position associated with the event.
+   *
+   * \param value the joystick hat position associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_position(const joy_hat_position value) noexcept
+  {
+    m_event.value = static_cast<u8>(value);
+  }
+
+  /**
+   * \brief Returns the index of the hat that changed.
+   *
+   * \return the index of the hat that changed.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto hat() const noexcept -> u8
+  {
+    return m_event.hat;
+  }
+
+  /**
+   * \brief Returns the position of the associated joystick hat.
+   *
+   * \return the position of the associated joystick hat.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto position() const noexcept -> joy_hat_position
+  {
+    return static_cast<joy_hat_position>(m_event.value);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.jhat = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_JOY_HAT_EVENT_HEADER
+
+// #include "centurion/events/keyboard_event.hpp"
+#ifndef CENTURION_KEYBOARD_EVENT_HEADER
+#define CENTURION_KEYBOARD_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/button_state.hpp"
+
+// #include "../input/key_code.hpp"
+
+// #include "../input/key_modifier.hpp"
+
+// #include "../input/scan_code.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class keyboard_event
+ *
+ * \brief Represents an event associated with some sort of key action, such
+ * as the release or pressing of a key.
+ *
+ * \see `SDL_KeyboardEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile keyboard_event.hpp
+ */
+class keyboard_event final : public common_event<SDL_KeyboardEvent>
+{
+ public:
+  /**
+   * \brief Creates a keyboard event of type `key_down`.
+   *
+   * \since 4.0.0
+   */
+  keyboard_event() noexcept : common_event{event_type::key_down}
+  {}
+
+  /**
+   * \brief Creates a keyboard event based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the scan code that is associated with the event.
+   *
+   * \param code the scan code that will be associated with the event.
+   *
+   * \since 5.0.0
+   */
+  void set_scan_code(const scan_code& code) noexcept
+  {
+    m_event.keysym.scancode = code.get();
+  }
+
+  /**
+   * \brief Sets the key code that is associated with the event.
+   *
+   * \param code the key code that will be associated with the event.
+   *
+   * \since 5.0.0
+   */
+  void set_key_code(const key_code& code) noexcept
+  {
+    m_event.keysym.sym = code.get();
+  }
+
+  /**
+   * \brief Sets the button state associated with the event.
+   *
+   * \param state the button state that will be associated with the event
+   *
+   * \since 5.0.0
+   */
+  void set_button_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
+
+  /**
+   * \brief Sets the status of a key modifier.
+   *
+   * \param modifier the key modifier that will be affected.
+   * \param active `true` if the key modifier is active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  {
+    if (active)
+    {
+      m_event.keysym.mod |= static_cast<u16>(modifier);
+    }
+    else
+    {
+      m_event.keysym.mod &= ~static_cast<u16>(modifier);
+    }
+  }
+
+  /**
+   * \brief Sets the flag that indicates whether or not the key associated with
+   * this key event was repeatedly triggered.
+   *
+   * \param repeated `true` if the key was repeatedly triggered; `false`
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  void set_repeated(const bool repeated) noexcept
+  {
+    m_event.repeat = repeated;
+  }
+
+  /**
+   * \brief Sets the window ID that is associated with this key event.
+   *
+   * \param id the window ID that should be associated with the key event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Indicates whether or not the event is associated with the
+   * specified scan code.
+   *
+   * \param code the scan code that will be checked.
+   *
+   * \return `true` if the supplied scan code is associated with the event;
+   * `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto is_active(const scan_code& code) const noexcept -> bool
+  {
+    return m_event.keysym.scancode == code.get();
+  }
+
+  /**
+   * \brief Indicates whether or not the event is associated with the
+   * specified key code.
+   *
+   * \param code the key code that will be checked.
+   *
+   * \return `true` if the supplied key code is associated with the event;
+   * `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto is_active(const key_code& code) const noexcept -> bool
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym) == code.get();
+  }
+
+  /**
+   * \brief Indicates whether or not the specified key modifier is active.
+   *
+   * \note Multiple key modifiers can be active at the same time.
+   *
+   * \param modifier the key modifier that will be checked.
+   *
+   * \return `true` if the specified key modifier is active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept
+      -> bool
+  {
+    return m_event.keysym.mod & static_cast<u16>(modifier);
+  }
+
+  /**
+   * \brief Indicates whether or not any of the SHIFT modifiers are active.
+   *
+   * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto shift_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_shift) ||
+           modifier_active(key_modifier::right_shift);
+  }
+
+  /**
+   * \brief Indicates whether or not any of the CTRL modifiers are active.
+   *
+   * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_ctrl) ||
+           modifier_active(key_modifier::right_ctrl);
+  }
+
+  /**
+   * \brief Indicates whether or not any of the ALT modifiers are active.
+   *
+   * \return `true` if any of the ALT modifiers are active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto alt_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_alt) ||
+           modifier_active(key_modifier::right_alt);
+  }
+
+  /**
+   * \brief Indicates whether or not any of the GUI modifiers are active.
+   *
+   * \return `true` if any of the GUI modifiers are active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto gui_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_gui) ||
+           modifier_active(key_modifier::right_gui);
+  }
+
+  /**
+   * \brief Indicates whether or not the CAPS modifier is active.
+   *
+   * \return `true` if the CAPS modifier is active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto caps_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::caps);
+  }
+
+  /**
+   * \brief Indicates whether or not the NUM modifier is active.
+   *
+   * \return `true` if the NUM modifier is active; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto num_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::num);
+  }
+
+  /**
+   * \brief Indicates whether or not the key associated with this key event has
+   * been repeatedly triggered.
+   *
+   * \return `true` if the key associated with the event was repeated; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto repeated() const noexcept -> bool
+  {
+    return m_event.repeat;
+  }
+
+  /**
+   * \brief Returns the button state of the key associated with the event.
+   *
+   * \return the button state of the key associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
+
+  /**
+   * \brief Indicates whether or not the event is associated with the release
+   * of a key.
+   *
+   * \note This function is equivalent to `state() ==  button_state::released`.
+   *
+   * \return `true` if the event is a key released event; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
+
+  /**
+   * \brief Indicates whether or not the event is associated with the press
+   * of a key.
+   *
+   * \note This function is equivalent to `state() ==  button_state::pressed`.
+   *
+   * \return `true` if the event is a key pressed event; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
+
+  /**
+   * \brief Returns the scan code that is associated with the event.
+   *
+   * \return the scan code that is associated with the event.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Returns the key code that is associated with the event.
+   *
+   * \return the key code that is associated with the event.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto get_key_code() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Returns the ID of the window associated with the event.
+   *
+   * \return the ID of the window associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.key = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_KEYBOARD_EVENT_HEADER
+
+// #include "centurion/events/mouse_button_event.hpp"
+#ifndef CENTURION_MOUSE_BUTTON_EVENT_HEADER
+#define CENTURION_MOUSE_BUTTON_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/button_state.hpp"
+
+// #include "../input/mouse_button.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class mouse_button_event
+ *
+ * \brief Represents an event triggered by mouse button presses or releases.
+ *
+ * \see `SDL_MouseButtonEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
+{
+ public:
+  /**
+   * \brief Creates a mouse button event of type `mouse_button_down`.
+   *
+   * \since 4.0.0
+   */
+  mouse_button_event() noexcept : common_event{event_type::mouse_button_down}
+  {}
+
+  /**
+   * \brief Creates a mouse_button_event that is based on the supplied SDL
+   * event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the mouse instance ID.
+   *
+   * \param which the mouse instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets the mouse button associated with the event.
+   *
+   * \param button the mouse button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_button(const mouse_button button) noexcept
+  {
+    m_event.button = static_cast<u8>(button);
+  }
+
+  /**
+   * \brief Sets the button state associated with the event.
+   *
+   * \param state the button state associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
+
+  /**
+   * \brief Sets the amount of clicks associated with the event.
+   *
+   * \param clicks the amount of clicks associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_clicks(const u8 clicks) noexcept
+  {
+    m_event.clicks = clicks;
+  }
+
+  /**
+   * \brief Sets the x-coordinate of the mouse relative to the window.
+   *
+   * \param x the x-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  void set_x(const i32 x) noexcept
+  {
+    m_event.x = x;
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the mouse relative to the window.
+   *
+   * \param y the y-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  void set_y(const i32 y) noexcept
+  {
+    m_event.y = y;
+  }
+
+  /**
+   * \brief Returns the ID of the window associated with the event.
+   *
+   * \return the ID of the window associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
+   * triggered by a touch input device.
+   *
+   * \return the mouse instance ID, or SDL_TOUCH_MOUSEID.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the mouse button associated with the event.
+   *
+   * \return the mouse button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto button() const noexcept -> mouse_button
+  {
+    return static_cast<mouse_button>(m_event.button);
+  }
+
+  /**
+   * \brief Returns the state of the mouse button associated with the event.
+   *
+   * \return the state of the mouse button associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is pressed.
+   *
+   * \return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
+
+  /**
+   * \brief Indicates whether or not the associated button is released.
+   *
+   * \return `true` if the associated button is released; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
+
+  /**
+   * \brief Returns the number of mouse clicks associated with the event.
+   *
+   * \return the number of mouse clicks associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto clicks() const noexcept -> u8
+  {
+    return m_event.clicks;
+  }
+
+  /**
+   * \brief Returns the x-coordinate of the mouse relative to the window.
+   *
+   * \return the x-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto x() const noexcept -> i32
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the mouse relative to the window.
+   *
+   * \return the y-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto y() const noexcept -> i32
+  {
+    return m_event.y;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.button = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_MOUSE_BUTTON_EVENT_HEADER
+
+// #include "centurion/events/mouse_motion_event.hpp"
+#ifndef CENTURION_MOUSE_MOTION_EVENT_HEADER
+#define CENTURION_MOUSE_MOTION_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../input/mouse_button.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class mouse_motion_event
+ *
+ * \brief Represents events that are triggered by the movement of the mouse.
+ *
+ * \see `SDL_MouseMotionEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile mouse_motion_event.hpp
+ */
+class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
+{
+ public:
+  /**
+   * \brief Creates a mouse motion event.
+   *
+   * \since 4.0.0
+   */
+  mouse_motion_event() noexcept : common_event{event_type::mouse_motion}
+  {}
+
+  /**
+   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
+   * event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the mouse instance ID.
+   *
+   * \param which the mouse instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets the mouse button state associated with the event.
+   *
+   * \details The state could be any of `SDL_BUTTON_LMASK`, `SDL_BUTTON_MMASK`,
+   * `SDL_BUTTON_RMASK`, `SDL_BUTTON_X1MASK` and `SDL_BUTTON_X2MASK` OR'd
+   * together.
+   *
+   * \param state the mouse button state associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_state(const u32 state) noexcept
+  {
+    m_event.state = state;
+  }
+
+  /**
+   * \brief Sets the x-coordinate of the mouse relative to the mouse that is
+   * associated with the event.
+   *
+   * \param x the x-coordinate of the mouse.
+   *
+   * \since 4.0.0
+   */
+  void set_x(const i32 x) noexcept
+  {
+    m_event.x = x;
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the mouse relative to the mouse that is
+   * associated with the event.
+   *
+   * \param y the y-coordinate of the mouse.
+   *
+   * \since 4.0.0
+   */
+  void set_y(const i32 y) noexcept
+  {
+    m_event.y = y;
+  }
+
+  /**
+   * \brief Sets the value of the relative motion of the mouse along the x-axis.
+   *
+   * \param dx the value of the relative motion of the mouse along the x-axis.
+   *
+   * \since 4.0.0
+   */
+  void set_dx(const i32 dx) noexcept
+  {
+    m_event.xrel = dx;
+  }
+
+  /**
+   * \brief Sets the value of the relative motion of the mouse along the y-axis.
+   *
+   * \param dy the value of the relative motion of the mouse along the y-axis.
+   *
+   * \since 4.0.0
+   */
+  void set_dy(const i32 dy) noexcept
+  {
+    m_event.yrel = dy;
+  }
+
+  /**
+   * \brief Returns the window ID associated with the event.
+   *
+   * \return the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID`.
+   *
+   * \details The returned value might be `SDL_TOUCH_MOUSEID` for events that
+   * were generated by a touch input device.
+   *
+   * \return the mouse instance ID, or `SDL_TOUCH_MOUSEID`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns a bitmask for the current mouse button state.
+   *
+   * \remark If you want to check if a specific mouse button is pressed or
+   * released, a better alternative would be to use the `pressed(MouseButton)
+   * ` method.
+   *
+   * \return a bitmask for the current mouse button state.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto state() const noexcept -> u32
+  {
+    return m_event.state;
+  }
+
+  /**
+   * \brief Indicates whether or not a mouse button is pressed.
+   *
+   * \param button the mouse button that will be checked.
+   *
+   * \return `true` if the specified mouse button is pressed; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
+  {
+    return m_event.state & SDL_BUTTON(static_cast<u32>(button));
+  }
+
+  /**
+   * \brief Returns the x-coordinate of the mouse relative to the window.
+   *
+   * \return the x-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto x() const noexcept -> i32
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the mouse relative to the window.
+   *
+   * \return the y-coordinate of the mouse relative to the window.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto y() const noexcept -> i32
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the relative motion of the mouse along the x-axis.
+   *
+   * \return the relative motion of the mouse along the x-axis.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dx() const noexcept -> i32
+  {
+    return m_event.xrel;
+  }
+
+  /**
+   * \brief Returns the relative motion of the mouse along the y-axis.
+   *
+   * \return the relative motion of the mouse along the y-axis.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dy() const noexcept -> i32
+  {
+    return m_event.yrel;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.motion = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_MOUSE_MOTION_EVENT_HEADER
+
+// #include "centurion/events/mouse_wheel_event.hpp"
+#ifndef CENTURION_MOUSE_WHEEL_EVENT_HEADER
+#define CENTURION_MOUSE_WHEEL_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \enum mouse_wheel_direction
+ *
+ * \brief Mirrors the the `SDL_MouseWheelDirection` enum.
+ *
+ * \see `SDL_MouseWheelDirection`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+enum class mouse_wheel_direction
+{
+  normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
+  flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
+};
+
+/**
+ * \class mouse_wheel_event
+ *
+ * \brief Represents events triggered when a user moves the mouse wheel.
+ *
+ * \see `SDL_MouseWheelEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
+{
+ public:
+  /**
+   * \brief Creates a mouse wheel event.
+   *
+   * \since 4.0.0
+   */
+  mouse_wheel_event() noexcept : common_event{event_type::mouse_wheel}
+  {}
+
+  /**
+   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
+   * event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the mouse instance ID.
+   *
+   * \param which the mouse instance ID.
+   *
+   * \since 4.0.0
+   */
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
+
+  /**
+   * \brief Sets the horizontally scrolled distance.
+   *
+   * \details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
+   *
+   * \param xScroll the horizontally scrolled distance.
+   *
+   * \since 4.0.0
+   */
+  void set_x_scroll(const i32 xScroll) noexcept
+  {
+    m_event.x = xScroll;
+  }
+
+  /**
+   * \brief Sets the vertically scrolled distance.
+   *
+   * \details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
+   *
+   * \param yScroll the vertically scrolled distance.
+   *
+   * \since 4.0.0
+   */
+  void set_y_scroll(const i32 yScroll) noexcept
+  {
+    m_event.y = yScroll;
+  }
+
+  /**
+   * \brief Sets the mouse wheel direction mode associated with the event.
+   *
+   * \param direction the mouse wheel direction mode associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_direction(const mouse_wheel_direction direction) noexcept
+  {
+    m_event.direction = static_cast<u32>(direction);
+  }
+
+  /**
+   * \brief Returns the ID of the window associated with the event.
+   *
+   * \return the ID of the window associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID` if the event
+   * was triggered by a touch input device.
+   *
+   * \return the mouse instance ID, or `SDL_TOUCH_MOUSEID`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the horizontally scrolled distance
+   *
+   * \details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
+   *
+   * \return the horizontally scrolled distance.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto x_scroll() const noexcept -> i32
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the vertically scrolled distance.
+   *
+   * \details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
+   *
+   * \return the vertically scrolled distance.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto y_scroll() const noexcept -> i32
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the mouse wheel direction mode associated with the event.
+   *
+   * \return the mouse wheel direction mode associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto direction() const noexcept -> mouse_wheel_direction
+  {
+    return static_cast<mouse_wheel_direction>(m_event.direction);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.wheel = event.get();
+  return e;
+}
+
+/**
+ * \brief Indicates whether or not two mouse wheel direction values are equal.
+ *
+ * \param lhs the left-hand side mouse wheel direction value.
+ * \param rhs the right-hand side mouse wheel direction value.
+ *
+ * \return `true` if the two values are equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(
+    const mouse_wheel_direction lhs,
+    const SDL_MouseWheelDirection rhs) noexcept -> bool
+{
+  return lhs == static_cast<mouse_wheel_direction>(rhs);
+}
+
+/**
+ * \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
+ *
+ */
+[[nodiscard]] constexpr auto operator==(
+    const SDL_MouseWheelDirection lhs,
+    const mouse_wheel_direction rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two mouse wheel direction values aren't
+ * equal.
+ *
+ * \param lhs the left-hand side mouse wheel direction value.
+ * \param rhs the right-hand side mouse wheel direction value.
+ *
+ * \return `true` if the two values aren't equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(
+    const mouse_wheel_direction lhs,
+    const SDL_MouseWheelDirection rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
+ */
+[[nodiscard]] constexpr auto operator!=(
+    const SDL_MouseWheelDirection lhs,
+    const mouse_wheel_direction rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_MOUSE_WHEEL_EVENT_HEADER
+
+// #include "centurion/events/multi_gesture_event.hpp"
+#ifndef CENTURION_MULTI_GESTURE_EVENT_HEADER
+#define CENTURION_MULTI_GESTURE_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class multi_gesture_event
+ *
+ * \brief Provides information about events related to touch events triggered
+ * by multiple fingers.
+ *
+ * \see `SDL_MultiGestureEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
+{
+ public:
+  /**
+   * \brief Creates a multi-gesture event.
+   *
+   * \since 4.0.0
+   */
+  multi_gesture_event() noexcept : common_event{event_type::multi_gesture}
+  {}
+
+  /**
+   * \brief Creates a `MultiGestureEvent` that is based on the supplied SDL
+   * event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the touch device ID associated with the event.
+   *
+   * \param id the touch device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
+
+  /**
+   * \brief Sets the amount that the fingers rotated during the gesture
+   * associated with the event.
+   *
+   * \param dTheta the amount that the fingers rotated.
+   *
+   * \since 4.0.0
+   */
+  void set_delta_theta(const float dTheta) noexcept
+  {
+    m_event.dTheta = dTheta;
+  }
+
+  /**
+   * \brief Sets the amount that the fingers pinched during the gesture
+   * associated with the event.
+   *
+   * \param dDistance the amount that the fingers pinched.
+   *
+   * \since 4.0.0
+   */
+  void set_delta_distance(const float dDistance) noexcept
+  {
+    m_event.dDist = dDistance;
+  }
+
+  /**
+   * \brief Sets the x-coordinate of the normalized center of the gesture
+   * associated with the event.
+   *
+   * \param centerX the x-coordinate of the normalized center of the gesture
+   * associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_center_x(const float centerX) noexcept
+  {
+    m_event.x = centerX;
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the normalized center of the gesture
+   * associated with the event.
+   *
+   * \param centerY the y-coordinate of the normalized center of the gesture
+   * associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_center_y(const float centerY) noexcept
+  {
+    m_event.y = centerY;
+  }
+
+  /**
+   * \brief Sets the number of fingers that was used in the gesture associated
+   * with the event.
+   *
+   * \param nFingers the number of fingers that was used in the gesture.
+   *
+   * \since 4.0.0
+   */
+  void set_fingers(const u16 nFingers) noexcept
+  {
+    m_event.numFingers = nFingers;
+  }
+
+  /**
+   * \brief Returns the touch device ID associated with the event.
+   *
+   * \return the touch device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
+
+  /**
+   * \brief Returns the amount that the fingers rotated during the gesture
+   * associated with the event.
+   *
+   * \return the amount that the fingers rotated.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto delta_theta() const noexcept -> float
+  {
+    return m_event.dTheta;
+  }
+
+  /**
+   * \brief Returns the amount that the fingers pinched during the gesture
+   * associated with the event.
+   *
+   * \return the amount that the fingers pinched.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto delta_distance() const noexcept -> float
+  {
+    return m_event.dDist;
+  }
+
+  /**
+   * \brief Returns the x-coordinate of the normalized center of gesture
+   * associated with the event.
+   *
+   * \return the x-coordinate of the normalized center of gesture associated
+   * with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto center_x() const noexcept -> float
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the normalized center of gesture
+   * associated with the event.
+   *
+   * \return the y-coordinate of the normalized center of gesture associated
+   * with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto center_y() const noexcept -> float
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the amount of fingers used in the gesture associated with
+   * the event.
+   *
+   * \return the amount of fingers used in the gesture associated with the
+   * event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto fingers() const noexcept -> float
+  {
+    return m_event.numFingers;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_MultiGestureEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.mgesture = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_MULTI_GESTURE_EVENT_HEADER
+
+// #include "centurion/events/quit_event.hpp"
+#ifndef CENTURION_QUIT_EVENT_HEADER
+#define CENTURION_QUIT_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class quit_event
+ *
+ * \brief Represents the event of the user wanting to close the application,
+ * usually by pressing the "X"-button on the window frame.
+ *
+ * \see `SDL_QuitEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+class quit_event final : public common_event<SDL_QuitEvent>
+{
+ public:
+  /**
+   * \brief Creates a quit event.
+   *
+   * \since 4.0.0
+   */
+  quit_event() noexcept : common_event{event_type::quit}
+  {}
+
+  /**
+   * \brief Creates a quit event based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event}
+  {}
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.quit = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_QUIT_EVENT_HEADER
+
+// #include "centurion/events/text_editing_event.hpp"
+#ifndef CENTURION_TEXT_EDITING_EVENT_HEADER
+#define CENTURION_TEXT_EDITING_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <string_view>  // string_view
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/clamp.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class text_editing_event
+ *
+ * \brief Represents an event triggered by keyboard text editing.
+ *
+ * \note This class doesn't provide a setter for the text, since it's
+ * impossible to assign a value to a variable of type `char[32]` in C++.
+ *
+ * \see `SDL_TextEditingEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile text_editing_event.hpp
+ */
+class text_editing_event final : public common_event<SDL_TextEditingEvent>
+{
+ public:
+  /**
+   * \brief Creates a text editing event.
+   *
+   * \since 4.0.0
+   */
+  text_editing_event() noexcept : common_event{event_type::text_editing}
+  {
+    check_length();
+  }
+
+  /**
+   * \brief Creates a `TextEditingEvent` that is based on the supplied SDL
+   * event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept
+      : common_event{event}
+  {
+    check_length();
+  }
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the location to begin editing from.
+   *
+   * \param start the location to begin editing from.
+   *
+   * \since 4.0.0
+   */
+  void set_start(const i32 start) noexcept
+  {
+    m_event.start = start;
+  }
+
+  /**
+   * \brief Sets the number of characters to edit from the start point.
+   *
+   * \details The supplied value will be clamped to the range [0, 32].
+   *
+   * \param length the number of characters to edit from the start point.
+   *
+   * \since 4.0.0
+   */
+  void set_length(const i32 length) noexcept
+  {
+    m_event.length = detail::clamp(length, 0, 32);
+  }
+
+  /**
+   * \brief Returns the window ID associated with the event.
+   *
+   * \return the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the text that will be used, as a null-terminated string in
+   * UTF-8 encoding.
+   *
+   * \return the text that will be used.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto text() const noexcept -> std::string_view
+  {
+    return std::string_view{static_cast<czstring>(m_event.text)};
+  }
+
+  /**
+   * \brief Returns the location to begin editing from.
+   *
+   * \return the location to begin editing from.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto start() const noexcept -> i32
+  {
+    return m_event.start;
+  }
+
+  /**
+   * \brief Returns the number of characters to edit from the start point.
+   *
+   * \details The returned value will always be in the range [0, 32].
+   *
+   * \return the number of characters to edit from the start point.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto length() const noexcept -> i32
+  {
+    return m_event.length;
+  }
+
+ private:
+  void check_length() noexcept
+  {
+    m_event.length = detail::clamp(m_event.length, 0, 32);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.edit = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXT_EDITING_EVENT_HEADER
+
+// #include "centurion/events/text_input_event.hpp"
+#ifndef CENTURION_TEXT_INPUT_EVENT_HEADER
+#define CENTURION_TEXT_INPUT_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <string_view>  // string_view
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class text_input_event
+ *
+ * \brief Provides information about keyboard text input events.
+ *
+ * \see `SDL_TextInputEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile text_input_event.hpp
+ */
+class text_input_event final : public common_event<SDL_TextInputEvent>
+{
+ public:
+  /**
+   * \brief Creates a text input event.
+   *
+   * \since 4.0.0
+   */
+  text_input_event() noexcept : common_event{event_type::text_input}
+  {}
+
+  /**
+   * \brief Creates a `TextInputEvent` that is based on the supplied SDL event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Returns the window ID associated with the event.
+   *
+   * \return the window ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * Returns the text that will be used, as a null-terminated string in UTF-8
+   * encoding.
+   *
+   * \return the text that will be used.
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
+  {
+    return std::string_view{static_cast<czstring>(m_event.text)};
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_TextInputEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.text = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXT_INPUT_EVENT_HEADER
+
+// #include "centurion/events/touch_finger_event.hpp"
+#ifndef CENTURION_TOUCH_FINGER_EVENT_HEADER
+#define CENTURION_TOUCH_FINGER_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/clamp.hpp"
+
+// #include "../misc/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class touch_finger_event
+ *
+ * \brief Represents an event related to touch screen actions.
+ *
+ * \see `SDL_TouchFingerEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile touch_finger_event.hpp
+ */
+class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
+{
+ public:
+  /**
+   * \brief Creates a touch finger event of type `touch_down`.
+   *
+   * \since 4.0.0
+   */
+  touch_finger_event() noexcept : common_event{event_type::touch_down}
+  {}
+
+  /**
+   * \brief Creates a touch finger event that is based on the supplied SDL
+   * ouch finger event.
+   *
+   * \param event the SDL event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the ID of the associated touch device.
+   *
+   * \param id the ID of the associated touch device.
+   *
+   * \since 4.0.0
+   */
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
+
+  /**
+   * \brief Sets the finger ID associated with the event.
+   *
+   * \param id the finger ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  void set_finger_id(const SDL_FingerID id) noexcept
+  {
+    m_event.fingerId = id;
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Sets the window ID of the window under the finger.
+   *
+   * \param id the window ID of the window under the finger.
+   *
+   * \since 4.0.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Sets the normalized x-coordinate of the location of the event.
+   *
+   * \details The supplied value will be clamped to the range [0, 1].
+   *
+   * \param x the normalized x-coordinate of the location of the event,
+   * clamped to the range [0, 1].
+   *
+   * \since 4.0.0
+   */
+  void set_x(const float x) noexcept
+  {
+    m_event.x = detail::clamp(x, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the normalized y-coordinate of the location of the event.
+   *
+   * \details The supplied value will be clamped to the range [0, 1].
+   *
+   * \param y the normalized y-coordinate of the location of the event,
+   * clamped to the range [0, 1].
+   *
+   * \since 4.0.0
+   */
+  void set_y(const float y) noexcept
+  {
+    m_event.y = detail::clamp(y, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the normalized distance moved along the x-axis.
+   *
+   * \details The supplied value will be clamped to the range [-1, 1].
+   *
+   * \param dx the normalized distance moved along the x-axis, clamped to the
+   * range [-1, 1].
+   *
+   * \since 4.0.0
+   */
+  void set_dx(const float dx) noexcept
+  {
+    m_event.dx = detail::clamp(dx, -1.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the normalized distance moved along the y-axis.
+   *
+   * \details The supplied value will be clamped to the range [-1, 1].
+   *
+   * \param dy the normalized distance moved along the y-axis, clamped to the
+   * range [-1, 1].
+   *
+   * \since 4.0.0
+   */
+  void set_dy(const float dy) noexcept
+  {
+    m_event.dy = detail::clamp(dy, -1.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the normalized pressure associated with the event.
+   *
+   * \details The supplied value will be clamped to the range [0, 1].
+   *
+   * \param pressure the normalized pressure associated with the event, clamped
+   * in the range [0, 1].
+   *
+   * \since 4.0.0
+   */
+  void set_pressure(const float pressure) noexcept
+  {
+    m_event.pressure = detail::clamp(pressure, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Returns the touch device ID associated with the event.
+   *
+   * \return the touch device ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
+
+  /**
+   * \brief Returns the finger ID associated with the event.
+   *
+   * \return the finger ID associated with the event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto finger_id() const noexcept -> SDL_FingerID
+  {
+    return m_event.fingerId;
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Returns the window ID of the window under the finger.
+   *
+   * \return the window ID of the window under the finger.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Returns the normalized x-coordinate of the location of the event.
+   *
+   * \details The returned value will be in the range [0, 1].
+   *
+   * \return the normalized x-coordinate of the location of the event, in the
+   * range [0, 1].
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the normalized y-coordinate of the location of the event.
+   *
+   * \details The returned value will be in the range [0, 1].
+   *
+   * \return the normalized y-coordinate of the location of the event, in the
+   * range [0, 1].
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the normalized distance moved along the x-axis.
+   *
+   * \details The returned value will be in the range [-1, 1].
+   *
+   * \return the normalized distance moved along the x-axis, in the range
+   * [-1, 1].
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dx() const noexcept -> float
+  {
+    return m_event.dx;
+  }
+
+  /**
+   * \brief Returns the normalized distance moved along the y-axis.
+   *
+   * \details The returned value will be in the range [-1, 1].
+   *
+   * \return the normalized distance moved along the y-axis, in the range
+   * [-1, 1].
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto dy() const noexcept -> float
+  {
+    return m_event.dy;
+  }
+
+  /**
+   * \brief Returns the normalized pressure associated with the event.
+   *
+   * \details The returned value will be in the range [0, 1].
+   *
+   * \return the normalized pressure associated with the event, in the range
+   * [0, 1].
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto pressure() const noexcept -> float
+  {
+    return m_event.pressure;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.tfinger = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_TOUCH_FINGER_EVENT_HEADER
+
+// #include "centurion/events/window_event.hpp"
+#ifndef CENTURION_WINDOW_EVENT_HEADER
+#define CENTURION_WINDOW_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "common_event.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \enum window_event_id
+ *
+ * \brief Mirrors the `SDL_WindowEventID` enum.
+ *
+ * \details Depending on the event ID of a `window_event` instance, the
+ * `window_event::data_1()` and `window_event::data_2()` methods have special
+ * meanings.
+ *
+ * <table style="width:100%">
+ *   <tr>
+ *     <th>Value</th>
+ *     <th>data_1</th>
+ *     <th>data_2</th>
+ *   </tr>
+ *   <tr>
+ *    <td><code>None</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Shown</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Hidden</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Exposed</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Moved</code></td>
+ *    <td>X</td>
+ *    <td>Y</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Resized</code></td>
+ *    <td>Width</td>
+ *    <td>Height</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>SizeChanged</code></td>
+ *    <td>Width</td>
+ *    <td>Height</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Minimized</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Maximized</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Restored</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Enter</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Leave</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>FocusGained</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>FocusLost</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>Close</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>TakeFocus</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ *   <tr>
+ *    <td><code>HitTest</code></td>
+ *    <td>N/A</td>
+ *    <td>N/A</td>
+ *   </tr>
+ * </table>
+ *
+ * \since 4.0.0
+ *
+ * \headerfile event.hpp
+ */
+enum class window_event_id
+{
+  none = SDL_WINDOWEVENT_NONE,
+  shown = SDL_WINDOWEVENT_SHOWN,
+  hidden = SDL_WINDOWEVENT_HIDDEN,
+  exposed = SDL_WINDOWEVENT_EXPOSED,
+  moved = SDL_WINDOWEVENT_MOVED,
+  resized = SDL_WINDOWEVENT_RESIZED,
+  size_changed = SDL_WINDOWEVENT_SIZE_CHANGED,
+  minimized = SDL_WINDOWEVENT_MINIMIZED,
+  maximized = SDL_WINDOWEVENT_MAXIMIZED,
+  restored = SDL_WINDOWEVENT_RESTORED,
+  enter = SDL_WINDOWEVENT_ENTER,
+  leave = SDL_WINDOWEVENT_LEAVE,
+  focus_gained = SDL_WINDOWEVENT_FOCUS_GAINED,
+  focus_lost = SDL_WINDOWEVENT_FOCUS_LOST,
+  close = SDL_WINDOWEVENT_CLOSE,
+  take_focus = SDL_WINDOWEVENT_TAKE_FOCUS,
+  hit_test = SDL_WINDOWEVENT_HIT_TEST
+};
+
+/**
+ * \class window_event
+ *
+ * \brief Represents an event that is associated with an action related to a
+ * window.
+ *
+ * \see `SDL_WindowEvent`
+ *
+ * \since 4.0.0
+ *
+ * \headerfile window_event.hpp
+ */
+class window_event final : public common_event<SDL_WindowEvent>
+{
+ public:
+  /**
+   * \brief Creates a window event.
+   *
+   * \since 4.0.0
+   */
+  window_event() noexcept : common_event{event_type::window}
+  {}
+
+  /**
+   * \brief Creates a window event based on the supplied SDL window event.
+   *
+   * \param event the SDL window event that will be copied.
+   *
+   * \since 4.0.0
+   */
+  explicit window_event(const SDL_WindowEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Returns the event ID of this window event.
+   *
+   * \details There are many different kinds of window events, use this
+   * method to check what kind of action that triggered this event.
+   *
+   * \return the event ID of this window event.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto event_id() const noexcept -> window_event_id
+  {
+    return static_cast<window_event_id>(m_event.event);
+  }
+
+  /**
+   * \brief Returns the value of the first data value.
+   *
+   * \details The meaning of this value is dependent on the window event ID
+   * of this window event.
+   *
+   * For instance, if the event ID is `SizeChanged`, then data1 and data2
+   * represent the new width and height of the window respectively. See the
+   * `WindowEventID` documentation for more details about whether the value
+   * returned from this method is meaningful in regard to the window event ID.
+   *
+   * \return the value of the first data value.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto data_1() const noexcept -> i32
+  {
+    return m_event.data1;
+  }
+
+  /**
+   * \brief Returns the value of the second data value.
+   *
+   * \details The meaning of this value is dependent on the window event ID
+   * of this window event.
+   *
+   * For instance, if the event ID is `SizeChanged`, then data1 and data2
+   * represent the new width and height of the window respectively. See the
+   * `WindowEventID` documentation for more details about whether the value
+   * returned from this method is meaningful in regard to the window event ID.
+   *
+   * \return the value of the second data value.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto data_2() const noexcept -> i32
+  {
+    return m_event.data2;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
+    -> SDL_Event
+{
+  SDL_Event e;
+  e.window = event.get();
+  return e;
+}
+
+/**
+ * \brief Indicates whether or not two window event ID values are the same.
+ *
+ * \param lhs the left-hand side window event ID value.
+ * \param rhs the right-hand side window event ID value.
+ *
+ * \return `true` if the window event ID values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const window_event_id lhs,
+                                        const SDL_WindowEventID rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_WindowEventID>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(window_event_id, SDL_WindowEventID)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_WindowEventID lhs,
+                                        const window_event_id rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two window event ID values aren't the same.
+ *
+ * \param lhs the left-hand side window event ID value.
+ * \param rhs the right-hand side window event ID value.
+ *
+ * \return `true` if the window event ID values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const window_event_id lhs,
+                                        const SDL_WindowEventID rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(window_event_id, SDL_WindowEventID)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_WindowEventID lhs,
+                                        const window_event_id rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_WINDOW_EVENT_HEADER
+
+#include "centurion/events/xinput_hints.hpp"
+// #include "centurion/filesystem/base_path.hpp"
 #ifndef CENTURION_BASE_PATH_HEADER
 #define CENTURION_BASE_PATH_HEADER
 
@@ -23158,10 +22332,6 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/owner.hpp"
-
 // #include "centurion_cfg.hpp"
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
@@ -23336,6 +22506,100 @@ struct sdl_deleter final
 
 #endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
 
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -23452,7 +22716,7 @@ namespace cen {
 
 #endif  // CENTURION_BASE_PATH_HEADER
 
-// #include "filesystem/file.hpp"
+// #include "centurion/filesystem/file.hpp"
 #ifndef CENTURION_FILE_HEADER
 #define CENTURION_FILE_HEADER
 
@@ -24488,7 +23752,7 @@ class file final
 
 #endif  // CENTURION_FILE_HEADER
 
-// #include "filesystem/pref_path.hpp"
+// #include "centurion/filesystem/pref_path.hpp"
 #ifndef CENTURION_PREF_PATH_HEADER
 #define CENTURION_PREF_PATH_HEADER
 
@@ -24548,7 +23812,3998 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_PREF_PATH_HEADER
-// #include "input/button_state.hpp"
+// #include "centurion/hints/android_hints.hpp"
+#ifndef CENTURION_ANDROID_HINTS_HEADER
+#define CENTURION_ANDROID_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
+// #include "../detail/hints_impl.hpp"
+#ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
+#define CENTURION_DETAIL_HINTS_IMPL_HEADER
+
+#include <cstddef>      // size_t
+#include <optional>     // optional
+#include <string>       // string, stoi, stoul, stof
+#include <type_traits>  // is_same_v, is_convertible_v
+
+// #include "../centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
+// #include "../misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "czstring_compare.hpp"
+#ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+#define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "czstring_eq.hpp"
+#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+#include <cstring>  // strcmp
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \cond FALSE
+namespace cen::detail {
+
+/**
+ * \brief Indicates whether or not two C-style strings are equal.
+ *
+ * \param lhs the left-hand side string, can safely be null.
+ * \param rhs the right-hand side string, can safely be null.
+ *
+ * \return `true` if the strings are equal; `false` otherwise.
+ *
+ * \since 4.1.0
+ */
+[[nodiscard]] inline auto czstring_eq(const czstring lhs,
+                                      const czstring rhs) noexcept -> bool
+{
+  if (lhs && rhs)
+  {
+    return std::strcmp(lhs, rhs) == 0;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \cond FALSE
+namespace cen::detail {
+
+struct czstring_compare final
+{
+  auto operator()(const czstring lhs, const czstring rhs) const noexcept -> bool
+  {
+    return detail::czstring_eq(lhs, rhs);
+  }
+};
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+
+// #include "static_bimap.hpp"
+#ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
+#define CENTURION_DETAIL_STATIC_BIMAP_HEADER
+
+#include <algorithm>  // find_if
+#include <array>      // array
+#include <utility>    // pair
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "centurion_cfg.hpp"
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"N/A"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \cond FALSE
+namespace cen::detail {
+
+/**
+ * \class static_bimap
+ *
+ * \brief A bidirectional associative container for when keys and values are
+ * known at compile-time.
+ *
+ * \note This class is only meant to be used in constexpr contexts.
+ *
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on
+ * constexpr maps!
+ *
+ * \tparam Key the type of the keys, must provide an overloaded `operator==`.
+ * \tparam Value the type of the values.
+ * \tparam ValueCmp the predicate used to lookup values from keys.
+ * \tparam size the amount of key-value pairs.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile static_bimap.hpp
+ */
+template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+class static_bimap final
+{
+  using pair_type = std::pair<Key, Value>;
+  using storage_type = std::array<pair_type, size>;
+
+ public:
+  storage_type data;
+
+  constexpr auto find(const Key& key) const -> const Value&
+  {
+    const auto it =
+        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+          return pair.first == key;
+        });
+
+    if (it != data.end())
+    {
+      return it->second;
+    }
+    else
+    {
+      throw cen_error{"Failed to find element in static map!"};
+    }
+  }
+
+  constexpr auto key_from(const Value& value) const -> const Key&
+  {
+    const auto it =
+        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+          ValueCmp predicate;
+          return predicate(pair.second, value);
+        });
+
+    if (it != data.end())
+    {
+      return it->first;
+    }
+    else
+    {
+      throw cen_error{"Failed to find key in static map!"};
+    }
+  }
+};
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename Key, std::size_t size>
+using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+
+template <typename Derived, typename Arg>
+class crtp_hint
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, Arg>;
+  }
+
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return Derived::name();
+  }
+
+  [[nodiscard]] static auto value() noexcept -> std::optional<Arg>
+  {
+    return Derived::current_value();
+  }
+
+  [[nodiscard]] static auto to_string(Arg value) -> std::string
+  {
+    return std::to_string(value);
+  }
+};
+
+// A hint class that only accepts booleans
+template <typename Hint>
+class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, bool>;
+  }
+
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
+  {
+    return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
+  }
+
+  [[nodiscard]] static auto to_string(const bool value) -> std::string
+  {
+    return value ? "1" : "0";
+  }
+};
+
+// A hint class that only accepts strings
+template <typename Hint>
+class string_hint : public crtp_hint<string_hint<Hint>, czstring>
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_convertible_v<T, czstring>;
+  }
+
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
+  {
+    const czstring value = SDL_GetHint(Hint::name());
+    if (!value)
+    {
+      return std::nullopt;
+    }
+    else
+    {
+      return value;
+    }
+  }
+
+  [[nodiscard]] static auto to_string(const czstring value) -> std::string
+  {
+    return value;
+  }
+};
+
+// A hint class that only accepts integers
+template <typename Hint>
+class int_hint : public crtp_hint<int_hint<Hint>, int>
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, int>;
+  }
+
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
+  {
+    const czstring value = SDL_GetHint(Hint::name());
+    if (!value)
+    {
+      return std::nullopt;
+    }
+    else
+    {
+      return std::stoi(value);
+    }
+  }
+};
+
+// A hint class that only accepts unsigned integers
+template <typename Hint>
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, unsigned int>;
+  }
+
+  [[nodiscard]] static auto current_value() noexcept
+      -> std::optional<unsigned int>
+  {
+    const czstring value = SDL_GetHint(Hint::name());
+    if (!value)
+    {
+      return std::nullopt;
+    }
+    else
+    {
+      return static_cast<unsigned int>(std::stoul(value));
+    }
+  }
+};
+
+// A hint class that only accepts floats
+template <typename Hint>
+class float_hint : public crtp_hint<float_hint<Hint>, float>
+{
+ public:
+  template <typename T>
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, float>;
+  }
+
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
+  {
+    const czstring value = SDL_GetHint(Hint::name());
+    if (!value)
+    {
+      return std::nullopt;
+    }
+    else
+    {
+      return std::stof(value);
+    }
+  }
+};
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_HINTS_IMPL_HEADER
+
+// #include "../misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::android {
+
+struct block_on_pause final : detail::bool_hint<block_on_pause>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
+  }
+};
+
+struct trap_back_button final : detail::bool_hint<trap_back_button>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
+  }
+};
+
+struct apk_expansion_main_file_version final
+    : detail::int_hint<apk_expansion_main_file_version>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+  }
+};
+
+struct apk_expansion_patch_file_version final
+    : detail::int_hint<apk_expansion_patch_file_version>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct pause_background_audio final : detail::bool_hint<pause_background_audio>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen::hint::android
+
+/// \} End of group configuration
+
+#endif  // CENTURION_ANDROID_HINTS_HEADER
+// #include "centurion/hints/apple_tv_hints.hpp"
+#ifndef CENTURION_APPLE_TV_HINTS_HEADER
+#define CENTURION_APPLE_TV_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::appletv {
+
+struct controller_ui_events final : detail::bool_hint<controller_ui_events>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
+  }
+};
+
+struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
+  }
+};
+
+}  // namespace cen::hint::appletv
+
+/// \} End of group configuration
+
+#endif  // CENTURION_APPLE_TV_HINTS_HEADER
+// #include "centurion/hints/common_hints.hpp"
+#ifndef CENTURION_COMMON_HINTS_HEADER
+#define CENTURION_COMMON_HINTS_HEADER
+
+#include <SDL.h>
+
+#include <utility>  // make_pair
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "enum_hint.hpp"
+#ifndef CENTURION_ENUM_HINT_HEADER
+#define CENTURION_ENUM_HINT_HEADER
+
+#include <SDL.h>
+
+#include <optional>     // optional
+#include <string>       // string
+#include <type_traits>  // is_same_v
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen::hint {
+
+/// \addtogroup configuration
+/// \{
+
+struct render_driver;
+struct audio_resampling_mode;
+struct scale_quality;
+struct framebuffer_acceleration;
+struct audio_category;
+struct wave_riff_chunk_size;
+struct wave_truncation;
+struct wave_fact_chunk;
+struct logical_size_mode;
+
+namespace qtwayland {
+struct content_orientation;
+}
+
+namespace windows {
+struct d3d_compiler;
+}
+
+/// \} End of group configuration
+
+/// \cond FALSE
+
+template <class Hint>
+struct enum_hint_traits;
+
+template <>
+struct enum_hint_traits<render_driver> final
+{
+  enum class value
+  {
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
+    metal,
+    software
+  };
+};
+
+template <>
+struct enum_hint_traits<audio_resampling_mode> final
+{
+  enum class value
+  {
+    normal = 0,
+    fast = 1,
+    medium = 2,
+    best = 3
+  };
+};
+
+template <>
+struct enum_hint_traits<scale_quality> final
+{
+  enum class value
+  {
+    nearest = 0,
+    linear = 1,
+    best = 2
+  };
+};
+
+template <>
+struct enum_hint_traits<framebuffer_acceleration> final
+{
+  enum class value
+  {
+    off,
+    on,
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
+    metal,
+    software
+  };
+};
+
+template <>
+struct enum_hint_traits<audio_category> final
+{
+  enum class value
+  {
+    ambient,
+    playback
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_riff_chunk_size> final
+{
+  enum class value
+  {
+    force,
+    ignore_zero,
+    ignore,
+    maximum
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_truncation> final
+{
+  enum class value
+  {
+    very_strict,
+    strict,
+    drop_frame,
+    drop_block
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_fact_chunk> final
+{
+  enum class value
+  {
+    truncate,
+    strict,
+    ignore_zero,
+    ignore
+  };
+};
+
+template <>
+struct enum_hint_traits<logical_size_mode> final
+{
+  enum class value
+  {
+    letterbox,
+    overscan
+  };
+};
+
+template <>
+struct enum_hint_traits<qtwayland::content_orientation> final
+{
+  enum class value
+  {
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
+  };
+};
+
+template <>
+struct enum_hint_traits<windows::d3d_compiler> final
+{
+  enum class value
+  {
+    v46,
+    v43,
+    none
+  };
+};
+
+/// \endcond
+
+/// \addtogroup configuration
+/// \{
+
+template <class Derived>
+class enum_hint
+{
+ public:
+  using value = typename enum_hint_traits<Derived>::value;
+
+  template <typename T>
+  constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, value>;
+  }
+
+  static auto current_value() noexcept -> std::optional<value>
+  {
+    czstring hint = SDL_GetHint(Derived::name());
+    if (!hint)
+    {
+      return std::nullopt;
+    }
+    return Derived::map.key_from(hint);
+  }
+
+  static auto to_string(const value value) -> std::string
+  {
+    return Derived::map.find(value);
+  }
+};
+
+/// \} End of group configuration
+
+}  // namespace cen::hint
+
+#endif  // CENTURION_ENUM_HINT_HEADER
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen::hint {
+
+/// \addtogroup configuration
+/// \{
+
+/**
+ * \class render_driver
+ *
+ * \brief Used to specify the render driver that will be used.
+ *
+ * \headerfile hints.hpp
+ */
+struct render_driver final : enum_hint<render_driver>
+{
+  static inline constexpr detail::string_map<value, 6> map{
+      std::make_pair(value::direct3d, "direct3d"),
+      std::make_pair(value::opengl, "opengl"),
+      std::make_pair(value::opengles, "opengles"),
+      std::make_pair(value::opengles2, "opengles2"),
+      std::make_pair(value::metal, "metal"),
+      std::make_pair(value::software, "software")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DRIVER;
+  }
+};
+
+struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
+{
+  static inline constexpr detail::string_map<value, 4> map{
+      std::make_pair(value::normal, "default"),
+      std::make_pair(value::fast, "fast"),
+      std::make_pair(value::medium, "medium"),
+      std::make_pair(value::best, "best")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_RESAMPLING_MODE;
+  }
+};
+
+struct scale_quality final : enum_hint<scale_quality>
+{
+  static inline constexpr detail::string_map<value, 3> map{
+      std::make_pair(value::nearest, "nearest"),
+      std::make_pair(value::linear, "linear"),
+      std::make_pair(value::best, "best")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_SCALE_QUALITY;
+  }
+};
+
+struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
+{
+  static inline constexpr detail::string_map<value, 8> map{
+      std::make_pair(value::off, "0"),
+      std::make_pair(value::on, "1"),
+      std::make_pair(value::direct3d, "direct3d"),
+      std::make_pair(value::opengl, "opengl"),
+      std::make_pair(value::opengles, "opengles"),
+      std::make_pair(value::opengles2, "opengles2"),
+      std::make_pair(value::metal, "metal"),
+      std::make_pair(value::software, "software")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_FRAMEBUFFER_ACCELERATION;
+  }
+};
+
+struct audio_category final : enum_hint<audio_category>
+{
+  static inline constexpr detail::string_map<value, 2> map{
+      std::make_pair(value::ambient, "ambient"),
+      std::make_pair(value::playback, "playback")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_CATEGORY;
+  }
+};
+
+struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
+{
+  static inline constexpr detail::string_map<value, 4> map{
+      std::make_pair(value::force, "force"),
+      std::make_pair(value::ignore, "ignore"),
+      std::make_pair(value::ignore_zero, "ignorezero"),
+      std::make_pair(value::maximum, "maximum")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
+  }
+};
+
+struct wave_truncation final : enum_hint<wave_truncation>
+{
+  static inline constexpr detail::string_map<value, 4> map{
+      std::make_pair(value::drop_block, "dropblock"),
+      std::make_pair(value::drop_frame, "dropframe"),
+      std::make_pair(value::strict, "strict"),
+      std::make_pair(value::very_strict, "verystrict")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WAVE_TRUNCATION;
+  }
+};
+
+struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
+{
+  static inline constexpr detail::string_map<value, 4> map{
+      std::make_pair(value::strict, "strict"),
+      std::make_pair(value::ignore_zero, "ignorezero"),
+      std::make_pair(value::ignore, "ignore"),
+      std::make_pair(value::truncate, "truncate")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WAVE_FACT_CHUNK;
+  }
+};
+
+struct logical_size_mode final : enum_hint<logical_size_mode>
+{
+  static inline constexpr detail::string_map<value, 2> map{
+      std::make_pair(value::letterbox, "letterbox"),
+      std::make_pair(value::overscan, "overscan")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
+  }
+};
+
+struct accelerometer_as_joystick final
+    : detail::bool_hint<accelerometer_as_joystick>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
+  }
+};
+
+struct allow_top_most final : detail::bool_hint<allow_top_most>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ALLOW_TOPMOST;
+  }
+};
+
+struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
+  }
+};
+
+struct double_buffer final : detail::bool_hint<double_buffer>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_DOUBLE_BUFFER;
+  }
+};
+
+struct enable_steam_controllers final
+    : detail::bool_hint<enable_steam_controllers>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
+  }
+};
+
+struct grab_keyboard final : detail::bool_hint<grab_keyboard>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GRAB_KEYBOARD;
+  }
+};
+
+struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IDLE_TIMER_DISABLED;
+  }
+};
+
+struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IME_INTERNAL_EDITING;
+  }
+};
+
+struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_NO_SIGNAL_HANDLERS;
+  }
+};
+
+struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_OPENGL_ES_DRIVER;
+  }
+};
+
+struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_OPENGL_SHADERS;
+  }
+};
+
+struct vsync final : detail::bool_hint<vsync>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_VSYNC;
+  }
+};
+
+struct allow_screensaver final : detail::bool_hint<allow_screensaver>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct video_external_context final : detail::bool_hint<video_external_context>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
+  }
+};
+
+struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
+  }
+};
+
+struct window_frame_usable_while_cursor_hidden final
+    : detail::bool_hint<window_frame_usable_while_cursor_hidden>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
+  }
+};
+
+struct render_batching final : detail::bool_hint<render_batching>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_BATCHING;
+  }
+};
+
+struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RETURN_KEY_HIDES_IME;
+  }
+};
+
+struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TOUCH_MOUSE_EVENTS;
+  }
+};
+
+struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_TOUCH_EVENTS;
+  }
+};
+
+struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_DISPLAY_USABLE_BOUNDS;
+  }
+};
+
+#endif  // #if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct orientations final : detail::string_hint<orientations>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ORIENTATIONS;
+  }
+};
+
+struct window_share_pixel_format final
+    : detail::string_hint<window_share_pixel_format>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
+  }
+};
+
+struct event_logging final : detail::int_hint<event_logging>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EVENT_LOGGING;
+  }
+};
+
+struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_STACK_SIZE;
+  }
+};
+
+struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TIMER_RESOLUTION;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct preferred_locales final : detail::string_hint<preferred_locales>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_PREFERRED_LOCALES;
+  }
+};
+
+struct thread_priority_policy final
+    : detail::string_hint<thread_priority_policy>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    // This hint could be enum-based, but it isn't clear whether or not there
+    // may be implementation specific identifiers other than those of the listed
+    // pthread identifiers. So, we let this be a string-based hint.
+    return SDL_HINT_THREAD_PRIORITY_POLICY;
+  }
+};
+
+struct treat_time_critical_as_real_time final
+    : detail::bool_hint<treat_time_critical_as_real_time>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL;
+  }
+};
+
+struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_APP_NAME;
+  }
+};
+
+struct audio_device_stream_name final
+    : detail::string_hint<audio_device_stream_name>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_NAME;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \} End of group configuration
+
+}  // namespace cen::hint
+
+#endif  // CENTURION_COMMON_HINTS_HEADER
+// #include "centurion/hints/controller_hints.hpp"
+#ifndef CENTURION_CONTROLLER_HINTS_HEADER
+#define CENTURION_CONTROLLER_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+// TODO Centurion 6: Rename this namespace to controller for API consistency
+namespace cen::hint::gamecontroller {
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct use_button_labels final : detail::bool_hint<use_button_labels>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
+  }
+};
+
+struct type final : detail::string_hint<type>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERTYPE;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct config final : detail::string_hint<config>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG;
+  }
+};
+
+struct config_file final : detail::string_hint<config_file>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
+  }
+};
+
+struct ignore_devices final : detail::string_hint<ignore_devices>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
+  }
+};
+
+struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
+  }
+};
+
+}  // namespace cen::hint::gamecontroller
+
+/// \} End of group configuration
+
+#endif  // CENTURION_CONTROLLER_HINTS_HEADER
+// #include "centurion/hints/d3d_hints.hpp"
+#ifndef CENTURION_D3D_HINTS_HEADER
+#define CENTURION_D3D_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::d3d {
+
+struct v11_debug final : detail::bool_hint<v11_debug>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
+  }
+};
+
+struct thread_safe final : detail::bool_hint<thread_safe>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
+  }
+};
+
+}  // namespace cen::hint::d3d
+
+/// \} End of group configuration
+
+#endif  // CENTURION_D3D_HINTS_HEADER
+// #include "centurion/hints/emscripten_hints.hpp"
+#ifndef CENTURION_EMSCRIPTEN_HINTS_HEADER
+#define CENTURION_EMSCRIPTEN_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::emscripten {
+
+struct keyboard_element final : detail::string_hint<keyboard_element>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct asyncify final : detail::bool_hint<asyncify>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_ASYNCIFY;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen::hint::emscripten
+
+/// \} End of group configuration
+
+#endif  // CENTURION_EMSCRIPTEN_HINTS_HEADER
+// #include "centurion/hints/enum_hint.hpp"
+#ifndef CENTURION_ENUM_HINT_HEADER
+#define CENTURION_ENUM_HINT_HEADER
+
+#include <SDL.h>
+
+#include <optional>     // optional
+#include <string>       // string
+#include <type_traits>  // is_same_v
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen::hint {
+
+/// \addtogroup configuration
+/// \{
+
+struct render_driver;
+struct audio_resampling_mode;
+struct scale_quality;
+struct framebuffer_acceleration;
+struct audio_category;
+struct wave_riff_chunk_size;
+struct wave_truncation;
+struct wave_fact_chunk;
+struct logical_size_mode;
+
+namespace qtwayland {
+struct content_orientation;
+}
+
+namespace windows {
+struct d3d_compiler;
+}
+
+/// \} End of group configuration
+
+/// \cond FALSE
+
+template <class Hint>
+struct enum_hint_traits;
+
+template <>
+struct enum_hint_traits<render_driver> final
+{
+  enum class value
+  {
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
+    metal,
+    software
+  };
+};
+
+template <>
+struct enum_hint_traits<audio_resampling_mode> final
+{
+  enum class value
+  {
+    normal = 0,
+    fast = 1,
+    medium = 2,
+    best = 3
+  };
+};
+
+template <>
+struct enum_hint_traits<scale_quality> final
+{
+  enum class value
+  {
+    nearest = 0,
+    linear = 1,
+    best = 2
+  };
+};
+
+template <>
+struct enum_hint_traits<framebuffer_acceleration> final
+{
+  enum class value
+  {
+    off,
+    on,
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
+    metal,
+    software
+  };
+};
+
+template <>
+struct enum_hint_traits<audio_category> final
+{
+  enum class value
+  {
+    ambient,
+    playback
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_riff_chunk_size> final
+{
+  enum class value
+  {
+    force,
+    ignore_zero,
+    ignore,
+    maximum
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_truncation> final
+{
+  enum class value
+  {
+    very_strict,
+    strict,
+    drop_frame,
+    drop_block
+  };
+};
+
+template <>
+struct enum_hint_traits<wave_fact_chunk> final
+{
+  enum class value
+  {
+    truncate,
+    strict,
+    ignore_zero,
+    ignore
+  };
+};
+
+template <>
+struct enum_hint_traits<logical_size_mode> final
+{
+  enum class value
+  {
+    letterbox,
+    overscan
+  };
+};
+
+template <>
+struct enum_hint_traits<qtwayland::content_orientation> final
+{
+  enum class value
+  {
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
+  };
+};
+
+template <>
+struct enum_hint_traits<windows::d3d_compiler> final
+{
+  enum class value
+  {
+    v46,
+    v43,
+    none
+  };
+};
+
+/// \endcond
+
+/// \addtogroup configuration
+/// \{
+
+template <class Derived>
+class enum_hint
+{
+ public:
+  using value = typename enum_hint_traits<Derived>::value;
+
+  template <typename T>
+  constexpr static auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, value>;
+  }
+
+  static auto current_value() noexcept -> std::optional<value>
+  {
+    czstring hint = SDL_GetHint(Derived::name());
+    if (!hint)
+    {
+      return std::nullopt;
+    }
+    return Derived::map.key_from(hint);
+  }
+
+  static auto to_string(const value value) -> std::string
+  {
+    return Derived::map.find(value);
+  }
+};
+
+/// \} End of group configuration
+
+}  // namespace cen::hint
+
+#endif  // CENTURION_ENUM_HINT_HEADER
+// #include "centurion/hints/hints.hpp"
+/**
+ * \brief Provides utilities related to managing hints.
+ *
+ * \details Provides utilities related to managing hints ("configuration
+ * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
+ * <code>SDL_hints.hpp</code> header for details regarding any specific hint
+ * type.
+ *
+ * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
+ * `X11WindowVisualID` are string hints because the types of their values
+ * isn't known. Should be fixed if the type isn't actually string.
+ *
+ * \todo C++20: Make callback signature depend on the `UserData` and the type
+ * of the associated hint, so that the values supplied to the callback aren't
+ * always strings.
+ *
+ * \todo Document all of the hint classes.
+ *
+ * \file hints.hpp
+ *
+ * \since 4.1.0
+ *
+ * \author Albin Johansson
+ *
+ * \date 2019-2021
+ *
+ * \copyright MIT License
+ */
+
+#ifndef CENTURION_HINTS_HEADER
+#define CENTURION_HINTS_HEADER
+
+#include <SDL.h>
+
+#include <optional>  // optional
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../log.hpp"
+#ifndef CENTURION_LOG_HEADER
+#define CENTURION_LOG_HEADER
+
+#include <SDL.h>
+
+#include <cassert>  // assert
+#include <string>   // string
+#include <utility>  // forward
+
+// #include "centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup misc
+/// \{
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10
+using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+/**
+ * \namespace cen::log
+ *
+ * \brief Contains easy-to-use logging facilities.
+ *
+ * \details The usage of the logging API will be very familiar to most people
+ * that have used the `printf` and/or the `SDL_Log` facilities.
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+namespace cen::log {
+
+/**
+ * \enum priority
+ *
+ * \brief Mirrors the `SDL_LogPriority` enum.
+ *
+ * \see `SDL_LogPriority`
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+enum class priority
+{
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
+  verbose = SDL_LOG_PRIORITY_VERBOSE,
+  debug = SDL_LOG_PRIORITY_DEBUG,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
+  error = SDL_LOG_PRIORITY_ERROR,
+};
+
+/**
+ * \enum category
+ *
+ * \brief Mirrors the `SDL_LogCategory` enum.
+ *
+ * \see `SDL_LogCategory`
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+enum class category
+{
+  app = SDL_LOG_CATEGORY_APPLICATION,
+  error = SDL_LOG_CATEGORY_ERROR,
+  assert = SDL_LOG_CATEGORY_ASSERT,
+  system = SDL_LOG_CATEGORY_SYSTEM,
+  audio = SDL_LOG_CATEGORY_AUDIO,
+  video = SDL_LOG_CATEGORY_VIDEO,
+  render = SDL_LOG_CATEGORY_RENDER,
+  input = SDL_LOG_CATEGORY_INPUT,
+  test = SDL_LOG_CATEGORY_TEST,
+  misc = SDL_LOG_CATEGORY_CUSTOM
+};
+
+/**
+ * \brief Logs a message with the specified priority and category.
+ *
+ * \details This method has no effect if the supplied string is null. Usage
+ * of this method is quite bulky, so refer to the other logging methods for
+ * casual logging.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param priority the priority that will be used.
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void msg(const priority priority,
+         const category category,
+         const not_null<czstring> fmt,
+         Args&&... args) noexcept
+{
+  assert(fmt);
+  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
+  const auto prio = static_cast<SDL_LogPriority>(priority);
+  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::info` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::info` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::info(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::warn` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::warn` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::warn(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::verbose` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const category category,
+             const not_null<czstring> fmt,
+             Args&&... args) noexcept
+{
+  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::verbose` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::verbose(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::debug` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const category category,
+           const not_null<czstring> fmt,
+           Args&&... args) noexcept
+{
+  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::debug` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::debug(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::critical` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const category category,
+              const not_null<czstring> fmt,
+              Args&&... args) noexcept
+{
+  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::critical` and `category::app` .
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::critical(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::error` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const category category, const czstring fmt, Args&&... args) noexcept
+{
+  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with the `priority::error` and `category::app`.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::error(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a string.
+ *
+ * \details This function is meant to be used for casual logging, where you
+ * just want to log a string. The message will be logged with
+ * `priority::info` and `category::app`.
+ *
+ * \param str the string that will be logged.
+ *
+ * \since 5.0.0
+ */
+inline void put(const std::string& str) noexcept
+{
+  log::info("%s", str.c_str());
+}
+
+/**
+ * \copydoc put(const std::string&)
+ */
+inline void put(const not_null<czstring> str) noexcept
+{
+  log::info("%s", str);
+}
+
+/**
+ * \brief Resets all of the logging priorities.
+ *
+ * \since 3.0.0
+ */
+inline void reset_priorities() noexcept
+{
+  SDL_LogResetPriorities();
+}
+
+/**
+ * \brief Sets the priority of all categories.
+ *
+ * \param prio the priority that will be used.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const priority prio) noexcept
+{
+  const auto p = static_cast<SDL_LogPriority>(prio);
+  SDL_LogSetAllPriority(p);
+
+  // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
+}
+
+/**
+ * \brief Sets the priority of the specified category.
+ *
+ * \param category the category that will have its priority changed.
+ * \param prio the new priority value.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const category category, const priority prio) noexcept
+{
+  SDL_LogSetPriority(static_cast<int>(category),
+                     static_cast<SDL_LogPriority>(prio));
+}
+
+/**
+ * \brief Returns the priority of the specified category.
+ *
+ * \param category the category to return the priority of.
+ * \return the priority of the specified category.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto get_priority(const category category) noexcept
+    -> priority
+{
+  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
+}
+
+/**
+ * \brief Returns the maximum size, i.e the maximum amount of characters that
+ * a string can contain and successfully be logged without being truncated.
+ *
+ * \note Strings longer that this value will be truncated.
+ *
+ * \return the maximum amount of characters that a loggable string can
+ * contain.
+ *
+ * \see `SDL_MAX_LOG_MESSAGE`
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto max_message_size() noexcept -> int
+{
+  return SDL_MAX_LOG_MESSAGE;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values are the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_LogPriority>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(priority, SDL_LogPriority)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values aren't the
+ * same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(priority, SDL_LogPriority)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_LogCategory>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(category, SDL_LogCategory)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(category, SDL_LogCategory)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+}  // namespace cen::log
+
+#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
+
+#ifdef NDEBUG
+
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...)
+
+#else
+
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+
+#endif  // NDEBUG
+
+#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_LOG_INFO
+ *
+ * \brief A debug-only macro that expands to `cen::log::info`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_WARN
+ *
+ * \brief A debug-only macro that expands to `cen::log::warn`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ *
+ * \brief A debug-only macro that expands to `cen::log::verbose`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ *
+ * \brief A debug-only macro that expands to `cen::log::debug`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ *
+ * \brief A debug-only macro that expands to `cen::log::critical`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_ERROR
+ *
+ * \brief A debug-only macro that expands to `cen::log::error`.
+ *
+ * \since 5.0.0
+ */
+
+/// \}
+
+#endif  // CENTURION_LOG_HEADER
+
+// #include "../misc/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "centurion_cfg.hpp"
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"N/A"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup configuration
+/// \{
+
+/**
+ * \enum hint_priority
+ *
+ * \brief Provides three different priorities that can be specified when
+ * setting the value of a hint.
+ *
+ * \since 4.1.0
+ *
+ * \see `SDL_HintPriority`
+ *
+ * \headerfile hints.hpp
+ */
+enum class hint_priority
+{
+  low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
+  normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
+  override = SDL_HINT_OVERRIDE  ///< The highest priority.
+};
+
+/**
+ * \brief Sets the value of the specified hint.
+ *
+ * \details This method will only accept values that are related to the
+ * specified hint, supplying the wrong kind of value causes a compile-time
+ * error. See the related hint class for more details about the associated
+ * value type. However, whilst this method is type-safe, it doesn't ensure
+ * that *correct* values are specified for the hints.
+ *
+ * \tparam Hint the type of the hint that will be modified.
+ * \tparam priority the priority that will be used, defaults to `normal`.
+ * \tparam Value the type of the hint value.
+ *
+ * \param value the new value that will be set for the specified hint.
+ *
+ * \return `true` if the hint was successfully set; `false` otherwise.
+ *
+ * \since 4.1.0
+ */
+template <typename Hint,
+          hint_priority priority = hint_priority::normal,
+          typename Value,
+          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
+auto set_hint(const Value& value) -> bool
+{
+  return static_cast<bool>(
+      SDL_SetHintWithPriority(Hint::name(),
+                              Hint::to_string(value).c_str(),
+                              static_cast<SDL_HintPriority>(priority)));
+}
+
+/**
+ * \brief Returns the current value of the specified hint.
+ *
+ * \note The returned value is a `std::optional` of the hint value type. Many
+ * hints aren't actually set by default.
+ *
+ * \tparam Hint the type of the Hint to obtain the value of.
+ *
+ * \return the current value of the specified hint; `std::nullopt` if there is
+ * no value set for the hint.
+ *
+ * \since 4.1.0
+ */
+template <typename Hint>
+[[nodiscard]] auto get_hint() noexcept
+{
+  return Hint::current_value();
+}
+
+/**
+ * \class hint_callback
+ *
+ * \brief Represents a handle for dealing with hint callbacks.
+ *
+ * \details This class provides methods for easily connecting and disconnecting
+ * a callback from receiving updates.
+ *
+ * \tparam Hint the type of the associated hint. Should be one of the hint
+ * types defined in the `hints.hpp` header.
+ *
+ * \tparam UserData the type of the user data, defaults to `void`.
+ *
+ * \since 4.1.0
+ *
+ * \headerfile hints.hpp
+ */
+template <typename Hint, typename UserData = void>
+class hint_callback final
+{
+ public:
+  /**
+   * \brief Creates a `hint_callback`.
+   *
+   * \param callback the function object that will be called whenever the
+   * associated hint is updated. The signature should be `void(void*,
+   * czstring, czstring, czstring)`.
+   * \param userData a pointer to some user data. Defaults to `nullptr`.
+   *
+   * \throws cen_error if the supplied function pointer is null.
+   *
+   * \since 4.1.0
+   */
+  explicit hint_callback(SDL_HintCallback callback,
+                         UserData* userData = nullptr)
+      : m_callback{callback}
+      , m_userData{userData}
+  {
+    if (!callback)
+    {
+      throw cen_error{"Failed to create hint callback"};
+    }
+  }
+
+  /**
+   * \brief Registers the callback to be invoked whenever the associated hint is
+   * updated.
+   *
+   * \see `SDL_AddHintCallback`
+   *
+   * \since 4.1.0
+   */
+  void connect() noexcept
+  {
+    SDL_AddHintCallback(Hint::name(),
+                        m_callback,
+                        static_cast<void*>(m_userData));
+  }
+
+  /**
+   * \brief Unregisters the callback from being updated whenever the associated
+   * hint is updated.
+   *
+   * \see `SDL_DelHintCallback`
+   *
+   * \since 4.1.0
+   */
+  void disconnect() noexcept
+  {
+    SDL_DelHintCallback(Hint::name(),
+                        m_callback,
+                        static_cast<void*>(m_userData));
+  }
+
+  /**
+   * \brief Returns a pointer to the function that is invoked when the
+   * associated hint is updated.
+   *
+   * \return a pointer to the function that is invoked when the associated
+   * hint is updated.
+   *
+   * \since 4.1.0
+   */
+  [[nodiscard]] auto get() noexcept -> SDL_HintCallback
+  {
+    return m_callback;
+  }
+
+  /**
+   * \brief Returns a pointer to the user data associated with the callback.
+   *
+   * \return a pointer to the user data associated with the callback, can be
+   * null.
+   *
+   * \since 4.1.0
+   */
+  [[nodiscard]] auto user_data() const noexcept -> UserData*
+  {
+    return m_userData;
+  }
+
+ private:
+  SDL_HintCallback m_callback;
+  UserData* m_userData;
+};
+
+/**
+ * \brief Adds a callback to observe changes of the value of the specified hint.
+ *
+ * \details A callback handle object is returned, which can be used to easily
+ * disconnect the callback later. This function can be used with any function
+ * object that is stateless, such as traditional function pointers and lambdas.
+ * The simplest way to add a callback is with a lambda and no explicit user
+ * data.
+ *
+ * \note The callback will be immediately invoked with the current value of
+ * the hint.
+ *
+ * \note In a future version of centurion (that supports C++20), the
+ * signature of the function object will be dependent on the `UserData` type.
+ * Unfortunately, this isn't really doable with C++17. Since it requires
+ * default-constructible stateless lambdas.
+ *
+ * \tparam Hint should one of the many hint types defined in this header.
+ * However, all it requires is that the type provides a static method that
+ * returns a `czstring`.
+ * \tparam UserData the type of the user data, defaults to void.
+ *
+ * \param fun the function object that will be invoked when the hint is
+ * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
+ * \param userData the user data to associate with the callback, defaults to
+ * `nullptr`.
+ *
+ * \return a handle to the added callback.
+ *
+ * \since 4.1.0
+ */
+template <typename Hint, typename UserData = void>
+auto add_hint_callback(SDL_HintCallback fun,
+                       UserData* userData = nullptr) noexcept
+    -> hint_callback<Hint, UserData>
+{
+  hint_callback<Hint, UserData> hintCallback{fun, userData};
+  hintCallback.connect();
+  return hintCallback;
+}
+
+/**
+ * \brief Clears all stored hints.
+ *
+ * \see `SDL_ClearHints`
+ *
+ * \since 4.1.0
+ */
+inline void clear_hints() noexcept
+{
+  SDL_ClearHints();
+}
+
+/// \} End of group configuration
+
+}  // namespace cen
+
+#endif  // CENTURION_HINTS_HEADER
+
+// #include "centurion/hints/joystick_hints.hpp"
+#ifndef CENTURION_JOYSTICK_HINTS_HEADER
+#define CENTURION_JOYSTICK_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::joystick {
+
+struct allow_background_events final
+    : detail::bool_hint<allow_background_events>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
+  }
+};
+
+struct use_hidapi final : detail::bool_hint<use_hidapi>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI;
+  }
+};
+
+struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
+  }
+};
+
+struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
+  }
+};
+
+struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
+  }
+};
+
+struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
+  }
+};
+
+struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct use_hidapi_ps5 final : detail::bool_hint<use_hidapi_ps5>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS5;
+  }
+};
+
+struct use_raw_input final : detail::bool_hint<use_raw_input>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_RAWINPUT;
+  }
+};
+
+struct hidapi_correlate_xinput final
+    : detail::bool_hint<hidapi_correlate_xinput>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
+  }
+};
+
+struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_LINUX_JOYSTICK_DEADZONES;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen::hint::joystick
+
+/// \} End of group configuration
+
+#endif  // CENTURION_JOYSTICK_HINTS_HEADER
+// #include "centurion/hints/mac_hints.hpp"
+#ifndef CENTURION_MAC_HINTS_HEADER
+#define CENTURION_MAC_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::mac {
+
+struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
+  }
+};
+
+struct background_app final : detail::bool_hint<background_app>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_BACKGROUND_APP;
+  }
+};
+
+struct ctrl_click_emulate_right_click final
+    : detail::bool_hint<ctrl_click_emulate_right_click>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
+  }
+};
+
+}  // namespace cen::hint::mac
+
+/// \} End of group configuration
+
+#endif  // CENTURION_MAC_HINTS_HEADER
+// #include "centurion/hints/mouse_hints.hpp"
+#ifndef CENTURION_MOUSE_HINTS_HEADER
+#define CENTURION_MOUSE_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::mouse {
+
+struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
+  }
+};
+
+struct relative_mode_warp final : detail::bool_hint<relative_mode_warp>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
+  }
+};
+
+struct double_click_time final : detail::int_hint<double_click_time>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
+  }
+};
+
+struct double_click_radius final : detail::int_hint<double_click_radius>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
+  }
+};
+
+struct normal_speed_scale final : detail::float_hint<normal_speed_scale>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
+  }
+};
+
+struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+struct relative_scaling final : detail::bool_hint<relative_scaling>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SCALING;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen::hint::mouse
+
+/// \} End of group configuration
+
+#endif  // CENTURION_MOUSE_HINTS_HEADER
+// #include "centurion/hints/qtwayland_hints.hpp"
+#ifndef CENTURION_QTWAYLAND_HINTS_HEADER
+#define CENTURION_QTWAYLAND_HINTS_HEADER
+
+#include <SDL.h>
+
+#include <utility>  // make_pair
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "enum_hint.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::qtwayland {
+
+struct content_orientation final : enum_hint<content_orientation>
+{
+  static inline constexpr detail::string_map<value, 5> map{
+      std::make_pair(value::primary, "primary"),
+      std::make_pair(value::portrait, "portrait"),
+      std::make_pair(value::landscape, "landscape"),
+      std::make_pair(value::inverted_portrait, "inverted-portrait"),
+      std::make_pair(value::inverted_landscape, "inverted-landscape")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
+  }
+};
+
+struct window_flags final : detail::string_hint<window_flags>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
+  }
+};
+
+}  // namespace cen::hint::qtwayland
+
+/// \} End of group configuration
+
+#endif  // CENTURION_QTWAYLAND_HINTS_HEADER
+// #include "centurion/hints/raspberry_pi_hints.hpp"
+#ifndef CENTURION_RASPBERRY_PI_HINTS_HEADER
+#define CENTURION_RASPBERRY_PI_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::raspberrypi {
+
+struct video_layer final : detail::int_hint<video_layer>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RPI_VIDEO_LAYER;
+  }
+};
+
+/// \} End of group configuration
+
+}  // namespace cen::hint::raspberrypi
+
+#endif  // CENTURION_RASPBERRY_PI_HINTS_HEADER
+
+// #include "centurion/hints/windows_hints.hpp"
+#ifndef CENTURION_WINDOWS_HINTS_HEADER
+#define CENTURION_WINDOWS_HINTS_HEADER
+
+#include <utility>  // make_pair
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "enum_hint.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::windows {
+
+struct d3d_compiler final : enum_hint<d3d_compiler>
+{
+  static inline constexpr detail::string_map<value, 3> map{
+      std::make_pair(value::v46, "d3dcompiler_46.dll"),
+      std::make_pair(value::v43, "d3dcompiler_43.dll"),
+      std::make_pair(value::none, "none")};
+
+  constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
+  }
+};
+
+struct no_thread_naming final : detail::bool_hint<no_thread_naming>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
+  }
+};
+
+struct enable_message_loop final : detail::bool_hint<enable_message_loop>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
+  }
+};
+
+struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
+  }
+};
+
+struct int_resource_icon final : detail::string_hint<int_resource_icon>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
+  }
+};
+
+struct int_resource_icon_small final
+    : detail::string_hint<int_resource_icon_small>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
+  }
+};
+
+}  // namespace cen::hint::windows
+
+/// \} End of group configuration
+
+#endif  // CENTURION_WINDOWS_HINTS_HEADER
+
+// #include "centurion/hints/winrt_hints.hpp"
+#ifndef CENTURION_WINRT_HINTS_HEADER
+#define CENTURION_WINRT_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::winrt {
+
+struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
+  }
+};
+
+struct privacy_policy_url final : detail::string_hint<privacy_policy_url>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
+  }
+};
+
+struct handle_back_button final : detail::bool_hint<handle_back_button>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
+  }
+};
+
+}  // namespace cen::hint::winrt
+
+/// \} End of group configuration
+
+#endif  // CENTURION_WINRT_HINTS_HEADER
+// #include "centurion/hints/x11_hints.hpp"
+#ifndef CENTURION_X11_HINTS_HEADER
+#define CENTURION_X11_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::x11 {
+
+struct net_wm_ping final : detail::bool_hint<net_wm_ping>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_PING;
+  }
+};
+
+struct net_wm_bypass_compositor final
+    : detail::bool_hint<net_wm_bypass_compositor>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
+  }
+};
+
+struct xinerama final : detail::bool_hint<xinerama>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XINERAMA;
+  }
+};
+
+struct xrandr final : detail::bool_hint<xrandr>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XRANDR;
+  }
+};
+
+struct xvidmode final : detail::bool_hint<xvidmode>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XVIDMODE;
+  }
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+struct force_egl final : detail::bool_hint<force_egl>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_FORCE_EGL;
+  }
+};
+
+struct window_visual_id final : detail::string_hint<window_visual_id>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+}  // namespace cen::hint::x11
+
+/// \} End of group configuration
+
+#endif  // CENTURION_X11_HINTS_HEADER
+
+// #include "centurion/hints/xinput_hints.hpp"
+#ifndef CENTURION_XINPUT_HINTS_HEADER
+#define CENTURION_XINPUT_HINTS_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../detail/hints_impl.hpp"
+
+// #include "../misc/czstring.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup configuration
+/// \{
+
+namespace cen::hint::xinput {
+
+struct is_enabled final : detail::bool_hint<is_enabled>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_ENABLED;
+  }
+};
+
+struct use_old_joystick_mapping final
+    : detail::bool_hint<use_old_joystick_mapping>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
+  }
+};
+
+}  // namespace cen::hint::xinput
+
+/// \} End of group configuration
+
+#endif  // CENTURION_XINPUT_HINTS_HEADER
+// #include "centurion/input/button_state.hpp"
 #ifndef CENTURION_BUTTON_STATE_HEADER
 #define CENTURION_BUTTON_STATE_HEADER
 
@@ -24656,7 +27911,7 @@ enum class button_state
 }  // namespace cen
 
 #endif  // CENTURION_BUTTON_STATE_HEADER
-// #include "input/controller.hpp"
+// #include "centurion/input/controller.hpp"
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
@@ -26017,10 +29272,6 @@ constexpr auto operator"" _s(const unsigned long long int value) noexcept
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/owner.hpp"
-
 // #include "centurion_cfg.hpp"
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
@@ -26195,6 +29446,100 @@ struct sdl_deleter final
 
 #endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
 
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -28830,6 +32175,8 @@ template <std::size_t bufferSize = 16, typename T>
 
 // #include "../misc/exception.hpp"
 
+// #include "../misc/integers.hpp"
+
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -29036,7 +32383,7 @@ class basic_sensor final
       -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
+    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
     if (result != -1)
     {
       return array;
@@ -30580,11 +33927,10 @@ class basic_controller final
   {
     std::array<float, size> array{};
     const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller,
-                                        value,
-                                        array.data(),
-                                        static_cast<int>(array.size()));
+    const auto res = SDL_GameControllerGetSensorData(m_controller,
+                                                     value,
+                                                     array.data(),
+                                                     isize(array));
     if (res != -1)
     {
       return array;
@@ -31183,7 +34529,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER
 
-// #include "input/haptic.hpp"
+// #include "centurion/input/haptic.hpp"
 #ifndef CENTURION_HAPTIC_HEADER
 #define CENTURION_HAPTIC_HEADER
 
@@ -34101,7 +37447,7 @@ auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic)
 
 #endif  // CENTURION_HAPTIC_HEADER
 
-// #include "input/joystick.hpp"
+// #include "centurion/input/joystick.hpp"
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
@@ -35459,7 +38805,7 @@ class basic_joystick final
 }  // namespace cen
 
 #endif  // CENTURION_JOYSTICK_HEADER
-// #include "input/key_code.hpp"
+// #include "centurion/input/key_code.hpp"
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
@@ -36482,7 +39828,7 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 }  // namespace cen
 
 #endif  // CENTURION_KEY_CODE_HEADER
-// #include "input/key_modifier.hpp"
+// #include "centurion/input/key_modifier.hpp"
 #ifndef CENTURION_KEY_MODIFIER_HEADER
 #define CENTURION_KEY_MODIFIER_HEADER
 
@@ -36532,7 +39878,7 @@ enum class key_modifier
 }  // namespace cen
 
 #endif  // CENTURION_KEY_MODIFIER_HEADER
-// #include "input/key_state.hpp"
+// #include "centurion/input/key_state.hpp"
 #ifndef CENTURION_KEY_STATE_HEADER
 #define CENTURION_KEY_STATE_HEADER
 
@@ -38890,7 +42236,7 @@ class key_state final
 
 #endif  // CENTURION_KEY_STATE_HEADER
 
-// #include "input/mouse_state.hpp"
+// #include "centurion/input/mouse_state.hpp"
 #ifndef CENTURION_MOUSE_STATE_HEADER
 #define CENTURION_MOUSE_STATE_HEADER
 
@@ -39980,7 +43326,7 @@ class mouse_state final
 }  // namespace cen
 
 #endif  // CENTURION_MOUSE_STATE_HEADER
-// #include "input/scan_code.hpp"
+// #include "centurion/input/scan_code.hpp"
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
@@ -40995,7 +44341,7 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 }  // namespace cen
 
 #endif  // CENTURION_SCAN_CODE_HEADER
-// #include "input/sensor.hpp"
+// #include "centurion/input/sensor.hpp"
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
@@ -41019,6 +44365,8 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 // #include "../misc/czstring.hpp"
 
 // #include "../misc/exception.hpp"
+
+// #include "../misc/integers.hpp"
 
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -41226,7 +44574,7 @@ class basic_sensor final
       -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), array.size());
+    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
     if (result != -1)
     {
       return array;
@@ -41529,7 +44877,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<B>& sensor)
 
 #endif  // CENTURION_SENSOR_HEADER
 
-// #include "input/touch.hpp"
+// #include "centurion/input/touch.hpp"
 #ifndef CENTURION_TOUCH_HEADER
 #define CENTURION_TOUCH_HEADER
 
@@ -41776,7 +45124,1643 @@ enum class device_type
 }  // namespace cen::touch
 
 #endif  // CENTURION_TOUCH_HEADER
-// #include "math/area.hpp"
+// #include "centurion/library.hpp"
+/**
+ * \defgroup core Core
+ * \brief Contains entities considered to be fundamental for the library.
+ */
+
+/**
+ * \defgroup configuration Configuration
+ * \brief Contains the API related to hints/configuration variables.
+ */
+
+/**
+ * \defgroup event Events
+ * \brief Contains entities related to events.
+ */
+
+/**
+ * \defgroup thread Threads
+ * \brief Provides threading utilities for dealing with threads, mutexes, locks,
+ * etc.
+ */
+
+/**
+ * \defgroup input Input
+ * \brief Contains components related to input from mice, keyboards,
+ * controllers, etc.
+ */
+
+/**
+ * \defgroup graphics Graphics
+ * \brief Contains components related to window-management, rendering, fonts,
+ * etc.
+ */
+
+/**
+ * \defgroup system System
+ * \brief Contains various utilities related to system resources.
+ */
+
+/**
+ * \defgroup compiler Compiler
+ * \brief Provides `constexpr` utilities for querying the current compiler.
+ * \note There is no guarantee that the compiler checks are mutually exclusive.
+ */
+
+/**
+ * \defgroup geometry Geometry
+ * \brief Contains basic geometric components, used throughout the library.
+ */
+
+/**
+ * \defgroup audio Audio
+ * \brief Contains the audio API, for playing as sound effects and music.
+ */
+
+/**
+ * \defgroup misc Misc
+ * \brief Contains miscellaneous components.
+ */
+
+#ifndef CENTURION_LIBRARY_HEADER
+#define CENTURION_LIBRARY_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <optional>  // optional
+
+// #include "misc/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "centurion_cfg.hpp"
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"N/A"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+// #include "misc/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef u64
+ *
+ * \brief Alias for a 64-bit unsigned integer.
+ */
+using u64 = Uint64;
+
+/**
+ * \typedef u32
+ *
+ * \brief Alias for a 32-bit unsigned integer.
+ */
+using u32 = Uint32;
+
+/**
+ * \typedef u16
+ *
+ * \brief Alias for a 16-bit unsigned integer.
+ */
+using u16 = Uint16;
+
+/**
+ * \typedef u8
+ *
+ * \brief Alias for an 8-bit unsigned integer.
+ */
+using u8 = Uint8;
+
+/**
+ * \typedef i64
+ *
+ * \brief Alias for a 64-bit signed integer.
+ */
+using i64 = Sint64;
+
+/**
+ * \typedef i32
+ *
+ * \brief Alias for a 32-bit signed integer.
+ */
+using i32 = Sint32;
+
+/**
+ * \typedef i16
+ *
+ * \brief Alias for a 16-bit signed integer.
+ */
+using i16 = Sint16;
+
+/**
+ * \typedef i8
+ *
+ * \brief Alias for an 8-bit signed integer.
+ */
+using i8 = Sint8;
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept
+    -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept
+    -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept
+    -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept
+    -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept
+    -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept
+    -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept
+    -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept
+    -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \namespace cen
+ *
+ * \brief The top-level namespace that all components of the library reside in.
+ */
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \struct config
+ *
+ * \brief Used to specify how the library is initialized.
+ *
+ * \details All fields are initialized to the default values used by the
+ * library.
+ *
+ * \since 4.0.0
+ *
+ * \var config::initCore
+ * Indicates whether or not the SDL2 core is initialized.
+ *
+ * \var config::initImage
+ * Indicates whether or not SDL2_image is initialized.
+ *
+ * \var config::initMixer
+ * Indicates whether or not SDL2_mixer is initialized.
+ *
+ * \var config::initTTF
+ * Indicates whether or not SDL2_ttf is initialized.
+ *
+ * \var config::coreFlags
+ * Flags passed on to `SDL_Init()`, if \ref config.initCore is `true`.
+ *
+ * \var config::imageFlags
+ * Flags passed on to `IMG_Init()`, if \ref config.initImage is
+ * `true`.
+ *
+ * \var config::mixerFlags
+ * Flags passed on to `Mix_Init()`, if \ref config.initMixer is
+ * `true`.
+ *
+ * \var config::mixerFreq
+ * The frequency used by SDL2_mixer, if \ref config.initMixer is
+ * `true`.
+ *
+ * \var config::mixerFormat
+ * The format used by SDL2_mixer, if \ref config.initMixer is `true`.
+ *
+ * \var config::mixerChannels
+ * The amount of channels used by SDL2_mixer, if \ref config.initMixer
+ * is `true`.
+ *
+ * \var config::mixerChunkSize
+ * The chunk size used by SDL2_mixer, if \ref config.initMixer is
+ * `true`.
+ *
+ * \headerfile centurion.hpp
+ */
+struct config final
+{
+  bool initCore{true};
+  bool initImage{true};
+  bool initMixer{true};
+  bool initTTF{true};
+
+  u32 coreFlags{SDL_INIT_EVERYTHING};
+
+  int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
+
+  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
+                 MIX_INIT_MOD | MIX_INIT_OPUS};
+
+  int mixerFreq{MIX_DEFAULT_FREQUENCY};
+  u16 mixerFormat{MIX_DEFAULT_FORMAT};
+  int mixerChannels{MIX_DEFAULT_CHANNELS};
+  int mixerChunkSize{4096};
+};
+
+/**
+ * \class library
+ *
+ * \brief Used to initialize and de-initialize the library.
+ *
+ * \note The signature of the main-method must be `ìnt(int, char**)` when
+ * using the Centurion library!
+ *
+ * \since 3.0.0
+ *
+ * \headerfile centurion.hpp
+ */
+class library final
+{
+ public:
+  /**
+   * \brief Initializes the library.
+   *
+   * \note Make sure to have the `library` instance as a local variable that
+   * will outlive the duration of your main program. It's not sufficient to just
+   * call the constructor but not store the result as a variable.
+   *
+   * \pre there mustn't exist any other instances of this class at the time of
+   * invocation of this constructor.
+   *
+   * \throws sdl_error if the core SDL2 library can't be initialized.
+   * \throws img_error if the SDL2_image library can't be initialized.
+   * \throws ttf_error if the SDL2_ttf library can't be initialized.
+   * \throws mix_error if the SDL2_mixer library can't be initialized.
+   *
+   * \since 3.0.0
+   */
+  library()
+  {
+    init();
+  }
+
+  /**
+   * \brief Initializes the library according to the supplied configuration.
+   *
+   * \pre there mustn't exist any other instances of this class at the time of
+   * invocation of this constructor.
+   *
+   * \param cfg the configuration spec, determines what gets initialized.
+   *
+   * \throws sdl_error if the core SDL2 library can't be initialized.
+   * \throws img_error if the SDL2_image library can't be initialized.
+   * \throws ttf_error if the SDL2_ttf library can't be initialized.
+   * \throws mix_error if the SDL2_mixer library can't be initialized.
+   *
+   * \since 4.0.0
+   */
+  explicit library(const config& cfg) : m_cfg{cfg}
+  {
+    init();
+  }
+
+  library(const library&) = delete;
+
+  library(library&&) = delete;
+
+  auto operator=(const library&) -> library& = delete;
+
+  auto operator=(library&&) -> library& = delete;
+
+ private:
+  class sdl final
+  {
+   public:
+    explicit sdl(const u32 flags)
+    {
+      const auto result = SDL_Init(flags);
+      if (result < 0)
+      {
+        throw sdl_error{};
+      }
+    }
+
+    ~sdl() noexcept
+    {
+      SDL_Quit();
+    }
+  };
+
+  class sdl_ttf final
+  {
+   public:
+    explicit sdl_ttf()
+    {
+      const auto result = TTF_Init();
+      if (result == -1)
+      {
+        throw ttf_error{};
+      }
+    }
+
+    ~sdl_ttf() noexcept
+    {
+      TTF_Quit();
+    }
+  };
+
+  class sdl_mixer final
+  {
+   public:
+    sdl_mixer(const int flags,
+              const int freq,
+              const u16 format,
+              const int nChannels,
+              const int chunkSize)
+    {
+      if (!Mix_Init(flags))
+      {
+        throw mix_error{};
+      }
+
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
+      {
+        throw mix_error{};
+      }
+    }
+
+    ~sdl_mixer() noexcept
+    {
+      Mix_CloseAudio();
+      Mix_Quit();
+    }
+  };
+
+  class sdl_image final
+  {
+   public:
+    explicit sdl_image(const int flags)
+    {
+      if (!IMG_Init(flags))
+      {
+        throw img_error{};
+      }
+    }
+
+    ~sdl_image() noexcept
+    {
+      IMG_Quit();
+    }
+  };
+
+  config m_cfg;
+  std::optional<sdl> m_sdl;
+  std::optional<sdl_image> m_img;
+  std::optional<sdl_ttf> m_ttf;
+  std::optional<sdl_mixer> m_mixer;
+
+  void init()
+  {
+    if (m_cfg.initCore)
+    {
+      m_sdl.emplace(m_cfg.coreFlags);
+    }
+
+    if (m_cfg.initImage)
+    {
+      m_img.emplace(m_cfg.imageFlags);
+    }
+
+    if (m_cfg.initTTF)
+    {
+      m_ttf.emplace();
+    }
+
+    if (m_cfg.initMixer)
+    {
+      m_mixer.emplace(m_cfg.mixerFlags,
+                      m_cfg.mixerFreq,
+                      m_cfg.mixerFormat,
+                      m_cfg.mixerChannels,
+                      m_cfg.mixerChunkSize);
+    }
+  }
+};
+
+/// \name SDL version queries
+/// \{
+
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL
+ * that the program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version;
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION,
+          SDL_IMAGE_MINOR_VERSION,
+          SDL_IMAGE_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION,
+          SDL_MIXER_MINOR_VERSION,
+          SDL_MIXER_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+/// \} End of SDL version queries
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_LIBRARY_HEADER
+
+// #include "centurion/log.hpp"
+#ifndef CENTURION_LOG_HEADER
+#define CENTURION_LOG_HEADER
+
+#include <SDL.h>
+
+#include <cassert>  // assert
+#include <string>   // string
+#include <utility>  // forward
+
+// #include "centurion_cfg.hpp"
+
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \addtogroup misc
+/// \{
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10
+using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+/**
+ * \namespace cen::log
+ *
+ * \brief Contains easy-to-use logging facilities.
+ *
+ * \details The usage of the logging API will be very familiar to most people
+ * that have used the `printf` and/or the `SDL_Log` facilities.
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+namespace cen::log {
+
+/**
+ * \enum priority
+ *
+ * \brief Mirrors the `SDL_LogPriority` enum.
+ *
+ * \see `SDL_LogPriority`
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+enum class priority
+{
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
+  verbose = SDL_LOG_PRIORITY_VERBOSE,
+  debug = SDL_LOG_PRIORITY_DEBUG,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
+  error = SDL_LOG_PRIORITY_ERROR,
+};
+
+/**
+ * \enum category
+ *
+ * \brief Mirrors the `SDL_LogCategory` enum.
+ *
+ * \see `SDL_LogCategory`
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+enum class category
+{
+  app = SDL_LOG_CATEGORY_APPLICATION,
+  error = SDL_LOG_CATEGORY_ERROR,
+  assert = SDL_LOG_CATEGORY_ASSERT,
+  system = SDL_LOG_CATEGORY_SYSTEM,
+  audio = SDL_LOG_CATEGORY_AUDIO,
+  video = SDL_LOG_CATEGORY_VIDEO,
+  render = SDL_LOG_CATEGORY_RENDER,
+  input = SDL_LOG_CATEGORY_INPUT,
+  test = SDL_LOG_CATEGORY_TEST,
+  misc = SDL_LOG_CATEGORY_CUSTOM
+};
+
+/**
+ * \brief Logs a message with the specified priority and category.
+ *
+ * \details This method has no effect if the supplied string is null. Usage
+ * of this method is quite bulky, so refer to the other logging methods for
+ * casual logging.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param priority the priority that will be used.
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void msg(const priority priority,
+         const category category,
+         const not_null<czstring> fmt,
+         Args&&... args) noexcept
+{
+  assert(fmt);
+  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
+  const auto prio = static_cast<SDL_LogPriority>(priority);
+  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::info` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::info` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::info(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::warn` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::warn` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::warn(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::verbose` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const category category,
+             const not_null<czstring> fmt,
+             Args&&... args) noexcept
+{
+  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::verbose` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::verbose(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::debug` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const category category,
+           const not_null<czstring> fmt,
+           Args&&... args) noexcept
+{
+  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::debug` and `category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::debug(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::critical` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const category category,
+              const not_null<czstring> fmt,
+              Args&&... args) noexcept
+{
+  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::critical` and `category::app` .
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::critical(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `priority::error` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const category category, const czstring fmt, Args&&... args) noexcept
+{
+  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with the `priority::error` and `category::app`.
+ *
+ * \tparam Args the types of the arguments that will be used in the
+ * formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::error(category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a string.
+ *
+ * \details This function is meant to be used for casual logging, where you
+ * just want to log a string. The message will be logged with
+ * `priority::info` and `category::app`.
+ *
+ * \param str the string that will be logged.
+ *
+ * \since 5.0.0
+ */
+inline void put(const std::string& str) noexcept
+{
+  log::info("%s", str.c_str());
+}
+
+/**
+ * \copydoc put(const std::string&)
+ */
+inline void put(const not_null<czstring> str) noexcept
+{
+  log::info("%s", str);
+}
+
+/**
+ * \brief Resets all of the logging priorities.
+ *
+ * \since 3.0.0
+ */
+inline void reset_priorities() noexcept
+{
+  SDL_LogResetPriorities();
+}
+
+/**
+ * \brief Sets the priority of all categories.
+ *
+ * \param prio the priority that will be used.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const priority prio) noexcept
+{
+  const auto p = static_cast<SDL_LogPriority>(prio);
+  SDL_LogSetAllPriority(p);
+
+  // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
+}
+
+/**
+ * \brief Sets the priority of the specified category.
+ *
+ * \param category the category that will have its priority changed.
+ * \param prio the new priority value.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const category category, const priority prio) noexcept
+{
+  SDL_LogSetPriority(static_cast<int>(category),
+                     static_cast<SDL_LogPriority>(prio));
+}
+
+/**
+ * \brief Returns the priority of the specified category.
+ *
+ * \param category the category to return the priority of.
+ * \return the priority of the specified category.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto get_priority(const category category) noexcept
+    -> priority
+{
+  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
+}
+
+/**
+ * \brief Returns the maximum size, i.e the maximum amount of characters that
+ * a string can contain and successfully be logged without being truncated.
+ *
+ * \note Strings longer that this value will be truncated.
+ *
+ * \return the maximum amount of characters that a loggable string can
+ * contain.
+ *
+ * \see `SDL_MAX_LOG_MESSAGE`
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto max_message_size() noexcept -> int
+{
+  return SDL_MAX_LOG_MESSAGE;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values are the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_LogPriority>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(priority, SDL_LogPriority)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values aren't the
+ * same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(priority, SDL_LogPriority)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_LogCategory>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(category, SDL_LogCategory)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(category, SDL_LogCategory)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+}  // namespace cen::log
+
+#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
+
+#ifdef NDEBUG
+
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...)
+
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...)
+
+#else
+
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
+
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+
+#endif  // NDEBUG
+
+#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_LOG_INFO
+ *
+ * \brief A debug-only macro that expands to `cen::log::info`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_WARN
+ *
+ * \brief A debug-only macro that expands to `cen::log::warn`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_VERBOSE
+ *
+ * \brief A debug-only macro that expands to `cen::log::verbose`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_DEBUG
+ *
+ * \brief A debug-only macro that expands to `cen::log::debug`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_CRITICAL
+ *
+ * \brief A debug-only macro that expands to `cen::log::critical`.
+ *
+ * \since 5.0.0
+ */
+
+/**
+ * \def CENTURION_LOG_ERROR
+ *
+ * \brief A debug-only macro that expands to `cen::log::error`.
+ *
+ * \since 5.0.0
+ */
+
+/// \}
+
+#endif  // CENTURION_LOG_HEADER
+
+// #include "centurion/math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
@@ -42256,7 +47240,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 }  // namespace cen
 
 #endif  // CENTURION_AREA_HEADER
-// #include "math/point.hpp"
+// #include "centurion/math/point.hpp"
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
@@ -42775,7 +47759,7 @@ inline auto operator<<(std::ostream& stream, const fpoint& point)
 }  // namespace cen
 
 #endif  // CENTURION_POINT_HEADER
-// #include "math/rect.hpp"
+// #include "centurion/math/rect.hpp"
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
@@ -44385,7 +49369,7 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
 }  // namespace cen
 
 #endif  // CENTURION_RECTANGLE_HEADER
-// #include "math/vector3.hpp"
+// #include "centurion/math/vector3.hpp"
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
@@ -44543,7 +49527,1160 @@ template <typename T>
 
 #endif  // CENTURION_VECTOR3_HEADER
 
-// #include "system/battery.hpp"
+// #include "centurion/misc/cast.hpp"
+#ifndef CENTURION_CAST_HEADER
+#define CENTURION_CAST_HEADER
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \brief Casts a value to a value of another type.
+ *
+ * \ingroup misc
+ *
+ * \details This is the default implementation, which simply attempts to use
+ * `static_cast`. The idea is that this function will be specialized for
+ * various Centurion and SDL types. This is useful because it isn't always
+ * possible to implement conversion operators as members.
+ *
+ * \tparam To the type of the value that will be converted.
+ * \tparam From the type that the value will be casted to.
+ *
+ * \param from the value that will be converted.
+ *
+ * \return the result of casting the supplied value to the specified type.
+ *
+ * \since 5.0.0
+ */
+template <typename To, typename From>
+[[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
+{
+  return static_cast<To>(from);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_CAST_HEADER
+
+// #include "centurion/misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "centurion/misc/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "centurion_cfg.hpp"
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"N/A"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+// #include "centurion/misc/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef u64
+ *
+ * \brief Alias for a 64-bit unsigned integer.
+ */
+using u64 = Uint64;
+
+/**
+ * \typedef u32
+ *
+ * \brief Alias for a 32-bit unsigned integer.
+ */
+using u32 = Uint32;
+
+/**
+ * \typedef u16
+ *
+ * \brief Alias for a 16-bit unsigned integer.
+ */
+using u16 = Uint16;
+
+/**
+ * \typedef u8
+ *
+ * \brief Alias for an 8-bit unsigned integer.
+ */
+using u8 = Uint8;
+
+/**
+ * \typedef i64
+ *
+ * \brief Alias for a 64-bit signed integer.
+ */
+using i64 = Sint64;
+
+/**
+ * \typedef i32
+ *
+ * \brief Alias for a 32-bit signed integer.
+ */
+using i32 = Sint32;
+
+/**
+ * \typedef i16
+ *
+ * \brief Alias for a 16-bit signed integer.
+ */
+using i16 = Sint16;
+
+/**
+ * \typedef i8
+ *
+ * \brief Alias for an 8-bit signed integer.
+ */
+using i8 = Sint8;
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept
+    -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept
+    -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept
+    -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept
+    -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept
+    -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept
+    -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept
+    -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept
+    -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+// #include "centurion/misc/not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+// #include "centurion/misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
+// #include "centurion/misc/time.hpp"
+#ifndef CENTURION_TIME_HEADER
+#define CENTURION_TIME_HEADER
+
+#include <chrono>  // duration
+#include <ratio>   // milli, micro, nano
+
+// #include "centurion_cfg.hpp"
+
+// #include "integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef u64
+ *
+ * \brief Alias for a 64-bit unsigned integer.
+ */
+using u64 = Uint64;
+
+/**
+ * \typedef u32
+ *
+ * \brief Alias for a 32-bit unsigned integer.
+ */
+using u32 = Uint32;
+
+/**
+ * \typedef u16
+ *
+ * \brief Alias for a 16-bit unsigned integer.
+ */
+using u16 = Uint16;
+
+/**
+ * \typedef u8
+ *
+ * \brief Alias for an 8-bit unsigned integer.
+ */
+using u8 = Uint8;
+
+/**
+ * \typedef i64
+ *
+ * \brief Alias for a 64-bit signed integer.
+ */
+using i64 = Sint64;
+
+/**
+ * \typedef i32
+ *
+ * \brief Alias for a 32-bit signed integer.
+ */
+using i32 = Sint32;
+
+/**
+ * \typedef i16
+ *
+ * \brief Alias for a 16-bit signed integer.
+ */
+using i16 = Sint16;
+
+/**
+ * \typedef i8
+ *
+ * \brief Alias for an 8-bit signed integer.
+ */
+using i8 = Sint8;
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept
+    -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept
+    -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept
+    -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept
+    -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept
+    -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept
+    -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept
+    -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept
+    -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef seconds
+ *
+ * \brief Templated alias for durations in seconds.
+ */
+template <typename T>
+using seconds = std::chrono::duration<T>;
+
+/**
+ * \typedef milliseconds
+ *
+ * \brief Templated alias for durations in milliseconds.
+ */
+template <typename T>
+using milliseconds = std::chrono::duration<T, std::milli>;
+
+/**
+ * \typedef microseconds
+ *
+ * \brief Templated alias for durations in microseconds.
+ */
+template <typename T>
+using microseconds = std::chrono::duration<T, std::micro>;
+
+/**
+ * \typedef nanoseconds
+ *
+ * \brief Templated alias for durations in nanoseconds.
+ */
+template <typename T>
+using nanoseconds = std::chrono::duration<T, std::nano>;
+
+/**
+ * \typedef minutes
+ *
+ * \brief Templated alias for durations in minutes.
+ */
+template <typename T>
+using minutes = std::chrono::duration<T, std::ratio<60>>;
+
+/**
+ * \namespace literals
+ *
+ * \brief Contains suffix operators.
+ *
+ * \since 5.0.0
+ */
+namespace literals {
+
+constexpr auto operator"" _ns(const unsigned long long int value) noexcept
+    -> nanoseconds<u32>
+{
+  return nanoseconds<u32>{value};
+}
+
+constexpr auto operator"" _us(const unsigned long long int value) noexcept
+    -> microseconds<u32>
+{
+  return microseconds<u32>{value};
+}
+
+constexpr auto operator"" _ms(const unsigned long long int value) noexcept
+    -> milliseconds<u32>
+{
+  return milliseconds<u32>{value};
+}
+
+constexpr auto operator"" _s(const unsigned long long int value) noexcept
+    -> seconds<u32>
+{
+  return seconds<u32>{value};
+}
+
+}  // namespace literals
+}  // namespace cen
+
+#endif  // CENTURION_TIME_HEADER
+
+// #include "centurion/sdl_string.hpp"
+#ifndef CENTURION_SDL_STRING_HEADER
+#define CENTURION_SDL_STRING_HEADER
+
+#include <SDL.h>
+
+#include <memory>  // unique_ptr
+#include <string>  // string
+
+// #include "centurion_cfg.hpp"
+
+// #include "detail/sdl_deleter.hpp"
+#ifndef CENTURION_DETAIL_SDL_DELETER_HEADER
+#define CENTURION_DETAIL_SDL_DELETER_HEADER
+
+#include <SDL.h>
+
+// #include "../centurion_cfg.hpp"
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_USE_PRAGMA_ONCE
+ *
+ * \brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
+
+/**
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * \brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * \since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a
+ * specific version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
+   (SDL_PATCHLEVEL == (z)))
+
+#if !defined(__clang__)
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ *
+ * \brief This macro is defined if the `memory_resource` header is available.
+ *
+ * \note This is a very rough check, that assumes that as long as we are using
+ * MSVC or GCC, we are fine.
+ *
+ * \todo C++20: Use the feature test macro for this instead.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // !defined(__clang__)
+
+/// \} End of group core
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif
+
+#endif  // CENTURION_CFG_HEADER
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+struct sdl_deleter final
+{
+  void operator()(T* ptr) noexcept
+  {
+    SDL_free(ptr);
+  }
+};
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
+
+// #include "misc/czstring.hpp"
+
+// #include "misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \class sdl_string
+ *
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to
+ * be freed using `SDL_free`.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile sdl_string.hpp
+ */
+class sdl_string final
+{
+ public:
+  /**
+   * \brief
+   *
+   * \param str the string that will be claimed, can be null.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
+  {}
+
+  /**
+   * \brief Returns the internal string, which might be null.
+   *
+   * \return the internal string; `nullptr` if there is none.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> czstring
+  {
+    return m_str.get();
+  }
+
+  /**
+   * \brief Returns a copy of the internal string.
+   *
+   * \details This function returns the empty string if the internal string
+   * is a null pointer.
+   *
+   * \return a copy of the internal string.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto copy() const -> std::string
+  {
+    if (m_str)
+    {
+      return std::string{get()};
+    }
+    else
+    {
+      return std::string{};
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not the internal string is non-null.
+   *
+   * \return `true` if the internal string is non-null; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  explicit operator bool() const noexcept
+  {
+    return m_str.operator bool();
+  }
+
+ private:
+  std::unique_ptr<char, detail::sdl_deleter<char>> m_str;
+};
+
+}  // namespace cen
+
+#endif  // CENTURION_SDL_STRING_HEADER
+
+// #include "centurion/system/battery.hpp"
 #ifndef CENTURION_BATTERY_HEADER
 #define CENTURION_BATTERY_HEADER
 
@@ -45292,7 +51429,7 @@ enum class power_state
 }  // namespace cen::battery
 
 #endif  // CENTURION_BATTERY_HEADER
-// #include "system/byte_order.hpp"
+// #include "centurion/system/byte_order.hpp"
 #ifndef CENTURION_BYTE_ORDER_HEADER
 #define CENTURION_BYTE_ORDER_HEADER
 
@@ -45665,7 +51802,7 @@ namespace cen {
 
 #endif  // CENTURION_BYTE_ORDER_HEADER
 
-// #include "system/clipboard.hpp"
+// #include "centurion/system/clipboard.hpp"
 #ifndef CENTURION_CLIPBOARD_HEADER
 #define CENTURION_CLIPBOARD_HEADER
 
@@ -45781,10 +51918,6 @@ using not_null = T;
 
 #include <memory>  // unique_ptr
 #include <string>  // string
-
-// #include "../misc/czstring.hpp"
-
-// #include "../misc/owner.hpp"
 
 // #include "centurion_cfg.hpp"
 #ifndef CENTURION_CFG_HEADER
@@ -45960,6 +52093,100 @@ struct sdl_deleter final
 
 #endif  // CENTURION_DETAIL_SDL_DELETER_HEADER
 
+// #include "misc/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+#include <SDL.h>
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "misc/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+#include <type_traits>  // enable_if_t, is_pointer_v
+
+// #include "centurion_cfg.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 
@@ -46128,7 +52355,7 @@ inline auto set_text(const std::string& text) noexcept -> bool
 
 #endif  // CENTURION_CLIPBOARD_HEADER
 
-// #include "system/counter.hpp"
+// #include "centurion/system/counter.hpp"
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 
@@ -46219,7 +52446,7 @@ template <typename T>
 }  // namespace cen::counter
 
 #endif  // CENTURION_TIMER_HEADER
-// #include "system/cpu.hpp"
+// #include "centurion/system/cpu.hpp"
 #ifndef CENTURION_CPU_HEADER
 #define CENTURION_CPU_HEADER
 
@@ -46607,7 +52834,7 @@ class simd_block final
 }  // namespace cen::cpu
 
 #endif  // CENTURION_CPU_HEADER
-// #include "system/locale.hpp"
+// #include "centurion/system/locale.hpp"
 #ifndef CENTURION_LOCALE_HEADER
 #define CENTURION_LOCALE_HEADER
 
@@ -46900,7 +53127,7 @@ class locale final
 
 #endif  // CENTURION_LOCALE_HEADER
 
-// #include "system/platform.hpp"
+// #include "centurion/system/platform.hpp"
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
@@ -49378,7 +55605,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
 }  // namespace cen::platform
 
 #endif  // CENTURION_PLATFORM_HEADER
-// #include "system/ram.hpp"
+// #include "centurion/system/ram.hpp"
 #ifndef CENTURION_RAM_HEADER
 #define CENTURION_RAM_HEADER
 
@@ -49436,7 +55663,363 @@ namespace cen::ram {
 }  // namespace cen::ram
 
 #endif  // CENTURION_RAM_HEADER
-// #include "thread/condition.hpp"
+// #include "centurion/system/shared_object.hpp"
+#ifndef CENTURION_SHARED_OBJECT_HEADER
+#define CENTURION_SHARED_OBJECT_HEADER
+
+#include <SDL.h>
+
+#include <cassert>  // assert
+#include <memory>   // unique_ptr
+#include <string>   // string
+
+// #include "../centurion_cfg.hpp"
+
+// #include "../misc/czstring.hpp"
+
+// #include "../misc/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "centurion_cfg.hpp"
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "centurion_cfg.hpp"
+
+// #include "not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept
+      : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"N/A"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+// #include "../misc/not_null.hpp"
+
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
+namespace cen {
+
+/// \addtogroup system
+/// \{
+
+/**
+ * \class shared_object
+ *
+ * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and
+ * `.dll` files).
+ *
+ * \since 5.3.0
+ *
+ * \headerfile shared_object.hpp
+ */
+class shared_object final
+{
+ public:
+  /**
+   * \brief Loads a shared object.
+   *
+   * \param object the name of the shared object that will be loaded.
+   *
+   * \throws sdl_error if the shared object cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit shared_object(const not_null<czstring> object)
+      : m_object{SDL_LoadObject(object)}
+  {
+    if (!m_object)
+    {
+      throw sdl_error{};
+    }
+  }
+
+  /**
+   * \brief Loads a shared object.
+   *
+   * \param object the name of the shared object that will be loaded.
+   *
+   * \throws sdl_error if the shared object cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  explicit shared_object(const std::string& object)
+      : shared_object{object.c_str()}
+  {}
+
+  /**
+   * \brief Attempts to load a function from the shared object.
+   *
+   * \note The function must be a C-function!
+   *
+   * \tparam T the signature of the function, e.g. `void(int, float)`.
+   *
+   * \param name the name of the function in the shared object.
+   *
+   * \return the loaded function; a null pointer is returned if something goes
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  template <typename T>
+  [[nodiscard]] auto load_function(const not_null<czstring> name) const noexcept
+      -> T*
+  {
+    assert(name);
+    return reinterpret_cast<T*>(SDL_LoadFunction(m_object.get(), name));
+  }
+
+  /**
+   * \brief Attempts to load a function from the shared object.
+   *
+   * \note The function must be a C-function!
+   *
+   * \tparam T the signature of the function, e.g. `void(int, float)`.
+   *
+   * \param name the name of the function in the shared object.
+   *
+   * \return the loaded function; a null pointer is returned if something goes
+   * wrong.
+   *
+   * \since 5.3.0
+   */
+  template <typename T>
+  [[nodiscard]] auto load_function(const std::string& name) const noexcept -> T*
+  {
+    return load_function<T>(name.c_str());
+  }
+
+ private:
+  struct deleter final
+  {
+    void operator()(void* object) noexcept
+    {
+      SDL_UnloadObject(object);
+    }
+  };
+  std::unique_ptr<void, deleter> m_object;
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  shared_object() = default;
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
+};
+
+/// \} End of system group
+
+}  // namespace cen
+
+#endif  // CENTURION_SHARED_OBJECT_HEADER
+
+// #include "centurion/thread/condition.hpp"
 #ifndef CENTURION_CONDITION_HEADER
 #define CENTURION_CONDITION_HEADER
 
@@ -50625,7 +57208,7 @@ class condition final
 
 #endif  // CENTURION_CONDITION_HEADER
 
-// #include "thread/mutex.hpp"
+// #include "centurion/thread/mutex.hpp"
 #ifndef CENTURION_MUTEX_HEADER
 #define CENTURION_MUTEX_HEADER
 
@@ -50757,7 +57340,7 @@ class mutex final
 
 #endif  // CENTURION_MUTEX_HEADER
 
-// #include "thread/scoped_lock.hpp"
+// #include "centurion/thread/scoped_lock.hpp"
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
@@ -50835,7 +57418,7 @@ class scoped_lock final
 
 #endif  // CENTURION_SCOPED_LOCK_HEADER
 
-// #include "thread/semaphore.hpp"
+// #include "centurion/thread/semaphore.hpp"
 #ifndef CENTURION_SEMAPHORE_HEADER
 #define CENTURION_SEMAPHORE_HEADER
 
@@ -50977,7 +57560,7 @@ class semaphore final
 
 #endif  // CENTURION_SEMAPHORE_HEADER
 
-// #include "thread/thread.hpp"
+// #include "centurion/thread/thread.hpp"
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
@@ -51645,7 +58228,7 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
 
 #endif  // CENTURION_THREAD_HEADER
 
-// #include "thread/try_lock.hpp"
+// #include "centurion/thread/try_lock.hpp"
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 
@@ -51777,7 +58360,7 @@ class try_lock final
 
 #endif  // CENTURION_TRY_LOCK_HEADER
 
-// #include "video/blend_mode.hpp"
+// #include "centurion/video/blend_mode.hpp"
 #ifndef CENTURION_BLEND_MODE_HEADER
 #define CENTURION_BLEND_MODE_HEADER
 
@@ -51949,7 +58532,7 @@ enum class blend_mode
 
 #endif  // CENTURION_BLEND_MODE_HEADER
 
-// #include "video/color.hpp"
+// #include "centurion/video/color.hpp"
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
@@ -52943,7 +59526,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
 
 #endif  // CENTURION_COLOR_HEADER
 
-// #include "video/colors.hpp"
+// #include "centurion/video/colors.hpp"
 #ifndef CENTURION_COLORS_HEADER
 #define CENTURION_COLORS_HEADER
 
@@ -54651,7 +61234,7 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 #endif  // CENTURION_COLORS_HEADER
 
-// #include "video/cursor.hpp"
+// #include "centurion/video/cursor.hpp"
 #ifndef CENTURION_CURSOR_HEADER
 #define CENTURION_CURSOR_HEADER
 
@@ -59714,7 +66297,7 @@ class basic_cursor final
 }  // namespace cen
 
 #endif  // CENTURION_CURSOR_HEADER
-// #include "video/font.hpp"
+// #include "centurion/video/font.hpp"
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
@@ -60917,7 +67500,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 }  // namespace cen
 
 #endif  // CENTURION_FONT_HEADER
-// #include "video/font_cache.hpp"
+// #include "centurion/video/font_cache.hpp"
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
 
@@ -63437,7 +70020,7 @@ class font_cache final
 }  // namespace cen
 
 #endif  // CENTURION_FONT_CACHE_HEADER
-// #include "video/graphics_drivers.hpp"
+// #include "centurion/video/graphics_drivers.hpp"
 #ifndef CENTURION_GRAPHICS_DRIVERS_HEADER
 #define CENTURION_GRAPHICS_DRIVERS_HEADER
 
@@ -63514,7 +70097,7 @@ namespace cen {
 
 #endif  // CENTURION_GRAPHICS_DRIVERS_HEADER
 
-// #include "video/message_box.hpp"
+// #include "centurion/video/message_box.hpp"
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
@@ -63573,6 +70156,8 @@ class stack_resource final
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
 // #include "../misc/exception.hpp"
+
+// #include "../misc/integers.hpp"
 
 // #include "color.hpp"
 
@@ -66438,7 +73023,7 @@ class message_box final
     }
 
     data.buttons = buttonData.data();
-    data.numbuttons = static_cast<int>(buttonData.size());
+    data.numbuttons = isize(buttonData);
 
     button_id button{-1};
     if (SDL_ShowMessageBox(&data, &button) == -1)
@@ -66571,7 +73156,7 @@ class message_box final
 
 #endif  // CENTURION_MESSAGE_BOX_HEADER
 
-// #include "video/pixel_format.hpp"
+// #include "centurion/video/pixel_format.hpp"
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
 
@@ -66997,7 +73582,7 @@ class basic_pixel_format_info final
 }  // namespace cen
 
 #endif  // CENTURION_PIXEL_FORMAT_HEADER
-// #include "video/renderer.hpp"
+// #include "centurion/video/renderer.hpp"
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
@@ -68216,15 +74801,14 @@ class basic_renderer final
     {
       const auto& front = container.front();
       const auto* first = front.data();
-      const auto count = static_cast<int>(container.size());
 
       if constexpr (std::is_same_v<value_t, int>)
       {
-        SDL_RenderDrawLines(get(), first, count);
+        SDL_RenderDrawLines(get(), first, isize(container));
       }
       else
       {
-        SDL_RenderDrawLinesF(get(), first, count);
+        SDL_RenderDrawLinesF(get(), first, isize(container));
       }
     }
   }
@@ -70015,7 +76599,7 @@ auto operator<<(std::ostream& stream, const basic_renderer<B>& renderer)
 
 #endif  // CENTURION_RENDERER_HEADER
 
-// #include "video/scale_mode.hpp"
+// #include "centurion/video/scale_mode.hpp"
 #ifndef CENTURION_SCALE_MODE_HEADER
 #define CENTURION_SCALE_MODE_HEADER
 
@@ -70113,7 +76697,7 @@ enum class scale_mode
 
 #endif  // CENTURION_SCALE_MODE_HEADER
 
-// #include "video/screen.hpp"
+// #include "centurion/video/screen.hpp"
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 
@@ -70507,7 +77091,7 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
 /// \}
 
 #endif  // CENTURION_SCREEN_HEADER
-// #include "video/surface.hpp"
+// #include "centurion/video/surface.hpp"
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
@@ -71318,7 +77902,7 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface)
 }  // namespace cen
 
 #endif  // CENTURION_SURFACE_HEADER
-// #include "video/texture.hpp"
+// #include "centurion/video/texture.hpp"
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
@@ -72018,7 +78602,7 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture)
 }  // namespace cen
 
 #endif  // CENTURION_TEXTURE_HEADER
-// #include "video/texture_access.hpp"
+// #include "centurion/video/texture_access.hpp"
 #ifndef CENTURION_TEXTURE_ACCESS_HEADER
 #define CENTURION_TEXTURE_ACCESS_HEADER
 
@@ -72119,7 +78703,7 @@ enum class texture_access
 
 #endif  // CENTURION_TEXTURE_ACCESS_HEADER
 
-// #include "video/unicode_string.hpp"
+// #include "centurion/video/unicode_string.hpp"
 #ifndef CENTURION_UNICODE_STRING_HEADER
 #define CENTURION_UNICODE_STRING_HEADER
 
@@ -72546,7 +79130,7 @@ constexpr auto operator""_uni(const unsigned long long int i) noexcept
 
 #endif  // CENTURION_UNICODE_STRING_HEADER
 
-// #include "video/window.hpp"
+// #include "centurion/video/window.hpp"
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
@@ -73662,7 +80246,7 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window)
 
 #endif  // CENTURION_WINDOW_HEADER
 
-// #include "video/window_utils.hpp"
+// #include "centurion/video/window_utils.hpp"
 #ifndef CENTURION_WINDOW_UTILS_HEADER
 #define CENTURION_WINDOW_UTILS_HEADER
 
@@ -74042,15 +80626,14 @@ class basic_renderer final
     {
       const auto& front = container.front();
       const auto* first = front.data();
-      const auto count = static_cast<int>(container.size());
 
       if constexpr (std::is_same_v<value_t, int>)
       {
-        SDL_RenderDrawLines(get(), first, count);
+        SDL_RenderDrawLines(get(), first, isize(container));
       }
       else
       {
-        SDL_RenderDrawLinesF(get(), first, count);
+        SDL_RenderDrawLinesF(get(), first, isize(container));
       }
     }
   }

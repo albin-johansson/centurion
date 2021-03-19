@@ -17,18 +17,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * \namespace cen::platform
- *
- * \ingroup system
- *
- * \brief Contains utilities related to platform information.
- *
- * \since 5.0.0
- *
- * \headerfile platform.hpp
- */
-namespace cen::platform {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -39,21 +28,18 @@ namespace cen::platform {
  * \brief Provides values that represent various different operating
  * systems.
  *
- * \details The `linuxx` enumerator has its ugly name because of a weird
- * compilation error on GCC.
- *
  * \since 3.0.0
  *
  * \headerfile platform.hpp
  */
 enum class platform_id
 {
-  unknown,  ///< Indicates that the platform is unknown.
-  windows,  ///< Represents the Windows platform.
-  mac_osx,  ///< Represents the Apple OSX platform.
-  linuxx,   ///< Represents the Linux platform.
-  ios,      ///< Represents the Apple iOS platform.
-  android   ///< Represents the Android platform.
+  unknown,   ///< Indicates that the platform is unknown.
+  windows,   ///< Represents the Windows platform.
+  mac_osx,   ///< Represents the Apple OSX platform.
+  linux_os,  ///< Represents the Linux platform.
+  ios,       ///< Represents the Apple iOS platform.
+  android    ///< Represents the Android platform.
 };
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -101,7 +87,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto id() noexcept -> platform_id
+[[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const czstring platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows"))
@@ -114,7 +100,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
   }
   else if (detail::czstring_eq(platform, "Linux"))
   {
-    return platform_id::linuxx;
+    return platform_id::linux_os;
   }
   else if (detail::czstring_eq(platform, "iOS"))
   {
@@ -139,7 +125,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_windows() noexcept -> bool
 {
-  return id() == platform_id::windows;
+  return current_platform() == platform_id::windows;
 }
 
 /**
@@ -151,7 +137,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_mac_osx() noexcept -> bool
 {
-  return id() == platform_id::mac_osx;
+  return current_platform() == platform_id::mac_osx;
 }
 
 /**
@@ -163,7 +149,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_linux() noexcept -> bool
 {
-  return id() == platform_id::linuxx;
+  return current_platform() == platform_id::linux_os;
 }
 
 /**
@@ -175,7 +161,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_ios() noexcept -> bool
 {
-  return id() == platform_id::ios;
+  return current_platform() == platform_id::ios;
 }
 
 /**
@@ -187,7 +173,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_android() noexcept -> bool
 {
-  return id() == platform_id::android;
+  return current_platform() == platform_id::android;
 }
 
 /**
@@ -198,7 +184,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto name() -> std::optional<std::string>
+[[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
   if (name != "Unknown")
@@ -308,6 +294,6 @@ inline auto open_url(const std::string& url) noexcept -> bool
 
 /// \} End of group system
 
-}  // namespace cen::platform
+}  // namespace cen
 
 #endif  // CENTURION_PLATFORM_HEADER

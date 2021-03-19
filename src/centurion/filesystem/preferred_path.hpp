@@ -1,5 +1,5 @@
-#ifndef CENTURION_PREF_PATH_HEADER
-#define CENTURION_PREF_PATH_HEADER
+#ifndef CENTURION_PREFERRED_PATH_HEADER
+#define CENTURION_PREFERRED_PATH_HEADER
 
 #include <SDL.h>
 
@@ -75,4 +75,4 @@ namespace cen {
 
 }  // namespace cen
 
-#endif  // CENTURION_PREF_PATH_HEADER
+#endif  // CENTURION_PREFERRED_PATH_HEADER

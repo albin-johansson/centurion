@@ -54,7 +54,7 @@
 #include "centurion/events/xinput_hints.hpp"
 #include "centurion/filesystem/base_path.hpp"
 #include "centurion/filesystem/file.hpp"
-#include "centurion/filesystem/pref_path.hpp"
+#include "centurion/filesystem/preferred_path.hpp"
 #include "centurion/hints/android_hints.hpp"
 #include "centurion/hints/apple_tv_hints.hpp"
 #include "centurion/hints/common_hints.hpp"

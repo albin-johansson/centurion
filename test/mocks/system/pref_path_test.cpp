@@ -1,9 +1,8 @@
-#include "filesystem/pref_path.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "filesystem/preferred_path.hpp"
 
 extern "C" {
 FAKE_VALUE_FUNC(char*, SDL_GetPrefPath, const char*, const char*)

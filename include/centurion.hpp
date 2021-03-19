@@ -22705,7 +22705,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto get_base_path() -> sdl_string
+[[nodiscard]] inline auto base_path() -> sdl_string
 {
   return sdl_string{SDL_GetBasePath()};
 }
@@ -23752,13 +23752,14 @@ class file final
 
 #endif  // CENTURION_FILE_HEADER
 
-// #include "centurion/filesystem/pref_path.hpp"
-#ifndef CENTURION_PREF_PATH_HEADER
-#define CENTURION_PREF_PATH_HEADER
+// #include "centurion/filesystem/preferred_path.hpp"
+#ifndef CENTURION_PREFERRED_PATH_HEADER
+#define CENTURION_PREFERRED_PATH_HEADER
 
 #include <SDL.h>
 
 #include <cassert>  // assert
+#include <string>   // string
 
 // #include "../centurion_cfg.hpp"
 
@@ -23791,15 +23792,13 @@ namespace cen {
  * \param org the name of the organization, cannot be null.
  * \param app the name of the application, cannot be null.
  *
- * \todo std::string overload
- *
  * \return an absolute path to the preferred path for storing application files;
  * a null string is returned if something goes wrong.
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto get_pref_path(const not_null<czstring> org,
-                                        const not_null<czstring> app)
+[[nodiscard]] inline auto preferred_path(const not_null<czstring> org,
+                                         const not_null<czstring> app)
     -> sdl_string
 {
   assert(org);
@@ -23807,11 +23806,35 @@ namespace cen {
   return sdl_string{SDL_GetPrefPath(org, app)};
 }
 
+/**
+ * \brief Returns the preferred path for storing application related files.
+ *
+ * \details This function returns the path to the directory to which
+ * applications are meant to write files such as preferences and save data, etc.
+ * This directory will be unique per user and application. The returned path
+ * will end with a path separator (e.g. "\\" or "/").
+ *
+ * \note Only use letters, numbers, and spaces in the supplied names!
+ *
+ * \param org the name of the organization.
+ * \param app the name of the application.
+ *
+ * \return an absolute path to the preferred path for storing application files;
+ * a null string is returned if something goes wrong.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto preferred_path(const std::string& org,
+                                         const std::string& app) -> sdl_string
+{
+  return preferred_path(org.c_str(), app.c_str());
+}
+
 /// \}
 
 }  // namespace cen
 
-#endif  // CENTURION_PREF_PATH_HEADER
+#endif  // CENTURION_PREFERRED_PATH_HEADER
 // #include "centurion/hints/android_hints.hpp"
 #ifndef CENTURION_ANDROID_HINTS_HEADER
 #define CENTURION_ANDROID_HINTS_HEADER
@@ -25449,8 +25472,7 @@ struct audio_device_stream_name final
 /// \addtogroup configuration
 /// \{
 
-// TODO Centurion 6: Rename this namespace to controller for API consistency
-namespace cen::hint::gamecontroller {
+namespace cen::hint::controller {
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -25504,7 +25526,7 @@ struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
   }
 };
 
-}  // namespace cen::hint::gamecontroller
+}  // namespace cen::hint::controller
 
 /// \} End of group configuration
 
@@ -55311,18 +55333,7 @@ class basic_pixel_format_info final
 
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * \namespace cen::platform
- *
- * \ingroup system
- *
- * \brief Contains utilities related to platform information.
- *
- * \since 5.0.0
- *
- * \headerfile platform.hpp
- */
-namespace cen::platform {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -55333,21 +55344,18 @@ namespace cen::platform {
  * \brief Provides values that represent various different operating
  * systems.
  *
- * \details The `linuxx` enumerator has its ugly name because of a weird
- * compilation error on GCC.
- *
  * \since 3.0.0
  *
  * \headerfile platform.hpp
  */
 enum class platform_id
 {
-  unknown,  ///< Indicates that the platform is unknown.
-  windows,  ///< Represents the Windows platform.
-  mac_osx,  ///< Represents the Apple OSX platform.
-  linuxx,   ///< Represents the Linux platform.
-  ios,      ///< Represents the Apple iOS platform.
-  android   ///< Represents the Android platform.
+  unknown,   ///< Indicates that the platform is unknown.
+  windows,   ///< Represents the Windows platform.
+  mac_osx,   ///< Represents the Apple OSX platform.
+  linux_os,  ///< Represents the Linux platform.
+  ios,       ///< Represents the Apple iOS platform.
+  android    ///< Represents the Android platform.
 };
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -55395,7 +55403,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto id() noexcept -> platform_id
+[[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const czstring platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows"))
@@ -55408,7 +55416,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
   }
   else if (detail::czstring_eq(platform, "Linux"))
   {
-    return platform_id::linuxx;
+    return platform_id::linux_os;
   }
   else if (detail::czstring_eq(platform, "iOS"))
   {
@@ -55433,7 +55441,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_windows() noexcept -> bool
 {
-  return id() == platform_id::windows;
+  return current_platform() == platform_id::windows;
 }
 
 /**
@@ -55445,7 +55453,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_mac_osx() noexcept -> bool
 {
-  return id() == platform_id::mac_osx;
+  return current_platform() == platform_id::mac_osx;
 }
 
 /**
@@ -55457,7 +55465,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_linux() noexcept -> bool
 {
-  return id() == platform_id::linuxx;
+  return current_platform() == platform_id::linux_os;
 }
 
 /**
@@ -55469,7 +55477,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_ios() noexcept -> bool
 {
-  return id() == platform_id::ios;
+  return current_platform() == platform_id::ios;
 }
 
 /**
@@ -55481,7 +55489,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  */
 [[nodiscard]] inline auto is_android() noexcept -> bool
 {
-  return id() == platform_id::android;
+  return current_platform() == platform_id::android;
 }
 
 /**
@@ -55492,7 +55500,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto name() -> std::optional<std::string>
+[[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
   if (name != "Unknown")
@@ -55602,7 +55610,7 @@ inline auto open_url(const std::string& url) noexcept -> bool
 
 /// \} End of group system
 
-}  // namespace cen::platform
+}  // namespace cen
 
 #endif  // CENTURION_PLATFORM_HEADER
 // #include "centurion/system/ram.hpp"

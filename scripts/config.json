@@ -16,6 +16,7 @@
     "src/centurion/misc",
     "src/centurion/system",
     "src/centurion/thread",
-    "src/centurion/video"
+    "src/centurion/video",
+    "src/centurion/hints"
   ]
 }

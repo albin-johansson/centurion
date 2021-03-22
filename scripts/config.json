@@ -11,12 +11,12 @@
     "src/centurion/detail",
     "src/centurion/events",
     "src/centurion/filesystem",
+    "src/centurion/hints",
     "src/centurion/input",
     "src/centurion/math",
     "src/centurion/misc",
     "src/centurion/system",
     "src/centurion/thread",
-    "src/centurion/video",
-    "src/centurion/hints"
+    "src/centurion/video"
   ]
 }

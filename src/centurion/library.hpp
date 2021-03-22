@@ -26,7 +26,7 @@
  */
 
 /**
- * \defgroup graphics Graphics
+ * \defgroup graphics Video
  * \brief Contains components related to window-management, rendering, fonts,
  * etc.
  */
@@ -43,8 +43,8 @@
  */
 
 /**
- * \defgroup geometry Geometry
- * \brief Contains basic geometric components, used throughout the library.
+ * \defgroup geometry Math
+ * \brief Contains basic mathematical components, used throughout the library.
  */
 
 /**

@@ -22243,7 +22243,6 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
 
 #endif  // CENTURION_WINDOW_EVENT_HEADER
 
-#include "centurion/events/xinput_hints.hpp"
 // #include "centurion/filesystem/base_path.hpp"
 #ifndef CENTURION_BASE_PATH_HEADER
 #define CENTURION_BASE_PATH_HEADER
@@ -45175,7 +45174,7 @@ enum class device_type
  */
 
 /**
- * \defgroup graphics Graphics
+ * \defgroup graphics Video
  * \brief Contains components related to window-management, rendering, fonts,
  * etc.
  */
@@ -45192,8 +45191,8 @@ enum class device_type
  */
 
 /**
- * \defgroup geometry Geometry
- * \brief Contains basic geometric components, used throughout the library.
+ * \defgroup geometry Math
+ * \brief Contains basic mathematical components, used throughout the library.
  */
 
 /**

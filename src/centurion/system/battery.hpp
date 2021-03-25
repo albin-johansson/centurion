@@ -14,16 +14,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * \namespace cen::battery
- *
- * \ingroup system
- *
- * \brief Contains utilities related to the battery of the system.
- *
- * \since 5.0.0
- */
-namespace cen::battery {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -46,6 +37,17 @@ enum class power_state
   charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
   charged = SDL_POWERSTATE_CHARGED  ///< Currently plugged in and charged.
 };
+
+/**
+ * \namespace cen::battery
+ *
+ * \ingroup system
+ *
+ * \brief Contains utilities related to the battery of the system.
+ *
+ * \since 5.0.0
+ */
+namespace battery {
 
 /**
  * \brief Returns the seconds of battery life that is remaining.
@@ -188,6 +190,8 @@ enum class power_state
                          power_state::unknown);
 }
 
+}  // namespace battery
+
 /**
  * \brief Indicates whether or not two power states values are the same.
  *
@@ -242,6 +246,6 @@ enum class power_state
 
 /// \} End of group system
 
-}  // namespace cen::battery
+}  // namespace cen
 
 #endif  // CENTURION_BATTERY_HEADER

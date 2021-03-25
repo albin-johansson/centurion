@@ -23800,6 +23800,12 @@ namespace cen {
                                          const not_null<czstring> app)
     -> sdl_string
 {
+  /*
+     Looking at the SDL source code, it actually seems fine to supply a null
+     string for the organization name. However, I haven't been able to find any
+     documentation providing this guarantee, so we simply disallow null
+     organization names.
+  */
   assert(org);
   assert(app);
   return sdl_string{SDL_GetPrefPath(org, app)};
@@ -39899,9 +39905,9 @@ enum class key_modifier
 }  // namespace cen
 
 #endif  // CENTURION_KEY_MODIFIER_HEADER
-// #include "centurion/input/key_state.hpp"
-#ifndef CENTURION_KEY_STATE_HEADER
-#define CENTURION_KEY_STATE_HEADER
+// #include "centurion/input/keyboard.hpp"
+#ifndef CENTURION_KEYBOARD_HEADER
+#define CENTURION_KEYBOARD_HEADER
 
 #include <SDL.h>
 
@@ -42011,7 +42017,7 @@ namespace cen {
 /// \{
 
 /**
- * \class key_state
+ * \class keyboard
  *
  * \brief Provides information about the keyboard state.
  *
@@ -42020,9 +42026,9 @@ namespace cen {
  *
  * \since 3.0.0
  *
- * \headerfile key_state.hpp
+ * \headerfile keyboard.hpp
  */
-class key_state final
+class keyboard final
 {
  public:
   /**
@@ -42030,7 +42036,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  key_state() noexcept
+  keyboard() noexcept
   {
     m_states = SDL_GetKeyboardState(&m_nKeys);
   }
@@ -42042,9 +42048,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  void update() noexcept
+  void update()
   {
-    std::copy(m_states, m_states + m_nKeys, m_prevStates.begin());
+    std::copy(m_states, m_states + m_nKeys, m_previous.begin());
   }
 
   /**
@@ -42058,9 +42064,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_pressed(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
+    return check_state(code, [this](const SDL_Scancode sc) {
       return m_states[sc];
     });
   }
@@ -42078,7 +42084,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_pressed(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_pressed(const key_code& code) const -> bool
   {
     return is_pressed(code.to_scan_code());
   }
@@ -42095,10 +42101,10 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_held(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc] && m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return m_states[sc] && m_previous[sc];
     });
   }
 
@@ -42116,7 +42122,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_held(const key_code& code) const -> bool
   {
     return is_held(code.to_scan_code());
   }
@@ -42133,11 +42139,10 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_pressed(const scan_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_pressed(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc] && !m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return m_states[sc] && !m_previous[sc];
     });
   }
 
@@ -42155,10 +42160,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_pressed(const key_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_pressed(const key_code& code) const -> bool
   {
-    return was_just_pressed(code.to_scan_code());
+    return just_pressed(code.to_scan_code());
   }
 
   /**
@@ -42173,11 +42177,10 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_released(const scan_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return !m_states[sc] && m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return !m_states[sc] && m_previous[sc];
     });
   }
 
@@ -42195,10 +42198,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_released(const key_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_released(const key_code& code) const -> bool
   {
-    return was_just_released(code.to_scan_code());
+    return just_released(code.to_scan_code());
   }
 
   /**
@@ -42212,8 +42214,8 @@ class key_state final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto modifier_active(
-      const key_modifier modifier) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_modifier modifier) noexcept
+      -> bool
   {
     return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
   }
@@ -42232,12 +42234,14 @@ class key_state final
 
  private:
   const u8* m_states{};
-  std::array<u8, cen::scan_code::count()> m_prevStates{};
+  std::array<u8, cen::scan_code::count()> m_previous{};
   int m_nKeys{};
 
+  // clang-format off
+
   template <typename Predicate>
-  auto check_state(const cen::scan_code& code,
-                   Predicate&& predicate) const noexcept -> bool
+  auto check_state(const cen::scan_code& code, Predicate&& predicate) const
+      noexcept(noexcept( predicate(code.get()) )) -> bool
   {
     const auto sc = code.get();
     if (sc >= 0 && sc < m_nKeys)
@@ -42249,17 +42253,19 @@ class key_state final
       return false;
     }
   }
+
+  // clang-format on
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 
-#endif  // CENTURION_KEY_STATE_HEADER
+#endif  // CENTURION_KEYBOARD_HEADER
 
-// #include "centurion/input/mouse_state.hpp"
-#ifndef CENTURION_MOUSE_STATE_HEADER
-#define CENTURION_MOUSE_STATE_HEADER
+// #include "centurion/input/mouse.hpp"
+#ifndef CENTURION_MOUSE_HEADER
+#define CENTURION_MOUSE_HEADER
 
 // #include "../centurion_cfg.hpp"
 
@@ -43069,24 +43075,24 @@ namespace cen {
 /// \{
 
 /**
- * \class mouse_state
+ * \class mouse
  *
  * \brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
  *
  * \since 3.0.0
  *
- * \headerfile mouse_state.hpp
+ * \headerfile mouse.hpp
  */
-class mouse_state final
+class mouse final
 {
  public:
   /**
-   * \brief Creates a `mouse_state` instance.
+   * \brief Creates a `mouse` instance.
    *
    * \since 3.0.0
    */
-  mouse_state() noexcept = default;
+  mouse() noexcept = default;
 
   /**
    * \brief Updates the mouse state. The window width and height will be
@@ -43225,7 +43231,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_mouse_moved() const noexcept -> bool
+  [[nodiscard]] auto was_moved() const noexcept -> bool
   {
     return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
   }
@@ -43237,7 +43243,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto mouse_x() const noexcept -> int
+  [[nodiscard]] auto x() const noexcept -> int
   {
     return m_mouseX;
   }
@@ -43249,7 +43255,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto mouse_y() const noexcept -> int
+  [[nodiscard]] auto y() const noexcept -> int
   {
     return m_mouseY;
   }
@@ -43261,7 +43267,7 @@ class mouse_state final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto mouse_pos() const noexcept -> ipoint
+  [[nodiscard]] auto position() const noexcept -> ipoint
   {
     return {m_mouseX, m_mouseY};
   }
@@ -43330,23 +43336,23 @@ class mouse_state final
   }
 
  private:
-  int m_mouseX{0};
-  int m_mouseY{0};
-  int m_oldX{0};
-  int m_oldY{0};
+  int m_mouseX{};
+  int m_mouseY{};
+  int m_oldX{};
+  int m_oldY{};
   int m_logicalWidth{1};
   int m_logicalHeight{1};
-  bool m_leftPressed{false};
-  bool m_rightPressed{false};
-  bool m_prevLeftPressed{false};
-  bool m_prevRightPressed{false};
+  bool m_leftPressed{};
+  bool m_rightPressed{};
+  bool m_prevLeftPressed{};
+  bool m_prevRightPressed{};
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_STATE_HEADER
+#endif  // CENTURION_MOUSE_HEADER
 // #include "centurion/input/scan_code.hpp"
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
@@ -51219,16 +51225,7 @@ constexpr auto operator"" _s(const unsigned long long int value) noexcept
 
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * \namespace cen::battery
- *
- * \ingroup system
- *
- * \brief Contains utilities related to the battery of the system.
- *
- * \since 5.0.0
- */
-namespace cen::battery {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -51251,6 +51248,17 @@ enum class power_state
   charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
   charged = SDL_POWERSTATE_CHARGED  ///< Currently plugged in and charged.
 };
+
+/**
+ * \namespace cen::battery
+ *
+ * \ingroup system
+ *
+ * \brief Contains utilities related to the battery of the system.
+ *
+ * \since 5.0.0
+ */
+namespace battery {
 
 /**
  * \brief Returns the seconds of battery life that is remaining.
@@ -51393,6 +51401,8 @@ enum class power_state
                          power_state::unknown);
 }
 
+}  // namespace battery
+
 /**
  * \brief Indicates whether or not two power states values are the same.
  *
@@ -51447,7 +51457,7 @@ enum class power_state
 
 /// \} End of group system
 
-}  // namespace cen::battery
+}  // namespace cen
 
 #endif  // CENTURION_BATTERY_HEADER
 // #include "centurion/system/byte_order.hpp"
@@ -70111,6 +70121,7 @@ namespace cen {
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
+#include <cstddef>      // nullptr_t
 #include <optional>     // optional
 #include <string>       // string
 #include <string_view>  // string_view
@@ -72486,6 +72497,47 @@ namespace cen {
 /// \{
 
 /**
+ * \enum message_box_type
+ *
+ * \brief Serves as a hint of the purpose of a message box. Message boxes
+ * can indicate errors, warnings and general information.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile message_box.hpp
+ */
+enum class message_box_type : u32
+{
+  error = SDL_MESSAGEBOX_ERROR,
+  warning = SDL_MESSAGEBOX_WARNING,
+  information = SDL_MESSAGEBOX_INFORMATION
+};
+
+/**
+ * \enum button_order
+ *
+ * \brief Provides hints for how the buttons in a message box should be
+ * aligned, either left-to-right or right-to-left.
+ *
+ * \note This enum has no effect and shouldn't be used if you're using
+ * SDL 2.0.10.
+ *
+ * \since 4.0.0
+ *
+ * \headerfile message_box.hpp
+ */
+enum class button_order : u32
+{
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+#else
+  left_to_right,
+  right_to_left
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+};
+
+/**
  * \class message_box
  *
  * \brief Represents a modal message box that can be used display
@@ -72506,47 +72558,6 @@ class message_box final
    * \since 5.0.0
    */
   using button_id = int;
-
-  /**
-   * \enum button_order
-   *
-   * \brief Provides hints for how the buttons in a message box should be
-   * aligned, either left-to-right or right-to-left.
-   *
-   * \note This enum has no effect and shouldn't be used if you're using
-   * SDL 2.0.10.
-   *
-   * \since 4.0.0
-   *
-   * \headerfile message_box.hpp
-   */
-  enum class button_order
-  {
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-    left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-    right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
-#else
-    left_to_right,
-    right_to_left
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-  };
-
-  /**
-   * \enum type
-   *
-   * \brief Serves as a hint of the purpose of a message box. Message boxes
-   * can indicate errors, warnings and general information.
-   *
-   * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
-   */
-  enum class type
-  {
-    error = SDL_MESSAGEBOX_ERROR,
-    warning = SDL_MESSAGEBOX_WARNING,
-    information = SDL_MESSAGEBOX_INFORMATION
-  };
 
   /**
    * \enum default_button
@@ -72677,7 +72688,7 @@ class message_box final
   static void show(const basic_window<T>& parent,
                    const std::string& title,
                    const std::string& message,
-                   const type type = default_type(),
+                   const message_box_type type = default_type(),
                    const button_order buttonOrder = default_order())
   {
     show(parent.ptr(), title, message, type, buttonOrder);
@@ -72698,7 +72709,7 @@ class message_box final
    */
   static void show(const std::string& title,
                    const std::string& message,
-                   const type type = default_type(),
+                   const message_box_type type = default_type(),
                    const button_order buttonOrder = default_order())
   {
     show(nullptr, title, message, type, buttonOrder);
@@ -72760,7 +72771,7 @@ class message_box final
     m_buttons.emplace_back(id, std::move(text), button);
   }
 
-  void set_title(std::nullptr_t) = delete;
+  [[maybe_unused]] void set_title(std::nullptr_t) = delete;
 
   /**
    * \brief Sets the title of the message box.
@@ -72786,7 +72797,7 @@ class message_box final
     m_message = std::move(message);
   }
 
-  void set_message(std::nullptr_t) = delete;
+  [[maybe_unused]] void set_message(std::nullptr_t) = delete;
 
   /**
    * \brief Sets the color scheme that will be used by the message box.
@@ -72810,7 +72821,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_type(const type type) noexcept
+  void set_type(const message_box_type type) noexcept
   {
     m_type = type;
   }
@@ -72884,7 +72895,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_type() const noexcept -> type
+  [[nodiscard]] auto type() const noexcept -> message_box_type
   {
     return m_type;
   }
@@ -72963,12 +72974,13 @@ class message_box final
   std::string m_title{"Message box"};
   std::string m_message{"N/A"};
   std::optional<color_scheme> m_colorScheme;
-  type m_type{default_type()};
+  message_box_type m_type{default_type()};
   button_order m_buttonOrder{default_order()};
 
-  [[nodiscard]] constexpr static auto default_type() noexcept -> type
+  [[nodiscard]] constexpr static auto default_type() noexcept
+      -> message_box_type
   {
-    return type::information;
+    return message_box_type::information;
   }
 
   [[nodiscard]] constexpr static auto default_order() noexcept -> button_order
@@ -72977,7 +72989,7 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(
-      const type type,
+      const message_box_type type,
       const button_order buttonOrder) noexcept -> u32
   {
     return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
@@ -72986,7 +72998,7 @@ class message_box final
   static void show(SDL_Window* parent,
                    const std::string& title,
                    const std::string& message,
-                   const type type,
+                   const message_box_type type,
                    const button_order buttonOrder)
   {
     if (const auto result =
@@ -82486,8 +82498,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_window_from_id(const u32 id) noexcept
-    -> window_handle
+[[nodiscard]] inline auto get_window(const u32 id) noexcept -> window_handle
 {
   return window_handle{SDL_GetWindowFromID(id)};
 }

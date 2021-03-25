@@ -188,7 +188,7 @@ int main(int argc, char** argv)
 
 ## Program using the keyboard and mouse state directly
 
-It is also possible to create applications that are not event-driven at all. Instead of relying on events, we can instead access the current input state through the `key_state` and `mouse_state` classes. We can still query the event API for some extra information, such as if the user has requested the application to quit by closing the window.
+It is also possible to create applications that are not event-driven at all. Instead of relying on events, we can instead access the current input state through the `keyboard` and `mouse` classes. We can still query the event API for some extra information, such as if the user has requested the application to quit by closing the window.
 
 ```C++
 #include <centurion.hpp>
@@ -199,8 +199,8 @@ auto run() -> int
 {
   cen::window window;
   cen::renderer renderer{window};
-  cen::key_state keyState;      // Our view onto the keyboard state 
-  cen::mouse_state mouseState;  // Our view onto the mouse state
+  cen::keyboard keyboard; // View onto the keyboard state 
+  cen::mouse mouse;       // View onto the mouse state
 
   window.show();
 
@@ -208,18 +208,17 @@ auto run() -> int
   bool running{true};
 
   while (running) {
-    keyState.update();                         // Updates the keyboard state
-    mouseState.update(renderer.output_size()); // Updates the mouse state
-    cen::event::refresh();                     // Manually refreshes the event queue
+    keyboard.update();                    // Updates the keyboard state
+    mouse.update(renderer.output_size()); // Updates the mouse state
+    cen::event::refresh();                // Manually refreshes the event queue
 
-    // Check if there's a quit event in the event queue
-    if (cen::event::queue_count(cen::event_type::quit) > 0) {
+    if (cen::event::in_queue(cen::event_type::quit)) {
       running = false;
       break;
     }
 
     // Query the key state directly
-    if (keyState.is_pressed(cen::keycodes::d)) {
+    if (keyboard.is_pressed(cen::keycodes::d)) {
       rectangle.set_x(rectangle.x() + 10);
     }
 

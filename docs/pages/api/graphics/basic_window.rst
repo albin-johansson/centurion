@@ -48,7 +48,7 @@ The following functions are located in the ``window_utils.hpp`` header.
   :outline:
   :no-link:
 
-.. doxygenfunction:: get_window_from_id(u32 id) noexcept -> window_handle
+.. doxygenfunction:: get_window(u32 id) noexcept -> window_handle
   :outline:
   :no-link:
 

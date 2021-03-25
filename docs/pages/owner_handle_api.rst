@@ -83,7 +83,7 @@ The second example involves SDL functions that return non-owning raw pointers. F
 function is ``SDL_GetWindowFromID()``, which returns a ``SDL_Window*``. It would be impossible to safely 
 wrap the returned pointer of such functions in the corresponding Centurion component if we did not 
 have the ability to explicitly state the ownership semantics. So as a result of handles, there is a corresponding
-Centurion function for the aforementioned SDL function, ``get_window_from_id()``, which is defined in 
+Centurion function for the aforementioned SDL function, ``get_window()``, which is defined in
 ``window_utils.hpp``. Many similiar examples can be found throughout the Centurion library.
 
 Whilst it is not important to understand how this works behind-the-scenes, the basic premise is

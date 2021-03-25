@@ -60,8 +60,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_window_from_id(const u32 id) noexcept
-    -> window_handle
+[[nodiscard]] inline auto get_window(const u32 id) noexcept -> window_handle
 {
   return window_handle{SDL_GetWindowFromID(id)};
 }

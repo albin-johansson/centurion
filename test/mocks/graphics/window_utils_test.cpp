@@ -46,9 +46,9 @@ TEST_F(WindowUtilsTest, KeyboardFocusWindow)
   EXPECT_EQ(1, SDL_GetKeyboardFocus_fake.call_count);
 }
 
-TEST_F(WindowUtilsTest, GetWindowFromId)
+TEST_F(WindowUtilsTest, GetWindow)
 {
-  auto window [[maybe_unused]] = cen::get_window_from_id(0);
+  auto window [[maybe_unused]] = cen::get_window(0);
   EXPECT_EQ(1, SDL_GetWindowFromID_fake.call_count);
 }
 

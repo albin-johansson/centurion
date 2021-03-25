@@ -53,9 +53,9 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  void update() noexcept
+  void update()
   {
-    std::copy(m_states, m_states + m_nKeys, m_prevStates.begin());
+    std::copy(m_states, m_states + m_nKeys, m_previous.begin());
   }
 
   /**
@@ -69,9 +69,9 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_pressed(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
+    return check_state(code, [this](const SDL_Scancode sc) {
       return m_states[sc];
     });
   }
@@ -89,7 +89,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_pressed(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_pressed(const key_code& code) const -> bool
   {
     return is_pressed(code.to_scan_code());
   }
@@ -106,10 +106,10 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_held(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc] && m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return m_states[sc] && m_previous[sc];
     });
   }
 
@@ -127,7 +127,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_held(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto is_held(const key_code& code) const -> bool
   {
     return is_held(code.to_scan_code());
   }
@@ -144,10 +144,10 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_pressed(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto just_pressed(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc] && !m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return m_states[sc] && !m_previous[sc];
     });
   }
 
@@ -165,7 +165,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_pressed(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto just_pressed(const key_code& code) const -> bool
   {
     return just_pressed(code.to_scan_code());
   }
@@ -182,10 +182,10 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const scan_code& code) const noexcept -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return !m_states[sc] && m_prevStates[sc];
+    return check_state(code, [this](const SDL_Scancode sc) {
+      return !m_states[sc] && m_previous[sc];
     });
   }
 
@@ -203,7 +203,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const key_code& code) const noexcept -> bool
+  [[nodiscard]] auto just_released(const key_code& code) const -> bool
   {
     return just_released(code.to_scan_code());
   }
@@ -239,12 +239,14 @@ class keyboard final
 
  private:
   const u8* m_states{};
-  std::array<u8, cen::scan_code::count()> m_prevStates{};
+  std::array<u8, cen::scan_code::count()> m_previous{};
   int m_nKeys{};
 
+  // clang-format off
+
   template <typename Predicate>
-  auto check_state(const cen::scan_code& code,
-                   Predicate&& predicate) const noexcept -> bool
+  auto check_state(const cen::scan_code& code, Predicate&& predicate) const
+      noexcept(noexcept( predicate(code.get()) )) -> bool
   {
     const auto sc = code.get();
     if (sc >= 0 && sc < m_nKeys)
@@ -256,6 +258,8 @@ class keyboard final
       return false;
     }
   }
+
+  // clang-format on
 };
 
 /// \} End of group input

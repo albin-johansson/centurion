@@ -23,6 +23,10 @@ Interface
   :outline:
   :members:
 
+.. doxygenenum:: cen::power_state
+  :outline:
+  :no-link:
+
 Examples
 --------
 
@@ -35,15 +39,15 @@ Examples
     // Check if the system is running on a battery
     const auto exists = cen::battery::exists();
 
-    if (const auto percentage = cen::battery::percentage(); percentage) {
+    if (const auto percentage = cen::battery::percentage()) {
       // obtained the battery percentage
     }
 
-    if (const auto minutes = cen::battery::minutes_left(); minutes) {
+    if (const auto minutes = cen::battery::minutes_left()) {
       // obtained the minutes of battery life left
     }
 
-    if (const auto seconds = cen::battery::seconds_left(); seconds) {
+    if (const auto seconds = cen::battery::seconds_left()) {
       // obtained the seconds of battery life left
     }
 

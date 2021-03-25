@@ -1,5 +1,5 @@
-#ifndef CENTURION_KEY_STATE_HEADER
-#define CENTURION_KEY_STATE_HEADER
+#ifndef CENTURION_KEYBOARD_HEADER
+#define CENTURION_KEYBOARD_HEADER
 
 #include <SDL.h>
 
@@ -22,7 +22,7 @@ namespace cen {
 /// \{
 
 /**
- * \class key_state
+ * \class keyboard
  *
  * \brief Provides information about the keyboard state.
  *
@@ -31,9 +31,9 @@ namespace cen {
  *
  * \since 3.0.0
  *
- * \headerfile key_state.hpp
+ * \headerfile keyboard.hpp
  */
-class key_state final
+class keyboard final
 {
  public:
   /**
@@ -41,7 +41,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  key_state() noexcept
+  keyboard() noexcept
   {
     m_states = SDL_GetKeyboardState(&m_nKeys);
   }
@@ -144,8 +144,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_pressed(const scan_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_pressed(const scan_code& code) const noexcept -> bool
   {
     return check_state(code, [this](const SDL_Scancode sc) noexcept {
       return m_states[sc] && !m_prevStates[sc];
@@ -166,10 +165,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_pressed(const key_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_pressed(const key_code& code) const noexcept -> bool
   {
-    return was_just_pressed(code.to_scan_code());
+    return just_pressed(code.to_scan_code());
   }
 
   /**
@@ -184,8 +182,7 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_released(const scan_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const noexcept -> bool
   {
     return check_state(code, [this](const SDL_Scancode sc) noexcept {
       return !m_states[sc] && m_prevStates[sc];
@@ -206,10 +203,9 @@ class key_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_just_released(const key_code& code) const noexcept
-      -> bool
+  [[nodiscard]] auto just_released(const key_code& code) const noexcept -> bool
   {
-    return was_just_released(code.to_scan_code());
+    return just_released(code.to_scan_code());
   }
 
   /**
@@ -223,8 +219,8 @@ class key_state final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto modifier_active(
-      const key_modifier modifier) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_modifier modifier) noexcept
+      -> bool
   {
     return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
   }
@@ -262,8 +258,8 @@ class key_state final
   }
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 
-#endif  // CENTURION_KEY_STATE_HEADER
+#endif  // CENTURION_KEYBOARD_HEADER

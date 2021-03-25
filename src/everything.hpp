@@ -77,7 +77,7 @@
 #include "centurion/input/joystick.hpp"
 #include "centurion/input/key_code.hpp"
 #include "centurion/input/key_modifier.hpp"
-#include "centurion/input/key_state.hpp"
+#include "centurion/input/keyboard.hpp"
 #include "centurion/input/mouse_state.hpp"
 #include "centurion/input/scan_code.hpp"
 #include "centurion/input/sensor.hpp"

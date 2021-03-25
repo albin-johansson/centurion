@@ -51,29 +51,27 @@ TEST(MessageBox, SetColorScheme)
 
 TEST(MessageBox, SetType)
 {
-  using type = cen::message_box::type;
   cen::message_box mb;
 
-  mb.set_type(type::information);
-  EXPECT_EQ(type::information, mb.get_type());
+  mb.set_type(cen::message_box_type::information);
+  EXPECT_EQ(cen::message_box_type::information, mb.type());
 
-  mb.set_type(type::warning);
-  EXPECT_EQ(type::warning, mb.get_type());
+  mb.set_type(cen::message_box_type::warning);
+  EXPECT_EQ(cen::message_box_type::warning, mb.type());
 
-  mb.set_type(type::error);
-  EXPECT_EQ(type::error, mb.get_type());
+  mb.set_type(cen::message_box_type::error);
+  EXPECT_EQ(cen::message_box_type::error, mb.type());
 }
 
 TEST(MessageBox, SetButtonOrder)
 {
-  using order = cen::message_box::button_order;
   cen::message_box mb;
 
-  mb.set_button_order(order::left_to_right);
-  EXPECT_EQ(order::left_to_right, mb.get_button_order());
+  mb.set_button_order(cen::button_order::left_to_right);
+  EXPECT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 
-  mb.set_button_order(order::right_to_left);
-  EXPECT_EQ(order::right_to_left, mb.get_button_order());
+  mb.set_button_order(cen::button_order::right_to_left);
+  EXPECT_EQ(cen::button_order::right_to_left, mb.get_button_order());
 }
 
 TEST(MessageBox, HasButton)
@@ -102,28 +100,26 @@ TEST(MessageBox, Message)
 TEST(MessageBox, GetType)
 {
   const cen::message_box mb;
-  EXPECT_EQ(cen::message_box::type::information, mb.get_type());
+  EXPECT_EQ(cen::message_box_type::information, mb.type());
 }
 
 TEST(MessageBox, GetButtonOrder)
 {
   const cen::message_box mb;
-  EXPECT_EQ(cen::message_box::button_order::left_to_right,
-            mb.get_button_order());
+  EXPECT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 }
 
 TEST(MessageBox, ButtonOrderEnum)
 {
-  using order = cen::message_box::button_order;
   EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-            static_cast<int>(order::left_to_right));
+            static_cast<cen::u32>(cen::button_order::left_to_right));
   EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
-            static_cast<int>(order::right_to_left));
+            static_cast<cen::u32>(cen::button_order::right_to_left));
 }
 
 TEST(MessageBox, TypeEnum)
 {
-  using type = cen::message_box::type;
+  using type = cen::message_box_type;
   EXPECT_EQ(SDL_MESSAGEBOX_INFORMATION, static_cast<int>(type::information));
   EXPECT_EQ(SDL_MESSAGEBOX_WARNING, static_cast<int>(type::warning));
   EXPECT_EQ(SDL_MESSAGEBOX_ERROR, static_cast<int>(type::error));

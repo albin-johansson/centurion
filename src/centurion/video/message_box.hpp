@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
+#include <cstddef>      // nullptr_t
 #include <optional>     // optional
 #include <string>       // string
 #include <string_view>  // string_view
@@ -28,6 +29,47 @@ namespace cen {
 /// \{
 
 /**
+ * \enum message_box_type
+ *
+ * \brief Serves as a hint of the purpose of a message box. Message boxes
+ * can indicate errors, warnings and general information.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile message_box.hpp
+ */
+enum class message_box_type : u32
+{
+  error = SDL_MESSAGEBOX_ERROR,
+  warning = SDL_MESSAGEBOX_WARNING,
+  information = SDL_MESSAGEBOX_INFORMATION
+};
+
+/**
+ * \enum button_order
+ *
+ * \brief Provides hints for how the buttons in a message box should be
+ * aligned, either left-to-right or right-to-left.
+ *
+ * \note This enum has no effect and shouldn't be used if you're using
+ * SDL 2.0.10.
+ *
+ * \since 4.0.0
+ *
+ * \headerfile message_box.hpp
+ */
+enum class button_order : u32
+{
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+#else
+  left_to_right,
+  right_to_left
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+};
+
+/**
  * \class message_box
  *
  * \brief Represents a modal message box that can be used display
@@ -48,47 +90,6 @@ class message_box final
    * \since 5.0.0
    */
   using button_id = int;
-
-  /**
-   * \enum button_order
-   *
-   * \brief Provides hints for how the buttons in a message box should be
-   * aligned, either left-to-right or right-to-left.
-   *
-   * \note This enum has no effect and shouldn't be used if you're using
-   * SDL 2.0.10.
-   *
-   * \since 4.0.0
-   *
-   * \headerfile message_box.hpp
-   */
-  enum class button_order
-  {
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-    left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-    right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
-#else
-    left_to_right,
-    right_to_left
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-  };
-
-  /**
-   * \enum type
-   *
-   * \brief Serves as a hint of the purpose of a message box. Message boxes
-   * can indicate errors, warnings and general information.
-   *
-   * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
-   */
-  enum class type
-  {
-    error = SDL_MESSAGEBOX_ERROR,
-    warning = SDL_MESSAGEBOX_WARNING,
-    information = SDL_MESSAGEBOX_INFORMATION
-  };
 
   /**
    * \enum default_button
@@ -219,7 +220,7 @@ class message_box final
   static void show(const basic_window<T>& parent,
                    const std::string& title,
                    const std::string& message,
-                   const type type = default_type(),
+                   const message_box_type type = default_type(),
                    const button_order buttonOrder = default_order())
   {
     show(parent.ptr(), title, message, type, buttonOrder);
@@ -240,7 +241,7 @@ class message_box final
    */
   static void show(const std::string& title,
                    const std::string& message,
-                   const type type = default_type(),
+                   const message_box_type type = default_type(),
                    const button_order buttonOrder = default_order())
   {
     show(nullptr, title, message, type, buttonOrder);
@@ -302,7 +303,7 @@ class message_box final
     m_buttons.emplace_back(id, std::move(text), button);
   }
 
-  void set_title(std::nullptr_t) = delete;
+  [[maybe_unused]] void set_title(std::nullptr_t) = delete;
 
   /**
    * \brief Sets the title of the message box.
@@ -328,7 +329,7 @@ class message_box final
     m_message = std::move(message);
   }
 
-  void set_message(std::nullptr_t) = delete;
+  [[maybe_unused]] void set_message(std::nullptr_t) = delete;
 
   /**
    * \brief Sets the color scheme that will be used by the message box.
@@ -352,7 +353,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_type(const type type) noexcept
+  void set_type(const message_box_type type) noexcept
   {
     m_type = type;
   }
@@ -426,7 +427,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_type() const noexcept -> type
+  [[nodiscard]] auto type() const noexcept -> message_box_type
   {
     return m_type;
   }
@@ -505,12 +506,13 @@ class message_box final
   std::string m_title{"Message box"};
   std::string m_message{"N/A"};
   std::optional<color_scheme> m_colorScheme;
-  type m_type{default_type()};
+  message_box_type m_type{default_type()};
   button_order m_buttonOrder{default_order()};
 
-  [[nodiscard]] constexpr static auto default_type() noexcept -> type
+  [[nodiscard]] constexpr static auto default_type() noexcept
+      -> message_box_type
   {
-    return type::information;
+    return message_box_type::information;
   }
 
   [[nodiscard]] constexpr static auto default_order() noexcept -> button_order
@@ -519,7 +521,7 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(
-      const type type,
+      const message_box_type type,
       const button_order buttonOrder) noexcept -> u32
   {
     return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
@@ -528,7 +530,7 @@ class message_box final
   static void show(SDL_Window* parent,
                    const std::string& title,
                    const std::string& message,
-                   const type type,
+                   const message_box_type type,
                    const button_order buttonOrder)
   {
     if (const auto result =

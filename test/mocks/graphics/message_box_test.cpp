@@ -43,7 +43,7 @@ TEST_F(MessageBoxTest, ShowStatic)
   }
 
   {  // With custom type
-    cen::message_box::show(title, message, cen::message_box::type::error);
+    cen::message_box::show(title, message, cen::message_box_type::error);
     EXPECT_EQ(2, SDL_ShowSimpleMessageBox_fake.call_count);
 
     EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT | SDL_MESSAGEBOX_ERROR,
@@ -56,8 +56,8 @@ TEST_F(MessageBoxTest, ShowStatic)
   {  // With custom type and button order
     cen::message_box::show(title,
                            message,
-                           cen::message_box::type::error,
-                           cen::message_box::button_order::right_to_left);
+                           cen::message_box_type::error,
+                           cen::button_order::right_to_left);
     EXPECT_EQ(3, SDL_ShowSimpleMessageBox_fake.call_count);
 
     EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT | SDL_MESSAGEBOX_ERROR,

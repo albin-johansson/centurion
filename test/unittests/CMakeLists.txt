@@ -89,7 +89,7 @@ set(SOURCE_FILES
     input/key_code_tests.cpp
     input/keyboard_test.cpp
     input/mouse_button_test.cpp
-    input/mouse_state_test.cpp
+    input/mouse_test.cpp
     input/scan_code_tests.cpp
     input/sensor_test.cpp
     input/touch_test.cpp

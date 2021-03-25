@@ -1,5 +1,5 @@
-#ifndef CENTURION_MOUSE_STATE_HEADER
-#define CENTURION_MOUSE_STATE_HEADER
+#ifndef CENTURION_MOUSE_HEADER
+#define CENTURION_MOUSE_HEADER
 
 #include "../centurion_cfg.hpp"
 #include "../detail/max.hpp"
@@ -17,24 +17,24 @@ namespace cen {
 /// \{
 
 /**
- * \class mouse_state
+ * \class mouse
  *
  * \brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
  *
  * \since 3.0.0
  *
- * \headerfile mouse_state.hpp
+ * \headerfile mouse.hpp
  */
-class mouse_state final
+class mouse final
 {
  public:
   /**
-   * \brief Creates a `mouse_state` instance.
+   * \brief Creates a `mouse` instance.
    *
    * \since 3.0.0
    */
-  mouse_state() noexcept = default;
+  mouse() noexcept = default;
 
   /**
    * \brief Updates the mouse state. The window width and height will be
@@ -173,7 +173,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto was_mouse_moved() const noexcept -> bool
+  [[nodiscard]] auto was_moved() const noexcept -> bool
   {
     return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
   }
@@ -185,7 +185,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto mouse_x() const noexcept -> int
+  [[nodiscard]] auto x() const noexcept -> int
   {
     return m_mouseX;
   }
@@ -197,7 +197,7 @@ class mouse_state final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto mouse_y() const noexcept -> int
+  [[nodiscard]] auto y() const noexcept -> int
   {
     return m_mouseY;
   }
@@ -209,7 +209,7 @@ class mouse_state final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto mouse_pos() const noexcept -> ipoint
+  [[nodiscard]] auto position() const noexcept -> ipoint
   {
     return {m_mouseX, m_mouseY};
   }
@@ -278,20 +278,20 @@ class mouse_state final
   }
 
  private:
-  int m_mouseX{0};
-  int m_mouseY{0};
-  int m_oldX{0};
-  int m_oldY{0};
+  int m_mouseX{};
+  int m_mouseY{};
+  int m_oldX{};
+  int m_oldY{};
   int m_logicalWidth{1};
   int m_logicalHeight{1};
-  bool m_leftPressed{false};
-  bool m_rightPressed{false};
-  bool m_prevLeftPressed{false};
-  bool m_prevRightPressed{false};
+  bool m_leftPressed{};
+  bool m_rightPressed{};
+  bool m_prevLeftPressed{};
+  bool m_prevRightPressed{};
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_STATE_HEADER
+#endif  // CENTURION_MOUSE_HEADER

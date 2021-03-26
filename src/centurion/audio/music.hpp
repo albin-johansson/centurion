@@ -144,8 +144,8 @@ class music final
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played
    * forever. Furthermore, the values 0 and 1 both results in the music being
-   * played *one time*. Except for these "special" values, the method behaves as
-   * expected.
+   * played *one time*. Except for these "special" values, the function behaves
+   * as expected.
    *
    * \param nLoops the number of times to loop the music, `music::forever` can
    * be supplied to loop the music indefinitely.

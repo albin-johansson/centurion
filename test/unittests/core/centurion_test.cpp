@@ -13,6 +13,33 @@ TEST(CenturionHeader, SDLLinkedVersion)
   EXPECT_EQ(expected.patch, version.patch);
 }
 
+TEST(CenturionHeader, SDLImageLinkedVersion)
+{
+  const auto expected = *IMG_Linked_Version();
+  const auto version = cen::sdl_image_linked_version();
+  EXPECT_EQ(expected.major, version.major);
+  EXPECT_EQ(expected.minor, version.minor);
+  EXPECT_EQ(expected.patch, version.patch);
+}
+
+TEST(CenturionHeader, SDLMixerLinkedVersion)
+{
+  const auto expected = *Mix_Linked_Version();
+  const auto version = cen::sdl_mixer_linked_version();
+  EXPECT_EQ(expected.major, version.major);
+  EXPECT_EQ(expected.minor, version.minor);
+  EXPECT_EQ(expected.patch, version.patch);
+}
+
+TEST(CenturionHeader, SDLTTFLinkedVersion)
+{
+  const auto expected = *TTF_Linked_Version();
+  const auto version = cen::sdl_ttf_linked_version();
+  EXPECT_EQ(expected.major, version.major);
+  EXPECT_EQ(expected.minor, version.minor);
+  EXPECT_EQ(expected.patch, version.patch);
+}
+
 TEST(CenturionHeader, SDLVersion)
 {
   constexpr auto version = cen::sdl_version();

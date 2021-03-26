@@ -2,6 +2,7 @@
 #define CENTURION_FILE_HEADER
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 #include <cassert>   // assert
 #include <cstddef>   // size_t
@@ -557,6 +558,95 @@ class file final
   }
 
   /// \} End of read API
+
+  /// \name File type queries
+  /// \{
+
+  // TODO Centurion 6: Document and test these functions
+
+  /**
+   * \brief Indicates whether or not the file represents a PNG image.
+   *
+   * \return `true` if the file is a PNG image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_png() const noexcept -> bool
+  {
+    return IMG_isPNG(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_ico() const noexcept -> bool
+  {
+    return IMG_isICO(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_jpg() const noexcept -> bool
+  {
+    return IMG_isJPG(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_bmp() const noexcept -> bool
+  {
+    return IMG_isBMP(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_gif() const noexcept -> bool
+  {
+    return IMG_isGIF(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_svg() const noexcept -> bool
+  {
+    return IMG_isSVG(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_webp() const noexcept -> bool
+  {
+    return IMG_isWEBP(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_tif() const noexcept -> bool
+  {
+    return IMG_isTIF(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_pnm() const noexcept -> bool
+  {
+    return IMG_isPNM(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_pcx() const noexcept -> bool
+  {
+    return IMG_isPCX(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_lbm() const noexcept -> bool
+  {
+    return IMG_isLBM(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_cur() const noexcept -> bool
+  {
+    return IMG_isCUR(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_xcf() const noexcept -> bool
+  {
+    return IMG_isXCF(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_xpm() const noexcept -> bool
+  {
+    return IMG_isXPM(m_context.get()) == 1;
+  }
+
+  [[nodiscard]] auto is_xv() const noexcept -> bool
+  {
+    return IMG_isXV(m_context.get()) == 1;
+  }
+
+  /// \}
 
   /**
    * \brief Seeks to the specified offset, using the specified seek mode.

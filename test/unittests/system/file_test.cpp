@@ -106,6 +106,14 @@ TEST_F(FileTest, Queries)
   EXPECT_EQ(file.get()->type, static_cast<cen::u32>(file.type()));
 }
 
+TEST_F(FileTest, IsPNG)
+{
+  cen::file file{"resources/panda.png", cen::file_mode::read_existing};
+  ASSERT_TRUE(file);
+
+  EXPECT_TRUE(file.is_png());
+}
+
 TEST_F(FileTest, SeekModeEnum)
 {
   EXPECT_EQ(RW_SEEK_SET, static_cast<int>(cen::seek_mode::from_beginning));

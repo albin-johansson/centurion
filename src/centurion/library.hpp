@@ -133,7 +133,7 @@ namespace cen {
  * The chunk size used by SDL2_mixer, if \ref config.initMixer is
  * `true`.
  *
- * \headerfile centurion.hpp
+ * \headerfile library.hpp
  */
 struct config final
 {
@@ -165,7 +165,7 @@ struct config final
  *
  * \since 3.0.0
  *
- * \headerfile centurion.hpp
+ * \headerfile library.hpp
  */
 class library final
 {

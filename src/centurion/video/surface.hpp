@@ -4,10 +4,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <cassert>      // assert
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
@@ -33,7 +32,7 @@ namespace cen {
 /// \addtogroup graphics
 /// \{
 
-template <typename B>
+template <typename T>
 class basic_surface;
 
 /**
@@ -43,7 +42,7 @@ class basic_surface;
  *
  * \since 5.0.0
  */
-using surface = basic_surface<std::true_type>;
+using surface = basic_surface<detail::owning_type>;
 
 /**
  * \typedef surface_handle
@@ -52,24 +51,30 @@ using surface = basic_surface<std::true_type>;
  *
  * \since 5.0.0
  */
-using surface_handle = basic_surface<std::false_type>;
+using surface_handle = basic_surface<detail::handle_type>;
 
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated image.
+ * \brief Represents a non-accelerated collection of pixels that constitute an
+ * image. Surfaces are often used for icons and snapshots, as an "intermediate"
+ * representation that can be manually manipulated, unlike textures. There is no
+ * support for directly rendering surfaces, but they can be converted to
+ * textures, which in turn can be rendered.
  *
- * \tparam B `std::true_type` for owning surfaces; `std::false_type` for
- * non-owning surfaces.
+ * \tparam B Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
  * \headerfile surface.hpp
  */
-template <typename B>
+template <typename T>
 class basic_surface final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -80,10 +85,10 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<B>())
+  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_surface)
       {
@@ -104,7 +109,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -125,7 +130,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -141,7 +146,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -168,7 +173,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -180,6 +185,18 @@ class basic_surface final
     source.set_blend_mode(blendMode);
 
     return source.convert(pixelFormat);
+  }
+
+  /**
+   * \see with_format()
+   */
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto with_format(const std::string& file,
+                                        const blend_mode blendMode,
+                                        const pixel_format pixelFormat)
+      -> basic_surface
+  {
+    return with_format(file.c_str(), blendMode, pixelFormat);
   }
 
   /**
@@ -195,12 +212,21 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
     assert(file);
     return basic_surface{SDL_LoadBMP(file)};
+  }
+
+  /**
+   * \see from_bmp()
+   */
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
+  {
+    return from_bmp(file.c_str());
   }
 
   /**
@@ -210,9 +236,9 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  basic_surface(const basic_surface& other) noexcept(!detail::is_owning<B>())
+  basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       copy(other);
     }
@@ -231,6 +257,8 @@ class basic_surface final
    */
   basic_surface(basic_surface&& other) noexcept = default;
 
+  /// \} End of construction
+
   /**
    * \brief Copies the supplied surface.
    *
@@ -240,12 +268,12 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  auto operator=(const basic_surface& other) noexcept(!detail::is_owning<B>())
+  auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
     if (this != &other)
     {
-      if constexpr (detail::is_owning<B>())
+      if constexpr (detail::is_owning<T>())
       {
         copy(other);
       }
@@ -268,8 +296,11 @@ class basic_surface final
    */
   auto operator=(basic_surface&& other) noexcept -> basic_surface& = default;
 
+  /// \name Save functions
+  /// \{
+
   /**
-   * \brief Saves the surface as a BMP file.
+   * \brief Saves the surface as a BMP image.
    *
    * \param file the file path that the surface data will be saved at.
    *
@@ -285,49 +316,72 @@ class basic_surface final
   }
 
   /**
-   * \brief Sets the color of the pixel at the specified coordinate.
-   *
-   * \details This method has no effect if the coordinate is out-of-bounds or if
-   * something goes wrong when attempting to modify the pixel data.
-   *
-   * \param pixel the pixel that will be changed.
-   * \param color the new color of the pixel.
-   *
-   * \since 4.0.0
+   * \see save_as_bmp()
    */
-  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  auto save_as_bmp(const std::string& file) const noexcept -> bool  // NOLINT
   {
-    if (!in_bounds(pixel) || !lock())
-    {
-      return;
-    }
-
-    const int nPixels = (m_surface->pitch / 4) * height();
-    const int index = (pixel.y() * width()) + pixel.x();
-
-    if ((index >= 0) && (index < nPixels))
-    {
-      const auto info = format_info();
-      auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
-      pixels[index] = info.rgba_to_pixel(color);
-    }
-
-    unlock();
+    return save_as_bmp(file.c_str());
   }
 
   /**
-   * \brief Indicates whether or not the surface must be locked before modifying
-   * the pixel data associated with the surface.
+   * \brief Saves the surface as a PNG image.
    *
-   * \return `true` if the surface must be locked before modification; `false`
-   * otherwise.
+   * \param file the file path that the surface data will be saved at.
    *
-   * \since 4.0.0
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 6.0.0
    */
-  [[nodiscard]] auto must_lock() const noexcept -> bool
+  auto save_as_png(const not_null<czstring> file) const noexcept -> bool
   {
-    return SDL_MUSTLOCK(m_surface);
+    assert(file);
+    const auto result = IMG_SavePNG(get(), file);
+    return result != -1;
   }
+
+  /**
+   * \see save_as_png()
+   */
+  auto save_as_png(const std::string& file) const noexcept -> bool  // NOLINT
+  {
+    return save_as_png(file.c_str());
+  }
+
+  /**
+   * \brief Saves the surface as a JPG image.
+   *
+   * \note The quality parameter is supplied to libjpeg in the SDL
+   * implementation, but the limitations on its values are unknown at the time
+   * of writing.
+   *
+   * \param file the file path that the surface data will be saved at.
+   * \param quality the quality of the JPG image.
+   *
+   * \return `true` on success; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  auto save_as_jpg(const not_null<czstring> file,
+                   const int quality) const noexcept -> bool
+  {
+    assert(file);
+    const auto result = IMG_SaveJPG(get(), file, quality);
+    return result != -1;
+  }
+
+  /**
+   * \see save_as_jpg()
+   */
+  auto save_as_jpg(const std::string& file, const int quality) const noexcept
+      -> bool
+  {
+    return save_as_jpg(file.c_str(), quality);
+  }
+
+  /// \} End of save functions
+
+  /// \name Locking
+  /// \{
 
   /**
    * \brief Attempts to lock the surface, so that the associated pixel data can
@@ -366,6 +420,56 @@ class basic_surface final
     {
       SDL_UnlockSurface(m_surface);
     }
+  }
+
+  /**
+   * \brief Indicates whether or not the surface must be locked before modifying
+   * the pixel data associated with the surface.
+   *
+   * \return `true` if the surface must be locked before modification; `false`
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto must_lock() const noexcept -> bool
+  {
+    return SDL_MUSTLOCK(m_surface);
+  }
+
+  /// \} End of locking
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the color of the pixel at the specified coordinate.
+   *
+   * \details This method has no effect if the coordinate is out-of-bounds or if
+   * something goes wrong when attempting to modify the pixel data.
+   *
+   * \param pixel the pixel that will be changed.
+   * \param color the new color of the pixel.
+   *
+   * \since 4.0.0
+   */
+  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  {
+    if (!in_bounds(pixel) || !lock())
+    {
+      return;
+    }
+
+    const int nPixels = (m_surface->pitch / 4) * height();
+    const int index = (pixel.y() * width()) + pixel.x();
+
+    if ((index >= 0) && (index < nPixels))
+    {
+      const auto info = format_info();
+      auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
+      pixels[index] = info.rgba_to_pixel(color);
+    }
+
+    unlock();
   }
 
   /**
@@ -421,6 +525,11 @@ class basic_surface final
   {
     return SDL_SetSurfaceRLE(m_surface, enabled ? 1 : 0) == 0;
   }
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
 
   /**
    * \brief Returns the alpha component modulation of the surface.
@@ -644,6 +753,11 @@ class basic_surface final
     return m_surface.get();
   }
 
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
   /**
    * \brief Indicates whether or not a surface handle holds a non-null pointer.
    *
@@ -654,7 +768,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename TT = T, detail::is_handle<TT> = true>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;
@@ -684,6 +798,8 @@ class basic_surface final
     return get();
   }
 
+  /// \} End of conversions
+
  private:
   struct deleter final
   {
@@ -692,7 +808,7 @@ class basic_surface final
       SDL_FreeSurface(surface);
     }
   };
-  detail::pointer_manager<B, SDL_Surface, deleter> m_surface;
+  detail::pointer_manager<T, SDL_Surface, deleter> m_surface;
 
   /**
    * \brief Copies the contents of the supplied surface instance into this

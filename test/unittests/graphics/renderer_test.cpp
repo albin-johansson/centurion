@@ -13,6 +13,8 @@
 #include "video/graphics_drivers.hpp"
 #include "video/window.hpp"
 
+using namespace std::string_literals;
+
 class RendererTest : public testing::Test
 {
  protected:
@@ -367,8 +369,12 @@ TEST_F(RendererTest, Capture)
   const auto snapshot = m_renderer->capture(m_window->get_pixel_format());
   EXPECT_TRUE(snapshot.save_as_bmp("snapshot.bmp"));
 
-  // We take the opportunity to check if we can load the BMP file
-  EXPECT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"));
+  {  // We take the opportunity to do some surface tests as well
+    EXPECT_NO_THROW(cen::surface::from_bmp("snapshot.bmp"s));
+    EXPECT_NO_THROW(cen::surface::with_format("resources/panda.png"s,
+                                              m_renderer->get_blend_mode(),
+                                              m_window->get_pixel_format()));
+  }
 
   m_window->hide();
 }

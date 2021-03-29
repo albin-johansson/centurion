@@ -24,6 +24,8 @@ static_assert(std::is_copy_assignable_v<cen::surface_handle>);
 static_assert(std::is_nothrow_move_constructible_v<cen::surface_handle>);
 static_assert(std::is_nothrow_move_assignable_v<cen::surface_handle>);
 
+using namespace std::string_literals;
+
 class SurfaceTest : public testing::Test
 {
  protected:
@@ -43,7 +45,6 @@ class SurfaceTest : public testing::Test
 
 TEST_F(SurfaceTest, PathConstructor)
 {
-  using namespace std::string_literals;
   EXPECT_THROW(cen::surface(""), cen::cen_error);
   EXPECT_THROW(cen::surface(""s), cen::cen_error);
   EXPECT_NO_THROW(cen::surface{m_path});
@@ -108,6 +109,21 @@ TEST_F(SurfaceTest, MoveAssignment)
 
   EXPECT_FALSE(source.get());
   EXPECT_TRUE(destination.get());
+}
+
+TEST_F(SurfaceTest, SaveAsBMP)
+{
+  EXPECT_TRUE(m_surface->save_as_bmp("surface_as_bmp.bmp"s));
+}
+
+TEST_F(SurfaceTest, SaveAsPNG)
+{
+  EXPECT_TRUE(m_surface->save_as_png("surface_as_png.png"s));
+}
+
+TEST_F(SurfaceTest, SaveAsJPG)
+{
+  EXPECT_TRUE(m_surface->save_as_jpg("surface_as_jpg.jpg"s, 25));
 }
 
 TEST_F(SurfaceTest, SetPixel)

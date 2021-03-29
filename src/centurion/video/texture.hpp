@@ -69,8 +69,8 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<B>())
-      : m_texture{src}
+  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<B>())
+      : m_texture{source}
   {
     if constexpr (detail::is_owning<B>())
     {

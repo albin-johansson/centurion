@@ -4,11 +4,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <cassert>  // assert
+#include <cstddef>  // size_t
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
@@ -39,13 +38,14 @@ namespace cen {
 template <typename T>
 class basic_texture;
 
-using texture = basic_texture<std::true_type>;
-using texture_handle = basic_texture<std::false_type>;
+using texture = basic_texture<detail::owning_type>;
+using texture_handle = basic_texture<detail::handle_type>;
 
 /**
  * \class basic_texture
  *
- * \brief Represents an hardware-accelerated image.
+ * \brief Represents an hardware-accelerated image. This class is used for all
+ * non-primitive rendering.
  *
  * \since 3.0.0
  *
@@ -55,10 +55,13 @@ using texture_handle = basic_texture<std::false_type>;
  *
  * \headerfile texture.hpp
  */
-template <typename B>
+template <typename T>
 class basic_texture final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
    *
@@ -69,10 +72,10 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<B>())
+  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<T>())
       : m_texture{source}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_texture)
       {
@@ -88,7 +91,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename TT = T, detail::is_handle<TT> = true>
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -105,7 +108,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -128,7 +131,7 @@ class basic_texture final
    *
    * \since 5.3.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
@@ -146,7 +149,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -171,7 +174,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -208,7 +211,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const not_null<czstring> path,
                                       const pixel_format format)
@@ -244,7 +247,7 @@ class basic_texture final
    * \see streaming()
    * \since 5.3.0
    */
-  template <typename Renderer, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
                                       const pixel_format format)
@@ -252,6 +255,11 @@ class basic_texture final
   {
     return streaming(renderer, path.c_str(), format);
   }
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
 
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
@@ -346,24 +354,10 @@ class basic_texture final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  /**
-   * \brief Releases ownership of the associated SDL texture and returns a
-   * pointer to it.
-   *
-   * \warning Usage of this function should be considered dangerous, since
-   * you might run into memory leak issues. You **must** call
-   * `SDL_DestroyTexture` on the returned pointer to free the associated
-   * memory.
-   *
-   * \return a pointer to the associated SDL texture.
-   *
-   * \since 5.0.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
-  {
-    return m_texture.release();
-  }
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
 
   /**
    * \brief Returns the pixel format that is used by the texture.
@@ -535,18 +529,22 @@ class basic_texture final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Indicates whether or not a texture handle holds a non-null pointer.
+   * \brief Releases ownership of the associated SDL texture and returns a
+   * pointer to it.
    *
-   * \tparam BB dummy parameter for SFINAE.
+   * \warning Usage of this function should be considered dangerous, since
+   * you might run into memory leak issues. You **must** call
+   * `SDL_DestroyTexture` on the returned pointer to free the associated
+   * memory.
    *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   * \return a pointer to the associated SDL texture.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
-  explicit operator bool() const noexcept
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
-    return m_texture != nullptr;
+    return m_texture.release();
   }
 
   /**
@@ -559,6 +557,26 @@ class basic_texture final
   [[nodiscard]] auto get() const noexcept -> SDL_Texture*
   {
     return m_texture.get();
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not a texture handle holds a non-null pointer.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = true>
+  explicit operator bool() const noexcept
+  {
+    return m_texture != nullptr;
   }
 
   /**
@@ -585,6 +603,8 @@ class basic_texture final
     return m_texture;
   }
 
+  /// \} End of conversions
+
  private:
   struct deleter final
   {
@@ -593,7 +613,7 @@ class basic_texture final
       SDL_DestroyTexture(texture);
     }
   };
-  detail::pointer_manager<B, SDL_Texture, deleter> m_texture;
+  detail::pointer_manager<T, SDL_Texture, deleter> m_texture;
 
   /**
    * \brief Locks the texture for write-only pixel access.

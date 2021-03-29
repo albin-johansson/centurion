@@ -317,6 +317,7 @@ class basic_surface final
 
   /**
    * \see save_as_bmp()
+   * \since 6.0.0
    */
   auto save_as_bmp(const std::string& file) const noexcept -> bool  // NOLINT
   {

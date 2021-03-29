@@ -342,6 +342,7 @@ class basic_surface final
 
   /**
    * \see save_as_png()
+   * \since 6.0.0
    */
   auto save_as_png(const std::string& file) const noexcept -> bool  // NOLINT
   {
@@ -372,6 +373,7 @@ class basic_surface final
 
   /**
    * \see save_as_jpg()
+   * \since 6.0.0
    */
   auto save_as_jpg(const std::string& file, const int quality) const noexcept
       -> bool

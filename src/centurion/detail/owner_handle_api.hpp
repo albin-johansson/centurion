@@ -15,16 +15,19 @@
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
+using owning_type = std::true_type;
+using handle_type = std::false_type;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+
+template <typename T>
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
 {
-  return std::is_same_v<T, std::true_type>;
+  return std::is_same_v<T, owning_type>;
 }
 
 template <typename B, typename Type, typename Deleter>

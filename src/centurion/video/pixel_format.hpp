@@ -19,7 +19,7 @@
 
 namespace cen {
 
-/// \addtogroup graphics
+/// \addtogroup video
 /// \{
 
 /**

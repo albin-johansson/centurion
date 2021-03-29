@@ -29,7 +29,7 @@
 
 namespace cen {
 
-/// \addtogroup graphics
+/// \addtogroup video
 /// \{
 
 template <typename T>

@@ -11,7 +11,7 @@
 
 namespace cen {
 
-/// \addtogroup graphics
+/// \addtogroup video
 /// \{
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

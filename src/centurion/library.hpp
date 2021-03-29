@@ -26,7 +26,7 @@
  */
 
 /**
- * \defgroup graphics Video
+ * \defgroup video Video
  * \brief Contains components related to window-management, rendering, fonts,
  * etc.
  */

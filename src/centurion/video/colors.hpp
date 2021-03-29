@@ -11,7 +11,7 @@
 /**
  * \namespace cen::colors
  *
- * \ingroup graphics
+ * \ingroup video
  *
  * \brief Contains pre-defined `color` constants.
  *

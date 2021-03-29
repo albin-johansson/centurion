@@ -18,7 +18,7 @@
 
 namespace cen {
 
-/// \addtogroup graphics
+/// \addtogroup video
 /// \{
 
 /**
@@ -627,7 +627,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
   return !(lhs == rhs);
 }
 
-/// \} End of group graphics
+/// \} End of group video
 
 }  // namespace cen
 

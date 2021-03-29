@@ -25,7 +25,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto num_render_drivers() noexcept -> int
+[[nodiscard]] inline auto render_driver_count() noexcept -> int
 {
   return SDL_GetNumRenderDrivers();
 }
@@ -37,7 +37,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto num_video_drivers() noexcept -> int
+[[nodiscard]] inline auto video_driver_count() noexcept -> int
 {
   return SDL_GetNumVideoDrivers();
 }

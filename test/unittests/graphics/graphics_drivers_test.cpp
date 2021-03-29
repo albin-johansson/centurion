@@ -2,12 +2,12 @@
 
 #include <gtest/gtest.h>
 
-TEST(GraphicsDrivers, NumRenderDrivers)
+TEST(GraphicsDrivers, RenderDriverCount)
 {
-  EXPECT_EQ(SDL_GetNumRenderDrivers(), cen::num_render_drivers());
+  EXPECT_EQ(SDL_GetNumRenderDrivers(), cen::render_driver_count());
 }
 
-TEST(GraphicsDrivers, NumVideoDrivers)
+TEST(GraphicsDrivers, VideoDriverCount)
 {
-  EXPECT_EQ(SDL_GetNumVideoDrivers(), cen::num_video_drivers());
+  EXPECT_EQ(SDL_GetNumVideoDrivers(), cen::video_driver_count());
 }

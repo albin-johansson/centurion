@@ -57,7 +57,9 @@ using surface_handle = basic_surface<detail::handle_type>;
  * \class basic_surface
  *
  * \brief Represents a non-accelerated collection of pixels that constitute an
- * image. Surfaces are often used for icons and snapshots, as an "intermediate"
+ * image.
+ *
+ * \details Surfaces are often used for icons and snapshots, as an "intermediate"
  * representation that can be manually manipulated, unlike textures. There is no
  * support for directly rendering surfaces, but they can be converted to
  * textures, which in turn can be rendered.

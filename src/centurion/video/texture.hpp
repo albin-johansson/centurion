@@ -65,7 +65,7 @@ class basic_texture final
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
    *
-   * \param src a pointer to the associated SDL texture.
+   * \param source a pointer to the associated SDL texture.
    *
    * \throws cen_error if the supplied pointer is null *and* the texture is
    * owning.

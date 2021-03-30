@@ -45,30 +45,30 @@ class RendererTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_RenderPresent);
-    RESET_FAKE(SDL_RenderClear);
-    RESET_FAKE(SDL_SetRenderDrawColor);
-    RESET_FAKE(SDL_GetRenderDrawColor);
-    RESET_FAKE(SDL_RenderDrawRect);
-    RESET_FAKE(SDL_RenderDrawRectF);
-    RESET_FAKE(SDL_RenderFillRect);
-    RESET_FAKE(SDL_RenderFillRectF);
-    RESET_FAKE(SDL_GetRendererOutputSize);
-    RESET_FAKE(SDL_RenderDrawLine);
-    RESET_FAKE(SDL_RenderDrawLineF);
-    RESET_FAKE(SDL_RenderDrawLines);
-    RESET_FAKE(SDL_RenderDrawLinesF);
-    RESET_FAKE(SDL_RenderCopy);
-    RESET_FAKE(SDL_RenderCopyF);
-    RESET_FAKE(SDL_RenderCopyEx);
-    RESET_FAKE(SDL_RenderCopyExF);
-    RESET_FAKE(SDL_QueryTexture);
-    RESET_FAKE(SDL_RenderSetClipRect);
-    RESET_FAKE(SDL_RenderSetViewport);
-    RESET_FAKE(SDL_SetRenderDrawBlendMode);
-    RESET_FAKE(SDL_GetRendererInfo);
-    RESET_FAKE(SDL_RenderGetIntegerScale);
-    RESET_FAKE(SDL_RenderIsClipEnabled);
+    RESET_FAKE(SDL_RenderPresent)
+    RESET_FAKE(SDL_RenderClear)
+    RESET_FAKE(SDL_SetRenderDrawColor)
+    RESET_FAKE(SDL_GetRenderDrawColor)
+    RESET_FAKE(SDL_RenderDrawRect)
+    RESET_FAKE(SDL_RenderDrawRectF)
+    RESET_FAKE(SDL_RenderFillRect)
+    RESET_FAKE(SDL_RenderFillRectF)
+    RESET_FAKE(SDL_GetRendererOutputSize)
+    RESET_FAKE(SDL_RenderDrawLine)
+    RESET_FAKE(SDL_RenderDrawLineF)
+    RESET_FAKE(SDL_RenderDrawLines)
+    RESET_FAKE(SDL_RenderDrawLinesF)
+    RESET_FAKE(SDL_RenderCopy)
+    RESET_FAKE(SDL_RenderCopyF)
+    RESET_FAKE(SDL_RenderCopyEx)
+    RESET_FAKE(SDL_RenderCopyExF)
+    RESET_FAKE(SDL_QueryTexture)
+    RESET_FAKE(SDL_RenderSetClipRect)
+    RESET_FAKE(SDL_RenderSetViewport)
+    RESET_FAKE(SDL_SetRenderDrawBlendMode)
+    RESET_FAKE(SDL_GetRendererInfo)
+    RESET_FAKE(SDL_RenderGetIntegerScale)
+    RESET_FAKE(SDL_RenderIsClipEnabled)
   }
 
   cen::renderer_handle m_renderer{nullptr};

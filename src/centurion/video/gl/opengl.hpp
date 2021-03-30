@@ -120,9 +120,7 @@ inline auto get_attribute(const gl_attribute attribute) noexcept
     -> std::optional<int>
 {
   int value{};
-  const auto result =
-      SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attribute), &value);
-  if (result == 0)
+  if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attribute), &value) == 0)
   {
     return value;
   }

@@ -11,7 +11,6 @@
 #include <optional>  // optional
 #include <string>    // string
 
-#include "../../centurion_cfg.hpp"
 #include "../../misc/czstring.hpp"
 #include "../../misc/exception.hpp"
 #include "../../misc/not_null.hpp"

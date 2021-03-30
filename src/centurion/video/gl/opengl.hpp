@@ -23,7 +23,7 @@
 
 namespace cen {
 
-enum class gl_attribute  // multi_sample_samples
+enum class gl_attribute
 {
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,

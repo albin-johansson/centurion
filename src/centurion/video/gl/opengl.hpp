@@ -23,6 +23,15 @@
 
 namespace cen {
 
+/**
+ * \enum gl_attribute
+ *
+ * \brief Provides identifiers for different OpenGL attributes.
+ *
+ * \since 6.0.0
+ *
+ * \headerfile opengl.hpp
+ */
 enum class gl_attribute
 {
   red_size = SDL_GL_RED_SIZE,
@@ -60,9 +69,28 @@ enum class gl_attribute
 
 namespace gl {
 
+/**
+ * \class library
+ *
+ * \brief Manages the initialization and de-initialization of an OpenGL library.
+ *
+ * \since 6.0.0
+ *
+ * \headerfile opengl.hpp
+ */
 class library final
 {
  public:
+  /**
+   * \brief Loads an OpenGL library.
+   *
+   * \param path the file path to the OpenGL library that will be used; null
+   * indicates that the default library will be used.
+   *
+   * \throws sdl_error if the OpenGL library can't be loaded.
+   *
+   * \since 6.0.0
+   */
   explicit library(const czstring path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1)
@@ -84,6 +112,23 @@ class library final
 
   // clang-format off
 
+  /**
+   * \brief Returns the address of an OpenGL function.
+   *
+   * \details This function must be used to retrieve OpenGL functions after
+   * loading the library at runtime.
+   *
+   * \note Be sure to declare your function pointers with `APIENTRY` to ensure
+   * the correct calling convention on different platforms, which avoids stack
+   * corruption.
+   *
+   * \param function the name of the function to obtain the address of.
+   *
+   * \return the address of the specified function; null if something went
+   * wrong.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto address_of(const not_null<czstring> function) const noexcept // NOLINT
       -> void*
   {
@@ -165,6 +210,15 @@ inline auto set_swap_interval(const int interval) noexcept -> bool
   return SDL_GL_GetSwapInterval();
 }
 
+/**
+ * \brief Swaps the buffers for an OpenGL window.
+ *
+ * \note This requires that double-buffering is supported.
+ *
+ * \param window the OpenGL window to swap the buffers for.
+ *
+ * \since 6.0.0
+ */
 template <typename T>
 void swap(basic_window<T>& window) noexcept
 {

@@ -1,12 +1,6 @@
 #include <GL/glew.h>
 
-#include "library.hpp"
-#include "misc/time.hpp"
-#include "thread/thread.hpp"
-#include "video/gl/opengl.hpp"
-#include "video/renderer.hpp"
-#include "video/vulkan/vulkan.hpp"
-#include "video/window.hpp"
+#include "centurion.hpp"
 
 namespace {
 

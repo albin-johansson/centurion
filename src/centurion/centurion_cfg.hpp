@@ -40,6 +40,16 @@
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
    (SDL_PATCHLEVEL == (z)))
 
+/**
+ * \def CENTURION_FEATURE_OPENGL
+ *
+ * \brief This macro can be used to control whether or not the OpenGL library
+ * components are included.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_FEATURE_OPENGL
+
 #if !defined(__clang__)
 
 /**

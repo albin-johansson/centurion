@@ -1,6 +1,10 @@
 #ifndef CENTURION_OPENGL_HEADER
 #define CENTURION_OPENGL_HEADER
 
+#include "../../centurion_cfg.hpp"
+
+#ifdef CENTURION_FEATURE_OPENGL
+
 #include <SDL.h>
 
 #include <cassert>   // assert
@@ -164,4 +168,5 @@ void swap(basic_window<T>& window) noexcept
 }  // namespace gl
 }  // namespace cen
 
+#endif  // CENTURION_FEATURE_OPENGL
 #endif  // CENTURION_OPENGL_HEADER

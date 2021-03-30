@@ -130,10 +130,6 @@ class basic_renderer final
     {
       throw sdl_error{};
     }
-
-    set_blend_mode(blend_mode::blend);
-    set_color(colors::black);
-    set_logical_integer_scale(false);
   }
 
   template <typename BB = B, detail::is_handle<BB> = true>
@@ -1666,8 +1662,8 @@ class basic_renderer final
    * \brief Sets whether or not to force integer scaling for the logical
    * viewport.
    *
-   * \details By default, this property is set to false. This function can be
-   * useful to combat visual artefacts when doing floating-point rendering.
+   * \details This function can be useful to combat visual artefacts when doing
+   * floating-point rendering.
    *
    * \param enabled `true` if integer scaling should be used; `false` otherwise.
    *
@@ -1931,8 +1927,6 @@ class basic_renderer final
 
   /**
    * \brief Returns the currently selected rendering color.
-   *
-   * \details The default color is black.
    *
    * \return the currently selected rendering color.
    *

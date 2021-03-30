@@ -65,8 +65,7 @@ class library final
  public:
   explicit library(const czstring path = nullptr)
   {
-    const auto result = SDL_GL_LoadLibrary(path);
-    if (result == -1)
+    if (SDL_GL_LoadLibrary(path) == -1)
     {
       throw sdl_error{};
     }

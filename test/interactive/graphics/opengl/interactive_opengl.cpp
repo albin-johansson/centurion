@@ -18,13 +18,25 @@ auto run() -> int
 
   window.show();
 
-  glClearColor(255, 0, 0, 1);
-  glClear(GL_COLOR_BUFFER_BIT);
+  cen::event event;
+  bool running{true};
 
-  cen::gl::swap(window);
+  while (running)
+  {
+    while (event.poll())
+    {
+      if (event.is<cen::quit_event>())
+      {
+        running = false;
+        break;
+      }
+    }
 
-  using namespace cen::literals;
-  cen::thread::sleep(2_s);
+    glClearColor(1, 0.58, 0.95, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    cen::gl::swap(window);
+  }
 
   window.hide();
 

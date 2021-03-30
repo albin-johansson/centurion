@@ -78,7 +78,7 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_INTERACTIVE=OFF -GNinja
 
       - name: Build
         if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}

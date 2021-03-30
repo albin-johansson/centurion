@@ -117,6 +117,8 @@
 #include "centurion/video/cursor.hpp"
 #include "centurion/video/font.hpp"
 #include "centurion/video/font_cache.hpp"
+#include "centurion/video/gl/context.hpp"
+#include "centurion/video/gl/opengl.hpp"
 #include "centurion/video/graphics_drivers.hpp"
 #include "centurion/video/message_box.hpp"
 #include "centurion/video/pixel_format.hpp"

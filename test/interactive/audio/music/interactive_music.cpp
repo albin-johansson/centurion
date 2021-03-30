@@ -1,11 +1,6 @@
 #include <utility>  // move
 
-#include "audio/music.hpp"
-#include "events/event.hpp"
-#include "library.hpp"
-#include "video/renderer.hpp"
-#include "video/texture.hpp"
-#include "video/window.hpp"
+#include "centurion.hpp"
 
 namespace {
 

@@ -1,9 +1,4 @@
-#include "events/event.hpp"
-#include "events/event_dispatcher.hpp"
-#include "video/font_cache.hpp"
-#include "video/renderer.hpp"
-#include "video/window.hpp"
-#include "library.hpp"
+#include "centurion.hpp"
 
 namespace {
 

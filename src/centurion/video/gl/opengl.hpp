@@ -71,6 +71,12 @@ class library final
     }
   }
 
+  library(const library&) = delete;
+  library(library&&) = delete;
+
+  auto operator=(const library&) -> library& = delete;
+  auto operator=(library&&) -> library& = delete;
+
   ~library() noexcept
   {
     SDL_GL_UnloadLibrary();

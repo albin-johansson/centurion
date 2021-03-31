@@ -361,6 +361,47 @@ class basic_renderer final
 
   /// \} End of primitive rendering
 
+  /// \name Translated primitive rendering
+  /// \{
+
+  /**
+   * \brief Renders an outlined rectangle in the currently selected color.
+   *
+   * \details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam R the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \since 4.1.0
+   */
+  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  void draw_rect_t(const basic_rect<R>& rect) noexcept
+  {
+    draw_rect(translate(rect));
+  }
+
+  /**
+   * \brief Renders a filled rectangle in the currently selected color.
+   *
+   * \details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam R the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \since 4.1.0
+   */
+  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  void fill_rect_t(const basic_rect<R>& rect) noexcept
+  {
+    fill_rect(translate(rect));
+  }
+
+  /// \} End of translated primitive rendering
+
   /// \name Text rendering
   /// \{
 
@@ -1169,76 +1210,8 @@ class basic_renderer final
 
   /// \} End of texture rendering
 
-  /// \name Translated rendering.
+  /// \name Translated texture rendering.
   /// \{
-
-  /**
-   * \brief Sets the translation viewport that will be used by the renderer.
-   *
-   * \details This function should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
-   *
-   * \param viewport the rectangle that will be used as the translation
-   * viewport.
-   *
-   * \since 3.0.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = true>
-  void set_translation_viewport(const frect& viewport) noexcept
-  {
-    m_renderer.translation = viewport;
-  }
-
-  /**
-   * \brief Returns the translation viewport that is currently being used.
-   *
-   * \details Set to (0, 0, 0, 0) by default.
-   *
-   * \return the translation viewport that is currently being used.
-   *
-   * \since 3.0.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
-  {
-    return m_renderer.translation;
-  }
-
-  /**
-   * \brief Renders an outlined rectangle in the currently selected color.
-   *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam R the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.1.0
-   */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
-  void draw_rect_t(const basic_rect<R>& rect) noexcept
-  {
-    draw_rect(translate(rect));
-  }
-
-  /**
-   * \brief Renders a filled rectangle in the currently selected color.
-   *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam R the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.1.0
-   */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
-  void fill_rect_t(const basic_rect<R>& rect) noexcept
-  {
-    fill_rect(translate(rect));
-  }
 
   /**
    * \brief Renders a texture at the specified position.
@@ -1418,7 +1391,44 @@ class basic_renderer final
     render(texture, source, translate(destination), angle, center, flip);
   }
 
-  /// \} End of translated rendering
+  /// \} End of translated texture rendering
+
+  /// \name Translation viewport
+  /// \{
+
+  /**
+   * \brief Sets the translation viewport that will be used by the renderer.
+   *
+   * \details This function should be called before calling any of the `_t`
+   * rendering methods, for automatic translation.
+   *
+   * \param viewport the rectangle that will be used as the translation
+   * viewport.
+   *
+   * \since 3.0.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  void set_translation_viewport(const frect& viewport) noexcept
+  {
+    m_renderer.translation = viewport;
+  }
+
+  /**
+   * \brief Returns the translation viewport that is currently being used.
+   *
+   * \details Set to (0, 0, 0, 0) by default.
+   *
+   * \return the translation viewport that is currently being used.
+   *
+   * \since 3.0.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
+  {
+    return m_renderer.translation;
+  }
+
+  /// \} End of translation viewport
 
   /// \name Font handling
   /// \{

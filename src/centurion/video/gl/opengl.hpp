@@ -213,6 +213,8 @@ inline auto set_swap_interval(const int interval) noexcept -> bool
 /**
  * \brief Swaps the buffers for an OpenGL window.
  *
+ * \pre The window must be usable within an OpenGL context.
+ *
  * \note This requires that double-buffering is supported.
  *
  * \param window the OpenGL window to swap the buffers for.
@@ -222,6 +224,7 @@ inline auto set_swap_interval(const int interval) noexcept -> bool
 template <typename T>
 void swap(basic_window<T>& window) noexcept
 {
+  assert(window.is_opengl());
   SDL_GL_SwapWindow(window.get());
 }
 

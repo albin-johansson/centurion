@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <cassert>        // assert
+#include <cmath>          // floor, sqrt
 #include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
@@ -359,6 +360,113 @@ class basic_renderer final
     }
   }
 
+  /**
+   * \brief Renders a point using the currently selected color.
+   *
+   * \tparam U the representation type used by the point.
+   *
+   * \param point the point that will be rendered.
+   *
+   * \since 6.0.0
+   */
+  template <typename U>
+  void draw_point(const basic_point<U>& point) noexcept
+  {
+    if constexpr (basic_point<U>::isIntegral)
+    {
+      SDL_RenderDrawPoint(get(), point.x(), point.y());
+    }
+    else
+    {
+      SDL_RenderDrawPointF(get(), point.x(), point.y());
+    }
+  }
+
+  /**
+   * \brief Renders a circle using the currently selected color.
+   *
+   * \tparam U the representation type used by the point.
+   *
+   * \param position the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename U>
+  void draw_circle(const basic_point<U>& position, const float radius) noexcept
+  {
+    using value_t = typename basic_point<U>::value_type;
+
+    auto error = -radius;
+    auto x = radius - 0.5f;
+    auto y = 0.5f;
+
+    const auto cx = static_cast<float>(position.x()) - 0.5f;
+    const auto cy = static_cast<float>(position.y()) - 0.5f;
+
+    while (x >= y)
+    {
+      // clang-format off
+      draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
+      draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
+
+      if (x != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
+        draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
+      }
+
+      if (y != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
+        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
+      }
+
+      if (x != 0 && y != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
+        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
+      }
+      // clang-format on
+
+      error += y;
+      ++y;
+      error += y;
+
+      if (error >= 0)
+      {
+        --x;
+        error -= x;
+        error -= x;
+      }
+    }
+  }
+
+  /**
+   * \brief Renders a filled circle using the currently selected color.
+   *
+   * \param center the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  void fill_circle(const fpoint& center, const float radius)
+  {
+    const auto cx = center.x();
+    const auto cy = center.y();
+
+    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
+    {
+      const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
+      const auto x = cx - dx;
+
+      draw_line<float>({cx - dx, cy + dy - radius},
+                       {cx + dx, cy + dy - radius});
+      draw_line<float>({cx - dx, cy - dy + radius},
+                       {cx + dx, cy - dy + radius});
+    }
+  }
+
   /// \} End of primitive rendering
 
   /// \name Translated primitive rendering
@@ -398,6 +506,65 @@ class basic_renderer final
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
+  }
+
+  /**
+   * \brief Renders a point using the currently selected color.
+   *
+   * \details The rendered point will be translated using the current
+   * translation viewport.
+   *
+   * \tparam U the representation
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param point the point that will be rendered.
+   *
+   * \since 6.0.0
+   */
+  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  void draw_point_t(const basic_point<U>& point) noexcept
+  {
+    draw_point(translate(point));
+  }
+
+  /**
+   * \brief Renders a circle with the currently selected color.
+   *
+   * \details The rendered circle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam U the precision used by the point.
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param position the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  void draw_circle_t(const basic_point<U>& position,
+                     const float radius) noexcept
+  {
+    draw_circle(translate(position), radius);
+  }
+
+  /**
+   * \brief Renders a filled circle with the currently selected color.
+   *
+   * \details The rendered circle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam BB dummy parameter for SFINAE.
+   *
+   * \param center the center of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  void fill_circle_t(const fpoint& center, const float radius)
+  {
+    fill_circle(translate(center), radius);
   }
 
   /// \} End of translated primitive rendering

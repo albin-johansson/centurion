@@ -78,6 +78,31 @@ class point_traits final
   using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
 };
 
+template <typename T>
+class basic_point;
+
+/**
+ * \typedef ipoint
+ *
+ * \brief Alias for an `int`-based point.
+ *
+ * \details This type corresponds to `SDL_Point`.
+ *
+ * \since 5.0.0
+ */
+using ipoint = basic_point<int>;
+
+/**
+ * \typedef fpoint
+ *
+ * \brief Alias for a `float`-based point.
+ *
+ * \details This type corresponds to `SDL_FPoint`.
+ *
+ * \since 5.0.0
+ */
+using fpoint = basic_point<float>;
+
 /**
  * \class basic_point
  *
@@ -233,6 +258,9 @@ class basic_point final
     return &m_point;
   }
 
+  /// \name Conversions
+  /// \{
+
   /**
    * \brief Converts to the internal representation.
    *
@@ -277,6 +305,8 @@ class basic_point final
     return &m_point;
   }
 
+  /// \} End of conversions
+
   /**
    * \brief Serializes the point.
    *
@@ -299,28 +329,6 @@ class basic_point final
  private:
   point_type m_point{0, 0};
 };
-
-/**
- * \typedef ipoint
- *
- * \brief Alias for an `int`-based point.
- *
- * \details This type corresponds to `SDL_Point`.
- *
- * \since 5.0.0
- */
-using ipoint = basic_point<int>;
-
-/**
- * \typedef fpoint
- *
- * \brief Alias for a `float`-based point.
- *
- * \details This type corresponds to `SDL_FPoint`.
- *
- * \since 5.0.0
- */
-using fpoint = basic_point<float>;
 
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.

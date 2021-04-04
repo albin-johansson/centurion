@@ -28,7 +28,6 @@ FAKE_VOID_FUNC(SDL_GetWindowMinimumSize, SDL_Window*, int*, int*)
 FAKE_VOID_FUNC(SDL_GetWindowMaximumSize, SDL_Window*, int*, int*)
 FAKE_VOID_FUNC(SDL_GetWindowPosition, SDL_Window*, int*, int*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_GetWindowGrab, SDL_Window*)
-FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
 FAKE_VALUE_FUNC(Uint32, SDL_GetWindowID, SDL_Window*)
 FAKE_VALUE_FUNC(Uint32, SDL_GetWindowPixelFormat, SDL_Window*)
 FAKE_VALUE_FUNC(SDL_Surface*, SDL_GetWindowSurface, SDL_Window*)
@@ -72,7 +71,6 @@ class WindowTest : public testing::Test
     RESET_FAKE(SDL_GetWindowPosition);
     RESET_FAKE(SDL_SetWindowPosition);
     RESET_FAKE(SDL_GetWindowGrab);
-    RESET_FAKE(SDL_GetWindowFlags);
     RESET_FAKE(SDL_GetWindowID);
     RESET_FAKE(SDL_GetWindowPixelFormat);
     RESET_FAKE(SDL_GetWindowSurface);

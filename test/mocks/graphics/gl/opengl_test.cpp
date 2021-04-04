@@ -32,7 +32,10 @@ class OpenGLTest : public testing::Test
 
 TEST_F(OpenGLTest, Swap)
 {
-  cen::gl::swap(m_window);
+  std::array values{cen::u32{SDL_WINDOW_OPENGL}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  EXPECT_NO_FATAL_FAILURE(cen::gl::swap(m_window));
   EXPECT_EQ(1, SDL_GL_SwapWindow_fake.call_count);
 }
 

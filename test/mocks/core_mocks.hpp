@@ -26,6 +26,9 @@ DECLARE_FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
 // Misc
 DECLARE_FAKE_VALUE_FUNC(const char*, SDL_GetError);
 DECLARE_FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
+
+// Window
+DECLARE_FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
 }
 // clang-format on
 

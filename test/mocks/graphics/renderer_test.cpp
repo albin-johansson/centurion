@@ -17,6 +17,8 @@ FAKE_VALUE_FUNC(int, SDL_SetRenderDrawColor, SDL_Renderer*, Uint8, Uint8, Uint8,
 FAKE_VALUE_FUNC(int, SDL_GetRenderDrawColor, SDL_Renderer*, Uint8*, Uint8*, Uint8*, Uint8*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawPoint, SDL_Renderer*, int, int)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawPointF, SDL_Renderer*, float, float)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
 FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
@@ -51,6 +53,8 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_GetRenderDrawColor)
     RESET_FAKE(SDL_RenderDrawRect)
     RESET_FAKE(SDL_RenderDrawRectF)
+    RESET_FAKE(SDL_RenderDrawPoint)
+    RESET_FAKE(SDL_RenderDrawPointF)
     RESET_FAKE(SDL_RenderFillRect)
     RESET_FAKE(SDL_RenderFillRectF)
     RESET_FAKE(SDL_GetRendererOutputSize)
@@ -184,6 +188,18 @@ TEST_F(RendererTest, FillRect)
     EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
     EXPECT_EQ(1, SDL_RenderFillRectF_fake.call_count);
   }
+}
+
+TEST_F(RendererTest, DrawPoint)
+{
+  const cen::ipoint ipoint;
+  const cen::fpoint fpoint;
+
+  m_renderer.draw_point(ipoint);
+  m_renderer.draw_point(fpoint);
+
+  EXPECT_EQ(1, SDL_RenderDrawPoint_fake.call_count);
+  EXPECT_EQ(1, SDL_RenderDrawPointF_fake.call_count);
 }
 
 TEST_F(RendererTest, Fill)

@@ -118,7 +118,7 @@ class basic_joystick;
  *
  * \since 5.0.0
  */
-using joystick = basic_joystick<std::true_type>;
+using joystick = basic_joystick<detail::owning_type>;
 
 /**
  * \typedef joystick_handle
@@ -127,7 +127,7 @@ using joystick = basic_joystick<std::true_type>;
  *
  * \since 5.0.0
  */
-using joystick_handle = basic_joystick<std::false_type>;
+using joystick_handle = basic_joystick<detail::handle_type>;
 
 /**
  * \class basic_joystick
@@ -136,9 +136,6 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \details The game controller API is built on top of the joystick API, which
  * means that the game controller is higher-level and easier to use.
- *
- * \tparam B `std::true_type` for a owning joysticks; `std::false_type` for
- * non-owning joysticks.
  *
  * \since 4.2.0
  *
@@ -150,8 +147,8 @@ using joystick_handle = basic_joystick<std::false_type>;
 template <typename B>
 class basic_joystick final
 {
-  inline constexpr static bool isOwner = std::is_same_v<B, std::true_type>;
-  inline constexpr static bool isHandle = std::is_same_v<B, std::false_type>;
+  inline constexpr static bool isOwner = std::is_same_v<B, detail::owning_type>;
+  inline constexpr static bool isHandle = std::is_same_v<B, detail::handle_type>;
 
  public:
   /// \name Construction

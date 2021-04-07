@@ -119,7 +119,7 @@ class basic_pixel_format_info;
  *
  * \since 5.2.0
  */
-using pixel_format_info = basic_pixel_format_info<std::true_type>;
+using pixel_format_info = basic_pixel_format_info<detail::owning_type>;
 
 /**
  * \typedef pixel_format_info_handle
@@ -128,7 +128,7 @@ using pixel_format_info = basic_pixel_format_info<std::true_type>;
  *
  * \since 5.2.0
  */
-using pixel_format_info_handle = basic_pixel_format_info<std::false_type>;
+using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
 
 /**
  * \class basic_pixel_format_info
@@ -139,8 +139,6 @@ using pixel_format_info_handle = basic_pixel_format_info<std::false_type>;
  * and non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
- *
- * \tparam B `std::true_type` for owning semantics; `std::false_type` otherwise.
  *
  * \see pixel_format
  * \see pixel_format_info

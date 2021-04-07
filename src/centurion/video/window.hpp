@@ -37,7 +37,7 @@ class basic_window;
  *
  * \since 5.0.0
  */
-using window = basic_window<std::true_type>;
+using window = basic_window<detail::owning_type>;
 
 /**
  * \typedef window_handle
@@ -46,15 +46,12 @@ using window = basic_window<std::true_type>;
  *
  * \since 5.0.0
  */
-using window_handle = basic_window<std::false_type>;
+using window_handle = basic_window<detail::handle_type>;
 
 /**
  * \class basic_window
  *
  * \brief Represents an operating system window.
- *
- * \tparam B `std::true_type` for owning windows; `std::false_type` for
- * non-owning windows.
  *
  * \since 5.0.0
  *
@@ -66,8 +63,8 @@ using window_handle = basic_window<std::false_type>;
 template <typename B>
 class basic_window final
 {
-  inline constexpr static bool isOwner = std::is_same_v<B, std::true_type>;
-  inline constexpr static bool isHandle = std::is_same_v<B, std::false_type>;
+  inline constexpr static bool isOwner = std::is_same_v<B, detail::owning_type>;
+  inline constexpr static bool isHandle = std::is_same_v<B, detail::handle_type>;
 
  public:
   /**

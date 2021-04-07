@@ -1482,7 +1482,7 @@ class basic_haptic;
  *
  * \since 5.2.0
  */
-using haptic = basic_haptic<std::true_type>;
+using haptic = basic_haptic<detail::owning_type>;
 
 /**
  * \typedef haptic_handle
@@ -1491,15 +1491,12 @@ using haptic = basic_haptic<std::true_type>;
  *
  * \since 5.2.0
  */
-using haptic_handle = basic_haptic<std::false_type>;
+using haptic_handle = basic_haptic<detail::handle_type>;
 
 /**
  * \class basic_haptic
  *
  * \brief Represents a haptic (force feedback) device.
- *
- * \tparam B `std::true_type` for owning haptic devices; `std::false_type` for
- * non-owning haptic devices.
  *
  * \see `haptic`
  * \see `haptic_handle`

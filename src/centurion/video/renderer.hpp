@@ -45,7 +45,7 @@ class basic_renderer;
  *
  * \since 5.0.0
  */
-using renderer = basic_renderer<std::true_type>;
+using renderer = basic_renderer<detail::owning_type>;
 
 /**
  * \typedef renderer_handle
@@ -54,15 +54,12 @@ using renderer = basic_renderer<std::true_type>;
  *
  * \since 5.0.0
  */
-using renderer_handle = basic_renderer<std::false_type>;
+using renderer_handle = basic_renderer<detail::handle_type>;
 
 /**
  * \class basic_renderer
  *
  * \brief Provides hardware-accelerated 2D-rendering.
- *
- * \tparam B `std::true_type` for owning renderers; `std::false_type` for
- * non-owning renderers.
  *
  * \since 5.0.0
  *

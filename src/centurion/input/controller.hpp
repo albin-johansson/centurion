@@ -160,7 +160,7 @@ class basic_controller;
  *
  * \since 5.0.0
  */
-using controller = basic_controller<std::true_type>;
+using controller = basic_controller<detail::owning_type>;
 
 /**
  * \typedef controller_handle
@@ -169,15 +169,12 @@ using controller = basic_controller<std::true_type>;
  *
  * \since 5.0.0
  */
-using controller_handle = basic_controller<std::false_type>;
+using controller_handle = basic_controller<detail::handle_type>;
 
 /**
  * \class basic_controller
  *
  * \brief Represents a game controller, e.g. an xbox-controller.
- *
- * \tparam B `std::true_type` for owning controllers; `std::false_type` for
- * non-owning controllers.
  *
  * \since 5.0.0
  *

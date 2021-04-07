@@ -108,7 +108,7 @@ class basic_cursor;
  *
  * \since 5.0.0
  */
-using cursor = basic_cursor<std::true_type>;
+using cursor = basic_cursor<detail::owning_type>;
 
 /**
  * \typedef cursor_handle
@@ -117,7 +117,7 @@ using cursor = basic_cursor<std::true_type>;
  *
  * \since 5.0.0
  */
-using cursor_handle = basic_cursor<std::false_type>;
+using cursor_handle = basic_cursor<detail::handle_type>;
 
 /**
  * \class basic_cursor
@@ -126,9 +126,6 @@ using cursor_handle = basic_cursor<std::false_type>;
  *
  * \details Depending on the template type parameter, this class can
  * represent either an owning or non-owning cursor.
- *
- * \tparam B `std::true_type` for owning cursors, `std::false_type` for
- * non-owning cursors.
  *
  * \since 5.0.0
  *

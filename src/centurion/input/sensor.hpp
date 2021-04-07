@@ -58,7 +58,7 @@ class basic_sensor;
  *
  * \since 5.2.0
  */
-using sensor = basic_sensor<std::true_type>;
+using sensor = basic_sensor<detail::owning_type>;
 
 /**
  * \typedef sensor_handle
@@ -67,7 +67,7 @@ using sensor = basic_sensor<std::true_type>;
  *
  * \since 5.2.0
  */
-using sensor_handle = basic_sensor<std::false_type>;
+using sensor_handle = basic_sensor<detail::handle_type>;
 
 /**
  * \class basic_sensor
@@ -76,9 +76,6 @@ using sensor_handle = basic_sensor<std::false_type>;
  *
  * \see sensor
  * \see sensor_handle
- *
- * \tparam B `std::true_type` for owning sensors; `std::false_type` for
- * non-owning sensors.
  *
  * \since 5.2.0
  *

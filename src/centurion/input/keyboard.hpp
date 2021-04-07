@@ -32,7 +32,7 @@ class keyboard final
 {
  public:
   /**
-   * \brief Creates a `key_state` instance.
+   * \brief Creates a `keyboard` instance.
    *
    * \since 3.0.0
    */

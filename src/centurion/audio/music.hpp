@@ -432,7 +432,7 @@ using music_finished_callback = void (*)() noexcept;
 
 /**
  * \brief Sets the callback that is invoked each time the music finishes
- * playing or is stop as a result of `cen::music::halt()`.
+ * playing or is stopped as a result of `cen::music::halt()`.
  *
  * \warning Make sure that your callback doesn't throw (or at least doesn't
  * leak) any exceptions.

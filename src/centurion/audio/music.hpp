@@ -100,6 +100,9 @@ class music final
    */
   inline constexpr static int forever = -1;
 
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a `music` instance based on the file at the specified path.
    *
@@ -129,6 +132,11 @@ class music final
    */
   explicit music(const std::string& file) : music{file.c_str()}
   {}
+
+  /// \} End of construction
+
+  /// \name Playback functions
+  /// \{
 
   /**
    * \brief Plays the music associated with this instance.
@@ -193,6 +201,35 @@ class music final
   }
 
   /**
+   * \brief Indicates whether or not any music is currently playing.
+   *
+   * \return `true` if music is currently being played; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] static auto is_playing() noexcept -> bool
+  {
+    return Mix_PlayingMusic();
+  }
+
+  /**
+   * \brief Indicates whether or not any music is paused.
+   *
+   * \return `true` if the music is paused; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] static auto is_paused() noexcept -> bool
+  {
+    return Mix_PausedMusic();
+  }
+
+  /// \} Playback functions
+
+  /// \name Fade functions
+  /// \{
+
+  /**
    * \brief Plays the music by fading it in by the specified amount of time.
    *
    * \pre `ms` must be greater than zero.
@@ -247,44 +284,6 @@ class music final
   }
 
   /**
-   * \brief Sets the volume of all music.
-   *
-   * \param volume the volume that will be used, in the range [0,
-   * `music::max_volume()`]. An out-of-bounds value will be clamped to the
-   * closest valid value.
-   *
-   * \since 3.0.0
-   */
-  static void set_volume(const int volume) noexcept
-  {
-    Mix_VolumeMusic(detail::clamp(volume, 0, MIX_MAX_VOLUME));
-  }
-
-  /**
-   * \brief Indicates whether or not any music is currently playing.
-   *
-   * \return `true` if music is currently being played; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto is_playing() noexcept -> bool
-  {
-    return Mix_PlayingMusic();
-  }
-
-  /**
-   * \brief Indicates whether or not any music is paused.
-   *
-   * \return `true` if the music is paused; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto is_paused() noexcept -> bool
-  {
-    return Mix_PausedMusic();
-  }
-
-  /**
    * \brief Indicates whether or not any music is currently being faded in or
    * out.
    *
@@ -296,6 +295,37 @@ class music final
   [[nodiscard]] static auto is_fading() noexcept -> bool
   {
     return detail::any_eq(get_fade_status(), fade_status::in, fade_status::out);
+  }
+
+  /**
+   * \brief Returns the current fade status of the music playback.
+   *
+   * \return the current fade status.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] static auto get_fade_status() noexcept -> fade_status
+  {
+    return static_cast<fade_status>(Mix_FadingMusic());
+  }
+
+  /// \} End of fade functions
+
+  /// \name Volume functions
+  /// \{
+
+  /**
+   * \brief Sets the volume of all music.
+   *
+   * \param volume the volume that will be used, in the range [0,
+   * `music::max_volume()`]. An out-of-bounds value will be clamped to the
+   * closest valid value.
+   *
+   * \since 3.0.0
+   */
+  static void set_volume(const int volume) noexcept
+  {
+    Mix_VolumeMusic(detail::clamp(volume, 0, MIX_MAX_VOLUME));
   }
 
   /**
@@ -313,45 +343,21 @@ class music final
   }
 
   /**
-   * \brief Returns the current fade status of the music playback.
+   * \brief Returns the maximum possible volume.
    *
-   * \return the current fade status.
+   * \return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
    *
-   * \since 3.0.0
+   * \since 5.0.0
    */
-  [[nodiscard]] static auto get_fade_status() noexcept -> fade_status
+  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
-    return static_cast<fade_status>(Mix_FadingMusic());
+    return MIX_MAX_VOLUME;
   }
 
-  /**
-   * \brief Returns the type of the music.
-   *
-   * \return the type of the music.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto type() const noexcept -> music_type
-  {
-    return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
-  }
+  /// \} End of volume functions
 
-  /**
-   * \brief Returns a pointer to the associated `Mix_Music`.
-   *
-   * \warning Use of this method is not recommended. However, it's useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated `Mix_Music`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> Mix_Music*
-  {
-    return m_music.get();
-  }
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Converts to `Mix_Music*`.
@@ -377,16 +383,32 @@ class music final
     return m_music.get();
   }
 
+  /// \} End of conversions
+
   /**
-   * \brief Returns the maximum possible volume.
+   * \brief Returns the type of the music.
    *
-   * \return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
+   * \return the type of the music.
    *
-   * \since 5.0.0
+   * \since 3.0.0
    */
-  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
+  [[nodiscard]] auto type() const noexcept -> music_type
   {
-    return MIX_MAX_VOLUME;
+    return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
+  }
+
+  /**
+   * \brief Returns a pointer to the associated `Mix_Music` instance.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated `Mix_Music`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> Mix_Music*
+  {
+    return m_music.get();
   }
 
  private:
@@ -436,6 +458,9 @@ inline auto operator<<(std::ostream& stream, const music& music)
 {
   return stream << to_string(music);
 }
+
+/// \name Music-related comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not the fading status values represent are the
@@ -542,6 +567,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return !(lhs == rhs);
 }
 
+/// \} End of music-related comparison operators
 /// \} End of group audio
 
 }  // namespace cen

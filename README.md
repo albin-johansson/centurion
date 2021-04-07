@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 }
 ```
 
-#### Using an event dispatcher
+### Using an event dispatcher
 
 Another event-driven approach consists of utilizing the `event_dispatcher` class. This allows us to explicitly specify which events we are interested in handling, and subsequently designate the associated event handlers that can be lambdas, free functions or member functions. However, this approach works best with member functions, since we can avoid passing around too much data.
 
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
 }
 ```
 
-## Program using the keyboard and mouse state directly
+### Program using the keyboard and mouse state directly
 
 It is also possible to create applications that are not event-driven at all. Instead of relying on events, we can instead access the current input state through the `keyboard` and `mouse` classes. We can still query the event API for some extra information, such as if the user has requested the application to quit by closing the window.
 

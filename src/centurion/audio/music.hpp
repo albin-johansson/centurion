@@ -428,6 +428,9 @@ class music final
 #endif
 };
 
+/// \name Callbacks
+/// \{
+
 using music_finished_callback = void (*)() noexcept;
 
 /**
@@ -445,6 +448,8 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 {
   Mix_HookMusicFinished(callback);
 }
+
+/// \} End of callbacks
 
 /**
  * \brief Returns a textual representation of a `music` instance.

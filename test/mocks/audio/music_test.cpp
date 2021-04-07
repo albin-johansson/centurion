@@ -10,6 +10,7 @@ extern "C" {
 FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
 FAKE_VOID_FUNC(Mix_ResumeMusic)
 FAKE_VOID_FUNC(Mix_PauseMusic)
+FAKE_VOID_FUNC(Mix_HookMusicFinished, cen::music_finished_callback)
 FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
 FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
 FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
@@ -32,6 +33,7 @@ class MusicTest : public testing::Test
     RESET_FAKE(Mix_FreeMusic);
     RESET_FAKE(Mix_ResumeMusic);
     RESET_FAKE(Mix_PauseMusic);
+    RESET_FAKE(Mix_HookMusicFinished);
     RESET_FAKE(Mix_PlayMusic);
     RESET_FAKE(Mix_FadeInMusic);
     RESET_FAKE(Mix_FadeOutMusic);
@@ -141,6 +143,13 @@ TEST_F(MusicTest, Type)
   cen::music music;
   const auto type [[maybe_unused]] = music.type();
   EXPECT_EQ(1, Mix_GetMusicType_fake.call_count);
+}
+
+TEST_F(MusicTest, OnMusicFinished)
+{
+  cen::on_music_finished([] {
+  });
+  EXPECT_EQ(1, Mix_HookMusicFinished_fake.call_count);
 }
 
 using MusicDeathTest = MusicTest;

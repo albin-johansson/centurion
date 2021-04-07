@@ -434,8 +434,7 @@ class music final
 inline auto operator<<(std::ostream& stream, const music& music)
     -> std::ostream&
 {
-  stream << to_string(music);
-  return stream;
+  return stream << to_string(music);
 }
 
 /**
@@ -543,7 +542,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of group audio
 
 }  // namespace cen
 

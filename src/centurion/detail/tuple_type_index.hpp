@@ -16,13 +16,13 @@ template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
   template <std::size_t... index>
-  static constexpr int find(std::index_sequence<index...>)
+  constexpr static int find(std::index_sequence<index...>)
   {
     return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
   }
 
  public:
-  inline static constexpr auto value = find(std::index_sequence_for<T...>{});
+  inline constexpr static auto value = find(std::index_sequence_for<T...>{});
 };
 
 template <typename Target, typename... T>

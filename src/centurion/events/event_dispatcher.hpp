@@ -9,8 +9,8 @@
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-#include "detail/to_string.hpp"
-#include "detail/tuple_type_index.hpp"
+#include "../detail/to_string.hpp"
+#include "../detail/tuple_type_index.hpp"
 #include "event.hpp"
 
 namespace cen {

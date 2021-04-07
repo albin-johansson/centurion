@@ -12,6 +12,7 @@ extern "C" {
 FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
 FAKE_VOID_FUNC(Mix_ResumeMusic)
 FAKE_VOID_FUNC(Mix_PauseMusic)
+FAKE_VOID_FUNC(Mix_RewindMusic)
 FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
 FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
 FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
@@ -23,6 +24,7 @@ FAKE_VALUE_FUNC(int, Mix_PausedMusic)
 FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
 FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
 FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
+FAKE_VALUE_FUNC(int, Mix_SetMusicPosition, double)
 FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
 FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
 }
@@ -35,22 +37,24 @@ class MusicTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(Mix_FreeMusic);
-    RESET_FAKE(Mix_ResumeMusic);
-    RESET_FAKE(Mix_PauseMusic);
-    RESET_FAKE(Mix_HookMusicFinished);
-    RESET_FAKE(Mix_PlayMusic);
-    RESET_FAKE(Mix_FadeInMusic);
-    RESET_FAKE(Mix_FadeOutMusic);
-    RESET_FAKE(Mix_VolumeMusic);
-    RESET_FAKE(Mix_HaltMusic);
-    RESET_FAKE(Mix_PlayingMusic);
-    RESET_FAKE(Mix_PausedMusic);
-    RESET_FAKE(Mix_GetMusicDecoder);
-    RESET_FAKE(Mix_HasMusicDecoder);
-    RESET_FAKE(Mix_GetNumMusicDecoders);
-    RESET_FAKE(Mix_FadingMusic);
-    RESET_FAKE(Mix_GetMusicType);
+    RESET_FAKE(Mix_FreeMusic)
+    RESET_FAKE(Mix_ResumeMusic)
+    RESET_FAKE(Mix_PauseMusic)
+    RESET_FAKE(Mix_RewindMusic)
+    RESET_FAKE(Mix_HookMusicFinished)
+    RESET_FAKE(Mix_PlayMusic)
+    RESET_FAKE(Mix_FadeInMusic)
+    RESET_FAKE(Mix_FadeOutMusic)
+    RESET_FAKE(Mix_VolumeMusic)
+    RESET_FAKE(Mix_HaltMusic)
+    RESET_FAKE(Mix_PlayingMusic)
+    RESET_FAKE(Mix_PausedMusic)
+    RESET_FAKE(Mix_GetMusicDecoder)
+    RESET_FAKE(Mix_HasMusicDecoder)
+    RESET_FAKE(Mix_GetNumMusicDecoders)
+    RESET_FAKE(Mix_SetMusicPosition)
+    RESET_FAKE(Mix_FadingMusic)
+    RESET_FAKE(Mix_GetMusicType)
   }
 };
 
@@ -144,6 +148,18 @@ TEST_F(MusicTest, GetFadeStatus)
 {
   const auto status [[maybe_unused]] = cen::music::get_fade_status();
   EXPECT_EQ(1, Mix_FadingMusic_fake.call_count);
+}
+
+TEST_F(MusicTest, Rewind)
+{
+  cen::music::rewind();
+  EXPECT_EQ(1, Mix_RewindMusic_fake.call_count);
+}
+
+TEST_F(MusicTest, SetPosition)
+{
+  cen::music::set_position(1);
+  EXPECT_EQ(1, Mix_SetMusicPosition_fake.call_count);
 }
 
 TEST_F(MusicTest, Type)

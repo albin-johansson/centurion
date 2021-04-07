@@ -311,6 +311,21 @@ class music final
 
   /// \} End of fade functions
 
+  /// \name Playback position functions
+  /// \{
+
+  static void rewind() noexcept
+  {
+    Mix_RewindMusic();
+  }
+
+  static auto set_position(const double position) noexcept -> bool
+  {
+    return Mix_SetMusicPosition(position) == 0;
+  }
+
+  /// \} End of playback position functions
+
   /// \name Volume functions
   /// \{
 

@@ -411,6 +411,26 @@ class music final
     return m_music.get();
   }
 
+  /// \name Decoder functions
+  /// \{
+
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
+  {
+    return Mix_GetMusicDecoder(index);
+  }
+
+  [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
+  {
+    return Mix_HasMusicDecoder(name) == SDL_TRUE;
+  }
+
+  [[nodiscard]] static auto decoder_count() noexcept -> int
+  {
+    return Mix_GetNumMusicDecoders();
+  }
+
+  /// \} End of decoder functions
+
  private:
   struct deleter final
   {
@@ -431,7 +451,7 @@ class music final
 /// \name Callbacks
 /// \{
 
-using music_finished_callback = void (*)() noexcept;
+using music_finished_callback = void(SDLCALL*)() noexcept;
 
 /**
  * \brief Sets the callback that is invoked each time the music finishes

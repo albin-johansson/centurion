@@ -5,12 +5,14 @@
 
 #include "core_mocks.hpp"
 
+using music_finished_callback = void(SDLCALL*)(void);
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
 FAKE_VOID_FUNC(Mix_ResumeMusic)
 FAKE_VOID_FUNC(Mix_PauseMusic)
-FAKE_VOID_FUNC(Mix_HookMusicFinished, cen::music_finished_callback)
+FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
 FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
 FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
 FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
@@ -18,6 +20,9 @@ FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
 FAKE_VALUE_FUNC(int, Mix_HaltMusic)
 FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
 FAKE_VALUE_FUNC(int, Mix_PausedMusic)
+FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
+FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
+FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
 FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
 FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
 }
@@ -41,6 +46,9 @@ class MusicTest : public testing::Test
     RESET_FAKE(Mix_HaltMusic);
     RESET_FAKE(Mix_PlayingMusic);
     RESET_FAKE(Mix_PausedMusic);
+    RESET_FAKE(Mix_GetMusicDecoder);
+    RESET_FAKE(Mix_HasMusicDecoder);
+    RESET_FAKE(Mix_GetNumMusicDecoders);
     RESET_FAKE(Mix_FadingMusic);
     RESET_FAKE(Mix_GetMusicType);
   }
@@ -145,9 +153,27 @@ TEST_F(MusicTest, Type)
   EXPECT_EQ(1, Mix_GetMusicType_fake.call_count);
 }
 
+TEST_F(MusicTest, GetDecoder)
+{
+  const auto name [[maybe_unused]] = cen::music::get_decoder(0);
+  EXPECT_EQ(1, Mix_GetMusicDecoder_fake.call_count);
+}
+
+TEST_F(MusicTest, HasDecoder)
+{
+  const auto has [[maybe_unused]] = cen::music::has_decoder("foo");
+  EXPECT_EQ(1, Mix_HasMusicDecoder_fake.call_count);
+}
+
+TEST_F(MusicTest, DecoderCount)
+{
+  const auto count [[maybe_unused]] = cen::music::decoder_count();
+  EXPECT_EQ(1, Mix_GetNumMusicDecoders_fake.call_count);
+}
+
 TEST_F(MusicTest, OnMusicFinished)
 {
-  cen::on_music_finished([] {
+  cen::on_music_finished([]() noexcept {
   });
   EXPECT_EQ(1, Mix_HookMusicFinished_fake.call_count);
 }

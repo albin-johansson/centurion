@@ -3,13 +3,8 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
 #include "../detail/hints_impl.hpp"
 #include "../misc/czstring.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \addtogroup configuration
 /// \{

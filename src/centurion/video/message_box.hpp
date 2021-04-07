@@ -11,17 +11,12 @@
 #include <utility>      // move
 #include <vector>       // vector
 
-#include "../centurion_cfg.hpp"
 #include "../detail/stack_resource.hpp"
 #include "../misc/exception.hpp"
 #include "../misc/integers.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "window.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

@@ -6,12 +6,7 @@
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
-#include "../centurion_cfg.hpp"
 #include "../misc/integers.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

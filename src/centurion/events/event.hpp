@@ -7,7 +7,6 @@
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
-#include "../centurion_cfg.hpp"
 #include "audio_device_event.hpp"
 #include "common_event.hpp"
 #include "controller_axis_event.hpp"
@@ -31,10 +30,6 @@
 #include "text_input_event.hpp"
 #include "touch_finger_event.hpp"
 #include "window_event.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

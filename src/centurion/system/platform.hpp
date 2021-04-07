@@ -7,15 +7,10 @@
 #include <optional>  // optional
 #include <string>    // string
 
-#include "../centurion_cfg.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
 #include "../video/pixel_format.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

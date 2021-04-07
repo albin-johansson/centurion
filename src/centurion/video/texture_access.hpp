@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
-
 namespace cen {
 
 /// \addtogroup video

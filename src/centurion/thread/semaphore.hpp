@@ -5,15 +5,10 @@
 
 #include <memory>  // unique_ptr
 
-#include "../centurion_cfg.hpp"
 #include "../misc/exception.hpp"
 #include "../misc/integers.hpp"
 #include "../misc/time.hpp"
 #include "mutex.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

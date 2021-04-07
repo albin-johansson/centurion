@@ -4,12 +4,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "../centurion_cfg.hpp"
 #include "../detail/to_string.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

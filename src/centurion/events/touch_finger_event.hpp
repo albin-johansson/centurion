@@ -3,14 +3,9 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
 #include "../detail/clamp.hpp"
 #include "../misc/integers.hpp"
 #include "common_event.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

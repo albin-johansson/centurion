@@ -5,12 +5,7 @@
 #include <array>      // array
 #include <utility>    // pair
 
-#include "../centurion_cfg.hpp"
 #include "../misc/exception.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {

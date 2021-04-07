@@ -7,15 +7,10 @@
 #include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
-#include "../centurion_cfg.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

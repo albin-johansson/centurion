@@ -8,7 +8,6 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
-#include "../centurion_cfg.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
@@ -17,10 +16,6 @@
 #include "../misc/time.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

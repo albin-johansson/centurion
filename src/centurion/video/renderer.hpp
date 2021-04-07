@@ -14,7 +14,6 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -30,10 +29,6 @@
 #include "surface.hpp"
 #include "texture.hpp"
 #include "unicode_string.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

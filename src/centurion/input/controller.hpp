@@ -11,7 +11,6 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../misc/czstring.hpp"
@@ -25,10 +24,6 @@
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

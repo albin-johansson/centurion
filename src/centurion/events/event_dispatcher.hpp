@@ -9,14 +9,9 @@
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-#include "centurion_cfg.hpp"
 #include "detail/to_string.hpp"
 #include "detail/tuple_type_index.hpp"
 #include "event.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

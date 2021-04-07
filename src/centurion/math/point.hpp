@@ -8,13 +8,8 @@
 #include <string>       // string
 #include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
 
-#include "../centurion_cfg.hpp"
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

@@ -1,9 +1,7 @@
 #ifndef CENTURION_OPENGL_HEADER
 #define CENTURION_OPENGL_HEADER
 
-#include "../../centurion_cfg.hpp"
-
-#ifdef CENTURION_FEATURE_OPENGL
+#ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
 
@@ -16,10 +14,6 @@
 #include "../../misc/not_null.hpp"
 #include "../window.hpp"
 #include "context.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 
@@ -231,5 +225,5 @@ void swap(basic_window<T>& window) noexcept
 }  // namespace gl
 }  // namespace cen
 
-#endif  // CENTURION_FEATURE_OPENGL
+#endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_OPENGL_HEADER

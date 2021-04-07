@@ -22,9 +22,16 @@
  * SOFTWARE.
  */
 
+#ifndef CENTURION_NO_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_NO_PRAGMA_ONCE
+
+// clang-format off
+#include "centurion/macros.hpp"
+// clang-format on
+
 #include "centurion/audio/music.hpp"
 #include "centurion/audio/sound_effect.hpp"
-#include "centurion/centurion_cfg.hpp"
 #include "centurion/compiler.hpp"
 #include "centurion/events/audio_device_event.hpp"
 #include "centurion/events/common_event.hpp"

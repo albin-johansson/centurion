@@ -3,17 +3,12 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
 #include "../input/button_state.hpp"
 #include "../input/key_code.hpp"
 #include "../input/key_modifier.hpp"
 #include "../input/scan_code.hpp"
 #include "../misc/integers.hpp"
 #include "common_event.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

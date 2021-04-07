@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
 #include "../sdl_string.hpp"
 
 namespace cen {

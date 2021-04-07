@@ -8,7 +8,6 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"
@@ -22,10 +21,6 @@
 #include "../misc/not_null.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

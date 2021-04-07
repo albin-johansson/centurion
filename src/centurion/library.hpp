@@ -71,10 +71,6 @@
 #include "misc/exception.hpp"
 #include "misc/integers.hpp"
 
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /**
  * \namespace cen
  *

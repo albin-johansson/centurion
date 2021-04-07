@@ -6,15 +6,10 @@
 #include <algorithm>  // copy
 #include <array>      // array
 
-#include "../centurion_cfg.hpp"
 #include "../misc/integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

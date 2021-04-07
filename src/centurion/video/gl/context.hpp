@@ -5,14 +5,9 @@
 
 #include <memory>  // unique_ptr
 
-#include "../../centurion_cfg.hpp"
 #include "../../detail/owner_handle_api.hpp"
 #include "../../misc/exception.hpp"
 #include "../window.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \addtogroup video
 /// \addtogroup opengl

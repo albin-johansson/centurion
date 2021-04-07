@@ -9,7 +9,6 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, enable_if_t
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
@@ -20,10 +19,6 @@
 #include "../misc/integers.hpp"
 #include "../misc/time.hpp"
 #include "joystick.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

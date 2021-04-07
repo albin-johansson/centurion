@@ -7,17 +7,12 @@
 #include <string>       // string
 #include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
 
-#include "../centurion_cfg.hpp"
 #include "../detail/max.hpp"
 #include "../detail/min.hpp"
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
 #include "area.hpp"
 #include "point.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

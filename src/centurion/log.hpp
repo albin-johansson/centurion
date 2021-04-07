@@ -7,13 +7,9 @@
 #include <string>   // string
 #include <utility>  // forward
 
-#include "centurion_cfg.hpp"
+#include "macros.hpp"
 #include "misc/czstring.hpp"
 #include "misc/not_null.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \addtogroup misc
 /// \{
@@ -559,8 +555,7 @@ inline void set_priority(const category category, const priority prio) noexcept
 
 }  // namespace cen::log
 
-#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
-
+#ifndef CENTURION_NO_DEBUG_LOG_MACROS
 #ifdef NDEBUG
 
 /**
@@ -626,11 +621,12 @@ inline void set_priority(const category category, const priority prio) noexcept
 #define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
 
 #endif  // NDEBUG
-
-#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
+#endif  // CENTURION_NO_DEBUG_LOG_MACROS
 
 /**
  * \def CENTURION_LOG_INFO
+ *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
  *
  * \brief A debug-only macro that expands to `cen::log::info`.
  *
@@ -640,6 +636,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 /**
  * \def CENTURION_LOG_WARN
  *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ *
  * \brief A debug-only macro that expands to `cen::log::warn`.
  *
  * \since 5.0.0
@@ -647,6 +645,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 
 /**
  * \def CENTURION_LOG_VERBOSE
+ *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
  *
  * \brief A debug-only macro that expands to `cen::log::verbose`.
  *
@@ -656,6 +656,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 /**
  * \def CENTURION_LOG_DEBUG
  *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ *
  * \brief A debug-only macro that expands to `cen::log::debug`.
  *
  * \since 5.0.0
@@ -664,6 +666,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 /**
  * \def CENTURION_LOG_CRITICAL
  *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ *
  * \brief A debug-only macro that expands to `cen::log::critical`.
  *
  * \since 5.0.0
@@ -671,6 +675,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 
 /**
  * \def CENTURION_LOG_ERROR
+ *
+ * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
  *
  * \brief A debug-only macro that expands to `cen::log::error`.
  *

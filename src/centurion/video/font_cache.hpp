@@ -8,17 +8,12 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
-#include "../centurion_cfg.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
 #include "font.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
 #include "unicode_string.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

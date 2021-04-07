@@ -8,7 +8,6 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
@@ -22,10 +21,6 @@
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "pixel_format.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 
@@ -59,10 +54,10 @@ using surface_handle = basic_surface<detail::handle_type>;
  * \brief Represents a non-accelerated collection of pixels that constitute an
  * image.
  *
- * \details Surfaces are often used for icons and snapshots, as an "intermediate"
- * representation that can be manually manipulated, unlike textures. There is no
- * support for directly rendering surfaces, but they can be converted to
- * textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, as an
+ * "intermediate" representation that can be manually manipulated, unlike
+ * textures. There is no support for directly rendering surfaces, but they can
+ * be converted to textures, which in turn can be rendered.
  *
  * \tparam B Used to determine the ownership semantics of the class.
  *

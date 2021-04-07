@@ -8,7 +8,6 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
-#include "../centurion_cfg.hpp"
 #include "compiler.hpp"
 
 /// \cond FALSE

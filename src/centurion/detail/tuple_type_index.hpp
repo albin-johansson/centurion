@@ -6,12 +6,6 @@
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
 
-#include "../centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /// \cond FALSE
 namespace cen::detail {
 

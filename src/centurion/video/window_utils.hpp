@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
 #include "../misc/integers.hpp"
 #include "renderer.hpp"
 #include "window.hpp"

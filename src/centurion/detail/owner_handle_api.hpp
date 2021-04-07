@@ -5,12 +5,7 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "../centurion_cfg.hpp"
 #include "../misc/exception.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {

@@ -5,13 +5,8 @@
 
 #include <utility>  // move
 
-#include "../centurion_cfg.hpp"
 #include "../misc/integers.hpp"
 #include "event_type.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

@@ -3,12 +3,6 @@
 
 #include <SDL.h>
 
-#include "centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 namespace cen {
 
 /// \addtogroup compiler

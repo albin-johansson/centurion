@@ -6,14 +6,9 @@
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
 
-#include "../centurion_cfg.hpp"
 #include "../misc/czstring.hpp"
 #include "czstring_compare.hpp"
 #include "static_bimap.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {

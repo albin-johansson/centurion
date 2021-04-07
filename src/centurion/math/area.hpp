@@ -5,13 +5,8 @@
 #include <string>       // string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#include "../centurion_cfg.hpp"
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

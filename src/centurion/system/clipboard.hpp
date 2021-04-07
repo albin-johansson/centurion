@@ -6,14 +6,9 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "../centurion_cfg.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
 #include "../sdl_string.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \addtogroup system
 /// \{

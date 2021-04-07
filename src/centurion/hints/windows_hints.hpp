@@ -3,13 +3,8 @@
 
 #include <utility>  // make_pair
 
-#include "../centurion_cfg.hpp"
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \addtogroup configuration
 /// \{

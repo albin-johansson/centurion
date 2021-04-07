@@ -8,7 +8,6 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "../centurion_cfg.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
@@ -18,10 +17,6 @@
 #include "../misc/exception.hpp"
 #include "../misc/not_null.hpp"
 #include "../misc/time.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

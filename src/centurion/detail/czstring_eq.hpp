@@ -3,12 +3,7 @@
 
 #include <cstring>  // strcmp
 
-#include "../centurion_cfg.hpp"
 #include "../misc/czstring.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {

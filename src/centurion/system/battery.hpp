@@ -6,13 +6,8 @@
 #include <chrono>    // duration_cast
 #include <optional>  // optional
 
-#include "../centurion_cfg.hpp"
 #include "../detail/any_eq.hpp"
 #include "../misc/time.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
 

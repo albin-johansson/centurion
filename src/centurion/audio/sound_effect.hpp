@@ -388,11 +388,10 @@ class sound_effect final
 inline auto operator<<(std::ostream& stream, const sound_effect& sound)
     -> std::ostream&
 {
-  stream << to_string(sound);
-  return stream;
+  return stream << to_string(sound);
 }
 
-/// \}
+/// \} End of group audio
 
 }  // namespace cen
 

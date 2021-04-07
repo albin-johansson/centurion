@@ -66,8 +66,8 @@ using window_handle = basic_window<std::false_type>;
 template <typename B>
 class basic_window final
 {
-  inline static constexpr bool isOwner = std::is_same_v<B, std::true_type>;
-  inline static constexpr bool isHandle = std::is_same_v<B, std::false_type>;
+  inline constexpr static bool isOwner = std::is_same_v<B, std::true_type>;
+  inline constexpr static bool isHandle = std::is_same_v<B, std::false_type>;
 
  public:
   /**

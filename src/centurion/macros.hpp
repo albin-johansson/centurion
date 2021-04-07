@@ -40,6 +40,5 @@
 // this definition.
 using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
-#endif
-
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 #endif  // CENTURION_MACROS_HEADER

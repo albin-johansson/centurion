@@ -6,7 +6,7 @@
 namespace {
 
 inline constexpr std::size_t font_id = 7;
-inline constexpr cen::iarea window_size{800, 600};
+inline constexpr cen::iarea window_size = cen::window::default_size();
 
 inline constexpr auto msg_zero = "\"0\" to play the click one time.";
 inline constexpr auto msg_one = "\"1\" to play the click one time.";

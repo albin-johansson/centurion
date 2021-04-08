@@ -43,7 +43,7 @@
  */
 
 /**
- * \defgroup geometry Math
+ * \defgroup math Math
  * \brief Contains basic mathematical components, used throughout the library.
  */
 

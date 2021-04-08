@@ -71,13 +71,6 @@ using renderer_handle = basic_renderer<detail::handle_type>;
 template <typename B>
 class basic_renderer final
 {
-  [[nodiscard]] constexpr static auto default_flags() noexcept
-      -> SDL_RendererFlags
-  {
-    return static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
-                                          SDL_RENDERER_PRESENTVSYNC);
-  }
-
  public:
   /// \name Construction
   /// \{
@@ -116,7 +109,7 @@ class basic_renderer final
    */
   template <typename Window, typename BB = B, detail::is_owner<BB> = true>
   explicit basic_renderer(const Window& window,
-                          const SDL_RendererFlags flags = default_flags())
+                          const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get())
@@ -2200,6 +2193,18 @@ class basic_renderer final
   [[nodiscard]] auto supports_target_textures() const noexcept -> bool
   {
     return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
+  }
+
+  /**
+   * \brief Returns the default flags used when creating renderers.
+   *
+   * \return the default renderer flags.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  {
+    return SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
   }
 
   /// \} End of flag queries

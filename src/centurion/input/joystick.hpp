@@ -147,10 +147,6 @@ using joystick_handle = basic_joystick<detail::handle_type>;
 template <typename B>
 class basic_joystick final
 {
-  inline constexpr static bool isOwner = std::is_same_v<B, detail::owning_type>;
-  inline constexpr static bool isHandle =
-      std::is_same_v<B, detail::handle_type>;
-
  public:
   /// \name Construction
   /// \{
@@ -167,10 +163,10 @@ class basic_joystick final
    * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(isHandle)
+  explicit basic_joystick(SDL_Joystick* joystick) noexcept(!detail::is_owning<B>())
       : m_joystick{joystick}
   {
-    if constexpr (isOwner)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_joystick)
       {

@@ -116,7 +116,7 @@ class mutex final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-/// \}
+/// \} End of group thread
 
 }  // namespace cen
 

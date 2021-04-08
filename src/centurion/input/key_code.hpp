@@ -46,6 +46,9 @@ namespace cen {
 class key_code final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a `key_code` instance with the `SDLK_UNKNOWN` key code.
    *
@@ -64,7 +67,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ key_code(SDL_KeyCode key) noexcept : m_key{key}
+  constexpr /*implicit*/ key_code(const SDL_KeyCode key) noexcept : m_key{key}
   {}
 
   /**
@@ -79,7 +82,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  explicit key_code(SDL_Scancode scancode) noexcept
+  explicit key_code(const SDL_Scancode scancode) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
   {}
 
@@ -112,6 +115,11 @@ class key_code final
   explicit key_code(const std::string& name) noexcept : key_code{name.c_str()}
   {}
 
+  /// \} End of construction
+
+  /// \name Assignment operators
+  /// \{
+
   constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
   constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
@@ -125,7 +133,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  constexpr auto operator=(SDL_KeyCode key) noexcept -> key_code&
+  constexpr auto operator=(const SDL_KeyCode key) noexcept -> key_code&
   {
     m_key = key;
     return *this;
@@ -141,7 +149,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  auto operator=(SDL_Scancode scancode) noexcept -> key_code&
+  auto operator=(const SDL_Scancode scancode) noexcept -> key_code&
   {
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode));
     return *this;
@@ -184,6 +192,11 @@ class key_code final
   {
     return this->operator=(name.c_str());  // NOLINT
   }
+
+  /// \} End of assignment operators
+
+  /// \name Queries
+  /// \{
 
   /**
    * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
@@ -236,6 +249,11 @@ class key_code final
     return m_key;
   }
 
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
   /**
    * \brief Converts to `SDL_KeyCode`.
    *
@@ -275,6 +293,8 @@ class key_code final
   {
     return to_scan_code();
   }
+
+  /// \} End of conversions
 
   /**
    * \brief Serializes the key code.
@@ -326,9 +346,11 @@ class key_code final
 inline auto operator<<(std::ostream& stream, const key_code& keyCode)
     -> std::ostream&
 {
-  stream << to_string(keyCode);
-  return stream;
+  return stream << to_string(keyCode);
 }
+
+/// \name Key code comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two key codes are the same.
@@ -361,6 +383,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
 {
   return !(lhs == rhs);
 }
+
+/// \} End of key code comparison operators
 
 /**
  * \namespace cen::keycodes

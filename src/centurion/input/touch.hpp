@@ -42,18 +42,23 @@ struct finger_state final
 /**
  * \enum device_type
  *
- * \brief Mirrors the `SDL_TouchDeviceType` enum.
- *
- * \since 4.3.0
+ * \brief Provides values that represent different touch device types.
  *
  * \var device_type::invalid
  * Indicates an invalid touch device type.
+ *
  * \var device_type::direct
  * Indicates a touch screen with window-relative coordinates.
+ *
  * \var device_type::indirect_absolute
  * Indicates a trackpad with absolute device coordinates.
+ *
  * \var device_type::indirect_relative
  * Indicates a trackpad with screen cursor-relative coordinates.
+ *
+ * \see `SDL_TouchDeviceType`
+ *
+ * \since 4.3.0
  *
  * \headerfile touch.hpp
  */
@@ -66,65 +71,13 @@ enum class device_type
 };
 
 /**
- * \brief Indicates whether or not two touch device types are the same.
- *
- * \param lhs the left-hand side touch device type.
- * \param rhs the right-hand side touch device type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const device_type lhs,
-                                        const SDL_TouchDeviceType rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(device_type, SDL_TouchDeviceType)
- */
-[[nodiscard]] constexpr auto operator==(const SDL_TouchDeviceType lhs,
-                                        const device_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two touch device types aren't the same.
- *
- * \param lhs the left-hand side touch device type.
- * \param rhs the right-hand side touch device type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const device_type lhs,
-                                        const SDL_TouchDeviceType rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(device_type, SDL_TouchDeviceType)
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_TouchDeviceType lhs,
-                                        const device_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
  * \brief Returns the number of registered touch devices.
  *
  * \return the number of registered touch devices.
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto num_devices() noexcept -> int
+[[nodiscard]] inline auto device_count() noexcept -> int
 {
   return SDL_GetNumTouchDevices();
 }
@@ -175,7 +128,7 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto num_fingers(const SDL_TouchID id) noexcept -> int
+[[nodiscard]] inline auto finger_count(const SDL_TouchID id) noexcept -> int
 {
   return SDL_GetNumTouchFingers(id);
 }
@@ -230,6 +183,63 @@ enum class device_type
 {
   return SDL_MOUSE_TOUCHID;
 }
+
+/// \name Touch device comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two touch device types are the same.
+ *
+ * \param lhs the left-hand side touch device type.
+ * \param rhs the right-hand side touch device type.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const device_type lhs,
+                                        const SDL_TouchDeviceType rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(device_type, SDL_TouchDeviceType)
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_TouchDeviceType lhs,
+                                        const device_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two touch device types aren't the same.
+ *
+ * \param lhs the left-hand side touch device type.
+ * \param rhs the right-hand side touch device type.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const device_type lhs,
+                                        const SDL_TouchDeviceType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(device_type, SDL_TouchDeviceType)
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_TouchDeviceType lhs,
+                                        const device_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of touch device comparison operators
 
 /// \} End of group input
 

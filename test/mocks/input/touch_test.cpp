@@ -30,9 +30,9 @@ class TouchTest : public testing::Test
   }
 };
 
-TEST_F(TouchTest, NumDevices)
+TEST_F(TouchTest, DeviceCount)
 {
-  const auto count [[maybe_unused]] = cen::touch::num_devices();
+  const auto count [[maybe_unused]] = cen::touch::device_count();
   EXPECT_EQ(1, SDL_GetNumTouchDevices_fake.call_count);
 }
 
@@ -53,9 +53,9 @@ TEST_F(TouchTest, TypeOf)
   EXPECT_EQ(1, SDL_GetTouchDeviceType_fake.call_count);
 }
 
-TEST_F(TouchTest, NumFingers)
+TEST_F(TouchTest, FingerCount)
 {
-  const auto count [[maybe_unused]] = cen::touch::num_fingers(0);
+  const auto count [[maybe_unused]] = cen::touch::finger_count(0);
   EXPECT_EQ(1, SDL_GetNumTouchFingers_fake.call_count);
 }
 

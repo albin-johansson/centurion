@@ -139,5 +139,7 @@
 #include "centurion/video/texture.hpp"
 #include "centurion/video/texture_access.hpp"
 #include "centurion/video/unicode_string.hpp"
+#include "centurion/video/vulkan/vk_core.hpp"
+#include "centurion/video/vulkan/vk_library.hpp"
 #include "centurion/video/window.hpp"
 #include "centurion/video/window_utils.hpp"

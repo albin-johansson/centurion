@@ -115,7 +115,7 @@ class condition final
   std::unique_ptr<SDL_cond, deleter> m_cond;
 };
 
-/// \}
+/// \} End of group thread
 
 }  // namespace cen
 

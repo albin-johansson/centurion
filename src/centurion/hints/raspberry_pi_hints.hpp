@@ -19,8 +19,8 @@ struct video_layer final : detail::int_hint<video_layer>
   }
 };
 
-/// \} End of group configuration
-
 }  // namespace cen::hint::raspberrypi
+
+/// \} End of group configuration
 
 #endif  // CENTURION_RASPBERRY_PI_HINTS_HEADER

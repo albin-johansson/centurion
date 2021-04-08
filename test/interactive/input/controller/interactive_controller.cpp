@@ -5,6 +5,18 @@
 
 namespace {
 
+inline constexpr cen::i16 dead_zone = 15'000;
+
+inline constexpr auto step_size = 0.0002f;
+
+inline constexpr std::array colors{cen::colors::pink,
+                                   cen::colors::steel_blue,
+                                   cen::colors::red};
+
+using event_dispatcher = cen::event_dispatcher<cen::quit_event,
+                                               cen::controller_button_event,
+                                               cen::controller_axis_event>;
+
 class interactive_controller final
 {
  public:
@@ -27,7 +39,7 @@ class interactive_controller final
     // clang-format on
   }
 
-  void run()
+  auto run() -> int
   {
     cen::controller controller;
 
@@ -46,29 +58,22 @@ class interactive_controller final
     }
 
     m_window.hide();
+    return 0;
   }
 
  private:
-  inline static constexpr cen::i16 m_deadZone = 15'000;
-  inline static constexpr auto m_step = 0.0002f;
-
-  inline static constexpr std::array m_colors{cen::colors::pink,
-                                              cen::colors::steel_blue,
-                                              cen::colors::red};
-
   cen::window m_window;
   cen::renderer m_renderer;
+  event_dispatcher m_dispatcher;
+
   cen::frect m_rect;
   float m_dx{};
   float m_dy{};
-  std::size_t m_colorIndex{};
-  cen::color m_currentColor{m_colors.at(m_colorIndex)};
-  bool m_running{true};
 
-  using dispatcher_t = cen::event_dispatcher<cen::quit_event,
-                                             cen::controller_button_event,
-                                             cen::controller_axis_event>;
-  dispatcher_t m_dispatcher;
+  std::size_t m_colorIndex{};
+  cen::color m_currentColor{colors.at(0)};
+
+  bool m_running{true};
 
   void render()
   {
@@ -80,38 +85,6 @@ class interactive_controller final
     m_renderer.present();
   }
 
-  void change_color()
-  {
-    ++m_colorIndex;
-    m_currentColor = m_colors.at(m_colorIndex % m_colors.size());
-  }
-
-  void update_position(const cen::controller_axis_event& event)
-  {
-    const auto value = event.value();  // -32'768 to 32'767
-    const auto axis = event.axis();
-
-    const auto updateWith = [](float& diff, const int value) {
-      if ((value < -m_deadZone) || (value > m_deadZone))
-      {
-        diff = static_cast<float>(value) * m_step;
-      }
-      else
-      {
-        diff = 0;
-      }
-    };
-
-    if (axis == cen::controller_axis::left_x)
-    {
-      updateWith(m_dx, value);
-    }
-    else if (axis == cen::controller_axis::left_y)
-    {
-      updateWith(m_dy, value);
-    }
-  }
-
   void on_quit_event(const cen::quit_event& event)
   {
     m_running = false;
@@ -121,24 +94,43 @@ class interactive_controller final
   {
     if (event.released())
     {
-      change_color();
+      ++m_colorIndex;
+      m_currentColor = colors.at(m_colorIndex % colors.size());
     }
   }
 
   void on_controller_axis_event(const cen::controller_axis_event& event)
   {
-    update_position(event);
+    const auto update = [](const float diff, const int value) -> float {
+      if ((value < -dead_zone) || (value > dead_zone))
+      {
+        return static_cast<float>(value) * step_size;
+      }
+      else
+      {
+        return 0;
+      }
+    };
+
+    const auto value = event.value();
+    const auto axis = event.axis();
+
+    if (axis == cen::controller_axis::left_x)
+    {
+      m_dx = update(m_dx, value);
+    }
+    else if (axis == cen::controller_axis::left_y)
+    {
+      m_dy = update(m_dy, value);
+    }
   }
 };
 
 }  // namespace
 
-int main(int, char**)
+auto main(int, char**) -> int
 {
   const cen::library lib;
-
-  interactive_controller ic;
-  ic.run();
-
-  return 0;
+  interactive_controller demo;
+  return demo.run();
 }

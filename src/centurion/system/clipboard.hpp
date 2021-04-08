@@ -85,6 +85,6 @@ inline auto set_text(const std::string& text) noexcept -> bool
 
 }  // namespace cen::clipboard
 
-/// \}
+/// \} End of group system
 
 #endif  // CENTURION_CLIPBOARD_HEADER

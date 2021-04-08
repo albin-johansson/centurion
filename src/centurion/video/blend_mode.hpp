@@ -11,9 +11,11 @@ namespace cen {
 /**
  * \enum blend_mode
  *
- * \brief Mirrors the `SDL_BlendMode` enum.
+ * \brief Provides values that represent various rendering blend modes.
  *
  * \since 3.0.0
+ *
+ * \see `SDL_BlendMode`
  *
  * \headerfile blend_mode.hpp
  */
@@ -32,6 +34,9 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/// \name Blend mode comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two blend mode values are the same;
@@ -85,7 +90,9 @@ enum class blend_mode
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of blend mode comparison operators
+
+/// \} End of group video
 
 }  // namespace cen
 

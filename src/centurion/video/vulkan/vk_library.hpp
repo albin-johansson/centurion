@@ -9,6 +9,9 @@
 #include "../../misc/czstring.hpp"
 #include "../../misc/exception.hpp"
 
+/// \addtogroup video
+/// \{
+
 namespace cen::vk {
 
 class library final
@@ -36,6 +39,8 @@ class library final
 };
 
 }  // namespace cen::vk
+
+/// \} End of group video
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VK_LIBRARY_HEADER

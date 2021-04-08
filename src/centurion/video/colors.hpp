@@ -3,10 +3,11 @@
 
 #include "color.hpp"
 
+/// \addtogroup video
+/// \{
+
 /**
  * \namespace cen::colors
- *
- * \ingroup video
  *
  * \brief Contains pre-defined `color` constants.
  *
@@ -1058,5 +1059,7 @@ inline constexpr color yellow{0xFF, 0xFF, 0};
 inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 }  // namespace cen::colors
+
+/// \} End of group video
 
 #endif  // CENTURION_COLORS_HEADER

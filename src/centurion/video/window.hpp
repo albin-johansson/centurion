@@ -453,7 +453,29 @@ class basic_window final
     set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
   }
 
-  // TODO set_x, set_y
+  /**
+   * \brief Sets the x-coordinate of the window.
+   *
+   * \param x the new x-coordinate of the window.
+   *
+   * \since 6.0.0
+   */
+  void set_x(const int x) noexcept
+  {
+    set_position({x, y()});
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the window.
+   *
+   * \param y the new y-coordinate of the window.
+   *
+   * \since 6.0.0
+   */
+  void set_y(const int y) noexcept
+  {
+    set_position({x(), y});
+  }
 
   /**
    * \brief Sets the position of the window.

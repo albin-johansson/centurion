@@ -6,9 +6,9 @@
 
 #include "log.hpp"
 
-using dispatcher_t = cen::event_dispatcher<cen::quit_event,
-                                           cen::controller_button_event,
-                                           cen::window_event>;
+using event_dispatcher = cen::event_dispatcher<cen::quit_event,
+                                               cen::controller_button_event,
+                                               cen::window_event>;
 
 namespace {
 
@@ -40,7 +40,7 @@ TEST(EventDispatcher, Bind)
   cen::event::flush_all();
 
   button_handler buttonHandler;
-  dispatcher_t dispatcher;
+  event_dispatcher dispatcher;
 
   // clang-format off
   dispatcher.bind<cen::quit_event>().to<&on_quit>();
@@ -70,7 +70,7 @@ TEST(EventDispatcher, Bind)
 
 TEST(EventDispatcher, Reset)
 {
-  dispatcher_t dispatcher;
+  event_dispatcher dispatcher;
   ASSERT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
@@ -93,7 +93,7 @@ TEST(EventDispatcher, Reset)
 
 TEST(EventDispatcher, ActiveCount)
 {
-  dispatcher_t dispatcher;
+  event_dispatcher dispatcher;
   EXPECT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
@@ -124,12 +124,12 @@ TEST(EventDispatcher, Size)
 
 TEST(EventDispatcher, ToString)
 {
-  dispatcher_t dispatcher;
+  event_dispatcher dispatcher;
   cen::log::put(cen::to_string(dispatcher));
 }
 
 TEST(EventDispatcher, StreamOperator)
 {
-  dispatcher_t dispatcher;
+  event_dispatcher dispatcher;
   std::cout << "COUT: " << dispatcher << '\n';
 }

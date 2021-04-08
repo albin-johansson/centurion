@@ -1,7 +1,10 @@
 #ifndef CENTURION_GL_CONTEXT_HEADER
 #define CENTURION_GL_CONTEXT_HEADER
 
+#ifndef CENTURION_NO_OPENGL
+
 #include <SDL.h>
+#include <SDL_opengl.h>
 
 #include <memory>  // unique_ptr
 
@@ -55,8 +58,7 @@ class basic_context final
   template <typename U>
   auto make_current(basic_window<U>& window) -> bool
   {
-    const auto result = SDL_GL_MakeCurrent(window.get(), m_context.get());
-    return result == 0;
+    return SDL_GL_MakeCurrent(window.get(), m_context.get()) == 0;
   }
 
   [[nodiscard]] auto get() const noexcept -> SDL_GLContext
@@ -80,4 +82,5 @@ class basic_context final
 
 /// \} End of group video
 
+#endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_CONTEXT_HEADER

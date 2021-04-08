@@ -499,6 +499,9 @@ inline auto operator<<(std::ostream& stream, const color& color)
   return stream;
 }
 
+/// \name Color comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not the two colors are equal.
  *
@@ -625,6 +628,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
 {
   return !(lhs == rhs);
 }
+
+/// \} End of color comparison operators
 
 /// \} End of group video
 

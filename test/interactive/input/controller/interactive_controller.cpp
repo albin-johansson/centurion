@@ -7,7 +7,7 @@ namespace {
 
 inline constexpr cen::i16 dead_zone = 15'000;
 
-inline constexpr auto step_size = 0.0002f;
+inline constexpr float step_size = 0.0002f;
 
 inline constexpr std::array colors{cen::colors::pink,
                                    cen::colors::steel_blue,
@@ -101,7 +101,7 @@ class interactive_controller final
 
   void on_controller_axis_event(const cen::controller_axis_event& event)
   {
-    const auto update = [](const float diff, const int value) -> float {
+    const auto update = [](const int value) -> float {
       if ((value < -dead_zone) || (value > dead_zone))
       {
         return static_cast<float>(value) * step_size;
@@ -117,11 +117,11 @@ class interactive_controller final
 
     if (axis == cen::controller_axis::left_x)
     {
-      m_dx = update(m_dx, value);
+      m_dx = update(value);
     }
     else if (axis == cen::controller_axis::left_y)
     {
-      m_dy = update(m_dy, value);
+      m_dy = update(value);
     }
   }
 };

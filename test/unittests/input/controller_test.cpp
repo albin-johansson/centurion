@@ -37,9 +37,9 @@ TEST(Controller, LoadMappings)
   EXPECT_FALSE(cen::controller::load_mappings("foobar").has_value());
 }
 
-TEST(Controller, NumMappings)
+TEST(Controller, MappingCount)
 {
-  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::num_mappings());
+  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::mapping_count());
 }
 
 TEST(Controller, Count)

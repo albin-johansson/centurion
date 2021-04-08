@@ -56,13 +56,6 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 /// \} End of time (std::chrono) aliases
 
-/**
- * \namespace literals
- *
- * \brief Contains suffix operators.
- *
- * \since 5.0.0
- */
 namespace literals {
 
 constexpr auto operator"" _ns(const unsigned long long int value) noexcept

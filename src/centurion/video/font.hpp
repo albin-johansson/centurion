@@ -71,6 +71,9 @@ enum class font_hint
 class font final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a font based on the `.ttf`-file at the specified path.
    *
@@ -113,6 +116,11 @@ class font final
    */
   font(const std::string& file, const int size) : font{file.c_str(), size}
   {}
+
+  /// \} End of construction
+
+  /// \name Style functions
+  /// \{
 
   /**
    * \brief Resets the style of the font.
@@ -244,6 +252,97 @@ class font final
   }
 
   /**
+   * \brief Indicates whether or not the font is bold.
+   *
+   * \return `true` if the font is bold; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_bold() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_BOLD;
+  }
+
+  /**
+   * \brief Indicates whether or not the font is italic.
+   *
+   * \return `true` if the font is italic; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_italic() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_ITALIC;
+  }
+
+  /**
+   * \brief Indicates whether or not the font is underlined.
+   *
+   * \return `true` if the font is underlined; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_underlined() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_UNDERLINE;
+  }
+
+  /**
+   * \brief Indicates whether or not the font is a strikethrough font.
+   *
+   * \return `true` if the font is a strikethrough font; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_strikethrough() const noexcept -> bool
+  {
+    return m_style & TTF_STYLE_STRIKETHROUGH;
+  }
+
+  /**
+   * \brief Returns the size of the outline of the font.
+   *
+   * \return the current outline size, in pixels.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto outline() const noexcept -> int
+  {
+    return TTF_GetFontOutline(m_font.get());
+  }
+
+  /**
+   * \brief Returns the TrueType font hinting of the font.
+   *
+   * \details This property is set to `Normal` by default.
+   *
+   * \return the TrueType font hinting of the font.
+   *
+   * \since 3.1.0
+   */
+  [[nodiscard]] auto font_hinting() const noexcept -> font_hint
+  {
+    return static_cast<font_hint>(TTF_GetFontHinting(m_font.get()));
+  }
+
+  /**
+   * \brief Indicates whether or not kerning is being used.
+   *
+   * \return `true` if kerning is being used by the font; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto has_kerning() const noexcept -> bool
+  {
+    return TTF_GetFontKerning(m_font.get());
+  }
+
+  /// \} End of style functions
+
+  /// \name Queries
+  /// \{
+
+  /**
    * \brief Returns the maximum height of a character in this font.
    *
    * \details This is usually the same as the point size.
@@ -314,80 +413,6 @@ class font final
   }
 
   /**
-   * \brief Returns the TrueType font hinting of the font.
-   *
-   * \details This property is set to `Normal` by default.
-   *
-   * \return the TrueType font hinting of the font.
-   *
-   * \since 3.1.0
-   */
-  [[nodiscard]] auto font_hinting() const noexcept -> font_hint
-  {
-    return static_cast<font_hint>(TTF_GetFontHinting(m_font.get()));
-  }
-
-  /**
-   * \brief Indicates whether or not kerning is being used.
-   *
-   * \return `true` if kerning is being used by the font; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] auto has_kerning() const noexcept -> bool
-  {
-    return TTF_GetFontKerning(m_font.get());
-  }
-
-  /**
-   * \brief Indicates whether or not the font is bold.
-   *
-   * \return `true` if the font is bold; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] auto is_bold() const noexcept -> bool
-  {
-    return m_style & TTF_STYLE_BOLD;
-  }
-
-  /**
-   * \brief Indicates whether or not the font is italic.
-   *
-   * \return `true` if the font is italic; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] auto is_italic() const noexcept -> bool
-  {
-    return m_style & TTF_STYLE_ITALIC;
-  }
-
-  /**
-   * \brief Indicates whether or not the font is underlined.
-   *
-   * \return `true` if the font is underlined; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] auto is_underlined() const noexcept -> bool
-  {
-    return m_style & TTF_STYLE_UNDERLINE;
-  }
-
-  /**
-   * \brief Indicates whether or not the font is a strikethrough font.
-   *
-   * \return `true` if the font is a strikethrough font; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] auto is_strikethrough() const noexcept -> bool
-  {
-    return m_style & TTF_STYLE_STRIKETHROUGH;
-  }
-
-  /**
    * \brief Indicates whether or not the font is outlined.
    *
    * \return `true` if the font is outlined; `false` otherwise.
@@ -412,16 +437,48 @@ class font final
   }
 
   /**
-   * \brief Returns the size of the outline of the font.
+   * \brief Returns the family name of the font.
    *
-   * \return the current outline size, in pixels.
+   * \return the family name of the font.
    *
-   * \since 5.0.0
+   * \since 3.0.0
    */
-  [[nodiscard]] auto outline() const noexcept -> int
+  [[nodiscard]] auto family_name() const noexcept -> czstring
   {
-    return TTF_GetFontOutline(m_font.get());
+    return TTF_FontFaceFamilyName(m_font.get());
   }
+
+  /**
+   * \brief Returns the font face style name of the font.
+   *
+   * \note This information may not be available.
+   *
+   * \return the font face style name of the font; `nullptr` if it isn't
+   * available.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto style_name() const noexcept -> czstring
+  {
+    return TTF_FontFaceStyleName(m_font.get());
+  }
+
+  /**
+   * \brief Returns the size of the font.
+   *
+   * \return the size of the font.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> int
+  {
+    return m_size;
+  }
+
+  /// \} End of queries
+
+  /// \name Glyph information
+  /// \{
 
   /**
    * \brief Returns the kerning amount between two glyphs in the font, if
@@ -494,32 +551,10 @@ class font final
     }
   }
 
-  /**
-   * \brief Returns the family name of the font.
-   *
-   * \return the family name of the font.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto family_name() const noexcept -> czstring
-  {
-    return TTF_FontFaceFamilyName(m_font.get());
-  }
+  /// \} End of glyph information
 
-  /**
-   * \brief Returns the font face style name of the font.
-   *
-   * \note This information may not be available.
-   *
-   * \return the font face style name of the font; `nullptr` if it isn't
-   * available.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto style_name() const noexcept -> czstring
-  {
-    return TTF_FontFaceStyleName(m_font.get());
-  }
+  /// \name Rendered string size functions
+  /// \{
 
   /**
    * \brief Returns the width of the supplied string, if it was rendered using
@@ -628,34 +663,10 @@ class font final
     return string_size(str.c_str());
   }
 
-  /**
-   * \brief Returns the size of the font.
-   *
-   * \return the size of the font.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto size() const noexcept -> int
-  {
-    return m_size;
-  }
+  /// \} End of rendered string size functions
 
-  /**
-   * \brief Returns a pointer to the associated `TTF_Font`.
-   *
-   * \warning Use of this method is not recommended. However, it's useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated `TTF_Font`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> TTF_Font*
-  {
-    return m_font.get();
-  }
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Converts to `TTF_Font*`.
@@ -677,6 +688,25 @@ class font final
    * \since 3.0.0
    */
   [[nodiscard]] explicit operator const TTF_Font*() const noexcept
+  {
+    return m_font.get();
+  }
+
+  /// \} End of conversions
+
+  /**
+   * \brief Returns a pointer to the associated `TTF_Font`.
+   *
+   * \warning Use of this method is not recommended. However, it's useful since
+   * many SDL calls use non-const pointers even when no change will be applied.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated `TTF_Font`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> TTF_Font*
   {
     return m_font.get();
   }
@@ -753,11 +783,10 @@ class font final
  */
 inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 {
-  stream << to_string(font);
-  return stream;
+  return stream << to_string(font);
 }
 
-/// \}
+/// \} End of group video
 
 }  // namespace cen
 

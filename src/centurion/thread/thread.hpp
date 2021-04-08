@@ -83,6 +83,9 @@ class thread final
    */
   using id = SDL_threadID;
 
+  /// \name Construction/Destruction
+  /// \{
+
   /**
    * \brief Creates a thread and starts executing it.
    *
@@ -122,6 +125,46 @@ class thread final
       join();
     }
   }
+
+  /// \} End of construction/destruction
+
+  /**
+   * \brief Forces the current thread to halt for at least the specified
+   * duration.
+   *
+   * \note The actual time spent sleeping may differ, depending on the
+   * scheduling of the operating system. You shouldn't use this function for
+   * precise timing.
+   *
+   * \param ms the minimum amount of time to sleep for, in milliseconds.
+   *
+   * \since 5.0.0
+   */
+  static void sleep(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
+  {
+    SDL_Delay(ms.count());
+  }
+
+  /**
+   * \brief Sets the priority of the current thread.
+   *
+   * \note You might need elevated privileges to use `high` or `critical`
+   * priorities.
+   *
+   * \param priority the priority that will be used.
+   *
+   * \return `true` if the priority was successfully set; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  static auto set_priority(const thread_priority priority) noexcept -> bool
+  {
+    const auto prio = static_cast<SDL_ThreadPriority>(priority);
+    return SDL_SetThreadPriority(prio) == 0;
+  }
+
+  /// \name Mutators
+  /// \{
 
   /**
    * \brief Lets the thread terminate without having another thread join it.
@@ -169,6 +212,11 @@ class thread final
 
     return status;
   }
+
+  /// \} End of mutators
+
+  /// \name Queries
+  /// \{
 
   /**
    * \brief Indicates whether or not the thread can be joined.
@@ -224,6 +272,18 @@ class thread final
   }
 
   /**
+   * \brief Returns the identifier associated with the current thread.
+   *
+   * \return the ID of the current thread.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] static auto current_id() noexcept -> id
+  {
+    return SDL_ThreadID();
+  }
+
+  /**
    * \brief Returns the name of the thread.
    *
    * \note The default name used is `"thread"`.
@@ -257,53 +317,7 @@ class thread final
     return m_thread;
   }
 
-  /**
-   * \brief Forces the current thread to halt for at least the specified
-   * duration.
-   *
-   * \note The actual time spent sleeping may differ, depending on the
-   * scheduling of the operating system. You shouldn't use this function for
-   * precise timing.
-   *
-   * \param ms the minimum amount of time to sleep for, in milliseconds.
-   *
-   * \since 5.0.0
-   */
-  static void sleep(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
-  {
-    SDL_Delay(ms.count());
-  }
-
-  /**
-   * \brief Sets the priority of the current thread.
-   *
-   * \note You might need elevated privileges to use `high` or `critical`
-   * priorities.
-   *
-   * \param priority the priority that will be used.
-   *
-   * \return `true` if the priority was successfully set; `false` otherwise.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] static auto set_priority(
-      const thread_priority priority) noexcept -> bool
-  {
-    const auto prio = static_cast<SDL_ThreadPriority>(priority);
-    return SDL_SetThreadPriority(prio) == 0;
-  }
-
-  /**
-   * \brief Returns the identifier associated with the current thread.
-   *
-   * \return the ID of the current thread.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] static auto current_id() noexcept -> id
-  {
-    return SDL_ThreadID();
-  }
+  /// \} End of queries
 
  private:
   SDL_Thread* m_thread{};
@@ -343,6 +357,9 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
   stream << to_string(thread);
   return stream;
 }
+
+/// \name Thread priority comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two thread priorities are the same.
@@ -398,7 +415,9 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of thread comparison operators
+
+/// \} End of group thread
 
 }  // namespace cen
 

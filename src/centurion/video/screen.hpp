@@ -10,13 +10,57 @@
 #include "../misc/czstring.hpp"
 #include "pixel_format.hpp"
 
-/// \addtogroup system
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \brief Sets whether or not screen savers are enabled.
+ *
+ * \note By default, screen savers are disabled.
+ *
+ * \param enabled `true` if screen savers should be enabled; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+inline void set_screen_saver_enabled(const bool enabled) noexcept
+{
+  if (enabled)
+  {
+    SDL_EnableScreenSaver();
+  }
+  else
+  {
+    SDL_DisableScreenSaver();
+  }
+}
+
+/**
+ * \brief Indicates whether or not screen savers are enabled.
+ *
+ * \note By default, screen savers are disabled.
+ *
+ * \return `true` if screen savers are enabled; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] inline auto is_screen_saver_enabled() noexcept -> bool
+{
+  return SDL_IsScreenSaverEnabled();
+}
+
+/// \} End of group video
+
+}  // namespace cen
+
+/// \addtogroup video
 /// \{
 
 /**
  * \namespace cen::screen
  *
- * \brief Contains functions that provide information about the screen.
+ * \brief Contains functions that provide information about screen(s).
  *
  * \since 5.0.0
  *
@@ -27,8 +71,7 @@ namespace cen::screen {
 /**
  * \struct dpi_info
  *
- * \brief Simple POD-type for storing diagonal, horizontal and vertical DPI
- * values.
+ * \brief Provides diagonal, horizontal and vertical DPI values.
  *
  * \headerfile screen.hpp
  *
@@ -62,10 +105,201 @@ enum class orientation
 };
 
 /**
+ * \brief Returns the amount of available displays.
+ *
+ * \return the number of available displays.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] inline auto count() noexcept -> int
+{
+  return SDL_GetNumVideoDisplays();
+}
+
+/**
+ * \brief Returns the name of a display.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the name of the specified display, might be null.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] inline auto name(const int index = 0) noexcept -> czstring
+{
+  return SDL_GetDisplayName(index);
+}
+
+/**
+ * \brief Returns the orientation of the specified display.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the orientation of the specified display.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
+    -> orientation
+{
+  return static_cast<orientation>(SDL_GetDisplayOrientation(index));
+}
+
+/// \name Display mode queries
+/// \{
+
+/**
+ * \brief Returns the desktop display mode.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the desktop display mode; `std::nullopt` if something goes wrong.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto display_mode(const int index = 0) noexcept
+    -> std::optional<SDL_DisplayMode>
+{
+  SDL_DisplayMode mode{};
+  if (SDL_GetDesktopDisplayMode(index, &mode) == 0)
+  {
+    return mode;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the refresh rate of the screen.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the refresh rate of the screen; `std::nullopt` if something goes
+ * wrong.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto refresh_rate(const int index = 0) noexcept
+    -> std::optional<int>
+{
+  if (const auto mode = display_mode(index))
+  {
+    return mode->refresh_rate;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the pixel format of the desktop display mode.
+ *
+ * \note This function returns the pixel format used by the desktop display
+ * mode, i.e. the fullscreen display mode, so it might not be accurate for
+ * non-fullscreen windows.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the pixel format of the desktop display mode; `std::nullopt` if
+ * something goes wrong.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto get_pixel_format(const int index = 0) noexcept
+    -> std::optional<pixel_format>
+{
+  if (const auto mode = display_mode(index))
+  {
+    return static_cast<pixel_format>(mode->format);
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the width of the screen.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the width of the screen; `std::nullopt` if something goes wrong.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto width(const int index = 0) noexcept
+    -> std::optional<int>
+{
+  if (const auto mode = display_mode(index))
+  {
+    return display_mode(index)->w;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the height of the screen.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the height of the screen; `std::nullopt` if something goes wrong.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto height(const int index = 0) noexcept
+    -> std::optional<int>
+{
+  if (const auto mode = display_mode(index))
+  {
+    return display_mode(index)->h;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the size of the screen.
+ *
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
+ *
+ * \return the size of the screen; `std::nullopt` if something goes wrong.
+ *
+ * \since 4.1.0
+ */
+[[nodiscard]] inline auto size(const int index = 0) noexcept
+    -> std::optional<iarea>
+{
+  if (const auto mode = display_mode(index))
+  {
+    return iarea{mode->w, mode->h};
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
  * \brief Returns DPI information about a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return DPI information about the specified display; `std::nullopt` if
  * something went wrong.
@@ -74,11 +308,11 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto dpi(const int displayIndex = 0)
+[[nodiscard]] inline auto dpi(const int index = 0) noexcept
     -> std::optional<dpi_info>
 {
-  dpi_info info{};
-  const auto res = SDL_GetDisplayDPI(displayIndex,
+  dpi_info info;
+  const auto res = SDL_GetDisplayDPI(index,
                                      &info.diagonal,
                                      &info.horizontal,
                                      &info.vertical);
@@ -95,22 +329,20 @@ enum class orientation
 /**
  * \brief Returns vertical DPI information about a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return the vertical DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto vertical_dpi(const int displayIndex = 0)
+[[nodiscard]] inline auto vertical_dpi(const int index = 0) noexcept
     -> std::optional<float>
 {
-  float vertical{};
-  const auto res = SDL_GetDisplayDPI(displayIndex, nullptr, nullptr, &vertical);
-  if (res == 0)
+  if (const auto info = dpi(index))
   {
-    return vertical;
+    return info->vertical;
   }
   else
   {
@@ -121,22 +353,20 @@ enum class orientation
 /**
  * \brief Returns diagonal DPI information about a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return the diagonal DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto diagonal_dpi(const int displayIndex = 0)
+[[nodiscard]] inline auto diagonal_dpi(const int index = 0) noexcept
     -> std::optional<float>
 {
-  float diagonal{};
-  const auto res = SDL_GetDisplayDPI(displayIndex, &diagonal, nullptr, nullptr);
-  if (res == 0)
+  if (const auto info = dpi(index))
   {
-    return diagonal;
+    return info->diagonal;
   }
   else
   {
@@ -147,21 +377,20 @@ enum class orientation
 /**
  * \brief Returns horizontal DPI information about a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return the horizontal DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto horizontal_dpi(const int displayIndex = 0)
+[[nodiscard]] inline auto horizontal_dpi(const int index = 0) noexcept
     -> std::optional<float>
 {
-  float horizontal{};
-  if (!SDL_GetDisplayDPI(displayIndex, nullptr, &horizontal, nullptr))
+  if (const auto info = dpi(index))
   {
-    return horizontal;
+    return info->horizontal;
   }
   else
   {
@@ -172,8 +401,8 @@ enum class orientation
 /**
  * \brief Returns the bounds of a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return the bounds of the specified display; `std::nullopt` if something went
  * wrong.
@@ -182,11 +411,11 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto bounds(const int displayIndex = 0)
+[[nodiscard]] inline auto bounds(const int index = 0) noexcept
     -> std::optional<irect>
 {
-  irect result{};
-  if (SDL_GetDisplayBounds(displayIndex, &result.get()) == 0)
+  irect result;
+  if (SDL_GetDisplayBounds(index, &result.get()) == 0)
   {
     return result;
   }
@@ -199,8 +428,8 @@ enum class orientation
 /**
  * \brief Returns the usable bounds of a display.
  *
- * \param displayIndex the index of the display to query, must be in the range
- * [0, `cen::screen::amount()`].
+ * \param index the index of the queried display, in the range [0,
+ * `cen::screen::count()`].
  *
  * \return the usable bounds of the specified display; `std::nullopt` if
  * something went wrong.
@@ -209,11 +438,11 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto usable_bounds(const int displayIndex = 0)
+[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept
     -> std::optional<irect>
 {
-  irect result{};
-  if (SDL_GetDisplayUsableBounds(displayIndex, &result.get()) == 0)
+  irect result;
+  if (SDL_GetDisplayUsableBounds(index, &result.get()) == 0)
   {
     return result;
   }
@@ -223,161 +452,10 @@ enum class orientation
   }
 }
 
-/**
- * \brief Returns the orientation of the specified display.
- *
- * \param displayIndex the index of the display to obtain the orientation of,
- * must be in the range [0, `cen::screen::amount()`].
- *
- * \return the orientation of the specified display.
- *
- * \since 5.0.0
- */
-[[nodiscard]] inline auto get_orientation(const int displayIndex = 0)
-    -> orientation
-{
-  const auto result = SDL_GetDisplayOrientation(displayIndex);
-  return static_cast<orientation>(result);
-}
-
-/**
- * \brief Returns the amount of available displays.
- *
- * \return the number of available displays.
- *
- * \since 5.0.0
- */
-[[nodiscard]] inline auto amount() noexcept -> int
-{
-  return SDL_GetNumVideoDisplays();
-}
-
-/**
- * \brief Returns the name of a display.
- *
- * \param displayIndex the index of the display to obtain the name of, must be
- * in the range [0, `cen::screen::amount()`].
- *
- * \return the name of the specified display, might be null.
- *
- * \since 5.0.0
- */
-[[nodiscard]] inline auto name(const int displayIndex = 0) noexcept -> czstring
-{
-  return SDL_GetDisplayName(displayIndex);
-}
-
-/**
- * \brief Sets whether or not screen savers are enabled.
- *
- * \note By default, screen savers are disabled.
- *
- * \param enabled `true` if screen savers should be enabled; `false` otherwise.
- *
- * \since 4.0.0
- */
-inline void set_screen_saver_enabled(const bool enabled) noexcept
-{
-  if (enabled)
-  {
-    SDL_EnableScreenSaver();
-  }
-  else
-  {
-    SDL_DisableScreenSaver();
-  }
-}
-
-/**
- * \brief Indicates whether or not screen savers are enabled.
- *
- * \note By default, screen savers are disabled.
- *
- * \return `true` if screen savers are enabled; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] inline auto screen_saver_enabled() noexcept -> bool
-{
-  return SDL_IsScreenSaverEnabled();
-}
-
-/**
- * \brief Returns the width of the screen.
- *
- * \return the width of the screen.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto width() noexcept -> int
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  return mode.w;
-}
-
-/**
- * \brief Returns the height of the screen.
- *
- * \return the height of the screen.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto height() noexcept -> int
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  return mode.h;
-}
-
-/**
- * \brief Returns the size of the screen.
- *
- * \return the size of the screen.
- *
- * \since 4.1.0
- */
-[[nodiscard]] inline auto size() noexcept -> iarea
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  return {mode.w, mode.h};
-}
-
-/**
- * \brief Returns the refresh rate of the screen.
- *
- * \return the refresh rate of the screen.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto refresh_rate() noexcept -> int
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  return mode.refresh_rate;
-}
-
-/**
- * \brief Returns the pixel format of the desktop display mode.
- *
- * \note This function returns the pixel format used by the desktop display
- * mode, i.e. the fullscreen display mode, so it might not be accurate for
- * non-fullscreen windows.
- *
- * \return the pixel format of the desktop display mode.
- *
- * \since 3.0.0
- */
-[[nodiscard]] inline auto get_pixel_format() noexcept -> pixel_format
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  return static_cast<pixel_format>(mode.format);
-}
+/// \} End of display mode queries
 
 }  // namespace cen::screen
 
-/// \}
+/// \} End of group video
 
 #endif  // CENTURION_SCREEN_HEADER

@@ -30,7 +30,7 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Graphics
+   :caption: Video
 
    pages/api/graphics/basic_window
    pages/api/graphics/basic_renderer
@@ -43,6 +43,7 @@ Welcome to Centurion's documentation!
    pages/api/graphics/blend_mode
    pages/api/graphics/pixel_format
    pages/api/graphics/scale_mode
+   pages/api/graphics/screen
    pages/api/graphics/texture_access
 
 .. toctree::
@@ -87,7 +88,6 @@ Welcome to Centurion's documentation!
    pages/api/system/file
    pages/api/system/platform
    pages/api/system/ram
-   pages/api/system/screen
 
 .. toctree::
    :maxdepth: 1

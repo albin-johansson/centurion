@@ -4,13 +4,13 @@
 
 TEST(Screen, SetScreenSaverEnabled)
 {
-  EXPECT_FALSE(cen::screen::screen_saver_enabled());
+  EXPECT_FALSE(cen::is_screen_saver_enabled());
 
-  cen::screen::set_screen_saver_enabled(true);
-  EXPECT_TRUE(cen::screen::screen_saver_enabled());
+  cen::set_screen_saver_enabled(true);
+  EXPECT_TRUE(cen::is_screen_saver_enabled());
 
-  cen::screen::set_screen_saver_enabled(false);
-  EXPECT_FALSE(cen::screen::screen_saver_enabled());
+  cen::set_screen_saver_enabled(false);
+  EXPECT_FALSE(cen::is_screen_saver_enabled());
 }
 
 TEST(Screen, DPI)
@@ -30,7 +30,7 @@ TEST(Screen, DPI)
   }
 
   {  // Explicit display index
-    const auto amount = cen::screen::amount();
+    const auto amount = cen::screen::count();
     EXPECT_FALSE(cen::screen::dpi(amount));
     EXPECT_TRUE(cen::screen::dpi(amount - 1).has_value());
   }
@@ -45,7 +45,7 @@ TEST(Screen, DiagonalDPI)
   SDL_GetDisplayDPI(0, &expected, nullptr, nullptr);
 
   EXPECT_EQ(expected, *diagonal);
-  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::count()));
 }
 
 TEST(Screen, HorizontalDPI)
@@ -57,7 +57,7 @@ TEST(Screen, HorizontalDPI)
   SDL_GetDisplayDPI(0, nullptr, &expected, nullptr);
 
   EXPECT_EQ(expected, *horizontal);
-  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::count()));
 }
 
 TEST(Screen, VerticalDPI)
@@ -69,7 +69,7 @@ TEST(Screen, VerticalDPI)
   SDL_GetDisplayDPI(0, nullptr, nullptr, &expected);
 
   EXPECT_EQ(expected, *vertical);
-  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::count()));
 }
 
 TEST(Screen, Bounds)
@@ -85,7 +85,7 @@ TEST(Screen, Bounds)
   EXPECT_EQ(rect.w, bounds->width());
   EXPECT_EQ(rect.h, bounds->height());
 
-  EXPECT_FALSE(cen::screen::bounds(cen::screen::amount()).has_value());
+  EXPECT_FALSE(cen::screen::bounds(cen::screen::count()).has_value());
 }
 
 TEST(Screen, UsableBounds)
@@ -101,7 +101,7 @@ TEST(Screen, UsableBounds)
   EXPECT_EQ(rect.w, bounds->width());
   EXPECT_EQ(rect.h, bounds->height());
 
-  EXPECT_FALSE(cen::screen::usable_bounds(cen::screen::amount()).has_value());
+  EXPECT_FALSE(cen::screen::usable_bounds(cen::screen::count()).has_value());
 }
 
 TEST(Screen, GetOrientation)
@@ -113,18 +113,18 @@ TEST(Screen, GetOrientation)
   }
 
   EXPECT_EQ(cen::screen::orientation::unknown,
-            cen::screen::get_orientation(cen::screen::amount()));
+            cen::screen::get_orientation(cen::screen::count()));
 }
 
 TEST(Screen, Amount)
 {
-  EXPECT_EQ(SDL_GetNumVideoDisplays(), cen::screen::amount());
+  EXPECT_EQ(SDL_GetNumVideoDisplays(), cen::screen::count());
 }
 
 TEST(Screen, Name)
 {
   EXPECT_STREQ(SDL_GetDisplayName(0), cen::screen::name(0));
-  EXPECT_FALSE(cen::screen::name(cen::screen::amount()));
+  EXPECT_FALSE(cen::screen::name(cen::screen::count()));
 }
 
 TEST(Screen, Width)
@@ -147,8 +147,9 @@ TEST(Screen, Size)
   SDL_GetDesktopDisplayMode(0, &mode);
 
   const auto size = cen::screen::size();
-  EXPECT_EQ(mode.w, size.width);
-  EXPECT_EQ(mode.h, size.height);
+  ASSERT_TRUE(size);
+  EXPECT_EQ(mode.w, size->width);
+  EXPECT_EQ(mode.h, size->height);
 }
 
 TEST(Screen, RefreshRate)

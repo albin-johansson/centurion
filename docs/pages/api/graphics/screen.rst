@@ -29,7 +29,7 @@ Querying the screen size
 
 .. code-block:: C++
   
-  #include <screen.hpp>
+  #include <centurion.hpp>
 
   void foo()
   {
@@ -48,12 +48,12 @@ Controlling the screen saver
 
 .. code-block:: C++
   
-  #include <screen.hpp>
+  #include <centurion.hpp>
 
   void foo()
   {
     // checks whether screen savers are enabled
-    const auto enabled = cen::screen::screen_saver_enabled();
+    const auto enabled = cen::screen::is_screen_saver_enabled();
 
     // specifies whether or not screen savers should be enabled
     cen::screen::set_screen_saver_enabled(false);
@@ -64,15 +64,13 @@ Texture using screen pixel format
 
 .. code-block:: C++
   
-  #include <screen.hpp>
-  #include <renderer.hpp>
-  #include <texture.hpp>
+  #include <centurion.hpp>
 
   void foo(cen::renderer& renderer)
   {
     // creates a blank texture that uses the screen pixel format
     const cen::texture texture{renderer,
-                               cen::screen::pixel_format(), 
+                               cen::screen::get_pixel_format(),
                                cen::texture_access::no_lock, 
                                {100, 100}};
   }

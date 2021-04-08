@@ -127,7 +127,7 @@ class semaphore final
   std::unique_ptr<SDL_sem, deleter> m_semaphore;
 };
 
-/// \}
+/// \} End of group thread
 
 }  // namespace cen
 

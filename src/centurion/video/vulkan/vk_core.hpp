@@ -53,7 +53,7 @@ template <typename T>
 [[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept
     -> iarea
 {
-  assert(window.is_visible());
+  assert(window.is_vulkan());
 
   int width{};
   int height{};

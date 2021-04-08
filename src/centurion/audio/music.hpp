@@ -254,11 +254,14 @@ class music final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms, const int nLoops = 0)
+  void fade_in(const milliseconds<int> ms,
+               const int nLoops = 0) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
     Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count());
   }
+
+  // clang-format off
 
   /**
    * \brief Fades out any currently playing music over the specified amount of
@@ -274,7 +277,7 @@ class music final
    *
    * \since 3.0.0
    */
-  static void fade_out(const milliseconds<int> ms)
+  static void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
     if (!is_fading())
@@ -282,6 +285,8 @@ class music final
       Mix_FadeOutMusic(ms.count());
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Indicates whether or not any music is currently being faded in or

@@ -59,6 +59,8 @@ class semaphore final
     return SDL_SemWait(m_semaphore.get()) == 0;
   }
 
+  // clang-format off
+
   /**
    * \brief Attempts to acquire a token from the semaphore.
    *
@@ -69,11 +71,13 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  auto acquire(const milliseconds<u32> ms) -> lock_status
+  auto acquire(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
+      -> lock_status
   {
-    return static_cast<lock_status>(
-        SDL_SemWaitTimeout(m_semaphore.get(), ms.count()));
+    return static_cast<lock_status>(SDL_SemWaitTimeout(m_semaphore.get(), ms.count()));
   }
+
+  // clang-format on
 
   /**
    * \brief Attempts to acquire a token from the semaphore.

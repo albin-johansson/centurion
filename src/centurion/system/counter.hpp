@@ -63,6 +63,8 @@ template <typename T>
   return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) / freq};
 }
 
+// clang-format off
+
 /**
  * \brief Returns the amount of milliseconds since the library was
  * initialized.
@@ -71,10 +73,13 @@ template <typename T>
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto ticks() -> milliseconds<u32>
+[[nodiscard]] inline auto ticks() noexcept(noexcept(milliseconds<u32>{u32{}}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{SDL_GetTicks()};
 }
+
+// clang-format on
 
 /// \} End of group system
 

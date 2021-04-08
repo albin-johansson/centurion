@@ -148,7 +148,8 @@ template <typename B>
 class basic_joystick final
 {
   inline constexpr static bool isOwner = std::is_same_v<B, detail::owning_type>;
-  inline constexpr static bool isHandle = std::is_same_v<B, detail::handle_type>;
+  inline constexpr static bool isHandle =
+      std::is_same_v<B, detail::handle_type>;
 
  public:
   /// \name Construction
@@ -249,6 +250,8 @@ class basic_joystick final
 
   /// \} End of construction
 
+  // clang-format off
+
   /**
    * \brief Makes the joystick rumble.
    *
@@ -261,14 +264,19 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  void rumble(const u16 lowFreq,
+  auto rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration)
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+      -> bool
   {
-    SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count());
+    return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
 
+  // clang-format on
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  // clang-format off
 
   /**
    * \brief Starts a rumble effect in the joystick's triggers.
@@ -287,13 +295,16 @@ class basic_joystick final
    */
   auto rumble_triggers(const u16 left,
                        const u16 right,
-                       const milliseconds<u32> duration) -> bool
+                       const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+      -> bool
   {
     return SDL_JoystickRumbleTriggers(m_joystick,
                                       left,
                                       right,
                                       duration.count()) == 0;
   }
+
+  // clang-format on
 
   /**
    * \brief Sets the color of the LED light, if the joystick has one.

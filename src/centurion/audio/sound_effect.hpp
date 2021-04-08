@@ -240,7 +240,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms)
+  void fade_in(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
     if (!is_playing())
@@ -248,6 +248,8 @@ class basic_sound_effect final
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
+
+  // clang-format off
 
   /**
    * \brief Fades out the sound effect.
@@ -261,7 +263,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_out(const milliseconds<int> ms)  // NOLINT not const
+  void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT not const
   {
     assert(ms.count() > 0);
     if (is_playing())
@@ -269,6 +271,8 @@ class basic_sound_effect final
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Indicates whether or not the sound effect is being faded.

@@ -290,7 +290,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  void set_duration(const milliseconds<u32> ms)
+  void set_duration(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
   {
     rep().length = ms.count();
   }
@@ -307,7 +307,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_delay<D> = true>
-  void set_delay(const milliseconds<u16> ms)
+  void set_delay(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().delay = ms.count();
   }
@@ -375,7 +375,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = true>
-  void set_interval(const milliseconds<u16> ms)
+  void set_interval(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().interval = ms.count();
   }
@@ -453,6 +453,8 @@ class haptic_effect
     rep().fade_level = level;
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the attack.
    *
@@ -465,7 +467,7 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = true>
-  void set_attack_duration(const milliseconds<u16> ms)
+  void set_attack_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().attack_length = ms.count();
   }
@@ -482,10 +484,12 @@ class haptic_effect
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = true>
-  void set_fade_duration(const milliseconds<u16> ms)
+  void set_fade_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().fade_length = ms.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Returns the level at the *start* of the attack.
@@ -741,7 +745,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    *
    * \since 5.2.0
    */
-  void set_period(const milliseconds<u16> ms)
+  void set_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     representation().period = ms.count();
   }
@@ -1006,6 +1010,8 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     representation().channels = detail::max(u8{1}, count);
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the sample periods.
    *
@@ -1013,10 +1019,12 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \since 5.2.0
    */
-  void set_sample_period(const milliseconds<u16> ms)
+  void set_sample_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     representation().period = ms.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Sets the number of samples.
@@ -1647,6 +1655,8 @@ class basic_haptic final
     return SDL_HapticRumbleInit(m_haptic) == 0;
   }
 
+  // clang-format off
+
   /**
    * \brief Plays a rumble effect.
    *
@@ -1659,13 +1669,16 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto play_rumble(const float strength, const milliseconds<u32> duration)
+  auto play_rumble(const float strength,
+                   const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
       -> bool
   {
     return SDL_HapticRumblePlay(m_haptic,
                                 detail::clamp(strength, 0.0f, 1.0f),
                                 duration.count()) == 0;
   }
+
+  // clang-format on
 
   /**
    * \brief Stops the current rumble effect.

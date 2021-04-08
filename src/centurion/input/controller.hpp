@@ -326,6 +326,8 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
+  // clang-format off
+
   /**
    * \brief Starts a rumble effect.
    *
@@ -344,15 +346,19 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  auto rumble(const u16 lo, const u16 hi, const milliseconds<u32> duration)
+  auto rumble(const u16 lo,
+              const u16 hi,
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
       -> bool
   {
-    const auto res =
-        SDL_GameControllerRumble(m_controller, lo, hi, duration.count());
-    return res == 0;
+    return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
 
+  // clang-format on
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  // clang-format off
 
   /**
    * \brief Starts a rumble effect in the controller's triggers.
@@ -374,14 +380,13 @@ class basic_controller final
    */
   auto rumble_triggers(const u16 lo,
                        const u16 hi,
-                       const milliseconds<u32> duration) -> bool
+                       const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
+      -> bool
   {
-    const auto res = SDL_GameControllerRumbleTriggers(m_controller,
-                                                      lo,
-                                                      hi,
-                                                      duration.count());
-    return res == 0;
+    return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
   }
+
+  // clang-format on
 
 #endif  // SDL_VERSION(2, 0, 14)
 

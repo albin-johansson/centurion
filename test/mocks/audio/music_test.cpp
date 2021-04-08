@@ -176,7 +176,7 @@ TEST_F(MusicTest, Type)
 
 TEST_F(MusicTest, SetHook)
 {
-  cen::music::set_hook([](void*, cen::u8*, int) {
+  cen::music::set_hook([](void*, cen::u8*, int) noexcept {
   });
 
   EXPECT_EQ(1, Mix_HookMusic_fake.call_count);

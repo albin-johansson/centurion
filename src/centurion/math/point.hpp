@@ -13,7 +13,7 @@
 
 namespace cen {
 
-/// \addtogroup geometry
+/// \addtogroup math
 /// \{
 
 /**
@@ -30,8 +30,9 @@ namespace cen {
  * \headerfile point.hpp
  */
 template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+          std::enable_if_t<std::is_convertible_v<T, int> ||
+                               std::is_convertible_v<T, float>,
+                           int> = 0>
 class point_traits final
 {
  public:
@@ -142,6 +143,9 @@ class basic_point final
    */
   using point_type = typename point_traits<T>::point_type;
 
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a zero-initialized point.
    *
@@ -162,6 +166,11 @@ class basic_point final
     m_point.x = x;
     m_point.y = y;
   };
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
 
   /**
    * \brief Sets the x-coordinate of the point.
@@ -186,6 +195,11 @@ class basic_point final
   {
     m_point.y = y;
   }
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
 
   /**
    * \brief Returns the x-coordinate of the point.
@@ -252,6 +266,8 @@ class basic_point final
   {
     return &m_point;
   }
+
+  /// \} End of getters
 
   /// \name Conversions
   /// \{
@@ -324,6 +340,58 @@ class basic_point final
  private:
   point_type m_point{0, 0};
 };
+
+/**
+ * \brief Returns the distance between two points.
+ *
+ * \tparam T the representation type used by the points.
+ *
+ * \param from the first point.
+ * \param to the second point.
+ *
+ * \return the distance between the two points.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] inline auto distance(const basic_point<T>& from,
+                                   const basic_point<T>& to) noexcept ->
+    typename point_traits<T>::value_type
+{
+  if constexpr (basic_point<T>::isIntegral)
+  {
+    const auto xDiff = std::abs(from.x() - to.x());
+    const auto yDiff = std::abs(from.y() - to.y());
+    const auto dist = std::sqrt(xDiff + yDiff);
+    return static_cast<int>(std::round(dist));
+  }
+  else
+  {
+    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+  }
+}
+
+[[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
+{
+  return "ipoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
+}
+
+[[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
+{
+  return "fpoint{X: " + detail::to_string(point.x()).value() +
+         ", Y: " + detail::to_string(point.y()).value() + "}";
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_point<T>& point)
+    -> std::ostream&
+{
+  return stream << to_string(point);
+}
+
+/// \name Point cast specializations
+/// \{
 
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
@@ -407,59 +475,31 @@ template <>
   return SDL_FPoint{x, y};
 }
 
-/**
- * \brief Returns the distance between two points.
- *
- * \tparam T the representation type used by the points.
- *
- * \param from the first point.
- * \param to the second point.
- *
- * \return the distance between the two points.
- *
- * \since 5.0.0
- */
+/// \} End of point cast specializations
+
+/// \name Point addition and subtraction operators
+/// \{
+
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
-    typename point_traits<T>::value_type
-{
-  if constexpr (basic_point<T>::isIntegral)
-  {
-    const auto xDiff = std::abs(from.x() - to.x());
-    const auto yDiff = std::abs(from.y() - to.y());
-    const auto dist = std::sqrt(xDiff + yDiff);
-    return static_cast<int>(std::round(dist));
-  }
-  else
-  {
-    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
-  }
-}
-
-[[nodiscard]] constexpr auto operator+(const fpoint& lhs,
-                                       const fpoint& rhs) noexcept -> fpoint
+[[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
-[[nodiscard]] constexpr auto operator-(const fpoint& lhs,
-                                       const fpoint& rhs) noexcept -> fpoint
+template <typename T>
+[[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
 
-[[nodiscard]] constexpr auto operator+(const ipoint& lhs,
-                                       const ipoint& rhs) noexcept -> ipoint
-{
-  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
-}
+/// \} End of point addition and subtraction operators
 
-[[nodiscard]] constexpr auto operator-(const ipoint& lhs,
-                                       const ipoint& rhs) noexcept -> ipoint
-{
-  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
-}
+/// \name Point comparison operators
+/// \{
 
 [[nodiscard]] constexpr auto operator==(const ipoint& lhs,
                                         const ipoint& rhs) noexcept -> bool
@@ -485,33 +525,9 @@ template <typename T>
   return !(lhs == rhs);
 }
 
-[[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
-{
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
-}
+/// \} End of point comparison operators
 
-[[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
-{
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
-}
-
-inline auto operator<<(std::ostream& stream, const ipoint& point)
-    -> std::ostream&
-{
-  stream << to_string(point);
-  return stream;
-}
-
-inline auto operator<<(std::ostream& stream, const fpoint& point)
-    -> std::ostream&
-{
-  stream << to_string(point);
-  return stream;
-}
-
-/// \} End of group geometry
+/// \} End of group math
 
 }  // namespace cen
 

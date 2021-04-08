@@ -6,6 +6,7 @@
 #include "core_mocks.hpp"
 
 using music_finished_callback = void(SDLCALL*)(void);
+using hook_music_callback = void(SDLCALL*)(void*, Uint8*, int);
 
 // clang-format off
 extern "C" {
@@ -14,6 +15,7 @@ FAKE_VOID_FUNC(Mix_ResumeMusic)
 FAKE_VOID_FUNC(Mix_PauseMusic)
 FAKE_VOID_FUNC(Mix_RewindMusic)
 FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
+FAKE_VOID_FUNC(Mix_HookMusic, hook_music_callback, void*)
 FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
 FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
 FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
@@ -21,6 +23,7 @@ FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
 FAKE_VALUE_FUNC(int, Mix_HaltMusic)
 FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
 FAKE_VALUE_FUNC(int, Mix_PausedMusic)
+FAKE_VALUE_FUNC(void*, Mix_GetMusicHookData)
 FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
 FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
 FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
@@ -42,6 +45,7 @@ class MusicTest : public testing::Test
     RESET_FAKE(Mix_PauseMusic)
     RESET_FAKE(Mix_RewindMusic)
     RESET_FAKE(Mix_HookMusicFinished)
+    RESET_FAKE(Mix_HookMusic)
     RESET_FAKE(Mix_PlayMusic)
     RESET_FAKE(Mix_FadeInMusic)
     RESET_FAKE(Mix_FadeOutMusic)
@@ -49,6 +53,7 @@ class MusicTest : public testing::Test
     RESET_FAKE(Mix_HaltMusic)
     RESET_FAKE(Mix_PlayingMusic)
     RESET_FAKE(Mix_PausedMusic)
+    RESET_FAKE(Mix_GetMusicHookData)
     RESET_FAKE(Mix_GetMusicDecoder)
     RESET_FAKE(Mix_HasMusicDecoder)
     RESET_FAKE(Mix_GetNumMusicDecoders)
@@ -167,6 +172,28 @@ TEST_F(MusicTest, Type)
   cen::music music;
   const auto type [[maybe_unused]] = music.type();
   EXPECT_EQ(1, Mix_GetMusicType_fake.call_count);
+}
+
+TEST_F(MusicTest, SetHook)
+{
+  cen::music::set_hook([](void*, cen::u8*, int) {
+  });
+
+  EXPECT_EQ(1, Mix_HookMusic_fake.call_count);
+  EXPECT_NE(nullptr, Mix_HookMusic_fake.arg0_val);
+}
+
+TEST_F(MusicTest, ResetHook)
+{
+  cen::music::reset_hook();
+  EXPECT_EQ(1, Mix_HookMusic_fake.call_count);
+  EXPECT_EQ(nullptr, Mix_HookMusic_fake.arg0_val);
+}
+
+TEST_F(MusicTest, GetHookData)
+{
+  auto* data [[maybe_unused]] = cen::music::get_hook_data();
+  EXPECT_EQ(1, Mix_GetMusicHookData_fake.call_count);
 }
 
 TEST_F(MusicTest, GetDecoder)

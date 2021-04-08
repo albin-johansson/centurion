@@ -426,6 +426,29 @@ class music final
     return m_music.get();
   }
 
+  /// \name Hook functions
+  /// \{
+
+  using music_hook_callback = void(SDLCALL*)(void*, u8*, int) noexcept;
+
+  template <typename T = void>
+  static void set_hook(music_hook_callback callback, T* data = nullptr) noexcept
+  {
+    Mix_HookMusic(callback, data);
+  }
+
+  static void reset_hook() noexcept
+  {
+    set_hook(nullptr);
+  }
+
+  [[nodiscard]] static auto get_hook_data() noexcept -> void*
+  {
+    return Mix_GetMusicHookData();
+  }
+
+  /// \} End of hook functions
+
   /// \name Decoder functions
   /// \{
 

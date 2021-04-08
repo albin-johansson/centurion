@@ -10,6 +10,7 @@
 #include <optional>  // optional
 #include <string>    // string
 
+#include "../../math/area.hpp"
 #include "../../misc/czstring.hpp"
 #include "../../misc/not_null.hpp"
 #include "../window.hpp"

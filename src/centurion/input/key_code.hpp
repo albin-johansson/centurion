@@ -1031,7 +1031,7 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 }  // namespace keycodes
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 

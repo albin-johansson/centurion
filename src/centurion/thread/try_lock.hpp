@@ -116,7 +116,7 @@ class try_lock final
   lock_status m_status{};
 };
 
-/// \}
+/// \} End of group thread
 
 }  // namespace cen
 

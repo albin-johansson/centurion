@@ -10,6 +10,8 @@ namespace cen {
 /**
  * \typedef not_null
  *
+ * \ingroup misc
+ *
  * \brief Tag used to indicate that a pointer cannot be null.
  *
  * \note This alias is equivalent to `T`, it is a no-op.

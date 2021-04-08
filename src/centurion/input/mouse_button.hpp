@@ -26,7 +26,7 @@ enum class mouse_button
   x2 = SDL_BUTTON_X2
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 

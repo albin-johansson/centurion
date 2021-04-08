@@ -48,7 +48,7 @@ enum class sensor_type
   gyroscope = SDL_SENSOR_GYRO        ///< Gyroscope
 };
 
-template <typename B>
+template <typename T>
 class basic_sensor;
 
 /**
@@ -81,7 +81,7 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \headerfile sensor.hpp
  */
-template <typename B>
+template <typename T>
 class basic_sensor final
 {
  public:
@@ -101,10 +101,10 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!B::value)
+  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_sensor)
       {
@@ -116,7 +116,7 @@ class basic_sensor final
   /**
    * \brief Creates an owning sensor instance based on a device index.
    *
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \param index the device index of the sensor.
    *
@@ -124,7 +124,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename TT = T, detail::is_owner<TT> = true>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor)
@@ -136,17 +136,74 @@ class basic_sensor final
   /**
    * \brief Creates a sensor handle based on an owning sensor.
    *
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \param owner the associated owning sensor.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename TT = T, detail::is_handle<TT> = true>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
   /// \} End of construction
+
+  /**
+   * \brief Updates the state of all open sensors.
+   *
+   * \note This is done automatically by the event loop if sensor events are
+   * enabled.
+   *
+   * \since 5.2.0
+   */
+  static void update() noexcept
+  {
+    SDL_SensorUpdate();
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Locks access to the sensors for multi-threading.
+   *
+   * \note Refer to the SDL documentation for more details regarding this.
+   *
+   * \see SDL_LockSensors
+   *
+   * \since 5.2.0
+   */
+  static void lock() noexcept
+  {
+    SDL_LockSensors();
+  }
+
+  /**
+   * \brief Unlocks access to the sensors.
+   *
+   * \note Refer to the SDL documentation for more details regarding this.
+   *
+   * \see SDL_UnlockSensors
+   *
+   * \since 5.2.0
+   */
+  static void unlock() noexcept
+  {
+    SDL_UnlockSensors();
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns the amount of sensors currently attached to the system.
+   *
+   * \return the current amount of system sensors.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] static auto count() noexcept -> int
+  {
+    return SDL_NumSensors();
+  }
 
   /// \name Instance-based queries
   /// \{
@@ -224,6 +281,20 @@ class basic_sensor final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Returns a pointer to the associated SDL sensor.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated SDL sensor.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Sensor*
+  {
+    return m_sensor.get();
   }
 
   /// \} End of instance-based queries
@@ -310,91 +381,25 @@ class basic_sensor final
 
   /// \} End of index-based queries
 
-  /**
-   * \brief Updates the state of all open sensors.
-   *
-   * \note This is done automatically by the event loop if sensor events are
-   * enabled.
-   *
-   * \since 5.2.0
-   */
-  static void update() noexcept
-  {
-    SDL_SensorUpdate();
-  }
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /**
-   * \brief Locks access to the sensors for multi-threading.
-   *
-   * \note Refer to the SDL documentation for more details regarding this.
-   *
-   * \see SDL_LockSensors
-   *
-   * \since 5.2.0
-   */
-  static void lock() noexcept
-  {
-    SDL_LockSensors();
-  }
-
-  /**
-   * \brief Unlocks access to the sensors.
-   *
-   * \note Refer to the SDL documentation for more details regarding this.
-   *
-   * \see SDL_UnlockSensors
-   *
-   * \since 5.2.0
-   */
-  static void unlock() noexcept
-  {
-    SDL_UnlockSensors();
-  }
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /**
-   * \brief Returns the amount of sensors currently attached to the system.
-   *
-   * \return the current amount of system sensors.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] static auto count() noexcept -> int
-  {
-    return SDL_NumSensors();
-  }
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename TT = T, detail::is_handle<TT> = true>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
   }
 
-  /**
-   * \brief Returns a pointer to the associated SDL sensor.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated SDL sensor.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Sensor*
-  {
-    return m_sensor.get();
-  }
+  /// \} End of conversions
 
  private:
   struct deleter final
@@ -404,13 +409,13 @@ class basic_sensor final
       SDL_SensorClose(sensor);
     }
   };
-  detail::pointer_manager<B, SDL_Sensor, deleter> m_sensor;
+  detail::pointer_manager<T, SDL_Sensor, deleter> m_sensor;
 };
 
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
- * \tparam B the ownership semantics type of the sensor class.
+ * \tparam T the ownership semantics type of the sensor class.
  *
  * \param sensor the sensor that will be converted.
  *
@@ -418,8 +423,8 @@ class basic_sensor final
  *
  * \since 5.2.0
  */
-template <typename B>
-[[nodiscard]] auto to_string(const basic_sensor<B>& sensor) -> std::string
+template <typename T>
+[[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   const auto name = sensor.name();
   const std::string nameStr = name ? name : "N/A";
@@ -431,7 +436,7 @@ template <typename B>
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
  *
- * \tparam B the ownership semantics type of the sensor class.
+ * \tparam T the ownership semantics type of the sensor class.
  *
  * \param stream the stream that will be used.
  * \param sensor the sensor that will be printed.
@@ -440,8 +445,8 @@ template <typename B>
  *
  * \since 5.2.0
  */
-template <typename B>
-auto operator<<(std::ostream& stream, const basic_sensor<B>& sensor)
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
     -> std::ostream&
 {
   stream << to_string(sensor);

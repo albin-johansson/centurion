@@ -6,6 +6,7 @@
 #include <type_traits>       // is_same_v, decay_t
 #include <vector>            // vector
 
+#include "../compiler.hpp"
 #include "../misc/integers.hpp"
 
 namespace cen {
@@ -304,7 +305,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](const size_type index) noexcept(noexcept(m_data[index]))
+  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc())
       -> reference
   {
     assert(index < m_data.size());
@@ -314,7 +315,7 @@ class unicode_string final
   /**
    * \copydoc operator[]
    */
-  [[nodiscard]] auto operator[](const size_type index) const noexcept(noexcept(m_data[index]))
+  [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc())
       -> const_reference
   {
     assert(index < m_data.size());

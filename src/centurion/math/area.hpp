@@ -10,7 +10,7 @@
 
 namespace cen {
 
-/// \addtogroup geometry
+/// \addtogroup math
 /// \{
 
 /**
@@ -106,6 +106,9 @@ void serialize(Archive& archive, basic_area<T>& area)
   archive(area.width, area.height);
 }
 
+/// \name Area cast specializations
+/// \{
+
 template <>
 [[nodiscard]] constexpr auto cast(const iarea& from) noexcept -> darea
 {
@@ -141,6 +144,11 @@ template <>
 {
   return {static_cast<int>(from.width), static_cast<int>(from.height)};
 }
+
+/// \} End of area cast specializations
+
+/// \name Area comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -178,6 +186,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+/// \} End of area comparison operators
+
 /**
  * \brief Returns a textual representation of an area.
  *
@@ -212,11 +222,10 @@ template <typename T>
 auto operator<<(std::ostream& stream, const basic_area<T>& area)
     -> std::ostream&
 {
-  stream << to_string(area);
-  return stream;
+  return stream << to_string(area);
 }
 
-/// \} End of geometry group
+/// \} End of group math
 
 }  // namespace cen
 

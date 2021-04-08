@@ -15,6 +15,7 @@
 namespace cen::gl {
 
 /// \addtogroup video
+/// \{
 
 template <typename T>
 class basic_context;
@@ -78,9 +79,9 @@ class basic_context final
   std::unique_ptr<void, deleter> m_context;
 };
 
-}  // namespace cen::gl
-
 /// \} End of group video
+
+}  // namespace cen::gl
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_CONTEXT_HEADER

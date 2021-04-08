@@ -13,7 +13,15 @@
 #include "../window.hpp"
 
 /// \addtogroup video
+/// \{
 
+/**
+ * \namespace cen::vk
+ *
+ * \brief Contains Vulkan-related components.
+ *
+ * \since 6.0.0
+ */
 namespace cen::vk {
 
 [[nodiscard]] inline auto get_instance_proc_addr() noexcept -> void*

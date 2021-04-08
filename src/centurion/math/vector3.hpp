@@ -8,6 +8,9 @@
 
 namespace cen {
 
+/// \addtogroup math
+/// \{
+
 /**
  * \struct vector3
  *
@@ -68,43 +71,8 @@ void serialize(Archive& archive, vector3<T>& vector)
   archive(vector.x, vector.y, vector.z);
 }
 
-/**
- * \brief Returns a string that represents a vector.
- *
- * \tparam T the representation type used by the vector.
- *
- * \param vector the vector that will be converted to a string.
- *
- * \return a string that represents the supplied vector.
- *
- * \since 5.2.0
- */
-template <typename T>
-[[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
-{
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
-}
-
-/**
- * \brief Prints a textual representation of a vector.
- *
- * \tparam T the representation type used by the vector.
- *
- * \param stream the stream that will be used.
- * \param vector the vector that will be printed.
- *
- * \return the used stream.
- *
- * \since 5.2.0
- */
-template <typename T>
-auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
-{
-  stream << to_string(vector);
-  return stream;
-}
+/// \name Vector3 comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
@@ -143,6 +111,47 @@ template <typename T>
 {
   return !(lhs == rhs);
 }
+
+/// \} End of vector3 comparison operators
+
+/**
+ * \brief Returns a string that represents a vector.
+ *
+ * \tparam T the representation type used by the vector.
+ *
+ * \param vector the vector that will be converted to a string.
+ *
+ * \return a string that represents the supplied vector.
+ *
+ * \since 5.2.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
+{
+  return "vector3{x: " + detail::to_string(vector.x).value() +
+         ", y: " + detail::to_string(vector.y).value() +
+         ", z: " + detail::to_string(vector.z).value() + "}";
+}
+
+/**
+ * \brief Prints a textual representation of a vector.
+ *
+ * \tparam T the representation type used by the vector.
+ *
+ * \param stream the stream that will be used.
+ * \param vector the vector that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 5.2.0
+ */
+template <typename T>
+auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
+{
+  return stream << to_string(vector);
+}
+
+/// \} End of group math
 
 }  // namespace cen
 

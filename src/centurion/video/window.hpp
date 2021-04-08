@@ -64,6 +64,9 @@ template <typename B>
 class basic_window final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
@@ -185,6 +188,11 @@ class basic_window final
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
+  /// \} End of construction
+
+  /// \name Mutators
+  /// \{
+
   /**
    * \brief Makes the window visible.
    *
@@ -203,18 +211,6 @@ class basic_window final
   void hide() noexcept
   {
     SDL_HideWindow(m_window);
-  }
-
-  /**
-   * \brief Centers the window position relative to the screen.
-   *
-   * \note Windows are centered by default.
-   *
-   * \since 3.0.0
-   */
-  void center() noexcept
-  {
-    set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
   }
 
   /**
@@ -270,6 +266,11 @@ class basic_window final
   {
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
+
+  /// \} End of mutators
+
+  /// \name Setters
+  /// \{
 
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
@@ -330,58 +331,13 @@ class basic_window final
   }
 
   /**
-   * \brief Sets the width of the window.
-   *
-   * \details The supplied width is capped to always be at least 1.
-   *
-   * \param width the new width of the window, must be greater than zero.
-   *
-   * \since 3.0.0
-   */
-  void set_width(const int width) noexcept
-  {
-    SDL_SetWindowSize(m_window, detail::max(width, 1), height());
-  }
-
-  /**
-   * \brief Sets the height of the window.
-   *
-   * \details The supplied height is capped to always be at least 1.
-   *
-   * \param height the new height of the window, must be greater than zero.
-   *
-   * \since 3.0.0
-   */
-  void set_height(const int height) noexcept
-  {
-    SDL_SetWindowSize(m_window, width(), detail::max(height, 1));
-  }
-
-  /**
-   * \brief Sets the size of the window.
-   *
-   * \details The supplied dimensions are capped to be at least 1.
-   *
-   * \param size the new size of the window, components must be greater than
-   * zero.
-   *
-   * \since 5.0.0
-   */
-  void set_size(const iarea& size) noexcept
-  {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
-  }
-
-  /**
    * \brief Sets the icon that will be used by the window.
    *
    * \param icon the surface that will serve as the icon of the window.
    *
    * \since 3.0.0
    */
-  void set_icon(const surface& icon) noexcept
+  void set_icon(const cen::surface& icon) noexcept
   {
     SDL_SetWindowIcon(m_window, icon.get());
   }
@@ -424,53 +380,6 @@ class basic_window final
   void set_opacity(const float opacity) noexcept
   {
     SDL_SetWindowOpacity(m_window, opacity);
-  }
-
-  /**
-   * \brief Sets the minimum size of the window.
-   *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
-   *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
-   *
-   * \since 3.0.0
-   */
-  void set_min_size(const iarea& size) noexcept
-  {
-    SDL_SetWindowMinimumSize(m_window, size.width, size.height);
-  }
-
-  /**
-   * \brief Sets the maximum size of the window.
-   *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
-   *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
-   *
-   * \since 3.0.0
-   */
-  void set_max_size(const iarea& size) noexcept
-  {
-    SDL_SetWindowMaximumSize(m_window, size.width, size.height);
-  }
-
-  /**
-   * \brief Sets the position of the window.
-   *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
-   *
-   * \param position the new position of the window.
-   *
-   * \since 5.0.0
-   */
-  void set_position(const ipoint& position) noexcept
-  {
-    SDL_SetWindowPosition(m_window, position.x(), position.y());
   }
 
   /**
@@ -526,17 +435,276 @@ class basic_window final
     SDL_CaptureMouse(detail::convert_bool(capturingMouse));
   }
 
+  /// \} End of setters
+
+  /// \name Position functions
+  /// \{
+
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Centers the window position relative to the screen.
    *
-   * \return `true` if the window is grabbing the mouse; `false` otherwise.
+   * \note Windows are centered by default.
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
+  void center() noexcept
   {
-    return SDL_GetWindowGrab(m_window);
+    set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
+  }
+
+  // TODO set_x, set_y
+
+  /**
+   * \brief Sets the position of the window.
+   *
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
+   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   *
+   * \param position the new position of the window.
+   *
+   * \since 5.0.0
+   */
+  void set_position(const ipoint& position) noexcept
+  {
+    SDL_SetWindowPosition(m_window, position.x(), position.y());
+  }
+
+  /**
+   * \brief Returns the x-coordinate of the window position.
+   *
+   * \return the x-coordinate of the window position.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto x() const noexcept -> int
+  {
+    int x{};
+    SDL_GetWindowPosition(m_window, &x, nullptr);
+    return x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the window position.
+   *
+   * \return the y-coordinate of the window position.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto y() const noexcept -> int
+  {
+    int y{};
+    SDL_GetWindowPosition(m_window, nullptr, &y);
+    return y;
+  }
+
+  /**
+   * \brief Returns the current position of the window.
+   *
+   * \note Windows are centered by default.
+   *
+   * \return the current position of the window.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto position() const noexcept -> ipoint
+  {
+    int x{};
+    int y{};
+    SDL_GetWindowPosition(m_window, &x, &y);
+    return {x, y};
+  }
+
+  /// \} End of position functions
+
+  /// \name Size functions
+  /// \{
+
+  /**
+   * \brief Sets the width of the window.
+   *
+   * \details The supplied width is capped to always be at least 1.
+   *
+   * \param width the new width of the window, must be greater than zero.
+   *
+   * \since 3.0.0
+   */
+  void set_width(const int width) noexcept
+  {
+    SDL_SetWindowSize(m_window, detail::max(width, 1), height());
+  }
+
+  /**
+   * \brief Sets the height of the window.
+   *
+   * \details The supplied height is capped to always be at least 1.
+   *
+   * \param height the new height of the window, must be greater than zero.
+   *
+   * \since 3.0.0
+   */
+  void set_height(const int height) noexcept
+  {
+    SDL_SetWindowSize(m_window, width(), detail::max(height, 1));
+  }
+
+  /**
+   * \brief Sets the size of the window.
+   *
+   * \details The supplied dimensions are capped to be at least 1.
+   *
+   * \param size the new size of the window, components must be greater than
+   * zero.
+   *
+   * \since 5.0.0
+   */
+  void set_size(const iarea& size) noexcept
+  {
+    const auto width = detail::max(size.width, 1);
+    const auto height = detail::max(size.height, 1);
+    SDL_SetWindowSize(m_window, width, height);
+  }
+
+  /**
+   * \brief Sets the minimum size of the window.
+   *
+   * \details This method has no effect if any of the components aren't greater
+   * than zero.
+   *
+   * \param size the minimum size of the window, components must be greater
+   * than zero.
+   *
+   * \since 3.0.0
+   */
+  void set_min_size(const iarea& size) noexcept
+  {
+    SDL_SetWindowMinimumSize(m_window, size.width, size.height);
+  }
+
+  /**
+   * \brief Sets the maximum size of the window.
+   *
+   * \details This method has no effect if any of the components aren't greater
+   * than zero.
+   *
+   * \param size the maximum size of the window, components must be greater
+   * than zero.
+   *
+   * \since 3.0.0
+   */
+  void set_max_size(const iarea& size) noexcept
+  {
+    SDL_SetWindowMaximumSize(m_window, size.width, size.height);
+  }
+
+  /**
+   * \brief Returns the current width of the window.
+   *
+   * \return the current width of the window.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    int width{};
+    SDL_GetWindowSize(m_window, &width, nullptr);
+    return width;
+  }
+
+  /**
+   * \brief Returns the current height of the window.
+   *
+   * \return the current height of the window.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    int height{};
+    SDL_GetWindowSize(m_window, nullptr, &height);
+    return height;
+  }
+
+  /**
+   * \brief Returns the current size of the window.
+   *
+   * \note Calling this function is slightly faster than calling both `width`
+   * and `height` to obtain the window size.
+   *
+   * \return the size of the window.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    iarea size{};
+    SDL_GetWindowSize(m_window, &size.width, &size.height);
+    return size;
+  }
+
+  /**
+   * \brief Returns the minimum size of the window.
+   *
+   * \return the minimum size of the window.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto min_size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_GetWindowMinimumSize(m_window, &width, &height);
+    return {width, height};
+  }
+
+  /**
+   * \brief Returns the maximum size of the window.
+   *
+   * \return the maximum size of the window.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto max_size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_GetWindowMaximumSize(m_window, &width, &height);
+    return {width, height};
+  }
+
+  /**
+   * \brief Returns the default size of a window.
+   *
+   * \note This function is only available for owning windows.
+   *
+   * \return the default size of a window.
+   *
+   * \since 5.0.0
+   */
+  template <typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
+  {
+    return {800, 600};
+  }
+
+  /// \} End of size functions
+
+  /// \name Flag queries
+  /// \{
+
+  /**
+   * \brief Returns a mask that represents the flags associated with the window.
+   *
+   * \details You can check the returned mask using the `SDL_WindowFlags` enum.
+   *
+   * \return a mask that represents the flags associated with the window.
+   *
+   * \see `SDL_WindowFlags`
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto flags() const noexcept -> u32
+  {
+    return SDL_GetWindowFlags(m_window);
   }
 
   /**
@@ -566,7 +734,25 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is borderless.
+   *
+   * \note This check is the opposite of `is_decorated()`.
+   *
+   * \details Windows are not borderless by default.
+   *
+   * \return `true` if the window is borderless; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_borderless() const noexcept -> bool
+  {
+    return flags() & SDL_WINDOW_BORDERLESS;
+  }
+
+  /**
    * \brief Indicates whether or not the window is decorated.
+   *
+   * \note This check is the opposite of `is_borderless()`.
    *
    * \details Windows are decorated by default.
    *
@@ -576,7 +762,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_decorated() const noexcept -> bool
   {
-    return !(flags() & SDL_WINDOW_BORDERLESS);
+    return !is_borderless();
   }
 
   /**
@@ -720,60 +906,34 @@ class basic_window final
   }
 
   /**
-   * \brief Returns the current brightness value of the window.
+   * \brief Indicates whether or not a flag is set.
    *
-   * \details The default value of this property is 1.
+   * \details Some of the use cases of this method can be replaced by more
+   * explicit methods, e.g. `is_fullscreen()` instead of
+   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
-   * \return the current brightness of the window, in the range [0, 1].
+   * \param flag the flag that will be tested.
    *
-   * \since 3.0.0
+   * \return `true` if the flag is set; `false` otherwise.
+   *
+   * \since 4.0.0
    */
-  [[nodiscard]] auto brightness() const noexcept -> float
+  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept
+      -> bool
   {
-    return SDL_GetWindowBrightness(m_window);
+    return static_cast<bool>(flags() & flag);
   }
 
-  /**
-   * \brief Returns the opacity of the window.
-   *
-   * \return the opacity of the window, in the range [0, 1].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto opacity() const noexcept -> float
+  template <typename BB = B, detail::is_owner<BB> = true>
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
-    float opacity{1};
-    SDL_GetWindowOpacity(m_window, &opacity);
-    return opacity;
+    return SDL_WINDOW_HIDDEN;
   }
 
-  /**
-   * \brief Returns the x-coordinate of the window position.
-   *
-   * \return the x-coordinate of the window position.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto x() const noexcept -> int
-  {
-    int x{};
-    SDL_GetWindowPosition(m_window, &x, nullptr);
-    return x;
-  }
+  /// \} End of flag queries
 
-  /**
-   * \brief Returns the y-coordinate of the window position.
-   *
-   * \return the y-coordinate of the window position.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto y() const noexcept -> int
-  {
-    int y{};
-    SDL_GetWindowPosition(m_window, nullptr, &y);
-    return y;
-  }
+  /// \name Getters
+  /// \{
 
   /**
    * \brief Returns a numerical ID of the window.
@@ -809,130 +969,43 @@ class basic_window final
   }
 
   /**
-   * \brief Returns the current position of the window.
+   * \brief Returns the title of the window.
    *
-   * \note Windows are centered by default.
-   *
-   * \return the current position of the window.
+   * \return the title of the window.
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> ipoint
+  [[nodiscard]] auto title() const -> std::string
   {
-    int x{};
-    int y{};
-    SDL_GetWindowPosition(m_window, &x, &y);
-    return {x, y};
+    return SDL_GetWindowTitle(m_window);
   }
 
   /**
-   * \brief Returns the minimum size of the window.
+   * \brief Returns the current brightness value of the window.
    *
-   * \return the minimum size of the window.
+   * \details The default value of this property is 1.
+   *
+   * \return the current brightness of the window, in the range [0, 1].
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto min_size() const noexcept -> iarea
+  [[nodiscard]] auto brightness() const noexcept -> float
   {
-    int width{};
-    int height{};
-    SDL_GetWindowMinimumSize(m_window, &width, &height);
-    return {width, height};
+    return SDL_GetWindowBrightness(m_window);
   }
 
   /**
-   * \brief Returns the maximum size of the window.
+   * \brief Returns the opacity of the window.
    *
-   * \return the maximum size of the window.
+   * \return the opacity of the window, in the range [0, 1].
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto max_size() const noexcept -> iarea
+  [[nodiscard]] auto opacity() const noexcept -> float
   {
-    int width{};
-    int height{};
-    SDL_GetWindowMaximumSize(m_window, &width, &height);
-    return {width, height};
-  }
-
-  /**
-   * \brief Returns the current width of the window.
-   *
-   * \return the current width of the window.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto width() const noexcept -> int
-  {
-    int width{};
-    SDL_GetWindowSize(m_window, &width, nullptr);
-    return width;
-  }
-
-  /**
-   * \brief Returns the current height of the window.
-   *
-   * \return the current height of the window.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto height() const noexcept -> int
-  {
-    int height{};
-    SDL_GetWindowSize(m_window, nullptr, &height);
-    return height;
-  }
-
-  /**
-   * \brief Returns the current size of the window.
-   *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
-   *
-   * \return the size of the window.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto size() const noexcept -> iarea
-  {
-    iarea size{};
-    SDL_GetWindowSize(m_window, &size.width, &size.height);
-    return size;
-  }
-
-  /**
-   * \brief Indicates whether or not a flag is set.
-   *
-   * \details Some of the use cases of this method can be replaced by more
-   * explicit methods, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
-   *
-   * \param flag the flag that will be tested.
-   *
-   * \return `true` if the flag is set; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept
-      -> bool
-  {
-    return static_cast<bool>(flags() & flag);
-  }
-
-  /**
-   * \brief Returns a mask that represents the flags associated with the window.
-   *
-   * \details You can check the returned mask using the `SDL_WindowFlags` enum.
-   *
-   * \return a mask that represents the flags associated with the window.
-   *
-   * \see `SDL_WindowFlags`
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto flags() const noexcept -> u32
-  {
-    return SDL_GetWindowFlags(m_window);
+    float opacity{1};
+    SDL_GetWindowOpacity(m_window, &opacity);
+    return opacity;
   }
 
   /**
@@ -964,16 +1037,36 @@ class basic_window final
   }
 
   /**
-   * \brief Returns the title of the window.
+   * \brief Indicates whether or not the window is currently grabbing the mouse
+   * input.
    *
-   * \return the title of the window.
+   * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto title() const -> std::string
+  [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
   {
-    return SDL_GetWindowTitle(m_window);
+    return SDL_GetWindowGrab(m_window);
   }
+
+  /**
+   * \brief Returns a pointer to the associated SDL window.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated SDL window.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Window*
+  {
+    return m_window.get();
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Converts to `SDL_Window*`.
@@ -1017,40 +1110,7 @@ class basic_window final
     return m_window != nullptr;
   }
 
-  /**
-   * \brief Returns a pointer to the associated SDL window.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated SDL window.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Window*
-  {
-    return m_window.get();
-  }
-
-  /**
-   * \brief Returns the default size of a window.
-   *
-   * \note This function is only available for owning windows.
-   *
-   * \return the default size of a window.
-   *
-   * \since 5.0.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
-  {
-    return {800, 600};
-  }
-
-  template <typename BB = B, detail::is_owner<BB> = true>
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
-  {
-    return SDL_WINDOW_HIDDEN;
-  }
+  /// \} End of conversions
 
  private:
   struct deleter final

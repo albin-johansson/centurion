@@ -16,7 +16,7 @@
 
 namespace cen {
 
-/// \addtogroup geometry
+/// \addtogroup math
 /// \{
 
 /**
@@ -169,6 +169,9 @@ class basic_rect final
    */
   using rect_type = typename rect_traits<T>::rect_type;
 
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a rectangle with the components (0, 0, 0, 0).
    *
@@ -215,6 +218,11 @@ class basic_rect final
                        const value_type height) noexcept
       : m_rect{x, y, width, height}
   {}
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
 
   /**
    * \brief Sets the x-coordinate of the rectangle.
@@ -322,22 +330,10 @@ class basic_rect final
     m_rect.h = size.height;
   };
 
-  /**
-   * \brief Indicates whether or not the rectangle contains the point.
-   *
-   * \param point the point that will be checked.
-   *
-   * \return `true` if the rectangle contains the point; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept
-      -> bool
-  {
-    const auto px = point.x();
-    const auto py = point.y();
-    return !(px < x() || py < y() || px > max_x() || py > max_y());
-  }
+  /// \} End of setters
+
+  /// \name Queries
+  /// \{
 
   /**
    * \brief Returns the x-coordinate of the rectangle.
@@ -484,6 +480,23 @@ class basic_rect final
   }
 
   /**
+   * \brief Indicates whether or not the rectangle contains the point.
+   *
+   * \param point the point that will be checked.
+   *
+   * \return `true` if the rectangle contains the point; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept
+      -> bool
+  {
+    const auto px = point.x();
+    const auto py = point.y();
+    return !(px < x() || py < y() || px > max_x() || py > max_y());
+  }
+
+  /**
    * \brief Indicates whether or not the rectangle has an area.
    *
    * \details The rectangle has an area if both the width and height are
@@ -496,6 +509,28 @@ class basic_rect final
   [[nodiscard]] constexpr auto has_area() const noexcept -> bool
   {
     return (width() > 0) && (height() > 0);
+  }
+
+  /**
+   * \brief Returns a pointer to the internal rectangle representation.
+   *
+   * \note Don't cache the returned pointer.
+   *
+   * \return a pointer to the rectangle representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> rect_type*
+  {
+    return &m_rect;
+  }
+
+  /**
+   * \copydoc data()
+   */
+  [[nodiscard]] auto data() const noexcept -> const rect_type*
+  {
+    return &m_rect;
   }
 
   /**
@@ -522,27 +557,10 @@ class basic_rect final
     return m_rect;
   }
 
-  /**
-   * \brief Returns a pointer to the internal rectangle representation.
-   *
-   * \note Don't cache the returned pointer.
-   *
-   * \return a pointer to the rectangle representation.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto data() noexcept -> rect_type*
-  {
-    return &m_rect;
-  }
+  /// \} End of queries
 
-  /**
-   * \copydoc data()
-   */
-  [[nodiscard]] auto data() const noexcept -> const rect_type*
-  {
-    return &m_rect;
-  }
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Returns a pointer to the internal rectangle.
@@ -568,6 +586,8 @@ class basic_rect final
     return &m_rect;
   }
 
+  /// \} End of conversions
+
   /**
    * \brief Serializes the rectangle.
    *
@@ -591,66 +611,8 @@ class basic_rect final
   rect_type m_rect{0, 0, 0, 0};
 };
 
-/**
- * \brief Indicates whether or not two rectangles are equal.
- *
- * \tparam T the representation type used by the rectangles.
- *
- * \param lhs the left-hand side rectangle.
- * \param rhs the right-hand side rectangle.
- *
- * \return `true` if the rectangles are equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
-                                        const basic_rect<T>& rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
-         (lhs.width() == rhs.width()) && (lhs.height() == rhs.height());
-}
-
-/**
- * \brief Indicates whether or not two rectangles aren't equal.
- *
- * \tparam T the representation type used by the rectangles.
- *
- * \param lhs the left-hand side rectangle.
- * \param rhs the right-hand side rectangle.
- *
- * \return `true` if the rectangles aren't equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
-                                        const basic_rect<T>& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-template <>
-[[nodiscard]] constexpr auto cast(const irect& from) noexcept -> frect
-{
-  const frect::point_type pos{static_cast<float>(from.x()),
-                              static_cast<float>(from.y())};
-  const frect::area_type size{static_cast<float>(from.width()),
-                              static_cast<float>(from.height())};
-  return frect{pos, size};
-}
-
-template <>
-[[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
-{
-  const irect::point_type pos{static_cast<int>(from.x()),
-                              static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
-  return irect{pos, size};
-}
+/// \name Rectangle functions
+/// \{
 
 /**
  * \brief Indicates whether or not the two rectangles intersect.
@@ -747,6 +709,79 @@ template <typename T>
   return {{x, y}, {maxX - x, maxY - y}};
 }
 
+/// \} End of rectangle functions
+
+/// \name Rectangle comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two rectangles are equal.
+ *
+ * \tparam T the representation type used by the rectangles.
+ *
+ * \param lhs the left-hand side rectangle.
+ * \param rhs the right-hand side rectangle.
+ *
+ * \return `true` if the rectangles are equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
+                                        const basic_rect<T>& rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
+         (lhs.width() == rhs.width()) && (lhs.height() == rhs.height());
+}
+
+/**
+ * \brief Indicates whether or not two rectangles aren't equal.
+ *
+ * \tparam T the representation type used by the rectangles.
+ *
+ * \param lhs the left-hand side rectangle.
+ * \param rhs the right-hand side rectangle.
+ *
+ * \return `true` if the rectangles aren't equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
+                                        const basic_rect<T>& rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of rectangle comparison operators
+
+/// \name Rectangle cast specializations
+/// \{
+
+template <>
+[[nodiscard]] constexpr auto cast(const irect& from) noexcept -> frect
+{
+  const frect::point_type pos{static_cast<float>(from.x()),
+                              static_cast<float>(from.y())};
+  const frect::area_type size{static_cast<float>(from.width()),
+                              static_cast<float>(from.height())};
+  return frect{pos, size};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
+{
+  const irect::point_type pos{static_cast<int>(from.x()),
+                              static_cast<int>(from.y())};
+  const irect::area_type size{static_cast<int>(from.width()),
+                              static_cast<int>(from.height())};
+  return irect{pos, size};
+}
+
+/// \} End of rectangle cast specializations
+
 /**
  * \brief Returns a textual representation of a rectangle.
  *
@@ -787,7 +822,7 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
   return stream;
 }
 
-/// \}
+/// \} End of group math
 
 }  // namespace cen
 

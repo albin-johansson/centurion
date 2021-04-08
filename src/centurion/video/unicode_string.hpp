@@ -10,6 +10,9 @@
 
 namespace cen {
 
+/// \addtogroup video
+/// \{
+
 /**
  * \typedef unicode
  *
@@ -49,6 +52,9 @@ class unicode_string final
   using size_type = std::vector<unicode>::size_type;
   using difference_type = std::vector<unicode>::difference_type;
 
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates an empty Unicode string.
    *
@@ -72,6 +78,8 @@ class unicode_string final
     m_data.insert(m_data.end(), codes.begin(), codes.end());
     m_data.push_back(0);
   }
+
+  /// \} End of construction
 
   /**
    * \brief Reserves enough memory to hold the specified amount of elements.
@@ -279,6 +287,8 @@ class unicode_string final
     return m_data.at(index);
   }
 
+  // clang-format off
+
   /**
    * \brief Returns the element at the specified index.
    *
@@ -294,7 +304,8 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](const size_type index) noexcept -> reference
+  [[nodiscard]] auto operator[](const size_type index) noexcept(noexcept(m_data[index]))
+      -> reference
   {
     assert(index < m_data.size());
     return m_data[index];
@@ -303,12 +314,14 @@ class unicode_string final
   /**
    * \copydoc operator[]
    */
-  [[nodiscard]] auto operator[](const size_type index) const noexcept
+  [[nodiscard]] auto operator[](const size_type index) const noexcept(noexcept(m_data[index]))
       -> const_reference
   {
     assert(index < m_data.size());
     return m_data[index];
   }
+
+  // clang-format on
 
   /**
    * \brief Serializes the string.
@@ -324,7 +337,7 @@ class unicode_string final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive)
+  void serialize(Archive& archive) noexcept(noexcept(archive(m_data)))
   {
     archive(m_data);
   }
@@ -412,6 +425,8 @@ constexpr auto operator""_uni(const unsigned long long int i) noexcept
 }
 
 }  // namespace literals
+
+/// \} End of group video
 
 }  // namespace cen
 

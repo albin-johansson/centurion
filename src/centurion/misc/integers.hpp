@@ -5,6 +5,9 @@
 
 namespace cen {
 
+/// \name Integer aliases
+/// \{
+
 /**
  * \typedef u64
  *
@@ -60,6 +63,8 @@ using i16 = Sint16;
  * \brief Alias for an 8-bit signed integer.
  */
 using i8 = Sint8;
+
+/// \} End of integer aliases
 
 // clang-format off
 

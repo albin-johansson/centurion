@@ -63,9 +63,6 @@ using window_handle = basic_window<detail::handle_type>;
 template <typename B>
 class basic_window final
 {
-  inline constexpr static bool isOwner = std::is_same_v<B, detail::owning_type>;
-  inline constexpr static bool isHandle = std::is_same_v<B, detail::handle_type>;
-
  public:
   /**
    * \brief Creates a window from a pointer to an SDL window.
@@ -79,10 +76,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(isHandle)
+  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<B>())
       : m_window{window}
   {
-    if constexpr (isOwner)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_window)
       {

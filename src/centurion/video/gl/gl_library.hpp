@@ -78,7 +78,7 @@ class library final
    * \since 6.0.0
    */
   [[nodiscard]] auto address_of(const not_null<czstring> function) const noexcept // NOLINT
-  -> void*
+      -> void*
   {
     assert(function);
     return SDL_GL_GetProcAddress(function);

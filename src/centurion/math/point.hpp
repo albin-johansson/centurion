@@ -302,8 +302,6 @@ class basic_point final
 
   /// \} End of conversions
 
-  // clang-format off
-
   /**
    * \brief Serializes the point.
    *
@@ -318,12 +316,10 @@ class basic_point final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive) noexcept(noexcept(archive(m_point.x, m_point.y)))
+  void serialize(Archive& archive)
   {
     archive(m_point.x, m_point.y);
   }
-
-  // clang-format on
 
  private:
   point_type m_point{0, 0};

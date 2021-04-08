@@ -282,7 +282,7 @@ class scan_code final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive) noexcept(noexcept(archive(m_code)))
+  void serialize(Archive& archive)
   {
     archive(m_code);
   }

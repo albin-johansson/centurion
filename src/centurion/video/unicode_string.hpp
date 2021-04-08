@@ -337,7 +337,7 @@ class unicode_string final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive) noexcept(noexcept(archive(m_data)))
+  void serialize(Archive& archive)
   {
     archive(m_data);
   }

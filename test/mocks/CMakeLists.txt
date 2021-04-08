@@ -15,7 +15,7 @@ set(SOURCE_FILES
 
     event/event_test.cpp
 
-    graphics/gl/opengl_test.cpp
+    graphics/gl/gl_core_test.cpp
 
     graphics/message_box_test.cpp
     graphics/renderer_test.cpp

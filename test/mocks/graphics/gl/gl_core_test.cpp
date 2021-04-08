@@ -1,11 +1,10 @@
-#include "video/gl/opengl.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
 #include "core_mocks.hpp"
+#include "video/gl/gl_core.hpp"
 
 // clang-format off
 extern "C" {

@@ -61,7 +61,7 @@ set(SOURCE_FILES
     geometry/rect_test.cpp
     geometry/point_test.cpp
 
-    graphics/gl/opengl_test.cpp
+    graphics/gl/gl_core_test.cpp
 
     graphics/blend_mode_test.cpp
     graphics/color_test.cpp

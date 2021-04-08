@@ -9,10 +9,9 @@
 #include "../../misc/exception.hpp"
 #include "../window.hpp"
 
-/// \addtogroup video
-/// \addtogroup opengl
-
 namespace cen::gl {
+
+/// \addtogroup video
 
 template <typename T>
 class basic_context;
@@ -60,6 +59,11 @@ class basic_context final
     return result == 0;
   }
 
+  [[nodiscard]] auto get() const noexcept -> SDL_GLContext
+  {
+    return m_context.get();
+  }
+
  private:
   struct deleter final
   {
@@ -74,7 +78,6 @@ class basic_context final
 
 }  // namespace cen::gl
 
-/// \} End of group opengl
 /// \} End of group video
 
 #endif  // CENTURION_GL_CONTEXT_HEADER

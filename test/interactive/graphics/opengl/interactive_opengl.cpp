@@ -6,10 +6,12 @@ namespace {
 
 auto run() -> int
 {
-  cen::gl::set_attribute(cen::gl_attribute::context_major_version, 4);
-  cen::gl::set_attribute(cen::gl_attribute::context_minor_version, 1);
-  cen::gl::set_attribute(cen::gl_attribute::accelerated_visual, 1);
-  cen::gl::set_attribute(cen::gl_attribute::double_buffer, 1);
+  cen::gl::set(cen::gl_attribute::context_major_version, 4);
+  cen::gl::set(cen::gl_attribute::context_minor_version, 1);
+  cen::gl::set(cen::gl_attribute::accelerated_visual, 1);
+  cen::gl::set(cen::gl_attribute::double_buffer, 1);
+
+  const auto value = cen::gl::get(cen::gl_attribute::accelerated_visual);
 
   cen::window window{"Centurion OpenGL Demo",
                      {800, 600},
@@ -32,7 +34,7 @@ auto run() -> int
       }
     }
 
-    glClearColor(1, 0.58, 0.95, 1);
+    glClearColor(1, 0.58f, 0.95f, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     cen::gl::swap(window);

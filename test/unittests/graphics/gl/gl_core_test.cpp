@@ -1,6 +1,6 @@
-#include "video/gl/opengl.hpp"
-
 #include <gtest/gtest.h>
+
+#include "video/gl/gl_core.hpp"
 
 TEST(GLAttributeEnum, Values)
 {

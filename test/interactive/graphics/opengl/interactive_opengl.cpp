@@ -11,8 +11,6 @@ auto run() -> int
   cen::gl::set(cen::gl::attribute::accelerated_visual, 1);
   cen::gl::set(cen::gl::attribute::double_buffer, 1);
 
-  const auto value = cen::gl::get(cen::gl::attribute::accelerated_visual);
-
   cen::window window{"Centurion OpenGL Demo",
                      {800, 600},
                      SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN};

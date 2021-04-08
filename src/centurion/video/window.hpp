@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
+#include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
@@ -1154,8 +1155,7 @@ template <typename T>
 auto operator<<(std::ostream& stream, const basic_window<T>& window)
     -> std::ostream&
 {
-  stream << to_string(window);
-  return stream;
+  return stream << to_string(window);
 }
 
 /// \}

@@ -47,6 +47,8 @@ struct vector3 final
   }
 };
 
+// clang-format off
+
 /**
  * \brief Serializes a 3D-vector.
  *
@@ -63,10 +65,12 @@ struct vector3 final
  * \since 5.3.0
  */
 template <typename Archive, typename T>
-void serialize(Archive& archive, vector3<T>& vector)
+void serialize(Archive& archive, vector3<T>& vector) noexcept(noexcept(archive(vector.x, vector.y, vector.z)))
 {
   archive(vector.x, vector.y, vector.z);
 }
+
+// clang-format on
 
 /**
  * \brief Returns a string that represents a vector.

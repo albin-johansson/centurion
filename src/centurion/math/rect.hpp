@@ -568,6 +568,8 @@ class basic_rect final
     return &m_rect;
   }
 
+  // clang-format off
+
   /**
    * \brief Serializes the rectangle.
    *
@@ -582,10 +584,12 @@ class basic_rect final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive)
+  void serialize(Archive& archive) noexcept(noexcept(archive(m_rect.x, m_rect.y, m_rect.w, m_rect.h)))
   {
     archive(m_rect.x, m_rect.y, m_rect.w, m_rect.h);
   }
+
+  // clang-format on
 
  private:
   rect_type m_rect{0, 0, 0, 0};

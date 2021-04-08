@@ -438,6 +438,8 @@ class color final
     return 0xFF;
   }
 
+  // clang-format off
+
   /**
    * \brief Serializes the color.
    *
@@ -452,10 +454,12 @@ class color final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive)
+  void serialize(Archive& archive) noexcept(noexcept(archive(m_color.r, m_color.g, m_color.b, m_color.a)))
   {
     archive(m_color.r, m_color.g, m_color.b, m_color.a);
   }
+
+  // clang-format on
 
  private:
   SDL_Color m_color{0, 0, 0, max()};

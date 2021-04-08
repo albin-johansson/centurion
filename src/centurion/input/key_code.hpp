@@ -290,7 +290,7 @@ class key_code final
    * \since 5.3.0
    */
   template <typename Archive>
-  void serialize(Archive& archive)
+  void serialize(Archive& archive) noexcept(noexcept(archive(m_key)))
   {
     archive(m_key);
   }

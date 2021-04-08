@@ -85,6 +85,8 @@ using farea = basic_area<float>;
  */
 using darea = basic_area<double>;
 
+// clang-format off
+
 /**
  * \brief Serializes an area instance.
  *
@@ -101,10 +103,12 @@ using darea = basic_area<double>;
  * \since 5.3.0
  */
 template <typename Archive, typename T>
-void serialize(Archive& archive, basic_area<T>& area)
+void serialize(Archive& archive, basic_area<T>& area) noexcept(noexcept(archive(area.width, area.height)))
 {
   archive(area.width, area.height);
 }
+
+// clang-format on
 
 template <>
 [[nodiscard]] constexpr auto cast(const iarea& from) noexcept -> darea

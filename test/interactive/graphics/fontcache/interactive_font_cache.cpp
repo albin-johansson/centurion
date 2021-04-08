@@ -1,10 +1,18 @@
-#include "centurion.hpp"
+#include <centurion.hpp>
+#include <string>       // string
+#include <string_view>  // sv
+
+using namespace std::string_view_literals;
 
 namespace {
 
-using dispatcher_t = cen::event_dispatcher<cen::quit_event,
-                                           cen::keyboard_event,
-                                           cen::text_input_event>;
+inline constexpr auto first_id = 72;
+inline constexpr auto second_id = 23;
+inline constexpr auto alphabet = "abcdefghijklmnopqrstuvwxyzåäö"sv;
+
+using event_dispatcher = cen::event_dispatcher<cen::quit_event,
+                                               cen::keyboard_event,
+                                               cen::text_input_event>;
 
 class interactive_font_cache final
 {
@@ -18,24 +26,24 @@ class interactive_font_cache final
     m_cache.add_latin1(m_renderer);
 
     m_renderer.set_color(cen::colors::magenta);
-    m_cache.store_blended_latin1(m_fst, "cool string! <|>", m_renderer);
+    m_cache.store_blended_latin1(first_id, "cool string! <|>", m_renderer);
 
     const cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-    m_cache.store_blended_unicode(m_snd, cool, m_renderer);
+    m_cache.store_blended_unicode(second_id, cool, m_renderer);
 
-    // clang-format off
     m_dispatcher.bind<cen::quit_event>()
-                .to<&interactive_font_cache::on_quit_event>(this);
+        .to<&interactive_font_cache::on_quit_event>(this);
+
     m_dispatcher.bind<cen::keyboard_event>()
-                .to<&interactive_font_cache::on_keyboard_event>(this);
+        .to<&interactive_font_cache::on_keyboard_event>(this);
+
     m_dispatcher.bind<cen::text_input_event>()
-                .to<&interactive_font_cache::on_text_input_event>(this);
-    // clang-format on
+        .to<&interactive_font_cache::on_text_input_event>(this);
 
     m_text.reserve(100u);
   }
 
-  void run()
+  auto run() -> int
   {
     m_window.show();
 
@@ -46,15 +54,14 @@ class interactive_font_cache final
     }
 
     m_window.hide();
+
+    return 0;
   }
 
  private:
-  inline static constexpr auto m_fst = 72;
-  inline static constexpr auto m_snd = 23;
-
   cen::window m_window;
   cen::renderer m_renderer;
-  dispatcher_t m_dispatcher;
+  event_dispatcher m_dispatcher;
   cen::font_cache m_cache;
   std::string m_text;
   cen::unicode_string m_unicodeString{'c',
@@ -111,16 +118,12 @@ class interactive_font_cache final
   {
     m_renderer.clear_with(cen::colors::black);
 
-    using namespace std::string_view_literals;
-
-    m_renderer.render_text(m_cache,
-                           "abcdefghijklmnopqrstuvwxyzåäö"sv,
-                           {50, 10});
+    m_renderer.render_text(m_cache, alphabet, {50, 10});
     m_renderer.render_text(m_cache, m_text, {50, 150});
     m_renderer.render_text(m_cache, m_unicodeString, {50, 100});
 
-    m_renderer.render(m_cache.get_stored(m_fst), cen::ipoint{50, 200});
-    m_renderer.render(m_cache.get_stored(m_snd), cen::ipoint{300, 400});
+    m_renderer.render(m_cache.get_stored(first_id), cen::ipoint{50, 200});
+    m_renderer.render(m_cache.get_stored(second_id), cen::ipoint{300, 400});
 
     m_renderer.present();
   }
@@ -128,12 +131,9 @@ class interactive_font_cache final
 
 }  // namespace
 
-int main(int, char**)
+auto main(int, char**) -> int
 {
-  const cen::library library;
-
-  interactive_font_cache ifc;
-  ifc.run();
-
-  return 0;
+  const cen::library centurion;
+  interactive_font_cache demo;
+  return demo.run();
 }

@@ -94,10 +94,9 @@ TEST(Cursor, SetVisible)
   EXPECT_TRUE(cen::cursor::visible());
 }
 
-TEST(Cursor, NumSystemCursors)
+TEST(Cursor, Count)
 {
-  EXPECT_EQ(cen::cursor::num_system_cursors(),
-            static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+  EXPECT_EQ(cen::cursor::count(), static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
 }
 
 TEST(Cursor, SystemCursorEnumValues)

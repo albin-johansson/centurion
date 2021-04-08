@@ -2307,11 +2307,10 @@ template <typename B>
 auto operator<<(std::ostream& stream, const basic_renderer<B>& renderer)
     -> std::ostream&
 {
-  stream << to_string(renderer);
-  return stream;
+  return stream << to_string(renderer);
 }
 
-/// \}
+/// \} End of group video
 
 }  // namespace cen
 

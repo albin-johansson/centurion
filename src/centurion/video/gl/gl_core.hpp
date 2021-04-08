@@ -20,7 +20,7 @@
 /// \{
 
 /**
- * \namespace gl
+ * \namespace cen::gl
  *
  * \brief Contains OpenGL-related components.
  *

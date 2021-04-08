@@ -17,26 +17,29 @@ namespace cen {
 /**
  * \enum power_state
  *
- * \brief Mirrors the values of the `SDL_PowerState` enum.
+ * \brief Provides values that represent different battery power states.
  *
  * \since 3.0.0
+ *
+ * \see `SDL_PowerState`
  *
  * \headerfile battery.hpp
  */
 enum class power_state
 {
-  unknown = SDL_POWERSTATE_UNKNOWN,  ///< The status is unknown.
-  on_battery =
-      SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
-  no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
-  charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
-  charged = SDL_POWERSTATE_CHARGED  ///< Currently plugged in and charged.
+  // clang-format off
+
+  unknown = SDL_POWERSTATE_UNKNOWN,       ///< The status is unknown.
+  on_battery = SDL_POWERSTATE_ON_BATTERY, ///< Not plugged in and running on battery.
+  no_battery = SDL_POWERSTATE_NO_BATTERY, ///< No battery available.
+  charging = SDL_POWERSTATE_CHARGING,     ///< Currently charging the battery.
+  charged = SDL_POWERSTATE_CHARGED        ///< Currently plugged in and charged.
+
+  // clang-format on
 };
 
 /**
  * \namespace cen::battery
- *
- * \ingroup system
  *
  * \brief Contains utilities related to the battery of the system.
  *
@@ -187,6 +190,9 @@ namespace battery {
 
 }  // namespace battery
 
+/// \name Power state comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not two power states values are the same.
  *
@@ -238,6 +244,8 @@ namespace battery {
 {
   return rhs != lhs;
 }
+
+/// \} End of power state comparison operators
 
 /// \} End of group system
 

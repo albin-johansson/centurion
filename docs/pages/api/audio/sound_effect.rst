@@ -12,7 +12,7 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Default constructible    No
-Copyable                 No
+Copyable                 Only ``sound_effect_handle``
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``Mix_Chunk*``, ``const Mix_Chunk*``
@@ -24,7 +24,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygenclass:: cen::sound_effect
+.. doxygenclass:: cen::basic_sound_effect
   :members:
   :undoc-members:
   :outline:
@@ -38,13 +38,13 @@ Basic playback
 
 .. code-block:: C++
 
-  #include <sound_effect.hpp>
-  #include <thread.hpp>
+  #include <centurion.hpp>
+
+  using ms = cen::milliseconds<int>;
 
   void foo()
   {
     cen::sound_effect sound{"click.wav"};
-    using ms = cen::milliseconds<int>;
 
     // play once
     sound.play(); 
@@ -72,14 +72,16 @@ Fading a sound effect in and out
 
 .. code-block:: C++
 
-  #include <sound_effect.hpp>
+  #include <centurion.hpp>
+
+  using ms = cen::milliseconds<int>;
 
   void foo()
   {
     cen::sound_effect sound{"click.wav"};
 
     // fades in over 500 milliseconds
-    sound.fade_in(cen::milliseconds<int>{500});
+    sound.fade_in(ms{500});
 
     // checks whether or not the sound effect is currently being faded
     if (sound.is_fading()) {
@@ -87,7 +89,7 @@ Fading a sound effect in and out
     }
 
     // fades out over 1 second
-    sound.fade_out(cen::seconds<int>{1});
+    sound.fade_out(ms{1'000});
   }
 
 Handling sound effect volume
@@ -95,7 +97,7 @@ Handling sound effect volume
 
 .. code-block:: C++
 
-  #include <sound_effect.hpp>
+  #include <centurion.hpp>
 
   void foo()
   {

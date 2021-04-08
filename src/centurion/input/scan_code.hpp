@@ -39,6 +39,9 @@ namespace cen {
 class scan_code final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a `scan_code` instance with the `SDL_SCANCODE_UNKNOWN` scan
    * code.
@@ -104,6 +107,11 @@ class scan_code final
    */
   explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()}
   {}
+
+  /// \} End of construction
+
+  /// \name Assignment operators
+  /// \{
 
   constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
@@ -178,6 +186,11 @@ class scan_code final
     return operator=(name.c_str());  // NOLINT
   }
 
+  /// \} End of assignment operators
+
+  /// \name Queries
+  /// \{
+
   /**
    * \brief Returns the total amount of scan codes.
    *
@@ -242,6 +255,11 @@ class scan_code final
     return m_code;
   }
 
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
   /**
    * \brief Converts to `SDL_Scancode`.
    *
@@ -267,6 +285,8 @@ class scan_code final
   {
     return to_key_code();
   }
+
+  /// \} End of conversions
 
   /**
    * \brief Serializes the scan code.
@@ -318,9 +338,11 @@ class scan_code final
 inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
     -> std::ostream&
 {
-  stream << to_string(scanCode);
-  return stream;
+  return stream << to_string(scanCode);
 }
+
+/// \name Scan code comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two scan codes are the same.
@@ -353,6 +375,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
 {
   return !(lhs == rhs);
 }
+
+/// \} End of scan code comparison operators
 
 /**
  * \namespace cen::scancodes
@@ -999,7 +1023,7 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 }  // namespace scancodes
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 

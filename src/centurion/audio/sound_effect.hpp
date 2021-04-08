@@ -328,7 +328,6 @@ class basic_sound_effect final
    *
    * \since 3.1.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
   [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
     return MIX_MAX_VOLUME;

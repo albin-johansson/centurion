@@ -8,6 +8,8 @@ namespace cen {
 /**
  * \typedef owner
  *
+ * \ingroup misc
+ *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
  * \details If a function takes an `owner<T*>` as a parameter, then the

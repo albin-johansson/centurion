@@ -118,7 +118,7 @@ class shared_object final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
-/// \} End of system group
+/// \} End of group system
 
 }  // namespace cen
 

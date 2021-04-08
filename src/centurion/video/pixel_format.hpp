@@ -154,6 +154,9 @@ template <typename B>
 class basic_pixel_format_info final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
@@ -213,6 +216,11 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
+
+  /// \} End of construction
+
+  /// \name Pixel/RGB/RGBA conversions
+  /// \{
 
   /**
    * \brief Returns a color that corresponds to a masked pixel value.
@@ -285,6 +293,11 @@ class basic_pixel_format_info final
                        color.alpha());
   }
 
+  /// \} End of pixel/RGB/RGBA conversions
+
+  /// \name Queries
+  /// \{
+
   /**
    * \brief Returns the associated pixel format.
    *
@@ -313,6 +326,25 @@ class basic_pixel_format_info final
   }
 
   /**
+   * \brief Returns a pointer to the associated pixel format instance.
+   *
+   * \warning Do not claim ownership of the returned pointer.
+   *
+   * \return a pointer to the internal pixel format.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat*
+  {
+    return m_format.get();
+  }
+
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
+  /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
    * \tparam BB dummy template parameter for SFINAE.
@@ -327,19 +359,7 @@ class basic_pixel_format_info final
     return m_format;
   }
 
-  /**
-   * \brief Returns a pointer to the associated pixel format instance.
-   *
-   * \warning Do not claim ownership of the returned pointer.
-   *
-   * \return a pointer to the internal pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat*
-  {
-    return m_format.get();
-  }
+  /// \} End of conversions
 
  private:
   struct deleter final
@@ -351,6 +371,9 @@ class basic_pixel_format_info final
   };
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
+
+/// \name Pixel format comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not the two pixel format values are the same.
@@ -404,7 +427,9 @@ class basic_pixel_format_info final
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of pixel format comparison operators
+
+/// \} End of group video
 
 }  // namespace cen
 

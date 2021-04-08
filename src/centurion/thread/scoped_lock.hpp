@@ -61,7 +61,7 @@ class scoped_lock final
   mutex* m_mutex{};
 };
 
-/// \}
+/// \} End of group thread
 
 }  // namespace cen
 

@@ -12,6 +12,7 @@
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
+#include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
@@ -23,10 +24,35 @@ namespace cen {
 /// \addtogroup audio
 /// \{
 
+template <typename T>
+class basic_sound_effect;
+
 /**
- * \class sound_effect
+ * \typedef sound_effect
+ *
+ * \brief Represents an owning sound effect.
+ *
+ * \since 6.0.0
+ */
+using sound_effect = basic_sound_effect<detail::owning_type>;
+
+/**
+ * \typedef sound_effect_handle
+ *
+ * \brief Represents a non-owning sound effect.
+ *
+ * \since 6.0.0
+ */
+using sound_effect_handle = basic_sound_effect<detail::handle_type>;
+
+/**
+ * \class basic_sound_effect
  *
  * \brief Represents a sound effect.
+ *
+ * \details Unlike with the music API, multiple sound effects can be played at
+ * the same time, which is the main difference between `music` and
+ * `sound_effect`.
  *
  * \details The supported file formats are the following:
  * <ul>
@@ -37,11 +63,6 @@ namespace cen {
  *   <li>VOC (.voc)</li>
  * </ul>
  *
- * \par Usage
- * Usage of this class is pretty straightforward and self-explanatory. The
- * fundamental methods are `play()` and `stop()`, with additional support for
- * effects such as fading and looping.
- *
  * \since 3.0.0
  *
  * \see `Mix_Chunk`
@@ -49,7 +70,8 @@ namespace cen {
  *
  * \headerfile sound_effect.hpp
  */
-class sound_effect final
+template <typename T>
+class basic_sound_effect final
 {
  public:
   /**
@@ -58,6 +80,36 @@ class sound_effect final
    * \since 5.1.0
    */
   inline constexpr static int forever = -1;
+
+  /// \name Construction
+  /// \{
+
+  // clang-format off
+
+  /**
+   * \brief Creates a sound effect based on an existing SDL sound effect.
+   *
+   * \param sound a pointer to the associated chunk instance, cannot be null if
+   * the sound effect is owning.
+   *
+   * \throws mix_error if the supplied pointer is null and the sound effect is
+   * owning.
+   *
+   * \since 6.0.0
+   */
+  explicit basic_sound_effect(Mix_Chunk* sound) noexcept(noexcept(!detail::is_owning<T>()))
+      : m_chunk{sound}
+  {
+    if constexpr (detail::is_owning<T>())
+    {
+      if (!m_chunk)
+      {
+        throw mix_error{};
+      }
+    }
+  }
+
+  // clang-format on
 
   /**
    * \brief Creates a sound effect based on the audio file at the specified
@@ -69,7 +121,8 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  explicit sound_effect(const not_null<czstring> file)
+  template <typename TT = T, detail::is_owner<TT> = true>
+  explicit basic_sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk)
@@ -88,8 +141,29 @@ class sound_effect final
    *
    * \since 5.3.0
    */
-  explicit sound_effect(const std::string& file) : sound_effect{file.c_str()}
+  template <typename TT = T, detail::is_owner<TT> = true>
+  explicit basic_sound_effect(const std::string& file)
+      : basic_sound_effect{file.c_str()}
   {}
+
+  /**
+   * \brief Creates a sound effect handle to on an existing sound effect.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param owner the owning sound effect.
+   *
+   * \since 6.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = true>
+  explicit basic_sound_effect(const sound_effect& owner) noexcept
+      : m_chunk{owner.get()}
+  {}
+
+  /// \} End of construction
+
+  /// \name Playback functions
+  /// \{
 
   /**
    * \brief Plays the sound effect.
@@ -122,6 +196,37 @@ class sound_effect final
       m_channel = undefined_channel();
     }
   }
+
+  /**
+   * \brief Indicates whether or not the sound effect is currently playing.
+   *
+   * \return `true` if the sound effect is playing; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_playing() const noexcept -> bool
+  {
+    return (m_channel != undefined_channel()) && Mix_Playing(m_channel);
+  }
+
+  /**
+   * \brief Indicates whether or not any sound effects are currently playing.
+   *
+   * \return `true` if any sound effect is playing on some channel; `false`
+   * otherwise.
+   *
+   * \since 5.1.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto is_any_playing() noexcept -> bool
+  {
+    return Mix_Playing(undefined_channel());
+  }
+
+  /// \} End of playback functions
+
+  /// \name Fade functions
+  /// \{
 
   /**
    * \brief Fades in the sound effect.
@@ -166,47 +271,6 @@ class sound_effect final
   }
 
   /**
-   * \brief Sets the volume of the sound effect.
-   *
-   * \details This method will adjust input values outside the legal range to
-   * the closest legal value.
-   *
-   * \param volume the volume of the sound effect, in the range [0,
-   * `sound_effect::max_volume()`].
-   *
-   * \since 3.0.0
-   */
-  void set_volume(const int volume) noexcept
-  {
-    Mix_VolumeChunk(m_chunk.get(), detail::clamp(volume, 0, max_volume()));
-  }
-
-  /**
-   * \brief Indicates whether or not the sound effect is currently playing.
-   *
-   * \return `true` if the sound effect is playing; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_playing() const noexcept -> bool
-  {
-    return (m_channel != undefined_channel()) && Mix_Playing(m_channel);
-  }
-
-  /**
-   * \brief Indicates whether or not any sound effects are currently playing.
-   *
-   * \return `true` if any sound effect is playing on some channel; `false`
-   * otherwise.
-   *
-   * \since 5.1.0
-   */
-  [[nodiscard]] static auto is_any_playing() noexcept -> bool
-  {
-    return Mix_Playing(undefined_channel());
-  }
-
-  /**
    * \brief Indicates whether or not the sound effect is being faded.
    *
    * \note If the sound effect is being faded, it's also playing so
@@ -220,6 +284,27 @@ class sound_effect final
   [[nodiscard]] auto is_fading() const noexcept -> bool
   {
     return is_playing() && Mix_FadingChannel(m_channel);
+  }
+
+  /// \} End of fade functions
+
+  /// \name Volume functions
+  /// \{
+
+  /**
+   * \brief Sets the volume of the sound effect.
+   *
+   * \details This method will adjust input values outside the legal range to
+   * the closest legal value.
+   *
+   * \param volume the volume of the sound effect, in the range [0,
+   * `sound_effect::max_volume()`].
+   *
+   * \since 3.0.0
+   */
+  void set_volume(const int volume) noexcept
+  {
+    Mix_VolumeChunk(m_chunk.get(), detail::clamp(volume, 0, max_volume()));
   }
 
   /**
@@ -237,44 +322,22 @@ class sound_effect final
   }
 
   /**
-   * \brief Returns the channel associated with the sound effect, if any.
+   * \brief Returns the maximum possible volume value.
    *
-   * \note Channels are not associated with sound effects for long, and might
-   * change in between playbacks.
+   * \return the maximum possible volume value.
    *
-   * \return the channel currently associated with the sound effect;
-   * `std::nullopt` if there is none.
-   *
-   * \since 5.1.0
+   * \since 3.1.0
    */
-  [[nodiscard]] auto channel() const noexcept -> std::optional<int>
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
-    if (m_channel != undefined_channel())
-    {
-      return m_channel;
-    }
-    else
-    {
-      return std::nullopt;
-    }
+    return MIX_MAX_VOLUME;
   }
 
-  /**
-   * \brief Returns a pointer to the associated `Mix_Chunk`.
-   *
-   * \warning Use of this method is not recommended. However it is useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated `Mix_Chunk`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> Mix_Chunk*
-  {
-    return m_chunk.get();
-  }
+  /// \} End of volume functions
+
+  /// \name Conversions
+  /// \{
 
   /**
    * \brief Converts to `Mix_Chunk*`.
@@ -300,16 +363,66 @@ class sound_effect final
     return m_chunk.get();
   }
 
-  /**
-   * \brief Returns the maximum possible volume value.
-   *
-   * \return the maximum possible volume value.
-   *
-   * \since 3.1.0
-   */
-  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
+  /// \} End of conversions
+
+  /// \name Decoder functions
+  /// \{
+
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {
-    return MIX_MAX_VOLUME;
+    return Mix_GetChunkDecoder(index);
+  }
+
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
+  {
+    return Mix_HasChunkDecoder(name) == SDL_TRUE;
+  }
+
+  template <typename TT = T, detail::is_owner<TT> = true>
+  [[nodiscard]] static auto decoder_count() noexcept -> int
+  {
+    return Mix_GetNumChunkDecoders();
+  }
+
+  /// \} End of decoder functions
+
+  /**
+   * \brief Returns the channel associated with the sound effect, if any.
+   *
+   * \note Channels are not associated with sound effects for long, and might
+   * change in between playbacks.
+   *
+   * \return the channel currently associated with the sound effect;
+   * `std::nullopt` if there is none.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto channel() const noexcept -> std::optional<int>
+  {
+    if (m_channel != undefined_channel())
+    {
+      return m_channel;
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Returns a pointer to the associated `Mix_Chunk` instance.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated `Mix_Chunk`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> Mix_Chunk*
+  {
+    return m_chunk.get();
   }
 
  private:
@@ -321,7 +434,7 @@ class sound_effect final
     }
   };
 
-  std::unique_ptr<Mix_Chunk, deleter> m_chunk;
+  detail::pointer_manager<T, Mix_Chunk, deleter> m_chunk;
   int m_channel{undefined_channel()};
 
   [[nodiscard]] constexpr static auto undefined_channel() noexcept -> int
@@ -351,14 +464,31 @@ class sound_effect final
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
  public:
-  sound_effect() = default;
-
   void set_channel(const int channel) noexcept
   {
     m_channel = channel;
   }
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
+
+/**
+ * \brief Returns a handle to the sound effect currently associated with the
+ * specified channel.
+ *
+ * \note There might not be a sound effect associated with the specified
+ * channel, in which case the returned handle is null.
+ *
+ * \param channel the channel associated with the desired sound effect.
+ *
+ * \return a handle to the sound effect associated with the specified channel.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto get_sound(const int channel) noexcept
+    -> sound_effect_handle
+{
+  return sound_effect_handle{Mix_GetChunk(channel)};
+}
 
 /**
  * \brief Returns a textual representation of a sound effect.

@@ -8,6 +8,12 @@
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
+/// \name Time (std::chrono) aliases
+/// \{
+
 /**
  * \typedef seconds
  *
@@ -48,6 +54,8 @@ using nanoseconds = std::chrono::duration<T, std::nano>;
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
 
+/// \} End of time (std::chrono) aliases
+
 /**
  * \namespace literals
  *
@@ -82,6 +90,9 @@ constexpr auto operator"" _s(const unsigned long long int value) noexcept
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_TIME_HEADER

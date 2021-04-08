@@ -35,6 +35,7 @@ auto create_surface(basic_window<T>& window,
                     VkSurfaceKHR* outSurface) noexcept -> bool
 {
   // clang-format off
+  assert(window.is_vulkan());
   return SDL_Vulkan_CreateSurface(window.get(), instance, outSurface) == SDL_TRUE;
   // clang-format on
 }
@@ -45,6 +46,7 @@ auto get_extensions(basic_window<T>& window,
                     czstring* outNames) noexcept -> bool
 {
   // clang-format off
+  assert(window.is_vulkan());
   return SDL_Vulkan_GetInstanceExtensions(window.get(), outCount, outNames) == SDL_TRUE;
   // clang-format on
 }

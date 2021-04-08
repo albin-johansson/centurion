@@ -11,7 +11,7 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Mirrors the values of the `SDL_Keymod` enum.
+ * \brief Provides values that represent different key modifiers.
  *
  * \see `SDL_Keymod`
  *
@@ -35,7 +35,7 @@ enum class key_modifier
   mode = KMOD_MODE
 };
 
-/// \}
+/// \} End of group input
 
 }  // namespace cen
 

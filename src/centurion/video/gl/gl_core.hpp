@@ -47,6 +47,19 @@ void swap(basic_window<T>& window) noexcept
   SDL_GL_SwapWindow(window.get());
 }
 
+/**
+ * \brief Returns the drawable size of an OpenGL window.
+ *
+ * \pre `window` must be an OpenGL window.
+ *
+ * \tparam T the ownership semantics of the window.
+ *
+ * \param window the OpenGL window that will be queried.
+ *
+ * \return the drawable size of the window.
+ *
+ * \since 6.0.0
+ */
 template <typename T>
 [[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept
     -> iarea

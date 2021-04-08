@@ -27,20 +27,19 @@ namespace cen {
  *
  * \details This class provides two different optimizations.
  *
- * This class can be used to cache glyph textures that can subsequently be used
- * to render strings by simply looking up the individual glyphs and rendering
- * existing textures. It should be noted that the glyph-based rendering will
- * not feature accurate kerning. However, this might not be noticeable and/or
- * worth the performance boost. This type of rendering is *very* efficient for
- * rendering pieces of text that frequently changes, since other approaches
- * would require dynamic allocation and de-allocation for every new rendered
- * string.
+ * Firstly, this class can be used to cache glyph textures that can then be used
+ * to render strings, by simply looking up the individual glyphs and rendering
+ * the existing textures. Note, this will not result in accurate kerning.
+ * However, this might not be noticeable and/or worth the performance boost.
+ * This approach is *very* efficient for rendering pieces of text that
+ * frequently changes, since other approaches would require dynamic allocation
+ * and de-allocation for every new rendered string.
  *
- * Furthermore, it's possible to cache full strings and associate them with a
- * user-provided identifier. Using this approach, the strings will be rendered
- * using accurate kerning. The problem is, as you might guess, is that it's hard
- * to know the exact strings you will render at compile-time. Use this option
- * if you know that you're going to render some specific string a lot.
+ * Secondly, it's possible to cache complete strings and associate them with a
+ * user-provided identifier. In contrast with the first approach, this will
+ * result in accurate kerning. The only problem is that it's hard to know the
+ * exact strings you will render at compile-time. Use this option if you know
+ * that you're going to render some specific string a lot.
  *
  * \since 5.0.0
  *
@@ -65,6 +64,9 @@ class font_cache final
     texture cached;         ///< The cached texture.
     glyph_metrics metrics;  ///< The metrics of the glyph.
   };
+
+  /// \name Construction
+  /// \{
 
   /**
    * \brief Creates an empty font cache instance.
@@ -95,8 +97,9 @@ class font_cache final
   explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
   {}
 
-  /// \name String caching
-  /// \brief Functions related to caching strings as textures.
+  /// \} End of construction
+
+  /// \name String texture caching
   /// \{
 
   /**
@@ -580,10 +583,9 @@ class font_cache final
     }
   }
 
-  /// \}  // end of string caching
+  /// \} End of string texture caching
 
-  /// \name Glyph caching
-  /// \brief Functions related to cached Unicode glyph textures.
+  /// \name Glyph texture caching
   /// \{
 
   /**
@@ -773,7 +775,7 @@ class font_cache final
     }
   }
 
-  ///\}  // end of glyph caching
+  /// \} End of glyph texture caching
 
   /**
    * \brief Returns the font used by the cache.
@@ -831,7 +833,7 @@ class font_cache final
   }
 };
 
-/// \}
+/// \} End of group video
 
 }  // namespace cen
 

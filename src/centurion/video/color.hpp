@@ -486,9 +486,9 @@ class color final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] constexpr static auto blend(const color& a,
-                                            const color& b,
-                                            const double bias = 0.5) -> color
+  [[nodiscard]] static auto blend(const color& a,
+                                  const color& b,
+                                  const double bias = 0.5) -> color
   {
     assert(bias >= 0);
     assert(bias <= 1.0);

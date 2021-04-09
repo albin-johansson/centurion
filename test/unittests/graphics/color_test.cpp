@@ -6,9 +6,9 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "video/colors.hpp"
 #include "log.hpp"
 #include "serialization_utils.hpp"
+#include "video/colors.hpp"
 
 static_assert(std::is_final_v<cen::color>);
 
@@ -218,6 +218,25 @@ TEST(Color, WithAlpha)
   EXPECT_EQ(color.green(), other.green());
   EXPECT_EQ(color.blue(), other.blue());
   EXPECT_EQ(color.alpha(), 0x12);
+}
+
+TEST(Color, Blend)
+{
+  EXPECT_EQ(cen::colors::gray,
+            cen::color::blend(cen::colors::white, cen::colors::black));
+  EXPECT_EQ(cen::colors::white,
+            cen::color::blend(cen::colors::white, cen::colors::black, 0));
+  EXPECT_EQ(cen::colors::black,
+            cen::color::blend(cen::colors::white, cen::colors::black, 1));
+
+  const auto a = cen::colors::light_pink;  // #FFB6C1
+  const auto b = cen::colors::crimson;     // #DC143C
+  const auto c = cen::color::blend(a, b, 0.4);
+
+  EXPECT_EQ(0xF1, c.red());
+  EXPECT_EQ(0x75, c.green());
+  EXPECT_EQ(0x8C, c.blue());
+  EXPECT_EQ(0xFF, c.alpha());
 }
 
 TEST(Color, ConversionToSDLColor)

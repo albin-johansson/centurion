@@ -33,6 +33,9 @@ namespace cen {
 class color final
 {
  public:
+  /// \name Construction
+  /// \{
+
   /**
    * \brief Creates a color. The created color will be equal to #000000FF.
    *
@@ -248,6 +251,11 @@ class color final
     return color{r, g, b};
   }
 
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
   /**
    * \brief Sets the value of the red component.
    *
@@ -296,21 +304,10 @@ class color final
     m_color.a = alpha;
   }
 
-  /**
-   * \brief Returns a copy of the color with the specified alpha value.
-   *
-   * \param alpha the alpha component value that will be used by the new color.
-   *
-   * \return a color that is identical to the color except for the alpha
-   * component.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept
-      -> color
-  {
-    return {red(), green(), blue(), alpha};
-  }
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
 
   /**
    * \brief Returns the value of the red component.
@@ -372,6 +369,11 @@ class color final
     return m_color;
   }
 
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
   /**
    * \brief Converts the the color into an `SDL_Color`.
    *
@@ -426,17 +428,7 @@ class color final
     return &m_color;
   }
 
-  /**
-   * \brief Returns the maximum possible value of a color component.
-   *
-   * \return the maximum possible value of a color component.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr static auto max() noexcept -> u8
-  {
-    return 0xFF;
-  }
+  /// \} End of conversions
 
   /**
    * \brief Serializes the color.
@@ -455,6 +447,75 @@ class color final
   void serialize(Archive& archive)
   {
     archive(m_color.r, m_color.g, m_color.b, m_color.a);
+  }
+
+  /**
+   * \brief Returns a copy of the color with the specified alpha value.
+   *
+   * \param alpha the alpha component value that will be used by the new color.
+   *
+   * \return a color that is identical to the color except for the alpha
+   * component.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept
+      -> color
+  {
+    return {red(), green(), blue(), alpha};
+  }
+
+  /**
+   * \brief Blends two colors according to the specified bias.
+   *
+   * \pre `bias` should be in the range [0, 1].
+   *
+   * \details This function applies a linear interpolation for each color
+   * component to obtain the blended color. The bias parameter is the "alpha"
+   * for the interpolation, which determines how the input colors are blended.
+   * For example, a bias of 0 or 1 will simply result in the first or second
+   * color being returned, respectively. Subsequently, a bias of 0.5 with blend
+   * the two colors evenly.
+   *
+   * \param a the first color.
+   * \param b the second color.
+   * \param bias the bias that determines how the colors are blended, in the
+   * range [0, 1].
+   *
+   * \return a color obtained by blending the two supplied colors.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr static auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+  {
+    assert(bias >= 0);
+    assert(bias <= 1.0);
+
+    const auto invBias = 1.0 - bias;
+
+    const auto red = (a.red() * invBias) + (b.red() * bias);
+    const auto green = (a.green() * invBias) + (b.green() * bias);
+    const auto blue = (a.blue() * invBias) + (b.blue() * bias);
+    const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+
+    return color{static_cast<u8>(std::round(red)),
+                 static_cast<u8>(std::round(green)),
+                 static_cast<u8>(std::round(blue)),
+                 static_cast<u8>(std::round(alpha))};
+  }
+
+  /**
+   * \brief Returns the maximum possible value of a color component.
+   *
+   * \return the maximum possible value of a color component.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr static auto max() noexcept -> u8
+  {
+    return 0xFF;
   }
 
  private:
@@ -491,8 +552,7 @@ class color final
 inline auto operator<<(std::ostream& stream, const color& color)
     -> std::ostream&
 {
-  stream << to_string(color);
-  return stream;
+  return stream << to_string(color);
 }
 
 /// \name Color comparison operators

@@ -474,7 +474,7 @@ class color final
    * component to obtain the blended color. The bias parameter is the "alpha"
    * for the interpolation, which determines how the input colors are blended.
    * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 with blend
+   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
    * the two colors evenly.
    *
    * \param a the first color.

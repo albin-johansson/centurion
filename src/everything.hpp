@@ -27,7 +27,7 @@
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
 // clang-format off
-#include "core/macros.hpp"
+#include "centurion/core/macros.hpp"
 // clang-format on
 
 #include "centurion/audio/mixer.hpp"

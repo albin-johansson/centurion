@@ -99,8 +99,6 @@ class font final
     {
       throw ttf_error{};
     }
-
-    m_style = TTF_GetFontStyle(m_font.get());
   }
 
   /**
@@ -129,8 +127,7 @@ class font final
    */
   void reset() noexcept
   {
-    m_style = TTF_STYLE_NORMAL;
-    TTF_SetFontStyle(m_font.get(), m_style);
+    TTF_SetFontStyle(m_font.get(), TTF_STYLE_NORMAL);
   }
 
   /**
@@ -260,7 +257,7 @@ class font final
    */
   [[nodiscard]] auto is_bold() const noexcept -> bool
   {
-    return m_style & TTF_STYLE_BOLD;
+    return TTF_GetFontStyle(m_font.get()) & TTF_STYLE_BOLD;
   }
 
   /**
@@ -272,7 +269,7 @@ class font final
    */
   [[nodiscard]] auto is_italic() const noexcept -> bool
   {
-    return m_style & TTF_STYLE_ITALIC;
+    return TTF_GetFontStyle(m_font.get()) & TTF_STYLE_ITALIC;
   }
 
   /**
@@ -284,7 +281,7 @@ class font final
    */
   [[nodiscard]] auto is_underlined() const noexcept -> bool
   {
-    return m_style & TTF_STYLE_UNDERLINE;
+    return TTF_GetFontStyle(m_font.get()) & TTF_STYLE_UNDERLINE;
   }
 
   /**
@@ -296,7 +293,7 @@ class font final
    */
   [[nodiscard]] auto is_strikethrough() const noexcept -> bool
   {
-    return m_style & TTF_STYLE_STRIKETHROUGH;
+    return TTF_GetFontStyle(m_font.get()) & TTF_STYLE_STRIKETHROUGH;
   }
 
   /**
@@ -721,7 +718,6 @@ class font final
   };
 
   std::unique_ptr<TTF_Font, deleter> m_font;
-  int m_style{};
   int m_size{};
 
   /**
@@ -736,8 +732,8 @@ class font final
    */
   void add_style(const int mask) noexcept
   {
-    m_style |= mask;
-    TTF_SetFontStyle(m_font.get(), m_style);
+    const auto style = TTF_GetFontStyle(m_font.get());
+    TTF_SetFontStyle(m_font.get(), style | mask);
   }
 
   /**
@@ -752,8 +748,8 @@ class font final
    */
   void remove_style(const int mask) noexcept
   {
-    m_style &= ~mask;
-    TTF_SetFontStyle(m_font.get(), m_style);
+    const auto style = TTF_GetFontStyle(m_font.get());
+    TTF_SetFontStyle(m_font.get(), style & ~mask);
   }
 };
 

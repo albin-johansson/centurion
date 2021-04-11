@@ -328,6 +328,7 @@ TEST_F(WindowTest, IsScreenKeyboardShown)
 
   EXPECT_FALSE(m_window.is_screen_keyboard_shown());
   EXPECT_TRUE(m_window.is_screen_keyboard_shown());
+  EXPECT_EQ(2, SDL_IsScreenKeyboardShown_fake.call_count);
 }
 
 TEST_F(WindowTest, HasInputFocus)

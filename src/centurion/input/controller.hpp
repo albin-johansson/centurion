@@ -11,6 +11,7 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
+#include "../core/sdl_string.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../misc/czstring.hpp"
@@ -20,7 +21,6 @@
 #include "../misc/time.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
-#include "../core/sdl_string.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"

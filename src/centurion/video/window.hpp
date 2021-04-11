@@ -507,9 +507,7 @@ class basic_window final
    */
   [[nodiscard]] auto x() const noexcept -> int
   {
-    int x{};
-    SDL_GetWindowPosition(m_window, &x, nullptr);
-    return x;
+    return position().x();
   }
 
   /**
@@ -521,9 +519,7 @@ class basic_window final
    */
   [[nodiscard]] auto y() const noexcept -> int
   {
-    int y{};
-    SDL_GetWindowPosition(m_window, nullptr, &y);
-    return y;
+    return position().y();
   }
 
   /**
@@ -634,9 +630,7 @@ class basic_window final
    */
   [[nodiscard]] auto width() const noexcept -> int
   {
-    int width{};
-    SDL_GetWindowSize(m_window, &width, nullptr);
-    return width;
+    return size().width;
   }
 
   /**
@@ -648,9 +642,7 @@ class basic_window final
    */
   [[nodiscard]] auto height() const noexcept -> int
   {
-    int height{};
-    SDL_GetWindowSize(m_window, nullptr, &height);
-    return height;
+    return size().height;
   }
 
   /**

@@ -518,14 +518,12 @@ TEST_F(WindowTest, X)
   const auto x [[maybe_unused]] = m_window.x();
   EXPECT_EQ(1, SDL_GetWindowPosition_fake.call_count);
   EXPECT_NE(nullptr, SDL_GetWindowPosition_fake.arg1_val);
-  EXPECT_EQ(nullptr, SDL_GetWindowPosition_fake.arg2_val);
 }
 
 TEST_F(WindowTest, Y)
 {
   const auto y [[maybe_unused]] = m_window.y();
   EXPECT_EQ(1, SDL_GetWindowPosition_fake.call_count);
-  EXPECT_EQ(nullptr, SDL_GetWindowPosition_fake.arg1_val);
   EXPECT_NE(nullptr, SDL_GetWindowPosition_fake.arg2_val);
 }
 

@@ -264,6 +264,19 @@ class keyboard final
   // clang-format on
 };
 
+/**
+ * \brief Indicates whether or not the platform has screen keyboard support.
+ *
+ * \return `true` if the current platform has some form of screen keyboard
+ * support; `false` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto has_screen_keyboard() noexcept -> bool
+{
+  return SDL_HasScreenKeyboardSupport() == SDL_TRUE;
+}
+
 /// \} End of group input
 
 }  // namespace cen

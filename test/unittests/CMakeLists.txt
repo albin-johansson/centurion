@@ -85,7 +85,6 @@ set(SOURCE_FILES
     system/platform_test.cpp
     system/preferred_path_test.cpp
     system/ram_test.cpp
-    system/screen_test.cpp
     system/shared_object_test.cpp
     system/simd_block_test.cpp
 
@@ -109,6 +108,7 @@ set(SOURCE_FILES
     video/renderer_test.cpp
     video/renderer_handle_test.cpp
     video/scale_mode_test.cpp
+    video/screen_test.cpp
     video/surface_test.cpp
     video/surface_handle_test.cpp
     video/texture_test.cpp

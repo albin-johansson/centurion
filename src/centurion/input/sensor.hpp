@@ -449,8 +449,7 @@ template <typename T>
 auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
     -> std::ostream&
 {
-  stream << to_string(sensor);
-  return stream;
+  return stream << to_string(sensor);
 }
 
 /**
@@ -464,6 +463,9 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
 {
   return SDL_STANDARD_GRAVITY;
 }
+
+/// \name Sensor type comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two sensor types values are equal.
@@ -516,6 +518,8 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
 {
   return !(lhs == rhs);
 }
+
+/// \} End of sensor type comparison operators
 
 /// \} End of input group
 

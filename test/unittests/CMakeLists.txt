@@ -8,7 +8,6 @@ set(SOURCE_FILES
     typed_test_macros.hpp
     test_main.cpp
     log_test.cpp
-    vector3_test.cpp
 
     compiler/compiler_test.cpp
 
@@ -57,32 +56,6 @@ set(SOURCE_FILES
     event/window_event_test.cpp
     event/window_event_id_test.cpp
 
-    geometry/area_test.cpp
-    geometry/rect_test.cpp
-    geometry/point_test.cpp
-
-    graphics/gl/gl_core_test.cpp
-
-    graphics/blend_mode_test.cpp
-    graphics/color_test.cpp
-    graphics/cursor_test.cpp
-    graphics/font_cache_test.cpp
-    graphics/font_test.cpp
-    graphics/graphics_drivers_test.cpp
-    graphics/message_box_test.cpp
-    graphics/pixel_format_test.cpp
-    graphics/renderer_test.cpp
-    graphics/renderer_handle_test.cpp
-    graphics/scale_mode_test.cpp
-    graphics/surface_test.cpp
-    graphics/surface_handle_test.cpp
-    graphics/texture_test.cpp
-    graphics/unicode_string_test.cpp
-    graphics/texture_handle_test.cpp
-    graphics/texture_access_test.cpp
-    graphics/window_test.cpp
-    graphics/window_handle_test.cpp
-
     input/controller_axis_test.cpp
     input/controller_button_test.cpp
     input/controller_test.cpp
@@ -95,6 +68,11 @@ set(SOURCE_FILES
     input/scan_code_tests.cpp
     input/sensor_test.cpp
     input/touch_test.cpp
+
+    math/area_test.cpp
+    math/rect_test.cpp
+    math/point_test.cpp
+    math/vector3_test.cpp
 
     system/base_path_test.cpp
     system/battery_test.cpp
@@ -116,7 +94,30 @@ set(SOURCE_FILES
     thread/scoped_lock_test.cpp
     thread/try_lock_test.cpp
     thread/semaphore_test.cpp
-    thread/thread_test.cpp)
+    thread/thread_test.cpp
+
+    video/gl/gl_core_test.cpp
+
+    video/blend_mode_test.cpp
+    video/color_test.cpp
+    video/cursor_test.cpp
+    video/font_cache_test.cpp
+    video/font_test.cpp
+    video/graphics_drivers_test.cpp
+    video/message_box_test.cpp
+    video/pixel_format_test.cpp
+    video/renderer_test.cpp
+    video/renderer_handle_test.cpp
+    video/scale_mode_test.cpp
+    video/surface_test.cpp
+    video/surface_handle_test.cpp
+    video/texture_test.cpp
+    video/unicode_string_test.cpp
+    video/texture_handle_test.cpp
+    video/texture_access_test.cpp
+    video/window_test.cpp
+    video/window_handle_test.cpp
+    )
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

@@ -13,6 +13,39 @@ namespace cen {
 /// \addtogroup core
 /// \{
 
+/// \name Centurion version queries
+/// \{
+
+#define CENTURION_VERSION_MAJOR 6
+#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_PATCH 0
+
+#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+
+#define CENTURION_VERSION_NUMBER                         \
+  CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
+                                CENTURION_VERSION_MINOR, \
+                                CENTURION_VERSION_PATCH)
+
+#define CENTURION_VERSION_AT_LEAST(x, y, z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+
+struct version final
+{
+  int major{CENTURION_VERSION_MAJOR};
+  int minor{CENTURION_VERSION_MINOR};
+  int patch{CENTURION_VERSION_PATCH};
+};
+
+[[nodiscard]] constexpr auto version_at_least(const int major,
+                                              const int minor,
+                                              const int patch) noexcept -> bool
+{
+  return CENTURION_VERSION_AT_LEAST(major, minor, patch);
+}
+
+/// \} End of centurion version queries
+
 /// \name SDL version queries
 /// \{
 

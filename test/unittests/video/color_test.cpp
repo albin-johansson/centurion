@@ -6,7 +6,7 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "log.hpp"
+#include "misc/log.hpp"
 #include "serialization_utils.hpp"
 #include "video/colors.hpp"
 

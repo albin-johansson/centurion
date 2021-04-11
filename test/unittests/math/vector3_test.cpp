@@ -4,7 +4,7 @@
 
 #include <iostream>  // cout
 
-#include "log.hpp"
+#include "misc/log.hpp"
 #include "serialization_utils.hpp"
 
 using float3 = cen::vector3<float>;

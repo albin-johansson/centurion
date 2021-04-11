@@ -6,7 +6,7 @@
 #include <algorithm>  // copy
 #include <array>      // array
 
-#include "../compiler.hpp"
+#include "../compiler/compiler.hpp"
 #include "../misc/integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "core/library.hpp"
 #include "core_mocks.hpp"
-#include "library.hpp"
 
 class CenturionTest : public testing::Test
 {

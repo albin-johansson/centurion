@@ -6,7 +6,7 @@
 #include <iostream>  // cout
 #include <type_traits>
 
-#include "log.hpp"
+#include "misc/log.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);

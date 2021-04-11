@@ -8,7 +8,7 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
-#include "../compiler.hpp"
+#include "../compiler/compiler.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

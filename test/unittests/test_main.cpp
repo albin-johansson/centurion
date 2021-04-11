@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "library.hpp"
+#include "core/library.hpp"
 
 int main(int argc, char* argv[])
 {

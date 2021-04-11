@@ -1,4 +1,4 @@
-#include "compiler.hpp"
+#include "compiler/compiler.hpp"
 
 #include <gtest/gtest.h>
 

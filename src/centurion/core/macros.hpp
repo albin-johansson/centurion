@@ -3,6 +3,9 @@
 
 #include <SDL.h>
 
+/// \addtogroup core
+/// \{
+
 #ifndef __clang__
 
 /**
@@ -41,4 +44,7 @@
 using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 #endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+/// \} End of group core
+
 #endif  // CENTURION_MACROS_HEADER

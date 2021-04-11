@@ -2,8 +2,8 @@
 
 #include <iostream>  // cout
 
+#include "misc/log.hpp"
 #include "video/window.hpp"
-#include "log.hpp"
 
 TEST(WindowHandle, PointerConstructor)
 {

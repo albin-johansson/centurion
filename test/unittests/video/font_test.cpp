@@ -5,8 +5,8 @@
 #include <iostream>  // cout
 #include <type_traits>
 
-#include "library.hpp"
-#include "log.hpp"
+#include "core/library.hpp"
+#include "misc/log.hpp"
 
 using namespace std::string_literals;
 

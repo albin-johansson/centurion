@@ -27,13 +27,14 @@
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
 // clang-format off
-#include "centurion/macros.hpp"
+#include "core/macros.hpp"
 // clang-format on
 
 #include "centurion/audio/mixer.hpp"
 #include "centurion/audio/music.hpp"
 #include "centurion/audio/sound_effect.hpp"
-#include "centurion/compiler.hpp"
+#include "centurion/compiler/compiler.hpp"
+#include "centurion/core/library.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/version.hpp"
 #include "centurion/detail/address_of.hpp"
@@ -108,8 +109,6 @@
 #include "centurion/input/scan_code.hpp"
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/touch.hpp"
-#include "centurion/library.hpp"
-#include "centurion/log.hpp"
 #include "centurion/math/area.hpp"
 #include "centurion/math/point.hpp"
 #include "centurion/math/rect.hpp"
@@ -118,6 +117,7 @@
 #include "centurion/misc/czstring.hpp"
 #include "centurion/misc/exception.hpp"
 #include "centurion/misc/integers.hpp"
+#include "centurion/misc/log.hpp"
 #include "centurion/misc/not_null.hpp"
 #include "centurion/misc/owner.hpp"
 #include "centurion/misc/time.hpp"

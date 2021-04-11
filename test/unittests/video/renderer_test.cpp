@@ -5,9 +5,9 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "log.hpp"
 #include "math/rect.hpp"
 #include "misc/exception.hpp"
+#include "misc/log.hpp"
 #include "video/colors.hpp"
 #include "video/font.hpp"
 #include "video/graphics_drivers.hpp"

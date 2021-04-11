@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "input/scan_code.hpp"
-#include "log.hpp"
+#include "misc/log.hpp"
 #include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)

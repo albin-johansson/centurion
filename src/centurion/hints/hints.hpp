@@ -34,8 +34,8 @@
 
 #include <optional>  // optional
 
-#include "../log.hpp"
 #include "../misc/exception.hpp"
+#include "../misc/log.hpp"
 
 namespace cen {
 

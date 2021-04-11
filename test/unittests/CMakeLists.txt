@@ -7,7 +7,6 @@ set(SOURCE_FILES
 
     typed_test_macros.hpp
     test_main.cpp
-    log_test.cpp
 
     compiler/compiler_test.cpp
 
@@ -73,6 +72,8 @@ set(SOURCE_FILES
     math/rect_test.cpp
     math/point_test.cpp
     math/vector3_test.cpp
+
+    misc/log_test.cpp
 
     system/base_path_test.cpp
     system/battery_test.cpp

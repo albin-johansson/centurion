@@ -1,4 +1,4 @@
-#include "log.hpp"
+#include "misc/log.hpp"
 
 #include <gtest/gtest.h>
 

@@ -7,8 +7,8 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "log.hpp"
 #include "misc/exception.hpp"
+#include "misc/log.hpp"
 #include "video/colors.hpp"
 #include "video/renderer.hpp"
 #include "video/window.hpp"

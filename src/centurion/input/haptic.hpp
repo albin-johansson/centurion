@@ -2449,8 +2449,7 @@ template <typename B>
 auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic)
     -> std::ostream&
 {
-  stream << to_string(haptic);
-  return stream;
+  return stream << to_string(haptic);
 }
 
 /// \} End of input group

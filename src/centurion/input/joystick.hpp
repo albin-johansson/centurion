@@ -5,10 +5,14 @@
 
 #include <cassert>      // assert
 #include <optional>     // optional
+#include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
+#include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/sdl_version_at_least.hpp"
+#include "../detail/to_string.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
 #include "../misc/integers.hpp"
@@ -1205,6 +1209,56 @@ class basic_joystick final
 };
 
 /**
+ * \brief Returns a textual representation of a joystick.
+ *
+ * \tparam T the ownership semantics tag for the joystick.
+ *
+ * \param joystick the joystick that will be converted.
+ *
+ * \return a string representation of the joystick.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
+{
+  const auto* name = joystick.name();
+
+  czstring serial{};
+  if constexpr (detail::sdl_version_at_least(2, 0, 14))
+  {
+    serial = joystick.serial();
+  }
+
+  return "joystick{data: " + detail::address_of(joystick.get()) +
+         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", name: " + (name ? name : "N/A") +
+         ", serial: " + (serial ? serial : "N/A") + "}";
+}
+
+/**
+ * \brief Prints a joystick using a stream.
+ *
+ * \tparam T the ownership semantics tag for the joystick.
+ *
+ * \param stream the stream that will be used to print the joystick.
+ * \param joystick the joystick that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick)
+    -> std::ostream&
+{
+  return stream << to_string(joystick);
+}
+
+/// \name Joystick power comparison operators
+/// \{
+
+/**
  * \brief Indicates whether or not two joystick power values are the same.
  *
  * \param lhs the left-hand side power type.
@@ -1271,6 +1325,11 @@ class basic_joystick final
 {
   return !(lhs == rhs);
 }
+
+/// \} End of joystick power comparison operators
+
+/// \name Joystick type comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not two joystick type values are the same.
@@ -1339,6 +1398,8 @@ class basic_joystick final
 {
   return !(lhs == rhs);
 }
+
+/// \} End of joystick type comparison operators
 
 /// \} End of group input
 

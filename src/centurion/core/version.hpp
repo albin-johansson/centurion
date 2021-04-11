@@ -61,7 +61,7 @@ struct version final
  */
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version;
+  SDL_version version{};
   SDL_GetVersion(&version);
   return version;
 }

@@ -45,6 +45,7 @@
 #include "centurion/detail/min.hpp"
 #include "centurion/detail/owner_handle_api.hpp"
 #include "centurion/detail/sdl_deleter.hpp"
+#include "centurion/detail/sdl_version_at_least.hpp"
 #include "centurion/detail/stack_resource.hpp"
 #include "centurion/detail/static_bimap.hpp"
 #include "centurion/detail/to_string.hpp"

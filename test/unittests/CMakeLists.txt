@@ -8,7 +8,6 @@ set(SOURCE_FILES
     typed_test_macros.hpp
     test_main.cpp
     log_test.cpp
-    sdl_string_test.cpp
     vector3_test.cpp
 
     compiler/compiler_test.cpp
@@ -17,6 +16,7 @@ set(SOURCE_FILES
 
     core/centurion_test.cpp
     core/exception_test.cpp
+    core/sdl_string_test.cpp
 
     detail/address_of_test.cpp
     detail/any_eq_test.cpp

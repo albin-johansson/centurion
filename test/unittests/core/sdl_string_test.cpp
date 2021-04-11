@@ -1,4 +1,4 @@
-#include "sdl_string.hpp"
+#include "core/sdl_string.hpp"
 
 #include <gtest/gtest.h>
 

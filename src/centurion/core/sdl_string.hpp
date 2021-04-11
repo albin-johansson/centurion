@@ -12,6 +12,9 @@
 
 namespace cen {
 
+/// \addtogroup core
+/// \{
+
 /**
  * \class sdl_string
  *
@@ -84,6 +87,8 @@ class sdl_string final
  private:
   std::unique_ptr<char, detail::sdl_deleter<char>> m_str;
 };
+
+/// \} End of group core
 
 }  // namespace cen
 

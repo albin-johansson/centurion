@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../sdl_string.hpp"
+#include "../core/sdl_string.hpp"
 
 namespace cen {
 

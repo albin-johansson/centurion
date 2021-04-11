@@ -8,7 +8,7 @@
 
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
-#include "../sdl_string.hpp"
+#include "../core/sdl_string.hpp"
 
 namespace cen {
 

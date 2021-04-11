@@ -3,6 +3,8 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>  // array
+
 #include "core_mocks.hpp"
 
 using ms = cen::milliseconds<int>;
@@ -40,15 +42,18 @@ class SoundEffectTest : public testing::Test
 
 TEST_F(SoundEffectTest, Play)
 {
-  m_sound.play();
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(Mix_PlayChannelTimed, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(m_sound.play());
   EXPECT_EQ(1, Mix_PlayChannelTimed_fake.call_count);
   EXPECT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
 
-  m_sound.play(-2);
+  EXPECT_TRUE(m_sound.play(-2));
   EXPECT_EQ(2, Mix_PlayChannelTimed_fake.call_count);
   EXPECT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
 
-  m_sound.play(7);
+  EXPECT_TRUE(m_sound.play(7));
   EXPECT_EQ(3, Mix_PlayChannelTimed_fake.call_count);
   EXPECT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
 }

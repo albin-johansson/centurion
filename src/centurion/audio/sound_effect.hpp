@@ -174,13 +174,17 @@ class basic_sound_effect final
    * \param nLoops the amount of loops, `sound_effect::forever` can be used to
    * loop the sound effect indefinitely.
    *
+   * \return `true` on success; `false` on failure.
+   *
    * \see `sound_effect::forever`
    *
    * \since 3.0.0
    */
-  void play(const int nLoops = 0) noexcept
+  auto play(const int nLoops = 0) noexcept -> bool
   {
-    activate(detail::max(nLoops, forever));
+    m_channel =
+        Mix_PlayChannel(m_channel, m_chunk.get(), detail::max(nLoops, forever));
+    return m_channel != -1;
   }
 
   /**
@@ -443,26 +447,6 @@ class basic_sound_effect final
   [[nodiscard]] constexpr static auto undefined_channel() noexcept -> int
   {
     return -1;
-  }
-
-  /**
-   * \brief Activates the sound effect by playing it the specified amount of
-   * times.
-   *
-   * \param nLoops the amount of times to play the sound effect.
-   *
-   * \since 3.0.0
-   */
-  void activate(const int nLoops) noexcept
-  {
-    if (m_channel != undefined_channel())
-    {
-      Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
-    }
-    else
-    {
-      m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
-    }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE

@@ -6,9 +6,9 @@
 #include <memory>  // unique_ptr
 #include <string>  // string
 
-#include "detail/sdl_deleter.hpp"
-#include "misc/czstring.hpp"
-#include "misc/owner.hpp"
+#include "../detail/sdl_deleter.hpp"
+#include "../misc/czstring.hpp"
+#include "../misc/owner.hpp"
 
 namespace cen {
 

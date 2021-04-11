@@ -3,10 +3,13 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>  // array
+
 #include "core_mocks.hpp"
 
 using music_finished_callback = void(SDLCALL*)(void);
 using hook_music_callback = void(SDLCALL*)(void*, Uint8*, int);
+using ms = cen::milliseconds<int>;
 
 // clang-format off
 extern "C" {
@@ -65,17 +68,20 @@ class MusicTest : public testing::Test
 
 TEST_F(MusicTest, Play)
 {
+  std::array values{-1, 42};
+  SET_RETURN_SEQ(Mix_PlayMusic, values.data(), cen::isize(values));
+
   cen::music music;
 
-  music.play();
+  EXPECT_FALSE(music.play());
   EXPECT_EQ(1, Mix_PlayMusic_fake.call_count);
   EXPECT_EQ(0, Mix_PlayMusic_fake.arg1_val);
 
-  music.play(7);
+  EXPECT_EQ(42, music.play(7));
   EXPECT_EQ(2, Mix_PlayMusic_fake.call_count);
   EXPECT_EQ(7, Mix_PlayMusic_fake.arg1_val);
 
-  music.play(cen::music::forever - 1);
+  EXPECT_EQ(42, music.play(cen::music::forever - 1));
   EXPECT_EQ(3, Mix_PlayMusic_fake.call_count);
   EXPECT_EQ(cen::music::forever, Mix_PlayMusic_fake.arg1_val);
 }
@@ -94,28 +100,34 @@ TEST_F(MusicTest, Halt)
 
 TEST_F(MusicTest, FadeIn)
 {
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(Mix_FadeInMusic, values.data(), cen::isize(values));
+
   cen::music music;
 
-  music.fade_in(cen::milliseconds<int>{5});
+  EXPECT_FALSE(music.fade_in(ms{5}));
   EXPECT_EQ(1, Mix_FadeInMusic_fake.call_count);
   EXPECT_EQ(0, Mix_FadeInMusic_fake.arg1_val);
 
-  music.fade_in(cen::milliseconds<int>{5}, 4);
+  EXPECT_TRUE(music.fade_in(ms{5}, 4));
   EXPECT_EQ(2, Mix_FadeInMusic_fake.call_count);
   EXPECT_EQ(4, Mix_FadeInMusic_fake.arg1_val);
 }
 
 TEST_F(MusicTest, FadeOut)
 {
-  cen::music::fade_out(cen::milliseconds<int>{5});
+  std::array values{0, 1};  // Yes, this function has weird error codes
+  SET_RETURN_SEQ(Mix_FadeOutMusic, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(cen::music::fade_out(ms{5}));
   EXPECT_EQ(1, Mix_FadeOutMusic_fake.call_count);
 
-  cen::music::fade_out(cen::milliseconds<int>{3});
+  EXPECT_TRUE(cen::music::fade_out(ms{3}));
   EXPECT_EQ(2, Mix_FadeOutMusic_fake.call_count);
 
   // Should have no effect if already fading music
   Mix_FadingMusic_fake.return_val = MIX_FADING_IN;
-  cen::music::fade_out(cen::milliseconds<int>{3});
+  EXPECT_FALSE(cen::music::fade_out(ms{3}));
   EXPECT_EQ(2, Mix_FadeOutMusic_fake.call_count);
 }
 
@@ -226,11 +238,11 @@ using MusicDeathTest = MusicTest;
 TEST_F(MusicDeathTest, FadeIn)
 {
   cen::music music;
-  EXPECT_DEBUG_DEATH(music.fade_in(cen::milliseconds<int>::zero()), "");
+  EXPECT_DEBUG_DEATH(music.fade_in(ms::zero()), "");
 }
 
 TEST_F(MusicDeathTest, FadeOut)
 {
   cen::music music;
-  EXPECT_DEBUG_DEATH(music.fade_out(cen::milliseconds<int>::zero()), "");
+  EXPECT_DEBUG_DEATH(music.fade_out(ms::zero()), "");
 }

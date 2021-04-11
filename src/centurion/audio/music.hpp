@@ -3,10 +3,11 @@
 
 #include <SDL_mixer.h>
 
-#include <cassert>  // assert
-#include <memory>   // unique_ptr
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
@@ -26,9 +27,11 @@ namespace cen {
 /**
  * \enum fade_status
  *
- * \brief Mirrors the values of the `Mix_Fading` enum.
+ * \brief Provides values that represent different fade playback states.
  *
  * \since 3.0.0
+ *
+ * \see `Mix_Fading`
  *
  * \headerfile music.hpp
  */
@@ -42,9 +45,11 @@ enum class fade_status
 /**
  * \enum music_type
  *
- * \brief Mirrors the values of the `Mix_MusicType` enum.
+ * \brief Provides values that represent different supported music types.
  *
  * \since 3.0.0
+ *
+ * \see `Mix_MusicType`
  *
  * \headerfile music.hpp
  */
@@ -153,13 +158,24 @@ class music final
    * \param nLoops the number of times to loop the music, `music::forever` can
    * be supplied to loop the music indefinitely.
    *
+   * \return the channel used to play the music; `std::nullopt` on failure.
+   *
    * \see `music::forever`
    *
    * \since 3.0.0
    */
-  void play(const int nLoops = 0) noexcept
+  auto play(const int nLoops = 0) noexcept -> std::optional<int>
   {
-    Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
+    const auto channel =
+        Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
+    if (channel != -1)
+    {
+      return channel;
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /**
@@ -197,7 +213,7 @@ class music final
    */
   static void halt() noexcept
   {
-    Mix_HaltMusic();
+    Mix_HaltMusic();  // This appears to always return 0
   }
 
   /**
@@ -209,7 +225,7 @@ class music final
    */
   [[nodiscard]] static auto is_playing() noexcept -> bool
   {
-    return Mix_PlayingMusic();
+    return static_cast<bool>(Mix_PlayingMusic());
   }
 
   /**
@@ -221,7 +237,7 @@ class music final
    */
   [[nodiscard]] static auto is_paused() noexcept -> bool
   {
-    return Mix_PausedMusic();
+    return static_cast<bool>(Mix_PausedMusic());
   }
 
   /// \} Playback functions
@@ -250,15 +266,19 @@ class music final
    * \param nLoops the number of iterations to play the music, `music::forever`
    * can be supplied to loop the music indefinitely.
    *
+   * \return `true` on success; `false` on failure.
+   *
    * \see `music::forever`
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms,
-               const int nLoops = 0) noexcept(noexcept(ms.count()))
+  auto fade_in(const milliseconds<int> ms,
+               const int nLoops = 0) noexcept(noexcept(ms.count())) -> bool
   {
     assert(ms.count() > 0);
-    Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count());
+    return Mix_FadeInMusic(m_music.get(),
+                           detail::max(nLoops, forever),
+                           ms.count()) == 0;
   }
 
   // clang-format off
@@ -275,14 +295,21 @@ class music final
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
+   * \return `true` on success; `false` on failure.
+   *
    * \since 3.0.0
    */
-  static void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
+      -> bool
   {
     assert(ms.count() > 0);
     if (!is_fading())
     {
-      Mix_FadeOutMusic(ms.count());
+      return Mix_FadeOutMusic(ms.count()) != 0;
+    }
+    else
+    {
+      return false;
     }
   }
 

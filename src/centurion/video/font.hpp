@@ -496,9 +496,7 @@ class font final
                                     const unicode secondGlyph) const noexcept
       -> int
   {
-    const auto amount =
-        TTF_GetFontKerningSizeGlyphs(m_font.get(), firstGlyph, secondGlyph);
-    return amount;
+    return TTF_GetFontKerningSizeGlyphs(m_font.get(), firstGlyph, secondGlyph);
   }
 
   /**
@@ -554,23 +552,72 @@ class font final
   /// \{
 
   /**
+   * \brief Returns the size of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the size of, can't be null.
+   *
+   * \return the size of the string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto string_size(const not_null<czstring> str) const noexcept
+      -> std::optional<iarea>
+  {
+    assert(str);
+
+    int width{};
+    int height{};
+    if (TTF_SizeText(m_font.get(), str, &width, &height) != -1)
+    {
+      return iarea{width, height};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Returns the size of the supplied string, if it was rendered using
+   * the font.
+   *
+   * \param str the string to determine the size of.
+   *
+   * \return the size of the string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept
+      -> std::optional<iarea>
+  {
+    return string_size(str.c_str());
+  }
+
+  /**
    * \brief Returns the width of the supplied string, if it was rendered using
    * the font.
    *
    * \param str the string to determine the width of, can't be null.
    *
    * \return the width of the supplied string, if it was rendered using the
-   * font.
+   * font; `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
   [[nodiscard]] auto string_width(const not_null<czstring> str) const noexcept
-      -> int
+      -> std::optional<int>
   {
-    assert(str);
-    int width{};
-    TTF_SizeText(m_font.get(), str, &width, nullptr);
-    return width;
+    if (const auto size = string_size(str))
+    {
+      return size->width;
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /**
@@ -580,11 +627,12 @@ class font final
    * \param str the string to determine the width of.
    *
    * \return the width of the supplied string, if it was rendered using the
-   * font.
+   * font; `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> int
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept
+      -> std::optional<int>
   {
     return string_width(str.c_str());
   }
@@ -596,17 +644,21 @@ class font final
    * \param str the string to determine the height of, can't be null.
    *
    * \return the height of the supplied string, if it was rendered using the
-   * font.
+   * font; `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
   [[nodiscard]] auto string_height(const not_null<czstring> str) const noexcept
-      -> int
+      -> std::optional<int>
   {
-    assert(str);
-    int height{};
-    TTF_SizeText(m_font.get(), str, nullptr, &height);
-    return height;
+    if (const auto size = string_size(str))
+    {
+      return size->height;
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /**
@@ -616,48 +668,14 @@ class font final
    * \param str the string to determine the height of.
    *
    * \return the height of the supplied string, if it was rendered using the
-   * font.
+   * font; `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> int
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept
+      -> std::optional<int>
   {
     return string_height(str.c_str());
-  }
-
-  /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
-   *
-   * \param str the string to determine the size of, can't be null.
-   *
-   * \return the size of the string, if it was rendered using the font.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto string_size(const not_null<czstring> str) const noexcept
-      -> iarea
-  {
-    assert(str);
-    int width{};
-    int height{};
-    TTF_SizeText(m_font.get(), str, &width, &height);
-    return {width, height};
-  }
-
-  /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
-   *
-   * \param str the string to determine the size of.
-   *
-   * \return the size of the string, if it was rendered using the font.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> iarea
-  {
-    return string_size(str.c_str());
   }
 
   /// \} End of rendered string size functions

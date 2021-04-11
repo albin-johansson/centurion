@@ -8,6 +8,8 @@
 #include "library.hpp"
 #include "log.hpp"
 
+using namespace std::string_literals;
+
 namespace {
 
 inline constexpr auto typeWriterPath = "resources/type_writer.ttf";
@@ -29,7 +31,6 @@ TEST(Font, Constructor)
   EXPECT_THROW(cen::font("", 1), cen::ttf_error);
   EXPECT_THROW(cen::font(danielPath, 0), cen::cen_error);
 
-  using namespace std::string_literals;
   EXPECT_THROW(cen::font(""s, 1), cen::ttf_error);
   EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::cen_error);
 }
@@ -214,18 +215,12 @@ TEST(Font, StyleName)
 TEST(Font, StringWidth)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.string_width("foo"), 0);
-
-  using namespace std::string_literals;
   EXPECT_GT(font.string_width("foo"s), 0);
 }
 
 TEST(Font, StringHeight)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.string_height("foo"), 0);
-
-  using namespace std::string_literals;
   EXPECT_GT(font.string_height("foo"s), 0);
 }
 
@@ -233,18 +228,11 @@ TEST(Font, StringSize)
 {
   const cen::font font{typeWriterPath, 12};
 
-  {
-    const auto [width, height] = font.string_size("bar");
-    EXPECT_GT(width, 0);
-    EXPECT_GT(height, 0);
-  }
+  ASSERT_TRUE(font.string_size("bar"s));
 
-  {
-    using namespace std::string_literals;
-    const auto [width, height] = font.string_size("bar"s);
-    EXPECT_GT(width, 0);
-    EXPECT_GT(height, 0);
-  }
+  const auto [width, height] = font.string_size("bar"s).value();
+  EXPECT_GT(width, 0);
+  EXPECT_GT(height, 0);
 }
 
 TEST(Font, FontFaces)

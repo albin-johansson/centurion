@@ -14,6 +14,7 @@
 #include "../core/sdl_string.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/sdl_version_at_least.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
 #include "../misc/integers.hpp"
@@ -1382,11 +1383,17 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_controller<T>& controller)
     -> std::string
 {
-  using namespace std::string_literals;
+  const auto* name = controller.name();
 
-  const auto name = controller.name() ? controller.name() : "N/A";
-  return "controller{data: "s + detail::address_of(controller.get()) +
-         ", name: " + name + "}";
+  czstring serial{};
+  if constexpr (detail::sdl_version_at_least(2, 0, 14))
+  {
+    serial = controller.serial();
+  }
+
+  return "controller{data: " + detail::address_of(controller.get()) +
+         ", name: " + (name ? name : "N/A") +
+         ", serial: " + (serial ? serial : "N/A") + "}";
 }
 
 /**

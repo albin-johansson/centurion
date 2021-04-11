@@ -279,12 +279,14 @@ class basic_window final
    * \param fullscreen `true` if the window should enable fullscreen mode;
    * `false` for windowed mode.
    *
+   * \return `true` on success; `false` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_fullscreen(const bool fullscreen) noexcept
+  auto set_fullscreen(const bool fullscreen) noexcept -> bool
   {
     constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
+    return SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0) == 0;
   }
 
   /**
@@ -295,12 +297,14 @@ class basic_window final
    * \param fullscreen `true` if the window should enable fullscreen desktop
    * mode; `false` for windowed mode.
    *
+   * \return `true` on success; `false` otherwise.
+   *
    * \since 4.0.0
    */
-  void set_fullscreen_desktop(const bool fullscreen) noexcept
+  auto set_fullscreen_desktop(const bool fullscreen) noexcept -> bool
   {
-    const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
-    SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0);
+    constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
+    return SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0) == 0;
   }
 
   /**
@@ -376,11 +380,13 @@ class basic_window final
    *
    * \param opacity the opacity, in the range [0, 1].
    *
+   * \return `true` on success; `false` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_opacity(const float opacity) noexcept
+  auto set_opacity(const float opacity) noexcept -> bool
   {
-    SDL_SetWindowOpacity(m_window, opacity);
+    return SDL_SetWindowOpacity(m_window, opacity) == 0;
   }
 
   /**
@@ -412,10 +418,8 @@ class basic_window final
    */
   auto set_brightness(const float brightness) noexcept -> bool
   {
-    const auto res =
-        SDL_SetWindowBrightness(m_window,
-                                detail::clamp(brightness, 0.0f, 1.0f));
-    return res == 0;
+    return SDL_SetWindowBrightness(m_window,
+                                   detail::clamp(brightness, 0.0f, 1.0f)) == 0;
   }
 
   /**
@@ -427,13 +431,15 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
+   * \return `true` on success; `false` otherwise.
+   *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static void set_capturing_mouse(const bool capturingMouse) noexcept
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
   {
-    SDL_CaptureMouse(detail::convert_bool(capturingMouse));
+    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }
 
   /// \} End of setters

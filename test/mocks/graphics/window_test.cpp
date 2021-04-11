@@ -146,23 +146,29 @@ TEST_F(WindowTest, UpdateSurface)
 
 TEST_F(WindowTest, SetFullscreen)
 {
-  m_window.set_fullscreen(true);
+  std::array values{0, 1};
+  SET_RETURN_SEQ(SDL_SetWindowFullscreen, values.data(), cen::isize(values));
+
+  EXPECT_TRUE(m_window.set_fullscreen(true));
   EXPECT_EQ(1, SDL_SetWindowFullscreen_fake.call_count);
   EXPECT_EQ(SDL_WINDOW_FULLSCREEN, SDL_SetWindowFullscreen_fake.arg1_val);
 
-  m_window.set_fullscreen(false);
+  EXPECT_FALSE(m_window.set_fullscreen(false));
   EXPECT_EQ(2, SDL_SetWindowFullscreen_fake.call_count);
   EXPECT_EQ(0, SDL_SetWindowFullscreen_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetFullscreenDesktop)
 {
-  m_window.set_fullscreen_desktop(true);
+  std::array values{0, 1};
+  SET_RETURN_SEQ(SDL_SetWindowFullscreen, values.data(), cen::isize(values));
+
+  EXPECT_TRUE(m_window.set_fullscreen_desktop(true));
   EXPECT_EQ(1, SDL_SetWindowFullscreen_fake.call_count);
   EXPECT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP,
             SDL_SetWindowFullscreen_fake.arg1_val);
 
-  m_window.set_fullscreen_desktop(false);
+  EXPECT_FALSE(m_window.set_fullscreen_desktop(false));
   EXPECT_EQ(2, SDL_SetWindowFullscreen_fake.call_count);
   EXPECT_EQ(0, SDL_SetWindowFullscreen_fake.arg1_val);
 }
@@ -230,9 +236,14 @@ TEST_F(WindowTest, SetTitle)
 
 TEST_F(WindowTest, SetOpacity)
 {
-  m_window.set_opacity(0.8f);
+  std::array values{0, 1};
+  SET_RETURN_SEQ(SDL_SetWindowOpacity, values.data(), cen::isize(values));
+
+  EXPECT_TRUE(m_window.set_opacity(0.8f));
   EXPECT_EQ(1, SDL_SetWindowOpacity_fake.call_count);
   EXPECT_EQ(0.8f, SDL_SetWindowOpacity_fake.arg1_val);
+
+  EXPECT_FALSE(m_window.set_opacity(0.5f));
 }
 
 TEST_F(WindowTest, SetMinSize)
@@ -290,11 +301,14 @@ TEST_F(WindowTest, SetBrightness)
 
 TEST_F(WindowTest, SetCapturingMouse)
 {
-  cen::window::set_capturing_mouse(true);
+  std::array values{0, 1};
+  SET_RETURN_SEQ(SDL_CaptureMouse, values.data(), cen::isize(values));
+
+  EXPECT_TRUE(cen::window::set_capturing_mouse(true));
   EXPECT_EQ(1, SDL_CaptureMouse_fake.call_count);
   EXPECT_EQ(SDL_TRUE, SDL_CaptureMouse_fake.arg0_val);
 
-  cen::window::set_capturing_mouse(false);
+  EXPECT_FALSE(cen::window::set_capturing_mouse(false));
   EXPECT_EQ(2, SDL_CaptureMouse_fake.call_count);
   EXPECT_EQ(SDL_FALSE, SDL_CaptureMouse_fake.arg0_val);
 }

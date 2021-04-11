@@ -1071,6 +1071,20 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the screen keyboard is shown for the
+   * window.
+   *
+   * \return `true` if the screen keyboard is shown for the window; `false`
+   * otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_screen_keyboard_shown() const noexcept -> bool
+  {
+    return SDL_IsScreenKeyboardShown(get()) == SDL_TRUE;
+  }
+
+  /**
    * \brief Returns a pointer to the associated SDL window.
    *
    * \warning Don't take ownership of the returned pointer!

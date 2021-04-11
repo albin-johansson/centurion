@@ -28,6 +28,7 @@ FAKE_VOID_FUNC(SDL_GetWindowMinimumSize, SDL_Window*, int*, int*)
 FAKE_VOID_FUNC(SDL_GetWindowMaximumSize, SDL_Window*, int*, int*)
 FAKE_VOID_FUNC(SDL_GetWindowPosition, SDL_Window*, int*, int*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_GetWindowGrab, SDL_Window*)
+FAKE_VALUE_FUNC(SDL_bool, SDL_IsScreenKeyboardShown, SDL_Window*)
 FAKE_VALUE_FUNC(Uint32, SDL_GetWindowID, SDL_Window*)
 FAKE_VALUE_FUNC(Uint32, SDL_GetWindowPixelFormat, SDL_Window*)
 FAKE_VALUE_FUNC(SDL_Surface*, SDL_GetWindowSurface, SDL_Window*)
@@ -49,40 +50,41 @@ class WindowTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_FreeSurface);
-    RESET_FAKE(SDL_ShowWindow);
-    RESET_FAKE(SDL_HideWindow);
-    RESET_FAKE(SDL_SetWindowPosition);
-    RESET_FAKE(SDL_RaiseWindow);
-    RESET_FAKE(SDL_MaximizeWindow);
-    RESET_FAKE(SDL_MinimizeWindow);
-    RESET_FAKE(SDL_RestoreWindow);
-    RESET_FAKE(SDL_SetWindowBordered);
-    RESET_FAKE(SDL_SetWindowResizable);
-    RESET_FAKE(SDL_SetWindowGrab);
-    RESET_FAKE(SDL_SetWindowSize);
-    RESET_FAKE(SDL_GetWindowSize);
-    RESET_FAKE(SDL_SetWindowIcon);
-    RESET_FAKE(SDL_SetWindowTitle);
-    RESET_FAKE(SDL_SetWindowMinimumSize);
-    RESET_FAKE(SDL_SetWindowMaximumSize);
-    RESET_FAKE(SDL_GetWindowMinimumSize);
-    RESET_FAKE(SDL_GetWindowMaximumSize);
-    RESET_FAKE(SDL_GetWindowPosition);
-    RESET_FAKE(SDL_SetWindowPosition);
-    RESET_FAKE(SDL_GetWindowGrab);
-    RESET_FAKE(SDL_GetWindowID);
-    RESET_FAKE(SDL_GetWindowPixelFormat);
-    RESET_FAKE(SDL_GetWindowSurface);
-    RESET_FAKE(SDL_GetWindowTitle);
-    RESET_FAKE(SDL_CaptureMouse);
-    RESET_FAKE(SDL_UpdateWindowSurface);
-    RESET_FAKE(SDL_GetWindowDisplayIndex);
-    RESET_FAKE(SDL_SetWindowFullscreen);
-    RESET_FAKE(SDL_SetWindowBrightness);
-    RESET_FAKE(SDL_SetWindowOpacity);
-    RESET_FAKE(SDL_GetWindowOpacity);
-    RESET_FAKE(SDL_GetWindowBrightness);
+    RESET_FAKE(SDL_FreeSurface)
+    RESET_FAKE(SDL_ShowWindow)
+    RESET_FAKE(SDL_HideWindow)
+    RESET_FAKE(SDL_SetWindowPosition)
+    RESET_FAKE(SDL_RaiseWindow)
+    RESET_FAKE(SDL_MaximizeWindow)
+    RESET_FAKE(SDL_MinimizeWindow)
+    RESET_FAKE(SDL_RestoreWindow)
+    RESET_FAKE(SDL_SetWindowBordered)
+    RESET_FAKE(SDL_SetWindowResizable)
+    RESET_FAKE(SDL_SetWindowGrab)
+    RESET_FAKE(SDL_IsScreenKeyboardShown)
+    RESET_FAKE(SDL_SetWindowSize)
+    RESET_FAKE(SDL_GetWindowSize)
+    RESET_FAKE(SDL_SetWindowIcon)
+    RESET_FAKE(SDL_SetWindowTitle)
+    RESET_FAKE(SDL_SetWindowMinimumSize)
+    RESET_FAKE(SDL_SetWindowMaximumSize)
+    RESET_FAKE(SDL_GetWindowMinimumSize)
+    RESET_FAKE(SDL_GetWindowMaximumSize)
+    RESET_FAKE(SDL_GetWindowPosition)
+    RESET_FAKE(SDL_SetWindowPosition)
+    RESET_FAKE(SDL_GetWindowGrab)
+    RESET_FAKE(SDL_GetWindowID)
+    RESET_FAKE(SDL_GetWindowPixelFormat)
+    RESET_FAKE(SDL_GetWindowSurface)
+    RESET_FAKE(SDL_GetWindowTitle)
+    RESET_FAKE(SDL_CaptureMouse)
+    RESET_FAKE(SDL_UpdateWindowSurface)
+    RESET_FAKE(SDL_GetWindowDisplayIndex)
+    RESET_FAKE(SDL_SetWindowFullscreen)
+    RESET_FAKE(SDL_SetWindowBrightness)
+    RESET_FAKE(SDL_SetWindowOpacity)
+    RESET_FAKE(SDL_GetWindowOpacity)
+    RESET_FAKE(SDL_GetWindowBrightness)
   }
 
   cen::window_handle m_window{nullptr};
@@ -317,6 +319,15 @@ TEST_F(WindowTest, GrabbingMouse)
 {
   const auto grabbing [[maybe_unused]] = m_window.grabbing_mouse();
   EXPECT_EQ(1, SDL_GetWindowGrab_fake.call_count);
+}
+
+TEST_F(WindowTest, IsScreenKeyboardShown)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_IsScreenKeyboardShown, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(m_window.is_screen_keyboard_shown());
+  EXPECT_TRUE(m_window.is_screen_keyboard_shown());
 }
 
 TEST_F(WindowTest, HasInputFocus)

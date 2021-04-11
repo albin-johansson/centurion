@@ -452,7 +452,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  void set_pixel(const ipoint pixel, const color& color) noexcept
   {
     if (!in_bounds(pixel) || !lock())
     {
@@ -836,7 +836,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto in_bounds(const ipoint& point) const noexcept -> bool
+  [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
     return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
              point.y() >= height());

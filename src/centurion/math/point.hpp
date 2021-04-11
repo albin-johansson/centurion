@@ -371,13 +371,13 @@ template <typename T>
   }
 }
 
-[[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
+[[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
   return "ipoint{X: " + detail::to_string(point.x()).value() +
          ", Y: " + detail::to_string(point.y()).value() + "}";
 }
 
-[[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
+[[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
   return "fpoint{X: " + detail::to_string(point.x()).value() +
          ", Y: " + detail::to_string(point.y()).value() + "}";
@@ -501,26 +501,26 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint& lhs,
-                                        const ipoint& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const ipoint lhs,
+                                        const ipoint rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint& lhs,
-                                        const fpoint& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const fpoint lhs,
+                                        const fpoint rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator!=(const ipoint& lhs,
-                                        const ipoint& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const ipoint lhs,
+                                        const ipoint rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-[[nodiscard]] constexpr auto operator!=(const fpoint& lhs,
-                                        const fpoint& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const fpoint lhs,
+                                        const fpoint rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

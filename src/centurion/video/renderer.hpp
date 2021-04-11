@@ -435,7 +435,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  void fill_circle(const fpoint& center, const float radius)
+  void fill_circle(const fpoint center, const float radius)
   {
     const auto cx = center.x();
     const auto cy = center.y();
@@ -547,7 +547,7 @@ class basic_renderer final
    * \since 6.0.0
    */
   template <typename BB = B, detail::is_owner<BB> = true>
-  void fill_circle_t(const fpoint& center, const float radius)
+  void fill_circle_t(const fpoint center, const float radius)
   {
     fill_circle(translate(center), radius);
   }
@@ -1056,7 +1056,7 @@ class basic_renderer final
    */
   auto render_glyph(const font_cache& cache,
                     const unicode glyph,
-                    const ipoint& position) -> int
+                    const ipoint position) -> int
   {
     if (const auto* data = cache.try_at(glyph))
     {
@@ -1812,7 +1812,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_logical_size(const iarea& size) noexcept
+  void set_logical_size(const iarea size) noexcept
   {
     if ((size.width >= 0) && (size.height >= 0))
     {

@@ -112,7 +112,7 @@ class basic_window final
    */
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_window(const not_null<czstring> title,
-                        const iarea& size = default_size(),
+                        const iarea size = default_size(),
                         const u32 flags = default_flags())
   {
     assert(title);
@@ -159,7 +159,7 @@ class basic_window final
    */
   template <typename BB = B, detail::is_owner<BB> = true>
   explicit basic_window(const std::string& title,
-                        const iarea& size = default_size(),
+                        const iarea size = default_size(),
                         const u32 flags = default_flags())
       : basic_window{title.c_str(), size, flags}
   {}
@@ -493,7 +493,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  void set_position(const ipoint& position) noexcept
+  void set_position(const ipoint position) noexcept
   {
     SDL_SetWindowPosition(m_window, position.x(), position.y());
   }
@@ -582,7 +582,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  void set_size(const iarea& size) noexcept
+  void set_size(const iarea size) noexcept
   {
     const auto width = detail::max(size.width, 1);
     const auto height = detail::max(size.height, 1);
@@ -600,7 +600,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_min_size(const iarea& size) noexcept
+  void set_min_size(const iarea size) noexcept
   {
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
@@ -616,7 +616,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_max_size(const iarea& size) noexcept
+  void set_max_size(const iarea size) noexcept
   {
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }

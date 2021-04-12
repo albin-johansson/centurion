@@ -51,7 +51,7 @@ jobs:
           ninja
 
       - name: Run unit tests
-        working-directory: ./build/test/unittests
+        working-directory: ./build/test/unit-tests
         shell: bash
         run: ./CenturionTests
 

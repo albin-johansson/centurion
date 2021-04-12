@@ -4,7 +4,7 @@
 
 TEST(SIMDBlock, Usage)
 {
-  cen::cpu::simd_block block{100};
+  cen::simd_block block{100};
   ASSERT_TRUE(block);
   ASSERT_TRUE(block.data());
   ASSERT_TRUE(block.cast_data<int>());

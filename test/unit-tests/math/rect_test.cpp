@@ -572,17 +572,17 @@ TEST(Rect, InequalityOperatorComparisonDifferent)
   EXPECT_NE(snd, fst);
 }
 
-TEST(Rect, MakeRect)
+TEST(Rect, Rect)
 {
   // clang-format off
-  static_assert(std::is_same_v<decltype(cen::make_rect(1, 1, 1, 1)), cen::irect>);
-  static_assert(std::is_same_v<decltype(cen::make_rect(1u, 1u, 1u, 1u)), cen::irect>);
-  static_assert(std::is_same_v<decltype(cen::make_rect(1.0, 1.0, 1.0, 1.0)), cen::frect>);
-  static_assert(std::is_same_v<decltype(cen::make_rect(1.0f, 1.0f, 1.0f, 1.0f)), cen::frect>);
+  static_assert(std::is_same_v<decltype(cen::rect(1, 1, 1, 1)), cen::irect>);
+  static_assert(std::is_same_v<decltype(cen::rect(1u, 1u, 1u, 1u)), cen::irect>);
+  static_assert(std::is_same_v<decltype(cen::rect(1.0, 1.0, 1.0, 1.0)), cen::frect>);
+  static_assert(std::is_same_v<decltype(cen::rect(1.0f, 1.0f, 1.0f, 1.0f)), cen::frect>);
   // clang-format on
 
-  const auto irect = cen::make_rect(1, 2, 123, 456);
-  const auto frect = cen::make_rect(1.0f, 2.0f, 12.3f, 45.6f);
+  const auto irect = cen::rect(1, 2, 123, 456);
+  const auto frect = cen::rect(1.0f, 2.0f, 12.3f, 45.6f);
 
   EXPECT_EQ(1, irect.x());
   EXPECT_EQ(2, irect.y());

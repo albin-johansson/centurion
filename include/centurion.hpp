@@ -96,9 +96,39 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -113,7 +143,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -122,6 +152,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -136,6 +169,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -155,6 +190,9 @@ using zstring = char*;
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -362,6 +400,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -934,6 +975,9 @@ template <std::size_t bufferSize = 16, typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -947,6 +991,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -1128,9 +1174,8 @@ class mix_error final : public cen_error
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -1145,7 +1190,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -1867,9 +1912,39 @@ inline auto operator<<(std::ostream& stream, const music& music)
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -1884,7 +1959,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -1893,6 +1968,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -1907,6 +1985,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -2092,10 +2172,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -2116,7 +2196,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -2154,7 +2234,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -2294,7 +2374,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
@@ -2314,7 +2394,7 @@ class basic_sound_effect final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const std::string& file)
       : basic_sound_effect{file.c_str()}
   {}
@@ -2328,7 +2408,7 @@ class basic_sound_effect final
    *
    * \since 6.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_sound_effect(const sound_effect& owner) noexcept
       : m_chunk{owner.get()}
   {}
@@ -2394,7 +2474,7 @@ class basic_sound_effect final
    *
    * \since 5.1.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto is_any_playing() noexcept -> bool
   {
     return Mix_Playing(undefined_channel());
@@ -2548,19 +2628,19 @@ class basic_sound_effect final
   /// \name Decoder functions
   /// \{
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {
     return Mix_GetChunkDecoder(index);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto decoder_count() noexcept -> int
   {
     return Mix_GetNumChunkDecoders();
@@ -2916,9 +2996,39 @@ namespace cen {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -2933,7 +3043,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -2942,6 +3052,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -2956,6 +3069,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -3140,6 +3255,9 @@ class mix_error final : public cen_error
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -3347,6 +3465,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -3659,6 +3780,9 @@ struct sdl_deleter final
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -3673,6 +3797,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -3681,7 +3807,8 @@ using zstring = char*;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -3696,7 +3823,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -3798,28 +3925,100 @@ class sdl_string final
 
 #include <cassert>  // assert
 
-namespace cen {
-
 /// \addtogroup core
 /// \{
 
-/// \name Centurion version queries
-/// \{
-
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MINOR 0
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_PATCH 0
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of
+ * major/minor/patch numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number
+ * would be 8402.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based
+ * on the Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
+ * where you use it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_AT_LEAST(x, y, z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
 
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are default-initialized to the current
+ * Centurion version values.
+ *
+ * \version 6.0.0
+ *
+ * \headerfile version.hpp
+ */
 struct version final
 {
   int major{CENTURION_VERSION_MAJOR};
@@ -3827,6 +4026,21 @@ struct version final
   int patch{CENTURION_VERSION_PATCH};
 };
 
+/**
+ * \brief Indicates whether or not the current Centurion version is at least
+ * equal to the specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version;
+ * `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -3851,7 +4065,7 @@ struct version final
  */
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version;
+  SDL_version version{};
   SDL_GetVersion(&version);
   return version;
 }
@@ -3961,9 +4175,9 @@ struct version final
 
 /// \} End of SDL version queries
 
-/// \} End of group core
-
 }  // namespace cen
+
+/// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
 
@@ -4144,9 +4358,39 @@ namespace cen::detail {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -4161,7 +4405,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -4170,6 +4414,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -4184,6 +4431,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -4350,6 +4599,9 @@ struct czstring_compare final
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -4363,6 +4615,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -4844,10 +5098,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -4868,7 +5122,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -4906,7 +5160,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -4973,28 +5227,100 @@ struct sdl_deleter final
 
 #include <cassert>  // assert
 
-namespace cen {
-
 /// \addtogroup core
 /// \{
 
-/// \name Centurion version queries
-/// \{
-
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MINOR 0
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_PATCH 0
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of
+ * major/minor/patch numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number
+ * would be 8402.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based
+ * on the Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
+ * where you use it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_AT_LEAST(x, y, z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
 
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are default-initialized to the current
+ * Centurion version values.
+ *
+ * \version 6.0.0
+ *
+ * \headerfile version.hpp
+ */
 struct version final
 {
   int major{CENTURION_VERSION_MAJOR};
@@ -5002,6 +5328,21 @@ struct version final
   int patch{CENTURION_VERSION_PATCH};
 };
 
+/**
+ * \brief Indicates whether or not the current Centurion version is at least
+ * equal to the specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version;
+ * `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -5026,7 +5367,7 @@ struct version final
  */
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version;
+  SDL_version version{};
   SDL_GetVersion(&version);
   return version;
 }
@@ -5136,9 +5477,9 @@ struct version final
 
 /// \} End of SDL version queries
 
-/// \} End of group core
-
 }  // namespace cen
+
+/// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
 
@@ -5532,6 +5873,9 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -5738,6 +6082,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -6362,9 +6709,39 @@ struct sdl_deleter final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -6379,7 +6756,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -6388,6 +6765,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -6403,6 +6783,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -6411,7 +6793,8 @@ using zstring = char*;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -6426,7 +6809,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -6588,9 +6971,39 @@ template <typename T>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -6605,7 +7018,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -6614,6 +7027,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -6628,6 +7044,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -6813,10 +7231,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -6837,7 +7255,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -6875,7 +7293,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -6919,28 +7337,100 @@ class pointer_manager final
 
 #include <cassert>  // assert
 
-namespace cen {
-
 /// \addtogroup core
 /// \{
 
-/// \name Centurion version queries
-/// \{
-
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MINOR 0
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_PATCH 0
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of
+ * major/minor/patch numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number
+ * would be 8402.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based
+ * on the Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
+ * where you use it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_AT_LEAST(x, y, z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
 
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are default-initialized to the current
+ * Centurion version values.
+ *
+ * \version 6.0.0
+ *
+ * \headerfile version.hpp
+ */
 struct version final
 {
   int major{CENTURION_VERSION_MAJOR};
@@ -6948,6 +7438,21 @@ struct version final
   int patch{CENTURION_VERSION_PATCH};
 };
 
+/**
+ * \brief Indicates whether or not the current Centurion version is at least
+ * equal to the specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version;
+ * `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -6972,7 +7477,7 @@ struct version final
  */
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version;
+  SDL_version version{};
   SDL_GetVersion(&version);
   return version;
 }
@@ -7082,9 +7587,9 @@ struct version final
 
 /// \} End of SDL version queries
 
-/// \} End of group core
-
 }  // namespace cen
+
+/// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
 
@@ -7113,9 +7618,39 @@ namespace cen::detail {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -7130,7 +7665,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -7139,6 +7674,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -7153,6 +7691,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -7178,6 +7718,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -7191,6 +7734,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -7376,6 +7921,9 @@ class mix_error final : public cen_error
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -7582,6 +8130,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -7590,9 +8141,8 @@ namespace literals {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -7607,7 +8157,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -7629,6 +8179,9 @@ using not_null = T;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -7835,6 +8388,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -8146,6 +8702,9 @@ template <std::size_t bufferSize = 16, typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -8352,6 +8911,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -9472,7 +10034,7 @@ class basic_joystick final
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
@@ -9489,7 +10051,7 @@ class basic_joystick final
    *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_joystick(const joystick& owner) noexcept
       : m_joystick{owner.get()}
   {}
@@ -9504,7 +10066,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -9523,7 +10085,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -10454,7 +11016,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -10823,7 +11385,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor)
@@ -10841,7 +11403,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
@@ -11092,7 +11654,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
@@ -11690,7 +12252,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_controller(const controller& owner) noexcept
       : m_controller{owner.get()}
   {}
@@ -11715,7 +12277,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -11739,7 +12301,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
@@ -11766,7 +12328,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
@@ -12803,7 +13365,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -19276,9 +19838,39 @@ template <typename T>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -19293,7 +19885,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -19302,6 +19894,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -19316,6 +19911,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -25008,9 +25605,39 @@ struct sdl_deleter final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -25025,7 +25652,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -25034,6 +25661,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -25049,6 +25679,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -25057,7 +25689,8 @@ using zstring = char*;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -25072,7 +25705,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -25216,9 +25849,39 @@ namespace cen {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -25233,7 +25896,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -25242,6 +25905,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -25257,6 +25923,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -25268,6 +25936,9 @@ using zstring = char*;
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -25475,6 +26146,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -25483,9 +26157,8 @@ namespace literals {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -25500,7 +26173,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -26403,9 +27076,39 @@ namespace cen {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -26420,7 +27123,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -26429,6 +27132,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -26443,6 +27149,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -26539,6 +27247,9 @@ struct czstring_compare final
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -26552,6 +27263,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -26977,9 +27690,39 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -26994,7 +27737,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -27003,6 +27746,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -27017,6 +27763,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -28195,6 +28943,9 @@ class enum_hint
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -28208,6 +28959,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -30026,9 +30779,39 @@ struct sdl_deleter final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -30043,7 +30826,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -30052,6 +30835,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -30067,6 +30853,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -30075,7 +30863,8 @@ using zstring = char*;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -30090,7 +30879,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -30252,9 +31041,39 @@ template <typename T>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -30269,7 +31088,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -30278,6 +31097,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -30292,6 +31114,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -30477,10 +31301,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -30501,7 +31325,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -30539,7 +31363,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -30583,28 +31407,100 @@ class pointer_manager final
 
 #include <cassert>  // assert
 
-namespace cen {
-
 /// \addtogroup core
 /// \{
 
-/// \name Centurion version queries
-/// \{
-
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MINOR 0
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_PATCH 0
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of
+ * major/minor/patch numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number
+ * would be 8402.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based
+ * on the Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
+ * where you use it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_AT_LEAST(x, y, z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
 
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are default-initialized to the current
+ * Centurion version values.
+ *
+ * \version 6.0.0
+ *
+ * \headerfile version.hpp
+ */
 struct version final
 {
   int major{CENTURION_VERSION_MAJOR};
@@ -30612,6 +31508,21 @@ struct version final
   int patch{CENTURION_VERSION_PATCH};
 };
 
+/**
+ * \brief Indicates whether or not the current Centurion version is at least
+ * equal to the specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version;
+ * `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -30636,7 +31547,7 @@ struct version final
  */
 [[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
 {
-  SDL_version version;
+  SDL_version version{};
   SDL_GetVersion(&version);
   return version;
 }
@@ -30746,9 +31657,9 @@ struct version final
 
 /// \} End of SDL version queries
 
-/// \} End of group core
-
 }  // namespace cen
+
+/// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
 
@@ -30777,9 +31688,39 @@ namespace cen::detail {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -30794,7 +31735,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -30803,6 +31744,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -30817,6 +31761,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -30842,6 +31788,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -30855,6 +31804,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -31040,6 +31991,9 @@ class mix_error final : public cen_error
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -31246,6 +32200,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -31254,9 +32211,8 @@ namespace literals {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -31271,7 +32227,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -31293,6 +32249,9 @@ using not_null = T;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -31499,6 +32458,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -31810,6 +32772,9 @@ template <std::size_t bufferSize = 16, typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -32016,6 +32981,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -33136,7 +34104,7 @@ class basic_joystick final
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
@@ -33153,7 +34121,7 @@ class basic_joystick final
    *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_joystick(const joystick& owner) noexcept
       : m_joystick{owner.get()}
   {}
@@ -33168,7 +34136,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -33187,7 +34155,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -34118,7 +35086,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -34487,7 +35455,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor)
@@ -34505,7 +35473,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
@@ -34756,7 +35724,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
@@ -35354,7 +36322,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_controller(const controller& owner) noexcept
       : m_controller{owner.get()}
   {}
@@ -35379,7 +36347,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -35403,7 +36371,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
@@ -35430,7 +36398,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
@@ -36467,7 +37435,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -37430,16 +38398,16 @@ template <typename Derived>
 class haptic_effect
 {
   template <typename T>
-  using has_direction = std::enable_if_t<T::hasDirection, bool>;
+  using has_direction = std::enable_if_t<T::hasDirection, int>;
 
   template <typename T>
-  using has_envelope = std::enable_if_t<T::hasEnvelope, bool>;
+  using has_envelope = std::enable_if_t<T::hasEnvelope, int>;
 
   template <typename T>
-  using has_trigger = std::enable_if_t<T::hasTrigger, bool>;
+  using has_trigger = std::enable_if_t<T::hasTrigger, int>;
 
   template <typename T>
-  using has_delay = std::enable_if_t<T::hasDelay, bool>;
+  using has_delay = std::enable_if_t<T::hasDelay, int>;
 
  public:
   /// \name Direction functions
@@ -37456,7 +38424,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_direction<D> = true>
+  template <typename D = Derived, has_direction<D> = 0>
   void set_direction(const haptic_direction& direction) noexcept
   {
     rep().direction = direction.get();
@@ -37471,7 +38439,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_direction<D> = true>
+  template <typename D = Derived, has_direction<D> = 0>
   [[nodiscard]] auto direction() const noexcept -> haptic_direction
   {
     return haptic_direction{rep().direction};
@@ -37518,7 +38486,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_delay<D> = true>
+  template <typename D = Derived, has_delay<D> = 0>
   void set_delay(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().delay = ms.count();
@@ -37547,7 +38515,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_delay<D> = true>
+  template <typename D = Derived, has_delay<D> = 0>
   [[nodiscard]] auto delay() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().delay};
@@ -37569,7 +38537,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   void set_button(const u16 button) noexcept
   {
     rep().button = button;
@@ -37586,7 +38554,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   void set_interval(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().interval = ms.count();
@@ -37603,7 +38571,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   [[nodiscard]] auto button() const noexcept -> u16
   {
     return rep().button;
@@ -37620,7 +38588,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   [[nodiscard]] auto interval() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().interval};
@@ -37642,7 +38610,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_attack_level(const u16 level) noexcept
   {
     rep().attack_level = level;
@@ -37659,7 +38627,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_fade_level(const u16 level) noexcept
   {
     rep().fade_level = level;
@@ -37678,7 +38646,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_attack_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().attack_length = ms.count();
@@ -37695,7 +38663,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_fade_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().fade_length = ms.count();
@@ -37714,7 +38682,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto attack_level() const noexcept -> u16
   {
     return rep().attack_level;
@@ -37731,7 +38699,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto fade_level() const noexcept -> u16
   {
     return rep().fade_level;
@@ -37748,7 +38716,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().attack_length};
@@ -37765,7 +38733,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().fade_length};
@@ -38772,7 +39740,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic)
@@ -38790,7 +39758,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
   {}
 
@@ -38809,7 +39777,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
       -> basic_haptic
   {
@@ -38836,7 +39804,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromMouse())
@@ -39556,7 +40524,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_haptic != nullptr;
@@ -39872,7 +40840,7 @@ class basic_joystick final
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
@@ -39889,7 +40857,7 @@ class basic_joystick final
    *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_joystick(const joystick& owner) noexcept
       : m_joystick{owner.get()}
   {}
@@ -39904,7 +40872,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -39923,7 +40891,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -40854,7 +41822,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -44770,6 +45738,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -44798,6 +45796,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -44815,32 +45835,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -44996,11 +45991,44 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
 
 
 namespace cen {
@@ -45021,10 +46049,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -45333,6 +46358,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -45346,8 +46401,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -45362,6 +46417,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -46977,7 +48034,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor)
@@ -46995,7 +48052,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_sensor(const sensor& owner) noexcept : m_sensor{owner.get()}
   {}
 
@@ -47246,7 +48303,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_sensor != nullptr;
@@ -47883,6 +48940,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -47911,6 +48998,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -47928,32 +49037,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -48109,11 +49193,44 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
 
 
 namespace cen {
@@ -48134,10 +49251,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -48446,6 +49560,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -48459,8 +49603,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -48475,6 +49619,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -48645,7 +49791,7 @@ template <typename T>
 
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/max.hpp"
 #ifndef CENTURION_DETAIL_MAX_HEADER
@@ -48697,6 +49843,8 @@ template <typename T>
 
 // #include "../misc/cast.hpp"
 
+// #include "../misc/sfinae.hpp"
+
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
@@ -48714,6 +49862,36 @@ namespace cen {
 
 /// \addtogroup math
 /// \{
+
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
 
 /**
  * \struct basic_area
@@ -48743,6 +49921,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -48760,32 +49960,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -48941,11 +50116,13 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
 
 
 namespace cen {
@@ -48966,10 +50143,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -49278,6 +50452,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -49291,8 +50495,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -49307,6 +50511,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -49493,9 +50699,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
@@ -50071,6 +51275,39 @@ class basic_rect final
 /// \{
 
 /**
+ * \brief Creates a rectangle with automatically deduced precision.
+ *
+ * \note The only supported precisions for rectangles are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type.
+ *
+ * \param x the x-coordinate of the rectangle.
+ * \param y the y-coordinate of the rectangle.
+ * \param width the width of the rectangle.
+ * \param height the height of the rectangle.
+ *
+ * \return a rectangle with the specified position and size.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto rect(const T x,
+                                  const T y,
+                                  const T width,
+                                  const T height) noexcept
+    -> basic_rect<typename rect_traits<T>::value_type>
+{
+  using value_type = typename rect_traits<T>::value_type;
+  return basic_rect<value_type>{static_cast<value_type>(x),
+                                static_cast<value_type>(y),
+                                static_cast<value_type>(width),
+                                static_cast<value_type>(height)};
+}
+
+/**
  * \brief Indicates whether or not the two rectangles intersect.
  *
  * \details This function does *not* consider rectangles with overlapping
@@ -50487,9 +51724,39 @@ template <typename To, typename From>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -50504,7 +51771,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -50513,6 +51780,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -50527,6 +51797,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -50552,6 +51824,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -50565,6 +51840,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -50749,6 +52026,9 @@ class mix_error final : public cen_error
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -50956,6 +52236,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -51707,9 +52990,8 @@ inline void set_priority(const category category, const priority prio) noexcept
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -51724,7 +53006,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -51735,7 +53017,8 @@ using not_null = T;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -51750,12 +53033,45 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
 
 #endif  // CENTURION_OWNER_HEADER
+// #include "centurion/misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 // #include "centurion/misc/time.hpp"
 #ifndef CENTURION_TIME_HEADER
 #define CENTURION_TIME_HEADER
@@ -51770,6 +53086,9 @@ using owner = T;
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -51977,6 +53296,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -52129,6 +53451,9 @@ template <typename T, typename... Args>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -52335,6 +53660,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -52682,6 +54010,9 @@ namespace battery {
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -52888,6 +54219,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -53050,9 +54384,39 @@ namespace cen {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -53067,7 +54431,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -53076,6 +54440,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -53091,6 +54458,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -53099,9 +54468,8 @@ using zstring = char*;
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -53116,7 +54484,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -53163,9 +54531,39 @@ struct sdl_deleter final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -53180,7 +54578,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -53189,6 +54587,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -53204,6 +54605,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -53212,7 +54615,8 @@ using zstring = char*;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -53227,7 +54631,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -53407,10 +54811,11 @@ inline auto set_text(const std::string& text) noexcept -> bool
 // #include "../misc/time.hpp"
 
 
+/// \addtogroup system
+/// \{
+
 /**
  * \namespace cen::counter
- *
- * \ingroup system
  *
  * \brief Provides timing utilities.
  *
@@ -53419,9 +54824,6 @@ inline auto set_text(const std::string& text) noexcept -> bool
  * \headerfile counter.hpp
  */
 namespace cen::counter {
-
-/// \addtogroup system
-/// \{
 
 /**
  * \brief Returns the frequency of the system high-performance counter.
@@ -53483,9 +54885,9 @@ template <typename T>
 
 // clang-format on
 
-/// \} End of group system
-
 }  // namespace cen::counter
+
+/// \} End of group system
 
 #endif  // CENTURION_TIMER_HEADER
 // #include "centurion/system/cpu.hpp"
@@ -53497,10 +54899,131 @@ template <typename T>
 #include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
+/// \addtogroup system
+/// \{
+
+namespace cen {
+
+/**
+ * \class simd_block
+ *
+ * \brief Represents a block of memory, allocated in SIMD-friendly way.
+ *
+ * \since 5.2.0
+ *
+ * \headerfile cpu.hpp
+ */
+class simd_block final
+{
+ public:
+  /**
+   * \brief Allocates a block of SIMD-friendly memory.
+   *
+   * \note The allocation might fail, in which case the internal pointer is
+   * null.
+   *
+   * \param size the size of the memory block.
+   *
+   * \since 5.2.0
+   */
+  explicit simd_block(const std::size_t size) noexcept
+      : m_data{SDL_SIMDAlloc(size)}
+  {}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Reallocates the associated memory block.
+   *
+   * \param size the size of the new memory block.
+   *
+   * \since 5.2.0
+   */
+  void reallocate(const std::size_t size) noexcept
+  {
+    // We temporarily release the ownership of the pointer in order to avoid a
+    // double delete, since the reallocation will free the previously allocated
+    // memory.
+    auto* ptr = m_data.release();
+    m_data.reset(SDL_SIMDRealloc(ptr, size));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Returns a pointer to the associated memory block.
+   *
+   * \return a pointer to the memory block.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> void*
+  {
+    return m_data.get();
+  }
+
+  /**
+   * \copydoc data()
+   */
+  [[nodiscard]] auto data() const noexcept -> const void*
+  {
+    return m_data.get();
+  }
+
+  /**
+   * \brief Returns a reinterpreted pointer to the associated memory block.
+   *
+   * \warning It's your responsibility to make sure to avoid any potential
+   * undefined behaviour using this function, since it uses `reinterpret_cast`.
+   *
+   * \tparam T the type used when reinterpreting the internal pointer.
+   *
+   * \return a pointer to the associated memory block.
+   *
+   * \since 5.2.0
+   */
+  template <typename T>
+  [[nodiscard]] auto cast_data() noexcept -> T*
+  {
+    return reinterpret_cast<T*>(data());
+  }
+
+  /**
+   * \copydoc cast_data()
+   */
+  template <typename T>
+  [[nodiscard]] auto cast_data() const noexcept -> const T*
+  {
+    return reinterpret_cast<const T*>(data());
+  }
+
+  /**
+   * \brief Indicates whether or not the internal pointer isn't null.
+   *
+   * \return `true` if the internal pointer is non-null; `false` otherwise.
+   *
+   * \since 5.2.0
+   */
+  explicit operator bool() const noexcept
+  {
+    return m_data.operator bool();
+  }
+
+ private:
+  struct deleter final
+  {
+    void operator()(void* ptr) noexcept
+    {
+      SDL_SIMDFree(ptr);
+    }
+  };
+  std::unique_ptr<void, deleter> m_data;
+};
+
+}  // namespace cen
+
 /**
  * \namespace cen::cpu
- *
- * \ingroup system
  *
  * \brief Provides methods for obtaining information about the processor.
  *
@@ -53509,9 +55032,6 @@ template <typename T>
  * \headerfile cpu.hpp
  */
 namespace cen::cpu {
-
-/// \addtogroup system
-/// \{
 
 /**
  * \brief Returns the CPU L1 cache line size.
@@ -53748,125 +55268,9 @@ namespace cen::cpu {
   return SDL_BYTEORDER == SDL_LIL_ENDIAN;
 }
 
-/**
- * \class simd_block
- *
- * \brief Represents a block of memory, allocated in SIMD-friendly way.
- *
- * \since 5.2.0
- *
- * \headerfile cpu.hpp
- */
-class simd_block final
-{
- public:
-  /**
-   * \brief Allocates a block of SIMD-friendly memory.
-   *
-   * \note The allocation might fail, in which case the internal pointer is
-   * null.
-   *
-   * \param size the size of the memory block.
-   *
-   * \since 5.2.0
-   */
-  explicit simd_block(const std::size_t size) noexcept
-      : m_data{SDL_SIMDAlloc(size)}
-  {}
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /**
-   * \brief Reallocates the associated memory block.
-   *
-   * \param size the size of the new memory block.
-   *
-   * \since 5.2.0
-   */
-  void reallocate(const std::size_t size) noexcept
-  {
-    // We temporarily release the ownership of the pointer in order to avoid a
-    // double delete, since the reallocation will free the previously allocated
-    // memory.
-    auto* ptr = m_data.release();
-    m_data.reset(SDL_SIMDRealloc(ptr, size));
-  }
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /**
-   * \brief Returns a pointer to the associated memory block.
-   *
-   * \return a pointer to the memory block.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto data() noexcept -> void*
-  {
-    return m_data.get();
-  }
-
-  /**
-   * \copydoc data()
-   */
-  [[nodiscard]] auto data() const noexcept -> const void*
-  {
-    return m_data.get();
-  }
-
-  /**
-   * \brief Returns a reinterpreted pointer to the associated memory block.
-   *
-   * \warning It's your responsibility to make sure to avoid any potential
-   * undefined behaviour using this function, since it uses `reinterpret_cast`.
-   *
-   * \tparam T the type used when reinterpreting the internal pointer.
-   *
-   * \return a pointer to the associated memory block.
-   *
-   * \since 5.2.0
-   */
-  template <typename T>
-  [[nodiscard]] auto cast_data() noexcept -> T*
-  {
-    return reinterpret_cast<T*>(data());
-  }
-
-  /**
-   * \copydoc cast_data()
-   */
-  template <typename T>
-  [[nodiscard]] auto cast_data() const noexcept -> const T*
-  {
-    return reinterpret_cast<const T*>(data());
-  }
-
-  /**
-   * \brief Indicates whether or not the internal pointer isn't null.
-   *
-   * \return `true` if the internal pointer is non-null; `false` otherwise.
-   *
-   * \since 5.2.0
-   */
-  explicit operator bool() const noexcept
-  {
-    return m_data.operator bool();
-  }
-
- private:
-  struct deleter final
-  {
-    void operator()(void* ptr) noexcept
-    {
-      SDL_SIMDFree(ptr);
-    }
-  };
-  std::unique_ptr<void, deleter> m_data;
-};
+}  // namespace cen::cpu
 
 /// \} End of group system
-
-}  // namespace cen::cpu
 
 #endif  // CENTURION_CPU_HEADER
 // #include "centurion/system/locale.hpp"
@@ -53893,9 +55297,39 @@ class simd_block final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -53910,7 +55344,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -53919,6 +55353,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -53933,6 +55370,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -54183,9 +55622,39 @@ class locale final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -54200,7 +55669,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -54209,6 +55678,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -54223,6 +55695,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -54408,10 +55882,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -54432,7 +55906,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -54470,7 +55944,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -54505,9 +55979,39 @@ class pointer_manager final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -54522,7 +56026,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -54531,6 +56035,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -54545,6 +56052,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -54570,6 +56079,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -54583,6 +56095,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -54767,6 +56281,9 @@ class mix_error final : public cen_error
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -54974,6 +56491,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -54982,9 +56502,8 @@ namespace literals {
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -54999,7 +56518,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -56087,7 +57606,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -56106,7 +57625,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -56247,7 +57766,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -56615,10 +58134,11 @@ inline auto open_url(const std::string& url) noexcept -> bool
 
 #include <SDL.h>
 
+/// \addtogroup system
+/// \{
+
 /**
  * \namespace cen::ram
- *
- * \ingroup system
  *
  * \brief Contains functions related to the system memory.
  *
@@ -56627,9 +58147,6 @@ inline auto open_url(const std::string& url) noexcept -> bool
  * \headerfile ram.hpp
  */
 namespace cen::ram {
-
-/// \addtogroup system
-/// \{
 
 /**
  * \brief Returns the total amount of system RAM in megabytes.
@@ -56655,9 +58172,9 @@ namespace cen::ram {
   return amount_mb() / 1'000;
 }
 
-/// \} End of group system
-
 }  // namespace cen::ram
+
+/// \} End of group system
 
 #endif  // CENTURION_RAM_HEADER
 // #include "centurion/system/shared_object.hpp"
@@ -56692,6 +58209,9 @@ namespace cen::ram {
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -56705,6 +58225,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -57025,9 +58547,39 @@ class shared_object final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -57042,7 +58594,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -57051,6 +58603,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -57065,6 +58620,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -57250,6 +58807,9 @@ class mix_error final : public cen_error
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -57456,6 +59016,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -57475,6 +59038,9 @@ namespace literals {
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -57681,6 +59247,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -58683,6 +60252,9 @@ template <std::size_t bufferSize = 16, typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -58697,6 +60269,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -58709,9 +60283,8 @@ using zstring = char*;
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -58726,7 +60299,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -59593,6 +61166,9 @@ template <std::size_t bufferSize = 16, typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -59799,6 +61375,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -62285,9 +63864,39 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -62302,7 +63911,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -62311,6 +63920,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -62325,6 +63937,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -62510,10 +64124,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -62534,7 +64148,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -62572,7 +64186,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -62608,7 +64222,7 @@ class pointer_manager final
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 #ifndef CENTURION_DETAIL_TO_STRING_HEADER
@@ -62848,6 +64462,39 @@ template <typename To, typename From>
 
 #endif  // CENTURION_CAST_HEADER
 
+// #include "../misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -62867,10 +64514,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -63179,6 +64823,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -63192,8 +64866,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -63208,6 +64882,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -63447,6 +65123,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -63475,6 +65181,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -63492,32 +65220,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -63672,7 +65375,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/max.hpp"
 #ifndef CENTURION_DETAIL_MAX_HEADER
@@ -63724,6 +65427,8 @@ template <typename T>
 
 // #include "../misc/cast.hpp"
 
+// #include "../misc/sfinae.hpp"
+
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
@@ -63741,6 +65446,36 @@ namespace cen {
 
 /// \addtogroup math
 /// \{
+
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
 
 /**
  * \struct basic_area
@@ -63770,6 +65505,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -63787,32 +65544,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -63968,11 +65700,13 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
 
 
 namespace cen {
@@ -63993,10 +65727,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -64305,6 +66036,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -64318,8 +66079,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -64334,6 +66095,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -64520,9 +66283,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
@@ -65098,6 +66859,39 @@ class basic_rect final
 /// \{
 
 /**
+ * \brief Creates a rectangle with automatically deduced precision.
+ *
+ * \note The only supported precisions for rectangles are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type.
+ *
+ * \param x the x-coordinate of the rectangle.
+ * \param y the y-coordinate of the rectangle.
+ * \param width the width of the rectangle.
+ * \param height the height of the rectangle.
+ *
+ * \return a rectangle with the specified position and size.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto rect(const T x,
+                                  const T y,
+                                  const T width,
+                                  const T height) noexcept
+    -> basic_rect<typename rect_traits<T>::value_type>
+{
+  using value_type = typename rect_traits<T>::value_type;
+  return basic_rect<value_type>{static_cast<value_type>(x),
+                                static_cast<value_type>(y),
+                                static_cast<value_type>(width),
+                                static_cast<value_type>(height)};
+}
+
+/**
  * \brief Indicates whether or not the two rectangles intersect.
  *
  * \details This function does *not* consider rectangles with overlapping
@@ -65318,9 +67112,39 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -65335,7 +67159,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -65344,6 +67168,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -65358,6 +67185,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -65383,6 +67212,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -65396,6 +67228,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -65579,9 +67413,8 @@ class mix_error final : public cen_error
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -65596,7 +67429,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -65607,7 +67440,8 @@ using not_null = T;
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -65622,7 +67456,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -65933,7 +67767,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -65952,7 +67786,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -66093,7 +67927,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -66259,7 +68093,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -66280,7 +68114,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -66296,7 +68130,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -66323,7 +68157,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -66340,7 +68174,7 @@ class basic_surface final
   /**
    * \see with_format()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -66362,7 +68196,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
@@ -66373,7 +68207,7 @@ class basic_surface final
   /**
    * \see from_bmp()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
   {
     return from_bmp(file.c_str());
@@ -66921,7 +68755,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;
@@ -67151,7 +68985,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
@@ -67174,7 +69008,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_cursor(const surface& surface, const ipoint hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
@@ -67197,7 +69031,7 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_cursor(SDL_Cursor* cursor) noexcept : m_cursor{cursor}
   {}
 
@@ -67210,7 +69044,7 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_cursor(const cursor& owner) noexcept : m_cursor{owner.get()}
   {}
 
@@ -67359,7 +69193,7 @@ class basic_cursor final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_cursor != nullptr;
@@ -69956,7 +71790,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -69973,7 +71807,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -69996,7 +71830,7 @@ class basic_texture final
    *
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
@@ -70014,7 +71848,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -70039,7 +71873,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -70076,7 +71910,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const not_null<czstring> path,
                                       const pixel_format format)
@@ -70112,7 +71946,7 @@ class basic_texture final
    * \see streaming()
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
                                       const pixel_format format)
@@ -70406,7 +72240,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
     return m_texture.release();
@@ -70438,7 +72272,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;
@@ -72811,7 +74645,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -72858,7 +74692,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -72875,7 +74709,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -72886,7 +74720,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -73402,7 +75236,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -73646,7 +75480,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return SDL_WINDOW_HIDDEN;
@@ -73840,7 +75674,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -74687,9 +76521,39 @@ enum class attribute
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -74704,7 +76568,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -74713,6 +76577,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -74727,6 +76594,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -74912,10 +76781,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -74936,7 +76805,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -74974,7 +76843,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -75020,9 +76889,39 @@ class pointer_manager final
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -75037,7 +76936,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -75046,6 +76945,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -75060,6 +76962,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -75425,9 +77329,39 @@ template <typename T>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -75442,7 +77376,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -75451,6 +77385,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -75465,6 +77402,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -75650,10 +77589,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -75674,7 +77613,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -75712,7 +77651,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -76194,6 +78133,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -76222,6 +78191,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -76239,32 +78230,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -76419,7 +78385,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/max.hpp"
 #ifndef CENTURION_DETAIL_MAX_HEADER
@@ -76471,6 +78437,39 @@ template <typename T>
 
 // #include "../misc/cast.hpp"
 
+// #include "../misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
@@ -76488,6 +78487,36 @@ namespace cen {
 
 /// \addtogroup math
 /// \{
+
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
 
 /**
  * \struct basic_area
@@ -76517,6 +78546,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -76534,32 +78585,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -76715,11 +78741,13 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
 
 
 namespace cen {
@@ -76740,10 +78768,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -77052,6 +79077,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -77065,8 +79120,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -77081,6 +79136,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -77267,9 +79324,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
@@ -77845,6 +79900,39 @@ class basic_rect final
 /// \{
 
 /**
+ * \brief Creates a rectangle with automatically deduced precision.
+ *
+ * \note The only supported precisions for rectangles are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type.
+ *
+ * \param x the x-coordinate of the rectangle.
+ * \param y the y-coordinate of the rectangle.
+ * \param width the width of the rectangle.
+ * \param height the height of the rectangle.
+ *
+ * \return a rectangle with the specified position and size.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto rect(const T x,
+                                  const T y,
+                                  const T width,
+                                  const T height) noexcept
+    -> basic_rect<typename rect_traits<T>::value_type>
+{
+  using value_type = typename rect_traits<T>::value_type;
+  return basic_rect<value_type>{static_cast<value_type>(x),
+                                static_cast<value_type>(y),
+                                static_cast<value_type>(width),
+                                static_cast<value_type>(height)};
+}
+
+/**
  * \brief Indicates whether or not the two rectangles intersect.
  *
  * \details This function does *not* consider rectangles with overlapping
@@ -78065,9 +80153,39 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -78082,7 +80200,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -78091,6 +80209,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -78105,6 +80226,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -78130,6 +80253,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -78143,6 +80269,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -78324,9 +80452,8 @@ class mix_error final : public cen_error
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -78341,7 +80468,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -78369,6 +80496,9 @@ using not_null = T;
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -78576,6 +80706,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -79462,7 +81595,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -79481,7 +81614,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -79622,7 +81755,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -79736,7 +81869,8 @@ class basic_pixel_format_info final
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -79751,7 +81885,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -79947,7 +82081,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -79968,7 +82102,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -79984,7 +82118,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -80011,7 +82145,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -80028,7 +82162,7 @@ class basic_surface final
   /**
    * \see with_format()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -80050,7 +82184,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
@@ -80061,7 +82195,7 @@ class basic_surface final
   /**
    * \see from_bmp()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
   {
     return from_bmp(file.c_str());
@@ -80609,7 +82743,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;
@@ -80840,7 +82974,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -80887,7 +83021,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -80904,7 +83038,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -80915,7 +83049,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -81431,7 +83565,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -81675,7 +83809,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return SDL_WINDOW_HIDDEN;
@@ -81869,7 +84003,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -82268,6 +84402,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -82296,6 +84460,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -82313,32 +84499,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -82494,6 +84655,9 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -82508,6 +84672,8 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
@@ -82516,9 +84682,8 @@ using zstring = char*;
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -82533,7 +84698,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -83125,7 +85290,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -83144,7 +85309,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -83285,7 +85450,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -84336,7 +86501,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Window, typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_renderer(const Window& window,
                           const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -84347,7 +86512,7 @@ class basic_renderer final
     }
   }
 
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_renderer(const renderer& owner) noexcept
       : m_renderer{owner.get()}
   {}
@@ -84698,7 +86863,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
@@ -84716,7 +86881,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
@@ -84735,7 +86900,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
   void draw_point_t(const basic_point<U>& point) noexcept
   {
     draw_point(translate(point));
@@ -84755,7 +86920,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
   void draw_circle_t(const basic_point<U>& position,
                      const float radius) noexcept
   {
@@ -84775,7 +86940,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void fill_circle_t(const fpoint center, const float radius)
   {
     fill_circle(translate(center), radius);
@@ -85611,7 +87776,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -85636,7 +87801,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -85665,7 +87830,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -85694,7 +87859,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
@@ -85728,7 +87893,7 @@ class basic_renderer final
             typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -85761,7 +87926,7 @@ class basic_renderer final
             typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -85788,7 +87953,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -85803,7 +87968,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -85825,7 +87990,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -85849,7 +88014,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args, typename BB = B, detail::is_owner<BB> = true>
+  template <typename... Args, typename BB = B, detail::is_owner<BB> = 0>
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
@@ -85870,7 +88035,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
@@ -85887,7 +88052,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -85896,7 +88061,7 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -85913,7 +88078,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto has_font(const std::size_t id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -86448,7 +88613,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -86505,7 +88670,7 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
       -> basic_point<T>
   {
@@ -86518,7 +88683,7 @@ class basic_renderer final
     return basic_point<T>{x, y};
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
       -> basic_rect<T>
   {
@@ -87228,7 +89393,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -87249,7 +89414,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -87265,7 +89430,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -87292,7 +89457,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -87309,7 +89474,7 @@ class basic_surface final
   /**
    * \see with_format()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -87331,7 +89496,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
@@ -87342,7 +89507,7 @@ class basic_surface final
   /**
    * \see from_bmp()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
   {
     return from_bmp(file.c_str());
@@ -87890,7 +90055,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;
@@ -88137,7 +90302,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -88154,7 +90319,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -88177,7 +90342,7 @@ class basic_texture final
    *
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
@@ -88195,7 +90360,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -88220,7 +90385,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -88257,7 +90422,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const not_null<czstring> path,
                                       const pixel_format format)
@@ -88293,7 +90458,7 @@ class basic_texture final
    * \see streaming()
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
                                       const pixel_format format)
@@ -88587,7 +90752,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
     return m_texture.release();
@@ -88619,7 +90784,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;
@@ -89303,9 +91468,39 @@ constexpr auto operator""_uni(const unsigned long long int i) noexcept
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -89320,7 +91515,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -89329,6 +91524,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -89343,6 +91541,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -89536,9 +91736,39 @@ template <typename T>
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -89553,7 +91783,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -89562,6 +91792,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -89576,6 +91809,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -89761,10 +91996,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -89785,7 +92020,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -89823,7 +92058,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();
@@ -90305,6 +92540,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -90333,6 +92598,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -90350,32 +92637,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -90530,7 +92792,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/max.hpp"
 #ifndef CENTURION_DETAIL_MAX_HEADER
@@ -90582,6 +92844,39 @@ template <typename T>
 
 // #include "../misc/cast.hpp"
 
+// #include "../misc/sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
@@ -90599,6 +92894,36 @@ namespace cen {
 
 /// \addtogroup math
 /// \{
+
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
 
 /**
  * \struct basic_area
@@ -90628,6 +92953,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -90645,32 +92992,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.
@@ -90826,11 +93148,13 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../detail/to_string.hpp"
 
 // #include "../misc/cast.hpp"
+
+// #include "../misc/sfinae.hpp"
 
 
 namespace cen {
@@ -90851,10 +93175,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
@@ -91163,6 +93484,36 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *
@@ -91176,8 +93527,8 @@ class basic_point final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto distance(const basic_point<T>& from,
-                                   const basic_point<T>& to) noexcept ->
+[[nodiscard]] auto distance(const basic_point<T>& from,
+                            const basic_point<T>& to) noexcept ->
     typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -91192,6 +93543,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
@@ -91378,9 +93731,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
@@ -91956,6 +94307,39 @@ class basic_rect final
 /// \{
 
 /**
+ * \brief Creates a rectangle with automatically deduced precision.
+ *
+ * \note The only supported precisions for rectangles are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type.
+ *
+ * \param x the x-coordinate of the rectangle.
+ * \param y the y-coordinate of the rectangle.
+ * \param width the width of the rectangle.
+ * \param height the height of the rectangle.
+ *
+ * \return a rectangle with the specified position and size.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto rect(const T x,
+                                  const T y,
+                                  const T width,
+                                  const T height) noexcept
+    -> basic_rect<typename rect_traits<T>::value_type>
+{
+  using value_type = typename rect_traits<T>::value_type;
+  return basic_rect<value_type>{static_cast<value_type>(x),
+                                static_cast<value_type>(y),
+                                static_cast<value_type>(width),
+                                static_cast<value_type>(height)};
+}
+
+/**
  * \brief Indicates whether or not the two rectangles intersect.
  *
  * \details This function does *not* consider rectangles with overlapping
@@ -92176,9 +94560,39 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup misc
+/// \{
+
+// clang-format off
+
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
 
 namespace cen {
 
@@ -92193,7 +94607,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -92202,6 +94616,9 @@ using not_null = T;
 
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /**
  * \typedef czstring
@@ -92216,6 +94633,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -92241,6 +94660,9 @@ using zstring = char*;
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -92254,6 +94676,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -92435,9 +94859,8 @@ class mix_error final : public cen_error
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
+// #include "sfinae.hpp"
 
-#include <type_traits>  // enable_if_t, is_pointer_v
 
 namespace cen {
 
@@ -92452,7 +94875,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen
@@ -92480,6 +94903,9 @@ using not_null = T;
 #include <SDL.h>
 
 namespace cen {
+
+/// \addtogroup misc
+/// \{
 
 /// \name Integer aliases
 /// \{
@@ -92687,6 +95113,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER
@@ -93573,7 +96002,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -93592,7 +96021,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -93733,7 +96162,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;
@@ -93847,7 +96276,8 @@ class basic_pixel_format_info final
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+// #include "sfinae.hpp"
+
 
 namespace cen {
 
@@ -93862,7 +96292,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen
@@ -94058,7 +96488,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -94079,7 +96509,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -94095,7 +96525,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -94122,7 +96552,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -94139,7 +96569,7 @@ class basic_surface final
   /**
    * \see with_format()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -94161,7 +96591,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
@@ -94172,7 +96602,7 @@ class basic_surface final
   /**
    * \see from_bmp()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
   {
     return from_bmp(file.c_str());
@@ -94720,7 +97150,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;
@@ -94951,7 +97381,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -94998,7 +97428,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -95015,7 +97445,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -95026,7 +97456,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -95542,7 +97972,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -95786,7 +98216,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return SDL_WINDOW_HIDDEN;
@@ -95980,7 +98410,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -96131,6 +98561,9 @@ template <typename T>
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -96144,6 +98577,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 
@@ -96484,7 +98919,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -96531,7 +98966,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -96548,7 +98983,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -96559,7 +98994,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -97075,7 +99510,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -97319,7 +99754,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return SDL_WINDOW_HIDDEN;
@@ -97513,7 +99948,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -97705,7 +100140,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window, typename BB = B, detail::is_owner<BB> = true>
+  template <typename Window, typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_renderer(const Window& window,
                           const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -97716,7 +100151,7 @@ class basic_renderer final
     }
   }
 
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_renderer(const renderer& owner) noexcept
       : m_renderer{owner.get()}
   {}
@@ -98067,7 +100502,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
@@ -98085,7 +100520,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = true>
+  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
@@ -98104,7 +100539,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
   void draw_point_t(const basic_point<U>& point) noexcept
   {
     draw_point(translate(point));
@@ -98124,7 +100559,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = true>
+  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
   void draw_circle_t(const basic_point<U>& position,
                      const float radius) noexcept
   {
@@ -98144,7 +100579,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void fill_circle_t(const fpoint center, const float radius)
   {
     fill_circle(translate(center), radius);
@@ -98980,7 +101415,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -99005,7 +101440,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -99034,7 +101469,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -99063,7 +101498,7 @@ class basic_renderer final
   template <typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
@@ -99097,7 +101532,7 @@ class basic_renderer final
             typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -99130,7 +101565,7 @@ class basic_renderer final
             typename P,
             typename U,
             typename BB = B,
-            detail::is_owner<BB> = true>
+            detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -99157,7 +101592,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -99172,7 +101607,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -99194,7 +101629,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -99218,7 +101653,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args, typename BB = B, detail::is_owner<BB> = true>
+  template <typename... Args, typename BB = B, detail::is_owner<BB> = 0>
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
@@ -99239,7 +101674,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
@@ -99256,7 +101691,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -99265,7 +101700,7 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -99282,7 +101717,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto has_font(const std::size_t id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -99817,7 +102252,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -99874,7 +102309,7 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
       -> basic_point<T>
   {
@@ -99887,7 +102322,7 @@ class basic_renderer final
     return basic_point<T>{x, y};
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
       -> basic_rect<T>
   {

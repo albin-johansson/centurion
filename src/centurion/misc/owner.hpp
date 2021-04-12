@@ -1,7 +1,7 @@
 #ifndef CENTURION_OWNER_HEADER
 #define CENTURION_OWNER_HEADER
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include "sfinae.hpp"
 
 namespace cen {
 
@@ -16,7 +16,7 @@ namespace cen {
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
 }  // namespace cen

@@ -8,28 +8,100 @@
 
 #include <cassert>  // assert
 
-namespace cen {
-
 /// \addtogroup core
 /// \{
 
-/// \name Centurion version queries
-/// \{
-
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_MINOR 0
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_PATCH 0
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of
+ * major/minor/patch numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number
+ * would be 8402.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
 
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_NUMBER                         \
   CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
                                 CENTURION_VERSION_MINOR, \
                                 CENTURION_VERSION_PATCH)
 
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based
+ * on the Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
+ * where you use it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
 #define CENTURION_VERSION_AT_LEAST(x, y, z) \
   CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
 
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are default-initialized to the current
+ * Centurion version values.
+ *
+ * \version 6.0.0
+ *
+ * \headerfile version.hpp
+ */
 struct version final
 {
   int major{CENTURION_VERSION_MAJOR};
@@ -37,6 +109,21 @@ struct version final
   int patch{CENTURION_VERSION_PATCH};
 };
 
+/**
+ * \brief Indicates whether or not the current Centurion version is at least
+ * equal to the specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version;
+ * `false` otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] constexpr auto version_at_least(const int major,
                                               const int minor,
                                               const int patch) noexcept -> bool
@@ -171,8 +258,8 @@ struct version final
 
 /// \} End of SDL version queries
 
-/// \} End of group core
-
 }  // namespace cen
+
+/// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER

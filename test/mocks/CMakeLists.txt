@@ -15,14 +15,6 @@ set(SOURCE_FILES
 
     event/event_test.cpp
 
-    graphics/gl/gl_core_test.cpp
-
-    graphics/message_box_test.cpp
-    graphics/renderer_test.cpp
-    graphics/surface_test.cpp
-    graphics/window_test.cpp
-    graphics/window_utils_test.cpp
-
     input/controller_test.cpp
     input/haptic_test.cpp
     input/joystick_test.cpp
@@ -39,7 +31,15 @@ set(SOURCE_FILES
     thread/condition_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
-    thread/semaphore_test.cpp)
+    thread/semaphore_test.cpp
+
+    video/gl/gl_core_test.cpp
+
+    video/message_box_test.cpp
+    video/renderer_test.cpp
+    video/surface_test.cpp
+    video/window_test.cpp
+    video/window_utils_test.cpp)
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(SOURCE_FILES

@@ -5,10 +5,11 @@
 
 #include "../misc/time.hpp"
 
+/// \addtogroup system
+/// \{
+
 /**
  * \namespace cen::counter
- *
- * \ingroup system
  *
  * \brief Provides timing utilities.
  *
@@ -17,9 +18,6 @@
  * \headerfile counter.hpp
  */
 namespace cen::counter {
-
-/// \addtogroup system
-/// \{
 
 /**
  * \brief Returns the frequency of the system high-performance counter.
@@ -81,8 +79,8 @@ template <typename T>
 
 // clang-format on
 
-/// \} End of group system
-
 }  // namespace cen::counter
+
+/// \} End of group system
 
 #endif  // CENTURION_TIMER_HEADER

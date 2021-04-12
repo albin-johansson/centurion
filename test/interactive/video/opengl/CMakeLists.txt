@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-interactive-graphics-opengl LANGUAGES CXX)
+project(centurion-test-interactive-video-opengl LANGUAGES CXX)
 
 list(APPEND CMAKE_PREFIX_PATH ${CEN_LIBRARY_DIR}/glew)
 list(APPEND CMAKE_PREFIX_PATH $ENV{GLEW_LIBRARIES})

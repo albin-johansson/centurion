@@ -341,6 +341,8 @@ class basic_point final
   point_type m_point{0, 0};
 };
 
+/// \name Point-related functions
+/// \{
 /**
  * \brief Returns the distance between two points.
  *
@@ -370,6 +372,8 @@ template <typename T>
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
+
+/// \} End of point-related functions
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {

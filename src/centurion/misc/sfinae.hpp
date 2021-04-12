@@ -5,6 +5,9 @@
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 // clang-format off
 
 template <typename T>
@@ -20,6 +23,8 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group misc
 
 }  // namespace cen
 

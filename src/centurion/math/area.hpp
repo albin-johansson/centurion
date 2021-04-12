@@ -87,7 +87,7 @@ struct basic_area final
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto make_area(const T width, const T height) noexcept
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
     -> basic_area<T>
 {
   return {width, height};

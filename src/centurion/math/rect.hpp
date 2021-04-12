@@ -5,12 +5,13 @@
 
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, is_convertible_v, conditional_t, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "../detail/max.hpp"
 #include "../detail/min.hpp"
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
+#include "../misc/sfinae.hpp"
 #include "area.hpp"
 #include "point.hpp"
 
@@ -37,9 +38,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:

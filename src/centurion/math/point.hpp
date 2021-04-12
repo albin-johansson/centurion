@@ -6,7 +6,7 @@
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, conditional_t, is_convertible_v, ...
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
@@ -30,10 +30,7 @@ namespace cen {
  *
  * \headerfile point.hpp
  */
-template <typename T,
-          std::enable_if_t<std::is_convertible_v<T, int> ||
-                               std::is_convertible_v<T, float>,
-                           int> = 0>
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:

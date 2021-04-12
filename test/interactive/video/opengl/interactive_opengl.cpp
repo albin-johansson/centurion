@@ -12,7 +12,7 @@ auto run() -> int
   cen::gl::set(cen::gl::attribute::double_buffer, 1);
 
   cen::window window{"Centurion OpenGL Demo",
-                     {800, 600},
+                     cen::window::default_size(),
                      SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN};
   cen::gl::context context{window};
 

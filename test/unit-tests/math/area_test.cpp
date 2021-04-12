@@ -140,9 +140,9 @@ TEST(Area, Serialization)
 {
   const auto width = 123;
   const auto height = 845;
-  serialize_to("area.binary", cen::iarea{width, height});
+  serialize_save("area.binary", cen::iarea{width, height});
 
-  const auto other = serialize_from<cen::iarea>("area.binary");
+  const auto other = serialize_create<cen::iarea>("area.binary");
   EXPECT_EQ(width, other.width);
   EXPECT_EQ(height, other.height);
 }

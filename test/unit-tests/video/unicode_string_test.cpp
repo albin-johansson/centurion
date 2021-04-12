@@ -236,9 +236,9 @@ TEST(UnicodeString, InequalityOperator)
 TEST(UnicodeString, Serialize)
 {
   cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
-  serialize_to("unicode_string.binary", string);
+  serialize_save("unicode_string.binary", string);
 
   const auto other =
-      serialize_from<cen::unicode_string>("unicode_string.binary");
+      serialize_create<cen::unicode_string>("unicode_string.binary");
   EXPECT_EQ(string, other);
 }

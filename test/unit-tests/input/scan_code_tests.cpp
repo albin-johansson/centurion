@@ -291,8 +291,8 @@ TEST(ScanCode, Constants)
 
 TEST(ScanCode, Serialization)
 {
-  serialize_to("scan_code.binary", cen::scancodes::u);
+  serialize_save("scan_code.binary", cen::scancodes::u);
 
-  const auto code = serialize_from<cen::scan_code>("scan_code.binary");
+  const auto code = serialize_create<cen::scan_code>("scan_code.binary");
   EXPECT_EQ(cen::scancodes::u, code);
 }

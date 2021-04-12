@@ -324,8 +324,8 @@ TEST(KeyCode, Constants)
 
 TEST(KeyCode, Serialization)
 {
-  serialize_to("key_code.binary", cen::keycodes::enter);
+  serialize_save("key_code.binary", cen::keycodes::enter);
 
-  const auto other = serialize_from<cen::key_code>("key_code.binary");
+  const auto other = serialize_create<cen::key_code>("key_code.binary");
   EXPECT_EQ(cen::keycodes::enter, other);
 }

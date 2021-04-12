@@ -298,9 +298,9 @@ TEST(Color, Serialization)
   const auto green = 0xDE;
   const auto blue = 0xC3;
   const auto alpha = 0x8F;
-  serialize_to("color.binary", cen::color{red, green, blue, alpha});
+  serialize_save("color.binary", cen::color{red, green, blue, alpha});
 
-  const auto color = serialize_from<cen::color>("color.binary");
+  const auto color = serialize_create<cen::color>("color.binary");
   EXPECT_EQ(red, color.red());
   EXPECT_EQ(green, color.green());
   EXPECT_EQ(blue, color.blue());

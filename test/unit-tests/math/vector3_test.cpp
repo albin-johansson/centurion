@@ -98,9 +98,9 @@ TEST(Vector3, Serialization)
   const auto x = 7842;
   const auto y = 3234;
   const auto z = -1295;
-  serialize_to("vector3.binary", int3{x, y, z});
+  serialize_save("vector3.binary", int3{x, y, z});
 
-  const auto vector = serialize_from<int3>("vector3.binary");
+  const auto vector = serialize_create<int3>("vector3.binary");
   EXPECT_EQ(x, vector.x);
   EXPECT_EQ(y, vector.y);
   EXPECT_EQ(z, vector.z);

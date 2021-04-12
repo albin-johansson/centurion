@@ -578,9 +578,9 @@ TEST(Rect, Serialization)
   const auto y = 3348;
   const auto width = 412;
   const auto height = 7421;
-  serialize_to("rect.binary", cen::irect{x, y, width, height});
+  serialize_save("rect.binary", cen::irect{x, y, width, height});
 
-  const auto rect = serialize_from<cen::irect>("rect.binary");
+  const auto rect = serialize_create<cen::irect>("rect.binary");
   EXPECT_EQ(x, rect.x());
   EXPECT_EQ(y, rect.y());
   EXPECT_EQ(width, rect.width());

@@ -202,9 +202,9 @@ TEST(Point, Serialization)
 {
   const auto x = 839.9f;
   const auto y = 931.5f;
-  serialize_to("point.binary", cen::fpoint{x, y});
+  serialize_save("point.binary", cen::fpoint{x, y});
 
-  const auto point = serialize_from<cen::fpoint>("point.binary");
+  const auto point = serialize_create<cen::fpoint>("point.binary");
   EXPECT_EQ(x, point.x());
   EXPECT_EQ(y, point.y());
 }

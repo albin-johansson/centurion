@@ -5,6 +5,9 @@
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /// \name Integer aliases
 /// \{
 
@@ -211,6 +214,9 @@ namespace literals {
 }
 
 }  // namespace literals
+
+/// \} End of group misc
+
 }  // namespace cen
 
 #endif  // CENTURION_INTEGERS_HEADER

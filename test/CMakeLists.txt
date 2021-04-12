@@ -17,7 +17,7 @@ download_project(PROJ googletest
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
-add_subdirectory(unittests)
+add_subdirectory(unit-tests)
 add_subdirectory(mocks)
 
 if (CEN_INTERACTIVE)

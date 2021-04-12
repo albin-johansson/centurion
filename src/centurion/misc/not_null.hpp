@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include <type_traits>  // enable_if_t, is_pointer_v
+#include "sfinae.hpp"
 
 namespace cen {
 
@@ -18,7 +18,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+template <typename T, enable_if_pointer_v<T> = 0>
 using not_null = T;
 
 }  // namespace cen

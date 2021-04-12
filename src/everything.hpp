@@ -120,6 +120,7 @@
 #include "centurion/misc/log.hpp"
 #include "centurion/misc/not_null.hpp"
 #include "centurion/misc/owner.hpp"
+#include "centurion/misc/sfinae.hpp"
 #include "centurion/misc/time.hpp"
 #include "centurion/system/battery.hpp"
 #include "centurion/system/byte_order.hpp"

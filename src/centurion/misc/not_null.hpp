@@ -1,8 +1,6 @@
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
 
-#include <SDL.h>
-
 #include "sfinae.hpp"
 
 namespace cen {

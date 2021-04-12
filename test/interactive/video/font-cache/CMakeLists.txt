@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-interactive-graphics-fontcache LANGUAGES CXX)
+project(centurion-test-interactive-video-fontcache LANGUAGES CXX)
 
 cen_create_executable(InteractiveFontCache "interactive_font_cache.cpp")
 cen_set_compiler_options(InteractiveFontCache)

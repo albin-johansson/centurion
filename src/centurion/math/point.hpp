@@ -10,6 +10,7 @@
 
 #include "../detail/to_string.hpp"
 #include "../misc/cast.hpp"
+#include "../misc/sfinae.hpp"
 
 namespace cen {
 
@@ -343,6 +344,34 @@ class basic_point final
 
 /// \name Point-related functions
 /// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply two doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than
+ * `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto make_point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x),
+                                 static_cast<value_type>(y)};
+}
+
 /**
  * \brief Returns the distance between two points.
  *

@@ -122,8 +122,8 @@ class interactive_font_cache final
     m_renderer.render_text(m_cache, m_text, {50, 150});
     m_renderer.render_text(m_cache, m_unicodeString, {50, 100});
 
-    m_renderer.render(m_cache.get_stored(first_id), cen::ipoint{50, 200});
-    m_renderer.render(m_cache.get_stored(second_id), cen::ipoint{300, 400});
+    m_renderer.render(m_cache.get_stored(first_id), cen::point(50, 200));
+    m_renderer.render(m_cache.get_stored(second_id), cen::point(300, 400));
 
     m_renderer.present();
   }

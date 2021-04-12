@@ -13,6 +13,36 @@ namespace cen {
 /// \addtogroup math
 /// \{
 
+template <typename T>
+struct basic_area;
+
+/**
+ * \typedef iarea
+ *
+ * \brief An alias for `int` areas.
+ *
+ * \since 4.1.0
+ */
+using iarea = basic_area<int>;
+
+/**
+ * \typedef farea
+ *
+ * \brief An alias for `float` areas.
+ *
+ * \since 4.1.0
+ */
+using farea = basic_area<float>;
+
+/**
+ * \typedef darea
+ *
+ * \brief An alias for `double` areas.
+ *
+ * \since 4.1.0
+ */
+using darea = basic_area<double>;
+
 /**
  * \struct basic_area
  *
@@ -41,6 +71,28 @@ struct basic_area final
   static_assert(!std::is_same_v<T, bool>);
 };
 
+/// \name Area-related functions
+/// \{
+
+/**
+ * \brief Creates an area instance with automatically deduced precision.
+ *
+ * \tparam T the deduced type of the width and height values.
+ *
+ * \param width the width of the area.
+ * \param height the height of the area.
+ *
+ * \return an area instance with the specified width and height.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto make_area(const T width, const T height) noexcept
+    -> basic_area<T>
+{
+  return {width, height};
+}
+
 /**
  * \brief Returns the size (width x height) of an area.
  *
@@ -58,32 +110,7 @@ template <typename T>
   return area.width * area.height;
 }
 
-/**
- * \typedef iarea
- *
- * \brief An alias for `int` areas.
- *
- * \since 4.1.0
- */
-using iarea = basic_area<int>;
-
-/**
- * \typedef farea
- *
- * \brief An alias for `float` areas.
- *
- * \since 4.1.0
- */
-using farea = basic_area<float>;
-
-/**
- * \typedef darea
- *
- * \brief An alias for `double` areas.
- *
- * \since 4.1.0
- */
-using darea = basic_area<double>;
+/// \} End of area-related functions
 
 /**
  * \brief Serializes an area instance.

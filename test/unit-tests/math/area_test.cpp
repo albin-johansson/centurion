@@ -24,6 +24,22 @@ TEST(Area, Construction)
   EXPECT_EQ(area.height, height);
 }
 
+TEST(Area, MakeArea)
+{
+  const auto iarea = cen::make_area(123, 456);
+  const auto farea = cen::make_area(12.3f, 45.6f);
+  const auto darea = cen::make_area(12.3, 45.6);
+
+  EXPECT_EQ(123, iarea.width);
+  EXPECT_EQ(456, iarea.height);
+
+  EXPECT_EQ(12.3f, farea.width);
+  EXPECT_EQ(45.6f, farea.height);
+
+  EXPECT_EQ(12.3, darea.width);
+  EXPECT_EQ(45.6, darea.height);
+}
+
 TEST(Area, EqComparisonReflexivity)
 {
   const cen::iarea area{234, 12};

@@ -106,7 +106,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<czstring> file)
       : m_surface{IMG_Load(file)}
   {
@@ -127,7 +127,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
 
@@ -143,7 +143,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_surface(const iarea size, const pixel_format pixelFormat)
       : m_surface{SDL_CreateRGBSurfaceWithFormat(0,
                                                  size.width,
@@ -170,7 +170,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -187,7 +187,7 @@ class basic_surface final
   /**
    * \see with_format()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat)
@@ -209,7 +209,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
       -> basic_surface
   {
@@ -220,7 +220,7 @@ class basic_surface final
   /**
    * \see from_bmp()
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_bmp(const std::string& file) -> basic_surface
   {
     return from_bmp(file.c_str());
@@ -768,7 +768,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;

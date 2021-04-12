@@ -193,7 +193,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(static_cast<u32>(format))}
   {
@@ -212,7 +212,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
       : m_format{info.get()}
   {}
@@ -353,7 +353,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return m_format;

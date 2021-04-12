@@ -121,7 +121,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const not_null<czstring> file)
       : m_chunk{Mix_LoadWAV(file)}
   {
@@ -141,7 +141,7 @@ class basic_sound_effect final
    *
    * \since 5.3.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const std::string& file)
       : basic_sound_effect{file.c_str()}
   {}
@@ -155,7 +155,7 @@ class basic_sound_effect final
    *
    * \since 6.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_sound_effect(const sound_effect& owner) noexcept
       : m_chunk{owner.get()}
   {}
@@ -221,7 +221,7 @@ class basic_sound_effect final
    *
    * \since 5.1.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto is_any_playing() noexcept -> bool
   {
     return Mix_Playing(undefined_channel());
@@ -375,19 +375,19 @@ class basic_sound_effect final
   /// \name Decoder functions
   /// \{
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {
     return Mix_GetChunkDecoder(index);
   }
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }
 
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto decoder_count() noexcept -> int
   {
     return Mix_GetNumChunkDecoders();

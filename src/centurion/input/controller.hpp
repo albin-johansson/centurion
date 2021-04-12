@@ -238,7 +238,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_controller(const controller& owner) noexcept
       : m_controller{owner.get()}
   {}
@@ -263,7 +263,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_controller(const int index = 0)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -287,7 +287,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
       -> basic_controller
   {
@@ -314,7 +314,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index)
       -> basic_controller
   {
@@ -1351,7 +1351,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;

@@ -14,10 +14,10 @@ using owning_type = std::true_type;
 using handle_type = std::false_type;
 
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, bool>;
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
@@ -38,7 +38,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -76,7 +76,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();

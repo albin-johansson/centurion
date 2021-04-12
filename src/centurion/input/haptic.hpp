@@ -218,16 +218,16 @@ template <typename Derived>
 class haptic_effect
 {
   template <typename T>
-  using has_direction = std::enable_if_t<T::hasDirection, bool>;
+  using has_direction = std::enable_if_t<T::hasDirection, int>;
 
   template <typename T>
-  using has_envelope = std::enable_if_t<T::hasEnvelope, bool>;
+  using has_envelope = std::enable_if_t<T::hasEnvelope, int>;
 
   template <typename T>
-  using has_trigger = std::enable_if_t<T::hasTrigger, bool>;
+  using has_trigger = std::enable_if_t<T::hasTrigger, int>;
 
   template <typename T>
-  using has_delay = std::enable_if_t<T::hasDelay, bool>;
+  using has_delay = std::enable_if_t<T::hasDelay, int>;
 
  public:
   /// \name Direction functions
@@ -244,7 +244,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_direction<D> = true>
+  template <typename D = Derived, has_direction<D> = 0>
   void set_direction(const haptic_direction& direction) noexcept
   {
     rep().direction = direction.get();
@@ -259,7 +259,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_direction<D> = true>
+  template <typename D = Derived, has_direction<D> = 0>
   [[nodiscard]] auto direction() const noexcept -> haptic_direction
   {
     return haptic_direction{rep().direction};
@@ -306,7 +306,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_delay<D> = true>
+  template <typename D = Derived, has_delay<D> = 0>
   void set_delay(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().delay = ms.count();
@@ -335,7 +335,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_delay<D> = true>
+  template <typename D = Derived, has_delay<D> = 0>
   [[nodiscard]] auto delay() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().delay};
@@ -357,7 +357,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   void set_button(const u16 button) noexcept
   {
     rep().button = button;
@@ -374,7 +374,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   void set_interval(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().interval = ms.count();
@@ -391,7 +391,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   [[nodiscard]] auto button() const noexcept -> u16
   {
     return rep().button;
@@ -408,7 +408,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_trigger<D> = true>
+  template <typename D = Derived, has_trigger<D> = 0>
   [[nodiscard]] auto interval() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().interval};
@@ -430,7 +430,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_attack_level(const u16 level) noexcept
   {
     rep().attack_level = level;
@@ -447,7 +447,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_fade_level(const u16 level) noexcept
   {
     rep().fade_level = level;
@@ -466,7 +466,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_attack_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().attack_length = ms.count();
@@ -483,7 +483,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   void set_fade_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
   {
     rep().fade_length = ms.count();
@@ -502,7 +502,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto attack_level() const noexcept -> u16
   {
     return rep().attack_level;
@@ -519,7 +519,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto fade_level() const noexcept -> u16
   {
     return rep().fade_level;
@@ -536,7 +536,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto attack_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().attack_length};
@@ -553,7 +553,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  template <typename D = Derived, has_envelope<D> = true>
+  template <typename D = Derived, has_envelope<D> = 0>
   [[nodiscard]] auto fade_duration() const -> milliseconds<u16>
   {
     return milliseconds<u16>{rep().fade_length};
@@ -1560,7 +1560,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic)
@@ -1578,7 +1578,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
   {}
 
@@ -1597,7 +1597,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T, typename BB = B, detail::is_owner<BB> = true>
+  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
       -> basic_haptic
   {
@@ -1624,7 +1624,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromMouse())
@@ -2344,7 +2344,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_haptic != nullptr;

@@ -188,7 +188,7 @@ class basic_joystick final
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_joystick(const int index = 0)
       : m_joystick{SDL_JoystickOpen(index)}
   {
@@ -205,7 +205,7 @@ class basic_joystick final
    *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_joystick(const joystick& owner) noexcept
       : m_joystick{owner.get()}
   {}
@@ -220,7 +220,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -239,7 +239,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -1170,7 +1170,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;

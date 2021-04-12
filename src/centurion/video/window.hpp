@@ -110,7 +110,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -157,7 +157,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -174,7 +174,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -185,7 +185,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -701,7 +701,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -945,7 +945,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = true>
+  template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return SDL_WINDOW_HIDDEN;
@@ -1139,7 +1139,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = true>
+  template <typename BB = B, detail::is_handle<BB> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;

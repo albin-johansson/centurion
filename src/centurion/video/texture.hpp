@@ -86,7 +86,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -103,7 +103,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -126,7 +126,7 @@ class basic_texture final
    *
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
@@ -144,7 +144,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -169,7 +169,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   basic_texture(const Renderer& renderer,
                 const pixel_format format,
                 const texture_access access,
@@ -206,7 +206,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const not_null<czstring> path,
                                       const pixel_format format)
@@ -242,7 +242,7 @@ class basic_texture final
    * \see streaming()
    * \since 5.3.0
    */
-  template <typename Renderer, typename TT = T, detail::is_owner<TT> = true>
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
                                       const pixel_format format)
@@ -536,7 +536,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_owner<TT> = true>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
     return m_texture.release();
@@ -568,7 +568,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename TT = T, detail::is_handle<TT> = true>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;

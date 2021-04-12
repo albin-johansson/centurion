@@ -23,17 +23,17 @@ static_assert(std::is_nothrow_copy_assignable_v<cen::fpoint>);
 static_assert(std::is_nothrow_move_constructible_v<cen::fpoint>);
 static_assert(std::is_nothrow_move_assignable_v<cen::fpoint>);
 
-TEST(Point, MakePoint)
+TEST(Point, Point)
 {
   // clang-format off
-  static_assert(std::is_same_v<decltype(cen::make_point(1, 1)), cen::ipoint>);
-  static_assert(std::is_same_v<decltype(cen::make_point(1u, 1u)), cen::ipoint>);
-  static_assert(std::is_same_v<decltype(cen::make_point(1.0f, 1.0f)), cen::fpoint>);
-  static_assert(std::is_same_v<decltype(cen::make_point(1.0, 1.0)), cen::fpoint>);
+  static_assert(std::is_same_v<decltype(cen::point(1, 1)), cen::ipoint>);
+  static_assert(std::is_same_v<decltype(cen::point(1u, 1u)), cen::ipoint>);
+  static_assert(std::is_same_v<decltype(cen::point(1.0f, 1.0f)), cen::fpoint>);
+  static_assert(std::is_same_v<decltype(cen::point(1.0, 1.0)), cen::fpoint>);
   // clang-format on
 
-  const auto ipoint = cen::make_point(123, 456);
-  const auto fpoint = cen::make_point(12.3f, 45.6f);
+  const auto ipoint = cen::point(123, 456);
+  const auto fpoint = cen::point(12.3f, 45.6f);
 
   EXPECT_EQ(123, ipoint.x());
   EXPECT_EQ(456, ipoint.y());

@@ -361,7 +361,7 @@ class basic_point final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto make_point(const T x, const T y) noexcept
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
     -> basic_point<typename point_traits<T>::value_type>
 {
   using value_type = typename point_traits<T>::value_type;

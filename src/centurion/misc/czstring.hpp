@@ -5,6 +5,9 @@
 
 namespace cen {
 
+/// \addtogroup misc
+/// \{
+
 /**
  * \typedef czstring
  *
@@ -18,6 +21,8 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/// \} End of group misc
 
 }  // namespace cen
 

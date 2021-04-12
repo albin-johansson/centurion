@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
-#include <type_traits>
+#include <iostream>     // cout
+#include <type_traits>  // ...
 
 #include "misc/log.hpp"
 #include "serialization_utils.hpp"
@@ -570,6 +570,29 @@ TEST(Rect, InequalityOperatorComparisonDifferent)
   const cen::frect snd{{738.3f, 8.24f}, {67.3f, 89.23f}};
   EXPECT_NE(fst, snd);
   EXPECT_NE(snd, fst);
+}
+
+TEST(Rect, MakeRect)
+{
+  // clang-format off
+  static_assert(std::is_same_v<decltype(cen::make_rect(1, 1, 1, 1)), cen::irect>);
+  static_assert(std::is_same_v<decltype(cen::make_rect(1u, 1u, 1u, 1u)), cen::irect>);
+  static_assert(std::is_same_v<decltype(cen::make_rect(1.0, 1.0, 1.0, 1.0)), cen::frect>);
+  static_assert(std::is_same_v<decltype(cen::make_rect(1.0f, 1.0f, 1.0f, 1.0f)), cen::frect>);
+  // clang-format on
+
+  const auto irect = cen::make_rect(1, 2, 123, 456);
+  const auto frect = cen::make_rect(1.0f, 2.0f, 12.3f, 45.6f);
+
+  EXPECT_EQ(1, irect.x());
+  EXPECT_EQ(2, irect.y());
+  EXPECT_EQ(123, irect.width());
+  EXPECT_EQ(456, irect.height());
+
+  EXPECT_EQ(1.0f, frect.x());
+  EXPECT_EQ(2.0f, frect.y());
+  EXPECT_EQ(12.3f, frect.width());
+  EXPECT_EQ(45.6f, frect.height());
 }
 
 TEST(Rect, Serialization)

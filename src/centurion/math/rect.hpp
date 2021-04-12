@@ -614,6 +614,39 @@ class basic_rect final
 /// \{
 
 /**
+ * \brief Creates a rectangle with automatically deduced precision.
+ *
+ * \note The only supported precisions for rectangles are `int` and `float`, so
+ * this function will cast the supplied values to the corresponding type. For
+ * example, if you supply doubles to this function, the returned point will
+ * use float as the precision.
+ *
+ * \tparam T the deduced precision type.
+ *
+ * \param x the x-coordinate of the rectangle.
+ * \param y the y-coordinate of the rectangle.
+ * \param width the width of the rectangle.
+ * \param height the height of the rectangle.
+ *
+ * \return a rectangle with the specified position and size.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto make_rect(const T x,
+                                       const T y,
+                                       const T width,
+                                       const T height) noexcept
+    -> basic_rect<typename rect_traits<T>::value_type>
+{
+  using value_type = typename rect_traits<T>::value_type;
+  return basic_rect<value_type>{static_cast<value_type>(x),
+                                static_cast<value_type>(y),
+                                static_cast<value_type>(width),
+                                static_cast<value_type>(height)};
+}
+
+/**
  * \brief Indicates whether or not the two rectangles intersect.
  *
  * \details This function does *not* consider rectangles with overlapping

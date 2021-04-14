@@ -12,9 +12,6 @@ copy_directory_post_build(InteractiveRenderer
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
-target_include_directories(InteractiveRenderer
-    PUBLIC ${OPENGL_INCLUDE_DIRS})
-
 if (WIN32)
   cen_copy_runtime_binaries(InteractiveRenderer)
 endif ()

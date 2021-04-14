@@ -131,7 +131,7 @@ class battery_demo final
 
   void render()
   {
-    m_renderer.clear_with(cen::colors::steel_blue);
+    m_renderer.clear_with(cen::colors::light_coral);
 
     auto nextY = [y = 10]() mutable {
       const auto tmp = y;

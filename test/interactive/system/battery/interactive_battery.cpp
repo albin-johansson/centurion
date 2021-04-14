@@ -2,14 +2,14 @@
 
 namespace {
 
-inline constexpr auto msg_existence = "Does the system have a battery: ";
-inline constexpr auto msg_charged = "Is battery charged: ";
-inline constexpr auto msg_charging = "Is battery currently charging: ";
-inline constexpr auto msg_available = "Is battery available: ";
+inline constexpr auto msg_existence = "Does the system have a battery? ";
+inline constexpr auto msg_charged = "Is battery charged? ";
+inline constexpr auto msg_charging = "Is battery currently charging? ";
+inline constexpr auto msg_available = "Is battery available? ";
 
-inline constexpr auto msg_power = "Current power percentage: ";
-inline constexpr auto msg_minutes = "Remaining minutes: ";
-inline constexpr auto msg_seconds = "Remaining seconds: ";
+inline constexpr auto msg_power = "Battery percentage: ";
+inline constexpr auto msg_minutes = "Minutes remaining: ";
+inline constexpr auto msg_seconds = "Seconds remaining: ";
 
 inline constexpr auto msg_state = "Current battery state: ";
 inline constexpr auto msg_state_unknown = "unknown";
@@ -40,9 +40,11 @@ inline constexpr auto id_state_charged = 34;
 
 inline constexpr auto answer_x = 500;
 
+inline constexpr cen::iarea window_size{700, 350};
+
 [[nodiscard]] auto get_id(const cen::power_state state)
 {
-  switch (cen::battery::state())
+  switch (state)
   {
     default:
       [[fallthrough]];
@@ -68,7 +70,7 @@ class battery_demo final
 {
  public:
   battery_demo()
-      : m_window{"Battery demo"}
+      : m_window{"Battery demo", window_size}
       , m_renderer{m_window}
       , m_cache{"resources/fira_code.ttf", 24}
   {
@@ -131,33 +133,27 @@ class battery_demo final
   {
     m_renderer.clear_with(cen::colors::steel_blue);
 
-    auto next_y = [y = 10]() mutable {
+    auto nextY = [y = 10]() mutable {
       const auto tmp = y;
       y += 30;
       return tmp;
     };
 
-    render_yes_no_answer(id_existence, cen::battery::exists(), next_y());
+    render_yes_no_answer(id_existence, cen::battery::exists(), nextY());
 
-    next_y();
-    render_value(id_power, cen::battery::percentage(), next_y());
-
+    nextY();
+    constexpr auto null = std::optional<int>{};
     const auto minutes = cen::battery::minutes_left();
-    render_value(id_minutes,
-                 minutes ? minutes->count() : std::optional<int>{},
-                 next_y());
-
     const auto seconds = cen::battery::seconds_left();
-    render_value(id_seconds,
-                 seconds ? seconds->count() : std::optional<int>{},
-                 next_y());
+    render_value(id_power, cen::battery::percentage(), nextY());
+    render_value(id_minutes, minutes ? minutes->count() : null, nextY());
+    render_value(id_seconds, seconds ? seconds->count() : null, nextY());
 
-    next_y();
-    render_text_pair(id_state, get_id(cen::battery::state()), next_y());
-
-    render_yes_no_answer(id_available, cen::battery::is_available(), next_y());
-    render_yes_no_answer(id_charging, cen::battery::is_charging(), next_y());
-    render_yes_no_answer(id_charged, cen::battery::is_charged(), next_y());
+    nextY();
+    render_text_pair(id_state, get_id(cen::battery::state()), nextY());
+    render_yes_no_answer(id_available, cen::battery::is_available(), nextY());
+    render_yes_no_answer(id_charging, cen::battery::is_charging(), nextY());
+    render_yes_no_answer(id_charged, cen::battery::is_charged(), nextY());
 
     m_renderer.present();
   }
@@ -200,7 +196,7 @@ class battery_demo final
 
 }  // namespace
 
-auto main(int argc, char** argv) -> int
+auto main(int, char**) -> int
 {
   cen::library centurion;
   battery_demo demo;

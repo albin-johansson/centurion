@@ -14,6 +14,8 @@
 
 namespace cen::vk {
 
+// TODO Centurion 6: document and test
+
 class library final
 {
  public:

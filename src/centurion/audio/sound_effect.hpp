@@ -375,6 +375,8 @@ class basic_sound_effect final
   /// \name Decoder functions
   /// \{
 
+  // TODO Centurion 6: Document and test
+
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {

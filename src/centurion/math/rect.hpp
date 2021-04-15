@@ -42,59 +42,12 @@ template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
-  /**
-   * \var isIntegral
-   *
-   * \brief Indicates whether or not the rectangle is based on an integral type.
-   *
-   * \since 5.0.0
-   */
   inline constexpr static bool isIntegral = std::is_integral_v<T>;
-
-  /**
-   * \var isFloating
-   *
-   * \brief Indicates whether or not the rectangle is based on a floating-point
-   * type.
-   *
-   * \since 5.0.0
-   */
   inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
-  /**
-   * \typedef value_type
-   *
-   * \brief The representation type, i.e. `int` or `float`.
-   *
-   * \since 5.0.0
-   */
   using value_type = std::conditional_t<isIntegral, int, float>;
-
-  /**
-   * \typedef point_type
-   *
-   * \brief The point type used, i.e. `ipoint` or `fpoint`.
-   *
-   * \since 5.0.0
-   */
   using point_type = std::conditional_t<isIntegral, ipoint, fpoint>;
-
-  /**
-   * \typedef area_type
-   *
-   * \brief The area type used, i.e. `iarea` or `farea`.
-   *
-   * \since 5.0.0
-   */
   using area_type = std::conditional_t<isIntegral, iarea, farea>;
-
-  /**
-   * \typedef rect_type
-   *
-   * \brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
-   *
-   * \since 5.0.0
-   */
   using rect_type = std::conditional_t<isIntegral, SDL_Rect, SDL_FRect>;
 };
 
@@ -139,32 +92,53 @@ class basic_rect final
 {
  public:
   /**
-   * \copydoc rect_traits<T>::isIntegral
+   * \brief Indicates whether or not the rectangle is based on an integral type.
+   *
+   * \since 5.0.0
    */
   inline constexpr static bool isIntegral = rect_traits<T>::isIntegral;
 
   /**
-   * \copydoc rect_traits<T>::isFloating
+   * \brief Indicates whether or not the rectangle is based on a floating-point
+   * type.
+   *
+   * \since 5.0.0
    */
   inline constexpr static bool isFloating = rect_traits<T>::isFloating;
 
   /**
-   * \copydoc rect_traits<T>::value_type
+   * \typedef value_type
+   *
+   * \brief The representation type, i.e. `int` or `float`.
+   *
+   * \since 5.0.0
    */
   using value_type = typename rect_traits<T>::value_type;
 
   /**
-   * \copydoc rect_traits<T>::point_type
+   * \typedef point_type
+   *
+   * \brief The point type used, i.e. `ipoint` or `fpoint`.
+   *
+   * \since 5.0.0
    */
   using point_type = typename rect_traits<T>::point_type;
 
   /**
-   * \copydoc rect_traits<T>::area_type
+   * \typedef area_type
+   *
+   * \brief The area type used, i.e. `iarea` or `farea`.
+   *
+   * \since 5.0.0
    */
   using area_type = typename rect_traits<T>::area_type;
 
   /**
-   * \copydoc rect_traits<T>::rect_type
+   * \typedef rect_type
+   *
+   * \brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
+   *
+   * \since 5.0.0
    */
   using rect_type = typename rect_traits<T>::rect_type;
 

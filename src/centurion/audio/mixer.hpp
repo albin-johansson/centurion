@@ -9,6 +9,8 @@
 
 namespace cen {
 
+// TODO Centurion 6: Document and test
+
 /// \addtogroup audio
 /// \{
 

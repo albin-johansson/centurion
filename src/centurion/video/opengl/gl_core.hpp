@@ -73,6 +73,8 @@ template <typename T>
   return {width, height};
 }
 
+// TODO Centurion 6: document and test
+
 inline void reset_attributes() noexcept
 {
   SDL_GL_ResetAttributes();

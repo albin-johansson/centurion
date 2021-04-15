@@ -346,6 +346,8 @@ class music final
   /// \name Playback position functions
   /// \{
 
+  // TODO Centurion 6: Document and test
+
   static void rewind() noexcept
   {
     Mix_RewindMusic();

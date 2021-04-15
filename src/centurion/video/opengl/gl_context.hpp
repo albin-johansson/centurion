@@ -17,6 +17,8 @@ namespace cen::gl {
 /// \addtogroup video
 /// \{
 
+// TODO Centurion 6: document and test
+
 template <typename T>
 class basic_context;
 

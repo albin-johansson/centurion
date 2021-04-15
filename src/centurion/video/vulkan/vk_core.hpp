@@ -24,6 +24,8 @@
  */
 namespace cen::vk {
 
+// TODO Centurion 6: document and test
+
 [[nodiscard]] inline auto get_instance_proc_addr() noexcept -> void*
 {
   return SDL_Vulkan_GetVkGetInstanceProcAddr();

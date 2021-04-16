@@ -101,7 +101,7 @@ class basic_renderer final
    * \brief Creates an owning renderer based on the supplied window.
    *
    * \param window the associated window instance.
-   * \param flags the renderer flags that will be used.
+   * \param flags the renderer flags that will be used, see `SDL_RendererFlags`.
    *
    * \throws sdl_error if something goes wrong when creating the renderer.
    *

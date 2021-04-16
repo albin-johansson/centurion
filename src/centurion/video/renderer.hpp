@@ -1379,10 +1379,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P,
-            typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -1404,10 +1401,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P,
-            typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -1433,10 +1427,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P,
-            typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -1462,10 +1453,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P,
-            typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,

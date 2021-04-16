@@ -121,8 +121,7 @@ class basic_window final
     {
       throw cen_error{"Bad window width!"};
     }
-
-    if (size.height < 1)
+    else if (size.height < 1)
     {
       throw cen_error{"Bad window height!"};
     }
@@ -146,7 +145,7 @@ class basic_window final
    *
    * \param title the title of the window.
    * \param size the size of the window, components must be greater than zero.
-   * \param flags the window flags.
+   * \param flags the window flags, see `SDL_WindowFlags`.
    *
    * \throws cen_error if the supplied width or height aren't
    * greater than zero.

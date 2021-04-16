@@ -89,8 +89,10 @@ class basic_renderer final
   explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<B>())
       : m_renderer{renderer}
   {
-    if constexpr (detail::is_owning<B>()) {
-      if (!get()) {
+    if constexpr (detail::is_owning<B>())
+    {
+      if (!get()) 
+      {
         throw cen_error{"Cannot create renderer from null pointer!"};
       }
     }

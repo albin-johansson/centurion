@@ -22,7 +22,7 @@ namespace cen::detail {
  * \since 3.0.0
  */
 template <typename T>
-[[nodiscard]] auto address_of(T* ptr) -> std::string
+[[nodiscard]] auto address_of(const T* ptr) -> std::string
 {
   if (ptr)
   {

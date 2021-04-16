@@ -34,11 +34,16 @@ template <typename T>
     noexcept(noexcept(value < min) && noexcept(value > max)) -> T
 {
   assert(min <= max);
-  if (value < min) {
+  if (value < min)
+  {
     return min;
-  } else if (value > max) {
+  }
+  else if (value > max)
+  {
     return max;
-  } else {
+  }
+  else
+  {
     return value;
   }
 }

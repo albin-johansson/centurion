@@ -1,6 +1,8 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+#include "../core/macros.hpp"
+
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array

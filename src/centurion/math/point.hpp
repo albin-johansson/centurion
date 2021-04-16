@@ -272,34 +272,16 @@ class basic_point final
     return m_point;
   }
 
-  /**
-   * \brief Returns a pointer to the internal point.
-   *
-   * \note You shouldn't store the returned pointer. However, this conversion
-   * is safe since `reinterpret_cast` isn't used.
-   *
-   * \return a pointer to the internal point instance.
-   *
-   * \since 5.0.0
-   */
+  /// \copydoc data()
   [[nodiscard]] explicit operator point_type*() noexcept
   {
-    return &m_point;
+    return data();
   }
 
-  /**
-   * \brief Returns a pointer to the internal point.
-   *
-   * \note You shouldn't store the returned pointer. However, this conversion
-   * is safe since `reinterpret_cast` isn't used.
-   *
-   * \return a pointer to the internal point instance.
-   *
-   * \since 5.0.0
-   */
+  /// \copydoc data()
   [[nodiscard]] explicit operator const point_type*() const noexcept
   {
-    return &m_point;
+    return data();
   }
 
   /// \} End of conversions

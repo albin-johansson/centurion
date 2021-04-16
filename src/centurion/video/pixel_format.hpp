@@ -392,9 +392,7 @@ class basic_pixel_format_info final
   return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
- */
+/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
 [[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
                                         const pixel_format rhs) noexcept -> bool
 {
@@ -418,9 +416,7 @@ class basic_pixel_format_info final
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
- */
+/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
 [[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
                                         const pixel_format rhs) noexcept -> bool
 {

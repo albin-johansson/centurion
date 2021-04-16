@@ -575,9 +575,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
 }
 
-/**
- * \copydoc operator==(const color&, const color&)
- */
+/// \copydoc operator==(const color&, const color&)
 [[nodiscard]] constexpr auto operator==(const color& lhs,
                                         const SDL_Color& rhs) noexcept -> bool
 {
@@ -585,9 +583,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
          (lhs.blue() == rhs.b) && (lhs.alpha() == rhs.a);
 }
 
-/**
- * \copydoc operator==(const color&, const color&)
- */
+/// \copydoc operator==(const color&, const color&)
 [[nodiscard]] constexpr auto operator==(const SDL_Color& lhs,
                                         const color& rhs) noexcept -> bool
 {
@@ -614,9 +610,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
          (lhs.blue() == rhs.b);
 }
 
-/**
- * \copydoc operator==(const color&, const SDL_MessageBoxColor&)
- */
+/// \copydoc operator==(const color&, const SDL_MessageBoxColor&)
 [[nodiscard]] constexpr auto operator==(const SDL_MessageBoxColor& lhs,
                                         const color& rhs) noexcept -> bool
 {
@@ -639,18 +633,14 @@ inline auto operator<<(std::ostream& stream, const color& color)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(const color&, const color&)
- */
+/// \copydoc operator!=(const color&, const color&)
 [[nodiscard]] constexpr auto operator!=(const color& lhs,
                                         const SDL_Color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(const color&, const color&)
- */
+/// \copydoc operator!=(const color&, const color&)
 [[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs,
                                         const color& rhs) noexcept -> bool
 {
@@ -676,9 +666,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(const color&, const SDL_MessageBoxColor&)
- */
+/// \copydoc operator!=(const color&, const SDL_MessageBoxColor&)
 [[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
                                         const color& rhs) noexcept -> bool
 {

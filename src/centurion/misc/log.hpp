@@ -368,9 +368,7 @@ inline void put(const std::string& str) noexcept
   log::info("%s", str.c_str());
 }
 
-/**
- * \copydoc put(const std::string&)
- */
+/// \copydoc put(const std::string&)
 inline void put(const not_null<czstring> str) noexcept
 {
   log::info("%s", str);
@@ -465,9 +463,7 @@ inline void set_priority(const category category, const priority prio) noexcept
   return static_cast<SDL_LogPriority>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(priority, SDL_LogPriority)
- */
+/// \copydoc operator==(priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
                                         const priority rhs) noexcept -> bool
 {
@@ -492,9 +488,7 @@ inline void set_priority(const category category, const priority prio) noexcept
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(priority, SDL_LogPriority)
- */
+/// \copydoc operator!=(priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
                                         const priority rhs) noexcept -> bool
 {
@@ -518,9 +512,7 @@ inline void set_priority(const category category, const priority prio) noexcept
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(category, SDL_LogCategory)
- */
+/// \copydoc operator==(category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
                                         const category rhs) noexcept -> bool
 {
@@ -544,9 +536,7 @@ inline void set_priority(const category category, const priority prio) noexcept
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(category, SDL_LogCategory)
- */
+/// \copydoc operator!=(category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
                                         const category rhs) noexcept -> bool
 {

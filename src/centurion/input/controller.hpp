@@ -1435,9 +1435,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return static_cast<SDL_GameControllerType>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(controller_type, SDL_GameControllerType)
- */
+/// \copydoc operator==(controller_type, SDL_GameControllerType)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerType lhs,
                                         const controller_type rhs) noexcept
     -> bool
@@ -1463,9 +1461,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(controller_type, SDL_GameControllerType)
- */
+/// \copydoc operator!=(controller_type, SDL_GameControllerType)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerType lhs,
                                         const controller_type rhs) noexcept
     -> bool
@@ -1492,9 +1488,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(controller_axis, SDL_GameControllerAxis)
- */
+/// \copydoc operator==(controller_axis, SDL_GameControllerAxis)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerAxis lhs,
                                         const controller_axis rhs) noexcept
     -> bool
@@ -1520,9 +1514,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(controller_axis, SDL_GameControllerAxis)
- */
+/// \copydoc operator!=(controller_axis, SDL_GameControllerAxis)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerAxis lhs,
                                         const controller_axis rhs) noexcept
     -> bool
@@ -1549,9 +1541,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(controller_button, SDL_GameControllerButton)
- */
+/// \copydoc operator==(controller_button, SDL_GameControllerButton)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerButton lhs,
                                         const controller_button rhs) noexcept
     -> bool
@@ -1578,9 +1568,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(controller_button, SDL_GameControllerButton)
- */
+/// \copydoc operator!=(controller_button, SDL_GameControllerButton)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerButton lhs,
                                         const controller_button rhs) noexcept
     -> bool
@@ -1605,9 +1593,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
- */
+/// \copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerBindType lhs,
                                         const controller_bind_type rhs) noexcept
     -> bool
@@ -1633,9 +1619,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
- */
+/// \copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerBindType lhs,
                                         const controller_bind_type rhs) noexcept
     -> bool

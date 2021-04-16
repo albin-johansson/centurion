@@ -210,9 +210,7 @@ namespace battery {
   return static_cast<SDL_PowerState>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(power_state, SDL_PowerState)
- */
+/// \copydoc operator==(power_state, SDL_PowerState)
 [[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
                                         const power_state rhs) noexcept -> bool
 {
@@ -236,9 +234,7 @@ namespace battery {
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(power_state, SDL_PowerState)
- */
+/// \copydoc operator!=(power_state, SDL_PowerState)
 [[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
                                         const power_state rhs) noexcept -> bool
 {

@@ -594,9 +594,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(fade_status, Mix_Fading)
- */
+/// \copydoc operator==(fade_status, Mix_Fading)
 [[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
                                         const fade_status rhs) noexcept -> bool
 {
@@ -621,9 +619,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(fade_status, Mix_Fading)
- */
+/// \copydoc operator!=(fade_status, Mix_Fading)
 [[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
                                         const Mix_Fading rhs) noexcept -> bool
 {
@@ -647,9 +643,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(music_type, Mix_MusicType)
- */
+/// \copydoc operator==(music_type, Mix_MusicType)
 [[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
                                         const music_type rhs) noexcept -> bool
 {
@@ -673,9 +667,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(music_type, Mix_MusicType)
- */
+/// \copydoc operator!=(music_type, Mix_MusicType)
 [[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
                                         const music_type rhs) noexcept -> bool
 {

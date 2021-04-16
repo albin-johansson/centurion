@@ -50,9 +50,7 @@ enum class texture_access
   return static_cast<SDL_TextureAccess>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(texture_access, SDL_TextureAccess)
- */
+/// \copydoc operator==(texture_access, SDL_TextureAccess)
 [[nodiscard]] constexpr auto operator==(const SDL_TextureAccess lhs,
                                         const texture_access rhs) noexcept
     -> bool
@@ -79,9 +77,7 @@ enum class texture_access
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(texture_access, SDL_TextureAccess)
- */
+/// \copydoc operator!=(texture_access, SDL_TextureAccess)
 [[nodiscard]] constexpr auto operator!=(const SDL_TextureAccess lhs,
                                         const texture_access rhs) noexcept
     -> bool

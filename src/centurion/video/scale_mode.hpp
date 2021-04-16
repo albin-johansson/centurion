@@ -49,9 +49,7 @@ enum class scale_mode
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(scale_mode, SDL_ScaleMode)
- */
+/// \copydoc operator==(scale_mode, SDL_ScaleMode)
 [[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
                                         const scale_mode rhs) noexcept -> bool
 {
@@ -75,9 +73,7 @@ enum class scale_mode
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(scale_mode, SDL_ScaleMode)
- */
+/// \copydoc operator!=(scale_mode, SDL_ScaleMode)
 [[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
                                         const scale_mode rhs) noexcept -> bool
 {

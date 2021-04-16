@@ -378,9 +378,7 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
   return static_cast<SDL_ThreadPriority>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(thread_priority, SDL_ThreadPriority)
- */
+/// \copydoc operator==(thread_priority, SDL_ThreadPriority)
 [[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
                                         const thread_priority rhs) noexcept
     -> bool
@@ -405,9 +403,7 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(thread_priority, SDL_ThreadPriority)
- */
+/// \copydoc operator!=(thread_priority, SDL_ThreadPriority)
 [[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
                                         const thread_priority rhs) noexcept
     -> bool

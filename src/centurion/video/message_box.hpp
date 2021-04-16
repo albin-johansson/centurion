@@ -605,9 +605,7 @@ class message_box final
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
- */
+/// \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator==(
     const SDL_MessageBoxButtonFlags lhs,
     const message_box::default_button rhs) noexcept -> bool
@@ -632,9 +630,7 @@ class message_box final
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
- */
+/// \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator!=(
     const SDL_MessageBoxButtonFlags lhs,
     const message_box::default_button rhs) noexcept -> bool
@@ -659,9 +655,7 @@ class message_box final
   return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
 }
 
-/**
- * \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
- */
+/// \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator==(
     const message_box::color_id lhs,
     const SDL_MessageBoxColorType rhs) noexcept -> bool
@@ -686,9 +680,7 @@ class message_box final
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
- */
+/// \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator!=(
     const message_box::color_id lhs,
     const SDL_MessageBoxColorType rhs) noexcept -> bool

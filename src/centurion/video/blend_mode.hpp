@@ -55,9 +55,7 @@ enum class blend_mode
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(blend_mode, SDL_BlendMode)
- */
+/// \copydoc operator==(blend_mode, SDL_BlendMode)
 [[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
                                         const blend_mode rhs) noexcept -> bool
 {
@@ -81,9 +79,7 @@ enum class blend_mode
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(blend_mode, SDL_BlendMode)
- */
+/// \copydoc operator!=(blend_mode, SDL_BlendMode)
 [[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
                                         const blend_mode rhs) noexcept -> bool
 {

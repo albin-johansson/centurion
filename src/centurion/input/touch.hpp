@@ -204,9 +204,7 @@ enum class device_type
   return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(device_type, SDL_TouchDeviceType)
- */
+/// \copydoc operator==(device_type, SDL_TouchDeviceType)
 [[nodiscard]] constexpr auto operator==(const SDL_TouchDeviceType lhs,
                                         const device_type rhs) noexcept -> bool
 {
@@ -230,9 +228,7 @@ enum class device_type
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(device_type, SDL_TouchDeviceType)
- */
+/// \copydoc operator!=(device_type, SDL_TouchDeviceType)
 [[nodiscard]] constexpr auto operator!=(const SDL_TouchDeviceType lhs,
                                         const device_type rhs) noexcept -> bool
 {

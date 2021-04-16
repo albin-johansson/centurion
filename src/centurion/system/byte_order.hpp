@@ -27,25 +27,19 @@ namespace cen {
   return SDL_Swap16(value);
 }
 
-/**
- * \copydoc swap_byte_order()
- */
+/// \copydoc swap_byte_order()
 [[nodiscard]] inline auto swap_byte_order(const u32 value) noexcept -> u32
 {
   return SDL_Swap32(value);
 }
 
-/**
- * \copydoc swap_byte_order()
- */
+/// \copydoc swap_byte_order()
 [[nodiscard]] inline auto swap_byte_order(const u64 value) noexcept -> u64
 {
   return SDL_Swap64(value);
 }
 
-/**
- * \copydoc swap_byte_order()
- */
+/// \copydoc swap_byte_order()
 [[nodiscard]] inline auto swap_byte_order(const float value) noexcept -> float
 {
   return SDL_SwapFloat(value);
@@ -70,25 +64,19 @@ namespace cen {
   return SDL_SwapBE16(value);
 }
 
-/**
- * \copydoc swap_big_endian()
- */
+/// \copydoc swap_big_endian()
 [[nodiscard]] inline auto swap_big_endian(const u32 value) noexcept -> u32
 {
   return SDL_SwapBE32(value);
 }
 
-/**
- * \copydoc swap_big_endian()
- */
+/// \copydoc swap_big_endian()
 [[nodiscard]] inline auto swap_big_endian(const u64 value) noexcept -> u64
 {
   return SDL_SwapBE64(value);
 }
 
-/**
- * \copydoc swap_big_endian()
- */
+/// \copydoc swap_big_endian()
 [[nodiscard]] inline auto swap_big_endian(const float value) noexcept -> float
 {
   return SDL_SwapFloatBE(value);
@@ -113,25 +101,19 @@ namespace cen {
   return SDL_SwapLE16(value);
 }
 
-/**
- * \copydoc swap_little_endian()
- */
+/// \copydoc swap_little_endian()
 [[nodiscard]] inline auto swap_little_endian(const u32 value) noexcept -> u32
 {
   return SDL_SwapLE32(value);
 }
 
-/**
- * \copydoc swap_little_endian()
- */
+/// \copydoc swap_little_endian()
 [[nodiscard]] inline auto swap_little_endian(const u64 value) noexcept -> u64
 {
   return SDL_SwapLE64(value);
 }
 
-/**
- * \copydoc swap_little_endian()
- */
+/// \copydoc swap_little_endian()
 [[nodiscard]] inline auto swap_little_endian(const float value) noexcept
     -> float
 {

@@ -484,9 +484,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
   return static_cast<SDL_SensorType>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(const sensor_type, const SDL_SensorType)
- */
+/// \copydoc operator==(const sensor_type, const SDL_SensorType)
 [[nodiscard]] constexpr auto operator==(const SDL_SensorType lhs,
                                         const sensor_type rhs) noexcept -> bool
 {
@@ -510,9 +508,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(const sensor_type, const SDL_SensorType)
- */
+/// \copydoc operator!=(const sensor_type, const SDL_SensorType)
 [[nodiscard]] constexpr auto operator!=(const SDL_SensorType lhs,
                                         const sensor_type rhs) noexcept -> bool
 {

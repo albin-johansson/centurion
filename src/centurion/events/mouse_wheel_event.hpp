@@ -222,10 +222,7 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
 
-/**
- * \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
- *
- */
+/// \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
 [[nodiscard]] constexpr auto operator==(
     const SDL_MouseWheelDirection lhs,
     const mouse_wheel_direction rhs) noexcept -> bool
@@ -251,9 +248,7 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
- */
+/// \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
 [[nodiscard]] constexpr auto operator!=(
     const SDL_MouseWheelDirection lhs,
     const mouse_wheel_direction rhs) noexcept -> bool

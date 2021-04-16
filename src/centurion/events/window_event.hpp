@@ -253,9 +253,7 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
   return static_cast<SDL_WindowEventID>(lhs) == rhs;
 }
 
-/**
- * \copydoc operator==(window_event_id, SDL_WindowEventID)
- */
+/// \copydoc operator==(window_event_id, SDL_WindowEventID)
 [[nodiscard]] constexpr auto operator==(const SDL_WindowEventID lhs,
                                         const window_event_id rhs) noexcept
     -> bool
@@ -281,9 +279,7 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
   return !(lhs == rhs);
 }
 
-/**
- * \copydoc operator!=(window_event_id, SDL_WindowEventID)
- */
+/// \copydoc operator!=(window_event_id, SDL_WindowEventID)
 [[nodiscard]] constexpr auto operator!=(const SDL_WindowEventID lhs,
                                         const window_event_id rhs) noexcept
     -> bool

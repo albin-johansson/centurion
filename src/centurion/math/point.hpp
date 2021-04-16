@@ -121,24 +121,16 @@ template <typename T>
 class basic_point final
 {
  public:
-  /**
-   * \copydoc point_traits::isIntegral
-   */
+  /// \copydoc point_traits::isIntegral
   inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
 
-  /**
-   * \copydoc point_traits::isFloating
-   */
+  /// \copydoc point_traits::isFloating
   inline constexpr static bool isFloating = point_traits<T>::isFloating;
 
-  /**
-   * \copydoc point_traits::value_type
-   */
+  /// \copydoc point_traits::value_type
   using value_type = typename point_traits<T>::value_type;
 
-  /**
-   * \copydoc point_traits::point_type
-   */
+  /// \copydoc point_traits::point_type
   using point_type = typename point_traits<T>::point_type;
 
   /// \name Construction
@@ -235,9 +227,7 @@ class basic_point final
     return m_point;
   }
 
-  /**
-   * \copydoc get
-   */
+  /// \copydoc get
   [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
   {
     return m_point;
@@ -257,9 +247,7 @@ class basic_point final
     return &m_point;
   }
 
-  /**
-   * \copydoc data()
-   */
+  /// \copydoc data
   [[nodiscard]] auto data() const noexcept -> const point_type*
   {
     return &m_point;

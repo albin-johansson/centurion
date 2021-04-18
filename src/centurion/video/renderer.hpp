@@ -35,7 +35,7 @@ namespace cen {
 /// \addtogroup video
 /// \{
 
-template <typename B>
+template <typename T>
 class basic_renderer;
 
 /**
@@ -68,7 +68,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \headerfile renderer.hpp
  */
-template <typename B>
+template <typename T>
 class basic_renderer final
 {
  public:
@@ -86,10 +86,10 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<B>())
+  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!get())
       {
@@ -109,7 +109,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_renderer(const Window& window,
                           const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -120,7 +120,7 @@ class basic_renderer final
     }
   }
 
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_renderer(const renderer& owner) noexcept
       : m_renderer{owner.get()}
   {}
@@ -471,7 +471,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
@@ -489,7 +489,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
@@ -502,13 +502,13 @@ class basic_renderer final
    * translation viewport.
    *
    * \tparam U the representation
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \param point the point that will be rendered.
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
   void draw_point_t(const basic_point<U>& point) noexcept
   {
     draw_point(translate(point));
@@ -521,14 +521,14 @@ class basic_renderer final
    * translation viewport.
    *
    * \tparam U the precision used by the point.
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \param position the position of the rendered circle.
    * \param radius the radius of the rendered circle.
    *
    * \since 6.0.0
    */
-  template <typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
   void draw_circle_t(const basic_point<U>& position,
                      const float radius) noexcept
   {
@@ -541,14 +541,14 @@ class basic_renderer final
    * \details The rendered circle will be translated using the current
    * translation viewport.
    *
-   * \tparam BB dummy parameter for SFINAE.
+   * \tparam TT dummy parameter for SFINAE.
    *
    * \param center the center of the rendered circle.
    * \param radius the radius of the rendered circle.
    *
    * \since 6.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   void fill_circle_t(const fpoint center, const float radius)
   {
     fill_circle(translate(center), radius);
@@ -1381,7 +1381,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -1403,7 +1403,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -1429,7 +1429,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -1455,7 +1455,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P, typename U, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
@@ -1488,8 +1488,8 @@ class basic_renderer final
   template <typename R,
             typename P,
             typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+            typename TT = T,
+            detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1521,8 +1521,8 @@ class basic_renderer final
   template <typename R,
             typename P,
             typename U,
-            typename BB = B,
-            detail::is_owner<BB> = 0>
+            typename TT = T,
+            detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1549,7 +1549,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -1564,7 +1564,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -1586,7 +1586,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -1610,7 +1610,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args, typename BB = B, detail::is_owner<BB> = 0>
+  template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
@@ -1631,7 +1631,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
@@ -1648,7 +1648,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -1657,7 +1657,7 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -1674,7 +1674,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto has_font(const std::size_t id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -2209,7 +2209,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -2226,7 +2226,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       return m_renderer.ptr.get();
     }
@@ -2247,7 +2247,7 @@ class basic_renderer final
 
   struct owning_data final
   {
-    /*implicit*/ owning_data(SDL_Renderer* r) : ptr{r}
+    /*implicit*/ owning_data(SDL_Renderer* ptr) : ptr{ptr}  // NOLINT
     {}
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
@@ -2255,7 +2255,7 @@ class basic_renderer final
     std::unordered_map<std::size_t, font> fonts{};
   };
 
-  using rep_t = std::conditional_t<B::value, owning_data, SDL_Renderer*>;
+  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
 
   rep_t m_renderer;
 
@@ -2266,35 +2266,35 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
-  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
-      -> basic_point<T>
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
+      -> basic_point<U>
   {
-    using value_type = typename basic_point<T>::value_type;
+    using value_type = typename basic_point<U>::value_type;
 
     const auto& translation = m_renderer.translation;
     const auto x = point.x() - static_cast<value_type>(translation.x());
     const auto y = point.y() - static_cast<value_type>(translation.y());
 
-    return basic_point<T>{x, y};
+    return basic_point<U>{x, y};
   }
 
-  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
-  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
-      -> basic_rect<T>
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
+      -> basic_rect<U>
   {
-    return basic_rect<T>{translate(rect.position()), rect.size()};
+    return basic_rect<U>{translate(rect.position()), rect.size()};
   }
 };
 
-template <typename B>
-[[nodiscard]] auto to_string(const basic_renderer<B>& renderer) -> std::string
+template <typename T>
+[[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
 }
 
-template <typename B>
-auto operator<<(std::ostream& stream, const basic_renderer<B>& renderer)
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer)
     -> std::ostream&
 {
   return stream << to_string(renderer);

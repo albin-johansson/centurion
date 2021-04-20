@@ -567,11 +567,10 @@ class font final
   {
     assert(str);
 
-    int width{};
-    int height{};
-    if (TTF_SizeText(m_font.get(), str, &width, &height) != -1)
+    iarea size{};
+    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1)
     {
-      return iarea{width, height};
+      return size;
     }
     else
     {

@@ -159,6 +159,78 @@ TEST(Rect, SetSize)
   EXPECT_EQ(rect.size(), size);
 }
 
+TEST(Rect, OffsetX)
+{
+  const auto x = 123;
+  const auto y = 27;
+  const auto width = 100;
+  const auto height = 50;
+
+  const auto offset = 84;
+
+  cen::irect rect{x, y, width, height};
+  rect.offset_x(offset);
+
+  EXPECT_EQ(x + offset, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height, rect.height());
+}
+
+TEST(Rect, OffsetY)
+{
+  const auto x = 412;
+  const auto y = 754;
+  const auto width = 213;
+  const auto height = 886;
+
+  const auto offset = -45;
+
+  cen::irect rect{x, y, width, height};
+  rect.offset_y(offset);
+
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y + offset, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height, rect.height());
+}
+
+TEST(Rect, OffsetWidth)
+{
+  const auto x = 213;
+  const auto y = 3125;
+  const auto width = 324;
+  const auto height = 423;
+
+  const auto offset = 221;
+
+  cen::irect rect{x, y, width, height};
+  rect.offset_width(offset);
+
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width + offset, rect.width());
+  EXPECT_EQ(height, rect.height());
+}
+
+TEST(Rect, OffsetHeight)
+{
+  const auto x = 34;
+  const auto y = 4532;
+  const auto width = 5431;
+  const auto height = 6567;
+
+  const auto offset = 812;
+
+  cen::irect rect{x, y, width, height};
+  rect.offset_height(offset);
+
+  EXPECT_EQ(x, rect.x());
+  EXPECT_EQ(y, rect.y());
+  EXPECT_EQ(width, rect.width());
+  EXPECT_EQ(height + offset, rect.height());
+}
+
 TEST(Rect, Contains)
 {
   const cen::frect rect{{277.5f, 189.2f}, {79.2f, 58.2f}};

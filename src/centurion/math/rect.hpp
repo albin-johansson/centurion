@@ -250,6 +250,66 @@ class basic_rect final
   }
 
   /**
+   * \brief Offsets the x-coordinate of the rectangle by the specified amount.
+   *
+   * \details This function is effectively equivalent to calling `set_x()` with
+   * the sum of `x()` and `offset`.
+   *
+   * \param offset the offset to the x-coordinate of the rectangle.
+   *
+   * \since 6.0.0
+   */
+  constexpr void offset_x(const value_type offset) noexcept
+  {
+    m_rect.x += offset;
+  }
+
+  /**
+   * \brief Offsets the y-coordinate of the rectangle by the specified amount.
+   *
+   * \details This function is effectively equivalent to calling `set_y()` with
+   * the sum of `y()` and `offset`.
+   *
+   * \param offset the offset to the y-coordinate of the rectangle.
+   *
+   * \since 6.0.0
+   */
+  constexpr void offset_y(const value_type offset) noexcept
+  {
+    m_rect.y += offset;
+  }
+
+  /**
+   * \brief Tweaks the width of the rectangle by the specified amount.
+   *
+   * \details This function is effectively equivalent to calling `set_width()`
+   * with the sum of `width()` and `offset`.
+   *
+   * \param offset the offset to the width of the rectangle.
+   *
+   * \since 6.0.0
+   */
+  constexpr void offset_width(const value_type offset) noexcept
+  {
+    m_rect.w += offset;
+  }
+
+  /**
+   * \brief Tweaks the height of the rectangle by the specified amount.
+   *
+   * \details This function is effectively equivalent to calling `set_height()`
+   * with the sum of `height()` and `offset`.
+   *
+   * \param offset the offset to the height of the rectangle.
+   *
+   * \since 6.0.0
+   */
+  constexpr void offset_height(const value_type offset) noexcept
+  {
+    m_rect.h += offset;
+  }
+
+  /**
    * \brief Sets the position of the rectangle.
    *
    * \note Some frameworks have this kind of function change the size of the

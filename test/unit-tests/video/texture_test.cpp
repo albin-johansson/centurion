@@ -156,22 +156,6 @@ TEST_F(TextureTest, SetColorMod)
   m_texture->set_color_mod(previous);
 }
 
-TEST_F(TextureTest, SetScaleMode)
-{
-  const auto previous = m_texture->get_scale_mode();
-
-  m_texture->set_scale_mode(cen::scale_mode::nearest);
-  EXPECT_EQ(cen::scale_mode::nearest, m_texture->get_scale_mode());
-
-  m_texture->set_scale_mode(cen::scale_mode::linear);
-  EXPECT_EQ(cen::scale_mode::linear, m_texture->get_scale_mode());
-
-  m_texture->set_scale_mode(cen::scale_mode::best);
-  EXPECT_EQ(cen::scale_mode::best, m_texture->get_scale_mode());
-
-  m_texture->set_scale_mode(previous);
-}
-
 TEST_F(TextureTest, Release)
 {
   cen::texture texture{*m_renderer, m_path};
@@ -236,14 +220,6 @@ TEST_F(TextureTest, ColorMod)
   EXPECT_EQ(cen::colors::white, m_texture->color_mod());
 }
 
-TEST_F(TextureTest, GetScaleMode)
-{
-  SDL_ScaleMode mode;
-  SDL_GetTextureScaleMode(m_texture->get(), &mode);
-
-  EXPECT_EQ(mode, static_cast<SDL_ScaleMode>(m_texture->get_scale_mode()));
-}
-
 TEST_F(TextureTest, Width)
 {
   EXPECT_EQ(m_imgWidth, m_texture->width());
@@ -284,3 +260,31 @@ TEST_F(TextureTest, StreamOperator)
 {
   std::cout << "COUT: " << *m_texture << '\n';
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST_F(TextureTest, SetScaleMode)
+{
+  const auto previous = m_texture->get_scale_mode();
+
+  m_texture->set_scale_mode(cen::scale_mode::nearest);
+  EXPECT_EQ(cen::scale_mode::nearest, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(cen::scale_mode::linear);
+  EXPECT_EQ(cen::scale_mode::linear, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(cen::scale_mode::best);
+  EXPECT_EQ(cen::scale_mode::best, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(previous);
+}
+
+TEST_F(TextureTest, GetScaleMode)
+{
+  SDL_ScaleMode mode;
+  SDL_GetTextureScaleMode(m_texture->get(), &mode);
+
+  EXPECT_EQ(mode, static_cast<SDL_ScaleMode>(m_texture->get_scale_mode()));
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

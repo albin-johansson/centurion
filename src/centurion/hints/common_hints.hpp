@@ -5,8 +5,8 @@
 
 #include <utility>  // make_pair
 
+#include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
-#include "../misc/czstring.hpp"
 #include "enum_hint.hpp"
 
 namespace cen::hint {

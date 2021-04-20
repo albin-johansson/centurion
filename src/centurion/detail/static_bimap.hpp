@@ -5,7 +5,7 @@
 #include <array>      // array
 #include <utility>    // pair
 
-#include "../misc/exception.hpp"
+#include "../core/exception.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

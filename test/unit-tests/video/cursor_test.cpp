@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-#include "misc/exception.hpp"
+#include "core/exception.hpp"
 
 static_assert(std::is_move_constructible_v<cen::cursor>);
 static_assert(std::is_move_assignable_v<cen::cursor>);

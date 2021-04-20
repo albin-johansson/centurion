@@ -11,15 +11,15 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/not_null.hpp"
 #include "../core/sdl_string.hpp"
+#include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/not_null.hpp"
-#include "../misc/time.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "joystick.hpp"

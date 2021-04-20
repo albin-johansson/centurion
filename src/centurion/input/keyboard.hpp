@@ -7,7 +7,7 @@
 #include <array>      // array
 
 #include "../compiler/compiler.hpp"
-#include "../misc/integers.hpp"
+#include "../core/integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"

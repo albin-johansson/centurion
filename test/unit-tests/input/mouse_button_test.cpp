@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "misc/integers.hpp"
+#include "core/integers.hpp"
 
 TEST(MouseButton, EnumValues)
 {

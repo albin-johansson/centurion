@@ -7,9 +7,9 @@
 #include <optional>  // optional
 #include <string>    // string
 
+#include "../core/czstring.hpp"
+#include "../core/not_null.hpp"
 #include "../detail/czstring_eq.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/not_null.hpp"
 #include "../video/pixel_format.hpp"
 
 namespace cen {

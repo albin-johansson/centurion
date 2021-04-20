@@ -6,8 +6,8 @@
 #include <chrono>    // duration_cast
 #include <optional>  // optional
 
+#include "../core/time.hpp"
 #include "../detail/any_eq.hpp"
-#include "../misc/time.hpp"
 
 namespace cen {
 

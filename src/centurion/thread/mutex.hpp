@@ -5,7 +5,7 @@
 
 #include <memory>  // unique_ptr
 
-#include "../misc/exception.hpp"
+#include "../core/exception.hpp"
 
 namespace cen {
 

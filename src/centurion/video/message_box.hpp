@@ -11,9 +11,9 @@
 #include <utility>      // move
 #include <vector>       // vector
 
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
 #include "../detail/stack_resource.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "window.hpp"

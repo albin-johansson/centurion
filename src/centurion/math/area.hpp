@@ -5,8 +5,8 @@
 #include <string>       // string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
+#include "../core/cast.hpp"
 #include "../detail/to_string.hpp"
-#include "../misc/cast.hpp"
 
 namespace cen {
 

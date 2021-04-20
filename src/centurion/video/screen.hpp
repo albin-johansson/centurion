@@ -5,9 +5,9 @@
 
 #include <optional>  // optional
 
+#include "../core/czstring.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
-#include "../misc/czstring.hpp"
 #include "pixel_format.hpp"
 
 namespace cen {

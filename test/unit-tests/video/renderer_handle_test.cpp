@@ -3,7 +3,7 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 #include "video/renderer.hpp"
 #include "video/window.hpp"
 

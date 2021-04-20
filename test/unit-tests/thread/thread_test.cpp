@@ -5,7 +5,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 
 namespace {
 

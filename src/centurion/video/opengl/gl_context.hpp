@@ -8,8 +8,8 @@
 
 #include <memory>  // unique_ptr
 
+#include "../../core/exception.hpp"
 #include "../../detail/owner_handle_api.hpp"
-#include "../../misc/exception.hpp"
 #include "../window.hpp"
 
 namespace cen::gl {

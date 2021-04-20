@@ -1,7 +1,7 @@
 #ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 
-#include "../misc/czstring.hpp"
+#include "../core/czstring.hpp"
 #include "czstring_eq.hpp"
 
 /// \cond FALSE

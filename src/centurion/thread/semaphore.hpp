@@ -5,9 +5,9 @@
 
 #include <memory>  // unique_ptr
 
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/time.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/time.hpp"
 #include "mutex.hpp"
 
 namespace cen {

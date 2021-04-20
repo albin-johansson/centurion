@@ -5,11 +5,11 @@
 
 #include <type_traits>  // true_type, false_type
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/not_null.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/not_null.hpp"
 #include "color.hpp"
 
 namespace cen {

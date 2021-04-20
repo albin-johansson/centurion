@@ -6,8 +6,8 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "misc/exception.hpp"
-#include "misc/log.hpp"
+#include "core/exception.hpp"
+#include "core/log.hpp"
 
 static_assert(std::is_final_v<cen::sound_effect>);
 static_assert(!std::is_default_constructible_v<cen::sound_effect>);

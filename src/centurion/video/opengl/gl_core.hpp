@@ -10,9 +10,9 @@
 #include <optional>  // optional
 #include <string>    // string
 
+#include "../../core/czstring.hpp"
+#include "../../core/not_null.hpp"
 #include "../../math/area.hpp"
-#include "../../misc/czstring.hpp"
-#include "../../misc/not_null.hpp"
 #include "../window.hpp"
 #include "gl_attribute.hpp"
 #include "gl_context.hpp"

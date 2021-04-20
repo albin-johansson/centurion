@@ -14,13 +14,13 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
+#include "../core/czstring.hpp"
+#include "../core/integers.hpp"
+#include "../core/not_null.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../math/rect.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/not_null.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "colors.hpp"

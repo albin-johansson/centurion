@@ -7,9 +7,9 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
+#include "../core/czstring.hpp"
 #include "../core/macros.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/not_null.hpp"
+#include "../core/not_null.hpp"
 
 namespace cen {
 

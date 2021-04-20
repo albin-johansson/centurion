@@ -6,7 +6,7 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 
 static_assert(std::is_final_v<cen::music>);
 

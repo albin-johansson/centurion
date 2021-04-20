@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
-#include "../misc/czstring.hpp"
 
 /// \addtogroup configuration
 /// \{

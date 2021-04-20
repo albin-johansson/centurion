@@ -6,8 +6,8 @@
 #include <array>     // array
 #include <iostream>  // cout
 
+#include "core/integers.hpp"
 #include "core_mocks.hpp"
-#include "misc/integers.hpp"
 
 extern "C" {
 FAKE_VOID_FUNC(SDL_SensorUpdate)

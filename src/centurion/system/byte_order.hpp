@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../misc/integers.hpp"
+#include "../core/integers.hpp"
 
 namespace cen {
 

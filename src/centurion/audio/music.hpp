@@ -9,15 +9,15 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/not_null.hpp"
+#include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
 #include "../detail/to_string.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/not_null.hpp"
-#include "../misc/time.hpp"
 
 namespace cen {
 

@@ -5,7 +5,7 @@
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 #include "video/screen.hpp"
 
 class WindowTest : public testing::Test

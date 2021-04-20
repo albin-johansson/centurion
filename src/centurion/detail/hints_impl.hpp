@@ -6,7 +6,7 @@
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
 
-#include "../misc/czstring.hpp"
+#include "../core/czstring.hpp"
 #include "czstring_compare.hpp"
 #include "static_bimap.hpp"
 

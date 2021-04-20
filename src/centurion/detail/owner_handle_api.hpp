@@ -5,7 +5,7 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "../misc/exception.hpp"
+#include "../core/exception.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

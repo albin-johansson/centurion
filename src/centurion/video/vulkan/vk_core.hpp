@@ -9,7 +9,7 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 
-#include "../../misc/czstring.hpp"
+#include "../../core/czstring.hpp"
 #include "../window.hpp"
 
 /// \addtogroup video

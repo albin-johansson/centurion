@@ -7,7 +7,7 @@
 #include <string>       // string
 #include <type_traits>  // is_same_v
 
-#include "../misc/czstring.hpp"
+#include "../core/czstring.hpp"
 
 namespace cen::hint {
 

@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../misc/exception.hpp"
+#include "../core/exception.hpp"
 #include "mutex.hpp"
 
 namespace cen {

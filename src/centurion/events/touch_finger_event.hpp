@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
-#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 namespace cen {

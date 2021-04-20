@@ -9,15 +9,15 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, enable_if_t
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../math/vector3.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/time.hpp"
 #include "joystick.hpp"
 
 namespace cen {

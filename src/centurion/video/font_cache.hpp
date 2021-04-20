@@ -8,8 +8,8 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
-#include "../misc/czstring.hpp"
-#include "../misc/not_null.hpp"
+#include "../core/czstring.hpp"
+#include "../core/not_null.hpp"
 #include "font.hpp"
 #include "surface.hpp"
 #include "texture.hpp"

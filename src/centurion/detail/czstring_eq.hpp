@@ -3,7 +3,7 @@
 
 #include <cstring>  // strcmp
 
-#include "../misc/czstring.hpp"
+#include "../core/czstring.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

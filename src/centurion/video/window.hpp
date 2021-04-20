@@ -9,6 +9,10 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type, is_same_v
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/not_null.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"
@@ -17,10 +21,6 @@
 #include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/not_null.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
 
@@ -383,7 +383,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_icon(const cen::surface& icon) noexcept
+  void set_icon(const surface& icon) noexcept
   {
     SDL_SetWindowIcon(m_window, icon.get());
   }

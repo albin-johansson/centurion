@@ -6,7 +6,7 @@
 #include <type_traits>
 
 #include "core/library.hpp"
-#include "misc/log.hpp"
+#include "core/log.hpp"
 
 using namespace std::string_literals;
 

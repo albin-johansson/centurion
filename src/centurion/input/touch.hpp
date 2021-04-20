@@ -5,7 +5,7 @@
 
 #include <optional>  // optional
 
-#include "../misc/integers.hpp"
+#include "../core/integers.hpp"
 #include "button_state.hpp"
 
 /**

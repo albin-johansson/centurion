@@ -2,8 +2,8 @@
 
 #include <iostream>
 
+#include "core/log.hpp"
 #include "input/key_code.hpp"
-#include "misc/log.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)

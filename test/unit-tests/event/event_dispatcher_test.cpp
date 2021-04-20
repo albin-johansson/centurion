@@ -4,7 +4,7 @@
 
 #include <iostream>  // cout
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 
 using event_dispatcher = cen::event_dispatcher<cen::quit_event,
                                                cen::controller_button_event,

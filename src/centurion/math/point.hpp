@@ -8,9 +8,9 @@
 #include <string>       // string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
+#include "../core/cast.hpp"
+#include "../core/sfinae.hpp"
 #include "../detail/to_string.hpp"
-#include "../misc/cast.hpp"
-#include "../misc/sfinae.hpp"
 
 namespace cen {
 

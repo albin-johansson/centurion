@@ -13,6 +13,7 @@ set(SOURCE_FILES
     config/hints_test.cpp
 
     core/exception_test.cpp
+    core/log_test.cpp
     core/sdl_string_test.cpp
     core/version_test.cpp
 
@@ -72,8 +73,6 @@ set(SOURCE_FILES
     math/rect_test.cpp
     math/point_test.cpp
     math/vector3_test.cpp
-
-    misc/log_test.cpp
 
     system/base_path_test.cpp
     system/battery_test.cpp

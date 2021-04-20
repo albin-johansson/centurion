@@ -2,7 +2,7 @@
 
 #include <iostream>  // cout
 
-#include "misc/log.hpp"
+#include "core/log.hpp"
 #include "video/window.hpp"
 
 TEST(WindowHandle, PointerConstructor)

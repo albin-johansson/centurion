@@ -4,8 +4,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "../misc/czstring.hpp"
-#include "../misc/time.hpp"
+#include "../core/czstring.hpp"
+#include "../core/time.hpp"
 
 namespace cen {
 

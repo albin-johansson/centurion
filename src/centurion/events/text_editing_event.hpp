@@ -5,9 +5,9 @@
 
 #include <string_view>  // string_view
 
+#include "../core/czstring.hpp"
+#include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/integers.hpp"
 #include "common_event.hpp"
 
 namespace cen {

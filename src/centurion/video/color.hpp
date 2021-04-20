@@ -8,8 +8,8 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
+#include "../core/integers.hpp"
 #include "../detail/to_string.hpp"
-#include "../misc/integers.hpp"
 
 namespace cen {
 

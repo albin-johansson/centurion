@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../misc/time.hpp"
+#include "../core/time.hpp"
 
 /// \addtogroup system
 /// \{

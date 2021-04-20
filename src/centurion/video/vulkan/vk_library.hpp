@@ -6,8 +6,8 @@
 #include <SDL.h>
 #include <SDL_vulkan.h>
 
-#include "../../misc/czstring.hpp"
-#include "../../misc/exception.hpp"
+#include "../../core/czstring.hpp"
+#include "../../core/exception.hpp"
 
 /// \addtogroup video
 /// \{

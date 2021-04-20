@@ -1,10 +1,10 @@
 #ifndef CENTURION_MOUSE_HEADER
 #define CENTURION_MOUSE_HEADER
 
+#include "../core/integers.hpp"
 #include "../detail/max.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"
-#include "../misc/integers.hpp"
 
 namespace cen {
 

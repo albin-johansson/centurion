@@ -10,12 +10,12 @@
 #include <string>       // string
 #include <type_traits>  // true_type, false_type
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
 
 namespace cen {
 

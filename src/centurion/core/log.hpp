@@ -7,8 +7,8 @@
 #include <string>   // string
 #include <utility>  // forward
 
-#include "../core/macros.hpp"
 #include "czstring.hpp"
+#include "macros.hpp"
 #include "not_null.hpp"
 
 /// \addtogroup misc

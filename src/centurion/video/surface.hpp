@@ -8,16 +8,16 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/integers.hpp"
+#include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
-#include "../misc/czstring.hpp"
-#include "../misc/exception.hpp"
-#include "../misc/integers.hpp"
-#include "../misc/not_null.hpp"
-#include "../misc/owner.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
 #include "pixel_format.hpp"

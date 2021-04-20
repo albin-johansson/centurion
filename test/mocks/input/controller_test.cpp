@@ -137,12 +137,6 @@ TEST_F(ControllerTest, Rumble)
   EXPECT_EQ(1, SDL_GameControllerRumble_fake.call_count);
 }
 
-TEST_F(ControllerTest, RumbleTriggers)
-{
-  m_controller.rumble_triggers(0, 10, 1_ms);
-  EXPECT_EQ(1, SDL_GameControllerRumbleTriggers_fake.call_count);
-}
-
 TEST_F(ControllerTest, StopRumble)
 {
   m_controller.stop_rumble();
@@ -478,6 +472,12 @@ TEST_F(ControllerTest, TypeWithIndex)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
+
+TEST_F(ControllerTest, RumbleTriggers)
+{
+  m_controller.rumble_triggers(0, 10, 1_ms);
+  EXPECT_EQ(1, SDL_GameControllerRumbleTriggers_fake.call_count);
+}
 
 TEST_F(ControllerTest, Serial)
 {

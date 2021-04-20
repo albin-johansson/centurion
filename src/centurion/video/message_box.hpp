@@ -528,12 +528,10 @@ class message_box final
                    const message_box_type type,
                    const button_order buttonOrder)
   {
-    if (const auto result =
-            SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
-                                     title.c_str(),
-                                     message.c_str(),
-                                     parent);
-        result == -1)
+    if (-1 == SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
+                                       title.c_str(),
+                                       message.c_str(),
+                                       parent))
     {
       throw sdl_error{};
     }

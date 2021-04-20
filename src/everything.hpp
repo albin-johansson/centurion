@@ -42,6 +42,7 @@
 #include "centurion/core/log.hpp"
 #include "centurion/core/not_null.hpp"
 #include "centurion/core/owner.hpp"
+#include "centurion/core/result.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/sfinae.hpp"
 #include "centurion/core/time.hpp"

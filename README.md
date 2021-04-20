@@ -76,7 +76,7 @@ void run()
   {
     while (event.poll()) // Go through all currently queued events
     {               
-      if (event.is<cen::quit_event>()) // Quit upon receive a quit event, e.g. when the user closes the window 
+      if (event.is<cen::quit_event>()) // Quit when the user closes the window 
       { 
         running = false;
         break;

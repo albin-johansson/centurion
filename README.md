@@ -85,7 +85,7 @@ void run()
       {
         if (kbe->pressed() && kbe->is_active(cen::keycodes::d)) 
         {
-          rectangle.set_x(rectangle.x() + 10);
+          rectangle.offset_x(10);
         }
       }
     }
@@ -154,7 +154,7 @@ class Game final {
   cen::window m_window;
   cen::renderer m_renderer;
   custom_dispatcher m_dispatcher;
-  cen::irect m_rectangle{{10, 10}, {150, 100}};
+  cen::irect m_rectangle{10, 10, 150, 100};
   bool m_running{true};
 
   void render() 
@@ -178,7 +178,7 @@ class Game final {
   {
     if (event.pressed() && event.is_active(cen::keycodes::d)) 
     {
-      m_rectangle.set_x(m_rectangle.x() + 10);
+      m_rectangle.offset_x(10);
     }
   }
 };
@@ -230,7 +230,7 @@ auto run() -> int
     // Query the key state directly
     if (keyboard.is_pressed(cen::keycodes::d)) 
     {
-      rectangle.set_x(rectangle.x() + 10);
+      rectangle.offset_x(10);
     }
 
     renderer.clear_with(cen::colors::black);

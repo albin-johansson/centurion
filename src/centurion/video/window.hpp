@@ -315,17 +315,16 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param fullscreen `true` if the window should enable fullscreen mode;
-   * `false` for windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for
+   * windowed mode.
    *
    * \return `true` on success; `false` otherwise.
    *
    * \since 3.0.0
    */
-  auto set_fullscreen(const bool fullscreen) noexcept -> bool
+  auto set_fullscreen(const bool enabled) noexcept -> bool
   {
-    constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-    return SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0) == 0;
+    return SDL_SetWindowFullscreen(m_window, enabled ? fullscreen : 0) == 0;
   }
 
   /**
@@ -333,17 +332,17 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param fullscreen `true` if the window should enable fullscreen desktop
-   * mode; `false` for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false`
+   * for windowed mode.
    *
    * \return `true` on success; `false` otherwise.
    *
    * \since 4.0.0
    */
-  auto set_fullscreen_desktop(const bool fullscreen) noexcept -> bool
+  auto set_fullscreen_desktop(const bool enabled) noexcept -> bool
   {
-    constexpr auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
-    return SDL_SetWindowFullscreen(m_window, fullscreen ? flag : 0) == 0;
+    return SDL_SetWindowFullscreen(m_window,
+                                   enabled ? fullscreen_desktop : 0) == 0;
   }
 
   /**
@@ -710,10 +709,9 @@ class basic_window final
    */
   [[nodiscard]] auto min_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_GetWindowMinimumSize(m_window, &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_GetWindowMinimumSize(m_window, &size.width, &size.height);
+    return size;
   }
 
   /**
@@ -725,10 +723,9 @@ class basic_window final
    */
   [[nodiscard]] auto max_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_GetWindowMaximumSize(m_window, &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_GetWindowMaximumSize(m_window, &size.width, &size.height);
+    return size;
   }
 
   /**

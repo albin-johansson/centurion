@@ -52,7 +52,7 @@ TEST(Platform, IsAndroid)
   EXPECT_EQ(cen::is_android(), isAndroid);
 }
 
-TEST(Platform, Name)
+TEST(Platform, PlatformName)
 {
   EXPECT_EQ(std::string{SDL_GetPlatform()}, *cen::platform_name());
 }

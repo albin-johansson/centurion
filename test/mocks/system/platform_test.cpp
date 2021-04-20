@@ -27,21 +27,7 @@ class PlatformTest : public testing::Test
   }
 };
 
-TEST_F(PlatformTest, OpenURL)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
-
-  using namespace std::string_literals;
-  const auto url = "https://www.google.com"s;
-
-  EXPECT_FALSE(cen::open_url(url));
-  EXPECT_TRUE(cen::open_url(url));
-
-  EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
-}
-
-TEST_F(PlatformTest, ID)
+TEST_F(PlatformTest, CurrentPlatform)
 {
   SDL_GetPlatform_fake.return_val = "Windows";
   EXPECT_EQ(cen::platform_id::windows, cen::current_platform());
@@ -92,7 +78,7 @@ TEST_F(PlatformTest, IsAndroid)
   EXPECT_TRUE(cen::is_android());
 }
 
-TEST_F(PlatformTest, Name)
+TEST_F(PlatformTest, PlatformName)
 {
   SDL_GetPlatform_fake.return_val = "Windows";
   EXPECT_EQ("Windows", cen::platform_name().value());
@@ -118,3 +104,21 @@ TEST_F(PlatformTest, IsTablet)
   const auto isTablet [[maybe_unused]] = cen::is_tablet();
   EXPECT_EQ(1, SDL_IsTablet_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+TEST_F(PlatformTest, OpenURL)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
+
+  using namespace std::string_literals;
+  const auto url = "https://www.google.com"s;
+
+  EXPECT_FALSE(cen::open_url(url));
+  EXPECT_TRUE(cen::open_url(url));
+
+  EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

@@ -86,6 +86,8 @@ TEST(Joystick, TypeEnum)
   EXPECT_EQ(SDL_JOYSTICK_TYPE_THROTTLE, type::throttle);
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(Joystick, VirtualAPI)
 {
   const auto type = cen::joystick_type::game_controller;
@@ -110,3 +112,5 @@ TEST(Joystick, VirtualAPI)
 
   EXPECT_TRUE(cen::joystick::detach_virtual(*index));
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

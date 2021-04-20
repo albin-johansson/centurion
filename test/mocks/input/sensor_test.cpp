@@ -130,6 +130,19 @@ TEST_F(SensorTest, Update)
   EXPECT_EQ(1, SDL_SensorUpdate_fake.call_count);
 }
 
+TEST_F(SensorTest, Count)
+{
+  const auto count [[maybe_unused]] = cen::sensor::count();
+  EXPECT_EQ(1, SDL_NumSensors_fake.call_count);
+}
+
+TEST_F(SensorTest, StreamOperator)
+{
+  std::cout << "COUT: " << m_sensor << '\n';
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST_F(SensorTest, Lock)
 {
   cen::sensor::lock();
@@ -142,13 +155,4 @@ TEST_F(SensorTest, Unlock)
   EXPECT_EQ(1, SDL_UnlockSensors_fake.call_count);
 }
 
-TEST_F(SensorTest, Count)
-{
-  const auto count [[maybe_unused]] = cen::sensor::count();
-  EXPECT_EQ(1, SDL_NumSensors_fake.call_count);
-}
-
-TEST_F(SensorTest, StreamOperator)
-{
-  std::cout << "COUT: " << m_sensor << '\n';
-}
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

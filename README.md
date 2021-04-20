@@ -69,7 +69,7 @@ void run()
   
   window.show();
 
-  cen::irect rectangle{{10, 10}, {150, 100}};
+  auto rectangle = cen::rect(10, 10, 150, 100);
   bool running{true};
 
   while (running) 
@@ -212,7 +212,7 @@ auto run() -> int
 
   window.show();
 
-  cen::irect rectangle{{10, 10}, {150, 100}};
+  auto rectangle = cen::rect(10, 10, 150, 100);
   bool running{true};
 
   while (running) 

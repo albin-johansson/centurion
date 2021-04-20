@@ -239,6 +239,15 @@ TEST(Color, Blend)
   EXPECT_EQ(0xFF, c.alpha());
 }
 
+TEST(Color, Data)
+{
+  auto white = cen::colors::white;
+  const auto black = cen::colors::black;
+
+  EXPECT_TRUE(white.data());
+  EXPECT_TRUE(black.data());
+}
+
 TEST(Color, ConversionToSDLColor)
 {
   constexpr auto color = cen::colors::dark_orchid;

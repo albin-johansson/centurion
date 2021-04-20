@@ -358,6 +358,26 @@ class color final
   }
 
   /**
+   * \brief Returns a pointer to the internal SDL color.
+   *
+   * \warning Do not cache the returned pointer!
+   *
+   * \return a pointer to the internal color instance.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto data() noexcept -> SDL_Color*
+  {
+    return &m_color;
+  }
+
+  /// \copydoc data()
+  [[nodiscard]] auto data() const noexcept -> const SDL_Color*
+  {
+    return &m_color;
+  }
+
+  /**
    * \brief Returns the internal color instance.
    *
    * \return a reference to the internal color.

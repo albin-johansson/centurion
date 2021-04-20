@@ -93,16 +93,20 @@ TEST(PixelFormat, Values)
     EXPECT_EQ(cen::pixel_format::index4msb, SDL_PIXELFORMAT_INDEX4MSB);
     EXPECT_EQ(cen::pixel_format::index8, SDL_PIXELFORMAT_INDEX8);
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     EXPECT_EQ(cen::pixel_format::xrgb4444, SDL_PIXELFORMAT_XRGB4444);
     EXPECT_EQ(cen::pixel_format::xbgr4444, SDL_PIXELFORMAT_XBGR4444);
     EXPECT_EQ(cen::pixel_format::xrgb1555, SDL_PIXELFORMAT_XRGB1555);
     EXPECT_EQ(cen::pixel_format::xbgr1555, SDL_PIXELFORMAT_XBGR1555);
     EXPECT_EQ(cen::pixel_format::xrgb8888, SDL_PIXELFORMAT_XRGB8888);
     EXPECT_EQ(cen::pixel_format::xbgr8888, SDL_PIXELFORMAT_XBGR8888);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     EXPECT_EQ(cen::pixel_format::rgb332, SDL_PIXELFORMAT_RGB332);
     EXPECT_EQ(cen::pixel_format::rgb444, SDL_PIXELFORMAT_RGB444);
+#if SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(cen::pixel_format::bgr444, SDL_PIXELFORMAT_BGR444);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(cen::pixel_format::rgb555, SDL_PIXELFORMAT_RGB555);
     EXPECT_EQ(cen::pixel_format::bgr555, SDL_PIXELFORMAT_BGR555);
 
@@ -167,16 +171,20 @@ TEST(PixelFormat, Values)
     EXPECT_EQ(SDL_PIXELFORMAT_INDEX4MSB, cen::pixel_format::index4msb);
     EXPECT_EQ(SDL_PIXELFORMAT_INDEX8, cen::pixel_format::index8);
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     EXPECT_EQ(SDL_PIXELFORMAT_XRGB4444, cen::pixel_format::xrgb4444);
     EXPECT_EQ(SDL_PIXELFORMAT_XBGR4444, cen::pixel_format::xbgr4444);
     EXPECT_EQ(SDL_PIXELFORMAT_XRGB1555, cen::pixel_format::xrgb1555);
     EXPECT_EQ(SDL_PIXELFORMAT_XBGR1555, cen::pixel_format::xbgr1555);
     EXPECT_EQ(SDL_PIXELFORMAT_XRGB8888, cen::pixel_format::xrgb8888);
     EXPECT_EQ(SDL_PIXELFORMAT_XBGR8888, cen::pixel_format::xbgr8888);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     EXPECT_EQ(SDL_PIXELFORMAT_RGB332, cen::pixel_format::rgb332);
     EXPECT_EQ(SDL_PIXELFORMAT_RGB444, cen::pixel_format::rgb444);
+#if SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(SDL_PIXELFORMAT_BGR444, cen::pixel_format::bgr444);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(SDL_PIXELFORMAT_RGB555, cen::pixel_format::rgb555);
     EXPECT_EQ(SDL_PIXELFORMAT_BGR555, cen::pixel_format::bgr555);
 

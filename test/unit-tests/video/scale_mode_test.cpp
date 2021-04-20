@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST(ScaleMode, EnumValues)
 {
   EXPECT_EQ(cen::scale_mode::linear, SDL_ScaleModeLinear);
@@ -15,3 +17,5 @@ TEST(ScaleMode, EnumValues)
   EXPECT_NE(cen::scale_mode::linear, SDL_ScaleModeNearest);
   EXPECT_NE(SDL_ScaleModeBest, cen::scale_mode::nearest);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

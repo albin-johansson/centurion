@@ -29,8 +29,10 @@ FAKE_VALUE_FUNC(int, SDL_GameControllerRumbleTriggers, SDL_GameController*, Uint
 FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
+#endif // SDL_VERSION_ATLEAST(2, 0, 12)
 
 FAKE_VALUE_FUNC(Uint8, SDL_GameControllerGetButton, SDL_GameController*, SDL_GameControllerButton)
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)

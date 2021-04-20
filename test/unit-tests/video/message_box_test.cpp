@@ -109,14 +109,6 @@ TEST(MessageBox, GetButtonOrder)
   EXPECT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 }
 
-TEST(MessageBox, ButtonOrderEnum)
-{
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-            static_cast<cen::u32>(cen::button_order::left_to_right));
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
-            static_cast<cen::u32>(cen::button_order::right_to_left));
-}
-
 TEST(MessageBox, TypeEnum)
 {
   using type = cen::message_box_type;
@@ -186,3 +178,15 @@ TEST(MessageBox, ColorIdEnum)
   EXPECT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
   EXPECT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST(MessageBox, ButtonOrderEnum)
+{
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+            static_cast<cen::u32>(cen::button_order::left_to_right));
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
+            static_cast<cen::u32>(cen::button_order::right_to_left));
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

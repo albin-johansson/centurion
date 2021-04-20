@@ -7,6 +7,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
+#include "../core/macros.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/not_null.hpp"
 

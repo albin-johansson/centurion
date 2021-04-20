@@ -35,7 +35,9 @@ using boolean_hints =
                    cen::hint::vsync,
                    cen::hint::opengl_es_driver,
                    cen::hint::allow_screensaver,
+#if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::video_external_context,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::disable_high_dpi,
                    cen::hint::minimize_on_focus_loss,
                    cen::hint::window_frame_usable_while_cursor_hidden,
@@ -47,15 +49,21 @@ using boolean_hints =
                    cen::hint::treat_time_critical_as_real_time,
                    cen::hint::appletv::controller_ui_events,
                    cen::hint::appletv::remote_allow_rotation,
+#if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::emscripten::asyncify,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::xinput::is_enabled,
                    cen::hint::xinput::use_old_joystick_mapping,
                    cen::hint::mouse::focus_clickthrough,
                    cen::hint::mouse::relative_mode_warp,
+#if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::mouse::relative_scaling,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::d3d::v11_debug,
                    cen::hint::d3d::thread_safe,
+#if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::controller::use_button_labels,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::winrt::handle_back_button,
                    cen::hint::windows::no_thread_naming,
                    cen::hint::windows::enable_message_loop,
@@ -65,22 +73,30 @@ using boolean_hints =
                    cen::hint::mac::fullscreen_spaces,
                    cen::hint::android::block_on_pause,
                    cen::hint::android::trap_back_button,
+#if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::android::pause_background_audio,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::joystick::allow_background_events,
                    cen::hint::joystick::use_hidapi,
+#if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::joystick::use_hidapi_ps5,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::joystick::use_hidapi_ps4,
                    cen::hint::joystick::use_hidapi_ps4_rumble,
                    cen::hint::joystick::use_hidapi_steam,
                    cen::hint::joystick::use_hidapi_switch,
                    cen::hint::joystick::use_hidapi_xbox,
+#if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::joystick::use_hidapi_game_cube,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::joystick::use_raw_input,
                    cen::hint::joystick::hidapi_correlate_xinput,
                    cen::hint::joystick::linux_use_deadzones,
                    cen::hint::x11::net_wm_ping,
                    cen::hint::x11::net_wm_bypass_compositor,
+#if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::x11::force_egl,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::x11::xinerama,
                    cen::hint::x11::xrandr,
                    cen::hint::x11::xvidmode>;
@@ -200,11 +216,15 @@ CENTURION_REGISTER_TYPED_TEST(FloatHintTest, float_hints);
 
 using BasicHintTest = HintTest<void>;
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST_F(BasicHintTest, DisplayUsableBounds)
 {
   using cen::hint::display_usable_bounds;
   test_string_hint<display_usable_bounds>("10, 20, 30, 40");
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST_F(BasicHintTest, WindowSharePixelFormat)
 {
@@ -281,11 +301,15 @@ TEST_F(BasicHintTest, WindowVisualID)
   test_string_hint<window_visual_id>("foo");
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST_F(BasicHintTest, PreferredLocales)
 {
   using cen::hint::preferred_locales;
   test_string_hint<preferred_locales>("en_GB,en_US,se");
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST_F(BasicHintTest, ThreadPriorityPolicy)
 {

@@ -46,7 +46,9 @@ using boolean_hints =
                    cen::hint::return_key_hides_ime,
                    cen::hint::touch_mouse_events,
                    cen::hint::tv_remote_as_joystick,
+#if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::treat_time_critical_as_real_time,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::appletv::controller_ui_events,
                    cen::hint::appletv::remote_allow_rotation,
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -309,8 +311,6 @@ TEST_F(BasicHintTest, PreferredLocales)
   test_string_hint<preferred_locales>("en_GB,en_US,se");
 }
 
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
 TEST_F(BasicHintTest, ThreadPriorityPolicy)
 {
   using cen::hint::thread_priority_policy;
@@ -328,6 +328,8 @@ TEST_F(BasicHintTest, AudioDeviceStreamName)
   using cen::hint::audio_device_stream_name;
   test_string_hint<audio_device_stream_name>("Audio Stream");
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST_F(BasicHintTest, RenderDriver)
 {

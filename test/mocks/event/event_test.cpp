@@ -30,9 +30,9 @@ class EventTest : public testing::Test
   }
 };
 
-TEST_F(EventTest, Refresh)
+TEST_F(EventTest, Update)
 {
-  cen::event::refresh();
+  cen::event::update();
   EXPECT_EQ(1, SDL_PumpEvents_fake.call_count);
 }
 

@@ -64,9 +64,9 @@ static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
 static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
 // clang-format on
 
-TEST(Event, Refresh)
+TEST(Event, Update)
 {
-  EXPECT_NO_THROW(cen::event::refresh());
+  EXPECT_NO_THROW(cen::event::update());
 }
 
 TEST(Event, Push)
@@ -93,7 +93,7 @@ TEST(Event, Push)
 
 TEST(Event, Flush)
 {
-  cen::event::refresh();
+  cen::event::update();
   cen::event::flush();
 
   cen::event event;

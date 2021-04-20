@@ -77,7 +77,7 @@ class event final
   }
 
   /**
-   * \brief Refresh the event loop, gathering events from the input devices.
+   * \brief Updates the event loop, gathering events from the input devices.
    *
    * \note You might not have to call this method by yourself.
    *
@@ -85,7 +85,7 @@ class event final
    *
    * \since 3.1.0
    */
-  static void refresh() noexcept
+  static void update() noexcept
   {
     SDL_PumpEvents();
   }

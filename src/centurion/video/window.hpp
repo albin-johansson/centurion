@@ -768,204 +768,6 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window has input focus.
-   *
-   * \note The window might have to be visible for this to be true.
-   *
-   * \return `true` if the window has input focus; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto has_input_focus() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & input_focus);
-  }
-
-  /**
-   * \brief Indicates whether or not the window has mouse focus.
-   *
-   * \return `true` if the window has mouse focus; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto has_mouse_focus() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & mouse_focus);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is borderless.
-   *
-   * \note This check is the opposite of `is_decorated()`.
-   *
-   * \details Windows are not borderless by default.
-   *
-   * \return `true` if the window is borderless; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_borderless() const noexcept -> bool
-  {
-    return flags() & borderless;
-  }
-
-  /**
-   * \brief Indicates whether or not the window is decorated.
-   *
-   * \note This check is the opposite of `is_borderless()`.
-   *
-   * \details Windows are decorated by default.
-   *
-   * \return `true` if the window is decorated; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_decorated() const noexcept -> bool
-  {
-    return !is_borderless();
-  }
-
-  /**
-   * \brief Indicates whether or not the window is resizable.
-   *
-   * \details By default, this property is set to false.
-   *
-   * \return `true` if the window is resizable; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_resizable() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & resizable);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is in fullscreen mode.
-   *
-   * \return `true` if the window is in fullscreen mode; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_fullscreen() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & fullscreen);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is in fullscreen desktop mode.
-   *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & fullscreen_desktop);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is visible.
-   *
-   * \return `true` if the window is visible; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_visible() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & shown);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
-   *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_opengl() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & opengl);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is usable as a Vulkan surface.
-   *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_vulkan() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & vulkan);
-  }
-
-  /**
-   * \brief Indicates whether or not the window wasn't created by SDL.
-   *
-   * \return `true` if the window wasn't created by SDL; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_foreign() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & foreign);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is capturing the mouse.
-   *
-   * \return `true` if the window is capturing the mouse; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & mouse_capture);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is minimized.
-   *
-   * \return `true` if the window is minimized; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_minimized() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & minimized);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is maximized.
-   *
-   * \return `true` if the window is maximized; `false` otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_maximized() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & maximized);
-  }
-
-  /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
-   *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto is_always_on_top() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & always_on_top);
-  }
-
-  /**
    * \brief Indicates whether or not a flag is set.
    *
    * \details Some of the use cases of this function can be replaced by more
@@ -1000,6 +802,204 @@ class basic_window final
   [[nodiscard]] auto check_flag(const window_flags flag) const noexcept -> bool
   {
     return static_cast<bool>(flags() & flag);
+  }
+
+  /**
+   * \brief Indicates whether or not the window has input focus.
+   *
+   * \note The window might have to be visible for this to be true.
+   *
+   * \return `true` if the window has input focus; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto has_input_focus() const noexcept -> bool
+  {
+    return check_flag(input_focus);
+  }
+
+  /**
+   * \brief Indicates whether or not the window has mouse focus.
+   *
+   * \return `true` if the window has mouse focus; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto has_mouse_focus() const noexcept -> bool
+  {
+    return check_flag(mouse_focus);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is borderless.
+   *
+   * \note This check is the opposite of `is_decorated()`.
+   *
+   * \details Windows are not borderless by default.
+   *
+   * \return `true` if the window is borderless; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_borderless() const noexcept -> bool
+  {
+    return check_flag(borderless);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is decorated.
+   *
+   * \note This check is the opposite of `is_borderless()`.
+   *
+   * \details Windows are decorated by default.
+   *
+   * \return `true` if the window is decorated; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_decorated() const noexcept -> bool
+  {
+    return !is_borderless();
+  }
+
+  /**
+   * \brief Indicates whether or not the window is resizable.
+   *
+   * \details By default, this property is set to false.
+   *
+   * \return `true` if the window is resizable; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_resizable() const noexcept -> bool
+  {
+    return check_flag(resizable);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is in fullscreen mode.
+   *
+   * \return `true` if the window is in fullscreen mode; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_fullscreen() const noexcept -> bool
+  {
+    return check_flag(fullscreen);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is in fullscreen desktop mode.
+   *
+   * \return `true` if the window is in fullscreen desktop mode;
+   * `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool
+  {
+    return check_flag(fullscreen_desktop);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is visible.
+   *
+   * \return `true` if the window is visible; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_visible() const noexcept -> bool
+  {
+    return check_flag(shown);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is usable with an
+   * OpenGL-context.
+   *
+   * \return `true` if the window is compatible with an OpenGL-context; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_opengl() const noexcept -> bool
+  {
+    return check_flag(opengl);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is usable as a Vulkan surface.
+   *
+   * \return `true` if the window is is usable as a Vulkan surface; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_vulkan() const noexcept -> bool
+  {
+    return check_flag(vulkan);
+  }
+
+  /**
+   * \brief Indicates whether or not the window wasn't created by SDL.
+   *
+   * \return `true` if the window wasn't created by SDL; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_foreign() const noexcept -> bool
+  {
+    return check_flag(foreign);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is capturing the mouse.
+   *
+   * \return `true` if the window is capturing the mouse; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool
+  {
+    return check_flag(mouse_capture);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is minimized.
+   *
+   * \return `true` if the window is minimized; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_minimized() const noexcept -> bool
+  {
+    return check_flag(minimized);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is maximized.
+   *
+   * \return `true` if the window is maximized; `false` otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_maximized() const noexcept -> bool
+  {
+    return check_flag(maximized);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is set to be always on top of
+   * other windows.
+   *
+   * \return `true` if the window is always on top of other windows; false
+   * otherwise.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto is_always_on_top() const noexcept -> bool
+  {
+    return check_flag(always_on_top);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>

@@ -72,13 +72,19 @@ void run()
   cen::irect rectangle{{10, 10}, {150, 100}};
   bool running{true};
 
-  while (running) {
-    while (event.poll()) {               // Go through all currently queued events
-      if (event.is<cen::quit_event>()) { // Quit upon receive a quit event, e.g. when the user closes the window 
+  while (running) 
+  {
+    while (event.poll()) // Go through all currently queued events
+    {               
+      if (event.is<cen::quit_event>()) // Quit upon receive a quit event, e.g. when the user closes the window 
+      { 
         running = false;
         break;
-      } else if (const auto* kbe = event.try_get<cen::keyboard_event>()) {
-        if (kbe->pressed() && kbe->is_active(cen::keycodes::d)) {
+      } 
+      else if (const auto* kbe = event.try_get<cen::keyboard_event>()) 
+      {
+        if (kbe->pressed() && kbe->is_active(cen::keycodes::d)) 
+        {
           rectangle.set_x(rectangle.x() + 10);
         }
       }
@@ -134,7 +140,8 @@ class Game final {
   {
     m_window.show();
     
-    while (m_running) {
+    while (m_running) 
+    {
       m_dispatcher.poll();  // Handle currently queued events that we have subscribed to
       render();
     }
@@ -169,7 +176,8 @@ class Game final {
   // Invoked for each keyboard event
   void on_keyboard_event(const cen::keyboard_event& event) 
   {
-    if (event.pressed() && event.is_active(cen::keycodes::d)) {
+    if (event.pressed() && event.is_active(cen::keycodes::d)) 
+    {
       m_rectangle.set_x(m_rectangle.x() + 10);
     }
   }
@@ -207,18 +215,21 @@ auto run() -> int
   cen::irect rectangle{{10, 10}, {150, 100}};
   bool running{true};
 
-  while (running) {
+  while (running) 
+  {
     keyboard.update();                    // Updates the keyboard state
     mouse.update(renderer.output_size()); // Updates the mouse state
-    cen::event::refresh();                // Manually refreshes the event queue
+    cen::event::update();                 // Manually updates the event queue
 
-    if (cen::event::in_queue(cen::event_type::quit)) {
+    if (cen::event::in_queue(cen::event_type::quit)) 
+    {
       running = false;
       break;
     }
 
     // Query the key state directly
-    if (keyboard.is_pressed(cen::keycodes::d)) {
+    if (keyboard.is_pressed(cen::keycodes::d)) 
+    {
       rectangle.set_x(rectangle.x() + 10);
     }
 

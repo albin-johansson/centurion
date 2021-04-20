@@ -1,61 +1,35 @@
-/**
- * \defgroup core Core
- * \brief Contains entities considered to be fundamental for the library.
- */
+/// \defgroup core Core
+/// \brief Contains entities considered to be fundamental for the library.
 
-/**
- * \defgroup configuration Configuration
- * \brief Contains the API related to hints/configuration variables.
- */
+/// \defgroup configuration Configuration
+/// \brief Contains the API related to hints/configuration variables.
 
-/**
- * \defgroup event Events
- * \brief Contains entities related to events.
- */
+/// \defgroup event Events
+/// \brief Contains entities related to events.
 
-/**
- * \defgroup thread Threads
- * \brief Provides threading utilities for dealing with threads, mutexes, locks,
- * etc.
- */
+/// \defgroup thread Threads
+/// \brief Provides threading utilities such as threads, mutexes, locks, etc.
 
-/**
- * \defgroup input Input
- * \brief Contains components related to input from mice, keyboards,
- * controllers, etc.
- */
+/// \defgroup input Input
+/// \brief Contains components related to input from mice, keyboards,
+/// controllers, etc.
 
-/**
- * \defgroup video Video
- * \brief Contains components related to window-management, rendering, fonts,
- * etc.
- */
+/// \defgroup video Video
+/// \brief Contains components related to window-management, rendering, fonts,
+/// etc.
 
-/**
- * \defgroup system System
- * \brief Contains various utilities related to system resources.
- */
+/// \defgroup system System
+/// \brief Contains various utilities related to system resources.
 
-/**
- * \defgroup compiler Compiler
- * \brief Provides `constexpr` utilities for querying the current compiler.
- * \note There is no guarantee that the compiler checks are mutually exclusive.
- */
+/// \defgroup compiler Compiler
+/// \brief Provides `constexpr` utilities for querying the current compiler.
+/// \note There is no guarantee that the compiler checks are mutually exclusive.
 
-/**
- * \defgroup math Math
- * \brief Contains basic mathematical components, used throughout the library.
- */
+/// \defgroup math Math
+/// \brief Contains basic mathematical components, used throughout the library.
 
-/**
- * \defgroup audio Audio
- * \brief Contains the audio API, for playing as sound effects and music.
- */
-
-/**
- * \defgroup misc Misc
- * \brief Contains miscellaneous components.
- */
+/// \defgroup audio Audio
+/// \brief Contains the audio API, for playing as sound effects and music.
 
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER

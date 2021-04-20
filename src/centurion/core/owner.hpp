@@ -8,7 +8,7 @@ namespace cen {
 /**
  * \typedef owner
  *
- * \ingroup misc
+ * \ingroup core
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *

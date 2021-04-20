@@ -8,7 +8,7 @@
 
 namespace cen {
 
-/// \addtogroup misc
+/// \addtogroup core
 /// \{
 
 /// \name Time (std::chrono) aliases
@@ -84,7 +84,7 @@ constexpr auto operator"" _s(const unsigned long long int value) noexcept
 
 }  // namespace literals
 
-/// \} End of group misc
+/// \} End of group core
 
 }  // namespace cen
 

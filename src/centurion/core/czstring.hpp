@@ -5,7 +5,7 @@
 
 namespace cen {
 
-/// \addtogroup misc
+/// \addtogroup core
 /// \{
 
 /**
@@ -22,7 +22,7 @@ using czstring = const char*;
  */
 using zstring = char*;
 
-/// \} End of group misc
+/// \} End of group core
 
 }  // namespace cen
 

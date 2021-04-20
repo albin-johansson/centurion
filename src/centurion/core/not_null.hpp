@@ -8,7 +8,7 @@ namespace cen {
 /**
  * \typedef not_null
  *
- * \ingroup misc
+ * \ingroup core
  *
  * \brief Tag used to indicate that a pointer cannot be null.
  *

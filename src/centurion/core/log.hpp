@@ -11,7 +11,7 @@
 #include "macros.hpp"
 #include "not_null.hpp"
 
-/// \addtogroup misc
+/// \addtogroup core
 /// \{
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)

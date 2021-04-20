@@ -5,7 +5,7 @@
 
 namespace cen {
 
-/// \addtogroup misc
+/// \addtogroup core
 /// \{
 
 /// \name Integer aliases
@@ -215,7 +215,7 @@ namespace literals {
 
 }  // namespace literals
 
-/// \} End of group misc
+/// \} End of group core
 
 }  // namespace cen
 

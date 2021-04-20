@@ -6,7 +6,7 @@ namespace cen {
 /**
  * \brief Casts a value to a value of another type.
  *
- * \ingroup misc
+ * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
  * `static_cast`. The idea is that this function will be specialized for

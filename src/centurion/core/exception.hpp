@@ -12,7 +12,7 @@
 
 namespace cen {
 
-/// \addtogroup misc
+/// \addtogroup core
 /// \{
 
 /**
@@ -175,7 +175,7 @@ class mix_error final : public cen_error
   {}
 };
 
-/// \} End of group misc
+/// \} End of group core
 
 }  // namespace cen
 

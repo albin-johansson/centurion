@@ -60,6 +60,8 @@ TEST_F(SurfaceTest, SetRLEHint)
   EXPECT_EQ(2, SDL_SetSurfaceRLE_fake.call_count);
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST_F(SurfaceTest, IsRLEEnabled)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
@@ -70,3 +72,5 @@ TEST_F(SurfaceTest, IsRLEEnabled)
 
   EXPECT_EQ(2, SDL_HasSurfaceRLE_fake.call_count);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

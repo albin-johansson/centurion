@@ -19,6 +19,7 @@
 #include "../math/rect.hpp"
 #include "../misc/czstring.hpp"
 #include "../misc/exception.hpp"
+#include "../misc/integers.hpp"
 #include "../misc/not_null.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
@@ -65,6 +66,45 @@ template <typename B>
 class basic_window final
 {
  public:
+  /**
+   * \enum window_flags
+   *
+   * \brief Represents different window features and options.
+   *
+   * \details Values of this enum are intended to be used to create flag
+   * bitmasks, that can be used when creating windows and to obtain information
+   * from created windows.
+   *
+   * \see `SDL_WindowFlags`
+   *
+   * \since 6.0.0
+   */
+  enum window_flags : u32
+  {
+    fullscreen = SDL_WINDOW_FULLSCREEN,
+    opengl = SDL_WINDOW_OPENGL,
+    shown = SDL_WINDOW_SHOWN,
+    hidden = SDL_WINDOW_HIDDEN,
+    borderless = SDL_WINDOW_BORDERLESS,
+    resizable = SDL_WINDOW_RESIZABLE,
+    minimized = SDL_WINDOW_MINIMIZED,
+    maximized = SDL_WINDOW_MAXIMIZED,
+    input_grabbed = SDL_WINDOW_INPUT_GRABBED,
+    input_focus = SDL_WINDOW_INPUT_FOCUS,
+    mouse_focus = SDL_WINDOW_MOUSE_FOCUS,
+    fullscreen_desktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
+    foreign = SDL_WINDOW_FOREIGN,
+    high_dpi = SDL_WINDOW_ALLOW_HIGHDPI,
+    mouse_capture = SDL_WINDOW_MOUSE_CAPTURE,
+    always_on_top = SDL_WINDOW_ALWAYS_ON_TOP,
+    skip_taskbar = SDL_WINDOW_SKIP_TASKBAR,
+    utility = SDL_WINDOW_UTILITY,
+    tooltip = SDL_WINDOW_TOOLTIP,
+    popup_menu = SDL_WINDOW_POPUP_MENU,
+    vulkan = SDL_WINDOW_VULKAN,
+    metal = SDL_WINDOW_METAL
+  };
+
   /// \name Construction
   /// \{
 
@@ -738,7 +778,7 @@ class basic_window final
    */
   [[nodiscard]] auto has_input_focus() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_INPUT_FOCUS);
+    return static_cast<bool>(flags() & input_focus);
   }
 
   /**
@@ -750,7 +790,7 @@ class basic_window final
    */
   [[nodiscard]] auto has_mouse_focus() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_FOCUS);
+    return static_cast<bool>(flags() & mouse_focus);
   }
 
   /**
@@ -766,7 +806,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_borderless() const noexcept -> bool
   {
-    return flags() & SDL_WINDOW_BORDERLESS;
+    return flags() & borderless;
   }
 
   /**
@@ -796,7 +836,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_resizable() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
+    return static_cast<bool>(flags() & resizable);
   }
 
   /**
@@ -808,7 +848,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_fullscreen() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
+    return static_cast<bool>(flags() & fullscreen);
   }
 
   /**
@@ -821,7 +861,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
+    return static_cast<bool>(flags() & fullscreen_desktop);
   }
 
   /**
@@ -833,7 +873,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_visible() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
+    return static_cast<bool>(flags() & shown);
   }
 
   /**
@@ -847,7 +887,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_opengl() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
+    return static_cast<bool>(flags() & opengl);
   }
 
   /**
@@ -860,7 +900,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_vulkan() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
+    return static_cast<bool>(flags() & vulkan);
   }
 
   /**
@@ -872,7 +912,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_foreign() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_FOREIGN);
+    return static_cast<bool>(flags() & foreign);
   }
 
   /**
@@ -884,7 +924,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
+    return static_cast<bool>(flags() & mouse_capture);
   }
 
   /**
@@ -896,7 +936,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_minimized() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
+    return static_cast<bool>(flags() & minimized);
   }
 
   /**
@@ -908,7 +948,7 @@ class basic_window final
    */
   [[nodiscard]] auto is_maximized() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
+    return static_cast<bool>(flags() & maximized);
   }
 
   /**
@@ -920,16 +960,16 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto always_on_top() const noexcept -> bool
+  [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_WINDOW_ALWAYS_ON_TOP);
+    return static_cast<bool>(flags() & always_on_top);
   }
 
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this method can be replaced by more
-   * explicit methods, e.g. `is_fullscreen()` instead of
+   * \details Some of the use cases of this function can be replaced by more
+   * explicit functions, e.g. `is_fullscreen()` instead of
    * `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
@@ -944,10 +984,28 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
+  /**
+   * \brief Indicates whether or not a flag is set.
+   *
+   * \details Some of the use cases of this function can be replaced by more
+   * explicit functions, e.g. `is_fullscreen()` instead of
+   * `check_flag(cen::window::fullscreen)`.
+   *
+   * \param flag the flag that will be tested.
+   *
+   * \return `true` if the flag is set; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto check_flag(const window_flags flag) const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & flag);
+  }
+
   template <typename BB = B, detail::is_owner<BB> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
-    return SDL_WINDOW_HIDDEN;
+    return hidden;
   }
 
   /// \} End of flag queries

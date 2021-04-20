@@ -395,3 +395,11 @@ TEST_F(RendererTest, StreamOperator)
 {
   std::cout << "COUT: " << *m_renderer << '\n';
 }
+
+TEST_F(RendererTest, RendererFlagsEnum)
+{
+  EXPECT_EQ(SDL_RENDERER_ACCELERATED, cen::renderer::accelerated);
+  EXPECT_EQ(SDL_RENDERER_SOFTWARE, cen::renderer::software);
+  EXPECT_EQ(SDL_RENDERER_TARGETTEXTURE, cen::renderer::target_textures);
+  EXPECT_EQ(SDL_RENDERER_PRESENTVSYNC, cen::renderer::vsync);
+}

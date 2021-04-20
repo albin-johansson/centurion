@@ -72,6 +72,26 @@ template <typename T>
 class basic_renderer final
 {
  public:
+  /**
+   * \enum renderer_flags
+   *
+   * \brief Represents different renderer features.
+   *
+   * \details Values of this enum are intended to be used to create flag
+   * bitmasks, that can be used when creating renderers.
+   *
+   * \see `SDL_RendererFlags`
+   *
+   * \since 6.0.0
+   */
+  enum renderer_flags : u32
+  {
+    software = SDL_RENDERER_SOFTWARE,              ///< Software renderer
+    accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated
+    target_textures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures
+    vsync = SDL_RENDERER_PRESENTVSYNC              ///< Renderer Uses VSync
+  };
+
   /// \name Construction
   /// \{
 
@@ -103,7 +123,7 @@ class basic_renderer final
    * \brief Creates an owning renderer based on the supplied window.
    *
    * \param window the associated window instance.
-   * \param flags the renderer flags that will be used, see `SDL_RendererFlags`.
+   * \param flags the renderer flags that will be used, see `renderer_flags`.
    *
    * \throws sdl_error if something goes wrong when creating the renderer.
    *
@@ -2194,7 +2214,7 @@ class basic_renderer final
    */
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
-    return SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    return accelerated | vsync;
   }
 
   /// \} End of flag queries

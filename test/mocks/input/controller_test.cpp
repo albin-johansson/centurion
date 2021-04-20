@@ -91,8 +91,6 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerRumbleTriggers);
     RESET_FAKE(SDL_GameControllerGetAttached);
     RESET_FAKE(SDL_IsGameController);
-    RESET_FAKE(SDL_GameControllerGetType);
-    RESET_FAKE(SDL_GameControllerTypeForIndex);
     RESET_FAKE(SDL_GameControllerGetButton);
     RESET_FAKE(SDL_GameControllerName);
     RESET_FAKE(SDL_GameControllerGetAxis);
@@ -121,6 +119,11 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetSensorData);
     RESET_FAKE(SDL_GameControllerSetLED);
     RESET_FAKE(SDL_GameControllerHasLED);
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+    RESET_FAKE(SDL_GameControllerGetType);
+    RESET_FAKE(SDL_GameControllerTypeForIndex);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
   }
 
   /**

@@ -14,8 +14,10 @@ TEST(SIMDBlock, Usage)
   ASSERT_TRUE(cblock.data());
   ASSERT_TRUE(cblock.cast_data<int>());
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   block.reallocate(50);
   ASSERT_TRUE(block);
   ASSERT_TRUE(block.data());
   ASSERT_TRUE(block.cast_data<int>());
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }

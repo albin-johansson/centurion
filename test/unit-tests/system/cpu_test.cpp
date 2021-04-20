@@ -87,12 +87,16 @@ TEST(CPU, HasNEON)
   EXPECT_EQ(static_cast<bool>(SDL_HasNEON()), cen::cpu::has_neon());
 }
 
+TEST(CPU, SIMDAlignment)
+{
+  EXPECT_EQ(SDL_SIMDGetAlignment(), cen::cpu::simd_alignment());
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST(CPU, HasARMSIMD)
 {
   EXPECT_EQ(static_cast<bool>(SDL_HasARMSIMD()), cen::cpu::has_arm_simd());
 }
 
-TEST(CPU, SIMDAlignment)
-{
-  EXPECT_EQ(SDL_SIMDGetAlignment(), cen::cpu::simd_alignment());
-}
+#endif // SDL_VERSION_ATLEAST(2, 0, 12)

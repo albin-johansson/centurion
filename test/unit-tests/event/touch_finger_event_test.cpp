@@ -29,6 +29,8 @@ TEST(TouchFingerEvent, SetFingerId)
   EXPECT_EQ(id, event.finger_id());
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST(TouchFingerEvent, SetWindowId)
 {
   cen::touch_finger_event event;
@@ -38,6 +40,17 @@ TEST(TouchFingerEvent, SetWindowId)
 
   EXPECT_EQ(id, event.window_id());
 }
+
+TEST(TouchFingerEvent, WindowId)
+{
+  SDL_TouchFingerEvent sdl{};
+  sdl.windowID = 7;
+
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST(TouchFingerEvent, SetX)
 {
@@ -165,15 +178,6 @@ TEST(TouchFingerEvent, FingerId)
 
   const cen::touch_finger_event event{sdl};
   EXPECT_EQ(sdl.fingerId, event.finger_id());
-}
-
-TEST(TouchFingerEvent, WindowId)
-{
-  SDL_TouchFingerEvent sdl{};
-  sdl.windowID = 7;
-
-  const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(TouchFingerEvent, X)

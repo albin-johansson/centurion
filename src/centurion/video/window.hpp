@@ -29,7 +29,7 @@ namespace cen {
 /// \addtogroup video
 /// \{
 
-template <typename B>
+template <typename T>
 class basic_window;
 
 /**
@@ -62,7 +62,7 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \headerfile window.hpp
  */
-template <typename B>
+template <typename T>
 class basic_window final
 {
  public:
@@ -120,10 +120,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<B>())
+  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_window)
       {
@@ -150,7 +150,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const not_null<czstring> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -196,7 +196,7 @@ class basic_window final
    *
    * \since 5.3.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_window(const std::string& title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
@@ -213,7 +213,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -224,7 +224,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_window(const window& owner) noexcept : m_window{owner.get()}
   {}
 
@@ -740,7 +740,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] constexpr static auto default_size() noexcept -> iarea
   {
     return {800, 600};
@@ -1002,7 +1002,7 @@ class basic_window final
     return static_cast<bool>(flags() & flag);
   }
 
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {
     return hidden;
@@ -1196,7 +1196,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -1212,7 +1212,7 @@ class basic_window final
       SDL_DestroyWindow(window);
     }
   };
-  detail::pointer_manager<B, SDL_Window, deleter> m_window;
+  detail::pointer_manager<T, SDL_Window, deleter> m_window;
 };
 
 /**

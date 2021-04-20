@@ -124,5 +124,8 @@ TEST_F(WindowTest, WindowFlagsEnum)
   EXPECT_EQ(SDL_WINDOW_TOOLTIP, cen::window::tooltip);
   EXPECT_EQ(SDL_WINDOW_POPUP_MENU, cen::window::popup_menu);
   EXPECT_EQ(SDL_WINDOW_VULKAN, cen::window::vulkan);
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   EXPECT_EQ(SDL_WINDOW_METAL, cen::window::metal);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }

@@ -102,7 +102,10 @@ class basic_window final
     tooltip = SDL_WINDOW_TOOLTIP,
     popup_menu = SDL_WINDOW_POPUP_MENU,
     vulkan = SDL_WINDOW_VULKAN,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     metal = SDL_WINDOW_METAL
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   };
 
   /// \name Construction

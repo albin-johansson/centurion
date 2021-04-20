@@ -363,10 +363,10 @@ TEST_F(RendererTest, Capture)
   m_renderer->clear_with(cen::colors::pink);
 
   m_renderer->set_color(cen::colors::green);
-  m_renderer->fill_rect<int>({20, 20, 150, 100});
+  m_renderer->fill_rect(cen::rect(20, 20, 150, 100));
 
   m_renderer->set_color(cen::colors::black);
-  m_renderer->draw_circle<float>({300, 200}, 30);
+  m_renderer->draw_circle(cen::point(300.0, 200.0), 30);
 
   m_renderer->set_color(cen::colors::maroon);
   m_renderer->fill_circle({400, 300}, 35);

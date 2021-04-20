@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"
@@ -300,12 +301,12 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `true` if the window surface was successfully updated; `false`
+   * \return `success` if the surface was successfully updated; `failure`
    * otherwise.
    *
    * \since 5.0.0
    */
-  auto update_surface() noexcept -> bool
+  auto update_surface() noexcept -> result
   {
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
@@ -321,11 +322,11 @@ class basic_window final
    * \param enabled `true` if the window should be fullscreen; `false` for
    * windowed mode.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the display mode was changed; `failure` otherwise.
    *
    * \since 3.0.0
    */
-  auto set_fullscreen(const bool enabled) noexcept -> bool
+  auto set_fullscreen(const bool enabled) noexcept -> result
   {
     return SDL_SetWindowFullscreen(m_window, enabled ? fullscreen : 0) == 0;
   }
@@ -338,11 +339,11 @@ class basic_window final
    * \param enabled `true` if the window should be fullscreen desktop; `false`
    * for windowed mode.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the display mode was changed; `failure` otherwise.
    *
    * \since 4.0.0
    */
-  auto set_fullscreen_desktop(const bool enabled) noexcept -> bool
+  auto set_fullscreen_desktop(const bool enabled) noexcept -> result
   {
     return SDL_SetWindowFullscreen(m_window,
                                    enabled ? fullscreen_desktop : 0) == 0;
@@ -421,11 +422,11 @@ class basic_window final
    *
    * \param opacity the opacity, in the range [0, 1].
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the opacity was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
-  auto set_opacity(const float opacity) noexcept -> bool
+  auto set_opacity(const float opacity) noexcept -> result
   {
     return SDL_SetWindowOpacity(m_window, opacity) == 0;
   }
@@ -453,11 +454,12 @@ class basic_window final
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `true` if the brightness was successfully set; `false` otherwise.
+   * \return `success` if the brightness was successfully set; `failure`
+   * otherwise.
    *
    * \since 3.0.0
    */
-  auto set_brightness(const float brightness) noexcept -> bool
+  auto set_brightness(const float brightness) noexcept -> result
   {
     return SDL_SetWindowBrightness(m_window,
                                    detail::clamp(brightness, 0.0f, 1.0f)) == 0;

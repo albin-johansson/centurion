@@ -7,10 +7,10 @@ namespace cen::detail {
 // clang-format off
 
 template <typename T>
-[[nodiscard]] constexpr auto max(const T& left, const T& right)
-    noexcept(noexcept(left < right)) -> T
+[[nodiscard]] constexpr auto max(const T& a, const T& b)
+    noexcept(noexcept(a < b)) -> T
 {
-  return (left < right) ? right : left;
+  return (a < b) ? b : a;
 }
 
 // clang-format on

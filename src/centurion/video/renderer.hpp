@@ -200,7 +200,7 @@ class basic_renderer final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto capture(const pixel_format format) const -> cen::surface
+  [[nodiscard]] auto capture(const pixel_format format) const -> surface
   {
     surface image{output_size(), format};
 

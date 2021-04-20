@@ -297,11 +297,15 @@ TEST_F(BasicHintTest, IntResourceIconSmall)
   test_string_hint<int_resource_icon_small>("bar");
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST_F(BasicHintTest, WindowVisualID)
 {
   using cen::hint::x11::window_visual_id;
   test_string_hint<window_visual_id>("foo");
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

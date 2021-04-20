@@ -4,6 +4,8 @@
 
 #include <iostream>  // cout
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(Locale, GetPreferred)
 {
   // We assume that the systems that run these tests have English as an
@@ -20,3 +22,5 @@ TEST(Locale, GetPreferred)
     std::cout << "Could not obtain preferred locale!\n";
   }
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

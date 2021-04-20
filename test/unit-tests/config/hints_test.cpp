@@ -75,30 +75,38 @@ using boolean_hints =
                    cen::hint::mac::fullscreen_spaces,
                    cen::hint::android::block_on_pause,
                    cen::hint::android::trap_back_button,
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::android::pause_background_audio,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
                    cen::hint::joystick::allow_background_events,
                    cen::hint::joystick::use_hidapi,
+
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                    cen::hint::joystick::use_hidapi_ps5,
+                   cen::hint::joystick::use_raw_input,
+                   cen::hint::joystick::hidapi_correlate_xinput,
+                   cen::hint::joystick::linux_use_deadzones,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
                    cen::hint::joystick::use_hidapi_ps4,
                    cen::hint::joystick::use_hidapi_ps4_rumble,
                    cen::hint::joystick::use_hidapi_steam,
                    cen::hint::joystick::use_hidapi_switch,
                    cen::hint::joystick::use_hidapi_xbox,
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::joystick::use_hidapi_game_cube,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::joystick::use_raw_input,
-                   cen::hint::joystick::hidapi_correlate_xinput,
-                   cen::hint::joystick::linux_use_deadzones,
+
                    cen::hint::x11::net_wm_ping,
                    cen::hint::x11::net_wm_bypass_compositor,
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
                    cen::hint::x11::force_egl,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
                    cen::hint::x11::xinerama,
                    cen::hint::x11::xrandr,
                    cen::hint::x11::xvidmode>;

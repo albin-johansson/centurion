@@ -500,16 +500,16 @@ TEST_F(WindowTest, IsMaximized)
   EXPECT_EQ(2, SDL_GetWindowFlags_fake.call_count);
 }
 
-TEST_F(WindowTest, AlwaysOnTop)
+TEST_F(WindowTest, IsAlwaysOnTop)
 {
   std::array values{static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN),
                     static_cast<cen::u32>(SDL_WINDOW_ALWAYS_ON_TOP)};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_window.always_on_top());
+  EXPECT_FALSE(m_window.is_always_on_top());
   EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
 
-  EXPECT_TRUE(m_window.always_on_top());
+  EXPECT_TRUE(m_window.is_always_on_top());
   EXPECT_EQ(2, SDL_GetWindowFlags_fake.call_count);
 }
 
@@ -595,8 +595,10 @@ TEST_F(WindowTest, Size)
 
 TEST_F(WindowTest, CheckFlag)
 {
-  const auto full [[maybe_unused]] = m_window.check_flag(SDL_WINDOW_FULLSCREEN);
-  EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
+  const auto a [[maybe_unused]] = m_window.check_flag(SDL_WINDOW_FULLSCREEN);
+  const auto b [[maybe_unused]] =
+      m_window.check_flag(cen::window_handle::fullscreen);
+  EXPECT_EQ(2, SDL_GetWindowFlags_fake.call_count);
 }
 
 TEST_F(WindowTest, Flags)

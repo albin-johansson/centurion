@@ -25,11 +25,6 @@ TEST(Controller, FromJoystick)
   EXPECT_THROW(cen::controller::from_joystick(0), cen::sdl_error);
 }
 
-TEST(Controller, FromIndex)
-{
-  EXPECT_THROW(cen::controller::from_index(0), cen::sdl_error);
-}
-
 TEST(Controller, LoadMappings)
 {
   const auto path = "resources/controllers.txt";
@@ -54,32 +49,6 @@ TEST(Controller, Count)
   }
 
   EXPECT_EQ(nControllers, cen::controller::count());
-}
-
-TEST(Controller, ControllerTypeEnum)
-{
-  using type = cen::controller_type;
-
-  EXPECT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
-  EXPECT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
-  EXPECT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
-  EXPECT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
-  EXPECT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
-  EXPECT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
-  EXPECT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
-  EXPECT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
-
-  EXPECT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-  EXPECT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
 }
 
 TEST(Controller, ControllerAxisEnum)
@@ -128,13 +97,16 @@ TEST(Controller, ControllerButtonEnum)
   EXPECT_EQ(button::dpad_down, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
   EXPECT_EQ(button::dpad_right, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
   EXPECT_EQ(button::dpad_left, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  EXPECT_EQ(button::max, SDL_CONTROLLER_BUTTON_MAX);
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   EXPECT_EQ(button::misc1, SDL_CONTROLLER_BUTTON_MISC1);
   EXPECT_EQ(button::paddle1, SDL_CONTROLLER_BUTTON_PADDLE1);
   EXPECT_EQ(button::paddle2, SDL_CONTROLLER_BUTTON_PADDLE2);
   EXPECT_EQ(button::paddle3, SDL_CONTROLLER_BUTTON_PADDLE3);
   EXPECT_EQ(button::paddle4, SDL_CONTROLLER_BUTTON_PADDLE4);
   EXPECT_EQ(button::touchpad, SDL_CONTROLLER_BUTTON_TOUCHPAD);
-  EXPECT_EQ(button::max, SDL_CONTROLLER_BUTTON_MAX);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   EXPECT_NE(button::right_stick, SDL_CONTROLLER_BUTTON_DPAD_UP);
   EXPECT_NE(SDL_CONTROLLER_BUTTON_B, button::guide);
@@ -157,6 +129,45 @@ TEST(Controller, ControllerBindTypeEnum)
   EXPECT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
   EXPECT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST(Controller, FromIndex)
+{
+  EXPECT_THROW(cen::controller::from_index(0), cen::sdl_error);
+}
+
+TEST(Controller, ControllerTypeEnum)
+{
+  using type = cen::controller_type;
+
+  EXPECT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
+  EXPECT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
+  EXPECT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
+  EXPECT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
+  EXPECT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
+  EXPECT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  EXPECT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
+  EXPECT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
+
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  EXPECT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+  EXPECT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 namespace cen {
 

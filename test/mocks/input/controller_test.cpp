@@ -151,13 +151,6 @@ TEST_F(ControllerTest, StopRumble)
   EXPECT_EQ(0, SDL_GameControllerRumble_fake.arg3_val);
 }
 
-TEST_F(ControllerTest, SetPlayerIndex)
-{
-  m_controller.set_player_index(7);
-  EXPECT_EQ(1, SDL_GameControllerSetPlayerIndex_fake.call_count);
-  EXPECT_EQ(7, SDL_GameControllerSetPlayerIndex_fake.arg1_val);
-}
-
 TEST_F(ControllerTest, Product)
 {
   std::array values{0_u16, 3_u16};
@@ -191,12 +184,6 @@ TEST_F(ControllerTest, ProductVersion)
   EXPECT_EQ(4, m_controller.product_version().value());
 }
 
-TEST_F(ControllerTest, Serial)
-{
-  const auto serial [[maybe_unused]] = m_controller.serial();
-  EXPECT_EQ(1, SDL_GameControllerGetSerial_fake.call_count);
-}
-
 TEST_F(ControllerTest, Index)
 {
   std::array values{-1, 6};
@@ -226,29 +213,6 @@ TEST_F(ControllerTest, Name)
 
   EXPECT_EQ(nullptr, m_controller.name());
   EXPECT_STREQ("foobar", m_controller.name());
-}
-
-TEST_F(ControllerTest, Type)
-{
-  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN,
-                    SDL_CONTROLLER_TYPE_XBOX360,
-                    SDL_CONTROLLER_TYPE_PS4};
-  SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), cen::isize(values));
-
-  EXPECT_EQ(cen::controller_type::unknown, m_controller.type());
-  EXPECT_EQ(cen::controller_type::xbox_360, m_controller.type());
-  EXPECT_EQ(cen::controller_type::ps4, m_controller.type());
-}
-
-TEST_F(ControllerTest, TypeWithIndex)
-{
-  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
-  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
-  EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
 }
 
 TEST_F(ControllerTest, GetState)
@@ -309,125 +273,9 @@ TEST_F(ControllerTest, GetAxis)
   EXPECT_EQ(321, m_controller.get_axis(cen::controller_axis::left_x));
 }
 
-TEST_F(ControllerTest, HasAxis)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasAxis, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_controller.has_axis(cen::controller_axis::left_x));
-  EXPECT_TRUE(m_controller.has_axis(cen::controller_axis::left_x));
-  EXPECT_EQ(2, SDL_GameControllerHasAxis_fake.call_count);
-}
-
-TEST_F(ControllerTest, HasButton)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasButton,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_controller.has_button(cen::controller_button::x));
-  EXPECT_TRUE(m_controller.has_button(cen::controller_button::x));
-  EXPECT_EQ(2, SDL_GameControllerHasButton_fake.call_count);
-}
-
 TEST_F(ControllerTest, GetJoystick)
 {
   EXPECT_NO_THROW(m_controller.get_joystick());
-}
-
-TEST_F(ControllerTest, TouchpadCount)
-{
-  const auto count [[maybe_unused]] = m_controller.touchpad_count();
-  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpads_fake.call_count);
-}
-
-TEST_F(ControllerTest, TouchpadFingerCapacity)
-{
-  const auto capacity [[maybe_unused]] =
-      m_controller.touchpad_finger_capacity(0);
-  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
-}
-
-TEST_F(ControllerTest, TouchpadFingerState)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_controller.touchpad_finger_state(0, 0));
-  EXPECT_TRUE(m_controller.touchpad_finger_state(0, 0));
-  EXPECT_EQ(2, SDL_GameControllerGetTouchpadFinger_fake.call_count);
-}
-
-TEST_F(ControllerTest, SetSensorEnabled)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled,
-                 values.data(),
-                 cen::isize(values));
-
-  const auto type = cen::sensor_type::gyroscope;
-  EXPECT_FALSE(m_controller.set_sensor_enabled(type, true));
-  EXPECT_TRUE(m_controller.set_sensor_enabled(type, true));
-  EXPECT_EQ(2, SDL_GameControllerSetSensorEnabled_fake.call_count);
-}
-
-TEST_F(ControllerTest, HasSensor)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasSensor,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_controller.has_sensor(cen::sensor_type::gyroscope));
-  EXPECT_TRUE(m_controller.has_sensor(cen::sensor_type::gyroscope));
-  EXPECT_EQ(2, SDL_GameControllerHasSensor_fake.call_count);
-}
-
-TEST_F(ControllerTest, IsSensorEnabled)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
-  EXPECT_TRUE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
-  EXPECT_EQ(2, SDL_GameControllerIsSensorEnabled_fake.call_count);
-}
-
-TEST_F(ControllerTest, GetSensorData)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerGetSensorData,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
-  EXPECT_TRUE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
-  EXPECT_EQ(2, SDL_GameControllerGetSensorData_fake.call_count);
-}
-
-TEST_F(ControllerTest, SetLED)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerSetLED, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_controller.set_led(cen::colors::red));
-  EXPECT_TRUE(m_controller.set_led(cen::colors::red));
-  EXPECT_EQ(2, SDL_GameControllerSetLED_fake.call_count);
-}
-
-TEST_F(ControllerTest, HasLED)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasLED, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_controller.has_led());
-  EXPECT_TRUE(m_controller.has_led());
-  EXPECT_EQ(2, SDL_GameControllerHasLED_fake.call_count);
 }
 
 TEST_F(ControllerTest, AddMapping)
@@ -594,3 +442,163 @@ TEST_F(ControllerTest, IsPolling)
   EXPECT_TRUE(cen::controller::is_polling());
   EXPECT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST_F(ControllerTest, SetPlayerIndex)
+{
+  m_controller.set_player_index(7);
+  EXPECT_EQ(1, SDL_GameControllerSetPlayerIndex_fake.call_count);
+  EXPECT_EQ(7, SDL_GameControllerSetPlayerIndex_fake.arg1_val);
+}
+
+TEST_F(ControllerTest, Type)
+{
+  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN,
+                    SDL_CONTROLLER_TYPE_XBOX360,
+                    SDL_CONTROLLER_TYPE_PS4};
+  SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), cen::isize(values));
+
+  EXPECT_EQ(cen::controller_type::unknown, m_controller.type());
+  EXPECT_EQ(cen::controller_type::xbox_360, m_controller.type());
+  EXPECT_EQ(cen::controller_type::ps4, m_controller.type());
+}
+
+TEST_F(ControllerTest, TypeWithIndex)
+{
+  std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
+  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
+  EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+TEST_F(ControllerTest, Serial)
+{
+  const auto serial [[maybe_unused]] = m_controller.serial();
+  EXPECT_EQ(1, SDL_GameControllerGetSerial_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasAxis)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasAxis, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(m_controller.has_axis(cen::controller_axis::left_x));
+  EXPECT_TRUE(m_controller.has_axis(cen::controller_axis::left_x));
+  EXPECT_EQ(2, SDL_GameControllerHasAxis_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasButton)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasButton,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_FALSE(m_controller.has_button(cen::controller_button::x));
+  EXPECT_TRUE(m_controller.has_button(cen::controller_button::x));
+  EXPECT_EQ(2, SDL_GameControllerHasButton_fake.call_count);
+}
+
+TEST_F(ControllerTest, TouchpadCount)
+{
+  const auto count [[maybe_unused]] = m_controller.touchpad_count();
+  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpads_fake.call_count);
+}
+
+TEST_F(ControllerTest, TouchpadFingerCapacity)
+{
+  const auto capacity [[maybe_unused]] =
+      m_controller.touchpad_finger_capacity(0);
+  EXPECT_EQ(1, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
+}
+
+TEST_F(ControllerTest, TouchpadFingerState)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_FALSE(m_controller.touchpad_finger_state(0, 0));
+  EXPECT_TRUE(m_controller.touchpad_finger_state(0, 0));
+  EXPECT_EQ(2, SDL_GameControllerGetTouchpadFinger_fake.call_count);
+}
+
+TEST_F(ControllerTest, SetSensorEnabled)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled,
+                 values.data(),
+                 cen::isize(values));
+
+  const auto type = cen::sensor_type::gyroscope;
+  EXPECT_FALSE(m_controller.set_sensor_enabled(type, true));
+  EXPECT_TRUE(m_controller.set_sensor_enabled(type, true));
+  EXPECT_EQ(2, SDL_GameControllerSetSensorEnabled_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasSensor)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasSensor,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_FALSE(m_controller.has_sensor(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.has_sensor(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerHasSensor_fake.call_count);
+}
+
+TEST_F(ControllerTest, IsSensorEnabled)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_FALSE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerIsSensorEnabled_fake.call_count);
+}
+
+TEST_F(ControllerTest, GetSensorData)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerGetSensorData,
+                 values.data(),
+                 cen::isize(values));
+
+  EXPECT_FALSE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
+  EXPECT_TRUE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
+  EXPECT_EQ(2, SDL_GameControllerGetSensorData_fake.call_count);
+}
+
+TEST_F(ControllerTest, SetLED)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSetLED, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(m_controller.set_led(cen::colors::red));
+  EXPECT_TRUE(m_controller.set_led(cen::colors::red));
+  EXPECT_EQ(2, SDL_GameControllerSetLED_fake.call_count);
+}
+
+TEST_F(ControllerTest, HasLED)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerHasLED, values.data(), cen::isize(values));
+
+  EXPECT_FALSE(m_controller.has_led());
+  EXPECT_TRUE(m_controller.has_led());
+  EXPECT_EQ(2, SDL_GameControllerHasLED_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

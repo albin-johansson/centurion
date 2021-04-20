@@ -38,8 +38,9 @@ TEST_F(MessageBoxTest, ShowStatic)
 #if SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT | SDL_MESSAGEBOX_INFORMATION,
               SDL_ShowSimpleMessageBox_fake.arg0_val);
-#elif
-    EXPECT_EQ(SDL_MESSAGEBOX_INFORMATION, SDL_ShowSimpleMessageBox_fake.arg0_val);
+#else
+    EXPECT_EQ(SDL_MESSAGEBOX_INFORMATION,
+              SDL_ShowSimpleMessageBox_fake.arg0_val);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     EXPECT_STREQ(title.c_str(), SDL_ShowSimpleMessageBox_fake.arg1_val);
@@ -54,7 +55,7 @@ TEST_F(MessageBoxTest, ShowStatic)
 #if SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT | SDL_MESSAGEBOX_ERROR,
               SDL_ShowSimpleMessageBox_fake.arg0_val);
-#elif
+#else
     EXPECT_EQ(SDL_MESSAGEBOX_ERROR, SDL_ShowSimpleMessageBox_fake.arg0_val);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -73,7 +74,7 @@ TEST_F(MessageBoxTest, ShowStatic)
 #if SDL_VERSION_ATLEAST(2, 0, 12)
     EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT | SDL_MESSAGEBOX_ERROR,
               SDL_ShowSimpleMessageBox_fake.arg0_val);
-#elif
+#else
     EXPECT_EQ(SDL_MESSAGEBOX_ERROR, SDL_ShowSimpleMessageBox_fake.arg0_val);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 

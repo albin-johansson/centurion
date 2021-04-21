@@ -13,6 +13,7 @@
 #include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 
 namespace cen {
 
@@ -223,11 +224,12 @@ class file final
    *
    * \param value the value that will be written.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_byte(const u8 value) noexcept -> bool
+  auto write_byte(const u8 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteU8(m_context.get(), value) == 1;
@@ -241,11 +243,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_little_endian(const u16 value) noexcept -> bool
+  auto write_as_little_endian(const u16 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteLE16(m_context.get(), value) == 1;
@@ -259,11 +262,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_little_endian(const u32 value) noexcept -> bool
+  auto write_as_little_endian(const u32 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteLE32(m_context.get(), value) == 1;
@@ -277,11 +281,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_little_endian(const u64 value) noexcept -> bool
+  auto write_as_little_endian(const u64 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteLE64(m_context.get(), value) == 1;
@@ -295,11 +300,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_big_endian(const u16 value) noexcept -> bool
+  auto write_as_big_endian(const u16 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteBE16(m_context.get(), value) == 1;
@@ -313,11 +319,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_big_endian(const u32 value) noexcept -> bool
+  auto write_as_big_endian(const u32 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteBE32(m_context.get(), value) == 1;
@@ -331,11 +338,12 @@ class file final
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `true` if the value was written to the file; `false` otherwise.
+   * \return `success` if the value was written to the file; `failure`
+   * otherwise.
    *
    * \since 5.3.0
    */
-  auto write_as_big_endian(const u64 value) noexcept -> bool
+  auto write_as_big_endian(const u64 value) noexcept -> result
   {
     assert(m_context);
     return SDL_WriteBE64(m_context.get(), value) == 1;

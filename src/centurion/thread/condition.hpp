@@ -7,6 +7,7 @@
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "mutex.hpp"
 #include "scoped_lock.hpp"
@@ -40,11 +41,11 @@ class condition final
    * \brief Wakes up one of the threads that are waiting on the condition
    * variable.
    *
-   * \return `true` if everything went OK; `false` upon failure.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  auto signal() noexcept -> bool
+  auto signal() noexcept -> result
   {
     return SDL_CondSignal(m_cond.get()) == 0;
   }
@@ -52,11 +53,11 @@ class condition final
   /**
    * \brief Wakes up all threads that are waiting on the condition variable.
    *
-   * \return `true` if everything went OK; `false` on failure.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  auto broadcast() noexcept -> bool
+  auto broadcast() noexcept -> result
   {
     return SDL_CondBroadcast(m_cond.get()) == 0;
   }
@@ -68,11 +69,11 @@ class condition final
    *
    * \param mutex the mutex used to coordinate thread access.
    *
-   * \return `true` if everything went OK; `false` on failure.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  auto wait(mutex& mutex) noexcept -> bool
+  auto wait(mutex& mutex) noexcept -> result
   {
     return SDL_CondWait(m_cond.get(), mutex.get()) == 0;
   }

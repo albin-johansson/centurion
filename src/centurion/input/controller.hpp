@@ -15,6 +15,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
@@ -678,14 +679,14 @@ class basic_controller final
    * \param hi the intensity of the high frequency motor.
    * \param duration the duration of the rumble effect.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the rumble is successful; `failure` otherwise.
    *
    * \since 5.0.0
    */
   auto rumble(const u16 lo,
               const u16 hi,
               const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> bool
+      -> result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -710,14 +711,14 @@ class basic_controller final
    * \param hi the intensity of the high frequency motor.
    * \param duration the duration of the rumble effect.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the rumble is successful; `failure` otherwise.
    *
    * \since 5.2.0
    */
   auto rumble_triggers(const u16 lo,
                        const u16 hi,
                        const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> bool
+      -> result
   {
     return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -1042,12 +1043,13 @@ class basic_controller final
    * \param enabled `true` if data reporting should be enabled; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the sensor was successfully enabled or disabled;
+   * `failure` otherwise.
    *
    * \since 5.2.0
    */
   auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept
-      -> bool
+      -> result
   {
     const auto value = static_cast<SDL_SensorType>(type);
     const auto state = enabled ? SDL_TRUE : SDL_FALSE;
@@ -1132,11 +1134,11 @@ class basic_controller final
    *
    * \param color the new color of the controller's LED.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the color of the LED was set; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_led(const color& color) noexcept -> bool
+  auto set_led(const color& color) noexcept -> result
   {
     return SDL_GameControllerSetLED(m_controller,
                                     color.red(),

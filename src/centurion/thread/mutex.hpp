@@ -6,6 +6,7 @@
 #include <memory>  // unique_ptr
 
 #include "../core/exception.hpp"
+#include "../core/result.hpp"
 
 namespace cen {
 
@@ -55,11 +56,12 @@ class mutex final
   /**
    * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
    *
-   * \return `true` if the mutex was successfully locked; `false` on failure.
+   * \return `success` if the mutex was successfully locked; `failure`
+   * otherwise.
    *
    * \since 5.0.0
    */
-  auto lock() noexcept -> bool
+  auto lock() noexcept -> result
   {
     return SDL_LockMutex(get()) == 0;
   }
@@ -79,11 +81,12 @@ class mutex final
   /**
    * \brief Attempts to unlock the mutex.
    *
-   * \return `true` if the mutex was successfully unlocked; `false` otherwise.
+   * \return `success` if the mutex was successfully unlocked; `failure`
+   * otherwise.
    *
    * \since 5.0.0
    */
-  auto unlock() noexcept -> bool
+  auto unlock() noexcept -> result
   {
     return SDL_UnlockMutex(get()) == 0;
   }

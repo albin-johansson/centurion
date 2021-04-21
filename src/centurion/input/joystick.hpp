@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -262,12 +263,14 @@ class basic_joystick final
    * \param highFreq the intensity of the high frequency (right) motor.
    * \param duration the duration of the rumble effect, in milliseconds.
    *
+   * \return `success` if nothing went wrong; `failure` otherwise.
+   *
    * \since 4.2.0
    */
   auto rumble(const u16 lowFreq,
               const u16 highFreq,
               const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> bool
+      -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -289,14 +292,14 @@ class basic_joystick final
    * \param right the intensity used by the right rumble motor.
    * \param duration the duration of the rumble.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
   auto rumble_triggers(const u16 left,
                        const u16 right,
                        const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> bool
+      -> result
   {
     return SDL_JoystickRumbleTriggers(m_joystick,
                                       left,
@@ -312,11 +315,11 @@ class basic_joystick final
    * \param color the color that will be used by the LED, note that the alpha
    * component is ignored.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_led(const color& color) noexcept -> bool
+  auto set_led(const color& color) noexcept -> result
   {
     return SDL_JoystickSetLED(m_joystick,
                               color.red(),
@@ -401,11 +404,11 @@ class basic_joystick final
    * \param axis the axis that will be modified.
    * \param value the new value of the axis.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_virtual_axis(const int axis, const i16 value) noexcept -> bool
+  auto set_virtual_axis(const int axis, const i16 value) noexcept -> result
   {
     return SDL_JoystickSetVirtualAxis(m_joystick, axis, value) == 0;
   }
@@ -416,12 +419,12 @@ class basic_joystick final
    * \param button the index of the button that will be set.
    * \param state the new button state.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
   auto set_virtual_button(const int button, const button_state state) noexcept
-      -> bool
+      -> result
   {
     return SDL_JoystickSetVirtualButton(m_joystick,
                                         button,
@@ -434,11 +437,11 @@ class basic_joystick final
    * \param hat the index of the hat that will be changed.
    * \param state the new state of the virtual joystick hat.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_virtual_hat(const int hat, const hat_state state) noexcept -> bool
+  auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
   {
     // clang-format off
     return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;

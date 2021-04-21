@@ -13,6 +13,7 @@
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
+#include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
@@ -301,11 +302,11 @@ class basic_surface final
    *
    * \param file the file path that the surface data will be saved at.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.3.0
    */
-  auto save_as_bmp(const not_null<czstring> file) const noexcept -> bool
+  auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
     const auto result = SDL_SaveBMP(get(), file);
@@ -316,7 +317,7 @@ class basic_surface final
    * \see save_as_bmp()
    * \since 6.0.0
    */
-  auto save_as_bmp(const std::string& file) const noexcept -> bool  // NOLINT
+  auto save_as_bmp(const std::string& file) const noexcept -> result  // NOLINT
   {
     return save_as_bmp(file.c_str());
   }
@@ -326,11 +327,11 @@ class basic_surface final
    *
    * \param file the file path that the surface data will be saved at.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 6.0.0
    */
-  auto save_as_png(const not_null<czstring> file) const noexcept -> bool
+  auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
     const auto result = IMG_SavePNG(get(), file);
@@ -341,7 +342,7 @@ class basic_surface final
    * \see save_as_png()
    * \since 6.0.0
    */
-  auto save_as_png(const std::string& file) const noexcept -> bool  // NOLINT
+  auto save_as_png(const std::string& file) const noexcept -> result  // NOLINT
   {
     return save_as_png(file.c_str());
   }
@@ -356,12 +357,12 @@ class basic_surface final
    * \param file the file path that the surface data will be saved at.
    * \param quality the quality of the JPG image.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 6.0.0
    */
   auto save_as_jpg(const not_null<czstring> file,
-                   const int quality) const noexcept -> bool
+                   const int quality) const noexcept -> result
   {
     assert(file);
     const auto result = IMG_SaveJPG(get(), file, quality);
@@ -373,7 +374,7 @@ class basic_surface final
    * \since 6.0.0
    */
   auto save_as_jpg(const std::string& file, const int quality) const noexcept
-      -> bool
+      -> result
   {
     return save_as_jpg(file.c_str(), quality);
   }
@@ -389,12 +390,13 @@ class basic_surface final
    *
    * \details This method has no effect if `must_lock()` returns `false`.
    *
-   * \return `true` if the locking of the surface was successful or if locking
-   * isn't required for modifying the surface; `false` if something went wrong.
+   * \return `success` if the locking of the surface was successful or if
+   * locking isn't required for modifying the surface; `failure` if something
+   * went wrong.
    *
    * \since 4.0.0
    */
-  auto lock() noexcept -> bool
+  auto lock() noexcept -> result
   {
     if (must_lock())
     {
@@ -515,13 +517,13 @@ class basic_surface final
    * \param enabled `true` if the RLE optimization hint should be enabled;
    * `false` otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \see is_rle_enabled()
    *
    * \since 5.2.0
    */
-  auto set_rle_hint(const bool enabled) noexcept -> bool
+  auto set_rle_hint(const bool enabled) noexcept -> result
   {
     return SDL_SetSurfaceRLE(m_surface, enabled ? 1 : 0) == 0;
   }

@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
@@ -89,6 +90,9 @@ class basic_sound_effect final
 
   /**
    * \brief Creates a sound effect based on an existing SDL sound effect.
+   *
+   * \note The created sound effect claims ownership of the supplied pointer
+   * only if the sound effect has owning semantics.
    *
    * \param sound a pointer to the associated chunk instance, cannot be null if
    * the sound effect is owning.
@@ -175,13 +179,14 @@ class basic_sound_effect final
    * \param nLoops the amount of loops, `sound_effect::forever` can be used to
    * loop the sound effect indefinitely.
    *
-   * \return `true` on success; `false` on failure.
+   * \return `success` if the sound was played successfully; `failure`
+   * otherwise.
    *
    * \see `sound_effect::forever`
    *
    * \since 3.0.0
    */
-  auto play(const int nLoops = 0) noexcept -> bool
+  auto play(const int nLoops = 0) noexcept -> result
   {
     m_channel =
         Mix_PlayChannel(m_channel, m_chunk.get(), detail::max(nLoops, forever));

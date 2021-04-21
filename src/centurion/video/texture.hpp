@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
+#include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
@@ -620,11 +621,11 @@ class basic_texture final
    * \param pitch This is filled in with the pitch of the locked pixels, can
    * safely be null if it isn't needed.
    *
-   * \return `true` if all went well; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 4.0.0
    */
-  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
   {
     if (pitch)
     {

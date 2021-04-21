@@ -12,6 +12,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
@@ -1645,12 +1646,12 @@ class basic_haptic final
   /**
    * \brief Initializes rumble playback for the haptic device.
    *
-   * \return `true` if rumble playback was successfully initialized; `false`
-   * otherwise.
+   * \return `success` if rumble playback was successfully initialized;
+   * `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto init_rumble() noexcept -> bool
+  auto init_rumble() noexcept -> result
   {
     return SDL_HapticRumbleInit(m_haptic) == 0;
   }
@@ -1665,13 +1666,13 @@ class basic_haptic final
    * \param strength the strength of the rumble effect, clamped to [0, 1].
    * \param duration the duration of the rumble effect.
    *
-   * \return `true` on success; `false` if something went wrong.
+   * \return `success` if the rumble was successful; `failure` otherwise.
    *
    * \since 5.2.0
    */
   auto play_rumble(const float strength,
                    const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> bool
+      -> result
   {
     return SDL_HapticRumblePlay(m_haptic,
                                 detail::clamp(strength, 0.0f, 1.0f),
@@ -1683,11 +1684,12 @@ class basic_haptic final
   /**
    * \brief Stops the current rumble effect.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the rumble was successfully stopped; `failure`
+   * otherwise.
    *
    * \since 5.2.0
    */
-  auto stop_rumble() noexcept -> bool
+  auto stop_rumble() noexcept -> result
   {
     return SDL_HapticRumbleStop(m_haptic) == 0;
   }
@@ -1715,11 +1717,11 @@ class basic_haptic final
    * \pre The device must support the `pause` feature.
    * \post You must call `unpause()` before calling `upload()` or `update()`.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto pause() noexcept -> bool
+  auto pause() noexcept -> result
   {
     assert(has_feature_pause());
     return SDL_HapticPause(m_haptic) == 0;
@@ -1730,11 +1732,11 @@ class basic_haptic final
    *
    * \pre `pause()` must have been called before this function is invoked.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto unpause() noexcept -> bool
+  auto unpause() noexcept -> result
   {
     return SDL_HapticUnpause(m_haptic) == 0;
   }
@@ -1777,13 +1779,13 @@ class basic_haptic final
    * \param id the ID associated with the effect that will be updated.
    * \param effect the new properties that will be associated with the effect.
    *
-   * \return `true` on success; `false` if something went wrong.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
   template <typename D>
   auto update(const effect_id id, const haptic_effect<D>& effect) noexcept
-      -> bool
+      -> result
   {
     auto internal = effect.get();
     return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
@@ -1799,11 +1801,11 @@ class basic_haptic final
    * \param iterations the number of iterations, can be `haptic_infinity` to
    * repeat the effect forever (including the attack and fade).
    *
-   * \return `true` on success; `false` if something went wrong.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto run(const effect_id id, const u32 iterations = 1) noexcept -> bool
+  auto run(const effect_id id, const u32 iterations = 1) noexcept -> result
   {
     return SDL_HapticRunEffect(m_haptic, id, iterations) == 0;
   }
@@ -1813,11 +1815,11 @@ class basic_haptic final
    *
    * \param id the ID associated with the effect that will be stopped.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto stop(const effect_id id) noexcept -> bool
+  auto stop(const effect_id id) noexcept -> result
   {
     return SDL_HapticStopEffect(m_haptic, id) == 0;
   }
@@ -1825,11 +1827,11 @@ class basic_haptic final
   /**
    * \brief Stops all currently running effects on the device.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto stop_all() noexcept -> bool
+  auto stop_all() noexcept -> result
   {
     return SDL_HapticStopAll(m_haptic) == 0;
   }
@@ -1860,11 +1862,11 @@ class basic_haptic final
    *
    * \param gain the gain that will be used, in the interval [0, 100].
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_gain(const int gain) noexcept -> bool
+  auto set_gain(const int gain) noexcept -> result
   {
     assert(has_feature_gain());
     assert(gain >= 0);
@@ -1882,11 +1884,11 @@ class basic_haptic final
    * \param autocenter the value of the autocenter that will be used, in the
    * interval [0, 100]. Autocentering will be disabled if this value is zero.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  auto set_autocenter(const int autocenter) noexcept -> bool
+  auto set_autocenter(const int autocenter) noexcept -> result
   {
     assert(has_feature_autocenter());
     assert(autocenter >= 0);

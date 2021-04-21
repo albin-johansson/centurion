@@ -12,6 +12,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
@@ -266,14 +267,14 @@ class music final
    * \param nLoops the number of iterations to play the music, `music::forever`
    * can be supplied to loop the music indefinitely.
    *
-   * \return `true` on success; `false` on failure.
+   * \return `success` if the fade is successful; `failure` otherwise.
    *
    * \see `music::forever`
    *
    * \since 3.0.0
    */
   auto fade_in(const milliseconds<int> ms,
-               const int nLoops = 0) noexcept(noexcept(ms.count())) -> bool
+               const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
     return Mix_FadeInMusic(m_music.get(),

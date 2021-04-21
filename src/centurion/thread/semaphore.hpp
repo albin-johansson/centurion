@@ -7,6 +7,7 @@
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "mutex.hpp"
 
@@ -50,11 +51,11 @@ class semaphore final
    *
    * \note This function blocks the calling thread until a token is available.
    *
-   * \return `true` if a token was acquired; `false` on failure.
+   * \return `success` if a token was acquired; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  auto acquire() noexcept -> bool
+  auto acquire() noexcept -> result
   {
     return SDL_SemWait(m_semaphore.get()) == 0;
   }
@@ -95,11 +96,11 @@ class semaphore final
   /**
    * \brief Returns a token to the semaphore and notifies waiting threads.
    *
-   * \return `true` on success; `false` on failure.
+   * \return `success` if nothing went wrong; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  auto release() noexcept -> bool
+  auto release() noexcept -> result
   {
     return SDL_SemPost(m_semaphore.get()) == 0;
   }

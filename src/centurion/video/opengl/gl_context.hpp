@@ -9,6 +9,7 @@
 #include <memory>  // unique_ptr
 
 #include "../../core/exception.hpp"
+#include "../../core/result.hpp"
 #include "../../detail/owner_handle_api.hpp"
 #include "../window.hpp"
 
@@ -59,7 +60,7 @@ class basic_context final
   // clang-format on
 
   template <typename U>
-  auto make_current(basic_window<U>& window) -> bool
+  auto make_current(basic_window<U>& window) -> result
   {
     return SDL_GL_MakeCurrent(window.get(), m_context.get()) == 0;
   }

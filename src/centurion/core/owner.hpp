@@ -19,6 +19,23 @@ namespace cen {
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
 
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
 }  // namespace cen
 
 #endif  // CENTURION_OWNER_HEADER

@@ -12,6 +12,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
@@ -97,7 +98,7 @@ class basic_sound_effect final
    *
    * \since 6.0.0
    */
-  explicit basic_sound_effect(Mix_Chunk* sound) noexcept(noexcept(!detail::is_owning<T>()))
+  explicit basic_sound_effect(maybe_owner<Mix_Chunk*> sound) noexcept(!detail::is_owning<T>())
       : m_chunk{sound}
   {
     if constexpr (detail::is_owning<T>())

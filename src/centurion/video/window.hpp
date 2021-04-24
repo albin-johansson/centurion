@@ -189,7 +189,7 @@ class basic_window final
    *
    * \param title the title of the window.
    * \param size the size of the window, components must be greater than zero.
-   * \param flags the window flags, see `SDL_WindowFlags`.
+   * \param flags the window flags, see `window_flags`.
    *
    * \throws cen_error if the supplied width or height aren't
    * greater than zero.

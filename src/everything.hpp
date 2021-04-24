@@ -150,6 +150,7 @@
 #include "centurion/video/opengl/gl_context.hpp"
 #include "centurion/video/opengl/gl_core.hpp"
 #include "centurion/video/opengl/gl_library.hpp"
+#include "centurion/video/palette.hpp"
 #include "centurion/video/pixel_format.hpp"
 #include "centurion/video/renderer.hpp"
 #include "centurion/video/scale_mode.hpp"

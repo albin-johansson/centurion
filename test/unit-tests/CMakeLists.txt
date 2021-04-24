@@ -14,6 +14,7 @@ set(SOURCE_FILES
 
     core/exception_test.cpp
     core/log_test.cpp
+    core/result_test.cpp
     core/sdl_string_test.cpp
     core/version_test.cpp
 

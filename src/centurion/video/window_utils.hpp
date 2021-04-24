@@ -3,7 +3,10 @@
 
 #include <SDL.h>
 
+#include <utility>  // pair, make_pair, move
+
 #include "../core/integers.hpp"
+#include "../math/area.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
@@ -89,7 +92,32 @@ template <typename T>
   return renderer_handle{SDL_GetRenderer(window.get())};
 }
 
-/// \}
+/**
+ * \brief Creates a window and an associated renderer.
+ *
+ * \details This function can be used as a slightly more concise way to create a window
+ * and a renderer.
+ * \code{cpp}
+ *   auto [window, renderer] = cen::make_window_and_renderer();
+ * \endcode
+ *
+ * \param size the size of the window.
+ * \param flags the flags used by the window, see `basic_window::window_flags`.
+ *
+ * \return the created window and renderer.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto make_window_and_renderer(
+    const iarea size = window::default_size(),
+    const u32 flags = window::default_flags()) -> std::pair<window, renderer>
+{
+  cen::window window{"Centurion window", size, flags};
+  cen::renderer renderer{window};
+  return std::make_pair(std::move(window), std::move(renderer));
+}
+
+/// \} End of group video
 
 }  // namespace cen
 

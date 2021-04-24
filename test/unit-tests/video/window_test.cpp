@@ -129,3 +129,8 @@ TEST_F(WindowTest, WindowFlagsEnum)
   EXPECT_EQ(SDL_WINDOW_METAL, cen::window::metal);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }
+
+TEST(WindowUtils, MakeWindowAndRenderer)
+{
+  EXPECT_NO_THROW(cen::make_window_and_renderer());
+}

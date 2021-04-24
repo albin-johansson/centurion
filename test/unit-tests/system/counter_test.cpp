@@ -12,9 +12,9 @@ TEST(Counter, Now)
   EXPECT_NO_THROW(cen::counter::now());
 }
 
-TEST(Counter, NowSec)
+TEST(Counter, NowInSeconds)
 {
-  EXPECT_NO_THROW(cen::counter::now_sec<double>());
+  EXPECT_NO_THROW(cen::counter::now_in_seconds<double>());
 }
 
 TEST(Counter, Ticks)

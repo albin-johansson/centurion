@@ -191,9 +191,7 @@ struct version final
  */
 [[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
 {
-  return {SDL_IMAGE_MAJOR_VERSION,
-          SDL_IMAGE_MINOR_VERSION,
-          SDL_IMAGE_PATCHLEVEL};
+  return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
 
 /**
@@ -222,9 +220,7 @@ struct version final
  */
 [[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
 {
-  return {SDL_MIXER_MAJOR_VERSION,
-          SDL_MIXER_MINOR_VERSION,
-          SDL_MIXER_PATCHLEVEL};
+  return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
 /**

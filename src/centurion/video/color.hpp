@@ -479,8 +479,7 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept
-      -> color
+  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept -> color
   {
     return {red(), green(), blue(), alpha};
   }
@@ -506,9 +505,8 @@ class color final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] static auto blend(const color& a,
-                                  const color& b,
-                                  const double bias = 0.5) -> color
+  [[nodiscard]] static auto blend(const color& a, const color& b, const double bias = 0.5)
+      -> color
   {
     assert(bias >= 0);
     assert(bias <= 1.0);
@@ -569,8 +567,7 @@ class color final
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const color& color)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
 {
   return stream << to_string(color);
 }
@@ -588,24 +585,24 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs,
-                                        const color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
+    -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
 }
 
 /// \copydoc operator==(const color&, const color&)
-[[nodiscard]] constexpr auto operator==(const color& lhs,
-                                        const SDL_Color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const SDL_Color& rhs) noexcept
+    -> bool
 {
-  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
-         (lhs.blue() == rhs.b) && (lhs.alpha() == rhs.a);
+  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b) &&
+         (lhs.alpha() == rhs.a);
 }
 
 /// \copydoc operator==(const color&, const color&)
-[[nodiscard]] constexpr auto operator==(const SDL_Color& lhs,
-                                        const color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_Color& lhs, const color& rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -623,11 +620,9 @@ inline auto operator<<(std::ostream& stream, const color& color)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const color& lhs,
-                                        const SDL_MessageBoxColor& rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColor& rhs) noexcept -> bool
 {
-  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
-         (lhs.blue() == rhs.b);
+  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b);
 }
 
 /// \copydoc operator==(const color&, const SDL_MessageBoxColor&)
@@ -647,22 +642,22 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs,
-                                        const color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const color&, const color&)
-[[nodiscard]] constexpr auto operator!=(const color& lhs,
-                                        const SDL_Color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const SDL_Color& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const color&, const color&)
-[[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs,
-                                        const color& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs, const color& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -680,8 +675,7 @@ inline auto operator<<(std::ostream& stream, const color& color)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const color& lhs,
-                                        const SDL_MessageBoxColor& rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColor& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

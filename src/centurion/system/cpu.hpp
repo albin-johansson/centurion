@@ -33,8 +33,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit simd_block(const std::size_t size) noexcept
-      : m_data{SDL_SIMDAlloc(size)}
+  explicit simd_block(const std::size_t size) noexcept : m_data{SDL_SIMDAlloc(size)}
   {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

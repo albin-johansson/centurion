@@ -86,8 +86,7 @@ namespace cen {
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept
-    -> renderer_handle
+[[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept -> renderer_handle
 {
   return renderer_handle{SDL_GetRenderer(window.get())};
 }

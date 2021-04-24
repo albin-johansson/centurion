@@ -18,8 +18,8 @@ namespace cen::detail {
  *
  * \since 4.1.0
  */
-[[nodiscard]] inline auto czstring_eq(const czstring lhs,
-                                      const czstring rhs) noexcept -> bool
+[[nodiscard]] inline auto czstring_eq(const czstring lhs, const czstring rhs) noexcept
+    -> bool
 {
   if (lhs && rhs)
   {

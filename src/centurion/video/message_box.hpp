@@ -155,8 +155,7 @@ class message_box final
      */
     void set_color(const color_id id, const color& color) noexcept
     {
-      m_scheme.colors[static_cast<int>(id)] =
-          static_cast<SDL_MessageBoxColor>(color);
+      m_scheme.colors[static_cast<int>(id)] = static_cast<SDL_MessageBoxColor>(color);
     }
 
     /**
@@ -448,9 +447,7 @@ class message_box final
   class button final
   {
    public:
-    button(const button_id id,
-           std::string text,
-           const default_button defaultButton)
+    button(const button_id id, std::string text, const default_button defaultButton)
         : m_id{id}
         , m_defaultButton{defaultButton}
         , m_text{std::move(text)}
@@ -504,8 +501,7 @@ class message_box final
   message_box_type m_type{default_type()};
   button_order m_buttonOrder{default_order()};
 
-  [[nodiscard]] constexpr static auto default_type() noexcept
-      -> message_box_type
+  [[nodiscard]] constexpr static auto default_type() noexcept -> message_box_type
   {
     return message_box_type::information;
   }
@@ -515,9 +511,9 @@ class message_box final
     return button_order::left_to_right;
   }
 
-  [[nodiscard]] constexpr static auto to_flags(
-      const message_box_type type,
-      const button_order buttonOrder) noexcept -> u32
+  [[nodiscard]] constexpr static auto to_flags(const message_box_type type,
+                                               const button_order buttonOrder) noexcept
+      -> u32
   {
     return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
   }
@@ -596,17 +592,17 @@ class message_box final
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const message_box::default_button lhs,
-    const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const message_box::default_button lhs,
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
 
 /// \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
-[[nodiscard]] constexpr auto operator==(
-    const SDL_MessageBoxButtonFlags lhs,
-    const message_box::default_button rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_MessageBoxButtonFlags lhs,
+                                        const message_box::default_button rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -621,17 +617,17 @@ class message_box final
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const message_box::default_button lhs,
-    const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const message_box::default_button lhs,
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
-[[nodiscard]] constexpr auto operator!=(
-    const SDL_MessageBoxButtonFlags lhs,
-    const message_box::default_button rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxButtonFlags lhs,
+                                        const message_box::default_button rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -646,17 +642,16 @@ class message_box final
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const SDL_MessageBoxColorType lhs,
-    const message_box::color_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_MessageBoxColorType lhs,
+                                        const message_box::color_id rhs) noexcept -> bool
 {
   return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
 }
 
 /// \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
-[[nodiscard]] constexpr auto operator==(
-    const message_box::color_id lhs,
-    const SDL_MessageBoxColorType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const message_box::color_id lhs,
+                                        const SDL_MessageBoxColorType rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -671,17 +666,16 @@ class message_box final
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const SDL_MessageBoxColorType lhs,
-    const message_box::color_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxColorType lhs,
+                                        const message_box::color_id rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
-[[nodiscard]] constexpr auto operator!=(
-    const message_box::color_id lhs,
-    const SDL_MessageBoxColorType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const message_box::color_id lhs,
+                                        const SDL_MessageBoxColorType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

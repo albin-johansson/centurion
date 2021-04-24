@@ -335,8 +335,7 @@ template <typename T, enable_if_number_t<T> = 0>
     -> basic_point<typename point_traits<T>::value_type>
 {
   using value_type = typename point_traits<T>::value_type;
-  return basic_point<value_type>{static_cast<value_type>(x),
-                                 static_cast<value_type>(y)};
+  return basic_point<value_type>{static_cast<value_type>(x), static_cast<value_type>(y)};
 }
 
 /**
@@ -352,9 +351,8 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from,
-                            const basic_point<T>& to) noexcept ->
-    typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+    -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
   {
@@ -384,8 +382,7 @@ template <typename T>
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_point<T>& point)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
 {
   return stream << to_string(point);
 }
@@ -501,26 +498,26 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs,
-                                        const ipoint rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs,
-                                        const fpoint rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs,
-                                        const ipoint rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs,
-                                        const fpoint rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

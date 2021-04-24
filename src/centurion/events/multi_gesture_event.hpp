@@ -207,8 +207,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MultiGestureEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_MultiGestureEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.mgesture = event.get();

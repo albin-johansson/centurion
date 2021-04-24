@@ -29,8 +29,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  controller_axis_event() noexcept
-      : common_event{cen::event_type::controller_axis_motion}
+  controller_axis_event() noexcept : common_event{cen::event_type::controller_axis_motion}
   {}
 
   /**
@@ -122,8 +121,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.caxis = event.get();

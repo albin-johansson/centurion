@@ -130,8 +130,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
     return std::is_same_v<T, unsigned int>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept
-      -> std::optional<unsigned int>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<unsigned int>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)

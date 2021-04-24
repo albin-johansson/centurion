@@ -493,8 +493,7 @@ class font final
    * \since 4.0.0
    */
   [[nodiscard]] auto kerning_amount(const unicode firstGlyph,
-                                    const unicode secondGlyph) const noexcept
-      -> int
+                                    const unicode secondGlyph) const noexcept -> int
   {
     return TTF_GetFontKerningSizeGlyphs(m_font.get(), firstGlyph, secondGlyph);
   }
@@ -509,8 +508,7 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto is_glyph_provided(const unicode glyph) const noexcept
-      -> bool
+  [[nodiscard]] auto is_glyph_provided(const unicode glyph) const noexcept -> bool
   {
     return TTF_GlyphIsProvided(m_font.get(), glyph);
   }

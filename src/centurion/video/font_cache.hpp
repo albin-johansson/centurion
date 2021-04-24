@@ -133,9 +133,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_blended_utf8(const id_type id,
-                          const std::string& string,
-                          Renderer& renderer)
+  void store_blended_utf8(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_blended_utf8(id, string.c_str(), renderer);
   }
@@ -253,9 +251,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_solid_utf8(const id_type id,
-                        const std::string& string,
-                        Renderer& renderer)
+  void store_solid_utf8(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_solid_utf8(id, string.c_str(), renderer);
   }
@@ -411,9 +407,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_solid_latin1(const id_type id,
-                          const std::string& string,
-                          Renderer& renderer)
+  void store_solid_latin1(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_solid_latin1(id, string.c_str(), renderer);
   }
@@ -467,8 +461,7 @@ class font_cache final
                                      Renderer& renderer,
                                      const u32 wrap)
   {
-    store(id,
-          renderer.render_blended_wrapped_unicode(string, get_font(), wrap));
+    store(id, renderer.render_blended_wrapped_unicode(string, get_font(), wrap));
   }
 
   /**
@@ -569,8 +562,7 @@ class font_cache final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto try_get_stored(const id_type id) const noexcept
-      -> const texture*
+  [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const texture*
   {
     const auto iterator = m_strings.find(id);
     if (iterator != m_strings.end())
@@ -815,8 +807,8 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer,
-                                          const unicode glyph) -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph)
+      -> texture
   {
     const auto color = renderer.get_color().get();
     const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};

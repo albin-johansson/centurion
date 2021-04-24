@@ -61,8 +61,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept
-      : common_event{event}
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -115,8 +114,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jhat = event.get();

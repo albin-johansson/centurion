@@ -344,8 +344,7 @@ class key_code final
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const key_code& keyCode)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&
 {
   return stream << to_string(keyCode);
 }
@@ -363,8 +362,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(const key_code& lhs,
-                                        const key_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const key_code& lhs, const key_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -379,8 +378,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const key_code& lhs,
-                                        const key_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const key_code& lhs, const key_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

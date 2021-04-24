@@ -76,8 +76,7 @@ constexpr auto operator"" _ms(const unsigned long long int value) noexcept
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept
-    -> seconds<u32>
+constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }

@@ -56,8 +56,7 @@ class shared_object final
    *
    * \since 5.3.0
    */
-  explicit shared_object(const std::string& object)
-      : shared_object{object.c_str()}
+  explicit shared_object(const std::string& object) : shared_object{object.c_str()}
   {}
 
   /**
@@ -75,8 +74,7 @@ class shared_object final
    * \since 5.3.0
    */
   template <typename T>
-  [[nodiscard]] auto load_function(const not_null<czstring> name) const noexcept
-      -> T*
+  [[nodiscard]] auto load_function(const not_null<czstring> name) const noexcept -> T*
   {
     assert(name);
     return reinterpret_cast<T*>(SDL_LoadFunction(m_object.get(), name));

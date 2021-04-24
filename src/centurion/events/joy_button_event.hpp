@@ -146,8 +146,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jbutton = event.get();

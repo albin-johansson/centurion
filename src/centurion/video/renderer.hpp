@@ -95,7 +95,6 @@ class basic_renderer final
   /// \name Construction
   /// \{
 
-  // clang-format off
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
@@ -117,7 +116,6 @@ class basic_renderer final
       }
     }
   }
-  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.
@@ -130,8 +128,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_renderer(const Window& window,
-                          const u32 flags = default_flags())
+  explicit basic_renderer(const Window& window, const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get())
@@ -141,8 +138,7 @@ class basic_renderer final
   }
 
   template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit basic_renderer(const renderer& owner) noexcept
-      : m_renderer{owner.get()}
+  explicit basic_renderer(const renderer& owner) noexcept : m_renderer{owner.get()}
   {}
 
   /// \} End of construction
@@ -311,8 +307,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename U>
-  void draw_line(const basic_point<U>& start,
-                 const basic_point<U>& end) noexcept
+  void draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
   {
     if constexpr (basic_point<U>::isIntegral)
     {
@@ -413,7 +408,6 @@ class basic_renderer final
 
     while (x >= y)
     {
-      // clang-format off
       draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
       draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
 
@@ -434,7 +428,6 @@ class basic_renderer final
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
       }
-      // clang-format on
 
       error += y;
       ++y;
@@ -467,10 +460,8 @@ class basic_renderer final
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
       const auto x = cx - dx;
 
-      draw_line<float>({cx - dx, cy + dy - radius},
-                       {cx + dx, cy + dy - radius});
-      draw_line<float>({cx - dx, cy - dy + radius},
-                       {cx + dx, cy - dy + radius});
+      draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
+      draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
     }
   }
 
@@ -549,8 +540,7 @@ class basic_renderer final
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_circle_t(const basic_point<U>& position,
-                     const float radius) noexcept
+  void draw_circle_t(const basic_point<U>& position, const float radius) noexcept
   {
     draw_circle(translate(position), radius);
   }
@@ -602,20 +592,19 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str,
-                                         const font& font) -> texture
+  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str, const font& font)
+      -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
+    return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
   }
 
   /**
    * \see render_blended_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str,
-                                         const font& font) -> texture
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
+      -> texture
   {
     return render_blended_utf8(str.c_str(), font);
   }
@@ -653,10 +642,8 @@ class basic_renderer final
                                                  const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(TTF_RenderUTF8_Blended_Wrapped(font.get(),
-                                                      str,
-                                                      get_color().get(),
-                                                      wrap));
+    return render_text(
+        TTF_RenderUTF8_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
   }
 
   /**
@@ -700,10 +687,8 @@ class basic_renderer final
                                         const color& background) -> texture
   {
     assert(str);
-    return render_text(TTF_RenderUTF8_Shaded(font.get(),
-                                             str,
-                                             get_color().get(),
-                                             background.get()));
+    return render_text(
+        TTF_RenderUTF8_Shaded(font.get(), str, get_color().get(), background.get()));
   }
 
   /**
@@ -740,12 +725,11 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str,
-                                       const font& font) -> texture
+  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str, const font& font)
+      -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
+    return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
   }
 
   /**
@@ -781,20 +765,19 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str,
-                                           const font& font) -> texture
+  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str, const font& font)
+      -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Blended(font.get(), str, get_color().get()));
+    return render_text(TTF_RenderText_Blended(font.get(), str, get_color().get()));
   }
 
   /**
    * \see render_blended_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str,
-                                           const font& font) -> texture
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
+      -> texture
   {
     return render_blended_latin1(str.c_str(), font);
   }
@@ -832,10 +815,8 @@ class basic_renderer final
                                                    const u32 wrap) -> texture
   {
     assert(str);
-    return render_text(TTF_RenderText_Blended_Wrapped(font.get(),
-                                                      str,
-                                                      get_color().get(),
-                                                      wrap));
+    return render_text(
+        TTF_RenderText_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
   }
 
   /**
@@ -879,10 +860,8 @@ class basic_renderer final
                                           const color& background) -> texture
   {
     assert(str);
-    return render_text(TTF_RenderText_Shaded(font.get(),
-                                             str,
-                                             get_color().get(),
-                                             background.get()));
+    return render_text(
+        TTF_RenderText_Shaded(font.get(), str, get_color().get(), background.get()));
   }
 
   /**
@@ -919,20 +898,19 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str,
-                                         const font& font) -> texture
+  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str, const font& font)
+      -> texture
   {
     assert(str);
-    return render_text(
-        TTF_RenderText_Solid(font.get(), str, get_color().get()));
+    return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
   }
 
   /**
    * \see render_solid_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str,
-                                         const font& font) -> texture
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
+      -> texture
   {
     return render_solid_latin1(str.c_str(), font);
   }
@@ -958,8 +936,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_unicode(const unicode_string& str,
-                                            const font& font) -> texture
+  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
+      -> texture
   {
     return render_text(
         TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
@@ -1055,8 +1033,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_unicode(const unicode_string& str,
-                                          const font& font) -> texture
+  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
+      -> texture
   {
     return render_text(
         TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
@@ -1076,9 +1054,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  auto render_glyph(const font_cache& cache,
-                    const unicode glyph,
-                    const ipoint position) -> int
+  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
+      -> int
   {
     if (const auto* data = cache.try_at(glyph))
     {
@@ -1162,8 +1139,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const basic_point<P>& position) noexcept
+  void render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
   {
     if constexpr (basic_point<P>::isFloating)
     {
@@ -1173,10 +1149,7 @@ class basic_renderer final
     }
     else
     {
-      const SDL_Rect dst{position.x(),
-                         position.y(),
-                         texture.width(),
-                         texture.height()};
+      const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
       SDL_RenderCopy(get(), texture.get(), nullptr, &dst);
     }
   }
@@ -1193,8 +1166,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const basic_rect<P>& destination) noexcept
+  void render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
   {
     if constexpr (basic_rect<P>::isFloating)
     {
@@ -1402,8 +1374,7 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const basic_point<P>& position) noexcept
+  void render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
   {
     render(texture, translate(position));
   }
@@ -1505,11 +1476,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename R,
-            typename P,
-            typename U,
-            typename TT = T,
-            detail::is_owner<TT> = 0>
+  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1538,11 +1505,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename R,
-            typename P,
-            typename U,
-            typename TT = T,
-            detail::is_owner<TT> = 0>
+  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -2300,8 +2263,7 @@ class basic_renderer final
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
-      -> basic_rect<U>
+  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept -> basic_rect<U>
   {
     return basic_rect<U>{translate(rect.position()), rect.size()};
   }
@@ -2314,8 +2276,7 @@ template <typename T>
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std::ostream&
 {
   return stream << to_string(renderer);
 }

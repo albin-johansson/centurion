@@ -32,9 +32,8 @@
  *
  * \since 5.3.0
  */
-#define CENTURION_SDL_VERSION_IS(x, y, z)                      \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && \
-   (SDL_PATCHLEVEL == (z)))
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 

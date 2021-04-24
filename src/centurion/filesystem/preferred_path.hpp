@@ -34,8 +34,7 @@ namespace cen {
  * \since 5.2.0
  */
 [[nodiscard]] inline auto preferred_path(const not_null<czstring> org,
-                                         const not_null<czstring> app)
-    -> sdl_string
+                                         const not_null<czstring> app) -> sdl_string
 {
   /*
      Looking at the SDL source code, it actually seems fine to supply a null
@@ -66,8 +65,8 @@ namespace cen {
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto preferred_path(const std::string& org,
-                                         const std::string& app) -> sdl_string
+[[nodiscard]] inline auto preferred_path(const std::string& org, const std::string& app)
+    -> sdl_string
 {
   return preferred_path(org.c_str(), app.c_str());
 }

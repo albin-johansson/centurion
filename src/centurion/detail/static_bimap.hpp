@@ -41,10 +41,9 @@ class static_bimap final
 
   constexpr auto find(const Key& key) const -> const Value&
   {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          return pair.first == key;
-        });
+    const auto it = std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+      return pair.first == key;
+    });
 
     if (it != data.end())
     {
@@ -58,11 +57,10 @@ class static_bimap final
 
   constexpr auto key_from(const Value& value) const -> const Key&
   {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          ValueCmp predicate;
-          return predicate(pair.second, value);
-        });
+    const auto it = std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+      ValueCmp predicate;
+      return predicate(pair.second, value);
+    });
 
     if (it != data.end())
     {

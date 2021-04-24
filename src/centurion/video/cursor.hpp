@@ -336,16 +336,14 @@ class basic_cursor final
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const system_cursor lhs,
-                                        const SDL_SystemCursor rhs) noexcept
-    -> bool
+                                        const SDL_SystemCursor rhs) noexcept -> bool
 {
   return static_cast<SDL_SystemCursor>(lhs) == rhs;
 }
 
 /// \copydoc operator==(system_cursor, SDL_SystemCursor)
 [[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
-                                        const system_cursor rhs) noexcept
-    -> bool
+                                        const system_cursor rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -362,16 +360,14 @@ class basic_cursor final
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
-                                        const SDL_SystemCursor rhs) noexcept
-    -> bool
+                                        const SDL_SystemCursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(system_cursor, SDL_SystemCursor)
 [[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
-                                        const system_cursor rhs) noexcept
-    -> bool
+                                        const system_cursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

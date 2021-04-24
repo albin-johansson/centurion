@@ -57,11 +57,8 @@ namespace cen::counter {
 template <typename T>
 [[nodiscard]] auto now_sec() noexcept -> seconds<T>
 {
-  const auto freq = static_cast<T>(high_res_freq());
-  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) / freq};
+  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter() / high_res_freq())};
 }
-
-// clang-format off
 
 /**
  * \brief Returns the amount of milliseconds since the library was
@@ -76,8 +73,6 @@ template <typename T>
 {
   return milliseconds<u32>{SDL_GetTicks()};
 }
-
-// clang-format on
 
 }  // namespace cen::counter
 

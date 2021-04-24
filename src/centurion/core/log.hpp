@@ -125,9 +125,7 @@ void msg(const priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void info(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
 }
@@ -166,9 +164,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void warn(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
 }
@@ -248,9 +244,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const category category,
-           const not_null<czstring> fmt,
-           Args&&... args) noexcept
+void debug(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
 }
@@ -410,8 +404,7 @@ inline void set_priority(const priority prio) noexcept
  */
 inline void set_priority(const category category, const priority prio) noexcept
 {
-  SDL_LogSetPriority(static_cast<int>(category),
-                     static_cast<SDL_LogPriority>(prio));
+  SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(prio));
 }
 
 /**
@@ -422,8 +415,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const category category) noexcept
-    -> priority
+[[nodiscard]] inline auto get_priority(const category category) noexcept -> priority
 {
   return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
@@ -457,8 +449,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
+                                        const SDL_LogPriority rhs) noexcept -> bool
 {
   return static_cast<SDL_LogPriority>(lhs) == rhs;
 }
@@ -482,8 +473,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const priority lhs,
-                                        const SDL_LogPriority rhs) noexcept
-    -> bool
+                                        const SDL_LogPriority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -506,8 +496,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
+                                        const SDL_LogCategory rhs) noexcept -> bool
 {
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
@@ -530,8 +519,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const category lhs,
-                                        const SDL_LogCategory rhs) noexcept
-    -> bool
+                                        const SDL_LogCategory rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

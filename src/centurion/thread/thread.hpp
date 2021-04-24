@@ -34,12 +34,11 @@ namespace cen {
  */
 enum class thread_priority
 {
-  low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
-  normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is
-                                        ///< the default.
-  high = SDL_THREAD_PRIORITY_HIGH,      ///< For high-priority processing.
-  critical =
-      SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
+  low = SDL_THREAD_PRIORITY_LOW,                ///< Non-urgent, background processing.
+  normal = SDL_THREAD_PRIORITY_NORMAL,          ///< General purpose processing, this is
+                                                ///< the default.
+  high = SDL_THREAD_PRIORITY_HIGH,              ///< For high-priority processing.
+  critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
 };
 
 /**
@@ -336,8 +335,7 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-  return "thread{data: " + detail::address_of(thread.get()) +
-         ", name: " + thread.name() +
+  return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
          ", id: " + detail::to_string(thread.get_id()).value() + "}";
 }
 
@@ -351,8 +349,7 @@ class thread final
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const thread& thread)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&
 {
   stream << to_string(thread);
   return stream;
@@ -372,16 +369,14 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator==(const thread_priority lhs,
-                                        const SDL_ThreadPriority rhs) noexcept
-    -> bool
+                                        const SDL_ThreadPriority rhs) noexcept -> bool
 {
   return static_cast<SDL_ThreadPriority>(lhs) == rhs;
 }
 
 /// \copydoc operator==(thread_priority, SDL_ThreadPriority)
 [[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
-                                        const thread_priority rhs) noexcept
-    -> bool
+                                        const thread_priority rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -397,16 +392,14 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const thread_priority lhs,
-                                        const SDL_ThreadPriority rhs) noexcept
-    -> bool
+                                        const SDL_ThreadPriority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(thread_priority, SDL_ThreadPriority)
 [[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
-                                        const thread_priority rhs) noexcept
-    -> bool
+                                        const thread_priority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

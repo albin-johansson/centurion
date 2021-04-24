@@ -108,8 +108,7 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_surface(const not_null<czstring> file)
-      : m_surface{IMG_Load(file)}
+  explicit basic_surface(const not_null<czstring> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface)
     {
@@ -174,8 +173,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const not_null<czstring> file,
                                         const blend_mode blendMode,
-                                        const pixel_format pixelFormat)
-      -> basic_surface
+                                        const pixel_format pixelFormat) -> basic_surface
   {
     assert(file);
 
@@ -191,8 +189,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto with_format(const std::string& file,
                                         const blend_mode blendMode,
-                                        const pixel_format pixelFormat)
-      -> basic_surface
+                                        const pixel_format pixelFormat) -> basic_surface
   {
     return with_format(file.c_str(), blendMode, pixelFormat);
   }
@@ -211,8 +208,7 @@ class basic_surface final
    * \since 5.3.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_bmp(const not_null<czstring> file)
-      -> basic_surface
+  [[nodiscard]] static auto from_bmp(const not_null<czstring> file) -> basic_surface
   {
     assert(file);
     return basic_surface{SDL_LoadBMP(file)};
@@ -361,8 +357,8 @@ class basic_surface final
    *
    * \since 6.0.0
    */
-  auto save_as_jpg(const not_null<czstring> file,
-                   const int quality) const noexcept -> result
+  auto save_as_jpg(const not_null<czstring> file, const int quality) const noexcept
+      -> result
   {
     assert(file);
     const auto result = IMG_SaveJPG(get(), file, quality);
@@ -373,8 +369,7 @@ class basic_surface final
    * \see save_as_jpg()
    * \since 6.0.0
    */
-  auto save_as_jpg(const std::string& file, const int quality) const noexcept
-      -> result
+  auto save_as_jpg(const std::string& file, const int quality) const noexcept -> result
   {
     return save_as_jpg(file.c_str(), quality);
   }
@@ -900,8 +895,7 @@ template <typename T>
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_surface<T>& surface)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
   stream << to_string(surface);
   return stream;

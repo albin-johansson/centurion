@@ -7,6 +7,7 @@
 
 #include "core/log.hpp"
 #include "video/screen.hpp"
+#include "video/window_utils.hpp"
 
 class WindowTest : public testing::Test
 {
@@ -35,8 +36,7 @@ TEST_F(WindowTest, Defaults)
 TEST_F(WindowTest, ConstructFromPointer)
 {
   {  // window
-    EXPECT_NO_THROW(
-        cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
+    EXPECT_NO_THROW(cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
 
     SDL_Window* ptr{};
     EXPECT_THROW(cen::window{ptr}, cen::cen_error);

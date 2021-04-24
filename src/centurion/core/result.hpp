@@ -70,8 +70,7 @@ class result final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] constexpr auto operator==(const result other) const noexcept
-      -> bool
+  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
   {
     return m_success == other.m_success;
   }
@@ -86,8 +85,7 @@ class result final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept
-      -> bool
+  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
   {
     return !(*this == other);
   }

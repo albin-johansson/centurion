@@ -197,8 +197,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.wheel = event.get();
@@ -215,17 +214,16 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const mouse_wheel_direction lhs,
-    const SDL_MouseWheelDirection rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const mouse_wheel_direction lhs,
+                                        const SDL_MouseWheelDirection rhs) noexcept
+    -> bool
 {
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
 
 /// \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
-[[nodiscard]] constexpr auto operator==(
-    const SDL_MouseWheelDirection lhs,
-    const mouse_wheel_direction rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_MouseWheelDirection lhs,
+                                        const mouse_wheel_direction rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -241,17 +239,16 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const mouse_wheel_direction lhs,
-    const SDL_MouseWheelDirection rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const mouse_wheel_direction lhs,
+                                        const SDL_MouseWheelDirection rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
-[[nodiscard]] constexpr auto operator!=(
-    const SDL_MouseWheelDirection lhs,
-    const mouse_wheel_direction rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_MouseWheelDirection lhs,
+                                        const mouse_wheel_direction rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

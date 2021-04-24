@@ -210,18 +210,14 @@ class basic_texture final
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const not_null<czstring> path,
-                                      const pixel_format format)
-      -> basic_texture
+                                      const pixel_format format) -> basic_texture
   {
     assert(path);
 
     constexpr auto blendMode = blend_mode::blend;
     const auto surface = cen::surface::with_format(path, blendMode, format);
 
-    basic_texture texture{renderer,
-                          format,
-                          texture_access::streaming,
-                          surface.size()};
+    basic_texture texture{renderer, format, texture_access::streaming, surface.size()};
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
@@ -246,8 +242,7 @@ class basic_texture final
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       const std::string& path,
-                                      const pixel_format format)
-      -> basic_texture
+                                      const pixel_format format) -> basic_texture
   {
     return streaming(renderer, path.c_str(), format);
   }
@@ -270,8 +265,8 @@ class basic_texture final
    */
   void set_pixel(const ipoint pixel, const color& color)
   {
-    if (access() != texture_access::streaming || (pixel.x() < 0) ||
-        (pixel.y() < 0) || (pixel.x() >= width()) || (pixel.y() >= height()))
+    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
+        (pixel.x() >= width()) || (pixel.y() >= height()))
     {
       return;
     }
@@ -629,10 +624,8 @@ class basic_texture final
   {
     if (pitch)
     {
-      const auto result = SDL_LockTexture(m_texture,
-                                          nullptr,
-                                          reinterpret_cast<void**>(pixels),
-                                          pitch);
+      const auto result =
+          SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
       return result == 0;
     }
     else
@@ -685,8 +678,7 @@ template <typename T>
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_texture<T>& texture)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
 {
   stream << to_string(texture);
   return stream;

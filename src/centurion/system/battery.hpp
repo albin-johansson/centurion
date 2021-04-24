@@ -27,15 +27,11 @@ namespace cen {
  */
 enum class power_state
 {
-  // clang-format off
-
-  unknown = SDL_POWERSTATE_UNKNOWN,       ///< The status is unknown.
-  on_battery = SDL_POWERSTATE_ON_BATTERY, ///< Not plugged in and running on battery.
-  no_battery = SDL_POWERSTATE_NO_BATTERY, ///< No battery available.
-  charging = SDL_POWERSTATE_CHARGING,     ///< Currently charging the battery.
-  charged = SDL_POWERSTATE_CHARGED        ///< Currently plugged in and charged.
-
-  // clang-format on
+  unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
+  on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
+  no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
+  charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
+  charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
 };
 
 /**
@@ -183,9 +179,7 @@ namespace battery {
  */
 [[nodiscard]] inline auto is_available() noexcept -> bool
 {
-  return !detail::any_eq(state(),
-                         power_state::no_battery,
-                         power_state::unknown);
+  return !detail::any_eq(state(), power_state::no_battery, power_state::unknown);
 }
 
 }  // namespace battery
@@ -204,8 +198,7 @@ namespace battery {
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept
-    -> bool
+                                        const SDL_PowerState rhs) noexcept -> bool
 {
   return static_cast<SDL_PowerState>(lhs) == rhs;
 }
@@ -228,8 +221,7 @@ namespace battery {
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept
-    -> bool
+                                        const SDL_PowerState rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

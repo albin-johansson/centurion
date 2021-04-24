@@ -243,8 +243,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.motion = event.get();

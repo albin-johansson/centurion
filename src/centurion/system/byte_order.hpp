@@ -114,8 +114,7 @@ namespace cen {
 }
 
 /// \copydoc swap_little_endian()
-[[nodiscard]] inline auto swap_little_endian(const float value) noexcept
-    -> float
+[[nodiscard]] inline auto swap_little_endian(const float value) noexcept -> float
 {
   return SDL_SwapFloatLE(value);
 }

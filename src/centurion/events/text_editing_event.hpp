@@ -153,8 +153,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.edit = event.get();

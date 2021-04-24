@@ -242,8 +242,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.button = event.get();

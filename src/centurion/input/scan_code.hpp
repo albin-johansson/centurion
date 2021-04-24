@@ -76,8 +76,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const SDL_Keycode key) noexcept
-      : m_code{SDL_GetScancodeFromKey(key)}
+  explicit scan_code(const SDL_Keycode key) noexcept : m_code{SDL_GetScancodeFromKey(key)}
   {}
 
   /**
@@ -336,8 +335,7 @@ class scan_code final
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::ostream&
 {
   return stream << to_string(scanCode);
 }

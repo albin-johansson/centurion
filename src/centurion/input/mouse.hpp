@@ -54,12 +54,12 @@ class mouse final
     }
 
     {
-      const auto xRatio = static_cast<float>(m_mouseX) /
-                          static_cast<float>(detail::max(windowWidth, 1));
+      const auto xRatio =
+          static_cast<float>(m_mouseX) / static_cast<float>(detail::max(windowWidth, 1));
       const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
 
-      const auto yRatio = static_cast<float>(m_mouseY) /
-                          static_cast<float>(detail::max(windowHeight, 1));
+      const auto yRatio =
+          static_cast<float>(m_mouseY) / static_cast<float>(detail::max(windowHeight, 1));
       const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
 
       m_mouseX = static_cast<int>(adjustedX);

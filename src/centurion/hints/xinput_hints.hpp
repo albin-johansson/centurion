@@ -19,8 +19,7 @@ struct is_enabled final : detail::bool_hint<is_enabled>
   }
 };
 
-struct use_old_joystick_mapping final
-    : detail::bool_hint<use_old_joystick_mapping>
+struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mapping>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

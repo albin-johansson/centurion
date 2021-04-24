@@ -141,8 +141,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
-    -> orientation
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept -> orientation
 {
   return static_cast<orientation>(SDL_GetDisplayOrientation(index));
 }
@@ -185,8 +184,7 @@ enum class orientation
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto refresh_rate(const int index = 0) noexcept
-    -> std::optional<int>
+[[nodiscard]] inline auto refresh_rate(const int index = 0) noexcept -> std::optional<int>
 {
   if (const auto mode = display_mode(index))
   {
@@ -236,8 +234,7 @@ enum class orientation
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto width(const int index = 0) noexcept
-    -> std::optional<int>
+[[nodiscard]] inline auto width(const int index = 0) noexcept -> std::optional<int>
 {
   if (const auto mode = display_mode(index))
   {
@@ -259,8 +256,7 @@ enum class orientation
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto height(const int index = 0) noexcept
-    -> std::optional<int>
+[[nodiscard]] inline auto height(const int index = 0) noexcept -> std::optional<int>
 {
   if (const auto mode = display_mode(index))
   {
@@ -282,8 +278,7 @@ enum class orientation
  *
  * \since 4.1.0
  */
-[[nodiscard]] inline auto size(const int index = 0) noexcept
-    -> std::optional<iarea>
+[[nodiscard]] inline auto size(const int index = 0) noexcept -> std::optional<iarea>
 {
   if (const auto mode = display_mode(index))
   {
@@ -308,14 +303,11 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto dpi(const int index = 0) noexcept
-    -> std::optional<dpi_info>
+[[nodiscard]] inline auto dpi(const int index = 0) noexcept -> std::optional<dpi_info>
 {
   dpi_info info;
-  const auto res = SDL_GetDisplayDPI(index,
-                                     &info.diagonal,
-                                     &info.horizontal,
-                                     &info.vertical);
+  const auto res =
+      SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical);
   if (res == 0)
   {
     return info;
@@ -411,8 +403,7 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto bounds(const int index = 0) noexcept
-    -> std::optional<irect>
+[[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
   if (SDL_GetDisplayBounds(index, &result.get()) == 0)

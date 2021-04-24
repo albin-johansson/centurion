@@ -170,8 +170,7 @@ class basic_rect final
    *
    * \since 4.1.0
    */
-  constexpr basic_rect(const point_type& position,
-                       const area_type& size) noexcept
+  constexpr basic_rect(const point_type& position, const area_type& size) noexcept
       : m_rect{position.x(), position.y(), size.width, size.height}
   {}
 
@@ -521,8 +520,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept
-      -> bool
+  [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept -> bool
   {
     const auto px = point.x();
     const auto py = point.y();
@@ -700,11 +698,10 @@ template <typename T, enable_if_number_t<T> = 0>
  */
 template <typename T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
-                                        const basic_rect<T>& snd) noexcept
-    -> bool
+                                        const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() ||
-           fst.y() >= snd.max_y() || fst.max_y() <= snd.y());
+  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() || fst.y() >= snd.max_y() ||
+           fst.max_y() <= snd.y());
 }
 
 /**
@@ -728,8 +725,8 @@ template <typename T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
                                       const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() ||
-           fst.y() > snd.max_y() || fst.max_y() < snd.y());
+  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() || fst.y() > snd.max_y() ||
+           fst.max_y() < snd.y());
 }
 
 /**
@@ -748,8 +745,7 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] constexpr auto get_union(const basic_rect<T>& fst,
-                                       const basic_rect<T>& snd) noexcept
-    -> basic_rect<T>
+                                       const basic_rect<T>& snd) noexcept -> basic_rect<T>
 {
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
@@ -794,11 +790,10 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
-                                        const basic_rect<T>& rhs) noexcept
-    -> bool
+                                        const basic_rect<T>& rhs) noexcept -> bool
 {
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
-         (lhs.width() == rhs.width()) && (lhs.height() == rhs.height());
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) && (lhs.width() == rhs.width()) &&
+         (lhs.height() == rhs.height());
 }
 
 /**
@@ -815,8 +810,7 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
-                                        const basic_rect<T>& rhs) noexcept
-    -> bool
+                                        const basic_rect<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -829,8 +823,7 @@ template <typename T>
 template <>
 [[nodiscard]] constexpr auto cast(const irect& from) noexcept -> frect
 {
-  const frect::point_type pos{static_cast<float>(from.x()),
-                              static_cast<float>(from.y())};
+  const frect::point_type pos{static_cast<float>(from.x()), static_cast<float>(from.y())};
   const frect::area_type size{static_cast<float>(from.width()),
                               static_cast<float>(from.height())};
   return frect{pos, size};
@@ -839,8 +832,7 @@ template <>
 template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
-  const irect::point_type pos{static_cast<int>(from.x()),
-                              static_cast<int>(from.y())};
+  const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
   const irect::area_type size{static_cast<int>(from.width()),
                               static_cast<int>(from.height())};
   return irect{pos, size};
@@ -881,8 +873,7 @@ template <typename T>
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
   stream << to_string(rect);
   return stream;

@@ -34,8 +34,7 @@ class cen_error : public std::exception
    *
    * \since 3.0.0
    */
-  explicit cen_error(const czstring what) noexcept
-      : m_what{what ? what : m_what}
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
   {}
 
   [[nodiscard]] auto what() const noexcept -> czstring override

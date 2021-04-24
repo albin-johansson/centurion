@@ -45,8 +45,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept
-      : common_event{event}
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -174,8 +173,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept
-      -> bool
+  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
   {
     return m_event.keysym.mod & static_cast<u16>(modifier);
   }
@@ -350,8 +348,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.key = event.get();

@@ -30,9 +30,7 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  explicit try_lock(mutex& mutex) noexcept
-      : m_mutex{&mutex}
-      , m_status{mutex.try_lock()}
+  explicit try_lock(mutex& mutex) noexcept : m_mutex{&mutex}, m_status{mutex.try_lock()}
   {}
 
   try_lock(const try_lock&) = delete;

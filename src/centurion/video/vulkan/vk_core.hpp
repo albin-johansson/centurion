@@ -36,10 +36,8 @@ auto create_surface(basic_window<T>& window,
                     VkInstance instance,
                     VkSurfaceKHR* outSurface) noexcept -> bool
 {
-  // clang-format off
   assert(window.is_vulkan());
   return SDL_Vulkan_CreateSurface(window.get(), instance, outSurface) == SDL_TRUE;
-  // clang-format on
 }
 
 template <typename T>
@@ -47,15 +45,12 @@ auto get_extensions(basic_window<T>& window,
                     unsigned* outCount,
                     czstring* outNames) noexcept -> bool
 {
-  // clang-format off
   assert(window.is_vulkan());
   return SDL_Vulkan_GetInstanceExtensions(window.get(), outCount, outNames) == SDL_TRUE;
-  // clang-format on
 }
 
 template <typename T>
-[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept
-    -> iarea
+[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
 {
   assert(window.is_vulkan());
 

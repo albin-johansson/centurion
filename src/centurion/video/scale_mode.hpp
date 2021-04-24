@@ -43,8 +43,7 @@ enum class scale_mode
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept
-    -> bool
+                                        const SDL_ScaleMode rhs) noexcept -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
@@ -67,8 +66,7 @@ enum class scale_mode
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept
-    -> bool
+                                        const SDL_ScaleMode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

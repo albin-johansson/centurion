@@ -87,8 +87,7 @@ struct basic_area final
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area(const T width, const T height) noexcept
-    -> basic_area<T>
+[[nodiscard]] constexpr auto area(const T width, const T height) noexcept -> basic_area<T>
 {
   return {width, height};
 }
@@ -189,8 +188,7 @@ template <>
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_area<T>& lhs,
-                                        const basic_area<T>& rhs) noexcept
-    -> bool
+                                        const basic_area<T>& rhs) noexcept -> bool
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
 }
@@ -207,8 +205,7 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator!=(const basic_area<T>& lhs,
-                                        const basic_area<T>& rhs) noexcept
-    -> bool
+                                        const basic_area<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -246,8 +243,7 @@ template <typename T>
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_area<T>& area)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream&
 {
   return stream << to_string(area);
 }

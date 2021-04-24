@@ -286,11 +286,7 @@ class basic_pixel_format_info final
    */
   [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> u32
   {
-    return SDL_MapRGBA(m_format,
-                       color.red(),
-                       color.green(),
-                       color.blue(),
-                       color.alpha());
+    return SDL_MapRGBA(m_format, color.red(), color.green(), color.blue(), color.alpha());
   }
 
   /// \} End of pixel/RGB/RGBA conversions
@@ -386,8 +382,7 @@ class basic_pixel_format_info final
  * \since 3.1.0
  */
 [[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept
-    -> bool
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
 {
   return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
 }
@@ -410,8 +405,7 @@ class basic_pixel_format_info final
  * \since 3.1.0
  */
 [[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept
-    -> bool
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -24,8 +24,7 @@ namespace cen {
  *
  * \headerfile controller_button_event.hpp
  */
-class controller_button_event final
-    : public common_event<SDL_ControllerButtonEvent>
+class controller_button_event final : public common_event<SDL_ControllerButtonEvent>
 {
  public:
   /**
@@ -33,8 +32,7 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  controller_button_event() noexcept
-      : common_event{event_type::controller_button_down}
+  controller_button_event() noexcept : common_event{event_type::controller_button_down}
   {}
 
   /**
@@ -45,8 +43,7 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  explicit controller_button_event(
-      const SDL_ControllerButtonEvent& event) noexcept
+  explicit controller_button_event(const SDL_ControllerButtonEvent& event) noexcept
       : common_event{event}
   {}
 

@@ -61,8 +61,7 @@ void swap(basic_window<T>& window) noexcept
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept
-    -> iarea
+[[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
 {
   assert(window.is_opengl());
 
@@ -127,13 +126,13 @@ inline auto set_swap_interval(const int interval) noexcept -> bool
   return SDL_GL_ExtensionSupported(extension) == SDL_TRUE;
 }
 
+// clang-format on
+
 [[nodiscard]] inline auto is_extension_supported(const std::string& extension) noexcept
     -> bool
 {
   return is_extension_supported(extension.c_str());
 }
-
-// clang-format on
 
 }  // namespace cen::gl
 

@@ -70,8 +70,7 @@ class event final
   }
 
   template <typename T>
-  explicit event(const common_event<T>& event) noexcept
-      : m_event{as_sdl_event(event)}
+  explicit event(const common_event<T>& event) noexcept : m_event{as_sdl_event(event)}
   {
     update_data(event.type());
   }
@@ -201,11 +200,8 @@ class event final
    */
   [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
-    const auto num = SDL_PeepEvents(nullptr,
-                                    0,
-                                    SDL_PEEKEVENT,
-                                    SDL_FIRSTEVENT,
-                                    SDL_LASTEVENT);
+    const auto num =
+        SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
     if (num != -1)
     {
       return num;
@@ -418,8 +414,7 @@ class event final
     {
       m_data.emplace<controller_button_event>(m_event.cbutton);
     }
-    else if (t == et::controller_device_added ||
-             t == et::controller_device_removed ||
+    else if (t == et::controller_device_added || t == et::controller_device_removed ||
              t == et::controller_device_remapped)
     {
       m_data.emplace<controller_device_event>(m_event.cdevice);
@@ -428,8 +423,8 @@ class event final
     {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
     }
-    else if (t == et::drop_begin || t == et::drop_complete ||
-             t == et::drop_file || t == et::drop_text)
+    else if (t == et::drop_begin || t == et::drop_complete || t == et::drop_file ||
+             t == et::drop_text)
     {
       m_data.emplace<drop_event>(m_event.drop);
     }

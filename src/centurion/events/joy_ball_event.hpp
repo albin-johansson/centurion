@@ -41,8 +41,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept
-      : common_event{event}
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -149,8 +148,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jball = event.get();

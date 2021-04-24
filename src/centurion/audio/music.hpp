@@ -167,8 +167,7 @@ class music final
    */
   auto play(const int nLoops = 0) noexcept -> std::optional<int>
   {
-    const auto channel =
-        Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
+    const auto channel = Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
     if (channel != -1)
     {
       return channel;
@@ -277,12 +276,8 @@ class music final
                const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
-    return Mix_FadeInMusic(m_music.get(),
-                           detail::max(nLoops, forever),
-                           ms.count()) == 0;
+    return Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count()) == 0;
   }
-
-  // clang-format off
 
   /**
    * \brief Fades out any currently playing music over the specified amount of
@@ -300,8 +295,7 @@ class music final
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
-      -> bool
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> bool
   {
     assert(ms.count() > 0);
     if (!is_fading())
@@ -313,8 +307,6 @@ class music final
       return false;
     }
   }
-
-  // clang-format on
 
   /**
    * \brief Indicates whether or not any music is currently being faded in or
@@ -569,8 +561,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const music& music)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream&
 {
   return stream << to_string(music);
 }
@@ -638,8 +629,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept
-    -> bool
+                                        const Mix_MusicType rhs) noexcept -> bool
 {
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
@@ -662,8 +652,7 @@ inline auto operator<<(std::ostream& stream, const music& music)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept
-    -> bool
+                                        const Mix_MusicType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

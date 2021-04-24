@@ -278,8 +278,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.tfinger = event.get();

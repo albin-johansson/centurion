@@ -24,13 +24,12 @@ namespace cen {
  */
 enum class texture_access
 {
-  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Indicates that the texture changes
-                                       ///< rarely, and isn't lockable.
-  streaming =
-      SDL_TEXTUREACCESS_STREAMING,   ///< Indicates that the texture changes
-                                     ///< frequently, and is lockable.
-  target = SDL_TEXTUREACCESS_TARGET  ///< Indicates that the texture can be used
-                                     ///< as a render target.
+  no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
+                                            ///< rarely, and isn't lockable.
+  streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Indicates that the texture changes
+                                            ///< frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET         ///< Indicates that the texture can be used
+                                            ///< as a render target.
 };
 
 /**
@@ -44,16 +43,14 @@ enum class texture_access
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const texture_access lhs,
-                                        const SDL_TextureAccess rhs) noexcept
-    -> bool
+                                        const SDL_TextureAccess rhs) noexcept -> bool
 {
   return static_cast<SDL_TextureAccess>(lhs) == rhs;
 }
 
 /// \copydoc operator==(texture_access, SDL_TextureAccess)
 [[nodiscard]] constexpr auto operator==(const SDL_TextureAccess lhs,
-                                        const texture_access rhs) noexcept
-    -> bool
+                                        const texture_access rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -71,16 +68,14 @@ enum class texture_access
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const texture_access lhs,
-                                        const SDL_TextureAccess rhs) noexcept
-    -> bool
+                                        const SDL_TextureAccess rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(texture_access, SDL_TextureAccess)
 [[nodiscard]] constexpr auto operator!=(const SDL_TextureAccess lhs,
-                                        const texture_access rhs) noexcept
-    -> bool
+                                        const texture_access rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

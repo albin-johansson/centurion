@@ -49,8 +49,7 @@ enum class blend_mode
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept
-    -> bool
+                                        const SDL_BlendMode rhs) noexcept -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
@@ -73,8 +72,7 @@ enum class blend_mode
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept
-    -> bool
+                                        const SDL_BlendMode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

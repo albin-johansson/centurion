@@ -143,8 +143,7 @@ class file final
   /**
    * \copydoc file(not_null<czstring>, file_mode)
    */
-  file(const std::string& path, const file_mode mode) noexcept
-      : file{path.c_str(), mode}
+  file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
   {}
 
   /// \} End of construction
@@ -165,8 +164,7 @@ class file final
    * \since 5.3.0
    */
   template <typename T>
-  auto write(not_null<const T*> data, const size_type count) noexcept
-      -> size_type
+  auto write(not_null<const T*> data, const size_type count) noexcept -> size_type
   {
     assert(m_context);
     return SDL_RWwrite(get(), data, sizeof(T), count);
@@ -666,8 +664,7 @@ class file final
       -> std::optional<i64>
   {
     assert(m_context);
-    const auto result =
-        SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
+    const auto result = SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
     if (result != -1)
     {
       return result;

@@ -30,8 +30,6 @@ template <typename T>
 class basic_context final
 {
  public:
-  // clang-format off
-
   explicit basic_context(SDL_GLContext context) noexcept(!detail::is_owning<T>())
       : m_context{context}
   {
@@ -56,8 +54,6 @@ class basic_context final
       }
     }
   }
-
-  // clang-format on
 
   template <typename U>
   auto make_current(basic_window<U>& window) -> result

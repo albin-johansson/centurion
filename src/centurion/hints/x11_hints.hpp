@@ -19,8 +19,7 @@ struct net_wm_ping final : detail::bool_hint<net_wm_ping>
   }
 };
 
-struct net_wm_bypass_compositor final
-    : detail::bool_hint<net_wm_bypass_compositor>
+struct net_wm_bypass_compositor final : detail::bool_hint<net_wm_bypass_compositor>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

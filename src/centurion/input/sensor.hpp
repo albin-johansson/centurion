@@ -268,8 +268,7 @@ class basic_sensor final
    * \since 5.2.0
    */
   template <std::size_t size>
-  [[nodiscard]] auto data() const noexcept
-      -> std::optional<std::array<float, size>>
+  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
     const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
@@ -312,8 +311,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto id(const int index) noexcept
-      -> std::optional<sensor_id>
+  [[nodiscard]] static auto id(const int index) noexcept -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
     if (id != -1)
@@ -429,8 +427,7 @@ template <typename T>
   const auto name = sensor.name();
   const std::string nameStr = name ? name : "N/A";
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + nameStr + "}";
+         ", id: " + detail::to_string(sensor.id()).value() + ", name: " + nameStr + "}";
 }
 
 /**
@@ -446,8 +443,7 @@ template <typename T>
  * \since 5.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ostream&
 {
   return stream << to_string(sensor);
 }
@@ -478,8 +474,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
  * \since 5.2.0
  */
 [[nodiscard]] constexpr auto operator==(const sensor_type lhs,
-                                        const SDL_SensorType rhs) noexcept
-    -> bool
+                                        const SDL_SensorType rhs) noexcept -> bool
 {
   return static_cast<SDL_SensorType>(lhs) == rhs;
 }
@@ -502,8 +497,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor)
  * \since 5.2.0
  */
 [[nodiscard]] constexpr auto operator!=(const sensor_type lhs,
-                                        const SDL_SensorType rhs) noexcept
-    -> bool
+                                        const SDL_SensorType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

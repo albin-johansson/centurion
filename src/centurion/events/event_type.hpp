@@ -97,8 +97,7 @@ enum class event_type
  * \since 3.1.0
  */
 [[nodiscard]] constexpr auto operator==(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept
-    -> bool
+                                        const SDL_EventType rhs) noexcept -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
@@ -121,8 +120,7 @@ enum class event_type
  * \since 3.1.0
  */
 [[nodiscard]] constexpr auto operator!=(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept
-    -> bool
+                                        const SDL_EventType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

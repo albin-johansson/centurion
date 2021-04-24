@@ -144,8 +144,7 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto get_finger(const SDL_TouchID id,
-                                     const int index) noexcept
+[[nodiscard]] inline auto get_finger(const SDL_TouchID id, const int index) noexcept
     -> std::optional<SDL_Finger>
 {
   if (const auto* finger = SDL_GetTouchFinger(id, index))
@@ -198,8 +197,7 @@ enum class device_type
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator==(const device_type lhs,
-                                        const SDL_TouchDeviceType rhs) noexcept
-    -> bool
+                                        const SDL_TouchDeviceType rhs) noexcept -> bool
 {
   return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
 }
@@ -222,8 +220,7 @@ enum class device_type
  * \since 4.3.0
  */
 [[nodiscard]] constexpr auto operator!=(const device_type lhs,
-                                        const SDL_TouchDeviceType rhs) noexcept
-    -> bool
+                                        const SDL_TouchDeviceType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

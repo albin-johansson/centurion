@@ -35,8 +35,8 @@ inline auto set_sound_fonts(const czstring fonts) noexcept -> bool
 using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
 
 template <typename T = void>
-auto each_sound_font(sound_font_visit_callback callable,
-                     T* data = nullptr) noexcept -> bool
+auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
+    -> bool
 {
   return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
 }
@@ -63,8 +63,6 @@ inline auto reserve_channels(const int count) noexcept -> int
   return Mix_ReserveChannels(count);
 }
 
-// clang-format off
-
 inline auto expire_channel(const int channel,
                            const milliseconds<int> ms) noexcept(noexcept(ms.count()))
     -> bool
@@ -72,10 +70,7 @@ inline auto expire_channel(const int channel,
   return Mix_ExpireChannel(channel, ms.count()) != 0;
 }
 
-// clang-format on
-
-inline auto set_channel_group(const int channel, const int group) noexcept
-    -> bool
+inline auto set_channel_group(const int channel, const int group) noexcept -> bool
 {
   return Mix_GroupChannel(channel, group) == 1;
 }

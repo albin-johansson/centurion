@@ -167,8 +167,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  explicit window_event(const SDL_WindowEvent& event) noexcept
-      : common_event{event}
+  explicit window_event(const SDL_WindowEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -228,8 +227,7 @@ class window_event final : public common_event<SDL_WindowEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.window = event.get();
@@ -247,16 +245,14 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const window_event_id lhs,
-                                        const SDL_WindowEventID rhs) noexcept
-    -> bool
+                                        const SDL_WindowEventID rhs) noexcept -> bool
 {
   return static_cast<SDL_WindowEventID>(lhs) == rhs;
 }
 
 /// \copydoc operator==(window_event_id, SDL_WindowEventID)
 [[nodiscard]] constexpr auto operator==(const SDL_WindowEventID lhs,
-                                        const window_event_id rhs) noexcept
-    -> bool
+                                        const window_event_id rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -273,16 +269,14 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const window_event_id lhs,
-                                        const SDL_WindowEventID rhs) noexcept
-    -> bool
+                                        const SDL_WindowEventID rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(window_event_id, SDL_WindowEventID)
 [[nodiscard]] constexpr auto operator!=(const SDL_WindowEventID lhs,
-                                        const window_event_id rhs) noexcept
-    -> bool
+                                        const window_event_id rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -124,8 +124,7 @@ class unicode_string final
   template <typename... Character>
   void append(Character... code)
   {
-    static_assert(sizeof...(Character) != 0,
-                  "Function requires at least 1 argument!");
+    static_assert(sizeof...(Character) != 0, "Function requires at least 1 argument!");
     static_assert((std::is_same_v<unicode, std::decay_t<Character>> && ...),
                   "Cannot append values that aren't of type \"unicode\"!");
     (append(code), ...);
@@ -288,8 +287,6 @@ class unicode_string final
     return m_data.at(index);
   }
 
-  // clang-format off
-
   /**
    * \brief Returns the element at the specified index.
    *
@@ -305,8 +302,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc())
-      -> reference
+  [[nodiscard]] auto operator[](const size_type index) noexcept(on_msvc()) -> reference
   {
     assert(index < m_data.size());
     return m_data[index];
@@ -321,8 +317,6 @@ class unicode_string final
     assert(index < m_data.size());
     return m_data[index];
   }
-
-  // clang-format on
 
   /**
    * \brief Serializes the string.
@@ -357,8 +351,8 @@ class unicode_string final
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto operator==(const unicode_string& lhs,
-                                     const unicode_string& rhs) -> bool
+[[nodiscard]] inline auto operator==(const unicode_string& lhs, const unicode_string& rhs)
+    -> bool
 {
   if (lhs.size() != rhs.size())
   {
@@ -388,8 +382,8 @@ class unicode_string final
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto operator!=(const unicode_string& lhs,
-                                     const unicode_string& rhs) -> bool
+[[nodiscard]] inline auto operator!=(const unicode_string& lhs, const unicode_string& rhs)
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -419,8 +413,7 @@ constexpr auto operator""_uni(const char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const unsigned long long int i) noexcept
-    -> unicode
+constexpr auto operator""_uni(const unsigned long long int i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }

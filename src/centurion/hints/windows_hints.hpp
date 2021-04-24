@@ -56,8 +56,7 @@ struct int_resource_icon final : detail::string_hint<int_resource_icon>
   }
 };
 
-struct int_resource_icon_small final
-    : detail::string_hint<int_resource_icon_small>
+struct int_resource_icon_small final : detail::string_hint<int_resource_icon_small>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

@@ -113,8 +113,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.adevice = event.get();

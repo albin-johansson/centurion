@@ -60,9 +60,8 @@ enum class controller_type
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  nintendo_switch_pro =
-      SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro
-                                               ///< controller.
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
+                                                                 ///< Pro controller.
 };
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -240,8 +239,7 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit basic_controller(const controller& owner) noexcept
-      : m_controller{owner.get()}
+  explicit basic_controller(const controller& owner) noexcept : m_controller{owner.get()}
   {}
 
   /**
@@ -289,8 +287,7 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_joystick(const SDL_JoystickID id)
-      -> basic_controller
+  [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id))
     {
@@ -316,8 +313,7 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_index(const player_index index)
-      -> basic_controller
+  [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
     {
@@ -355,8 +351,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto is_supported(const joystick_index index) noexcept
-      -> bool
+  [[nodiscard]] static auto is_supported(const joystick_index index) noexcept -> bool
   {
     return static_cast<bool>(SDL_IsGameController(index));
   }
@@ -422,8 +417,7 @@ class basic_controller final
       -> controller_button
   {
     assert(str);
-    return static_cast<controller_button>(
-        SDL_GameControllerGetButtonFromString(str));
+    return static_cast<controller_button>(SDL_GameControllerGetButtonFromString(str));
   }
 
   /**
@@ -450,11 +444,9 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept
-      -> czstring
+  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept -> czstring
   {
-    return SDL_GameControllerGetStringForAxis(
-        static_cast<SDL_GameControllerAxis>(axis));
+    return SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(axis));
   }
 
   /**
@@ -466,8 +458,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_button button) noexcept
-      -> czstring
+  [[nodiscard]] static auto stringify(const controller_button button) noexcept -> czstring
   {
     return SDL_GameControllerGetStringForButton(
         static_cast<SDL_GameControllerButton>(button));
@@ -485,9 +476,9 @@ class basic_controller final
   [[nodiscard]] auto get_binding(const controller_axis axis) const
       -> std::optional<SDL_GameControllerButtonBind>
   {
-    const auto result = SDL_GameControllerGetBindForAxis(
-        m_controller,
-        static_cast<SDL_GameControllerAxis>(axis));
+    const auto result =
+        SDL_GameControllerGetBindForAxis(m_controller,
+                                         static_cast<SDL_GameControllerAxis>(axis));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
     {
       return result;
@@ -510,9 +501,9 @@ class basic_controller final
   [[nodiscard]] auto get_binding(const controller_button button) noexcept
       -> std::optional<SDL_GameControllerButtonBind>
   {
-    const auto result = SDL_GameControllerGetBindForButton(
-        m_controller,
-        static_cast<SDL_GameControllerButton>(button));
+    const auto result =
+        SDL_GameControllerGetBindForButton(m_controller,
+                                           static_cast<SDL_GameControllerButton>(button));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
     {
       return result;
@@ -535,9 +526,9 @@ class basic_controller final
   [[nodiscard]] auto get_state(const controller_button button) const noexcept
       -> button_state
   {
-    const auto state = SDL_GameControllerGetButton(
-        m_controller,
-        static_cast<SDL_GameControllerButton>(button));
+    const auto state =
+        SDL_GameControllerGetButton(m_controller,
+                                    static_cast<SDL_GameControllerButton>(button));
     return static_cast<button_state>(state);
   }
 
@@ -550,8 +541,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto is_pressed(const controller_button button) const noexcept
-      -> bool
+  [[nodiscard]] auto is_pressed(const controller_button button) const noexcept -> bool
   {
     return get_state(button) == button_state::pressed;
   }
@@ -565,8 +555,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto is_released(const controller_button button) const noexcept
-      -> bool
+  [[nodiscard]] auto is_released(const controller_button button) const noexcept -> bool
   {
     return get_state(button) == button_state::released;
   }
@@ -587,8 +576,7 @@ class basic_controller final
       -> controller_axis
   {
     assert(str);
-    return static_cast<controller_axis>(
-        SDL_GameControllerGetAxisFromString(str));
+    return static_cast<controller_axis>(SDL_GameControllerGetAxisFromString(str));
   }
 
   /**
@@ -603,8 +591,7 @@ class basic_controller final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto get_axis(const std::string& str) noexcept
-      -> controller_axis
+  [[nodiscard]] static auto get_axis(const std::string& str) noexcept -> controller_axis
   {
     return get_axis(str.c_str());
   }
@@ -649,8 +636,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_button(const controller_button button) const noexcept
-      -> bool
+  [[nodiscard]] auto has_button(const controller_button button) const noexcept -> bool
   {
     const auto value = static_cast<SDL_GameControllerButton>(button);
     return SDL_GameControllerHasButton(m_controller, value) == SDL_TRUE;
@@ -662,8 +648,6 @@ class basic_controller final
 
   /// \name Rumble functions
   /// \{
-
-  // clang-format off
 
   /**
    * \brief Starts a rumble effect.
@@ -690,8 +674,6 @@ class basic_controller final
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
-
-  // clang-format on
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -883,8 +865,7 @@ class basic_controller final
    */
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
-    return static_cast<controller_type>(
-        SDL_GameControllerGetType(m_controller));
+    return static_cast<controller_type>(SDL_GameControllerGetType(m_controller));
   }
 
   /**
@@ -897,8 +878,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto type(const joystick_index index) noexcept
-      -> controller_type
+  [[nodiscard]] static auto type(const joystick_index index) noexcept -> controller_type
   {
     return static_cast<controller_type>(SDL_GameControllerTypeForIndex(index));
   }
@@ -984,8 +964,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto touchpad_finger_capacity(const int touchpad) const noexcept
-      -> int
+  [[nodiscard]] auto touchpad_finger_capacity(const int touchpad) const noexcept -> int
   {
     return SDL_GameControllerGetNumTouchpadFingers(m_controller, touchpad);
   }
@@ -1048,8 +1027,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept
-      -> result
+  auto set_sensor_enabled(const sensor_type type, const bool enabled) noexcept -> result
   {
     const auto value = static_cast<SDL_SensorType>(type);
     const auto state = enabled ? SDL_TRUE : SDL_FALSE;
@@ -1082,8 +1060,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto is_sensor_enabled(const sensor_type type) const noexcept
-      -> bool
+  [[nodiscard]] auto is_sensor_enabled(const sensor_type type) const noexcept -> bool
   {
     const auto value = static_cast<SDL_SensorType>(type);
     return SDL_GameControllerIsSensorEnabled(m_controller, value) == SDL_TRUE;
@@ -1106,10 +1083,8 @@ class basic_controller final
   {
     std::array<float, size> array{};
     const auto value = static_cast<SDL_SensorType>(type);
-    const auto res = SDL_GameControllerGetSensorData(m_controller,
-                                                     value,
-                                                     array.data(),
-                                                     isize(array));
+    const auto res =
+        SDL_GameControllerGetSensorData(m_controller, value, array.data(), isize(array));
     if (res != -1)
     {
       return array;
@@ -1175,8 +1150,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto add_mapping(const not_null<czstring> mapping) noexcept
-      -> mapping_result
+  static auto add_mapping(const not_null<czstring> mapping) noexcept -> mapping_result
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
@@ -1230,8 +1204,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto load_mappings(const not_null<czstring> file) noexcept
-      -> std::optional<int>
+  static auto load_mappings(const not_null<czstring> file) noexcept -> std::optional<int>
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
@@ -1266,8 +1239,7 @@ class basic_controller final
    *
    * \since 5.3.0
    */
-  static auto load_mappings(const std::string& file) noexcept
-      -> std::optional<int>
+  static auto load_mappings(const std::string& file) noexcept -> std::optional<int>
   {
     return load_mappings(file.c_str());
   }
@@ -1293,8 +1265,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto mapping(const joystick_index index) noexcept
-      -> sdl_string
+  [[nodiscard]] static auto mapping(const joystick_index index) noexcept -> sdl_string
   {
     return sdl_string{SDL_GameControllerMappingForDeviceIndex(index)};
   }
@@ -1308,8 +1279,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto mapping(const SDL_JoystickGUID guid) noexcept
-      -> sdl_string
+  [[nodiscard]] static auto mapping(const SDL_JoystickGUID guid) noexcept -> sdl_string
   {
     return sdl_string{SDL_GameControllerMappingForGUID(guid)};
   }
@@ -1382,8 +1352,7 @@ class basic_controller final
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto to_string(const basic_controller<T>& controller)
-    -> std::string
+[[nodiscard]] auto to_string(const basic_controller<T>& controller) -> std::string
 {
   const auto* name = controller.name();
 
@@ -1394,8 +1363,8 @@ template <typename T>
   }
 
   return "controller{data: " + detail::address_of(controller.get()) +
-         ", name: " + (name ? name : "N/A") +
-         ", serial: " + (serial ? serial : "N/A") + "}";
+         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
+         "}";
 }
 
 /**
@@ -1430,17 +1399,15 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const controller_type lhs,
-    const SDL_GameControllerType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const controller_type lhs,
+                                        const SDL_GameControllerType rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(controller_type, SDL_GameControllerType)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept
-    -> bool
+                                        const controller_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -1456,17 +1423,15 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const controller_type lhs,
-    const SDL_GameControllerType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const controller_type lhs,
+                                        const SDL_GameControllerType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(controller_type, SDL_GameControllerType)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept
-    -> bool
+                                        const controller_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -1483,17 +1448,15 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const controller_axis lhs,
-    const SDL_GameControllerAxis rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const controller_axis lhs,
+                                        const SDL_GameControllerAxis rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
 }
 
 /// \copydoc operator==(controller_axis, SDL_GameControllerAxis)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept
-    -> bool
+                                        const controller_axis rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -1509,17 +1472,15 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const controller_axis lhs,
-    const SDL_GameControllerAxis rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const controller_axis lhs,
+                                        const SDL_GameControllerAxis rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(controller_axis, SDL_GameControllerAxis)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept
-    -> bool
+                                        const controller_axis rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -1536,17 +1497,16 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const controller_button lhs,
-    const SDL_GameControllerButton rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const controller_button lhs,
+                                        const SDL_GameControllerButton rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
 
 /// \copydoc operator==(controller_button, SDL_GameControllerButton)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept
-    -> bool
+                                        const controller_button rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -1563,17 +1523,16 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const controller_button lhs,
-    const SDL_GameControllerButton rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const controller_button lhs,
+                                        const SDL_GameControllerButton rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(controller_button, SDL_GameControllerButton)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept
-    -> bool
+                                        const controller_button rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -1588,17 +1547,16 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(
-    const controller_bind_type lhs,
-    const SDL_GameControllerBindType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
+                                        const SDL_GameControllerBindType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
 [[nodiscard]] constexpr auto operator==(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept
-    -> bool
+                                        const controller_bind_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -1614,17 +1572,16 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(
-    const controller_bind_type lhs,
-    const SDL_GameControllerBindType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
+                                        const SDL_GameControllerBindType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
 [[nodiscard]] constexpr auto operator!=(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept
-    -> bool
+                                        const controller_bind_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

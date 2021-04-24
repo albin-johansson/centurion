@@ -90,9 +90,8 @@ class event_sink final
   {
     static_assert(std::is_member_function_pointer_v<decltype(memberFunc)>,
                   "\"memberFunc\" must be member function pointer!");
-    static_assert(
-        std::is_invocable_v<decltype(memberFunc), Self*, const event_type&>,
-        "Member function must be invocable with subscribed event!");
+    static_assert(std::is_invocable_v<decltype(memberFunc), Self*, const event_type&>,
+                  "Member function must be invocable with subscribed event!");
 
     to(std::bind(memberFunc, self, std::placeholders::_1));
   }
@@ -334,16 +333,12 @@ template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
 {
-  // clang-format off
-  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value()
-         + ", #active: " + detail::to_string(dispatcher.active_count()).value()
-         + "}";
-  // clang-format on
+  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value() +
+         ", #active: " + detail::to_string(dispatcher.active_count()).value() + "}";
 }
 
 template <typename... E>
-inline auto operator<<(std::ostream& stream,
-                       const event_dispatcher<E...>& dispatcher)
+inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispatcher)
     -> std::ostream&
 {
   stream << to_string(dispatcher);

@@ -454,8 +454,6 @@ class haptic_effect
     rep().fade_level = level;
   }
 
-  // clang-format off
-
   /**
    * \brief Sets the duration of the attack.
    *
@@ -489,8 +487,6 @@ class haptic_effect
   {
     rep().fade_length = ms.count();
   }
-
-  // clang-format on
 
   /**
    * \brief Returns the level at the *start* of the attack.
@@ -668,8 +664,7 @@ class haptic_constant final : public haptic_effect<haptic_constant>
   /**
    * \copydoc representation();
    */
-  [[nodiscard]] auto representation() const noexcept
-      -> const SDL_HapticConstant&
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticConstant&
   {
     return m_effect.constant;
   }
@@ -854,8 +849,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \copydoc representation();
    */
-  [[nodiscard]] auto representation() const noexcept
-      -> const SDL_HapticPeriodic&
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticPeriodic&
   {
     return m_effect.periodic;
   }
@@ -1011,8 +1005,6 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     representation().channels = detail::max(u8{1}, count);
   }
 
-  // clang-format off
-
   /**
    * \brief Sets the duration of the sample periods.
    *
@@ -1024,8 +1016,6 @@ class haptic_custom final : public haptic_effect<haptic_custom>
   {
     representation().period = ms.count();
   }
-
-  // clang-format on
 
   /**
    * \brief Sets the number of samples.
@@ -1369,8 +1359,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
   /**
    * \copydoc representation();
    */
-  [[nodiscard]] auto representation() const noexcept
-      -> const SDL_HapticCondition&
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCondition&
   {
     return m_effect.condition;
   }
@@ -1474,8 +1463,7 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
   /**
    * \copydoc representation();
    */
-  [[nodiscard]] auto representation() const noexcept
-      -> const SDL_HapticLeftRight&
+  [[nodiscard]] auto representation() const noexcept -> const SDL_HapticLeftRight&
   {
     return m_effect.leftright;
   }
@@ -1536,8 +1524,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value)
-      : m_haptic{haptic}
+  explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value) : m_haptic{haptic}
   {
     if constexpr (B::value)
     {
@@ -1656,8 +1643,6 @@ class basic_haptic final
     return SDL_HapticRumbleInit(m_haptic) == 0;
   }
 
-  // clang-format off
-
   /**
    * \brief Plays a rumble effect.
    *
@@ -1678,8 +1663,6 @@ class basic_haptic final
                                 detail::clamp(strength, 0.0f, 1.0f),
                                 duration.count()) == 0;
   }
-
-  // clang-format on
 
   /**
    * \brief Stops the current rumble effect.
@@ -1752,8 +1735,7 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename D>
-  auto upload(const haptic_effect<D>& effect) noexcept
-      -> std::optional<effect_id>
+  auto upload(const haptic_effect<D>& effect) noexcept -> std::optional<effect_id>
   {
     auto internal = effect.get();
     const auto id = SDL_HapticNewEffect(m_haptic, &internal);
@@ -1784,8 +1766,7 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename D>
-  auto update(const effect_id id, const haptic_effect<D>& effect) noexcept
-      -> result
+  auto update(const effect_id id, const haptic_effect<D>& effect) noexcept -> result
   {
     auto internal = effect.get();
     return SDL_HapticUpdateEffect(m_haptic, id, &internal) == 0;
@@ -1906,8 +1887,7 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename D>
-  [[nodiscard]] auto is_supported(const haptic_effect<D>& effect) const noexcept
-      -> bool
+  [[nodiscard]] auto is_supported(const haptic_effect<D>& effect) const noexcept -> bool
   {
     auto internal = effect.get();
     return SDL_HapticEffectSupported(m_haptic, &internal) == SDL_TRUE;
@@ -1944,8 +1924,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept
-      -> bool
+  [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
     return has_feature(static_cast<unsigned>(feature));
   }
@@ -2304,8 +2283,8 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename T>
-  [[nodiscard]] static auto is_joystick_haptic(
-      const basic_joystick<T>& joystick) noexcept -> bool
+  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<T>& joystick) noexcept
+      -> bool
   {
     return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;
   }
@@ -2431,8 +2410,7 @@ template <typename B>
 {
   const auto* name = haptic.name();
   const auto nameStr = name ? std::string{name} : std::string{"N/A"};
-  return "haptic{data: " + detail::address_of(haptic.get()) +
-         ", name: " + nameStr + "}";
+  return "haptic{data: " + detail::address_of(haptic.get()) + ", name: " + nameStr + "}";
 }
 
 /**
@@ -2448,8 +2426,7 @@ template <typename B>
  * \since 5.2.0
  */
 template <typename B>
-auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ostream&
 {
   return stream << to_string(haptic);
 }

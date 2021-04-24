@@ -78,8 +78,6 @@ class condition final
     return SDL_CondWait(m_cond.get(), mutex.get()) == 0;
   }
 
-  // clang-format off
-
   /**
    * \brief Waits until the condition variable is signaled or if the specified
    * amount of time has passed.
@@ -99,10 +97,9 @@ class condition final
   auto wait(mutex& mutex, const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
       -> lock_status
   {
-    return static_cast<lock_status>(SDL_CondWaitTimeout(m_cond.get(), mutex.get(), ms.count()));
+    return static_cast<lock_status>(
+        SDL_CondWaitTimeout(m_cond.get(), mutex.get(), ms.count()));
   }
-
-  // clang-format on
 
  private:
   struct deleter final

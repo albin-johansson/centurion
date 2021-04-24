@@ -75,8 +75,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jdevice = event.get();

@@ -148,8 +148,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
   }
 };
 
-struct accelerometer_as_joystick final
-    : detail::bool_hint<accelerometer_as_joystick>
+struct accelerometer_as_joystick final : detail::bool_hint<accelerometer_as_joystick>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -181,8 +180,7 @@ struct double_buffer final : detail::bool_hint<double_buffer>
   }
 };
 
-struct enable_steam_controllers final
-    : detail::bool_hint<enable_steam_controllers>
+struct enable_steam_controllers final : detail::bool_hint<enable_steam_controllers>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -351,8 +349,7 @@ struct orientations final : detail::string_hint<orientations>
   }
 };
 
-struct window_share_pixel_format final
-    : detail::string_hint<window_share_pixel_format>
+struct window_share_pixel_format final : detail::string_hint<window_share_pixel_format>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -394,8 +391,7 @@ struct preferred_locales final : detail::string_hint<preferred_locales>
   }
 };
 
-struct thread_priority_policy final
-    : detail::string_hint<thread_priority_policy>
+struct thread_priority_policy final : detail::string_hint<thread_priority_policy>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -423,8 +419,7 @@ struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
   }
 };
 
-struct audio_device_stream_name final
-    : detail::string_hint<audio_device_stream_name>
+struct audio_device_stream_name final : detail::string_hint<audio_device_stream_name>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

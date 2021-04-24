@@ -41,8 +41,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept
-      : common_event{event}
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -119,8 +118,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 };
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.jaxis = event.get();

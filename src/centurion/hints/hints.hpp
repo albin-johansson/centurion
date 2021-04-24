@@ -144,8 +144,7 @@ class hint_callback final
    *
    * \since 4.1.0
    */
-  explicit hint_callback(SDL_HintCallback callback,
-                         UserData* userData = nullptr)
+  explicit hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
       : m_callback{callback}
       , m_userData{userData}
   {
@@ -165,9 +164,7 @@ class hint_callback final
    */
   void connect() noexcept
   {
-    SDL_AddHintCallback(Hint::name(),
-                        m_callback,
-                        static_cast<void*>(m_userData));
+    SDL_AddHintCallback(Hint::name(), m_callback, static_cast<void*>(m_userData));
   }
 
   /**
@@ -180,9 +177,7 @@ class hint_callback final
    */
   void disconnect() noexcept
   {
-    SDL_DelHintCallback(Hint::name(),
-                        m_callback,
-                        static_cast<void*>(m_userData));
+    SDL_DelHintCallback(Hint::name(), m_callback, static_cast<void*>(m_userData));
   }
 
   /**
@@ -249,8 +244,7 @@ class hint_callback final
  * \since 4.1.0
  */
 template <typename Hint, typename UserData = void>
-auto add_hint_callback(SDL_HintCallback fun,
-                       UserData* userData = nullptr) noexcept
+auto add_hint_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
     -> hint_callback<Hint, UserData>
 {
   hint_callback<Hint, UserData> hintCallback{fun, userData};

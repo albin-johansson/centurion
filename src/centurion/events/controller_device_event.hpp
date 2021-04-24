@@ -23,8 +23,7 @@ namespace cen {
  *
  * \headerfile controller_device_event.hpp
  */
-class controller_device_event final
-    : public common_event<SDL_ControllerDeviceEvent>
+class controller_device_event final : public common_event<SDL_ControllerDeviceEvent>
 {
  public:
   /**
@@ -32,8 +31,7 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  controller_device_event() noexcept
-      : common_event{event_type::controller_device_added}
+  controller_device_event() noexcept : common_event{event_type::controller_device_added}
   {}
 
   /**
@@ -44,8 +42,7 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  explicit controller_device_event(
-      const SDL_ControllerDeviceEvent& event) noexcept
+  explicit controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept
       : common_event{event}
   {}
 

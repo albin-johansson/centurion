@@ -127,8 +127,7 @@ class basic_sound_effect final
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_sound_effect(const not_null<czstring> file)
-      : m_chunk{Mix_LoadWAV(file)}
+  explicit basic_sound_effect(const not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk)
     {
@@ -147,8 +146,7 @@ class basic_sound_effect final
    * \since 5.3.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_sound_effect(const std::string& file)
-      : basic_sound_effect{file.c_str()}
+  explicit basic_sound_effect(const std::string& file) : basic_sound_effect{file.c_str()}
   {}
 
   /**
@@ -161,8 +159,7 @@ class basic_sound_effect final
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit basic_sound_effect(const sound_effect& owner) noexcept
-      : m_chunk{owner.get()}
+  explicit basic_sound_effect(const sound_effect& owner) noexcept : m_chunk{owner.get()}
   {}
 
   /// \} End of construction
@@ -188,8 +185,7 @@ class basic_sound_effect final
    */
   auto play(const int nLoops = 0) noexcept -> result
   {
-    m_channel =
-        Mix_PlayChannel(m_channel, m_chunk.get(), detail::max(nLoops, forever));
+    m_channel = Mix_PlayChannel(m_channel, m_chunk.get(), detail::max(nLoops, forever));
     return m_channel != -1;
   }
 
@@ -259,8 +255,6 @@ class basic_sound_effect final
     }
   }
 
-  // clang-format off
-
   /**
    * \brief Fades out the sound effect.
    *
@@ -273,7 +267,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT not const
+  void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT
   {
     assert(ms.count() > 0);
     if (is_playing())
@@ -281,8 +275,6 @@ class basic_sound_effect final
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
-
-  // clang-format on
 
   /**
    * \brief Indicates whether or not the sound effect is being faded.
@@ -479,8 +471,7 @@ class basic_sound_effect final
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto get_sound(const int channel) noexcept
-    -> sound_effect_handle
+[[nodiscard]] inline auto get_sound(const int channel) noexcept -> sound_effect_handle
 {
   return sound_effect_handle{Mix_GetChunk(channel)};
 }
@@ -510,8 +501,7 @@ class basic_sound_effect final
  *
  * \since 5.0.0
  */
-inline auto operator<<(std::ostream& stream, const sound_effect& sound)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::ostream&
 {
   return stream << to_string(sound);
 }

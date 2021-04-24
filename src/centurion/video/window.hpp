@@ -191,8 +191,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags, see `window_flags`.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -345,8 +344,7 @@ class basic_window final
    */
   auto set_fullscreen_desktop(const bool enabled) noexcept -> result
   {
-    return SDL_SetWindowFullscreen(m_window,
-                                   enabled ? fullscreen_desktop : 0) == 0;
+    return SDL_SetWindowFullscreen(m_window, enabled ? fullscreen_desktop : 0) == 0;
   }
 
   /**
@@ -461,8 +459,7 @@ class basic_window final
    */
   auto set_brightness(const float brightness) noexcept -> result
   {
-    return SDL_SetWindowBrightness(m_window,
-                                   detail::clamp(brightness, 0.0f, 1.0f)) == 0;
+    return SDL_SetWindowBrightness(m_window, detail::clamp(brightness, 0.0f, 1.0f)) == 0;
   }
 
   /**
@@ -782,8 +779,7 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept
-      -> bool
+  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept -> bool
   {
     return static_cast<bool>(flags() & flag);
   }
@@ -1245,8 +1241,7 @@ template <typename T>
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_window<T>& window)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ostream&
 {
   return stream << to_string(window);
 }

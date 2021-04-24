@@ -11,8 +11,7 @@
 
 namespace cen::hint::joystick {
 
-struct allow_background_events final
-    : detail::bool_hint<allow_background_events>
+struct allow_background_events final : detail::bool_hint<allow_background_events>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -98,8 +97,7 @@ struct use_raw_input final : detail::bool_hint<use_raw_input>
   }
 };
 
-struct hidapi_correlate_xinput final
-    : detail::bool_hint<hidapi_correlate_xinput>
+struct hidapi_correlate_xinput final : detail::bool_hint<hidapi_correlate_xinput>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

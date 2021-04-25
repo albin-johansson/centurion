@@ -1804,7 +1804,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_logical_integer_scale(const bool enabled) noexcept
+  void set_logical_integer_scaling(const bool enabled) noexcept
   {
     SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
   }

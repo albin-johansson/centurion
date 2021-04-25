@@ -300,12 +300,12 @@ TEST_F(RendererTest, SetLogicalSize)
   m_renderer->set_logical_size(old);
 }
 
-TEST_F(RendererTest, SetLogicalIntegerScale)
+TEST_F(RendererTest, SetLogicalIntegerScaling)
 {
-  m_renderer->set_logical_integer_scale(true);
+  m_renderer->set_logical_integer_scaling(true);
   EXPECT_TRUE(m_renderer->is_using_integer_logical_scaling());
 
-  m_renderer->set_logical_integer_scale(false);
+  m_renderer->set_logical_integer_scaling(false);
   EXPECT_FALSE(m_renderer->is_using_integer_logical_scaling());
 }
 

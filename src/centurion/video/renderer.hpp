@@ -220,6 +220,38 @@ class basic_renderer final
   /// \{
 
   /**
+   * \brief Fills the entire rendering target with the currently selected color.
+   *
+   * \details This function is different from `clear()` and `clear_with()` in
+   * that it can be used as an intermediate rendering command (just like all
+   * rendering functions). An example of a use case of this function could be
+   * for rendering a transparent background for game menus.
+   *
+   * \since 5.1.0
+   */
+  void fill() noexcept
+  {
+    fill_rect<int>({{}, output_size()});
+  }
+
+  /**
+   * \brief Fills the entire rendering target with the specified color.
+   *
+   * \note This function does not affect the currently set color.
+   *
+   * \copydetails fill()
+   */
+  void fill_with(const color& color) noexcept
+  {
+    const auto oldColor = get_color();
+
+    set_color(color);
+    fill();
+
+    set_color(oldColor);
+  }
+
+  /**
    * \brief Renders the outline of a rectangle in the currently selected color.
    *
    * \tparam U the representation type used by the rectangle.
@@ -261,38 +293,6 @@ class basic_renderer final
     {
       SDL_RenderFillRectF(get(), rect.data());
     }
-  }
-
-  /**
-   * \brief Fills the entire rendering target with the currently selected color.
-   *
-   * \details This function is different from `clear()` and `clear_with()` in
-   * that it can be used as an intermediate rendering command (just like all
-   * rendering functions). An example of a use case of this function could be
-   * for rendering a transparent background for game menus.
-   *
-   * \since 5.1.0
-   */
-  void fill() noexcept
-  {
-    fill_rect<int>({{}, output_size()});
-  }
-
-  /**
-   * \brief Fills the entire rendering target with the specified color.
-   *
-   * \note This function does not affect the currently set color.
-   *
-   * \copydetails fill()
-   */
-  void fill_with(const color& color) noexcept
-  {
-    const auto oldColor = get_color();
-
-    set_color(color);
-    fill();
-
-    set_color(oldColor);
   }
 
   /**

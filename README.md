@@ -39,7 +39,7 @@ The following is the smallest example of a Centurion program. All that is requir
 
 int main(int argc, char** argv)
 {
-  cen::library cebturion;
+  cen::library centurion;
 
   // All SDL libraries are now initialized and ready to be used!
 

@@ -41,8 +41,7 @@ TEST(Battery, MinutesLeft)
     SDL_GetPowerInfo(&actual, nullptr);
 
     const cen::seconds<int> s{actual};
-    EXPECT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s),
-              minutes.value());
+    EXPECT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s), minutes.value());
   }
 }
 
@@ -80,8 +79,7 @@ TEST(Battery, IsCharged)
 TEST(Battery, IsAvailable)
 {
   const auto state = cen::battery::state();
-  EXPECT_EQ(state != cen::power_state::unknown &&
-                state != cen::power_state::no_battery,
+  EXPECT_EQ(state != cen::power_state::unknown && state != cen::power_state::no_battery,
             cen::battery::is_available());
 }
 

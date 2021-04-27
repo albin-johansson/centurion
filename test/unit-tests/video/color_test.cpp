@@ -222,8 +222,7 @@ TEST(Color, WithAlpha)
 
 TEST(Color, Blend)
 {
-  EXPECT_EQ(cen::colors::gray,
-            cen::color::blend(cen::colors::white, cen::colors::black));
+  EXPECT_EQ(cen::colors::gray, cen::color::blend(cen::colors::white, cen::colors::black));
   EXPECT_EQ(cen::colors::white,
             cen::color::blend(cen::colors::white, cen::colors::black, 0));
   EXPECT_EQ(cen::colors::black,

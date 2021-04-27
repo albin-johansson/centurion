@@ -396,9 +396,7 @@ TEST_F(HapticTest, EffectCapacity)
 TEST_F(HapticTest, ConcurrentCapacity)
 {
   std::array values{-1, 4};
-  SET_RETURN_SEQ(SDL_HapticNumEffectsPlaying,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_HapticNumEffectsPlaying, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_haptic.concurrent_capacity());
   EXPECT_EQ(4, m_haptic.concurrent_capacity());

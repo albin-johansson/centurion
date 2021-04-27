@@ -93,8 +93,7 @@ TEST_F(TextureTest, Streaming)
   using namespace std::string_literals;
   const auto format = m_window->get_pixel_format();
 
-  EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format),
-               cen::cen_error);
+  EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format), cen::cen_error);
 
   auto texture = cen::texture::streaming(*m_renderer, m_path, format);
   EXPECT_EQ(format, texture.format());
@@ -190,10 +189,7 @@ TEST_F(TextureTest, IsTarget)
   EXPECT_FALSE(m_texture->is_target());
 
   const auto format = m_window->get_pixel_format();
-  const cen::texture target{*m_renderer,
-                            format,
-                            cen::texture_access::target,
-                            {10, 10}};
+  const cen::texture target{*m_renderer, format, cen::texture_access::target, {10, 10}};
   EXPECT_TRUE(target.is_target());
 }
 

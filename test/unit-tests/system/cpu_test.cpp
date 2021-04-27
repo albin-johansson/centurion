@@ -99,4 +99,4 @@ TEST(CPU, HasARMSIMD)
   EXPECT_EQ(static_cast<bool>(SDL_HasARMSIMD()), cen::cpu::has_arm_simd());
 }
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 12)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

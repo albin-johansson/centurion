@@ -238,7 +238,6 @@ TEST(UnicodeString, Serialize)
   cen::unicode_string string{'f', 'o', 'o', 'b', 'a', 'r'};
   serialize_save("unicode_string.binary", string);
 
-  const auto other =
-      serialize_create<cen::unicode_string>("unicode_string.binary");
+  const auto other = serialize_create<cen::unicode_string>("unicode_string.binary");
   EXPECT_EQ(string, other);
 }

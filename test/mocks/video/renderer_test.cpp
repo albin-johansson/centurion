@@ -394,12 +394,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const auto flip = SDL_FLIP_HORIZONTAL;
 
     m_renderer.render(m_texture, src, dst, angle, center, flip);
-    validate_render_function(SDL_RenderCopyEx_fake,
-                             src,
-                             dst,
-                             angle,
-                             center,
-                             flip);
+    validate_render_function(SDL_RenderCopyEx_fake, src, dst, angle, center, flip);
   }
 
   {
@@ -410,12 +405,7 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     const auto flip = SDL_FLIP_VERTICAL;
 
     m_renderer.render(m_texture, src, dst, angle, center, flip);
-    validate_render_function(SDL_RenderCopyExF_fake,
-                             src,
-                             dst,
-                             angle,
-                             center,
-                             flip);
+    validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center, flip);
   }
 
   EXPECT_EQ(1, SDL_RenderCopyEx_fake.call_count);
@@ -477,8 +467,7 @@ TEST_F(RendererTest, SupportsTargetTextures)
 
 TEST_F(RendererTest, IsUsingIntegerLogicalScaling)
 {
-  const auto scaling [[maybe_unused]] =
-      m_renderer.is_using_integer_logical_scaling();
+  const auto scaling [[maybe_unused]] = m_renderer.is_using_integer_logical_scaling();
   EXPECT_EQ(1, SDL_RenderGetIntegerScale_fake.call_count);
 }
 

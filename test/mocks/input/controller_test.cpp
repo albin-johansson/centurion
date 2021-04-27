@@ -153,9 +153,7 @@ TEST_F(ControllerTest, StopRumble)
 TEST_F(ControllerTest, Product)
 {
   std::array values{0_u16, 3_u16};
-  SET_RETURN_SEQ(SDL_GameControllerGetProduct,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetProduct, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.product().has_value());
   EXPECT_EQ(3, m_controller.product().value());
@@ -164,9 +162,7 @@ TEST_F(ControllerTest, Product)
 TEST_F(ControllerTest, Vendor)
 {
   std::array values{0_u16, 7_u16};
-  SET_RETURN_SEQ(SDL_GameControllerGetVendor,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetVendor, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.vendor().has_value());
   EXPECT_EQ(7, m_controller.vendor().value());
@@ -175,9 +171,7 @@ TEST_F(ControllerTest, Vendor)
 TEST_F(ControllerTest, ProductVersion)
 {
   std::array values{0_u16, 4_u16};
-  SET_RETURN_SEQ(SDL_GameControllerGetProductVersion,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetProductVersion, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.product_version().has_value());
   EXPECT_EQ(4, m_controller.product_version().value());
@@ -186,9 +180,7 @@ TEST_F(ControllerTest, ProductVersion)
 TEST_F(ControllerTest, Index)
 {
   std::array values{-1, 6};
-  SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.index().has_value());
   EXPECT_EQ(6, m_controller.index().value());
@@ -197,9 +189,7 @@ TEST_F(ControllerTest, Index)
 TEST_F(ControllerTest, IsConnected)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerGetAttached,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetAttached, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.is_connected());
   EXPECT_TRUE(m_controller.is_connected());
@@ -217,9 +207,7 @@ TEST_F(ControllerTest, Name)
 TEST_F(ControllerTest, GetState)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   EXPECT_EQ(cen::button_state::released,
             m_controller.get_state(cen::controller_button::a));
@@ -230,9 +218,7 @@ TEST_F(ControllerTest, GetState)
 TEST_F(ControllerTest, IsPressed)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.is_pressed(cen::controller_button::a));
   EXPECT_TRUE(m_controller.is_pressed(cen::controller_button::a));
@@ -241,9 +227,7 @@ TEST_F(ControllerTest, IsPressed)
 TEST_F(ControllerTest, IsReleased)
 {
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
-  SET_RETURN_SEQ(SDL_GameControllerGetButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
   EXPECT_TRUE(m_controller.is_released(cen::controller_button::a));
   EXPECT_FALSE(m_controller.is_released(cen::controller_button::a));
@@ -252,9 +236,7 @@ TEST_F(ControllerTest, IsReleased)
 TEST_F(ControllerTest, GetAxisFromString)
 {
   std::array values{SDL_CONTROLLER_AXIS_INVALID, SDL_CONTROLLER_AXIS_RIGHTX};
-  SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString, values.data(), cen::isize(values));
 
   EXPECT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
   EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
@@ -280,9 +262,7 @@ TEST_F(ControllerTest, GetJoystick)
 TEST_F(ControllerTest, AddMapping)
 {
   std::array values{1, 0, -1};
-  SET_RETURN_SEQ(SDL_GameControllerAddMapping,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), cen::isize(values));
 
   EXPECT_EQ(cen::controller_handle::mapping_result::added,
             m_controller.add_mapping("foo"));
@@ -301,9 +281,7 @@ TEST_F(ControllerTest, AddMapping)
 TEST_F(ControllerTest, LoadMappings)
 {
   std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerAddMappingsFromRW, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::controller::load_mappings("foo").has_value());
   EXPECT_EQ(7, cen::controller::load_mappings("foo"));
@@ -350,9 +328,7 @@ TEST_F(ControllerTest, GetButton)
 TEST_F(ControllerTest, StringifyWithAxis)
 {
   std::array<const char*, 2> values{nullptr, "foo"};
-  SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis, values.data(), cen::isize(values));
 
   EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_axis::left_y));
   EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_axis::left_y));
@@ -361,9 +337,7 @@ TEST_F(ControllerTest, StringifyWithAxis)
 TEST_F(ControllerTest, StringifyWithButton)
 {
   std::array<const char*, 2> values{nullptr, "foo"};
-  SET_RETURN_SEQ(SDL_GameControllerGetStringForButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetStringForButton, values.data(), cen::isize(values));
 
   EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_button::x));
   EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_button::x));
@@ -378,14 +352,10 @@ TEST_F(ControllerTest, GetBindingWithAxis)
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
   std::array values{first, second};
-  SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(
-      m_controller.get_binding(cen::controller_axis::right_x).has_value());
-  EXPECT_TRUE(
-      m_controller.get_binding(cen::controller_axis::right_x).has_value());
+  EXPECT_FALSE(m_controller.get_binding(cen::controller_axis::right_x).has_value());
+  EXPECT_TRUE(m_controller.get_binding(cen::controller_axis::right_x).has_value());
 }
 
 TEST_F(ControllerTest, GetBindingWithButton)
@@ -397,9 +367,7 @@ TEST_F(ControllerTest, GetBindingWithButton)
   second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
 
   std::array values{first, second};
-  SET_RETURN_SEQ(SDL_GameControllerGetBindForButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetBindForButton, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.get_binding(cen::controller_button::x).has_value());
   EXPECT_TRUE(m_controller.get_binding(cen::controller_button::x).has_value());
@@ -431,9 +399,7 @@ TEST_F(ControllerTest, SetPolling)
 TEST_F(ControllerTest, IsPolling)
 {
   std::array<int, 2> values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerEventState,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerEventState, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::controller::is_polling());
   EXPECT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
@@ -466,9 +432,7 @@ TEST_F(ControllerTest, Type)
 TEST_F(ControllerTest, TypeWithIndex)
 {
   std::array values{SDL_CONTROLLER_TYPE_UNKNOWN, SDL_CONTROLLER_TYPE_XBOXONE};
-  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex, values.data(), cen::isize(values));
 
   EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
   EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
@@ -503,9 +467,7 @@ TEST_F(ControllerTest, HasAxis)
 TEST_F(ControllerTest, HasButton)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasButton,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerHasButton, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.has_button(cen::controller_button::x));
   EXPECT_TRUE(m_controller.has_button(cen::controller_button::x));
@@ -520,17 +482,14 @@ TEST_F(ControllerTest, TouchpadCount)
 
 TEST_F(ControllerTest, TouchpadFingerCapacity)
 {
-  const auto capacity [[maybe_unused]] =
-      m_controller.touchpad_finger_capacity(0);
+  const auto capacity [[maybe_unused]] = m_controller.touchpad_finger_capacity(0);
   EXPECT_EQ(1, SDL_GameControllerGetNumTouchpadFingers_fake.call_count);
 }
 
 TEST_F(ControllerTest, TouchpadFingerState)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetTouchpadFinger, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.touchpad_finger_state(0, 0));
   EXPECT_TRUE(m_controller.touchpad_finger_state(0, 0));
@@ -540,9 +499,7 @@ TEST_F(ControllerTest, TouchpadFingerState)
 TEST_F(ControllerTest, SetSensorEnabled)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerSetSensorEnabled, values.data(), cen::isize(values));
 
   const auto type = cen::sensor_type::gyroscope;
   EXPECT_FALSE(m_controller.set_sensor_enabled(type, true));
@@ -553,9 +510,7 @@ TEST_F(ControllerTest, SetSensorEnabled)
 TEST_F(ControllerTest, HasSensor)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerHasSensor,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerHasSensor, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.has_sensor(cen::sensor_type::gyroscope));
   EXPECT_TRUE(m_controller.has_sensor(cen::sensor_type::gyroscope));
@@ -565,9 +520,7 @@ TEST_F(ControllerTest, HasSensor)
 TEST_F(ControllerTest, IsSensorEnabled)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerIsSensorEnabled, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
   EXPECT_TRUE(m_controller.is_sensor_enabled(cen::sensor_type::gyroscope));
@@ -577,9 +530,7 @@ TEST_F(ControllerTest, IsSensorEnabled)
 TEST_F(ControllerTest, GetSensorData)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_GameControllerGetSensorData,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetSensorData, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));
   EXPECT_TRUE(m_controller.get_sensor_data<3>(cen::sensor_type::gyroscope));

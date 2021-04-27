@@ -6,9 +6,8 @@
 
 #include "core/log.hpp"
 
-using event_dispatcher = cen::event_dispatcher<cen::quit_event,
-                                               cen::controller_button_event,
-                                               cen::window_event>;
+using event_dispatcher = cen::
+    event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
 
 namespace {
 
@@ -79,9 +78,8 @@ TEST(EventDispatcher, Reset)
   dispatcher.bind<cen::window_event>().to([](cen::window_event) {
   });
 
-  dispatcher.bind<cen::controller_button_event>().to(
-      [](cen::controller_button_event) {
-      });
+  dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {
+  });
 
   EXPECT_EQ(3, dispatcher.active_count());
 

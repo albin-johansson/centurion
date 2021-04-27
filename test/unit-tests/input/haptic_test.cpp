@@ -257,8 +257,7 @@ TEST(HapticDirection, SDLDirectionConstructor)
   source.dir[2] = 33;
 
   const cen::haptic_direction direction{source};
-  EXPECT_EQ(static_cast<cen::haptic_direction_type>(source.type),
-            direction.type());
+  EXPECT_EQ(static_cast<cen::haptic_direction_type>(source.type), direction.type());
   EXPECT_EQ(source.dir[0], direction.value().x);
   EXPECT_EQ(source.dir[1], direction.value().y);
   EXPECT_EQ(source.dir[2], direction.value().z);
@@ -266,8 +265,7 @@ TEST(HapticDirection, SDLDirectionConstructor)
 
 TEST(HapticDirectionType, EnumValues)
 {
-  EXPECT_EQ(SDL_HAPTIC_POLAR,
-            static_cast<int>(cen::haptic_direction_type::polar));
+  EXPECT_EQ(SDL_HAPTIC_POLAR, static_cast<int>(cen::haptic_direction_type::polar));
   EXPECT_EQ(SDL_HAPTIC_CARTESIAN,
             static_cast<int>(cen::haptic_direction_type::cartesian));
   EXPECT_EQ(SDL_HAPTIC_SPHERICAL,

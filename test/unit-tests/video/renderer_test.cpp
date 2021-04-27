@@ -24,8 +24,7 @@ class RendererTest : public testing::Test
     m_window = std::make_unique<cen::window>();
 
     m_renderer = std::make_unique<cen::renderer>(*m_window);
-    m_texture =
-        std::make_unique<cen::texture>(*m_renderer, "resources/panda.png");
+    m_texture = std::make_unique<cen::texture>(*m_renderer, "resources/panda.png");
   }
 
   static void TearDownTestSuite()
@@ -179,8 +178,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
     const cen::ipoint center{15, 12};
     const auto flip = SDL_FLIP_HORIZONTAL;
 
-    EXPECT_NO_THROW(
-        m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
+    EXPECT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
   }
 
   {
@@ -190,8 +188,7 @@ TEST_F(RendererTest, TranslatedRenderWithSourceDestinationAngleCenterFlip)
     const cen::fpoint center{15, 12};
     const auto flip = SDL_FLIP_VERTICAL;
 
-    EXPECT_NO_THROW(
-        m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
+    EXPECT_NO_THROW(m_renderer->render_t(*m_texture, src, dst, angle, center, flip));
   }
 }
 

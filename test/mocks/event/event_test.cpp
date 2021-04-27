@@ -81,8 +81,7 @@ TEST_F(EventTest, QueueCount)
 
 TEST_F(EventTest, QueueCountSpecific)
 {
-  const auto count [[maybe_unused]] =
-      cen::event::queue_count(cen::event_type::quit);
+  const auto count [[maybe_unused]] = cen::event::queue_count(cen::event_type::quit);
 
   EXPECT_EQ(1, SDL_PeepEvents_fake.call_count);
   EXPECT_EQ(nullptr, SDL_PeepEvents_fake.arg0_val);

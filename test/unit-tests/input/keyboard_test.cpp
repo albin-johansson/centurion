@@ -1,8 +1,8 @@
+#include "input/keyboard.hpp"
+
 #include <gtest/gtest.h>
 
 #include <type_traits>
-
-#include "input/keyboard.hpp"
 
 static_assert(std::is_final_v<cen::keyboard>);
 

@@ -95,8 +95,7 @@ TEST(Joystick, VirtualAPI)
   const auto nButtons = 3;
   const auto nHats = 4;
 
-  const auto index =
-      cen::joystick::attach_virtual(type, nAxes, nButtons, nHats);
+  const auto index = cen::joystick::attach_virtual(type, nAxes, nButtons, nHats);
   ASSERT_TRUE(index);
   ASSERT_TRUE(cen::joystick::is_virtual(*index));
 

@@ -131,8 +131,7 @@ class JoystickTest : public testing::Test
 
 TEST_F(JoystickTest, FromInstanceId)
 {
-  const auto handle [[maybe_unused]] =
-      cen::joystick_handle::from_instance_id(0);
+  const auto handle [[maybe_unused]] = cen::joystick_handle::from_instance_id(0);
 
   EXPECT_EQ(1, SDL_JoystickFromInstanceID_fake.call_count);
 }
@@ -160,9 +159,7 @@ TEST_F(JoystickTest, PlayerIndex)
 TEST_F(JoystickTest, PlayerIndexStatic)
 {
   std::array values{-1, 42};
-  SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::player_index(0).has_value());
   EXPECT_EQ(42, cen::joystick::player_index(0));
@@ -196,9 +193,7 @@ TEST_F(JoystickTest, Vendor)
 TEST_F(JoystickTest, VendorStatic)
 {
   std::array values{0_u16, 4_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::vendor(0).has_value());
   EXPECT_EQ(4, cen::joystick::vendor(0));
@@ -220,9 +215,7 @@ TEST_F(JoystickTest, Product)
 TEST_F(JoystickTest, ProductStatic)
 {
   std::array values{0_u16, 8_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::product(0).has_value());
   EXPECT_EQ(8, cen::joystick::product(0));
@@ -233,9 +226,7 @@ TEST_F(JoystickTest, ProductStatic)
 TEST_F(JoystickTest, ProductVersion)
 {
   std::array values{0_u16, 54_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetProductVersion,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetProductVersion, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.product_version().has_value());
   EXPECT_EQ(54, m_joystick.product_version());
@@ -246,9 +237,7 @@ TEST_F(JoystickTest, ProductVersion)
 TEST_F(JoystickTest, ProductVersionStatic)
 {
   std::array values{0_u16, 12_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::product_version(0).has_value());
   EXPECT_EQ(12, cen::joystick::product_version(0));
@@ -281,9 +270,7 @@ TEST_F(JoystickTest, AxisPos)
 TEST_F(JoystickTest, AxisInitialState)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_joystick.axis_initial_state(0).has_value());
   EXPECT_TRUE(m_joystick.axis_initial_state(0).has_value());
@@ -330,9 +317,7 @@ TEST_F(JoystickTest, InstanceId)
 TEST_F(JoystickTest, InstanceIdStatic)
 {
   std::array values{-1, 3};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::joystick::instance_id(0).has_value());
   EXPECT_EQ(3, cen::joystick::instance_id(0));
@@ -442,8 +427,7 @@ TEST_F(JoystickTest, GuidFromString)
 
 TEST_F(JoystickTest, FromPlayerIndex)
 {
-  const auto handle [[maybe_unused]] =
-      cen::joystick_handle::from_player_index(0);
+  const auto handle [[maybe_unused]] = cen::joystick_handle::from_player_index(0);
 
   EXPECT_EQ(1, SDL_JoystickFromPlayerIndex_fake.call_count);
 }
@@ -501,4 +485,4 @@ TEST_F(JoystickTest, Serial)
   EXPECT_EQ(1, SDL_JoystickGetSerial_fake.call_count);
 }
 
-#endif // SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

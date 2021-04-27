@@ -59,12 +59,9 @@ TEST_F(PixelFormatInfoTest, RGBToPixel)
 TEST_F(PixelFormatInfoTest, RGBAToPixel)
 {
   constexpr auto color = cen::colors::honey_dew;
-  EXPECT_EQ(SDL_MapRGBA(m_info->get(),
-                        color.red(),
-                        color.green(),
-                        color.blue(),
-                        color.alpha()),
-            m_info->rgba_to_pixel(color));
+  EXPECT_EQ(
+      SDL_MapRGBA(m_info->get(), color.red(), color.green(), color.blue(), color.alpha()),
+      m_info->rgba_to_pixel(color));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGB)

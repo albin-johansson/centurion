@@ -183,9 +183,7 @@ class battery_demo final
     m_renderer.render(m_cache.get_stored(id), cen::point(10, y));
     if (value)
     {
-      m_renderer.render_text(m_cache,
-                             std::to_string(*value),
-                             cen::point(answer_x, y));
+      m_renderer.render_text(m_cache, std::to_string(*value), cen::point(answer_x, y));
     }
     else
     {

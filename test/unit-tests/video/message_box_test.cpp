@@ -134,8 +134,7 @@ TEST(MessageBox, ColorSchemeClass)
   {  // Custom scheme
     cen::message_box::color_scheme scheme;
 
-    const auto check = [&](cen::message_box::color_id id,
-                           const cen::color& color) {
+    const auto check = [&](cen::message_box::color_id id, const cen::color& color) {
       scheme.set_color(id, color);
       EXPECT_EQ(color, scheme.get()->colors[static_cast<cen::u32>(id)]);
     };

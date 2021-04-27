@@ -64,8 +64,7 @@ TEST(Point, Distance)
   const cen::fpoint a{189.2f, 86.9f};
   const cen::fpoint b{66.5f, 36.6f};
 
-  const auto expected =
-      std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
+  const auto expected = std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
 
   EXPECT_EQ(cen::distance(a, b), expected);
   EXPECT_EQ(cen::distance(b, a), expected);

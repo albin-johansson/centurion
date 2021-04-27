@@ -91,9 +91,7 @@ TEST_F(SensorTest, Data)
 TEST_F(SensorTest, IDFromIndex)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_SensorGetDeviceInstanceID,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_SensorGetDeviceInstanceID, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::sensor::id(0));
   EXPECT_TRUE(cen::sensor::id(0));
@@ -115,9 +113,7 @@ TEST_F(SensorTest, TypeFromIndex)
 TEST_F(SensorTest, NonPortableTypeFromIndex)
 {
   std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_SensorGetDeviceNonPortableType,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_SensorGetDeviceNonPortableType, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::sensor::non_portable_type(0));
   EXPECT_TRUE(cen::sensor::non_portable_type(0));

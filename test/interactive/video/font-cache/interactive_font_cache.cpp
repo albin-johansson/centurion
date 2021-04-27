@@ -10,9 +10,8 @@ inline constexpr auto first_id = 72;
 inline constexpr auto second_id = 23;
 inline constexpr auto alphabet = "abcdefghijklmnopqrstuvwxyzåäö"sv;
 
-using event_dispatcher = cen::event_dispatcher<cen::quit_event,
-                                               cen::keyboard_event,
-                                               cen::text_input_event>;
+using event_dispatcher =
+    cen::event_dispatcher<cen::quit_event, cen::keyboard_event, cen::text_input_event>;
 
 class interactive_font_cache final
 {
@@ -31,8 +30,7 @@ class interactive_font_cache final
     const cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
     m_cache.store_blended_unicode(second_id, cool, m_renderer);
 
-    m_dispatcher.bind<cen::quit_event>()
-        .to<&interactive_font_cache::on_quit_event>(this);
+    m_dispatcher.bind<cen::quit_event>().to<&interactive_font_cache::on_quit_event>(this);
 
     m_dispatcher.bind<cen::keyboard_event>()
         .to<&interactive_font_cache::on_keyboard_event>(this);

@@ -21,95 +21,94 @@
 #include "typed_test_macros.hpp"
 #include "video/window.hpp"
 
-using boolean_hints =
-    testing::Types<cen::hint::double_buffer,
-                   cen::hint::accelerometer_as_joystick,
-                   cen::hint::allow_top_most,
-                   cen::hint::bmp_save_legacy_format,
-                   cen::hint::enable_steam_controllers,
-                   cen::hint::grab_keyboard,
-                   cen::hint::idle_timer_disabled,
-                   cen::hint::ime_internal_editing,
-                   cen::hint::no_signal_handlers,
-                   cen::hint::enable_opengl_shaders,
-                   cen::hint::vsync,
-                   cen::hint::opengl_es_driver,
-                   cen::hint::allow_screensaver,
+using boolean_hints = testing::Types<cen::hint::double_buffer,
+                                     cen::hint::accelerometer_as_joystick,
+                                     cen::hint::allow_top_most,
+                                     cen::hint::bmp_save_legacy_format,
+                                     cen::hint::enable_steam_controllers,
+                                     cen::hint::grab_keyboard,
+                                     cen::hint::idle_timer_disabled,
+                                     cen::hint::ime_internal_editing,
+                                     cen::hint::no_signal_handlers,
+                                     cen::hint::enable_opengl_shaders,
+                                     cen::hint::vsync,
+                                     cen::hint::opengl_es_driver,
+                                     cen::hint::allow_screensaver,
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::video_external_context,
+                                     cen::hint::video_external_context,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::disable_high_dpi,
-                   cen::hint::minimize_on_focus_loss,
-                   cen::hint::window_frame_usable_while_cursor_hidden,
-                   cen::hint::mouse_touch_events,
-                   cen::hint::render_batching,
-                   cen::hint::return_key_hides_ime,
-                   cen::hint::touch_mouse_events,
-                   cen::hint::tv_remote_as_joystick,
+                                     cen::hint::disable_high_dpi,
+                                     cen::hint::minimize_on_focus_loss,
+                                     cen::hint::window_frame_usable_while_cursor_hidden,
+                                     cen::hint::mouse_touch_events,
+                                     cen::hint::render_batching,
+                                     cen::hint::return_key_hides_ime,
+                                     cen::hint::touch_mouse_events,
+                                     cen::hint::tv_remote_as_joystick,
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::treat_time_critical_as_real_time,
+                                     cen::hint::treat_time_critical_as_real_time,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::appletv::controller_ui_events,
-                   cen::hint::appletv::remote_allow_rotation,
+                                     cen::hint::appletv::controller_ui_events,
+                                     cen::hint::appletv::remote_allow_rotation,
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::emscripten::asyncify,
+                                     cen::hint::emscripten::asyncify,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::xinput::is_enabled,
-                   cen::hint::xinput::use_old_joystick_mapping,
-                   cen::hint::mouse::focus_clickthrough,
-                   cen::hint::mouse::relative_mode_warp,
+                                     cen::hint::xinput::is_enabled,
+                                     cen::hint::xinput::use_old_joystick_mapping,
+                                     cen::hint::mouse::focus_clickthrough,
+                                     cen::hint::mouse::relative_mode_warp,
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::mouse::relative_scaling,
+                                     cen::hint::mouse::relative_scaling,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::d3d::v11_debug,
-                   cen::hint::d3d::thread_safe,
+                                     cen::hint::d3d::v11_debug,
+                                     cen::hint::d3d::thread_safe,
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::controller::use_button_labels,
+                                     cen::hint::controller::use_button_labels,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::winrt::handle_back_button,
-                   cen::hint::windows::no_thread_naming,
-                   cen::hint::windows::enable_message_loop,
-                   cen::hint::windows::no_close_on_alt_f4,
-                   cen::hint::mac::background_app,
-                   cen::hint::mac::ctrl_click_emulate_right_click,
-                   cen::hint::mac::fullscreen_spaces,
-                   cen::hint::android::block_on_pause,
-                   cen::hint::android::trap_back_button,
+                                     cen::hint::winrt::handle_back_button,
+                                     cen::hint::windows::no_thread_naming,
+                                     cen::hint::windows::enable_message_loop,
+                                     cen::hint::windows::no_close_on_alt_f4,
+                                     cen::hint::mac::background_app,
+                                     cen::hint::mac::ctrl_click_emulate_right_click,
+                                     cen::hint::mac::fullscreen_spaces,
+                                     cen::hint::android::block_on_pause,
+                                     cen::hint::android::trap_back_button,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::android::pause_background_audio,
+                                     cen::hint::android::pause_background_audio,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-                   cen::hint::joystick::allow_background_events,
-                   cen::hint::joystick::use_hidapi,
+                                     cen::hint::joystick::allow_background_events,
+                                     cen::hint::joystick::use_hidapi,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-                   cen::hint::joystick::use_hidapi_ps5,
-                   cen::hint::joystick::use_raw_input,
-                   cen::hint::joystick::hidapi_correlate_xinput,
-                   cen::hint::joystick::linux_use_deadzones,
+                                     cen::hint::joystick::use_hidapi_ps5,
+                                     cen::hint::joystick::use_raw_input,
+                                     cen::hint::joystick::hidapi_correlate_xinput,
+                                     cen::hint::joystick::linux_use_deadzones,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-                   cen::hint::joystick::use_hidapi_ps4,
-                   cen::hint::joystick::use_hidapi_ps4_rumble,
-                   cen::hint::joystick::use_hidapi_steam,
-                   cen::hint::joystick::use_hidapi_switch,
-                   cen::hint::joystick::use_hidapi_xbox,
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::joystick::use_hidapi_game_cube,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-                   cen::hint::x11::net_wm_ping,
-                   cen::hint::x11::net_wm_bypass_compositor,
+                                     cen::hint::joystick::use_hidapi_ps4,
+                                     cen::hint::joystick::use_hidapi_ps4_rumble,
+                                     cen::hint::joystick::use_hidapi_steam,
+                                     cen::hint::joystick::use_hidapi_switch,
+                                     cen::hint::joystick::use_hidapi_xbox,
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-                   cen::hint::x11::force_egl,
+                                     cen::hint::joystick::use_hidapi_game_cube,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-                   cen::hint::x11::xinerama,
-                   cen::hint::x11::xrandr,
-                   cen::hint::x11::xvidmode>;
+                                     cen::hint::x11::net_wm_ping,
+                                     cen::hint::x11::net_wm_bypass_compositor,
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+                                     cen::hint::x11::force_egl,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+                                     cen::hint::x11::xinerama,
+                                     cen::hint::x11::xrandr,
+                                     cen::hint::x11::xvidmode>;
 
 using integer_hints =
     testing::Types<cen::hint::event_logging,
@@ -195,9 +194,7 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
   });
 }
 
-CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest,
-                                       HintTest,
-                                       unsigned_hints)
+CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest, HintTest, unsigned_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));
@@ -374,15 +371,14 @@ TEST_F(BasicHintTest, ScaleQuality)
 TEST_F(BasicHintTest, FramebufferAcceleration)
 {
   using cen::hint::framebuffer_acceleration;
-  test_enum_hint<framebuffer_acceleration>(
-      framebuffer_acceleration::value::off,
-      framebuffer_acceleration::value::on,
-      framebuffer_acceleration::value::direct3d,
-      framebuffer_acceleration::value::opengl,
-      framebuffer_acceleration::value::opengles,
-      framebuffer_acceleration::value::opengles2,
-      framebuffer_acceleration::value::metal,
-      framebuffer_acceleration::value::software);
+  test_enum_hint<framebuffer_acceleration>(framebuffer_acceleration::value::off,
+                                           framebuffer_acceleration::value::on,
+                                           framebuffer_acceleration::value::direct3d,
+                                           framebuffer_acceleration::value::opengl,
+                                           framebuffer_acceleration::value::opengles,
+                                           framebuffer_acceleration::value::opengles2,
+                                           framebuffer_acceleration::value::metal,
+                                           framebuffer_acceleration::value::software);
 }
 
 TEST_F(BasicHintTest, AudioCategory)
@@ -429,12 +425,11 @@ TEST_F(BasicHintTest, LogicalSizeMode)
 TEST_F(BasicHintTest, ContentOrientation)
 {
   using cen::hint::qtwayland::content_orientation;
-  test_enum_hint<content_orientation>(
-      content_orientation::value::primary,
-      content_orientation::value::portrait,
-      content_orientation::value::landscape,
-      content_orientation::value::inverted_portrait,
-      content_orientation::value::inverted_landscape);
+  test_enum_hint<content_orientation>(content_orientation::value::primary,
+                                      content_orientation::value::portrait,
+                                      content_orientation::value::landscape,
+                                      content_orientation::value::inverted_portrait,
+                                      content_orientation::value::inverted_landscape);
 }
 
 TEST_F(BasicHintTest, D3DCompiler)
@@ -452,10 +447,7 @@ TEST_F(BasicHintTest, AddHintCallback)
 
   int data = 7;
   auto handle = cen::add_hint_callback<render_driver>(
-      [](void* data,
-         cen::czstring hint,
-         cen::czstring oldVal,
-         cen::czstring newVal) {
+      [](void* data, cen::czstring hint, cen::czstring oldVal, cen::czstring newVal) {
         static bool first = true;
         if (first)
         {

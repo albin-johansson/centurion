@@ -21,9 +21,7 @@ TEST(Keyboard, Constructor)
 TEST(Keyboard, HasScreenKeyboard)
 {
   std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_HasScreenKeyboardSupport,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_HasScreenKeyboardSupport, values.data(), cen::isize(values));
 
   EXPECT_FALSE(cen::has_screen_keyboard());
   EXPECT_TRUE(cen::has_screen_keyboard());

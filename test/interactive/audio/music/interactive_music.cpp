@@ -57,8 +57,7 @@ struct messages final
   }
 };
 
-using event_dispatcher =
-    cen::event_dispatcher<cen::quit_event, cen::keyboard_event>;
+using event_dispatcher = cen::event_dispatcher<cen::quit_event, cen::keyboard_event>;
 
 class interactive_music final
 {

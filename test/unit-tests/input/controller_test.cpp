@@ -195,9 +195,8 @@ class controller_handler  // TODO worth adding?
   void remove(int index)
   {
     auto erase = [](auto& container, auto&& predicate) {
-      container.erase(
-          std::remove_if(begin(container), end(container), predicate),
-          end(container));
+      container.erase(std::remove_if(begin(container), end(container), predicate),
+                      end(container));
     };
 
     erase(m_controllers, [=](const cen::controller& c) {

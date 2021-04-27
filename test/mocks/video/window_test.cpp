@@ -167,8 +167,7 @@ TEST_F(WindowTest, SetFullscreenDesktop)
 
   EXPECT_TRUE(m_window.set_fullscreen_desktop(true));
   EXPECT_EQ(1, SDL_SetWindowFullscreen_fake.call_count);
-  EXPECT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP,
-            SDL_SetWindowFullscreen_fake.arg1_val);
+  EXPECT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP, SDL_SetWindowFullscreen_fake.arg1_val);
 
   EXPECT_FALSE(m_window.set_fullscreen_desktop(false));
   EXPECT_EQ(2, SDL_SetWindowFullscreen_fake.call_count);
@@ -596,8 +595,7 @@ TEST_F(WindowTest, Size)
 TEST_F(WindowTest, CheckFlag)
 {
   const auto a [[maybe_unused]] = m_window.check_flag(SDL_WINDOW_FULLSCREEN);
-  const auto b [[maybe_unused]] =
-      m_window.check_flag(cen::window_handle::fullscreen);
+  const auto b [[maybe_unused]] = m_window.check_flag(cen::window_handle::fullscreen);
   EXPECT_EQ(2, SDL_GetWindowFlags_fake.call_count);
 }
 

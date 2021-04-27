@@ -163,8 +163,7 @@ TEST(Screen, GetPixelFormat)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  EXPECT_EQ(static_cast<cen::pixel_format>(mode.format),
-            cen::screen::get_pixel_format());
+  EXPECT_EQ(static_cast<cen::pixel_format>(mode.format), cen::screen::get_pixel_format());
 }
 
 TEST(Screen, OrientationEnum)
@@ -172,8 +171,7 @@ TEST(Screen, OrientationEnum)
   using sdl_orientation = SDL_DisplayOrientation;
   using cen::screen::orientation;
 
-  EXPECT_EQ(SDL_ORIENTATION_UNKNOWN,
-            static_cast<sdl_orientation>(orientation::unknown));
+  EXPECT_EQ(SDL_ORIENTATION_UNKNOWN, static_cast<sdl_orientation>(orientation::unknown));
 
   EXPECT_EQ(SDL_ORIENTATION_LANDSCAPE,
             static_cast<sdl_orientation>(orientation::landscape));

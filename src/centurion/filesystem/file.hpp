@@ -78,7 +78,7 @@ enum class seek_mode
  *
  * \headerfile file_type.hpp
  */
-enum class file_type : unsigned
+enum class file_type : uint
 {
   unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
   win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.

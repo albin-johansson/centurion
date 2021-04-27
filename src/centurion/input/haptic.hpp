@@ -1926,7 +1926,7 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
-    return has_feature(static_cast<unsigned>(feature));
+    return has_feature(static_cast<uint>(feature));
   }
 
   /**
@@ -2383,12 +2383,11 @@ class basic_haptic final
    *
    * \param flag the mask of feature flags.
    *
-   * \return `true` if the haptic device supports the features; `false`
-   otherwise.
+   * \return `true` if the haptic device supports the features; `false` otherwise.
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_feature(const unsigned flag) const noexcept -> bool
+  [[nodiscard]] auto has_feature(const uint flag) const noexcept -> bool
   {
     return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
   }

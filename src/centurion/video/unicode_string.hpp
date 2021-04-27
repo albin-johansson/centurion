@@ -413,7 +413,7 @@ constexpr auto operator""_uni(const char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const unsigned long long int i) noexcept -> unicode
+constexpr auto operator""_uni(const ulonglong i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }

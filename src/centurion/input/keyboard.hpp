@@ -255,6 +255,15 @@ class keyboard final
 };
 
 /**
+ * \typedef key_state
+ *
+ * \brief This is provided for backwards compatibility with Centurion 5.
+ *
+ * \deprecated This was deprecated in Centurion 6.0.0.
+ */
+using key_state [[deprecated]] = keyboard;
+
+/**
  * \brief Indicates whether or not the platform has screen keyboard support.
  *
  * \return `true` if the current platform has some form of screen keyboard

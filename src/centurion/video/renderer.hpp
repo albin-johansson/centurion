@@ -1712,7 +1712,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_viewport(const irect& viewport) noexcept
+  void set_viewport(const irect viewport) noexcept
   {
     SDL_RenderSetViewport(get(), viewport.data());
   }

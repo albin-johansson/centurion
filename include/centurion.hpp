@@ -326,60 +326,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -417,7 +389,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -431,7 +403,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -445,7 +417,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -459,7 +431,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -473,7 +445,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -487,7 +459,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -501,7 +473,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -515,7 +487,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -581,25 +553,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -3593,60 +3562,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -3684,7 +3625,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -3698,7 +3639,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -3712,7 +3653,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -3726,7 +3667,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -3740,7 +3681,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -3754,7 +3695,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -3768,7 +3709,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -3782,7 +3723,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -4038,60 +3979,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -4129,7 +4042,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -4143,7 +4056,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -4157,7 +4070,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -4171,7 +4084,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -4185,7 +4098,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -4199,7 +4112,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -4213,7 +4126,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -4227,7 +4140,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -5684,25 +5597,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -6348,6 +6258,194 @@ namespace cen::detail {
 
 // #include "../core/czstring.hpp"
 
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 // #include "czstring_compare.hpp"
 #ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
@@ -6779,16 +6877,16 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
 {
  public:
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, unsigned int>;
+    return std::is_same_v<T, uint>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<unsigned int>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<uint>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)
@@ -6797,7 +6895,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
     }
     else
     {
-      return static_cast<unsigned int>(std::stoul(value));
+      return static_cast<uint>(std::stoul(value));
     }
   }
 };
@@ -7712,60 +7810,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -7803,7 +7873,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -7817,7 +7887,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -7831,7 +7901,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -7845,7 +7915,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -7859,7 +7929,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -7873,7 +7943,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -7887,7 +7957,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -7901,7 +7971,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -8805,60 +8875,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -8896,7 +8938,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -8910,7 +8952,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -8924,7 +8966,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -8938,7 +8980,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -8952,7 +8994,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -8966,7 +9008,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -8980,7 +9022,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -8994,7 +9036,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -9347,60 +9389,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -9438,7 +9452,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -9452,7 +9466,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -9466,7 +9480,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -9480,7 +9494,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -9494,7 +9508,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -9508,7 +9522,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -9522,7 +9536,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -9536,7 +9550,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -9602,25 +9616,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -10362,60 +10373,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -10453,7 +10436,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -10467,7 +10450,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -10481,7 +10464,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -10495,7 +10478,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -10509,7 +10492,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -10523,7 +10506,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -10537,7 +10520,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -10551,7 +10534,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -27594,60 +27577,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -27685,7 +27640,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -27699,7 +27654,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -27713,7 +27668,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -27727,7 +27682,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -27741,7 +27696,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -27755,7 +27710,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -27769,7 +27724,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -27783,7 +27738,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -28017,7 +27972,7 @@ enum class seek_mode
  *
  * \headerfile file_type.hpp
  */
-enum class file_type : unsigned
+enum class file_type : uint
 {
   unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
   win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.
@@ -29116,6 +29071,194 @@ using zstring = char*;
 
 #endif  // CENTURION_CZSTRING_HEADER
 
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 // #include "czstring_compare.hpp"
 #ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
@@ -29585,16 +29728,16 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
 {
  public:
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, unsigned int>;
+    return std::is_same_v<T, uint>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<unsigned int>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<uint>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)
@@ -29603,7 +29746,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
     }
     else
     {
-      return static_cast<unsigned int>(std::stoul(value));
+      return static_cast<uint>(std::stoul(value));
     }
   }
 };
@@ -32883,60 +33026,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -32974,7 +33089,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -32988,7 +33103,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -33002,7 +33117,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -33016,7 +33131,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -33030,7 +33145,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -33044,7 +33159,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -33058,7 +33173,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -33072,7 +33187,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -33425,60 +33540,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -33516,7 +33603,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -33530,7 +33617,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -33544,7 +33631,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -33558,7 +33645,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -33572,7 +33659,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -33586,7 +33673,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -33600,7 +33687,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -33614,7 +33701,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -33680,25 +33767,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -34440,60 +34524,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -34531,7 +34587,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -34545,7 +34601,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -34559,7 +34615,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -34573,7 +34629,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -34587,7 +34643,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -34601,7 +34657,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -34615,7 +34671,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -34629,7 +34685,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -41862,7 +41918,7 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
-    return has_feature(static_cast<unsigned>(feature));
+    return has_feature(static_cast<uint>(feature));
   }
 
   /**
@@ -42319,12 +42375,11 @@ class basic_haptic final
    *
    * \param flag the mask of feature flags.
    *
-   * \return `true` if the haptic device supports the features; `false`
-   otherwise.
+   * \return `true` if the haptic device supports the features; `false` otherwise.
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_feature(const unsigned flag) const noexcept -> bool
+  [[nodiscard]] auto has_feature(const uint flag) const noexcept -> bool
   {
     return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
   }
@@ -47410,6 +47465,15 @@ class keyboard final
 };
 
 /**
+ * \typedef key_state
+ *
+ * \brief This is provided for backwards compatibility with Centurion 5.
+ *
+ * \deprecated This was deprecated in Centurion 6.0.0.
+ */
+using key_state [[deprecated]] = keyboard;
+
+/**
  * \brief Indicates whether or not the platform has screen keyboard support.
  *
  * \return `true` if the current platform has some form of screen keyboard
@@ -47578,7 +47642,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -48115,7 +48179,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -48572,6 +48636,15 @@ class mouse final
   bool m_prevLeftPressed{};
   bool m_prevRightPressed{};
 };
+
+/**
+ * \typedef mouse_state
+ *
+ * \brief This is provided for backwards compatibility with Centurion 5.
+ *
+ * \deprecated This was deprecated in Centurion 6.0.0.
+ */
+using mouse_state [[deprecated]] = mouse;
 
 /// \} End of group input
 
@@ -50724,7 +50797,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -51261,7 +51334,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -51600,7 +51673,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -52106,7 +52179,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -53345,60 +53418,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -53436,7 +53481,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -53450,7 +53495,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -53464,7 +53509,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -53478,7 +53523,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -53492,7 +53537,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -53506,7 +53551,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -53520,7 +53565,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -53534,7 +53579,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -53600,25 +53645,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -53922,60 +53964,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -54013,7 +54027,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -54027,7 +54041,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -54041,7 +54055,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -54055,7 +54069,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -54069,7 +54083,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -54083,7 +54097,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -54097,7 +54111,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -54111,7 +54125,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -55745,60 +55759,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -55836,7 +55822,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -55850,7 +55836,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -55864,7 +55850,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -55878,7 +55864,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -55892,7 +55878,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -55906,7 +55892,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -55920,7 +55906,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -55934,7 +55920,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -58595,60 +58581,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -58686,7 +58644,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -58700,7 +58658,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -58714,7 +58672,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -58728,7 +58686,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -58742,7 +58700,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -58756,7 +58714,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -58770,7 +58728,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -58784,7 +58742,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -58948,60 +58906,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -59039,7 +58969,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -59053,7 +58983,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -59067,7 +58997,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -59081,7 +59011,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -59095,7 +59025,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -59109,7 +59039,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -59123,7 +59053,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -59137,7 +59067,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -59203,25 +59133,22 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const unsigned long long int value) noexcept
-    -> nanoseconds<u32>
+constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const unsigned long long int value) noexcept
-    -> microseconds<u32>
+constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const unsigned long long int value) noexcept
-    -> milliseconds<u32>
+constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const unsigned long long int value) noexcept -> seconds<u32>
+constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 {
   return seconds<u32>{value};
 }
@@ -60846,60 +60773,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -60937,7 +60836,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -60951,7 +60850,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -60965,7 +60864,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -60979,7 +60878,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -60993,7 +60892,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -61007,7 +60906,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -61021,7 +60920,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -61035,7 +60934,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -64707,7 +64606,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -65557,7 +65456,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -65867,7 +65766,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -66373,7 +66272,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -69786,7 +69685,7 @@ constexpr auto operator""_uni(const char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const unsigned long long int i) noexcept -> unicode
+constexpr auto operator""_uni(const ulonglong i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }
@@ -77578,60 +77477,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -77669,7 +77540,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -77683,7 +77554,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -77697,7 +77568,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -77711,7 +77582,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -77725,7 +77596,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -77739,7 +77610,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -77753,7 +77624,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -77767,7 +77638,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -79007,7 +78878,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -79348,7 +79219,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -79854,7 +79725,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -84866,7 +84737,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -85480,7 +85351,7 @@ class gl_library final
   /**
    * \brief Loads an OpenGL library.
    *
-   * \param path the file path to the OpenGL library that will be used; null
+   * \param path the file path to the OpenGL library that will be used; a null path
    * indicates that the default library will be used.
    *
    * \throws sdl_error if the OpenGL library can't be loaded.
@@ -88791,7 +88662,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_viewport(const irect& viewport) noexcept
+  void set_viewport(const irect viewport) noexcept
   {
     SDL_RenderSetViewport(get(), viewport.data());
   }
@@ -92051,7 +91922,7 @@ constexpr auto operator""_uni(const char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-constexpr auto operator""_uni(const unsigned long long int i) noexcept -> unicode
+constexpr auto operator""_uni(const ulonglong i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }
@@ -92073,8 +91944,10 @@ constexpr auto operator""_uni(const unsigned long long int i) noexcept -> unicod
 #include <SDL.h>
 #include <SDL_vulkan.h>
 
-#include <cassert>  // assert
-#include <memory>   // unique_ptr
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <vector>    // vector
 
 // #include "../../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -92163,6 +92036,324 @@ using zstring = char*;
 }  // namespace cen
 
 #endif  // CENTURION_CZSTRING_HEADER
+
+// #include "../../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+// #include "../../core/result.hpp"
+#ifndef CENTURION_RESULT_HEADER
+#define CENTURION_RESULT_HEADER
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class result
+ *
+ * \brief A simple indicator for the result of different operations.
+ *
+ * \details The idea behind this class is to make results of various operations
+ * unambiguous. Quite an amount of functions in the library may fail, and
+ * earlier versions of Centurion would usually return a `bool` in those cases,
+ * where `true` and `false` would indicate success and failure, respectively.
+ * This class is a development of that practice. For instance, this class is
+ * contextually convertible to `bool`, where a successful result is still
+ * converted to `true`, and vice versa. However, this class also enables
+ * explicit checks against `success` and `failure` constants, which makes
+ * code very easy to read and unambiguous.
+ * \code{cpp}
+ *   cen::window window;
+ *
+ *   if (window.set_opacity(0.4f))
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::success)
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::failure)
+ *   {
+ *     // Failure!
+ *   }
+ * \endcode
+ *
+ * \see `success`
+ * \see `failure`
+ *
+ * \since 6.0.0
+ */
+class result final
+{
+ public:
+  /**
+   * \brief Creates a result.
+   *
+   * \param success `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  constexpr result(const bool success) noexcept  // NOLINT implicit
+      : m_success{success}
+  {}
+
+  /// \name Comparison operators
+  /// \{
+
+  /**
+   * \brief Indicates whether or not two results have the same success value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results are equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
+  {
+    return m_success == other.m_success;
+  }
+
+  /**
+   * \brief Indicates whether or not two results don't have the same success
+   * value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results aren't equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
+  {
+    return !(*this == other);
+  }
+
+  /// \} End of comparison operators
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the result is successful.
+   *
+   * \return `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr explicit operator bool() const noexcept
+  {
+    return m_success;
+  }
+
+  /// \} End of conversions
+
+ private:
+  bool m_success{};
+};
+
+/// Represents a successful result.
+/// \since 6.0.0
+inline constexpr result success{true};
+
+/// Represents a failure of some kind.
+/// \since 6.0.0
+inline constexpr result failure{false};
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_RESULT_HEADER
 
 // #include "../window.hpp"
 #ifndef CENTURION_WINDOW_HEADER
@@ -92492,60 +92683,32 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+using uint = unsigned int;
+
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases
@@ -92583,7 +92746,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u8(unsigned long long value) noexcept -> u8
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
 {
   return static_cast<u8>(value);
 }
@@ -92597,7 +92760,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u16(unsigned long long value) noexcept -> u16
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
 {
   return static_cast<u16>(value);
 }
@@ -92611,7 +92774,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u32(unsigned long long value) noexcept -> u32
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
 {
   return static_cast<u32>(value);
 }
@@ -92625,7 +92788,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_u64(unsigned long long value) noexcept -> u64
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
 {
   return static_cast<u64>(value);
 }
@@ -92639,7 +92802,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i8(unsigned long long value) noexcept -> i8
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
 {
   return static_cast<i8>(value);
 }
@@ -92653,7 +92816,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i16(unsigned long long value) noexcept -> i16
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
 {
   return static_cast<i16>(value);
 }
@@ -92667,7 +92830,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i32(unsigned long long value) noexcept -> i32
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
 {
   return static_cast<i32>(value);
 }
@@ -92681,7 +92844,7 @@ namespace literals {
  *
  * \since 5.3.0
  */
-[[nodiscard]] constexpr auto operator""_i64(unsigned long long value) noexcept -> i64
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
 {
   return static_cast<i64>(value);
 }
@@ -93921,7 +94084,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -94262,7 +94425,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }
@@ -94768,7 +94931,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)
@@ -99246,31 +99409,81 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
  */
 namespace cen::vk {
 
-// TODO Centurion 6: document and test
-
+/**
+ * \brief Returns the address of the `vkGetInstanceProcAddr` function.
+ *
+ * \return the address of the `vkGetInstanceProcAddr` function.
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] inline auto get_instance_proc_addr() noexcept -> void*
 {
   return SDL_Vulkan_GetVkGetInstanceProcAddr();
 }
 
+/**
+ * \brief Creates a rendering surface for a Vulkan window.
+ *
+ * \pre `window` must be a Vulkan window.
+ *
+ * \tparam T the ownership semantics of the window.
+ *
+ * \param window the Vulkan window.
+ * \param instance the current Vulkan instance.
+ * \param[out] outSurface the handle that will receive the handle of the created surface.
+ *
+ * \return `success` if the surface was succesfully created; `failure` otherwise.
+ *
+ * \since 6.0.0
+ */
 template <typename T>
 auto create_surface(basic_window<T>& window,
                     VkInstance instance,
-                    VkSurfaceKHR* outSurface) noexcept -> bool
+                    VkSurfaceKHR* outSurface) noexcept -> result
 {
   assert(window.is_vulkan());
   return SDL_Vulkan_CreateSurface(window.get(), instance, outSurface) == SDL_TRUE;
 }
 
-template <typename T>
-auto get_extensions(basic_window<T>& window,
-                    unsigned* outCount,
-                    czstring* outNames) noexcept -> bool
+/**
+ * \brief Returns the extensions required to create a Vulkan surface.
+ *
+ * \return the required Vulkan extensions; `std::nullopt` if something goes wrong.
+ *
+ * \since 6.0.0
+ */
+inline auto required_extensions() -> std::optional<std::vector<czstring>>
 {
-  assert(window.is_vulkan());
-  return SDL_Vulkan_GetInstanceExtensions(window.get(), outCount, outNames) == SDL_TRUE;
+  uint count{};
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr))
+  {
+    return std::nullopt;
+  }
+
+  std::vector<czstring> names;
+  names.reserve(count);
+
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
+  {
+    return std::nullopt;
+  }
+
+  return names;
 }
 
+/**
+ * \brief Returns the size of the drawable surface associated with the window.
+ *
+ * \pre `window` must be a Vulkan window.
+ *
+ * \tparam T the ownership semantics of the window.
+ *
+ * \param window the Vulkan window that will be queried.
+ *
+ * \return the size of the window drawable.
+ *
+ * \since 6.0.0
+ */
 template <typename T>
 [[nodiscard]] auto drawable_size(const basic_window<T>& window) noexcept -> iarea
 {
@@ -99520,14 +99733,25 @@ class mix_error final : public cen_error
 /// \addtogroup video
 /// \{
 
-namespace cen::vk {
+namespace cen {
 
-// TODO Centurion 6: document and test
-
-class library final
+/**
+ * \class vk_library
+ *
+ * \brief Responsible for loading and unloading a Vulkan library.
+ *
+ * \since 6.0.0
+ */
+class vk_library final
 {
  public:
-  explicit library(const czstring path = nullptr)
+  /**
+   * \brief Loads a Vulkan library.
+   *
+   * \param path optional file path to a Vulkan library; a null path indicates that the
+   * default library will be used.
+   */
+  explicit vk_library(const czstring path = nullptr)
   {
     const auto result = SDL_Vulkan_LoadLibrary(path);
     if (result == -1)
@@ -99536,19 +99760,19 @@ class library final
     }
   }
 
-  library(const library&) = delete;
-  library(library&&) = delete;
+  vk_library(const vk_library&) = delete;
+  vk_library(vk_library&&) = delete;
 
-  auto operator=(const library&) -> library& = delete;
-  auto operator=(library&&) -> library& = delete;
+  auto operator=(const vk_library&) -> vk_library& = delete;
+  auto operator=(vk_library&&) -> vk_library& = delete;
 
-  ~library() noexcept
+  ~vk_library() noexcept
   {
     SDL_Vulkan_UnloadLibrary();
   }
 };
 
-}  // namespace cen::vk
+}  // namespace cen
 
 /// \} End of group video
 
@@ -102567,7 +102791,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_viewport(const irect& viewport) noexcept
+  void set_viewport(const irect viewport) noexcept
   {
     SDL_RenderSetViewport(get(), viewport.data());
   }

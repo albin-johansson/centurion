@@ -39,6 +39,7 @@ set(SOURCE_FILES
     thread/scoped_lock_test.cpp
     thread/semaphore_test.cpp
 
+    video/gl/gl_context_test.cpp
     video/gl/gl_core_test.cpp
 
     video/message_box_test.cpp

@@ -351,7 +351,7 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T>& from, const basic_point<T>& to) noexcept
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
     -> typename point_traits<T>::value_type
 {
   if constexpr (basic_point<T>::isIntegral)

@@ -3,13 +3,12 @@
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cassert>   // assert
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"

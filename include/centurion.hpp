@@ -1668,11 +1668,12 @@ class music final
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
-   * \return `true` on success; `false` on failure.
+   * \return `success` if the fade is successful; `failure` on failure.
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> bool
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
+      -> result
   {
     assert(ms.count() > 0);
     if (!is_fading())
@@ -1681,7 +1682,7 @@ class music final
     }
     else
     {
-      return false;
+      return failure;
     }
   }
 
@@ -12059,11 +12060,11 @@ class basic_joystick final
    *
    * \param index the device index of the virtual joystick.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the joystick was successfully disconnected; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  static auto detach_virtual(const int index) noexcept -> bool
+  static auto detach_virtual(const int index) noexcept -> result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
@@ -16203,6 +16204,136 @@ inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
 #include <optional>  // optional
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
+
+// #include "../core/result.hpp"
+#ifndef CENTURION_RESULT_HEADER
+#define CENTURION_RESULT_HEADER
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class result
+ *
+ * \brief A simple indicator for the result of different operations.
+ *
+ * \details The idea behind this class is to make results of various operations
+ * unambiguous. Quite an amount of functions in the library may fail, and
+ * earlier versions of Centurion would usually return a `bool` in those cases,
+ * where `true` and `false` would indicate success and failure, respectively.
+ * This class is a development of that practice. For instance, this class is
+ * contextually convertible to `bool`, where a successful result is still
+ * converted to `true`, and vice versa. However, this class also enables
+ * explicit checks against `success` and `failure` constants, which makes
+ * code very easy to read and unambiguous.
+ * \code{cpp}
+ *   cen::window window;
+ *
+ *   if (window.set_opacity(0.4f))
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::success)
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::failure)
+ *   {
+ *     // Failure!
+ *   }
+ * \endcode
+ *
+ * \see `success`
+ * \see `failure`
+ *
+ * \since 6.0.0
+ */
+class result final
+{
+ public:
+  /**
+   * \brief Creates a result.
+   *
+   * \param success `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  constexpr result(const bool success) noexcept  // NOLINT implicit
+      : m_success{success}
+  {}
+
+  /// \name Comparison operators
+  /// \{
+
+  /**
+   * \brief Indicates whether or not two results have the same success value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results are equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
+  {
+    return m_success == other.m_success;
+  }
+
+  /**
+   * \brief Indicates whether or not two results don't have the same success
+   * value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results aren't equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
+  {
+    return !(*this == other);
+  }
+
+  /// \} End of comparison operators
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the result is successful.
+   *
+   * \return `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr explicit operator bool() const noexcept
+  {
+    return m_success;
+  }
+
+  /// \} End of conversions
+
+ private:
+  bool m_success{};
+};
+
+/// Represents a successful result.
+/// \since 6.0.0
+inline constexpr result success{true};
+
+/// Represents a failure of some kind.
+/// \since 6.0.0
+inline constexpr result failure{false};
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_RESULT_HEADER
 
 // #include "audio_device_event.hpp"
 #ifndef CENTURION_AUDIO_DEVICE_EVENT_HEADER
@@ -22592,16 +22723,15 @@ class event final
    *
    * \param event the event that will be pushed onto the event queue.
    *
-   * \return `true` if the event was successfully added; `false` otherwise.
+   * \return `success` if the event was successfully added; `failure` otherwise.
    *
    * \since 5.1.0
    */
   template <typename T>
-  static auto push(const common_event<T>& event) noexcept -> bool
+  static auto push(const common_event<T>& event) noexcept -> result
   {
     auto sdlEvent = as_sdl_event(event);
-    const auto result = SDL_PushEvent(&sdlEvent);
-    return result >= 0;
+    return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   /**
@@ -23240,6 +23370,8 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
+// #include "../core/result.hpp"
+
 // #include "audio_device_event.hpp"
 
 // #include "common_event.hpp"
@@ -23365,16 +23497,15 @@ class event final
    *
    * \param event the event that will be pushed onto the event queue.
    *
-   * \return `true` if the event was successfully added; `false` otherwise.
+   * \return `success` if the event was successfully added; `failure` otherwise.
    *
    * \since 5.1.0
    */
   template <typename T>
-  static auto push(const common_event<T>& event) noexcept -> bool
+  static auto push(const common_event<T>& event) noexcept -> result
   {
     auto sdlEvent = as_sdl_event(event);
-    const auto result = SDL_PushEvent(&sdlEvent);
-    return result >= 0;
+    return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   /**
@@ -31863,6 +31994,136 @@ inline void set_priority(const category category, const priority prio) noexcept
 
 #endif  // CENTURION_LOG_HEADER
 
+// #include "../core/result.hpp"
+#ifndef CENTURION_RESULT_HEADER
+#define CENTURION_RESULT_HEADER
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class result
+ *
+ * \brief A simple indicator for the result of different operations.
+ *
+ * \details The idea behind this class is to make results of various operations
+ * unambiguous. Quite an amount of functions in the library may fail, and
+ * earlier versions of Centurion would usually return a `bool` in those cases,
+ * where `true` and `false` would indicate success and failure, respectively.
+ * This class is a development of that practice. For instance, this class is
+ * contextually convertible to `bool`, where a successful result is still
+ * converted to `true`, and vice versa. However, this class also enables
+ * explicit checks against `success` and `failure` constants, which makes
+ * code very easy to read and unambiguous.
+ * \code{cpp}
+ *   cen::window window;
+ *
+ *   if (window.set_opacity(0.4f))
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::success)
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::failure)
+ *   {
+ *     // Failure!
+ *   }
+ * \endcode
+ *
+ * \see `success`
+ * \see `failure`
+ *
+ * \since 6.0.0
+ */
+class result final
+{
+ public:
+  /**
+   * \brief Creates a result.
+   *
+   * \param success `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  constexpr result(const bool success) noexcept  // NOLINT implicit
+      : m_success{success}
+  {}
+
+  /// \name Comparison operators
+  /// \{
+
+  /**
+   * \brief Indicates whether or not two results have the same success value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results are equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
+  {
+    return m_success == other.m_success;
+  }
+
+  /**
+   * \brief Indicates whether or not two results don't have the same success
+   * value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results aren't equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
+  {
+    return !(*this == other);
+  }
+
+  /// \} End of comparison operators
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the result is successful.
+   *
+   * \return `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr explicit operator bool() const noexcept
+  {
+    return m_success;
+  }
+
+  /// \} End of conversions
+
+ private:
+  bool m_success{};
+};
+
+/// Represents a successful result.
+/// \since 6.0.0
+inline constexpr result success{true};
+
+/// Represents a failure of some kind.
+/// \since 6.0.0
+inline constexpr result failure{false};
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_RESULT_HEADER
+
 
 namespace cen {
 
@@ -31903,7 +32164,7 @@ enum class hint_priority
  *
  * \param value the new value that will be set for the specified hint.
  *
- * \return `true` if the hint was successfully set; `false` otherwise.
+ * \return `success` if the hint was successfully set; `failure` otherwise.
  *
  * \since 4.1.0
  */
@@ -31911,7 +32172,7 @@ template <typename Hint,
           hint_priority priority = hint_priority::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-auto set_hint(const Value& value) -> bool
+auto set_hint(const Value& value) -> result
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
@@ -36210,11 +36471,11 @@ class basic_joystick final
    *
    * \param index the device index of the virtual joystick.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the joystick was successfully disconnected; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  static auto detach_virtual(const int index) noexcept -> bool
+  static auto detach_virtual(const int index) noexcept -> result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
@@ -42821,11 +43082,11 @@ class basic_joystick final
    *
    * \param index the device index of the virtual joystick.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the joystick was successfully disconnected; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  static auto detach_virtual(const int index) noexcept -> bool
+  static auto detach_virtual(const int index) noexcept -> result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }
@@ -54384,6 +54645,136 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/result.hpp"
+#ifndef CENTURION_RESULT_HEADER
+#define CENTURION_RESULT_HEADER
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class result
+ *
+ * \brief A simple indicator for the result of different operations.
+ *
+ * \details The idea behind this class is to make results of various operations
+ * unambiguous. Quite an amount of functions in the library may fail, and
+ * earlier versions of Centurion would usually return a `bool` in those cases,
+ * where `true` and `false` would indicate success and failure, respectively.
+ * This class is a development of that practice. For instance, this class is
+ * contextually convertible to `bool`, where a successful result is still
+ * converted to `true`, and vice versa. However, this class also enables
+ * explicit checks against `success` and `failure` constants, which makes
+ * code very easy to read and unambiguous.
+ * \code{cpp}
+ *   cen::window window;
+ *
+ *   if (window.set_opacity(0.4f))
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::success)
+ *   {
+ *     // Success!
+ *   }
+ *
+ *   if (window.set_opacity(0.4f) == cen::failure)
+ *   {
+ *     // Failure!
+ *   }
+ * \endcode
+ *
+ * \see `success`
+ * \see `failure`
+ *
+ * \since 6.0.0
+ */
+class result final
+{
+ public:
+  /**
+   * \brief Creates a result.
+   *
+   * \param success `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  constexpr result(const bool success) noexcept  // NOLINT implicit
+      : m_success{success}
+  {}
+
+  /// \name Comparison operators
+  /// \{
+
+  /**
+   * \brief Indicates whether or not two results have the same success value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results are equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator==(const result other) const noexcept -> bool
+  {
+    return m_success == other.m_success;
+  }
+
+  /**
+   * \brief Indicates whether or not two results don't have the same success
+   * value.
+   *
+   * \param other the other result.
+   *
+   * \return `true` if the results aren't equal; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr auto operator!=(const result other) const noexcept -> bool
+  {
+    return !(*this == other);
+  }
+
+  /// \} End of comparison operators
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the result is successful.
+   *
+   * \return `true` if the result is successful; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr explicit operator bool() const noexcept
+  {
+    return m_success;
+  }
+
+  /// \} End of conversions
+
+ private:
+  bool m_success{};
+};
+
+/// Represents a successful result.
+/// \since 6.0.0
+inline constexpr result success{true};
+
+/// Represents a failure of some kind.
+/// \since 6.0.0
+inline constexpr result failure{false};
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_RESULT_HEADER
+
 // #include "../core/sdl_string.hpp"
 #ifndef CENTURION_SDL_STRING_HEADER
 #define CENTURION_SDL_STRING_HEADER
@@ -54641,11 +55032,11 @@ inline auto set_text(const not_null<czstring> text) noexcept -> bool
  *
  * \param text the text that will be stored in the clipboard.
  *
- * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ * \return `success` if the clipboard text was successfully set; `failure` otherwise.
  *
  * \since 5.3.0
  */
-inline auto set_text(const std::string& text) noexcept -> bool
+inline auto set_text(const std::string& text) noexcept -> result
 {
   return set_text(text.c_str());
 }
@@ -55432,6 +55823,8 @@ class locale final
 // #include "../core/czstring.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/result.hpp"
 
 // #include "../detail/czstring_eq.hpp"
 
@@ -57681,7 +58074,7 @@ enum class platform_id
  * \brief Attempts to open a URL using a web browser or even a file manager for
  * local files.
  *
- * \note This function will return `true` if there was at least an "attempt" to
+ * \note This function will return `success` if there was at least an "attempt" to
  * open the specified URL, but it doesn't mean that the URL was successfully
  * loaded.
  *
@@ -57690,13 +58083,13 @@ enum class platform_id
  *
  * \param url the URL that should be opened, cannot be null.
  *
- * \return `true` on success; `false` otherwise.
+ * \return `success` if there was an attempt to open the URL; `failure` otherwise.
  *
  * \see SDL_OpenURL
  *
  * \since 5.2.0
  */
-inline auto open_url(const not_null<czstring> url) noexcept -> bool
+inline auto open_url(const not_null<czstring> url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
@@ -57706,7 +58099,7 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
  * \see open_url()
  * \since 5.3.0
  */
-inline auto open_url(const std::string& url) noexcept -> bool
+inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
 }
@@ -59882,6 +60275,8 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/result.hpp"
+
 // #include "../core/time.hpp"
 
 // #include "../detail/address_of.hpp"
@@ -60269,11 +60664,11 @@ class thread final
    *
    * \param priority the priority that will be used.
    *
-   * \return `true` if the priority was successfully set; `false` otherwise.
+   * \return `success` if the priority was successfully set; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  static auto set_priority(const thread_priority priority) noexcept -> bool
+  static auto set_priority(const thread_priority priority) noexcept -> result
   {
     const auto prio = static_cast<SDL_ThreadPriority>(priority);
     return SDL_SetThreadPriority(prio) == 0;
@@ -74847,13 +75242,13 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
   {
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }
@@ -83409,13 +83804,13 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
   {
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }
@@ -98615,13 +99010,13 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
   {
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }
@@ -100268,13 +100663,13 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
   {
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }

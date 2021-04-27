@@ -3,7 +3,6 @@ name: "CI: Ubuntu"
 on: [ push, pull_request ]
 
 env:
-  SDL_LATEST: 2.0.14
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
@@ -70,7 +69,6 @@ jobs:
           sudo make install
 
       - name: Create build directory
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         shell: bash
         run: mkdir -p build
 
@@ -81,7 +79,6 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_INTERACTIVE=OFF -GNinja
 
       - name: Build
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build
         shell: bash
         run: |
@@ -89,13 +86,11 @@ jobs:
           ninja CenturionMocks
 
       - name: Run unit tests
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build/test/unit-tests
         shell: bash
         run: ./CenturionTests
 
       - name: Run mocked test suite
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build/test/mocks
         shell: bash
         run: ./CenturionMocks

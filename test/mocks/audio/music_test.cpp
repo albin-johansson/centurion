@@ -6,6 +6,7 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
+#include "mixer_mocks.hpp"
 
 using music_finished_callback = void(SDLCALL*)(void);
 using hook_music_callback = void(SDLCALL*)(void*, Uint8*, int);
@@ -42,6 +43,7 @@ class MusicTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+    mocks::reset_mixer();
 
     RESET_FAKE(Mix_FreeMusic)
     RESET_FAKE(Mix_ResumeMusic)

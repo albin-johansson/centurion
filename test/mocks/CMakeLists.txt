@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-mocks LANGUAGES CXX)
 
 set(SOURCE_FILES
-    test_main.cpp
     core_mocks.hpp
     core_mocks.cpp
+    mixer_mocks.cpp
+    mixer_mocks.hpp
+    test_main.cpp
     thread_mocks.hpp
     thread_mocks.cpp
 

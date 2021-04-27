@@ -373,20 +373,56 @@ class basic_sound_effect final
   /// \name Decoder functions
   /// \{
 
-  // TODO Centurion 6: Document and test
-
+  /**
+   * \brief Returns the name of the decoder associated with the specified index.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param index the index of the desired decoder.
+   *
+   * \return the name of the decoder associated with the specified index; a null string is
+   * returned if the index is invalid.
+   *
+   * \see `Mix_GetChunkDecoder`
+   *
+   * \since 6.0.0
+   */
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {
     return Mix_GetChunkDecoder(index);
   }
 
+  /**
+   * \brief Indicates whether or not the system has the specified sound effect decoder.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param name the name of the decoder to check.
+   *
+   * \return `true` if the system has the specified decoder; `false` otherwise.
+   *
+   * \see `Mix_HasChunkDecoder`
+   *
+   * \since 6.0.0
+   */
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }
 
+  /**
+   * \brief Returns the number of available sound effect decoders.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \return the number of available sound effect decoders.
+   *
+   * \see `Mix_GetNumChunkDecoders`
+   *
+   * \since 6.0.0
+   */
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto decoder_count() noexcept -> int
   {

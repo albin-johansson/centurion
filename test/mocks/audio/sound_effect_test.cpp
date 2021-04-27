@@ -6,6 +6,7 @@
 #include <array>  // array
 
 #include "core_mocks.hpp"
+#include "mixer_mocks.hpp"
 
 using ms = cen::milliseconds<int>;
 
@@ -27,6 +28,7 @@ class SoundEffectTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+    mocks::reset_mixer();
 
     RESET_FAKE(Mix_FreeChunk);
     RESET_FAKE(Mix_Pause);
@@ -134,6 +136,28 @@ TEST_F(SoundEffectTest, Channel)
 
   m_sound.set_channel(7);
   EXPECT_EQ(7, m_sound.channel());
+}
+
+TEST_F(SoundEffectTest, GetDecoder)
+{
+  const auto* name [[maybe_unused]] = cen::sound_effect::get_decoder(0);
+  ASSERT_EQ(1, Mix_GetChunkDecoder_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, HasDecoder)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(Mix_HasChunkDecoder, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::sound_effect::has_decoder("foo"));
+  ASSERT_TRUE(cen::sound_effect::has_decoder("foo"));
+  ASSERT_EQ(2, Mix_HasChunkDecoder_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, DecoderCount)
+{
+  const auto count [[maybe_unused]] = cen::sound_effect::decoder_count();
+  ASSERT_EQ(1, Mix_GetNumChunkDecoders_fake.call_count);
 }
 
 using SoundEffectDeathTest = SoundEffectTest;

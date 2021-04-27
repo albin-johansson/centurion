@@ -11,6 +11,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// \brief Alias for an unsigned integer.
+/// \since 6.0.0
+using uint = unsigned int;
+
 /**
  * \typedef u64
  *

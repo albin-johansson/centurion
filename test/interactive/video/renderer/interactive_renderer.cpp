@@ -41,7 +41,7 @@ auto run() -> int
 
     renderer.set_color(cen::colors::khaki);
     renderer.draw_rect(cen::rect(550.0, 50.0, 140.0, 60.0));
-    
+
     renderer.set_color(cen::colors::forest_green);
     renderer.draw_line(cen::point(240.0, 340.0), cen::point(360.0, 460.0));
 

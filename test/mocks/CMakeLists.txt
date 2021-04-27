@@ -19,6 +19,8 @@ set(SOURCE_FILES
 
     event/event_test.cpp
 
+    filesystem/file_test.cpp
+
     input/controller_test.cpp
     input/haptic_test.cpp
     input/joystick_test.cpp

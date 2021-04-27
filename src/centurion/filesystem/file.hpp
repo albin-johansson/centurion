@@ -124,12 +124,12 @@ class file final
    * \brief Opens the file at the specified file path.
    *
    * \details Be sure to check the validity of the file, after construction.
-     \verbatim
-       cen::file file{"foo", cen::file_mode::read_existing_binary};
-       if (file) {
-         // File was opened successfully!
-       }
-     \endverbatim
+   * \code{cpp}
+   *   cen::file file{"foo", cen::file_mode::read_existing_binary};
+   *   if (file) {
+   *     // File was opened successfully!
+   *   }
+   * \endcode
    *
    * \param path the path of the file.
    * \param mode the mode that will be used to open the file.
@@ -563,8 +563,6 @@ class file final
   /// \name File type queries
   /// \{
 
-  // TODO Centurion 6: Document and test these functions
-
   /**
    * \brief Indicates whether or not the file represents a PNG image.
    *
@@ -577,77 +575,175 @@ class file final
     return IMG_isPNG(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an ICO image.
+   *
+   * \return `true` if the file is an ICO image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_ico() const noexcept -> bool
   {
     return IMG_isICO(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a JPG image.
+   *
+   * \return `true` if the file is a JPG image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_jpg() const noexcept -> bool
   {
     return IMG_isJPG(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a BMP image.
+   *
+   * \return `true` if the file is a BMP image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_bmp() const noexcept -> bool
   {
     return IMG_isBMP(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a GIF.
+   *
+   * \return `true` if the file is a GIF; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_gif() const noexcept -> bool
   {
     return IMG_isGIF(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an SVG image.
+   *
+   * \return `true` if the file is an SVG image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_svg() const noexcept -> bool
   {
     return IMG_isSVG(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a WEBP image.
+   *
+   * \return `true` if the file is a WEBP image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_webp() const noexcept -> bool
   {
     return IMG_isWEBP(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a TIF image.
+   *
+   * \return `true` if the file is a TIF image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_tif() const noexcept -> bool
   {
     return IMG_isTIF(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a PNM image.
+   *
+   * \return `true` if the file is a PNM image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_pnm() const noexcept -> bool
   {
     return IMG_isPNM(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a PCX image.
+   *
+   * \return `true` if the file is a PCX image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_pcx() const noexcept -> bool
   {
     return IMG_isPCX(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an LBM image.
+   *
+   * \return `true` if the file is an LBM image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_lbm() const noexcept -> bool
   {
     return IMG_isLBM(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents a CUR image.
+   *
+   * \return `true` if the file is a CUR image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_cur() const noexcept -> bool
   {
     return IMG_isCUR(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an XCF image.
+   *
+   * \return `true` if the file is an XCF image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_xcf() const noexcept -> bool
   {
     return IMG_isXCF(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an XPM image.
+   *
+   * \return `true` if the file is an XPM image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_xpm() const noexcept -> bool
   {
     return IMG_isXPM(m_context.get()) == 1;
   }
 
+  /**
+   * \brief Indicates whether or not the file represents an XV image.
+   *
+   * \return `true` if the file is an XV image; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] auto is_xv() const noexcept -> bool
   {
     return IMG_isXV(m_context.get()) == 1;
   }
 
-  /// \}
+  /// \} End of file type queries
 
   /**
    * \brief Seeks to the specified offset, using the specified seek mode.

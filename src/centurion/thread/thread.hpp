@@ -11,6 +11,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/to_string.hpp"
@@ -152,11 +153,11 @@ class thread final
    *
    * \param priority the priority that will be used.
    *
-   * \return `true` if the priority was successfully set; `false` otherwise.
+   * \return `success` if the priority was successfully set; `failure` otherwise.
    *
    * \since 5.0.0
    */
-  static auto set_priority(const thread_priority priority) noexcept -> bool
+  static auto set_priority(const thread_priority priority) noexcept -> result
   {
     const auto prio = static_cast<SDL_ThreadPriority>(priority);
     return SDL_SetThreadPriority(prio) == 0;

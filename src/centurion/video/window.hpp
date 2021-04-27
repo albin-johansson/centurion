@@ -471,13 +471,13 @@ class basic_window final
    * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
    * \see `SDL_CaptureMouse`
    *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> bool
+  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
   {
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }

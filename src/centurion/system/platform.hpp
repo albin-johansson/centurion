@@ -9,6 +9,7 @@
 
 #include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../video/pixel_format.hpp"
 
@@ -43,7 +44,7 @@ enum class platform_id
  * \brief Attempts to open a URL using a web browser or even a file manager for
  * local files.
  *
- * \note This function will return `true` if there was at least an "attempt" to
+ * \note This function will return `success` if there was at least an "attempt" to
  * open the specified URL, but it doesn't mean that the URL was successfully
  * loaded.
  *
@@ -52,13 +53,13 @@ enum class platform_id
  *
  * \param url the URL that should be opened, cannot be null.
  *
- * \return `true` on success; `false` otherwise.
+ * \return `success` if there was an attempt to open the URL; `failure` otherwise.
  *
  * \see SDL_OpenURL
  *
  * \since 5.2.0
  */
-inline auto open_url(const not_null<czstring> url) noexcept -> bool
+inline auto open_url(const not_null<czstring> url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
@@ -68,7 +69,7 @@ inline auto open_url(const not_null<czstring> url) noexcept -> bool
  * \see open_url()
  * \since 5.3.0
  */
-inline auto open_url(const std::string& url) noexcept -> bool
+inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
 }

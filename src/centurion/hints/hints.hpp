@@ -36,6 +36,7 @@
 
 #include "../core/exception.hpp"
 #include "../core/log.hpp"
+#include "../core/result.hpp"
 
 namespace cen {
 
@@ -76,7 +77,7 @@ enum class hint_priority
  *
  * \param value the new value that will be set for the specified hint.
  *
- * \return `true` if the hint was successfully set; `false` otherwise.
+ * \return `success` if the hint was successfully set; `failure` otherwise.
  *
  * \since 4.1.0
  */
@@ -84,7 +85,7 @@ template <typename Hint,
           hint_priority priority = hint_priority::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-auto set_hint(const Value& value) -> bool
+auto set_hint(const Value& value) -> result
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),

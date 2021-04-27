@@ -291,11 +291,12 @@ class music final
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
-   * \return `true` on success; `false` on failure.
+   * \return `success` if the fade is successful; `failure` on failure.
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> bool
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
+      -> result
   {
     assert(ms.count() > 0);
     if (!is_fading())
@@ -304,7 +305,7 @@ class music final
     }
     else
     {
-      return false;
+      return failure;
     }
   }
 

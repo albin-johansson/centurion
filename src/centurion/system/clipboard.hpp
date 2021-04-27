@@ -8,6 +8,7 @@
 
 #include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
+#include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 
 /// \addtogroup system
@@ -74,11 +75,11 @@ inline auto set_text(const not_null<czstring> text) noexcept -> bool
  *
  * \param text the text that will be stored in the clipboard.
  *
- * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ * \return `success` if the clipboard text was successfully set; `failure` otherwise.
  *
  * \since 5.3.0
  */
-inline auto set_text(const std::string& text) noexcept -> bool
+inline auto set_text(const std::string& text) noexcept -> result
 {
   return set_text(text.c_str());
 }

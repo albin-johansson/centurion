@@ -7,6 +7,7 @@
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
+#include "../core/result.hpp"
 #include "audio_device_event.hpp"
 #include "common_event.hpp"
 #include "controller_axis_event.hpp"
@@ -109,16 +110,15 @@ class event final
    *
    * \param event the event that will be pushed onto the event queue.
    *
-   * \return `true` if the event was successfully added; `false` otherwise.
+   * \return `success` if the event was successfully added; `failure` otherwise.
    *
    * \since 5.1.0
    */
   template <typename T>
-  static auto push(const common_event<T>& event) noexcept -> bool
+  static auto push(const common_event<T>& event) noexcept -> result
   {
     auto sdlEvent = as_sdl_event(event);
-    const auto result = SDL_PushEvent(&sdlEvent);
-    return result >= 0;
+    return SDL_PushEvent(&sdlEvent) >= 0;
   }
 
   /**

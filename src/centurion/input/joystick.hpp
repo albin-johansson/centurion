@@ -378,11 +378,11 @@ class basic_joystick final
    *
    * \param index the device index of the virtual joystick.
    *
-   * \return `true` on success; `false` otherwise.
+   * \return `success` if the joystick was successfully disconnected; `failure` otherwise.
    *
    * \since 5.2.0
    */
-  static auto detach_virtual(const int index) noexcept -> bool
+  static auto detach_virtual(const int index) noexcept -> result
   {
     return SDL_JoystickDetachVirtual(index) == 0;
   }

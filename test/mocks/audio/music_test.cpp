@@ -177,8 +177,12 @@ TEST_F(MusicTest, Rewind)
 
 TEST_F(MusicTest, SetPosition)
 {
-  cen::music::set_position(1);
-  EXPECT_EQ(1, Mix_SetMusicPosition_fake.call_count);
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(Mix_SetMusicPosition, values.data(), cen::isize(values));
+
+  ASSERT_EQ(cen::failure, cen::music::set_position(1));
+  ASSERT_EQ(cen::success, cen::music::set_position(1));
+  EXPECT_EQ(2, Mix_SetMusicPosition_fake.call_count);
 }
 
 TEST_F(MusicTest, Type)

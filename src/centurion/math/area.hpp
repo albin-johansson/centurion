@@ -104,7 +104,7 @@ template <typename T>
  * \since 5.3.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto area_of(const basic_area<T>& area) noexcept -> T
+[[nodiscard]] constexpr auto area_of(const basic_area<T> area) noexcept -> T
 {
   return area.width * area.height;
 }

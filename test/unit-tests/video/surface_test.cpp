@@ -11,6 +11,7 @@
 #include "core/exception.hpp"
 #include "core/log.hpp"
 #include "video/colors.hpp"
+#include "video/window.hpp"
 
 static_assert(std::is_copy_constructible_v<cen::surface>);
 static_assert(std::is_copy_assignable_v<cen::surface>);
@@ -60,13 +61,11 @@ TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 
 TEST_F(SurfaceTest, SizePixelFormatConstructor)
 {
-  EXPECT_THROW(cen::surface({-1, -1}, cen::pixel_format::rgba8888),
-               cen::sdl_error);
-
-  cen::surface surface{{10, 10}, cen::pixel_format::rgba8888};
+  cen::window window;
+  cen::surface surface{{10, 10}, window.get_pixel_format()};
   EXPECT_EQ(10, surface.width());
   EXPECT_EQ(10, surface.height());
-  EXPECT_EQ(cen::pixel_format::rgba8888, surface.format_info().format());
+  EXPECT_EQ(window.get_pixel_format(), surface.format_info().format());
 }
 
 TEST_F(SurfaceTest, CopyConstructor)

@@ -6,14 +6,14 @@ namespace {
 
 auto run() -> int
 {
-  cen::gl::set(cen::gl::attribute::context_major_version, 4);
-  cen::gl::set(cen::gl::attribute::context_minor_version, 1);
-  cen::gl::set(cen::gl::attribute::accelerated_visual, 1);
-  cen::gl::set(cen::gl::attribute::double_buffer, 1);
+  cen::gl::set(cen::gl_attribute::context_major_version, 4);
+  cen::gl::set(cen::gl_attribute::context_minor_version, 1);
+  cen::gl::set(cen::gl_attribute::accelerated_visual, 1);
+  cen::gl::set(cen::gl_attribute::double_buffer, 1);
 
   cen::window window{"Centurion OpenGL Demo",
                      cen::window::default_size(),
-                     SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN};
+                     cen::window::opengl | cen::window::hidden};
   cen::gl::context context{window};
 
   window.show();

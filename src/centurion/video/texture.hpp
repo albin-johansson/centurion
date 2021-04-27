@@ -58,6 +58,8 @@ class basic_texture final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
    *
@@ -68,7 +70,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
       : m_texture{source}
   {
     if constexpr (detail::is_owning<T>())
@@ -79,6 +81,8 @@ class basic_texture final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a handle to texture instance.

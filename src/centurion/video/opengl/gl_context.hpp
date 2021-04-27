@@ -10,6 +10,7 @@
 #include <memory>   // unique_ptr
 
 #include "../../core/exception.hpp"
+#include "../../core/owner.hpp"
 #include "../../core/result.hpp"
 #include "../../detail/owner_handle_api.hpp"
 #include "../window.hpp"
@@ -44,6 +45,8 @@ class basic_context final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a context instance from an existing OpenGL context.
    *
@@ -53,7 +56,7 @@ class basic_context final
    *
    * \since 6.0.0
    */
-  explicit basic_context(SDL_GLContext context) noexcept(!detail::is_owning<T>())
+  explicit basic_context(maybe_owner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
       : m_context{context}
   {
     if constexpr (detail::is_owning<T>())
@@ -64,6 +67,8 @@ class basic_context final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an OpenGL context based on the supplied window.

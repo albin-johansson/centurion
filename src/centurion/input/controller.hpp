@@ -15,6 +15,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 #include "../core/time.hpp"
@@ -219,7 +220,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
     if constexpr (detail::is_owning<T>()) {

@@ -73,6 +73,8 @@ class basic_surface final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -83,7 +85,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
+  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
     if constexpr (detail::is_owning<T>())
@@ -94,6 +96,8 @@ class basic_surface final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a surface based on the image at the specified path.

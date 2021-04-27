@@ -9,6 +9,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "color.hpp"
 
@@ -157,23 +158,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -181,6 +184,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.

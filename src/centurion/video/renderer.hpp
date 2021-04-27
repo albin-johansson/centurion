@@ -17,6 +17,7 @@
 #include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -95,6 +96,8 @@ class basic_renderer final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
@@ -105,7 +108,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
+  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
     if constexpr (detail::is_owning<T>())
@@ -116,6 +119,8 @@ class basic_renderer final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.

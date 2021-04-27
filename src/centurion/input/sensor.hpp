@@ -13,6 +13,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/owner.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
@@ -101,7 +102,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!detail::is_owning<T>())
+  explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
     if constexpr (detail::is_owning<T>())

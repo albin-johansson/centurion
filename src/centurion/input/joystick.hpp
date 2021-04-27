@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
@@ -156,6 +157,8 @@ class basic_joystick final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
@@ -168,7 +171,7 @@ class basic_joystick final
    * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owning<B>())
@@ -179,6 +182,8 @@ class basic_joystick final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning joystick based on a joystick device index.

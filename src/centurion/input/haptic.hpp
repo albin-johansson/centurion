@@ -7,11 +7,12 @@
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // true_type, false_type, enable_if_t
+#include <type_traits>  // enable_if_t
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
@@ -1524,9 +1525,10 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value) : m_haptic{haptic}
+  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<B>())
+      : m_haptic{haptic}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_haptic)
       {

@@ -13,6 +13,7 @@
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
@@ -124,7 +125,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>())

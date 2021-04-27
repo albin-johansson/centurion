@@ -12,14 +12,25 @@
 /// \addtogroup video
 /// \{
 
-namespace cen::vk {
+namespace cen {
 
-// TODO Centurion 6: document and test
-
-class library final
+/**
+ * \class vk_library
+ *
+ * \brief Responsible for loading and unloading a Vulkan library.
+ *
+ * \since 6.0.0
+ */
+class vk_library final
 {
  public:
-  explicit library(const czstring path = nullptr)
+  /**
+   * \brief Loads a Vulkan library.
+   *
+   * \param path optional file path to a Vulkan library; a null path indicates that the
+   * default library will be used.
+   */
+  explicit vk_library(const czstring path = nullptr)
   {
     const auto result = SDL_Vulkan_LoadLibrary(path);
     if (result == -1)
@@ -28,19 +39,19 @@ class library final
     }
   }
 
-  library(const library&) = delete;
-  library(library&&) = delete;
+  vk_library(const vk_library&) = delete;
+  vk_library(vk_library&&) = delete;
 
-  auto operator=(const library&) -> library& = delete;
-  auto operator=(library&&) -> library& = delete;
+  auto operator=(const vk_library&) -> vk_library& = delete;
+  auto operator=(vk_library&&) -> vk_library& = delete;
 
-  ~library() noexcept
+  ~vk_library() noexcept
   {
     SDL_Vulkan_UnloadLibrary();
   }
 };
 
-}  // namespace cen::vk
+}  // namespace cen
 
 /// \} End of group video
 

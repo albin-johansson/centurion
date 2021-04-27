@@ -479,16 +479,48 @@ class music final
   /// \name Decoder functions
   /// \{
 
+  /**
+   * \brief Returns the name of the decoder associated with the specified index.
+   *
+   * \param index the index of the desired decoder.
+   *
+   * \return the name of the decoder associated with the specified index; a null string is
+   * returned if the index is invalid.
+   *
+   * \see `Mix_GetMusicDecoder`
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
   {
     return Mix_GetMusicDecoder(index);
   }
 
+  /**
+   * \brief Indicates whether or not the system has the specified music decoder.
+   *
+   * \param name the name of the decoder to check.
+   *
+   * \return `true` if the system has the specified decoder; `false` otherwise.
+   *
+   * \see `Mix_HasMusicDecoder`
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
   {
     return Mix_HasMusicDecoder(name) == SDL_TRUE;
   }
 
+  /**
+   * \brief Returns the number of available music decoders.
+   *
+   * \return the number of available music decoders.
+   *
+   * \see `Mix_GetNumMusicDecoders`
+   *
+   * \since 6.0.0
+   */
   [[nodiscard]] static auto decoder_count() noexcept -> int
   {
     return Mix_GetNumMusicDecoders();

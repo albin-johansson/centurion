@@ -6,21 +6,21 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-namespace cen::gl {
+namespace cen {
 
 /// \addtogroup video
 /// \{
 
 /**
- * \enum attribute
+ * \enum gl_attribute
  *
  * \brief Provides identifiers for different OpenGL attributes.
  *
  * \since 6.0.0
  *
- * \headerfile opengl.hpp
+ * \headerfile gl_attribute.hpp
  */
-enum class attribute
+enum class gl_attribute
 {
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,
@@ -57,7 +57,7 @@ enum class attribute
 
 /// \} End of group video
 
-}  // namespace cen::gl
+}  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_ATTRIBUTE_HEADER

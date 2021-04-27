@@ -115,7 +115,7 @@ inline void reset_attributes() noexcept
  *
  * \since 6.0.0
  */
-inline auto set(const attribute attr, const int value) noexcept -> result
+inline auto set(const gl_attribute attr, const int value) noexcept -> result
 {
   return SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attr), value) == 0;
 }
@@ -130,7 +130,7 @@ inline auto set(const attribute attr, const int value) noexcept -> result
  *
  * \since 6.0.0
  */
-inline auto get(const attribute attr) noexcept -> std::optional<int>
+inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
 {
   int value{};
   if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0)

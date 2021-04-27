@@ -41,6 +41,7 @@ set(SOURCE_FILES
 
     video/gl/gl_context_test.cpp
     video/gl/gl_core_test.cpp
+    video/gl/gl_library_test.cpp
 
     video/message_box_test.cpp
     video/renderer_test.cpp

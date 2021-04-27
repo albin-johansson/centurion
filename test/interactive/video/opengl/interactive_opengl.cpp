@@ -48,6 +48,6 @@ auto run() -> int
 auto main(int argc, char** argv) -> int
 {
   cen::library centurion;
-  cen::gl::library opengl;
+  cen::gl_library opengl;
   return run();
 }

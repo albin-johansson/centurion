@@ -78,8 +78,8 @@ TEST_F(OpenGLTest, Set)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_SetAttribute, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::failure, cen::gl::set(cen::gl::attribute::buffer_size, 42));
-  ASSERT_EQ(cen::success, cen::gl::set(cen::gl::attribute::buffer_size, 42));
+  ASSERT_EQ(cen::failure, cen::gl::set(cen::gl_attribute::buffer_size, 42));
+  ASSERT_EQ(cen::success, cen::gl::set(cen::gl_attribute::buffer_size, 42));
   ASSERT_EQ(2, SDL_GL_SetAttribute_fake.call_count);
 }
 
@@ -88,8 +88,8 @@ TEST_F(OpenGLTest, Get)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_GL_GetAttribute, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::gl::get(cen::gl::attribute::buffer_size));
-  ASSERT_TRUE(cen::gl::get(cen::gl::attribute::buffer_size));
+  ASSERT_FALSE(cen::gl::get(cen::gl_attribute::buffer_size));
+  ASSERT_TRUE(cen::gl::get(cen::gl_attribute::buffer_size));
   ASSERT_EQ(2, SDL_GL_GetAttribute_fake.call_count);
 }
 

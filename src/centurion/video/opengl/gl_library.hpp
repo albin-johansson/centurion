@@ -12,13 +12,13 @@
 #include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
 
+namespace cen {
+
 /// \addtogroup video
 /// \{
 
-namespace cen::gl {
-
 /**
- * \class library
+ * \class gl_library
  *
  * \brief Manages the initialization and de-initialization of an OpenGL library.
  *
@@ -26,7 +26,7 @@ namespace cen::gl {
  *
  * \headerfile gl_library.hpp
  */
-class library final
+class gl_library final
 {
  public:
   /**
@@ -39,7 +39,7 @@ class library final
    *
    * \since 6.0.0
    */
-  explicit library(const czstring path = nullptr)
+  explicit gl_library(const czstring path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1)
     {
@@ -47,13 +47,13 @@ class library final
     }
   }
 
-  library(const library&) = delete;
-  library(library&&) = delete;
+  gl_library(const gl_library&) = delete;
+  gl_library(gl_library&&) = delete;
 
-  auto operator=(const library&) -> library& = delete;
-  auto operator=(library&&) -> library& = delete;
+  auto operator=(const gl_library&) -> gl_library& = delete;
+  auto operator=(gl_library&&) -> gl_library& = delete;
 
-  ~library() noexcept
+  ~gl_library() noexcept
   {
     SDL_GL_UnloadLibrary();
   }
@@ -87,9 +87,9 @@ class library final
   // clang-format on
 };
 
-}  // namespace cen::gl
-
 /// \} End of group video
+
+}  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_LIBRARY_HEADER

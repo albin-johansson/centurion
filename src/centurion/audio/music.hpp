@@ -339,14 +339,31 @@ class music final
   /// \name Playback position functions
   /// \{
 
-  // TODO Centurion 6: Document and test
-
+  /**
+   * \brief Rewinds the music stream to the initial position.
+   *
+   * \see `Mix_RewindMusic`
+   *
+   * \since 6.0.0
+   */
   static void rewind() noexcept
   {
     Mix_RewindMusic();
   }
 
-  static auto set_position(const double position) noexcept -> bool
+  /**
+   * \brief Sets the position in the music stream.
+   *
+   * \param position the new music stream position.
+   *
+   * \return `success` if the music position was successfully changed; `failure`
+   * otherwise.
+   *
+   * \see `Mix_SetMusicPosition`
+   *
+   * \since 6.0.0
+   */
+  static auto set_position(const double position) noexcept -> result
   {
     return Mix_SetMusicPosition(position) == 0;
   }

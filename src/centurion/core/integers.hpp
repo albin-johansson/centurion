@@ -15,60 +15,28 @@ using uint = unsigned int;
 
 using ulonglong = unsigned long long;
 
-/**
- * \typedef u64
- *
- * \brief Alias for a 64-bit unsigned integer.
- */
+/// Alias for a 64-bit unsigned integer.
 using u64 = Uint64;
 
-/**
- * \typedef u32
- *
- * \brief Alias for a 32-bit unsigned integer.
- */
+/// Alias for a 32-bit unsigned integer.
 using u32 = Uint32;
 
-/**
- * \typedef u16
- *
- * \brief Alias for a 16-bit unsigned integer.
- */
+/// Alias for a 16-bit unsigned integer.
 using u16 = Uint16;
 
-/**
- * \typedef u8
- *
- * \brief Alias for an 8-bit unsigned integer.
- */
+/// Alias for an 8-bit unsigned integer.
 using u8 = Uint8;
 
-/**
- * \typedef i64
- *
- * \brief Alias for a 64-bit signed integer.
- */
+/// Alias for a 64-bit signed integer.
 using i64 = Sint64;
 
-/**
- * \typedef i32
- *
- * \brief Alias for a 32-bit signed integer.
- */
+/// Alias for a 32-bit signed integer.
 using i32 = Sint32;
 
-/**
- * \typedef i16
- *
- * \brief Alias for a 16-bit signed integer.
- */
+/// Alias for a 16-bit signed integer.
 using i16 = Sint16;
 
-/**
- * \typedef i8
- *
- * \brief Alias for an 8-bit signed integer.
- */
+/// Alias for an 8-bit signed integer.
 using i8 = Sint8;
 
 /// \} End of integer aliases

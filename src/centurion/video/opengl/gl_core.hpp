@@ -18,15 +18,14 @@
 #include "gl_attribute.hpp"
 #include "gl_context.hpp"
 
-/// \addtogroup video
-/// \{
-
 namespace cen {
 
 /**
  * \enum gl_swap_interval
  *
  * \brief Provides identifiers that represent different swap interval modes.
+ *
+ * \ingroup video
  *
  * \since 6.0.0
  */
@@ -44,9 +43,14 @@ enum class gl_swap_interval
  *
  * \brief Contains OpenGL-related components.
  *
+ * \ingroup video
+ *
  * \since 6.0.0
  */
 namespace cen::gl {
+
+/// \addtogroup video
+/// \{
 
 /**
  * \brief Swaps the buffers for an OpenGL window.
@@ -216,9 +220,9 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
   return is_extension_supported(extension.c_str());
 }
 
-}  // namespace cen::gl
-
 /// \} End of group video
+
+}  // namespace cen::gl
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_CORE_HEADER

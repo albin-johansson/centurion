@@ -32,7 +32,7 @@ class gl_library final
   /**
    * \brief Loads an OpenGL library.
    *
-   * \param path the file path to the OpenGL library that will be used; null
+   * \param path the file path to the OpenGL library that will be used; a null path
    * indicates that the default library will be used.
    *
    * \throws sdl_error if the OpenGL library can't be loaded.

@@ -8552,13 +8552,12 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cassert>   // assert
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -9077,6 +9076,49 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
@@ -11472,11 +11514,10 @@ enum class button_state
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
@@ -11485,6 +11526,8 @@ enum class button_state
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -11838,6 +11881,8 @@ class basic_joystick final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
@@ -11850,7 +11895,7 @@ class basic_joystick final
    * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owning<B>())
@@ -11861,6 +11906,8 @@ class basic_joystick final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning joystick based on a joystick device index.
@@ -13064,18 +13111,19 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -13168,7 +13216,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!detail::is_owning<T>())
+  explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
     if constexpr (detail::is_owning<T>())
@@ -14021,7 +14069,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -32963,13 +33011,12 @@ enum class button_state
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cassert>   // assert
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -33488,6 +33535,49 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
@@ -35883,11 +35973,10 @@ enum class button_state
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
@@ -35896,6 +35985,8 @@ enum class button_state
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -36249,6 +36340,8 @@ class basic_joystick final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
@@ -36261,7 +36354,7 @@ class basic_joystick final
    * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owning<B>())
@@ -36272,6 +36365,8 @@ class basic_joystick final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning joystick based on a joystick device index.
@@ -37475,18 +37570,19 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -37579,7 +37675,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!detail::is_owning<T>())
+  explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
     if constexpr (detail::is_owning<T>())
@@ -38432,7 +38528,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
+  explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
     if constexpr (detail::is_owning<T>()) {
@@ -39817,13 +39913,15 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // true_type, false_type, enable_if_t
+#include <type_traits>  // enable_if_t
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -41777,9 +41875,10 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(SDL_Haptic* haptic) noexcept(!B::value) : m_haptic{haptic}
+  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<B>())
+      : m_haptic{haptic}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_haptic)
       {
@@ -42695,11 +42794,10 @@ auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ost
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
@@ -42708,6 +42806,8 @@ auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ost
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -42860,6 +42960,8 @@ class basic_joystick final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
@@ -42872,7 +42974,7 @@ class basic_joystick final
    * \throws cen_error if the supplied pointer is null and the joystick is
    * owning.
    */
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
       : m_joystick{joystick}
   {
     if constexpr (detail::is_owning<B>())
@@ -42883,6 +42985,8 @@ class basic_joystick final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning joystick based on a joystick device index.
@@ -49951,18 +50055,19 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 #include <SDL.h>
 
-#include <array>        // array
-#include <cstddef>      // size_t
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type
+#include <array>     // array
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -50055,7 +50160,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  explicit basic_sensor(SDL_Sensor* sensor) noexcept(!detail::is_owning<T>())
+  explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
     if constexpr (detail::is_owning<T>())
@@ -55834,8 +55939,6 @@ class locale final
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
 #define CENTURION_CZSTRING_HEADER
@@ -56353,6 +56456,49 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../detail/owner_handle_api.hpp"
 #ifndef CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 #define CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
@@ -57775,23 +57921,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -57799,6 +57947,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.
@@ -64002,8 +64152,6 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../detail/owner_handle_api.hpp"
 #ifndef CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 #define CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
@@ -67818,8 +67966,6 @@ enum class blend_mode
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -67827,6 +67973,8 @@ enum class blend_mode
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
 
@@ -67978,23 +68126,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -68002,6 +68152,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.
@@ -68296,6 +68448,8 @@ class basic_surface final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -68306,7 +68460,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
+  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
     if constexpr (detail::is_owning<T>())
@@ -68317,6 +68471,8 @@ class basic_surface final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a surface based on the image at the specified path.
@@ -71959,6 +72115,8 @@ class basic_texture final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
    *
@@ -71969,7 +72127,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
       : m_texture{source}
   {
     if constexpr (detail::is_owning<T>())
@@ -71980,6 +72138,8 @@ class basic_texture final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a handle to texture instance.
@@ -74660,11 +74820,10 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
@@ -74673,6 +74832,8 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -74895,7 +75056,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>())
@@ -77039,6 +77200,49 @@ class mix_error final : public cen_error
 
 #endif  // CENTURION_EXCEPTION_HEADER
 
+// #include "../../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
@@ -77550,11 +77754,10 @@ class pointer_manager final
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -78073,6 +78276,49 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
@@ -81174,8 +81420,6 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -81183,6 +81427,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
 
@@ -82032,23 +82278,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -82056,6 +82304,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.
@@ -82319,48 +82569,7 @@ class basic_pixel_format_info final
 // #include "../core/not_null.hpp"
 
 // #include "../core/owner.hpp"
-#ifndef CENTURION_OWNER_HEADER
-#define CENTURION_OWNER_HEADER
 
-// #include "sfinae.hpp"
-
-
-namespace cen {
-
-/**
- * \typedef owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote ownership of raw pointers directly in code.
- *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using owner = T;
-
-/**
- * \typedef maybe_owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
- *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
- *
- * \since 6.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using maybe_owner = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 
 // #include "../detail/address_of.hpp"
@@ -82523,6 +82732,8 @@ class basic_surface final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -82533,7 +82744,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
+  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
     if constexpr (detail::is_owning<T>())
@@ -82544,6 +82755,8 @@ class basic_surface final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a surface based on the image at the specified path.
@@ -83457,7 +83670,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>())
@@ -84616,6 +84829,8 @@ class basic_context final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a context instance from an existing OpenGL context.
    *
@@ -84625,7 +84840,7 @@ class basic_context final
    *
    * \since 6.0.0
    */
-  explicit basic_context(SDL_GLContext context) noexcept(!detail::is_owning<T>())
+  explicit basic_context(maybe_owner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
       : m_context{context}
   {
     if constexpr (detail::is_owning<T>())
@@ -84636,6 +84851,8 @@ class basic_context final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an OpenGL context based on the supplied window.
@@ -85362,6 +85579,8 @@ enum class gl_attribute
 
 // #include "../../core/exception.hpp"
 
+// #include "../../core/owner.hpp"
+
 // #include "../../core/result.hpp"
 
 // #include "../../detail/owner_handle_api.hpp"
@@ -85399,6 +85618,8 @@ class basic_context final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a context instance from an existing OpenGL context.
    *
@@ -85408,7 +85629,7 @@ class basic_context final
    *
    * \since 6.0.0
    */
-  explicit basic_context(SDL_GLContext context) noexcept(!detail::is_owning<T>())
+  explicit basic_context(maybe_owner<SDL_GLContext> context) noexcept(!detail::is_owning<T>())
       : m_context{context}
   {
     if constexpr (detail::is_owning<T>())
@@ -85419,6 +85640,8 @@ class basic_context final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an OpenGL context based on the supplied window.
@@ -86063,8 +86286,6 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -86072,6 +86293,8 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
 
@@ -86223,23 +86446,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -86247,6 +86472,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.
@@ -86503,7 +86730,7 @@ class basic_pixel_format_info final
 #include <optional>       // optional
 #include <ostream>        // ostream
 #include <string>         // string
-#include <type_traits>    // enable_if_t, true_type, false_type, conditional_t
+#include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
@@ -86512,6 +86739,8 @@ class basic_pixel_format_info final
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -87440,6 +87669,8 @@ class basic_renderer final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
@@ -87450,7 +87681,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
+  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
     if constexpr (detail::is_owning<T>())
@@ -87461,6 +87692,8 @@ class basic_renderer final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.
@@ -90268,6 +90501,8 @@ class basic_surface final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -90278,7 +90513,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
+  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
     if constexpr (detail::is_owning<T>())
@@ -90289,6 +90524,8 @@ class basic_surface final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a surface based on the image at the specified path.
@@ -91179,6 +91416,8 @@ class basic_texture final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
    *
@@ -91189,7 +91428,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* source) noexcept(!detail::is_owning<T>())
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
       : m_texture{source}
   {
     if constexpr (detail::is_owning<T>())
@@ -91200,6 +91439,8 @@ class basic_texture final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a handle to texture instance.
@@ -92756,11 +92997,10 @@ inline constexpr result failure{false};
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -93279,6 +93519,49 @@ using not_null = T;
 
 #endif  // CENTURION_NOT_NULL_HEADER
 
+// #include "../core/owner.hpp"
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
+
+// #include "sfinae.hpp"
+
+
+namespace cen {
+
+/**
+ * \typedef owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using owner = T;
+
+/**
+ * \typedef maybe_owner
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to denote conditional ownership of raw pointers directly in
+ * code.
+ *
+ * \details This is primarily used in constructors of owner/handle classes,
+ * where the owner version will claim ownership of the pointer, whilst the
+ * handle does not.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using maybe_owner = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
@@ -96380,8 +96663,6 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -96389,6 +96670,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
 
@@ -97238,23 +97521,25 @@ class basic_pixel_format_info final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a pixel format info instance based on an existing pointer.
    *
    * \note Ownership of the supplied pointer might be claimed, depending on the
    * ownership semantics of the class.
    *
-   * \param ptr a pointer to the associated pixel format.
+   * \param format a pointer to the associated pixel format.
    *
    * \throws cen_error if the supplied pointer is null *and* the class has
    * owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_pixel_format_info(SDL_PixelFormat* ptr) noexcept(!B::value)
-      : m_format{ptr}
+  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
+      : m_format{format}
   {
-    if constexpr (B::value)
+    if constexpr (detail::is_owning<B>())
     {
       if (!m_format)
       {
@@ -97262,6 +97547,8 @@ class basic_pixel_format_info final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning instance based on a pixel format.
@@ -97525,48 +97812,7 @@ class basic_pixel_format_info final
 // #include "../core/not_null.hpp"
 
 // #include "../core/owner.hpp"
-#ifndef CENTURION_OWNER_HEADER
-#define CENTURION_OWNER_HEADER
 
-// #include "sfinae.hpp"
-
-
-namespace cen {
-
-/**
- * \typedef owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote ownership of raw pointers directly in code.
- *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using owner = T;
-
-/**
- * \typedef maybe_owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
- *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
- *
- * \since 6.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using maybe_owner = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_OWNER_HEADER
 // #include "../core/result.hpp"
 
 // #include "../detail/address_of.hpp"
@@ -97729,6 +97975,8 @@ class basic_surface final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
    *
@@ -97739,7 +97987,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
+  explicit basic_surface(maybe_owner<SDL_Surface*> surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
     if constexpr (detail::is_owning<T>())
@@ -97750,6 +97998,8 @@ class basic_surface final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates a surface based on the image at the specified path.
@@ -98663,7 +98913,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>())
@@ -100180,11 +100430,10 @@ class vk_library final
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 // #include "../core/czstring.hpp"
 
@@ -100193,6 +100442,8 @@ class vk_library final
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
 
@@ -100316,7 +100567,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
+  explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
     if constexpr (detail::is_owning<T>())
@@ -101469,7 +101720,7 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 #include <optional>       // optional
 #include <ostream>        // ostream
 #include <string>         // string
-#include <type_traits>    // enable_if_t, true_type, false_type, conditional_t
+#include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
@@ -101478,6 +101729,8 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 // #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -101569,6 +101822,8 @@ class basic_renderer final
   /// \name Construction
   /// \{
 
+  // clang-format off
+
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
@@ -101579,7 +101834,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
+  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
     if constexpr (detail::is_owning<T>())
@@ -101590,6 +101845,8 @@ class basic_renderer final
       }
     }
   }
+
+  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.

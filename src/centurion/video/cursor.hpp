@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 #include "../detail/owner_handle_api.hpp"
 #include "../math/point.hpp"
 #include "surface.hpp"

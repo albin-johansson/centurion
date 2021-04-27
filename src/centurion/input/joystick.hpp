@@ -3,11 +3,10 @@
 
 #include <SDL.h>
 
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // true_type, false_type, is_same_v
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"

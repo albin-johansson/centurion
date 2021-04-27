@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-#include <type_traits>  // true_type, false_type
-
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"

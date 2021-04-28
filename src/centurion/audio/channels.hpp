@@ -144,14 +144,34 @@ inline auto reset_group(const channel_index channel) noexcept -> result
   return set_group(channel, -1);
 }
 
-// Returns the number of channels in a group.
+/**
+ * \brief Returns the number of channels in the specified group.
+ *
+ * \note If the supplied group is `-1`, then this function returns the total amount of
+ * channels.
+ *
+ * \param group the index of the channel group that will be checked.
+ *
+ * \return the number of channels in the group.
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] inline auto group_count(const group_index group = -1) noexcept -> int
 {
   return Mix_GroupCount(group);
 }
 
-// Finds the first available channel in a group of channels
-[[nodiscard]] inline auto first_available(const group_index group)
+/**
+ * \brief Returns the first available channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return an available channel index in the specified group; `std::nullopt` if no channel
+ * was available.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto first_available(const group_index group) noexcept
     -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupAvailable(group);
@@ -165,7 +185,16 @@ inline auto reset_group(const channel_index channel) noexcept -> result
   }
 }
 
-// Finds the "most recent" (i.e. last) sample playing in a group of channels
+/**
+ * \brief Returns the most recently playing channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return the most recently playing channel in the group; `std::nullopt` if it couldn't
+ * be determined.
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] inline auto most_recent(const group_index group)
     -> std::optional<channel_index>
 {
@@ -180,7 +209,16 @@ inline auto reset_group(const channel_index channel) noexcept -> result
   }
 }
 
-// Finds the "oldest" sample playing in a group of channels
+/**
+ * \brief Returns the oldest playing channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return the oldest playing channel in the group; `std::nullopt` if it couldn't be
+ * determined.
+ *
+ * \since 6.0.0
+ */
 [[nodiscard]] inline auto oldest(const group_index group) -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupOldest(group);

@@ -463,8 +463,6 @@ class basic_renderer final
     for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
     {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
-      const auto x = cx - dx;
-
       draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
       draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
     }

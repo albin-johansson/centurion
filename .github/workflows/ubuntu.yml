@@ -3,6 +3,7 @@ name: "CI: Ubuntu"
 on: [ push, pull_request ]
 
 env:
+  SDL_LATEST: 2.0.14
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15
@@ -26,7 +27,7 @@ jobs:
           sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
 
       - name: Install code coverage tools
-        if: ${{matrix.SDL_VERSION == '2.0.14'}}
+        if: ${{matrix.SDL_VERSION == env.SDL_LATEST}}
         shell: bash
         run: |
           sudo apt-get install -y libjson-perl
@@ -88,7 +89,7 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          if [[ "${{matrix.SDL_VERSION}}" == "2.0.14" ]];
+          if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" ]];
           then
             cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
           else
@@ -113,7 +114,7 @@ jobs:
         run: ./CenturionTests
 
       - name: Capture code coverage
-        if: ${{matrix.SDL_VERSION == '2.0.14'}}
+        if: ${{matrix.SDL_VERSION == env.SDL_LATEST}}
         working-directory: ./build
         shell: bash
         run: |

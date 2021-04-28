@@ -11,7 +11,8 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
-    audio/mixer_test.cpp
+    audio/channels_test.cpp
+    audio/sound_fonts_test.cpp
 
     config/hints_test.cpp
 

@@ -1,10 +1,11 @@
-#ifndef CENTURION_MIXER_HEADER
-#define CENTURION_MIXER_HEADER
+#ifndef CENTURION_CHANNELS_HEADER
+#define CENTURION_CHANNELS_HEADER
 
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "../core/czstring.hpp"
+#include <optional>  // optional
+
 #include "../core/result.hpp"
 #include "../core/time.hpp"
 
@@ -13,68 +14,22 @@ namespace cen {
 /// \addtogroup audio
 /// \{
 
-/// \name Sound fonts
+using channel_index = int;
+
+using group_index = int;
+
+using channel_finished_callback = void(SDLCALL*)(channel_index) noexcept;
+
+/// \} End of group audio
+
+/// \namespace cen::channels
+/// \brief Contains functions related to audio channels.
+/// \ingroup audio
+/// \since 6.0.0
+namespace channels {
+
+/// \addtogroup audio
 /// \{
-
-/**
- * \brief Sets the paths to the available SoundFont files.
- *
- * \param paths a string of SoundFont paths, separated by semicolons.
- *
- * \return `success` if the operation was successful; `failure` otherwise.
- *
- * \see `Mix_SetSoundFonts`
- *
- * \since 6.0.0
- */
-inline auto set_sound_fonts(const czstring paths) noexcept -> result
-{
-  return Mix_SetSoundFonts(paths) != 0;
-}
-
-/**
- * \brief Returns a path to a SoundFont file.
- *
- * \return a path to a SoundFonts file; can be null.
- *
- * \see `Mix_GetSoundFonts`
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto get_sound_fonts() noexcept -> czstring
-{
-  return Mix_GetSoundFonts();
-}
-
-/// \} End of sound fonts
-
-/// \name Callbacks
-/// \{
-
-using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
-
-/**
- * \brief Visits each available SoundFont path.
- *
- * \tparam T the type of the associated data.
- *
- * \param callable the callable that will be invoked for each SoundFont path.
- * \param data optional user data.
- *
- * \return `success` if the operation was successful; `failure` otherwise.
- *
- * \see `Mix_EachSoundFont`
- *
- * \since 6.0.0
- */
-template <typename T = void>
-auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
-    -> result
-{
-  return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
-}
-
-using channel_finished_callback = void(SDLCALL*)(int) noexcept;
 
 /**
  * \brief Assigns a callback for when a channel finishes its playback.
@@ -86,15 +41,10 @@ using channel_finished_callback = void(SDLCALL*)(int) noexcept;
  *
  * \since 6.0.0
  */
-inline void on_channel_finished(channel_finished_callback callback) noexcept
+inline void on_finished(channel_finished_callback callback) noexcept
 {
   Mix_ChannelFinished(callback);
 }
-
-/// \} End of callbacks
-
-/// \name Channel functions
-/// \{
 
 /**
  * \brief Changes the amount of channels managed by the mixer.
@@ -109,7 +59,7 @@ inline void on_channel_finished(channel_finished_callback callback) noexcept
  *
  * \since 6.0.0
  */
-inline auto allocate_channels(const int count) noexcept -> int
+inline auto allocate(const int count) noexcept -> int
 {
   return Mix_AllocateChannels(count);
 }
@@ -125,7 +75,7 @@ inline auto allocate_channels(const int count) noexcept -> int
  *
  * \since 6.0.0
  */
-inline auto reserve_channels(const int count) noexcept -> int
+inline auto reserve(const int count) noexcept -> int
 {
   return Mix_ReserveChannels(count);
 }
@@ -142,9 +92,8 @@ inline auto reserve_channels(const int count) noexcept -> int
  *
  * \since 6.0.0
  */
-inline auto expire_channel(const int channel,
-                           const milliseconds<int> ms) noexcept(noexcept(ms.count()))
-    -> result
+inline auto expire(const channel_index channel,
+                   const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> result
 {
   return Mix_ExpireChannel(channel, ms.count()) != 0;
 }
@@ -158,7 +107,7 @@ inline auto expire_channel(const int channel,
  *
  * \since 6.0.0
  */
-inline auto remove_expiration(const int channel) noexcept -> result
+inline auto remove_expiration(const channel_index channel) noexcept -> result
 {
   return Mix_ExpireChannel(channel, -1) != 0;
 }
@@ -175,7 +124,8 @@ inline auto remove_expiration(const int channel) noexcept -> result
  *
  * \since 6.0.0
  */
-inline auto set_channel_group(const int channel, const int group) noexcept -> result
+inline auto set_group(const channel_index channel, const group_index group) noexcept
+    -> result
 {
   return Mix_GroupChannel(channel, group) == 1;
 }
@@ -189,14 +139,63 @@ inline auto set_channel_group(const int channel, const int group) noexcept -> re
  *
  * \since 6.0.0
  */
-inline auto reset_channel_group(const int channel) noexcept -> result
+inline auto reset_group(const channel_index channel) noexcept -> result
 {
-  return set_channel_group(channel, -1);
+  return set_group(channel, -1);
 }
 
-/// \} End of channel functions
-/// \} End of group audio
+// Returns the number of channels in a group.
+[[nodiscard]] inline auto group_count(const group_index group = -1) noexcept -> int
+{
+  return Mix_GroupCount(group);
+}
+
+// Finds the first available channel in a group of channels
+[[nodiscard]] inline auto first_available(const group_index group)
+    -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupAvailable(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+// Finds the "most recent" (i.e. last) sample playing in a group of channels
+[[nodiscard]] inline auto most_recent(const group_index group)
+    -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupNewer(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+// Finds the "oldest" sample playing in a group of channels
+[[nodiscard]] inline auto oldest(const group_index group) -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupOldest(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace channels
 
 }  // namespace cen
 
-#endif  // CENTURION_MIXER_HEADER
+#endif  // CENTURION_CHANNELS_HEADER

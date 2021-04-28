@@ -1,0 +1,114 @@
+name: "Code Coverage"
+
+on: [ push, pull_request ]
+
+env:
+  SDL_VERSION: 2.0.14
+  IMG_VERSION: 2.0.5
+  MIX_VERSION: 2.0.4
+  TTF_VERSION: 2.0.15
+  SDL_VIDEODRIVER: x11
+  DISPLAY: :99.0
+
+jobs:
+  code-coverage:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: lukka/get-cmake@v3.18.3
+
+      - name: Install graphics drivers
+        shell: bash
+        run: |
+          sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
+
+      - name: Install code coverage tools
+        shell: bash
+        run: |
+          sudo apt-get install -y libjson-perl
+
+          # Manually builds latest LCOV
+          git clone https://github.com/linux-test-project/lcov.git lcov
+          cd lcov
+          sudo make install
+          cd ..
+
+      - name: Emulate video device
+        shell: bash
+        run: |
+          sudo apt install xvfb
+          /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
+          sleep 3
+
+      - name: Install SDL2
+        shell: bash
+        run: |
+          curl -L https://www.libsdl.org/release/SDL2-${{env.SDL_VERSION}}.tar.gz | tar xz
+          cd SDL2-${{env.SDL_VERSION}}
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_image
+        shell: bash
+        run: |
+          curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-${{env.IMG_VERSION}}.tar.gz | tar xz
+          cd SDL2_image-${{env.IMG_VERSION}}
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_mixer
+        shell: bash
+        run: |
+          curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}.tar.gz | tar xz
+          cd SDL2_mixer-${{env.MIX_VERSION}}
+          ./configure
+          make
+          sudo make install
+
+      - name: Install SDL2_ttf
+        shell: bash
+        run: |
+          curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${{env.TTF_VERSION}}.tar.gz | tar xz
+          cd SDL2_ttf-${{env.TTF_VERSION}}
+          ./configure
+          make
+          sudo make install
+
+      - name: Create build directory
+        shell: bash
+        run: mkdir -p build
+
+      - name: Generate build files
+        working-directory: ./build
+        shell: bash
+        run: |
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
+
+      - name: Build
+        working-directory: ./build
+        shell: bash
+        run: |
+          ninja CenturionTests
+          ninja CenturionMocks
+
+      - name: Run mocked test suite
+        working-directory: ./build/test/mocks
+        shell: bash
+        run: ./CenturionMocks
+
+      - name: Run unit tests
+        working-directory: ./build/test/unit-tests
+        shell: bash
+        run: ./CenturionTests
+
+      - name: Capture code coverage
+        working-directory: ./build
+        shell: bash
+        run: |
+          lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-9
+          lcov --remove coverage.info '*/test/*' '*/lib/*' '/usr/*' --output-file coverage.info
+          lcov --list coverage.info
+          bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

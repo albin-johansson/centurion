@@ -501,16 +501,100 @@ TEST_F(WindowTest, IsMaximized)
 
 TEST_F(WindowTest, IsAlwaysOnTop)
 {
-  std::array values{static_cast<cen::u32>(SDL_WINDOW_FULLSCREEN),
-                    static_cast<cen::u32>(SDL_WINDOW_ALWAYS_ON_TOP)};
+  std::array values{cen::u32{cen::window::fullscreen},
+                    cen::u32{cen::window::always_on_top}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   EXPECT_FALSE(m_window.is_always_on_top());
-  EXPECT_EQ(1, SDL_GetWindowFlags_fake.call_count);
-
   EXPECT_TRUE(m_window.is_always_on_top());
   EXPECT_EQ(2, SDL_GetWindowFlags_fake.call_count);
 }
+
+TEST_F(WindowTest, HasGrabbedInput)
+{
+  std::array values{cen::u32{cen::window::fullscreen},
+                    cen::u32{cen::window::input_grabbed}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.has_grabbed_input());
+  ASSERT_TRUE(m_window.has_grabbed_input());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsHighDPI)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::high_dpi}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_high_dpi());
+  ASSERT_TRUE(m_window.is_high_dpi());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsHidden)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::hidden}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_hidden());
+  ASSERT_TRUE(m_window.is_hidden());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsUtility)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::utility}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_utility());
+  ASSERT_TRUE(m_window.is_utility());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsTooltip)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::tooltip}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_tooltip());
+  ASSERT_TRUE(m_window.is_tooltip());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsPopupMenu)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::popup_menu}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_popup_menu());
+  ASSERT_TRUE(m_window.is_popup_menu());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+TEST_F(WindowTest, IsExcludedFromTaskbar)
+{
+  std::array values{cen::u32{cen::window::fullscreen},
+                    cen::u32{cen::window::skip_taskbar}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_excluded_from_taskbar());
+  ASSERT_TRUE(m_window.is_excluded_from_taskbar());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+TEST_F(WindowTest, IsMetal)
+{
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::metal}};
+  SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.is_metal());
+  ASSERT_TRUE(m_window.is_metal());
+  ASSERT_EQ(2, SDL_GetWindowFlags_fake.call_count);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST_F(WindowTest, Brightness)
 {

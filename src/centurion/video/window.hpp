@@ -803,6 +803,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window has grabbed the input focus.
+   *
+   * \return `true` if the window has grabbed input focus; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_grabbed_input() const noexcept -> bool
+  {
+    return check_flag(input_grabbed);
+  }
+
+  /**
    * \brief Indicates whether or not the window has input focus.
    *
    * \note The window might have to be visible for this to be true.
@@ -875,6 +887,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or the window supports high-DPI mode.
+   *
+   * \return `true` if the window supports high-DPI mode; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_high_dpi() const noexcept -> bool
+  {
+    return check_flag(high_dpi);
+  }
+
+  /**
    * \brief Indicates whether or not the window is in fullscreen mode.
    *
    * \return `true` if the window is in fullscreen mode; `false` otherwise.
@@ -912,6 +936,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is hidden.
+   *
+   * \return `true` if the window isn't visible; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_hidden() const noexcept -> bool
+  {
+    return check_flag(hidden);
+  }
+
+  /**
    * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -937,6 +973,22 @@ class basic_window final
   {
     return check_flag(vulkan);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the window can be used as a Metal view.
+   *
+   * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_metal() const noexcept -> bool
+  {
+    return check_flag(metal);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Indicates whether or not the window wasn't created by SDL.
@@ -998,6 +1050,54 @@ class basic_window final
   [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
     return check_flag(always_on_top);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a "utility" window.
+   *
+   * \return `true` if window is a "utility" window; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_utility() const noexcept -> bool
+  {
+    return check_flag(utility);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a tooltip.
+   *
+   * \return `true` if the window is a tooltip; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_tooltip() const noexcept -> bool
+  {
+    return check_flag(tooltip);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a popup menu.
+   *
+   * \return `true` if the window is a popup menu; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_popup_menu() const noexcept -> bool
+  {
+    return check_flag(popup_menu);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is excluded from the taskbar.
+   *
+   * \return `true` if the window is excluded from the taskbar; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_excluded_from_taskbar() const noexcept -> bool
+  {
+    return check_flag(skip_taskbar);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>

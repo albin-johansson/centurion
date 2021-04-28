@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
 
       - name: Install code coverage tools
-        if: ${{matrix.SDL_VERSION == "2.0.14"}}
+        if: ${{matrix.SDL_VERSION == '2.0.14'}}
         shell: bash
         run: |
           sudo apt-get install -y libjson-perl
@@ -113,7 +113,7 @@ jobs:
         run: ./CenturionTests
 
       - name: Capture code coverage
-        if: ${{matrix.SDL_VERSION == "2.0.14"}}
+        if: ${{matrix.SDL_VERSION == '2.0.14'}}
         working-directory: ./build
         shell: bash
         run: |

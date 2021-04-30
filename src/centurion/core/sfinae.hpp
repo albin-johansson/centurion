@@ -10,6 +10,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -17,9 +18,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;

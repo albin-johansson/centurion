@@ -133,7 +133,7 @@ struct config final
  * \details The following is how you should use this class.
  * \code{cpp}
  *   #include <centurion.hpp>
- *   
+ *
  *   int main(int argc, char** argv)
  *   {
  *     cen::library centurion;

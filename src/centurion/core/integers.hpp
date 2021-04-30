@@ -11,8 +11,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.

@@ -191,9 +191,8 @@ class library final
   auto operator=(library&&) -> library& = delete;
 
  private:
-  class sdl final
+  struct sdl final
   {
-   public:
     explicit sdl(const u32 flags)
     {
       const auto result = SDL_Init(flags);
@@ -209,9 +208,8 @@ class library final
     }
   };
 
-  class sdl_ttf final
+  struct sdl_ttf final
   {
-   public:
     explicit sdl_ttf()
     {
       const auto result = TTF_Init();
@@ -227,9 +225,8 @@ class library final
     }
   };
 
-  class sdl_mixer final
+  struct sdl_mixer final
   {
-   public:
     sdl_mixer(const int flags,
               const int freq,
               const u16 format,
@@ -254,9 +251,8 @@ class library final
     }
   };
 
-  class sdl_image final
+  struct sdl_image final
   {
-   public:
     explicit sdl_image(const int flags)
     {
       if (!IMG_Init(flags))

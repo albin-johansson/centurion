@@ -30,7 +30,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */

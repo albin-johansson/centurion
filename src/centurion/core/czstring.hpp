@@ -1,8 +1,6 @@
 #ifndef CENTURION_CZSTRING_HEADER
 #define CENTURION_CZSTRING_HEADER
 
-#include "not_null.hpp"
-
 namespace cen {
 
 /// \addtogroup core

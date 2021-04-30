@@ -17,6 +17,10 @@ jobs:
         shell: bash
         run: brew install mpg123
 
+      - name: Install OpenGL
+        shell: bash
+        run: brew install glfw
+
       - name: Install SDL2
         shell: bash
         run: brew install SDL2

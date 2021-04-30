@@ -130,6 +130,20 @@ struct config final
  *
  * \brief Used to initialize and de-initialize the library.
  *
+ * \details The following is how you should use this class.
+ * \code{cpp}
+ *   #include <centurion.hpp>
+ *   
+ *   int main(int argc, char** argv)
+ *   {
+ *     cen::library centurion;
+ *
+ *     // ...
+ *
+ *     return 0;
+ *   }
+ * \endcode
+ *
  * \note The signature of the main-method must be `ìnt(int, char**)` when
  * using the Centurion library!
  *

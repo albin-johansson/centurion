@@ -195,8 +195,7 @@ class library final
   {
     explicit sdl(const u32 flags)
     {
-      const auto result = SDL_Init(flags);
-      if (result < 0)
+      if (SDL_Init(flags) < 0)
       {
         throw sdl_error{};
       }
@@ -212,8 +211,7 @@ class library final
   {
     explicit sdl_ttf()
     {
-      const auto result = TTF_Init();
-      if (result == -1)
+      if (TTF_Init() == -1)
       {
         throw ttf_error{};
       }

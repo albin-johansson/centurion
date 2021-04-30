@@ -1663,7 +1663,7 @@ class basic_renderer final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto has_font(const std::size_t id) const -> bool
   {
-    return static_cast<bool>(m_renderer.fonts.count(id));
+    return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
 
   /// \} // end of font handling

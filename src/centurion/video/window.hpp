@@ -60,6 +60,12 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \see `window`
  * \see `window_handle`
+ * \see `get_window()`
+ * \see `get_grabbed_window()`
+ * \see `mouse_focus_window()`
+ * \see `keyboard_focus_window()`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  *
  * \headerfile window.hpp
  */

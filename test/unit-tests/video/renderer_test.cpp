@@ -268,11 +268,6 @@ TEST_F(RendererTest, SetBlendMode)
   EXPECT_EQ(cen::blend_mode::blend, m_renderer->get_blend_mode());
 }
 
-TEST_F(RendererTest, SetTarget)
-{
-  EXPECT_NO_THROW(m_renderer->set_target(nullptr));
-}
-
 TEST_F(RendererTest, SetScale)
 {
   const auto xScale = 0.8f;

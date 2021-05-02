@@ -18,6 +18,7 @@
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
+#include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -151,11 +152,14 @@ class basic_renderer final
   /**
    * \brief Clears the rendering target with the currently selected color.
    *
+   * \return `success` if the rendering target was successfully cleared; `failure`
+   * otherwise.
+   *
    * \since 3.0.0
    */
-  void clear() noexcept
+  auto clear() noexcept -> result
   {
-    SDL_RenderClear(get());
+    return SDL_RenderClear(get()) == 0;
   }
 
   /**
@@ -170,10 +174,9 @@ class basic_renderer final
   void clear_with(const color& color) noexcept
   {
     const auto oldColor = get_color();
-
     set_color(color);
-    clear();
 
+    clear();
     set_color(oldColor);
   }
 
@@ -210,9 +213,7 @@ class basic_renderer final
       throw sdl_error{};
     }
 
-    const auto result =
-        SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1)
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
     {
       throw sdl_error{};
     }
@@ -263,18 +264,20 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void draw_rect(const basic_rect<U>& rect) noexcept
+  auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
     if constexpr (basic_rect<U>::isIntegral)
     {
-      SDL_RenderDrawRect(get(), rect.data());
+      return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
     else
     {
-      SDL_RenderDrawRectF(get(), rect.data());
+      return SDL_RenderDrawRectF(get(), rect.data()) == 0;
     }
   }
 
@@ -285,18 +288,20 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void fill_rect(const basic_rect<U>& rect) noexcept
+  auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
     if constexpr (basic_rect<U>::isIntegral)
     {
-      SDL_RenderFillRect(get(), rect.data());
+      return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
     else
     {
-      SDL_RenderFillRectF(get(), rect.data());
+      return SDL_RenderFillRectF(get(), rect.data()) == 0;
     }
   }
 
@@ -309,18 +314,21 @@ class basic_renderer final
    * \param start the start point of the line.
    * \param end the end point of the line.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
+      -> result
   {
     if constexpr (basic_point<U>::isIntegral)
     {
-      SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
+      return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
     else
     {
-      SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
+      return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
 
@@ -343,10 +351,12 @@ class basic_renderer final
    * \param container the container that holds the points that will be used
    * to render the line.
    *
+   * \return `success` if the lines were successfully rendered; `failure` otherwise.
+   *
    * \since 5.0.0
    */
   template <typename Container>
-  void draw_lines(const Container& container) noexcept
+  auto draw_lines(const Container& container) noexcept -> result
   {
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
@@ -358,12 +368,16 @@ class basic_renderer final
 
       if constexpr (std::is_same_v<value_t, int>)
       {
-        SDL_RenderDrawLines(get(), first, isize(container));
+        return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
       }
       else
       {
-        SDL_RenderDrawLinesF(get(), first, isize(container));
+        return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
       }
+    }
+    else
+    {
+      return failure;
     }
   }
 
@@ -374,18 +388,20 @@ class basic_renderer final
    *
    * \param point the point that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 6.0.0
    */
   template <typename U>
-  void draw_point(const basic_point<U>& point) noexcept
+  auto draw_point(const basic_point<U>& point) noexcept -> result
   {
     if constexpr (basic_point<U>::isIntegral)
     {
-      SDL_RenderDrawPoint(get(), point.x(), point.y());
+      return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
     else
     {
-      SDL_RenderDrawPointF(get(), point.x(), point.y());
+      return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
 
@@ -483,12 +499,14 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_rect_t(const basic_rect<R>& rect) noexcept
+  auto draw_rect_t(const basic_rect<R>& rect) noexcept -> result
   {
-    draw_rect(translate(rect));
+    return draw_rect(translate(rect));
   }
 
   /**
@@ -501,12 +519,14 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void fill_rect_t(const basic_rect<R>& rect) noexcept
+  auto fill_rect_t(const basic_rect<R>& rect) noexcept -> result
   {
-    fill_rect(translate(rect));
+    return fill_rect(translate(rect));
   }
 
   /**
@@ -520,12 +540,14 @@ class basic_renderer final
    *
    * \param point the point that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_point_t(const basic_point<U>& point) noexcept
+  auto draw_point_t(const basic_point<U>& point) noexcept -> result
   {
-    draw_point(translate(point));
+    return draw_point(translate(point));
   }
 
   /**
@@ -1139,21 +1161,24 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param position the position of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
   {
     if constexpr (basic_point<P>::isFloating)
     {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
-      SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else
     {
       const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
-      SDL_RenderCopy(get(), texture.get(), nullptr, &dst);
+      return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
 
@@ -1166,18 +1191,21 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+  auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
     else
     {
-      SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
+      return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
     }
   }
 
@@ -1194,20 +1222,23 @@ class basic_renderer final
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<P>& destination) noexcept
+              const basic_rect<P>& destination) noexcept -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
+             0;
     }
     else
     {
-      SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
+      return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
     }
   }
 
@@ -1223,33 +1254,35 @@ class basic_renderer final
    * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<P>& destination,
-              const double angle) noexcept
+              const double angle) noexcept -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        nullptr,
-                        SDL_FLIP_NONE);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               nullptr,
+                               SDL_FLIP_NONE) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       nullptr,
-                       SDL_FLIP_NONE);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              nullptr,
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -1268,14 +1301,16 @@ class basic_renderer final
    * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
-              const basic_point<P>& center) noexcept
+              const basic_point<P>& center) noexcept -> result
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                  typename basic_point<P>::value_type>,
@@ -1284,23 +1319,23 @@ class basic_renderer final
 
     if constexpr (basic_rect<R>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        SDL_FLIP_NONE);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               SDL_FLIP_NONE) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       SDL_FLIP_NONE);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -1320,15 +1355,17 @@ class basic_renderer final
    * rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
               const basic_point<P>& center,
-              const SDL_RendererFlip flip) noexcept
+              const SDL_RendererFlip flip) noexcept -> result
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                  typename basic_point<P>::value_type>,
@@ -1337,23 +1374,23 @@ class basic_renderer final
 
     if constexpr (basic_rect<R>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        flip);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               flip) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       flip);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              flip) == 0;
     }
   }
 
@@ -1374,12 +1411,15 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param position the position (pre-translation) of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
   {
-    render(texture, translate(position));
+    return render(texture, translate(position));
   }
 
   /**
@@ -1395,13 +1435,15 @@ class basic_renderer final
    * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept
+  auto render_t(const basic_texture<U>& texture,
+                const basic_rect<P>& destination) noexcept -> result
   {
-    render(texture, translate(destination));
+    return render(texture, translate(destination));
   }
 
   /**
@@ -1421,14 +1463,16 @@ class basic_renderer final
    * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<P>& destination) noexcept
+                const basic_rect<P>& destination) noexcept -> result
   {
-    render(texture, source, translate(destination));
+    return render(texture, source, translate(destination));
   }
 
   /**
@@ -1447,15 +1491,17 @@ class basic_renderer final
    * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
-                const double angle) noexcept
+                const double angle) noexcept -> result
   {
-    render(texture, source, translate(destination), angle);
+    return render(texture, source, translate(destination), angle);
   }
 
   /**
@@ -1477,16 +1523,18 @@ class basic_renderer final
    * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 const double angle,
-                const basic_point<P>& center) noexcept
+                const basic_point<P>& center) noexcept -> result
   {
-    render(texture, source, translate(destination), angle, center);
+    return render(texture, source, translate(destination), angle, center);
   }
 
   /**
@@ -1506,17 +1554,19 @@ class basic_renderer final
    * be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 const double angle,
                 const basic_point<P>& center,
-                const SDL_RendererFlip flip) noexcept
+                const SDL_RendererFlip flip) noexcept -> result
   {
-    render(texture, source, translate(destination), angle, center, flip);
+    return render(texture, source, translate(destination), angle, center, flip);
   }
 
   /// \} End of translated texture rendering
@@ -1576,11 +1626,11 @@ class basic_renderer final
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
+    if (const auto it = fonts.find(id); it != fonts.end())
     {
-      remove_font(id);
+      fonts.erase(it);
     }
-    fonts.emplace(id, std::move(font));
+    fonts.try_emplace(id, std::move(font));
   }
 
   /**
@@ -1600,9 +1650,9 @@ class basic_renderer final
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
+    if (const auto it = fonts.find(id); it != fonts.end())
     {
-      remove_font(id);
+      fonts.erase(it);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
   }
@@ -1676,15 +1726,17 @@ class basic_renderer final
    *
    * \param color the color that will be used by the renderer.
    *
+   * \return `success` if the color was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_color(const color& color) noexcept
+  auto set_color(const color& color) noexcept -> result
   {
-    SDL_SetRenderDrawColor(get(),
-                           color.red(),
-                           color.green(),
-                           color.blue(),
-                           color.alpha());
+    return SDL_SetRenderDrawColor(get(),
+                                  color.red(),
+                                  color.green(),
+                                  color.blue(),
+                                  color.alpha()) == 0;
   }
 
   /**
@@ -1694,18 +1746,13 @@ class basic_renderer final
    *
    * \param area the clip area rectangle; or `std::nullopt` to disable clipping.
    *
+   * \return `success` if the clip was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_clip(const std::optional<irect> area) noexcept
+  auto set_clip(const std::optional<irect> area) noexcept -> result
   {
-    if (area)
-    {
-      SDL_RenderSetClipRect(get(), area->data());
-    }
-    else
-    {
-      SDL_RenderSetClipRect(get(), nullptr);
-    }
+    return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
 
   /**
@@ -1713,11 +1760,13 @@ class basic_renderer final
    *
    * \param viewport the viewport that will be used by the renderer.
    *
+   * \return `success` if the viewport was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_viewport(const irect viewport) noexcept
+  auto set_viewport(const irect viewport) noexcept -> result
   {
-    SDL_RenderSetViewport(get(), viewport.data());
+    return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
 
   /**
@@ -1725,34 +1774,44 @@ class basic_renderer final
    *
    * \param mode the blend mode that will be used by the renderer.
    *
+   * \return `success` if the blend mode was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_blend_mode(const blend_mode mode) noexcept
+  auto set_blend_mode(const blend_mode mode) noexcept -> result
   {
-    SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode));
+    return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
   }
 
   /**
    * \brief Sets the rendering target of the renderer.
    *
-   * \details The supplied texture must support being a render target.
-   * Otherwise, this function will reset the render target.
+   * \pre `target` must be a texture that can be used as a render target.
    *
-   * \param target a pointer to the new target texture; `nullptr` indicates
-   * that the default rendering target should be used.
+   * \param target the texture that will be used as a rendering target.
+   *
+   * \return `success` if the rendering target was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
-  void set_target(const texture* target) noexcept
+  template <typename U>
+  auto set_target(basic_texture<U>& target) noexcept -> result
   {
-    if (target && target->is_target())
-    {
-      SDL_SetRenderTarget(get(), target->get());
-    }
-    else
-    {
-      SDL_SetRenderTarget(get(), nullptr);
-    }
+    assert(target.is_target());
+    return SDL_SetRenderTarget(get(), target.get()) == 0;
+  }
+
+  /**
+   * \brief Resets the rendering target to the default.
+   *
+   * \return `success` if the rendering target was successfully reset; `failure`
+   * otherwise.
+   *
+   * \since 6.0.0
+   */
+  auto reset_target() noexcept -> result
+  {
+    return SDL_SetRenderTarget(get(), nullptr) == 0;
   }
 
   /**
@@ -1764,13 +1823,19 @@ class basic_renderer final
    * \param xScale the x-axis scale that will be used.
    * \param yScale the y-axis scale that will be used.
    *
+   * \return `success` if the scale was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_scale(const float xScale, const float yScale) noexcept
+  auto set_scale(const float xScale, const float yScale) noexcept -> result
   {
     if ((xScale > 0) && (yScale > 0))
     {
-      SDL_RenderSetScale(get(), xScale, yScale);
+      return SDL_RenderSetScale(get(), xScale, yScale) == 0;
+    }
+    else
+    {
+      return failure;
     }
   }
 
@@ -1786,13 +1851,19 @@ class basic_renderer final
    *
    * \param size the logical width and height that will be used.
    *
+   * \return `success` if the logical size was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_logical_size(const iarea size) noexcept
+  auto set_logical_size(const iarea size) noexcept -> result
   {
     if ((size.width >= 0) && (size.height >= 0))
     {
-      SDL_RenderSetLogicalSize(get(), size.width, size.height);
+      return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
+    }
+    else
+    {
+      return failure;
     }
   }
 
@@ -1805,11 +1876,13 @@ class basic_renderer final
    *
    * \param enabled `true` if integer scaling should be used; `false` otherwise.
    *
+   * \return `success` if the option was successfully changed; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_logical_integer_scaling(const bool enabled) noexcept
+  auto set_logical_integer_scaling(const bool enabled) noexcept -> result
   {
-    SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
+    return SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled)) == 0;
   }
 
   /// \} End of setters
@@ -1878,10 +1951,9 @@ class basic_renderer final
    */
   [[nodiscard]] auto logical_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_RenderGetLogicalSize(get(), &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
+    return size;
   }
 
   /**
@@ -1962,8 +2034,7 @@ class basic_renderer final
   [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
   {
     SDL_RendererInfo info{};
-    const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0)
+    if (SDL_GetRendererInfo(get(), &info) == 0)
     {
       return info;
     }
@@ -2013,10 +2084,9 @@ class basic_renderer final
    */
   [[nodiscard]] auto output_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_GetRendererOutputSize(get(), &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_GetRendererOutputSize(get(), &size.width, &size.height);
+    return size;
   }
 
   /**
@@ -2129,7 +2199,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
+    return static_cast<bool>(flags() & vsync);
   }
 
   /**
@@ -2142,7 +2212,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto is_accelerated() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
+    return static_cast<bool>(flags() & accelerated);
   }
 
   /**
@@ -2154,7 +2224,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto is_software_based() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
+    return static_cast<bool>(flags() & software);
   }
 
   /**
@@ -2168,7 +2238,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto supports_target_textures() const noexcept -> bool
   {
-    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
+    return static_cast<bool>(flags() & target_textures);
   }
 
   /**
@@ -2241,9 +2311,7 @@ class basic_renderer final
     std::unordered_map<std::size_t, font> fonts{};
   };
 
-  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
-
-  rep_t m_renderer;
+  std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
 
   [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
   {

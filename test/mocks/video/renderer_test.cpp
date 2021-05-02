@@ -21,7 +21,6 @@ FAKE_VALUE_FUNC(int, SDL_RenderDrawPoint, SDL_Renderer*, int, int)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawPointF, SDL_Renderer*, float, float)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
-FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLines, SDL_Renderer*, const SDL_Point*, int)
@@ -31,9 +30,11 @@ FAKE_VALUE_FUNC(int, SDL_RenderCopyF, SDL_Renderer*, SDL_Texture*, const SDL_Rec
 FAKE_VALUE_FUNC(int, SDL_RenderCopyEx, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_Rect*, double, const SDL_Point*, SDL_RendererFlip)
 FAKE_VALUE_FUNC(int, SDL_RenderCopyExF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*, double, const SDL_FPoint*, SDL_RendererFlip)
 FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
+FAKE_VALUE_FUNC(int, SDL_SetRenderTarget, SDL_Renderer*, SDL_Texture*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
+FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
@@ -73,6 +74,7 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_GetRendererInfo)
     RESET_FAKE(SDL_RenderGetIntegerScale)
     RESET_FAKE(SDL_RenderIsClipEnabled)
+    RESET_FAKE(SDL_SetRenderTarget)
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -410,6 +412,79 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
 
   EXPECT_EQ(1, SDL_RenderCopyEx_fake.call_count);
   EXPECT_EQ(1, SDL_RenderCopyExF_fake.call_count);
+}
+
+TEST_F(RendererTest, ResetTarget)
+{
+  m_renderer.reset_target();
+  ASSERT_EQ(1, SDL_SetRenderTarget_fake.call_count);
+}
+
+TEST_F(RendererTest, SetColor)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_SetRenderDrawColor, values.data(), cen::isize(values));
+
+  ASSERT_EQ(cen::failure, m_renderer.set_color(cen::colors::cyan));
+  ASSERT_EQ(cen::success, m_renderer.set_color(cen::colors::cyan));
+  ASSERT_EQ(2, SDL_SetRenderDrawColor_fake.call_count);
+}
+
+TEST_F(RendererTest, SetClip)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_RenderSetClipRect, values.data(), cen::isize(values));
+
+  const auto rect = cen::rect(42, 27, 123, 321);
+  ASSERT_EQ(cen::failure, m_renderer.set_clip(rect));
+  ASSERT_EQ(cen::success, m_renderer.set_clip(rect));
+  ASSERT_EQ(2, SDL_RenderSetClipRect_fake.call_count);
+}
+
+TEST_F(RendererTest, SetViewport)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_RenderSetViewport, values.data(), cen::isize(values));
+
+  const auto rect = cen::rect(12, 34, 56, 78);
+  ASSERT_EQ(cen::failure, m_renderer.set_viewport(rect));
+  ASSERT_EQ(cen::success, m_renderer.set_viewport(rect));
+  ASSERT_EQ(2, SDL_RenderSetViewport_fake.call_count);
+}
+
+TEST_F(RendererTest, SetBlendMode)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_SetRenderDrawBlendMode, values.data(), cen::isize(values));
+
+  const auto rect = cen::rect(12, 34, 56, 78);
+  ASSERT_EQ(cen::failure, m_renderer.set_blend_mode(cen::blend_mode::blend));
+  ASSERT_EQ(cen::success, m_renderer.set_blend_mode(cen::blend_mode::blend));
+  ASSERT_EQ(2, SDL_SetRenderDrawBlendMode_fake.call_count);
+}
+
+auto query_texture(SDL_Texture* texture, Uint32* format, int* access, int* w, int* h)
+    -> int
+{
+  if (access)
+  {
+    *access = SDL_TEXTUREACCESS_TARGET;
+  }
+  return 0;
+}
+
+TEST_F(RendererTest, SetTarget)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_SetRenderTarget, values.data(), cen::isize(values));
+
+  std::array functions{query_texture};
+  SET_CUSTOM_FAKE_SEQ(SDL_QueryTexture, functions.data(), cen::isize(functions));
+
+  cen::texture_handle texture{nullptr};
+  ASSERT_EQ(cen::failure, m_renderer.set_target(texture));
+  ASSERT_EQ(cen::success, m_renderer.set_target(texture));
+  ASSERT_EQ(2, SDL_SetRenderTarget_fake.call_count);
 }
 
 TEST_F(RendererTest, Info)

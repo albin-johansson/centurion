@@ -80,104 +80,21 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 // clang-format on
 
-// #include "centurion/audio/mixer.hpp"
-#ifndef CENTURION_MIXER_HEADER
-#define CENTURION_MIXER_HEADER
+// #include "centurion/audio/channels.hpp"
+#ifndef CENTURION_CHANNELS_HEADER
+#define CENTURION_CHANNELS_HEADER
 
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-// #include "../core/czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
+#include <optional>  // optional
 
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
+
+#include <ostream>  // ostream
+#include <string>   // string
 
 namespace cen {
 
@@ -299,6 +216,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -326,8 +275,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -553,25 +504,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -587,68 +546,22 @@ namespace cen {
 /// \addtogroup audio
 /// \{
 
-/// \name Sound fonts
+using channel_index = int;
+
+using group_index = int;
+
+using channel_finished_callback = void(SDLCALL*)(channel_index) noexcept;
+
+/// \} End of group audio
+
+/// \namespace cen::channels
+/// \brief Contains functions related to audio channels.
+/// \ingroup audio
+/// \since 6.0.0
+namespace channels {
+
+/// \addtogroup audio
 /// \{
-
-/**
- * \brief Sets the paths to the available SoundFont files.
- *
- * \param paths a string of SoundFont paths, separated by semicolons.
- *
- * \return `success` if the operation was successful; `failure` otherwise.
- *
- * \see `Mix_SetSoundFonts`
- *
- * \since 6.0.0
- */
-inline auto set_sound_fonts(const czstring paths) noexcept -> result
-{
-  return Mix_SetSoundFonts(paths) != 0;
-}
-
-/**
- * \brief Returns a path to a SoundFont file.
- *
- * \return a path to a SoundFonts file; can be null.
- *
- * \see `Mix_GetSoundFonts`
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto get_sound_fonts() noexcept -> czstring
-{
-  return Mix_GetSoundFonts();
-}
-
-/// \} End of sound fonts
-
-/// \name Callbacks
-/// \{
-
-using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
-
-/**
- * \brief Visits each available SoundFont path.
- *
- * \tparam T the type of the associated data.
- *
- * \param callable the callable that will be invoked for each SoundFont path.
- * \param data optional user data.
- *
- * \return `success` if the operation was successful; `failure` otherwise.
- *
- * \see `Mix_EachSoundFont`
- *
- * \since 6.0.0
- */
-template <typename T = void>
-auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
-    -> result
-{
-  return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
-}
-
-using channel_finished_callback = void(SDLCALL*)(int) noexcept;
 
 /**
  * \brief Assigns a callback for when a channel finishes its playback.
@@ -660,15 +573,10 @@ using channel_finished_callback = void(SDLCALL*)(int) noexcept;
  *
  * \since 6.0.0
  */
-inline void on_channel_finished(channel_finished_callback callback) noexcept
+inline void on_finished(channel_finished_callback callback) noexcept
 {
   Mix_ChannelFinished(callback);
 }
-
-/// \} End of callbacks
-
-/// \name Channel functions
-/// \{
 
 /**
  * \brief Changes the amount of channels managed by the mixer.
@@ -683,7 +591,7 @@ inline void on_channel_finished(channel_finished_callback callback) noexcept
  *
  * \since 6.0.0
  */
-inline auto allocate_channels(const int count) noexcept -> int
+inline auto allocate(const int count) noexcept -> int
 {
   return Mix_AllocateChannels(count);
 }
@@ -699,7 +607,7 @@ inline auto allocate_channels(const int count) noexcept -> int
  *
  * \since 6.0.0
  */
-inline auto reserve_channels(const int count) noexcept -> int
+inline auto reserve(const int count) noexcept -> int
 {
   return Mix_ReserveChannels(count);
 }
@@ -716,9 +624,8 @@ inline auto reserve_channels(const int count) noexcept -> int
  *
  * \since 6.0.0
  */
-inline auto expire_channel(const int channel,
-                           const milliseconds<int> ms) noexcept(noexcept(ms.count()))
-    -> result
+inline auto expire(const channel_index channel,
+                   const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> result
 {
   return Mix_ExpireChannel(channel, ms.count()) != 0;
 }
@@ -732,7 +639,7 @@ inline auto expire_channel(const int channel,
  *
  * \since 6.0.0
  */
-inline auto remove_expiration(const int channel) noexcept -> result
+inline auto remove_expiration(const channel_index channel) noexcept -> result
 {
   return Mix_ExpireChannel(channel, -1) != 0;
 }
@@ -749,7 +656,8 @@ inline auto remove_expiration(const int channel) noexcept -> result
  *
  * \since 6.0.0
  */
-inline auto set_channel_group(const int channel, const int group) noexcept -> result
+inline auto set_group(const channel_index channel, const group_index group) noexcept
+    -> result
 {
   return Mix_GroupChannel(channel, group) == 1;
 }
@@ -763,17 +671,104 @@ inline auto set_channel_group(const int channel, const int group) noexcept -> re
  *
  * \since 6.0.0
  */
-inline auto reset_channel_group(const int channel) noexcept -> result
+inline auto reset_group(const channel_index channel) noexcept -> result
 {
-  return set_channel_group(channel, -1);
+  return set_group(channel, -1);
 }
 
-/// \} End of channel functions
-/// \} End of group audio
+/**
+ * \brief Returns the number of channels in the specified group.
+ *
+ * \note If the supplied group is `-1`, then this function returns the total amount of
+ * channels.
+ *
+ * \param group the index of the channel group that will be checked.
+ *
+ * \return the number of channels in the group.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto group_count(const group_index group = -1) noexcept -> int
+{
+  return Mix_GroupCount(group);
+}
+
+/**
+ * \brief Returns the first available channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return an available channel index in the specified group; `std::nullopt` if no channel
+ * was available.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto first_available(const group_index group) noexcept
+    -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupAvailable(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the most recently playing channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return the most recently playing channel in the group; `std::nullopt` if it couldn't
+ * be determined.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto most_recent(const group_index group)
+    -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupNewer(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Returns the oldest playing channel in the specified group.
+ *
+ * \param group the channel group that will be checked.
+ *
+ * \return the oldest playing channel in the group; `std::nullopt` if it couldn't be
+ * determined.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto oldest(const group_index group) -> std::optional<channel_index>
+{
+  const auto channel = Mix_GroupOldest(group);
+  if (channel != -1)
+  {
+    return channel;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace channels
 
 }  // namespace cen
 
-#endif  // CENTURION_MIXER_HEADER
+#endif  // CENTURION_CHANNELS_HEADER
 
 // #include "centurion/audio/music.hpp"
 #ifndef CENTURION_MUSIC_HEADER
@@ -788,6 +783,111 @@ inline auto reset_channel_group(const int channel) noexcept -> result
 #include <string>    // string
 
 // #include "../core/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -826,6 +926,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -853,7 +969,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -866,7 +982,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -1063,9 +1179,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -1199,8 +1315,9 @@ template <typename T>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -1356,7 +1473,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -1367,7 +1484,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -1376,11 +1493,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -2208,6 +2324,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -2215,9 +2332,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -2269,6 +2388,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -2296,7 +2431,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -2309,7 +2444,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -3073,6 +3208,82 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 
 #endif  // CENTURION_SOUND_EFFECT_HEADER
 
+// #include "centurion/audio/sound_fonts.hpp"
+#ifndef CENTURION_SOUND_FONTS_HEADER
+#define CENTURION_SOUND_FONTS_HEADER
+
+#include <SDL.h>
+#include <SDL_mixer.h>
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/result.hpp"
+
+
+namespace cen {
+
+/// \addtogroup audio
+/// \{
+
+using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
+
+/**
+ * \brief Sets the paths to the available SoundFont files.
+ *
+ * \param paths a string of SoundFont paths, separated by semicolons.
+ *
+ * \return `success` if the operation was successful; `failure` otherwise.
+ *
+ * \see `Mix_SetSoundFonts`
+ *
+ * \since 6.0.0
+ */
+inline auto set_sound_fonts(const czstring paths) noexcept -> result
+{
+  return Mix_SetSoundFonts(paths) != 0;
+}
+
+/**
+ * \brief Returns a path to a SoundFont file.
+ *
+ * \return a path to a SoundFonts file; can be null.
+ *
+ * \see `Mix_GetSoundFonts`
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto get_sound_fonts() noexcept -> czstring
+{
+  return Mix_GetSoundFonts();
+}
+
+/**
+ * \brief Visits each available SoundFont path.
+ *
+ * \tparam T the type of the associated data.
+ *
+ * \param callable the callable that will be invoked for each SoundFont path.
+ * \param data optional user data.
+ *
+ * \return `success` if the operation was successful; `failure` otherwise.
+ *
+ * \see `Mix_EachSoundFont`
+ *
+ * \since 6.0.0
+ */
+template <typename T = void>
+auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
+    -> result
+{
+  return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
+}
+
+/// \} End of group audio
+
+}  // namespace cen
+
+#endif  // CENTURION_SOUND_FONTS_HEADER
+
 // #include "centurion/compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
 #define CENTURION_COMPILER_HEADER
@@ -3268,6 +3479,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -3275,9 +3487,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -3329,6 +3543,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -3372,6 +3602,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -3399,7 +3645,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -3412,7 +3658,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -3563,8 +3809,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -3816,7 +4064,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -3829,7 +4077,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -3980,8 +4228,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -4240,6 +4490,20 @@ struct config final
  *
  * \brief Used to initialize and de-initialize the library.
  *
+ * \details The following is how you should use this class.
+ * \code{cpp}
+ *   #include <centurion.hpp>
+ *
+ *   int main(int argc, char** argv)
+ *   {
+ *     cen::library centurion;
+ *
+ *     // ...
+ *
+ *     return 0;
+ *   }
+ * \endcode
+ *
  * \note The signature of the main-method must be `ìnt(int, char**)` when
  * using the Centurion library!
  *
@@ -4301,13 +4565,11 @@ class library final
   auto operator=(library&&) -> library& = delete;
 
  private:
-  class sdl final
+  struct sdl final
   {
-   public:
     explicit sdl(const u32 flags)
     {
-      const auto result = SDL_Init(flags);
-      if (result < 0)
+      if (SDL_Init(flags) < 0)
       {
         throw sdl_error{};
       }
@@ -4319,13 +4581,11 @@ class library final
     }
   };
 
-  class sdl_ttf final
+  struct sdl_ttf final
   {
-   public:
     explicit sdl_ttf()
     {
-      const auto result = TTF_Init();
-      if (result == -1)
+      if (TTF_Init() == -1)
       {
         throw ttf_error{};
       }
@@ -4337,9 +4597,8 @@ class library final
     }
   };
 
-  class sdl_mixer final
+  struct sdl_mixer final
   {
-   public:
     sdl_mixer(const int flags,
               const int freq,
               const u16 format,
@@ -4364,9 +4623,8 @@ class library final
     }
   };
 
-  class sdl_image final
+  struct sdl_image final
   {
-   public:
     explicit sdl_image(const int flags)
     {
       if (!IMG_Init(flags))
@@ -4486,9 +4744,40 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 // #include "not_null.hpp"
 
+// #include "to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
 
-/// \addtogroup core
-/// \{
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
@@ -4497,24 +4786,15 @@ using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
 
 #endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
-/**
- * \namespace cen::log
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-namespace cen::log {
+namespace cen {
+
+/// \addtogroup core
+/// \{
 
 /**
- * \enum priority
+ * \enum log_priority
  *
- * \brief Mirrors the `SDL_LogPriority` enum.
+ * \brief Provides values that represent different logging priorities.
  *
  * \see `SDL_LogPriority`
  *
@@ -4522,7 +4802,7 @@ namespace cen::log {
  *
  * \headerfile log.hpp
  */
-enum class priority
+enum class log_priority : int
 {
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
@@ -4533,9 +4813,9 @@ enum class priority
 };
 
 /**
- * \enum category
+ * \enum log_category
  *
- * \brief Mirrors the `SDL_LogCategory` enum.
+ * \brief Provides values that represent different logging categories.
  *
  * \see `SDL_LogCategory`
  *
@@ -4543,7 +4823,7 @@ enum class priority
  *
  * \headerfile log.hpp
  */
-enum class category
+enum class log_category : int
 {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
@@ -4556,6 +4836,27 @@ enum class category
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/// \} End of group core
+
+/**
+ * \namespace cen::log
+ *
+ * \ingroup core
+ *
+ * \brief Contains easy-to-use logging facilities.
+ *
+ * \details The usage of the logging API will be very familiar to most people
+ * that have used the `printf` and/or the `SDL_Log` facilities.
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+namespace log {
+
+/// \addtogroup core
+/// \{
 
 /**
  * \brief Logs a message with the specified priority and category.
@@ -4575,8 +4876,8 @@ enum class category
  * \since 4.0.0
  */
 template <typename... Args>
-void msg(const priority priority,
-         const category category,
+void msg(const log_priority priority,
+         const log_category category,
          const not_null<czstring> fmt,
          Args&&... args) noexcept
 {
@@ -4601,9 +4902,11 @@ void msg(const priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void info(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::info, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4622,7 +4925,7 @@ void info(const category category, const not_null<czstring> fmt, Args&&... args)
 template <typename... Args>
 void info(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::info(category::app, fmt, std::forward<Args>(args)...);
+  log::info(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4640,9 +4943,11 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void warn(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::warn, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4661,7 +4966,7 @@ void warn(const category category, const not_null<czstring> fmt, Args&&... args)
 template <typename... Args>
 void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::warn(category::app, fmt, std::forward<Args>(args)...);
+  log::warn(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4679,11 +4984,11 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const category category,
+void verbose(const log_category category,
              const not_null<czstring> fmt,
              Args&&... args) noexcept
 {
-  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4702,7 +5007,7 @@ void verbose(const category category,
 template <typename... Args>
 void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::verbose(category::app, fmt, std::forward<Args>(args)...);
+  log::verbose(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4720,9 +5025,11 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void debug(const log_category category,
+           const not_null<czstring> fmt,
+           Args&&... args) noexcept
 {
-  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::debug, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4741,7 +5048,7 @@ void debug(const category category, const not_null<czstring> fmt, Args&&... args
 template <typename... Args>
 void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::debug(category::app, fmt, std::forward<Args>(args)...);
+  log::debug(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4759,11 +5066,11 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const category category,
+void critical(const log_category category,
               const not_null<czstring> fmt,
               Args&&... args) noexcept
 {
-  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4782,7 +5089,7 @@ void critical(const category category,
 template <typename... Args>
 void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::critical(category::app, fmt, std::forward<Args>(args)...);
+  log::critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4800,9 +5107,9 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const category category, const czstring fmt, Args&&... args) noexcept
+void error(const log_category category, const czstring fmt, Args&&... args) noexcept
 {
-  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::error, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4819,7 +5126,7 @@ void error(const category category, const czstring fmt, Args&&... args) noexcept
 template <typename... Args>
 void error(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::error(category::app, fmt, std::forward<Args>(args)...);
+  log::error(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -4857,13 +5164,13 @@ inline void reset_priorities() noexcept
 /**
  * \brief Sets the priority of all categories.
  *
- * \param prio the priority that will be used.
+ * \param priority the priority that will be used.
  *
  * \since 3.0.0
  */
-inline void set_priority(const priority prio) noexcept
+inline void set_priority(const log_priority priority) noexcept
 {
-  const auto p = static_cast<SDL_LogPriority>(prio);
+  const auto p = static_cast<SDL_LogPriority>(priority);
   SDL_LogSetAllPriority(p);
 
   // Apparently not set by SDL
@@ -4874,13 +5181,14 @@ inline void set_priority(const priority prio) noexcept
  * \brief Sets the priority of the specified category.
  *
  * \param category the category that will have its priority changed.
- * \param prio the new priority value.
+ * \param priority the new priority value.
  *
  * \since 3.0.0
  */
-inline void set_priority(const category category, const priority prio) noexcept
+inline void set_priority(const log_category category,
+                         const log_priority priority) noexcept
 {
-  SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(prio));
+  SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
 
 /**
@@ -4891,9 +5199,10 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const category category) noexcept -> priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept
+    -> log_priority
 {
-  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
+  return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
 
 /**
@@ -4914,6 +5223,13 @@ inline void set_priority(const category category, const priority prio) noexcept
   return SDL_MAX_LOG_MESSAGE;
 }
 
+/// \} End of group core
+
+}  // namespace log
+
+/// \addtogroup core
+/// \{
+
 /**
  * \brief Indicates whether or not the two log priorities values are the same.
  *
@@ -4924,15 +5240,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const priority lhs,
+[[nodiscard]] constexpr auto operator==(const log_priority lhs,
                                         const SDL_LogPriority rhs) noexcept -> bool
 {
   return static_cast<SDL_LogPriority>(lhs) == rhs;
 }
 
-/// \copydoc operator==(priority, SDL_LogPriority)
+/// \copydoc operator==(log_priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
+                                        const log_priority rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -4948,15 +5264,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const priority lhs,
+[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
                                         const SDL_LogPriority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-/// \copydoc operator!=(priority, SDL_LogPriority)
+/// \copydoc operator!=(log_priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
+                                        const log_priority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -4971,15 +5287,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const category lhs,
+[[nodiscard]] constexpr auto operator==(const log_category lhs,
                                         const SDL_LogCategory rhs) noexcept -> bool
 {
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
 
-/// \copydoc operator==(category, SDL_LogCategory)
+/// \copydoc operator==(log_category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
+                                        const log_category rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -4994,20 +5310,25 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const category lhs,
+[[nodiscard]] constexpr auto operator!=(const log_category lhs,
                                         const SDL_LogCategory rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-/// \copydoc operator!=(category, SDL_LogCategory)
+/// \copydoc operator!=(log_category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
+                                        const log_category rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-}  // namespace cen::log
+/// \} End of group core
+
+}  // namespace cen
+
+/// \addtogroup core
+/// \{
 
 #ifndef CENTURION_NO_DEBUG_LOG_MACROS
 #ifdef NDEBUG
@@ -5137,7 +5458,7 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 5.0.0
  */
 
-/// \}
+/// \} End of group core
 
 #endif  // CENTURION_LOG_HEADER
 
@@ -5214,6 +5535,9 @@ using maybe_owner = T;
 // #include "centurion/core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
+
+#include <ostream>  // ostream
+#include <string>   // string
 
 namespace cen {
 
@@ -5334,6 +5658,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 
@@ -5516,6 +5872,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -5523,9 +5880,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -5598,25 +5957,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -5625,6 +5992,40 @@ constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
 }  // namespace cen
 
 #endif  // CENTURION_TIME_HEADER
+
+// #include "centurion/core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
 
 // #include "centurion/core/version.hpp"
 #ifndef CENTURION_VERSION_HEADER
@@ -5724,7 +6125,7 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are default-initialized to the current
+ * \details The members of this struct are by default initialized to the current
  * Centurion version values.
  *
  * \version 6.0.0
@@ -5918,9 +6319,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -6084,6 +6485,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -6091,9 +6493,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -6144,6 +6548,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -6273,8 +6693,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -6517,6 +6939,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -6544,7 +6982,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -6557,7 +6995,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -7201,7 +7639,7 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are default-initialized to the current
+ * \details The members of this struct are by default initialized to the current
  * Centurion version values.
  *
  * \version 6.0.0
@@ -7451,17 +7889,14 @@ template <std::size_t bufferSize>
 class stack_resource final
 {
  public:
-  stack_resource() : m_buffer{}, m_pool{m_buffer.data(), sizeof m_buffer}
-  {}
-
   [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource*
   {
     return &m_pool;
   }
 
  private:
-  std::array<std::byte, bufferSize> m_buffer;
-  std::pmr::monotonic_buffer_resource m_pool;
+  std::array<std::byte, bufferSize> m_buffer{};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail
@@ -7558,8 +7993,9 @@ class static_bimap final
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -7715,7 +8151,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -7726,7 +8162,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -7735,11 +8171,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -7811,8 +8246,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -7995,11 +8432,48 @@ namespace literals {
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "event_type.hpp"
 #ifndef CENTURION_EVENT_TYPE_HEADER
 #define CENTURION_EVENT_TYPE_HEADER
 
 #include <SDL.h>
+
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -8017,7 +8491,7 @@ namespace cen {
  *
  * \headerfile event_type.hpp
  */
-enum class event_type
+enum class event_type : u32
 {
   quit = SDL_QUIT,
 
@@ -8216,7 +8690,7 @@ class common_event
    */
   void set_type(const event_type type) noexcept
   {
-    m_event.type = static_cast<u32>(type);
+    m_event.type = to_underlying(type);
   }
 
   /**
@@ -8401,6 +8875,8 @@ inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event) -> SDL
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "event_type.hpp"
 
 
@@ -8484,7 +8960,7 @@ class common_event
    */
   void set_type(const event_type type) noexcept
   {
-    m_event.type = static_cast<u32>(type);
+    m_event.type = to_underlying(type);
   }
 
   /**
@@ -8580,6 +9056,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -8587,9 +9064,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -8641,6 +9120,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -8684,6 +9179,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -8711,7 +9222,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -8724,7 +9235,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -8875,8 +9386,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -9123,6 +9636,9 @@ using maybe_owner = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -9242,6 +9758,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 
@@ -9432,8 +9980,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -9659,25 +10209,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -9716,9 +10274,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -9771,6 +10329,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -9778,9 +10337,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -9832,6 +10393,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -9859,7 +10436,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -9872,7 +10449,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -10210,7 +10787,7 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are default-initialized to the current
+ * \details The members of this struct are by default initialized to the current
  * Centurion version values.
  *
  * \version 6.0.0
@@ -10416,8 +10993,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -10596,8 +11175,9 @@ namespace literals {
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -10753,7 +11333,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -10764,7 +11344,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -10773,11 +11353,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -11484,6 +12063,9 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /**
@@ -11499,7 +12081,7 @@ namespace cen {
  *
  * \headerfile button_state.hpp
  */
-enum class button_state
+enum class button_state : u8
 {
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
@@ -11533,6 +12115,40 @@ enum class button_state
 
 // #include "../core/time.hpp"
 
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
@@ -11545,8 +12161,9 @@ enum class button_state
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -11702,7 +12319,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -11713,7 +12330,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -11722,11 +12339,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -11782,7 +12398,7 @@ enum class joystick_power
  *
  * \headerfile joystick.hpp
  */
-enum class hat_state
+enum class hat_state : u8
 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
@@ -12143,7 +12759,7 @@ class basic_joystick final
    */
   auto set_virtual_button(const int button, const button_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualButton(m_joystick, button, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualButton(m_joystick, button, to_underlying(state)) == 0;
   }
 
   /**
@@ -12158,7 +12774,7 @@ class basic_joystick final
    */
   auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, to_underlying(state)) == 0;
   }
 
   /**
@@ -12940,8 +13556,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -13539,10 +14154,9 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-  const auto name = sensor.name();
-  const std::string nameStr = name ? name : "N/A";
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() + ", name: " + nameStr + "}";
+         ", id: " + detail::to_string(sensor.id()).value() +
+         ", name: " + str_or_na(sensor.name()) + "}";
 }
 
 /**
@@ -14072,8 +14686,10 @@ class basic_controller final
   explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) {
-      if (!m_controller) {
+    if constexpr (detail::is_owning<T>()) 
+    {
+      if (!m_controller) 
+      {
         throw cen_error{"Cannot create controller from null pointer!"};
       }
     }
@@ -15213,8 +15829,7 @@ template <typename T>
   }
 
   return "controller{data: " + detail::address_of(controller.get()) +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -15582,6 +16197,8 @@ inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> 
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/controller.hpp"
 
 // #include "common_event.hpp"
@@ -15648,7 +16265,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -16257,6 +16874,9 @@ inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -16377,11 +16997,45 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
 
 #endif  // CENTURION_RESULT_HEADER
+
+// #include "../core/to_underlying.hpp"
 
 // #include "audio_device_event.hpp"
 #ifndef CENTURION_AUDIO_DEVICE_EVENT_HEADER
@@ -16664,6 +17318,8 @@ inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> 
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/controller.hpp"
 
 // #include "common_event.hpp"
@@ -16730,7 +17386,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -17637,11 +18293,16 @@ inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Eve
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/button_state.hpp"
 #ifndef CENTURION_BUTTON_STATE_HEADER
 #define CENTURION_BUTTON_STATE_HEADER
 
 #include <SDL.h>
+
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -17658,7 +18319,7 @@ namespace cen {
  *
  * \headerfile button_state.hpp
  */
-enum class button_state
+enum class button_state : u8
 {
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
@@ -17744,7 +18405,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -17923,6 +18584,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_E
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "common_event.hpp"
 
 
@@ -17938,7 +18601,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class joy_hat_position
+enum class joy_hat_position : u8
 {
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
@@ -18005,7 +18668,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    */
   void set_position(const joy_hat_position value) noexcept
   {
-    m_event.value = static_cast<u8>(value);
+    m_event.value = to_underlying(value);
   }
 
   /**
@@ -18054,6 +18717,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #include <SDL.h>
 
 // #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../input/button_state.hpp"
 
@@ -19154,6 +19819,9 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /// \addtogroup input
@@ -19170,7 +19838,7 @@ namespace cen {
  *
  * \headerfile key_modifier.hpp
  */
-enum class key_modifier
+enum class key_modifier : u16
 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
@@ -19397,7 +20065,7 @@ class scan_code final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SCANCODES);
+    return SDL_NUM_SCANCODES;
   }
 
   /**
@@ -20298,7 +20966,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_button_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -20313,11 +20981,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   {
     if (active)
     {
-      m_event.keysym.mod |= static_cast<u16>(modifier);
+      m_event.keysym.mod |= to_underlying(modifier);
     }
     else
     {
-      m_event.keysym.mod &= ~static_cast<u16>(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifier);
     }
   }
 
@@ -20392,7 +21060,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
   {
-    return m_event.keysym.mod & static_cast<u16>(modifier);
+    return m_event.keysym.mod & to_underlying(modifier);
   }
 
   /**
@@ -20586,6 +21254,8 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/button_state.hpp"
 
 // #include "../input/mouse_button.hpp"
@@ -20593,6 +21263,9 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
 #define CENTURION_MOUSE_BUTTON_HEADER
 
 #include <SDL.h>
+
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -20608,7 +21281,7 @@ namespace cen {
  *
  * \headerfile mouse_button.hpp
  */
-enum class mouse_button
+enum class mouse_button : u8
 {
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,
@@ -20697,7 +21370,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   void set_button(const mouse_button button) noexcept
   {
-    m_event.button = static_cast<u8>(button);
+    m_event.button = to_underlying(button);
   }
 
   /**
@@ -20709,7 +21382,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -20879,6 +21552,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event) -> SDL
 #include <SDL.h>
 
 // #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../input/mouse_button.hpp"
 
@@ -21068,7 +21743,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    */
   [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
   {
-    return m_event.state & SDL_BUTTON(static_cast<u32>(button));
+    return m_event.state & SDL_BUTTON(to_underlying(button));
   }
 
   /**
@@ -21714,6 +22389,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -21721,9 +22397,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -21774,6 +22452,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -22887,7 +23581,7 @@ class event final
   [[nodiscard]] static auto queue_count(const event_type type) noexcept
       -> std::optional<int>
   {
-    const auto id = static_cast<u32>(type);
+    const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
     if (num != -1)
     {
@@ -23175,8 +23869,9 @@ class event final
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -23332,7 +24027,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -23343,7 +24038,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -23352,11 +24047,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -23419,6 +24113,8 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
 // #include "../core/result.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "audio_device_event.hpp"
 
@@ -23661,7 +24357,7 @@ class event final
   [[nodiscard]] static auto queue_count(const event_type type) noexcept
       -> std::optional<int>
   {
-    const auto id = static_cast<u32>(type);
+    const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
     if (num != -1)
     {
@@ -24121,35 +24817,6 @@ class event_dispatcher final
     return index;
   }
 
-  /**
-   * \brief Checks for the specified event type in the event handler.
-   *
-   * \tparam Event the event to look for.
-   *
-   * \return `true` if there was a match; `false` otherwise.
-   *
-   * \since 5.1.0
-   */
-  template <typename Event>
-  auto check_for() -> bool
-  {
-    if (const auto* e = m_event.template try_get<Event>())
-    {
-      constexpr auto index = index_of<Event>();
-
-      if (auto& func = std::get<index>(m_sinks).function())
-      {
-        func(*e);
-      }
-
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
   template <typename Event>
   [[nodiscard]] auto get_sink() -> event_sink<Event>&
   {
@@ -24162,6 +24829,33 @@ class event_dispatcher final
   {
     constexpr auto index = index_of<Event>();
     return std::get<index>(m_sinks);
+  }
+
+  /**
+   * \brief Checks for the specified event type in the event handler.
+   *
+   * \tparam Event the event to look for.
+   *
+   * \return `true` if there was a match; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  template <typename Event>
+  auto check_for() -> bool
+  {
+    if (const auto* event = m_event.template try_get<Event>())
+    {
+      if (auto& function = get_sink<Event>().function())
+      {
+        function(*event);
+      }
+
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
  public:
@@ -24275,6 +24969,9 @@ inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispa
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /// \addtogroup event
@@ -24291,7 +24988,7 @@ namespace cen {
  *
  * \headerfile event_type.hpp
  */
-enum class event_type
+enum class event_type : u32
 {
   quit = SDL_QUIT,
 
@@ -24719,6 +25416,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Eve
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/button_state.hpp"
 
 // #include "common_event.hpp"
@@ -24798,7 +25497,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -24977,6 +25676,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_E
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "common_event.hpp"
 
 
@@ -24992,7 +25693,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class joy_hat_position
+enum class joy_hat_position : u8
 {
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
@@ -25059,7 +25760,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    */
   void set_position(const joy_hat_position value) noexcept
   {
-    m_event.value = static_cast<u8>(value);
+    m_event.value = to_underlying(value);
   }
 
   /**
@@ -25108,6 +25809,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #include <SDL.h>
 
 // #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../input/button_state.hpp"
 
@@ -25191,7 +25894,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_button_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -25206,11 +25909,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   {
     if (active)
     {
-      m_event.keysym.mod |= static_cast<u16>(modifier);
+      m_event.keysym.mod |= to_underlying(modifier);
     }
     else
     {
-      m_event.keysym.mod &= ~static_cast<u16>(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifier);
     }
   }
 
@@ -25285,7 +25988,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
   {
-    return m_event.keysym.mod & static_cast<u16>(modifier);
+    return m_event.keysym.mod & to_underlying(modifier);
   }
 
   /**
@@ -25479,6 +26182,8 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../input/button_state.hpp"
 
 // #include "../input/mouse_button.hpp"
@@ -25558,7 +26263,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   void set_button(const mouse_button button) noexcept
   {
-    m_event.button = static_cast<u8>(button);
+    m_event.button = to_underlying(button);
   }
 
   /**
@@ -25570,7 +26275,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**
@@ -25740,6 +26445,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseButtonEvent>& event) -> SDL
 #include <SDL.h>
 
 // #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../input/mouse_button.hpp"
 
@@ -25929,7 +26636,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    */
   [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
   {
-    return m_event.state & SDL_BUTTON(static_cast<u32>(button));
+    return m_event.state & SDL_BUTTON(to_underlying(button));
   }
 
   /**
@@ -27470,6 +28177,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -27477,9 +28185,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -27530,6 +28240,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -27736,6 +28462,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -27756,8 +28498,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -27961,6 +28705,9 @@ using not_null = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -28080,6 +28827,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 
@@ -29019,12 +29798,10 @@ namespace cen {
 [[nodiscard]] inline auto preferred_path(const not_null<czstring> org,
                                          const not_null<czstring> app) -> sdl_string
 {
-  /*
-     Looking at the SDL source code, it actually seems fine to supply a null
+  /* Looking at the SDL source code, it actually seems fine to supply a null
      string for the organization name. However, I haven't been able to find any
      documentation providing this guarantee, so we simply disallow null
-     organization names.
-  */
+     organization names. */
   assert(org);
   assert(app);
   return sdl_string{SDL_GetPrefPath(org, app)};
@@ -29086,6 +29863,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -29093,9 +29871,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -29146,6 +29926,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -29183,6 +29979,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -29190,9 +29987,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -29244,6 +30043,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -29264,8 +30079,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -29546,6 +30363,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -29573,7 +30406,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -29586,7 +30419,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -31145,6 +31978,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -31172,7 +32021,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -31185,7 +32034,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -31387,9 +32236,40 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 // #include "not_null.hpp"
 
+// #include "to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
 
-/// \addtogroup core
-/// \{
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
@@ -31398,24 +32278,15 @@ using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
 
 #endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
-/**
- * \namespace cen::log
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- *
- * \headerfile log.hpp
- */
-namespace cen::log {
+namespace cen {
+
+/// \addtogroup core
+/// \{
 
 /**
- * \enum priority
+ * \enum log_priority
  *
- * \brief Mirrors the `SDL_LogPriority` enum.
+ * \brief Provides values that represent different logging priorities.
  *
  * \see `SDL_LogPriority`
  *
@@ -31423,7 +32294,7 @@ namespace cen::log {
  *
  * \headerfile log.hpp
  */
-enum class priority
+enum class log_priority : int
 {
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
@@ -31434,9 +32305,9 @@ enum class priority
 };
 
 /**
- * \enum category
+ * \enum log_category
  *
- * \brief Mirrors the `SDL_LogCategory` enum.
+ * \brief Provides values that represent different logging categories.
  *
  * \see `SDL_LogCategory`
  *
@@ -31444,7 +32315,7 @@ enum class priority
  *
  * \headerfile log.hpp
  */
-enum class category
+enum class log_category : int
 {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
@@ -31457,6 +32328,27 @@ enum class category
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/// \} End of group core
+
+/**
+ * \namespace cen::log
+ *
+ * \ingroup core
+ *
+ * \brief Contains easy-to-use logging facilities.
+ *
+ * \details The usage of the logging API will be very familiar to most people
+ * that have used the `printf` and/or the `SDL_Log` facilities.
+ *
+ * \since 3.0.0
+ *
+ * \headerfile log.hpp
+ */
+namespace log {
+
+/// \addtogroup core
+/// \{
 
 /**
  * \brief Logs a message with the specified priority and category.
@@ -31476,8 +32368,8 @@ enum class category
  * \since 4.0.0
  */
 template <typename... Args>
-void msg(const priority priority,
-         const category category,
+void msg(const log_priority priority,
+         const log_category category,
          const not_null<czstring> fmt,
          Args&&... args) noexcept
 {
@@ -31502,9 +32394,11 @@ void msg(const priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void info(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::info, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31523,7 +32417,7 @@ void info(const category category, const not_null<czstring> fmt, Args&&... args)
 template <typename... Args>
 void info(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::info(category::app, fmt, std::forward<Args>(args)...);
+  log::info(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31541,9 +32435,11 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void warn(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::warn, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31562,7 +32458,7 @@ void warn(const category category, const not_null<czstring> fmt, Args&&... args)
 template <typename... Args>
 void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::warn(category::app, fmt, std::forward<Args>(args)...);
+  log::warn(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31580,11 +32476,11 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const category category,
+void verbose(const log_category category,
              const not_null<czstring> fmt,
              Args&&... args) noexcept
 {
-  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31603,7 +32499,7 @@ void verbose(const category category,
 template <typename... Args>
 void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::verbose(category::app, fmt, std::forward<Args>(args)...);
+  log::verbose(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31621,9 +32517,11 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const category category, const not_null<czstring> fmt, Args&&... args) noexcept
+void debug(const log_category category,
+           const not_null<czstring> fmt,
+           Args&&... args) noexcept
 {
-  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::debug, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31642,7 +32540,7 @@ void debug(const category category, const not_null<czstring> fmt, Args&&... args
 template <typename... Args>
 void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::debug(category::app, fmt, std::forward<Args>(args)...);
+  log::debug(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31660,11 +32558,11 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const category category,
+void critical(const log_category category,
               const not_null<czstring> fmt,
               Args&&... args) noexcept
 {
-  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31683,7 +32581,7 @@ void critical(const category category,
 template <typename... Args>
 void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::critical(category::app, fmt, std::forward<Args>(args)...);
+  log::critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31701,9 +32599,9 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const category category, const czstring fmt, Args&&... args) noexcept
+void error(const log_category category, const czstring fmt, Args&&... args) noexcept
 {
-  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
+  log::msg(log_priority::error, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31720,7 +32618,7 @@ void error(const category category, const czstring fmt, Args&&... args) noexcept
 template <typename... Args>
 void error(const not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::error(category::app, fmt, std::forward<Args>(args)...);
+  log::error(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -31758,13 +32656,13 @@ inline void reset_priorities() noexcept
 /**
  * \brief Sets the priority of all categories.
  *
- * \param prio the priority that will be used.
+ * \param priority the priority that will be used.
  *
  * \since 3.0.0
  */
-inline void set_priority(const priority prio) noexcept
+inline void set_priority(const log_priority priority) noexcept
 {
-  const auto p = static_cast<SDL_LogPriority>(prio);
+  const auto p = static_cast<SDL_LogPriority>(priority);
   SDL_LogSetAllPriority(p);
 
   // Apparently not set by SDL
@@ -31775,13 +32673,14 @@ inline void set_priority(const priority prio) noexcept
  * \brief Sets the priority of the specified category.
  *
  * \param category the category that will have its priority changed.
- * \param prio the new priority value.
+ * \param priority the new priority value.
  *
  * \since 3.0.0
  */
-inline void set_priority(const category category, const priority prio) noexcept
+inline void set_priority(const log_category category,
+                         const log_priority priority) noexcept
 {
-  SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(prio));
+  SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
 
 /**
@@ -31792,9 +32691,10 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const category category) noexcept -> priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept
+    -> log_priority
 {
-  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
+  return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
 
 /**
@@ -31815,6 +32715,13 @@ inline void set_priority(const category category, const priority prio) noexcept
   return SDL_MAX_LOG_MESSAGE;
 }
 
+/// \} End of group core
+
+}  // namespace log
+
+/// \addtogroup core
+/// \{
+
 /**
  * \brief Indicates whether or not the two log priorities values are the same.
  *
@@ -31825,15 +32732,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const priority lhs,
+[[nodiscard]] constexpr auto operator==(const log_priority lhs,
                                         const SDL_LogPriority rhs) noexcept -> bool
 {
   return static_cast<SDL_LogPriority>(lhs) == rhs;
 }
 
-/// \copydoc operator==(priority, SDL_LogPriority)
+/// \copydoc operator==(log_priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
+                                        const log_priority rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -31849,15 +32756,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const priority lhs,
+[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
                                         const SDL_LogPriority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-/// \copydoc operator!=(priority, SDL_LogPriority)
+/// \copydoc operator!=(log_priority, SDL_LogPriority)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const priority rhs) noexcept -> bool
+                                        const log_priority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -31872,15 +32779,15 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const category lhs,
+[[nodiscard]] constexpr auto operator==(const log_category lhs,
                                         const SDL_LogCategory rhs) noexcept -> bool
 {
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
 
-/// \copydoc operator==(category, SDL_LogCategory)
+/// \copydoc operator==(log_category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
+                                        const log_category rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -31895,20 +32802,25 @@ inline void set_priority(const category category, const priority prio) noexcept
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const category lhs,
+[[nodiscard]] constexpr auto operator!=(const log_category lhs,
                                         const SDL_LogCategory rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-/// \copydoc operator!=(category, SDL_LogCategory)
+/// \copydoc operator!=(log_category, SDL_LogCategory)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const category rhs) noexcept -> bool
+                                        const log_category rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-}  // namespace cen::log
+/// \} End of group core
+
+}  // namespace cen
+
+/// \addtogroup core
+/// \{
 
 #ifndef CENTURION_NO_DEBUG_LOG_MACROS
 #ifdef NDEBUG
@@ -32038,13 +32950,16 @@ inline void set_priority(const category category, const priority prio) noexcept
  * \since 5.0.0
  */
 
-/// \}
+/// \} End of group core
 
 #endif  // CENTURION_LOG_HEADER
 
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
+
+#include <ostream>  // ostream
+#include <string>   // string
 
 namespace cen {
 
@@ -32165,6 +33080,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 
@@ -32981,345 +33928,6 @@ struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mappi
 
 #include <SDL.h>
 
-namespace cen {
-
-/**
- * \enum button_state
- *
- * \ingroup input
- *
- * \brief Represents the two possible states for a button.
- *
- * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
- *
- * \since 3.1.0
- *
- * \headerfile button_state.hpp
- */
-enum class button_state
-{
-  released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
-  pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
-};
-
-}  // namespace cen
-
-#endif  // CENTURION_BUTTON_STATE_HEADER
-// #include "centurion/input/controller.hpp"
-#ifndef CENTURION_GAME_CONTROLLER_HEADER
-#define CENTURION_GAME_CONTROLLER_HEADER
-
-#include <SDL.h>
-
-#include <array>     // array
-#include <cassert>   // assert
-#include <cstddef>   // size_t
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
-
-// #include "../core/czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-// #include "../core/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
-#include <exception>  // exception
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \headerfile exception.hpp
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"N/A"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- *
- * \headerfile exception.hpp
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
-
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
 #define CENTURION_INTEGERS_HEADER
@@ -33334,8 +33942,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -33508,6 +34118,383 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
+
+namespace cen {
+
+/**
+ * \enum button_state
+ *
+ * \ingroup input
+ *
+ * \brief Represents the two possible states for a button.
+ *
+ * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
+ *
+ * \since 3.1.0
+ *
+ * \headerfile button_state.hpp
+ */
+enum class button_state : u8
+{
+  released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
+  pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
+};
+
+}  // namespace cen
+
+#endif  // CENTURION_BUTTON_STATE_HEADER
+// #include "centurion/input/controller.hpp"
+#ifndef CENTURION_GAME_CONTROLLER_HEADER
+#define CENTURION_GAME_CONTROLLER_HEADER
+
+#include <SDL.h>
+
+#include <array>     // array
+#include <cassert>   // assert
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
+
+// #include "../core/czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \headerfile exception.hpp
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from
+   * `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from
+   * `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from
+   * `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ *
+ * \headerfile exception.hpp
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from
+   * `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+// #include "../core/integers.hpp"
+
 // #include "../core/not_null.hpp"
 #ifndef CENTURION_NOT_NULL_HEADER
 #define CENTURION_NOT_NULL_HEADER
@@ -33581,6 +34568,9 @@ using maybe_owner = T;
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
+
+#include <ostream>  // ostream
+#include <string>   // string
 
 namespace cen {
 
@@ -33701,6 +34691,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 
@@ -33891,8 +34913,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -34118,25 +35142,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -34175,9 +35207,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -34230,6 +35262,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -34237,9 +35270,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -34291,6 +35326,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -34318,7 +35369,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -34331,7 +35382,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -34669,7 +35720,7 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are default-initialized to the current
+ * \details The members of this struct are by default initialized to the current
  * Centurion version values.
  *
  * \version 6.0.0
@@ -34875,8 +35926,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -35055,8 +36108,9 @@ namespace literals {
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -35212,7 +36266,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -35223,7 +36277,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -35232,11 +36286,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -35943,6 +36996,9 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /**
@@ -35958,7 +37014,7 @@ namespace cen {
  *
  * \headerfile button_state.hpp
  */
-enum class button_state
+enum class button_state : u8
 {
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
@@ -35992,6 +37048,40 @@ enum class button_state
 
 // #include "../core/time.hpp"
 
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
@@ -36004,8 +37094,9 @@ enum class button_state
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -36161,7 +37252,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -36172,7 +37263,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -36181,11 +37272,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -36241,7 +37331,7 @@ enum class joystick_power
  *
  * \headerfile joystick.hpp
  */
-enum class hat_state
+enum class hat_state : u8
 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
@@ -36602,7 +37692,7 @@ class basic_joystick final
    */
   auto set_virtual_button(const int button, const button_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualButton(m_joystick, button, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualButton(m_joystick, button, to_underlying(state)) == 0;
   }
 
   /**
@@ -36617,7 +37707,7 @@ class basic_joystick final
    */
   auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, to_underlying(state)) == 0;
   }
 
   /**
@@ -37399,8 +38489,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -37998,10 +39087,9 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-  const auto name = sensor.name();
-  const std::string nameStr = name ? name : "N/A";
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() + ", name: " + nameStr + "}";
+         ", id: " + detail::to_string(sensor.id()).value() +
+         ", name: " + str_or_na(sensor.name()) + "}";
 }
 
 /**
@@ -38531,8 +39619,10 @@ class basic_controller final
   explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) {
-      if (!m_controller) {
+    if constexpr (detail::is_owning<T>()) 
+    {
+      if (!m_controller) 
+      {
         throw cen_error{"Cannot create controller from null pointer!"};
       }
     }
@@ -39672,8 +40762,7 @@ template <typename T>
   }
 
   return "controller{data: " + detail::address_of(controller.get()) +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -40020,8 +41109,9 @@ template <typename T>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -40177,7 +41267,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -40188,7 +41278,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -40197,11 +41287,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -42759,9 +43848,8 @@ class basic_haptic final
 template <typename B>
 [[nodiscard]] auto to_string(const basic_haptic<B>& haptic) -> std::string
 {
-  const auto* name = haptic.name();
-  const auto nameStr = name ? std::string{name} : std::string{"N/A"};
-  return "haptic{data: " + detail::address_of(haptic.get()) + ", name: " + nameStr + "}";
+  return "haptic{data: " + detail::address_of(haptic.get()) +
+         ", name: " + str_or_na(haptic.name()) + "}";
 }
 
 /**
@@ -42813,6 +43901,8 @@ auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ost
 
 // #include "../core/time.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
@@ -42861,7 +43951,7 @@ enum class joystick_power
  *
  * \headerfile joystick.hpp
  */
-enum class hat_state
+enum class hat_state : u8
 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
@@ -43222,7 +44312,7 @@ class basic_joystick final
    */
   auto set_virtual_button(const int button, const button_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualButton(m_joystick, button, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualButton(m_joystick, button, to_underlying(state)) == 0;
   }
 
   /**
@@ -43237,7 +44327,7 @@ class basic_joystick final
    */
   auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, to_underlying(state)) == 0;
   }
 
   /**
@@ -44019,8 +45109,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -45281,6 +46370,9 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /// \addtogroup input
@@ -45297,7 +46389,7 @@ namespace cen {
  *
  * \headerfile key_modifier.hpp
  */
-enum class key_modifier
+enum class key_modifier : u16
 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
@@ -46516,6 +47608,9 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
 namespace cen {
 
 /// \addtogroup input
@@ -46532,7 +47627,7 @@ namespace cen {
  *
  * \headerfile key_modifier.hpp
  */
-enum class key_modifier
+enum class key_modifier : u16
 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
@@ -46759,7 +47854,7 @@ class scan_code final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SCANCODES);
+    return SDL_NUM_SCANCODES;
   }
 
   /**
@@ -48182,6 +49277,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -48189,9 +49285,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -48564,14 +49662,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -49222,7 +50320,7 @@ class scan_code final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SCANCODES);
+    return SDL_NUM_SCANCODES;
   }
 
   /**
@@ -50483,10 +51581,9 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-  const auto name = sensor.name();
-  const std::string nameStr = name ? name : "N/A";
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() + ", name: " + nameStr + "}";
+         ", id: " + detail::to_string(sensor.id()).value() +
+         ", name: " + str_or_na(sensor.name()) + "}";
 }
 
 /**
@@ -50869,8 +51966,9 @@ template <typename To, typename From>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -51026,7 +52124,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -51037,7 +52135,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -51046,11 +52144,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -51338,6 +52435,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -51345,9 +52443,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -51720,14 +52820,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -52565,14 +53665,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -53784,8 +54884,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -54011,25 +55113,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -54330,8 +55440,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -54656,6 +55768,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -54663,9 +55776,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -54717,6 +55832,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -54753,6 +55884,9 @@ using not_null = T;
 // #include "../core/result.hpp"
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
+
+#include <ostream>  // ostream
+#include <string>   // string
 
 namespace cen {
 
@@ -54874,6 +56008,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -54937,6 +56103,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -55659,6 +56841,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -55666,9 +56849,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -55719,6 +56904,22 @@ using czstring = const char*;
  * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
 
 /// \} End of group core
 
@@ -55960,6 +57161,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -55967,9 +57169,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -56021,6 +57225,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -56064,6 +57284,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -56091,7 +57327,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -56104,7 +57340,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -56255,8 +57491,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -56499,6 +57737,40 @@ using maybe_owner = T;
 }  // namespace cen
 
 #endif  // CENTURION_OWNER_HEADER
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "../detail/owner_handle_api.hpp"
 #ifndef CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 #define CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
@@ -56539,6 +57811,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -56546,9 +57819,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -56600,6 +57875,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -56627,7 +57918,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -56640,7 +57931,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -56893,8 +58184,9 @@ class pointer_manager final
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -57050,7 +58342,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -57061,7 +58353,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -57070,11 +58362,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -57792,7 +59083,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -57963,7 +59254,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {
@@ -58568,7 +59859,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -58581,7 +59872,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -58872,6 +60163,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -58879,9 +60171,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -58933,6 +60227,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -58960,7 +60270,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -58973,7 +60283,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -59124,8 +60434,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -59302,6 +60614,9 @@ namespace literals {
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -59422,6 +60737,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -59449,8 +60796,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -59676,25 +61025,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 
@@ -60388,6 +61745,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -60458,9 +61831,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -60479,8 +61852,9 @@ template <typename T>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -60636,7 +62010,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -60647,7 +62021,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -60656,11 +62030,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -61318,8 +62691,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -61498,8 +62873,9 @@ namespace literals {
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -61655,7 +63031,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -61666,7 +63042,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -61675,11 +63051,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -64192,6 +65567,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -64199,9 +65575,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -64253,6 +65631,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -64280,7 +65674,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -64293,7 +65687,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -64586,6 +65980,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -64593,9 +65988,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -64612,8 +66009,9 @@ using enable_if_convertible_t =
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -64769,7 +66167,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -64780,7 +66178,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -64789,11 +66187,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -65169,14 +66566,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -65359,6 +66756,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -65366,9 +66764,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -65420,6 +66820,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -65463,6 +66879,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -65490,7 +66922,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -65503,7 +66935,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -65716,6 +67148,9 @@ using maybe_owner = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -65836,11 +67271,77 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
 
 #endif  // CENTURION_RESULT_HEADER
+
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
 
 // #include "../detail/address_of.hpp"
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
@@ -65871,9 +67372,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -66835,14 +68336,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -67976,6 +69477,8 @@ enum class blend_mode
 
 // #include "../core/owner.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "color.hpp"
@@ -67997,7 +69500,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -68168,7 +69671,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {
@@ -68528,7 +70031,7 @@ class basic_surface final
                                                  size.width,
                                                  size.height,
                                                  0,
-                                                 static_cast<u32>(pixelFormat))}
+                                                 to_underlying(pixelFormat))}
   {
     if (!m_surface)
     {
@@ -68966,10 +70469,9 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
     {
-      basic_surface result{ptr};
+      basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
@@ -69258,7 +70760,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "surface{ptr: " + detail::address_of(surface.get()) +
+  return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
          ", height: " + detail::to_string(surface.height()).value() + "}";
 }
@@ -69519,7 +71021,7 @@ class basic_cursor final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SYSTEM_CURSORS);
+    return SDL_NUM_SYSTEM_CURSORS;
   }
 
   /// \} End of static members
@@ -69674,6 +71176,8 @@ class basic_cursor final
 // #include "../core/exception.hpp"
 
 // #include "../core/not_null.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -70282,7 +71786,7 @@ struct glyph_metrics final
  *
  * \headerfile font.hpp
  */
-enum class font_hint
+enum class font_hint : int
 {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
@@ -70463,7 +71967,7 @@ class font final
    */
   void set_font_hinting(const font_hint hint) noexcept
   {
-    TTF_SetFontHinting(m_font.get(), static_cast<int>(hint));
+    TTF_SetFontHinting(m_font.get(), to_underlying(hint));
   }
 
   /**
@@ -71068,6 +72572,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 // #include "../core/not_null.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/to_string.hpp"
@@ -71109,7 +72615,7 @@ struct glyph_metrics final
  *
  * \headerfile font.hpp
  */
-enum class font_hint
+enum class font_hint : int
 {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
@@ -71290,7 +72796,7 @@ class font final
    */
   void set_font_hinting(const font_hint hint) noexcept
   {
-    TTF_SetFontHinting(m_font.get(), static_cast<int>(hint));
+    TTF_SetFontHinting(m_font.get(), to_underlying(hint));
   }
 
   /**
@@ -72018,7 +73524,7 @@ namespace cen {
  *
  * \headerfile texture_access.hpp
  */
-enum class texture_access
+enum class texture_access : int
 {
   no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
                                             ///< rarely, and isn't lockable.
@@ -72237,8 +73743,8 @@ class basic_texture final
                 const texture_access access,
                 const iarea size)
       : m_texture{SDL_CreateTexture(renderer.get(),
-                                    static_cast<u32>(format),
-                                    static_cast<int>(access),
+                                    to_underlying(format),
+                                    to_underlying(access),
                                     size.width,
                                     size.height)}
   {
@@ -72723,7 +74229,7 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  return "texture{ptr: " + detail::address_of(texture.get()) +
+  return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + detail::to_string(texture.width()).value() +
          ", height: " + detail::to_string(texture.height()).value() + "}";
 }
@@ -73656,6 +75162,8 @@ namespace cen {
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/stack_resource.hpp"
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
@@ -73725,17 +75233,14 @@ template <std::size_t bufferSize>
 class stack_resource final
 {
  public:
-  stack_resource() : m_buffer{}, m_pool{m_buffer.data(), sizeof m_buffer}
-  {}
-
   [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource*
   {
     return &m_pool;
   }
 
  private:
-  std::array<std::byte, bufferSize> m_buffer;
-  std::pmr::monotonic_buffer_resource m_pool;
+  std::array<std::byte, bufferSize> m_buffer{};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail
@@ -75735,6 +77240,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window has grabbed the input focus.
+   *
+   * \return `true` if the window has grabbed input focus; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_grabbed_input() const noexcept -> bool
+  {
+    return check_flag(input_grabbed);
+  }
+
+  /**
    * \brief Indicates whether or not the window has input focus.
    *
    * \note The window might have to be visible for this to be true.
@@ -75807,6 +77324,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or the window supports high-DPI mode.
+   *
+   * \return `true` if the window supports high-DPI mode; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_high_dpi() const noexcept -> bool
+  {
+    return check_flag(high_dpi);
+  }
+
+  /**
    * \brief Indicates whether or not the window is in fullscreen mode.
    *
    * \return `true` if the window is in fullscreen mode; `false` otherwise.
@@ -75844,6 +77373,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is hidden.
+   *
+   * \return `true` if the window isn't visible; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_hidden() const noexcept -> bool
+  {
+    return check_flag(hidden);
+  }
+
+  /**
    * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -75869,6 +77410,22 @@ class basic_window final
   {
     return check_flag(vulkan);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the window can be used as a Metal view.
+   *
+   * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_metal() const noexcept -> bool
+  {
+    return check_flag(metal);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Indicates whether or not the window wasn't created by SDL.
@@ -75930,6 +77487,54 @@ class basic_window final
   [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
     return check_flag(always_on_top);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a "utility" window.
+   *
+   * \return `true` if window is a "utility" window; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_utility() const noexcept -> bool
+  {
+    return check_flag(utility);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a tooltip.
+   *
+   * \return `true` if the window is a tooltip; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_tooltip() const noexcept -> bool
+  {
+    return check_flag(tooltip);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a popup menu.
+   *
+   * \return `true` if the window is a popup menu; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_popup_menu() const noexcept -> bool
+  {
+    return check_flag(popup_menu);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is excluded from the taskbar.
+   *
+   * \return `true` if the window is excluded from the taskbar; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_excluded_from_taskbar() const noexcept -> bool
+  {
+    return check_flag(skip_taskbar);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
@@ -76262,7 +77867,7 @@ class message_box final
    *
    * \headerfile message_box.hpp
    */
-  enum class default_button
+  enum class default_button : u32
   {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
@@ -76277,7 +77882,7 @@ class message_box final
    *
    * \headerfile message_box.hpp
    */
-  enum class color_id
+  enum class color_id : int
   {
     background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
     text = SDL_MESSAGEBOX_COLOR_TEXT,
@@ -76322,7 +77927,7 @@ class message_box final
      */
     void set_color(const color_id id, const color& color) noexcept
     {
-      m_scheme.colors[static_cast<int>(id)] = static_cast<SDL_MessageBoxColor>(color);
+      m_scheme.colors[to_underlying(id)] = static_cast<SDL_MessageBoxColor>(color);
     }
 
     /**
@@ -76568,7 +78173,7 @@ class message_box final
   /**
    * \brief Returns the message of the message box.
    *
-   * \details The default message is "N/A".
+   * \details The default message is "n/a".
    *
    * \return the message of the message box.
    *
@@ -76648,7 +78253,7 @@ class message_box final
     {
       SDL_MessageBoxButtonData result{};
 
-      result.flags = static_cast<u32>(m_defaultButton);
+      result.flags = to_underlying(m_defaultButton);
       result.buttonid = m_id;
       result.text = m_text.c_str();
 
@@ -76663,7 +78268,7 @@ class message_box final
 
   std::vector<button> m_buttons;
   std::string m_title{"Message box"};
-  std::string m_message{"N/A"};
+  std::string m_message{"n/a"};
   std::optional<color_scheme> m_colorScheme;
   message_box_type m_type{default_type()};
   button_order m_buttonOrder{default_order()};
@@ -76682,7 +78287,7 @@ class message_box final
                                                const button_order buttonOrder) noexcept
       -> u32
   {
-    return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
+    return to_underlying(type) | to_underlying(buttonOrder);
   }
 
   static void show(SDL_Window* parent,
@@ -76962,6 +78567,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -76969,9 +78575,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -77023,6 +78631,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77050,7 +78674,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -77063,7 +78687,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -77247,6 +78871,9 @@ using maybe_owner = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -77367,6 +78994,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77413,6 +79072,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -77420,9 +79080,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -77474,6 +79136,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77501,7 +79179,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -77514,7 +79192,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -77780,6 +79458,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -77787,9 +79466,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -77841,6 +79522,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77884,6 +79581,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77911,7 +79624,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -77924,7 +79637,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -78075,8 +79788,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -78323,6 +80038,9 @@ using maybe_owner = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -78443,6 +80161,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -78478,9 +80228,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -78638,6 +80388,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -78645,9 +80396,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -78699,6 +80452,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -78726,7 +80495,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -78739,7 +80508,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -78979,8 +80748,9 @@ class pointer_manager final
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -79136,7 +80906,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -79147,7 +80917,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -79156,11 +80926,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -79225,8 +80994,9 @@ template <typename To, typename From>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -79382,7 +81152,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -79393,7 +81163,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -79402,11 +81172,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -79693,6 +81462,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -79700,9 +81470,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -80386,14 +82158,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -81430,6 +83202,40 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 // #include "../core/owner.hpp"
 
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "color.hpp"
@@ -82149,7 +83955,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -82320,7 +84126,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {
@@ -82572,6 +84378,8 @@ class basic_pixel_format_info final
 
 // #include "../core/result.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
@@ -82812,7 +84620,7 @@ class basic_surface final
                                                  size.width,
                                                  size.height,
                                                  0,
-                                                 static_cast<u32>(pixelFormat))}
+                                                 to_underlying(pixelFormat))}
   {
     if (!m_surface)
     {
@@ -83250,10 +85058,9 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
     {
-      basic_surface result{ptr};
+      basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
@@ -83542,7 +85349,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "surface{ptr: " + detail::address_of(surface.get()) +
+  return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
          ", height: " + detail::to_string(surface.height()).value() + "}";
 }
@@ -84349,6 +86156,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window has grabbed the input focus.
+   *
+   * \return `true` if the window has grabbed input focus; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_grabbed_input() const noexcept -> bool
+  {
+    return check_flag(input_grabbed);
+  }
+
+  /**
    * \brief Indicates whether or not the window has input focus.
    *
    * \note The window might have to be visible for this to be true.
@@ -84421,6 +86240,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or the window supports high-DPI mode.
+   *
+   * \return `true` if the window supports high-DPI mode; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_high_dpi() const noexcept -> bool
+  {
+    return check_flag(high_dpi);
+  }
+
+  /**
    * \brief Indicates whether or not the window is in fullscreen mode.
    *
    * \return `true` if the window is in fullscreen mode; `false` otherwise.
@@ -84458,6 +86289,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is hidden.
+   *
+   * \return `true` if the window isn't visible; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_hidden() const noexcept -> bool
+  {
+    return check_flag(hidden);
+  }
+
+  /**
    * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -84483,6 +86326,22 @@ class basic_window final
   {
     return check_flag(vulkan);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the window can be used as a Metal view.
+   *
+   * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_metal() const noexcept -> bool
+  {
+    return check_flag(metal);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Indicates whether or not the window wasn't created by SDL.
@@ -84544,6 +86403,54 @@ class basic_window final
   [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
     return check_flag(always_on_top);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a "utility" window.
+   *
+   * \return `true` if window is a "utility" window; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_utility() const noexcept -> bool
+  {
+    return check_flag(utility);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a tooltip.
+   *
+   * \return `true` if the window is a tooltip; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_tooltip() const noexcept -> bool
+  {
+    return check_flag(tooltip);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a popup menu.
+   *
+   * \return `true` if the window is a popup menu; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_popup_menu() const noexcept -> bool
+  {
+    return check_flag(popup_menu);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is excluded from the taskbar.
+   *
+   * \return `true` if the window is excluded from the taskbar; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_excluded_from_taskbar() const noexcept -> bool
+  {
+    return check_flag(skip_taskbar);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
@@ -84971,6 +86878,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -85005,6 +86928,40 @@ using not_null = T;
 #endif  // CENTURION_NOT_NULL_HEADER
 
 // #include "../../core/result.hpp"
+
+// #include "../../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
 
 // #include "../../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
@@ -85055,8 +87012,9 @@ template <typename To, typename From>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -85212,7 +87170,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -85223,7 +87181,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -85232,11 +87190,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -85733,7 +87690,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-enum class gl_swap_interval
+enum class gl_swap_interval : int
 {
   immediate = 0,       ///< Immediate updates.
   synchronized = 1,    ///< Updates synchronized with vertical retrace (VSync).
@@ -85859,7 +87816,7 @@ inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
  */
 inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> result
 {
-  return SDL_GL_SetSwapInterval(static_cast<int>(interval)) == 0;
+  return SDL_GL_SetSwapInterval(to_underlying(interval)) == 0;
 }
 
 /**
@@ -86296,6 +88253,8 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 // #include "../core/owner.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "color.hpp"
@@ -86317,7 +88276,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -86488,7 +88447,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {
@@ -86741,6 +88700,8 @@ class basic_pixel_format_info final
 // #include "../core/not_null.hpp"
 
 // #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -87633,12 +89594,19 @@ using renderer_handle = basic_renderer<detail::handle_type>;
 /**
  * \class basic_renderer
  *
- * \brief Provides hardware-accelerated 2D-rendering.
+ * \brief Provides 2D-rendering that is potentially hardware-accelerated.
+ *
+ * \details The owning version of this class, `renderer`, features an extended API
+ * compared to its non-owning counterpart, with support for font handling and translated
+ * rendering.
+ *
+ * \note Each window can feature at most associated renderer.
  *
  * \since 5.0.0
  *
  * \see `renderer`
  * \see `renderer_handle`
+ * \see `renderer_info`
  *
  * \headerfile renderer.hpp
  */
@@ -87724,11 +89692,14 @@ class basic_renderer final
   /**
    * \brief Clears the rendering target with the currently selected color.
    *
+   * \return `success` if the rendering target was successfully cleared; `failure`
+   * otherwise.
+   *
    * \since 3.0.0
    */
-  void clear() noexcept
+  auto clear() noexcept -> result
   {
-    SDL_RenderClear(get());
+    return SDL_RenderClear(get()) == 0;
   }
 
   /**
@@ -87743,10 +89714,9 @@ class basic_renderer final
   void clear_with(const color& color) noexcept
   {
     const auto oldColor = get_color();
-
     set_color(color);
-    clear();
 
+    clear();
     set_color(oldColor);
   }
 
@@ -87783,9 +89753,7 @@ class basic_renderer final
       throw sdl_error{};
     }
 
-    const auto result =
-        SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1)
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
     {
       throw sdl_error{};
     }
@@ -87836,18 +89804,20 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void draw_rect(const basic_rect<U>& rect) noexcept
+  auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
     if constexpr (basic_rect<U>::isIntegral)
     {
-      SDL_RenderDrawRect(get(), rect.data());
+      return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
     else
     {
-      SDL_RenderDrawRectF(get(), rect.data());
+      return SDL_RenderDrawRectF(get(), rect.data()) == 0;
     }
   }
 
@@ -87858,18 +89828,20 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void fill_rect(const basic_rect<U>& rect) noexcept
+  auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
     if constexpr (basic_rect<U>::isIntegral)
     {
-      SDL_RenderFillRect(get(), rect.data());
+      return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
     else
     {
-      SDL_RenderFillRectF(get(), rect.data());
+      return SDL_RenderFillRectF(get(), rect.data()) == 0;
     }
   }
 
@@ -87882,18 +89854,21 @@ class basic_renderer final
    * \param start the start point of the line.
    * \param end the end point of the line.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename U>
-  void draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
+      -> result
   {
     if constexpr (basic_point<U>::isIntegral)
     {
-      SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
+      return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
     else
     {
-      SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
+      return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
 
@@ -87916,10 +89891,12 @@ class basic_renderer final
    * \param container the container that holds the points that will be used
    * to render the line.
    *
+   * \return `success` if the lines were successfully rendered; `failure` otherwise.
+   *
    * \since 5.0.0
    */
   template <typename Container>
-  void draw_lines(const Container& container) noexcept
+  auto draw_lines(const Container& container) noexcept -> result
   {
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
@@ -87931,12 +89908,16 @@ class basic_renderer final
 
       if constexpr (std::is_same_v<value_t, int>)
       {
-        SDL_RenderDrawLines(get(), first, isize(container));
+        return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
       }
       else
       {
-        SDL_RenderDrawLinesF(get(), first, isize(container));
+        return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
       }
+    }
+    else
+    {
+      return failure;
     }
   }
 
@@ -87947,18 +89928,20 @@ class basic_renderer final
    *
    * \param point the point that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 6.0.0
    */
   template <typename U>
-  void draw_point(const basic_point<U>& point) noexcept
+  auto draw_point(const basic_point<U>& point) noexcept -> result
   {
     if constexpr (basic_point<U>::isIntegral)
     {
-      SDL_RenderDrawPoint(get(), point.x(), point.y());
+      return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
     else
     {
-      SDL_RenderDrawPointF(get(), point.x(), point.y());
+      return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
 
@@ -88036,8 +90019,6 @@ class basic_renderer final
     for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
     {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
-      const auto x = cx - dx;
-
       draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
       draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
     }
@@ -88058,12 +90039,14 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_rect_t(const basic_rect<R>& rect) noexcept
+  auto draw_rect_t(const basic_rect<R>& rect) noexcept -> result
   {
-    draw_rect(translate(rect));
+    return draw_rect(translate(rect));
   }
 
   /**
@@ -88076,12 +90059,14 @@ class basic_renderer final
    *
    * \param rect the rectangle that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.1.0
    */
   template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void fill_rect_t(const basic_rect<R>& rect) noexcept
+  auto fill_rect_t(const basic_rect<R>& rect) noexcept -> result
   {
-    fill_rect(translate(rect));
+    return fill_rect(translate(rect));
   }
 
   /**
@@ -88095,12 +90080,14 @@ class basic_renderer final
    *
    * \param point the point that will be rendered.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 6.0.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_point_t(const basic_point<U>& point) noexcept
+  auto draw_point_t(const basic_point<U>& point) noexcept -> result
   {
-    draw_point(translate(point));
+    return draw_point(translate(point));
   }
 
   /**
@@ -88714,21 +90701,24 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param position the position of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
   {
     if constexpr (basic_point<P>::isFloating)
     {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
-      SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
     else
     {
       const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
-      SDL_RenderCopy(get(), texture.get(), nullptr, &dst);
+      return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
   }
 
@@ -88741,18 +90731,21 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+  auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
     else
     {
-      SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
+      return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
     }
   }
 
@@ -88769,20 +90762,23 @@ class basic_renderer final
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<P>& destination) noexcept
+              const basic_rect<P>& destination) noexcept -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
+             0;
     }
     else
     {
-      SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
+      return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
     }
   }
 
@@ -88798,33 +90794,35 @@ class basic_renderer final
    * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<P>& destination,
-              const double angle) noexcept
+              const double angle) noexcept -> result
   {
     if constexpr (basic_rect<P>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        nullptr,
-                        SDL_FLIP_NONE);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               nullptr,
+                               SDL_FLIP_NONE) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       nullptr,
-                       SDL_FLIP_NONE);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              nullptr,
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -88843,14 +90841,16 @@ class basic_renderer final
    * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
-              const basic_point<P>& center) noexcept
+              const basic_point<P>& center) noexcept -> result
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                  typename basic_point<P>::value_type>,
@@ -88859,23 +90859,23 @@ class basic_renderer final
 
     if constexpr (basic_rect<R>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        SDL_FLIP_NONE);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               SDL_FLIP_NONE) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       SDL_FLIP_NONE);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -88895,15 +90895,17 @@ class basic_renderer final
    * rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
+  auto render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               const double angle,
               const basic_point<P>& center,
-              const SDL_RendererFlip flip) noexcept
+              const SDL_RendererFlip flip) noexcept -> result
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                  typename basic_point<P>::value_type>,
@@ -88912,23 +90914,23 @@ class basic_renderer final
 
     if constexpr (basic_rect<R>::isFloating)
     {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        flip);
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               flip) == 0;
     }
     else
     {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       flip);
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              flip) == 0;
     }
   }
 
@@ -88949,12 +90951,15 @@ class basic_renderer final
    * \param texture the texture that will be rendered.
    * \param position the position (pre-translation) of the rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+  auto render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
   {
-    render(texture, translate(position));
+    return render(texture, translate(position));
   }
 
   /**
@@ -88970,13 +90975,15 @@ class basic_renderer final
    * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept
+  auto render_t(const basic_texture<U>& texture,
+                const basic_rect<P>& destination) noexcept -> result
   {
-    render(texture, translate(destination));
+    return render(texture, translate(destination));
   }
 
   /**
@@ -88996,14 +91003,16 @@ class basic_renderer final
    * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<P>& destination) noexcept
+                const basic_rect<P>& destination) noexcept -> result
   {
-    render(texture, source, translate(destination));
+    return render(texture, source, translate(destination));
   }
 
   /**
@@ -89022,15 +91031,17 @@ class basic_renderer final
    * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
-                const double angle) noexcept
+                const double angle) noexcept -> result
   {
-    render(texture, source, translate(destination), angle);
+    return render(texture, source, translate(destination), angle);
   }
 
   /**
@@ -89052,16 +91063,18 @@ class basic_renderer final
    * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 const double angle,
-                const basic_point<P>& center) noexcept
+                const basic_point<P>& center) noexcept -> result
   {
-    render(texture, source, translate(destination), angle, center);
+    return render(texture, source, translate(destination), angle, center);
   }
 
   /**
@@ -89081,17 +91094,19 @@ class basic_renderer final
    * be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
    * \since 4.0.0
    */
   template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
+  auto render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 const double angle,
                 const basic_point<P>& center,
-                const SDL_RendererFlip flip) noexcept
+                const SDL_RendererFlip flip) noexcept -> result
   {
-    render(texture, source, translate(destination), angle, center, flip);
+    return render(texture, source, translate(destination), angle, center, flip);
   }
 
   /// \} End of translated texture rendering
@@ -89151,11 +91166,11 @@ class basic_renderer final
   void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
+    if (const auto it = fonts.find(id); it != fonts.end())
     {
-      remove_font(id);
+      fonts.erase(it);
     }
-    fonts.emplace(id, std::move(font));
+    fonts.try_emplace(id, std::move(font));
   }
 
   /**
@@ -89175,9 +91190,9 @@ class basic_renderer final
   void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
+    if (const auto it = fonts.find(id); it != fonts.end())
     {
-      remove_font(id);
+      fonts.erase(it);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
   }
@@ -89238,7 +91253,7 @@ class basic_renderer final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto has_font(const std::size_t id) const -> bool
   {
-    return static_cast<bool>(m_renderer.fonts.count(id));
+    return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
 
   /// \} // end of font handling
@@ -89251,15 +91266,17 @@ class basic_renderer final
    *
    * \param color the color that will be used by the renderer.
    *
+   * \return `success` if the color was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_color(const color& color) noexcept
+  auto set_color(const color& color) noexcept -> result
   {
-    SDL_SetRenderDrawColor(get(),
-                           color.red(),
-                           color.green(),
-                           color.blue(),
-                           color.alpha());
+    return SDL_SetRenderDrawColor(get(),
+                                  color.red(),
+                                  color.green(),
+                                  color.blue(),
+                                  color.alpha()) == 0;
   }
 
   /**
@@ -89269,18 +91286,13 @@ class basic_renderer final
    *
    * \param area the clip area rectangle; or `std::nullopt` to disable clipping.
    *
+   * \return `success` if the clip was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_clip(const std::optional<irect> area) noexcept
+  auto set_clip(const std::optional<irect> area) noexcept -> result
   {
-    if (area)
-    {
-      SDL_RenderSetClipRect(get(), area->data());
-    }
-    else
-    {
-      SDL_RenderSetClipRect(get(), nullptr);
-    }
+    return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
   }
 
   /**
@@ -89288,11 +91300,13 @@ class basic_renderer final
    *
    * \param viewport the viewport that will be used by the renderer.
    *
+   * \return `success` if the viewport was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_viewport(const irect viewport) noexcept
+  auto set_viewport(const irect viewport) noexcept -> result
   {
-    SDL_RenderSetViewport(get(), viewport.data());
+    return SDL_RenderSetViewport(get(), viewport.data()) == 0;
   }
 
   /**
@@ -89300,75 +91314,86 @@ class basic_renderer final
    *
    * \param mode the blend mode that will be used by the renderer.
    *
+   * \return `success` if the blend mode was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_blend_mode(const blend_mode mode) noexcept
+  auto set_blend_mode(const blend_mode mode) noexcept -> result
   {
-    SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode));
+    return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
   }
 
   /**
    * \brief Sets the rendering target of the renderer.
    *
-   * \details The supplied texture must support being a render target.
-   * Otherwise, this function will reset the render target.
+   * \pre `target` must be a texture that can be used as a render target.
    *
-   * \param target a pointer to the new target texture; `nullptr` indicates
-   * that the default rendering target should be used.
+   * \param target the texture that will be used as a rendering target.
+   *
+   * \return `success` if the rendering target was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
-  void set_target(const texture* target) noexcept
+  template <typename U>
+  auto set_target(basic_texture<U>& target) noexcept -> result
   {
-    if (target && target->is_target())
-    {
-      SDL_SetRenderTarget(get(), target->get());
-    }
-    else
-    {
-      SDL_SetRenderTarget(get(), nullptr);
-    }
+    assert(target.is_target());
+    return SDL_SetRenderTarget(get(), target.get()) == 0;
+  }
+
+  /**
+   * \brief Resets the rendering target to the default.
+   *
+   * \return `success` if the rendering target was successfully reset; `failure`
+   * otherwise.
+   *
+   * \since 6.0.0
+   */
+  auto reset_target() noexcept -> result
+  {
+    return SDL_SetRenderTarget(get(), nullptr) == 0;
   }
 
   /**
    * \brief Sets the rendering scale.
    *
-   * \note This function has no effect if any of the arguments aren't
-   * greater than zero.
+   * \pre `xScale` must be greater than zero.
+   * \pre `yScale` must be greater than zero.
    *
    * \param xScale the x-axis scale that will be used.
    * \param yScale the y-axis scale that will be used.
    *
+   * \return `success` if the scale was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_scale(const float xScale, const float yScale) noexcept
+  auto set_scale(const float xScale, const float yScale) noexcept -> result
   {
-    if ((xScale > 0) && (yScale > 0))
-    {
-      SDL_RenderSetScale(get(), xScale, yScale);
-    }
+    assert(xScale > 0);
+    assert(yScale > 0);
+    return SDL_RenderSetScale(get(), xScale, yScale) == 0;
   }
 
   /**
    * \brief Sets the logical size used by the renderer.
    *
+   * \pre The supplied width and height must be greater than or equal to zero.
+   *
    * \details This function is useful for resolution-independent rendering.
    *
-   * \remarks This is also known as *virtual size* in other frameworks.
-   *
-   * \note This function has no effect if either of the supplied dimensions
-   * aren't greater than zero.
+   * \remarks This is also known as virtual size.
    *
    * \param size the logical width and height that will be used.
    *
+   * \return `success` if the logical size was successfully set; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_logical_size(const iarea size) noexcept
+  auto set_logical_size(const iarea size) noexcept -> result
   {
-    if ((size.width >= 0) && (size.height >= 0))
-    {
-      SDL_RenderSetLogicalSize(get(), size.width, size.height);
-    }
+    assert(size.width >= 0);
+    assert(size.height >= 0);
+    return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
   }
 
   /**
@@ -89380,11 +91405,13 @@ class basic_renderer final
    *
    * \param enabled `true` if integer scaling should be used; `false` otherwise.
    *
+   * \return `success` if the option was successfully changed; `failure` otherwise.
+   *
    * \since 3.0.0
    */
-  void set_logical_integer_scaling(const bool enabled) noexcept
+  auto set_logical_integer_scaling(const bool enabled) noexcept -> result
   {
-    SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
+    return SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled)) == 0;
   }
 
   /// \} End of setters
@@ -89453,10 +91480,9 @@ class basic_renderer final
    */
   [[nodiscard]] auto logical_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_RenderGetLogicalSize(get(), &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
+    return size;
   }
 
   /**
@@ -89527,28 +91553,6 @@ class basic_renderer final
   }
 
   /**
-   * \brief Returns information about the renderer.
-   *
-   * \return information about the renderer; `std::nullopt` if something went
-   * wrong.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
-  {
-    SDL_RendererInfo info{};
-    const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0)
-    {
-      return info;
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
    * \brief Returns the output width of the renderer.
    *
    * \return the output width of the renderer.
@@ -89588,10 +91592,9 @@ class basic_renderer final
    */
   [[nodiscard]] auto output_size() const noexcept -> iarea
   {
-    int width{};
-    int height{};
-    SDL_GetRendererOutputSize(get(), &width, &height);
-    return {width, height};
+    iarea size{};
+    SDL_GetRendererOutputSize(get(), &size.width, &size.height);
+    return size;
   }
 
   /**
@@ -89669,113 +91672,6 @@ class basic_renderer final
     return viewport;
   }
 
-  /// \} End of queries
-
-  /// \name Flag-related queries.
-  /// \{
-
-  /**
-   * \brief Returns a bit mask of the current renderer flags.
-   *
-   * \note There are multiple other methods for checking if a flag is set,
-   * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
-   * this function.
-   *
-   * \return a bit mask of the current renderer flags.
-   *
-   * \see `SDL_RendererFlags`
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto flags() const noexcept -> u32
-  {
-    SDL_RendererInfo info{};
-    SDL_GetRendererInfo(get(), &info);
-    return info.flags;
-  }
-
-  /**
-   * \brief Indicates whether or not the `present` function is synced with
-   * the refresh rate of the screen.
-   *
-   * \return `true` if vsync is enabled; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is hardware accelerated.
-   *
-   * \return `true` if the renderer is hardware accelerated; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_accelerated() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is using software rendering.
-   *
-   * \return `true` if the renderer is software-based; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_software_based() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer supports rendering to a
-   * target texture.
-   *
-   * \return `true` if the renderer supports target texture rendering; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
-  }
-
-  /**
-   * \brief Returns the default flags used when creating renderers.
-   *
-   * \return the default renderer flags.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
-  {
-    return accelerated | vsync;
-  }
-
-  /// \} End of flag queries
-
-  /**
-   * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit operator bool() const noexcept
-  {
-    return m_renderer != nullptr;
-  }
-
   /**
    * \brief Returns a pointer to the associated SDL renderer.
    *
@@ -89797,6 +91693,41 @@ class basic_renderer final
     }
   }
 
+  /**
+   * \brief Returns the default flags used when creating renderers.
+   *
+   * \return the default renderer flags.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  {
+    return accelerated | vsync;
+  }
+
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the handle holds a non-null pointer.
+   *
+   * \warning It's undefined behaviour to invoke other member functions that
+   * use the internal pointer if this function returns `false`.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return m_renderer != nullptr;
+  }
+
+  /// \} End of conversions
+
  private:
   struct deleter final
   {
@@ -89816,9 +91747,7 @@ class basic_renderer final
     std::unordered_map<std::size_t, font> fonts{};
   };
 
-  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
-
-  rep_t m_renderer;
+  std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
 
   [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
   {
@@ -89864,6 +91793,2547 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 }  // namespace cen
 
 #endif  // CENTURION_RENDERER_HEADER
+
+// #include "centurion/video/renderer_info.hpp"
+#ifndef CENTURION_RENDERER_INFO_HEADER
+#define CENTURION_RENDERER_INFO_HEADER
+
+#include <SDL.h>
+
+#include <cassert>   // assert
+#include <cstddef>   // size_t
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, string_literals
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../math/area.hpp"
+
+// #include "pixel_format.hpp"
+
+// #include "renderer.hpp"
+#ifndef CENTURION_RENDERER_HEADER
+#define CENTURION_RENDERER_HEADER
+
+#include <SDL.h>
+
+#include <cassert>        // assert
+#include <cmath>          // floor, sqrt
+#include <cstddef>        // size_t
+#include <memory>         // unique_ptr
+#include <optional>       // optional
+#include <ostream>        // ostream
+#include <string>         // string
+#include <type_traits>    // conditional_t
+#include <unordered_map>  // unordered_map
+#include <utility>        // move, forward, pair
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/convert_bool.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "../math/rect.hpp"
+
+// #include "blend_mode.hpp"
+
+// #include "color.hpp"
+
+// #include "colors.hpp"
+
+// #include "font.hpp"
+
+// #include "font_cache.hpp"
+
+// #include "surface.hpp"
+
+// #include "texture.hpp"
+
+// #include "unicode_string.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+template <typename T>
+class basic_renderer;
+
+/**
+ * \typedef renderer
+ *
+ * \brief Represents an owning renderer.
+ *
+ * \since 5.0.0
+ */
+using renderer = basic_renderer<detail::owning_type>;
+
+/**
+ * \typedef renderer_handle
+ *
+ * \brief Represents a non-owning renderer.
+ *
+ * \since 5.0.0
+ */
+using renderer_handle = basic_renderer<detail::handle_type>;
+
+/**
+ * \class basic_renderer
+ *
+ * \brief Provides 2D-rendering that is potentially hardware-accelerated.
+ *
+ * \details The owning version of this class, `renderer`, features an extended API
+ * compared to its non-owning counterpart, with support for font handling and translated
+ * rendering.
+ *
+ * \note Each window can feature at most associated renderer.
+ *
+ * \since 5.0.0
+ *
+ * \see `renderer`
+ * \see `renderer_handle`
+ * \see `renderer_info`
+ *
+ * \headerfile renderer.hpp
+ */
+template <typename T>
+class basic_renderer final
+{
+ public:
+  /**
+   * \enum renderer_flags
+   *
+   * \brief Represents different renderer features.
+   *
+   * \details Values of this enum are intended to be used to create flag
+   * bitmasks, that can be used when creating renderers.
+   *
+   * \see `SDL_RendererFlags`
+   *
+   * \since 6.0.0
+   */
+  enum renderer_flags : u32
+  {
+    software = SDL_RENDERER_SOFTWARE,              ///< Software renderer
+    accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated
+    target_textures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures
+    vsync = SDL_RENDERER_PRESENTVSYNC              ///< Renderer Uses VSync
+  };
+
+  /// \name Construction
+  /// \{
+
+  // clang-format off
+
+  /**
+   * \brief Creates a renderer based on a pointer to an SDL renderer.
+   *
+   * \note The supplied pointer will be claimed by the renderer if the created
+   * renderer is owning.
+   *
+   * \param renderer a pointer to the associated SDL renderer.
+   *
+   * \since 3.0.0
+   */
+  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
+      : m_renderer{renderer}
+  {
+    if constexpr (detail::is_owning<T>())
+    {
+      if (!get())
+      {
+        throw cen_error{"Cannot create renderer from null pointer!"};
+      }
+    }
+  }
+
+  // clang-format on
+
+  /**
+   * \brief Creates an owning renderer based on the supplied window.
+   *
+   * \param window the associated window instance.
+   * \param flags the renderer flags that will be used, see `renderer_flags`.
+   *
+   * \throws sdl_error if something goes wrong when creating the renderer.
+   *
+   * \since 4.0.0
+   */
+  template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
+  explicit basic_renderer(const Window& window, const u32 flags = default_flags())
+      : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
+  {
+    if (!get())
+    {
+      throw sdl_error{};
+    }
+  }
+
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit basic_renderer(const renderer& owner) noexcept : m_renderer{owner.get()}
+  {}
+
+  /// \} End of construction
+
+  /**
+   * \brief Clears the rendering target with the currently selected color.
+   *
+   * \return `success` if the rendering target was successfully cleared; `failure`
+   * otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto clear() noexcept -> result
+  {
+    return SDL_RenderClear(get()) == 0;
+  }
+
+  /**
+   * \brief Clears the rendering target with the specified color.
+   *
+   * \note This function doesn't change the currently selected color.
+   *
+   * \param color the color that will be used to clear the rendering target.
+   *
+   * \since 5.0.0
+   */
+  void clear_with(const color& color) noexcept
+  {
+    const auto oldColor = get_color();
+    set_color(color);
+
+    clear();
+    set_color(oldColor);
+  }
+
+  /**
+   * \brief Applies the previous rendering calls to the rendering target.
+   *
+   * \since 3.0.0
+   */
+  void present() noexcept
+  {
+    SDL_RenderPresent(get());
+  }
+
+  /**
+   * \brief Captures a snapshot of the current rendering target as a surface.
+   *
+   * \note The correct pixel format supplied to this function can easily be
+   * obtained using the `basic_window::get_pixel_format()` function.
+   *
+   * \param format the pixel format that will be used by the surface.
+   *
+   * \return a surface that mirrors the pixel data of the current render target.
+   *
+   * \throws sdl_error if something goes wrong.
+   *
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto capture(const pixel_format format) const -> surface
+  {
+    surface image{output_size(), format};
+
+    if (!image.lock())
+    {
+      throw sdl_error{};
+    }
+
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
+    {
+      throw sdl_error{};
+    }
+
+    image.unlock();
+    return image;
+  }
+
+  /// \name Primitive rendering
+  /// \{
+
+  /**
+   * \brief Fills the entire rendering target with the currently selected color.
+   *
+   * \details This function is different from `clear()` and `clear_with()` in
+   * that it can be used as an intermediate rendering command (just like all
+   * rendering functions). An example of a use case of this function could be
+   * for rendering a transparent background for game menus.
+   *
+   * \since 5.1.0
+   */
+  void fill() noexcept
+  {
+    fill_rect<int>({{}, output_size()});
+  }
+
+  /**
+   * \brief Fills the entire rendering target with the specified color.
+   *
+   * \note This function does not affect the currently set color.
+   *
+   * \copydetails fill()
+   */
+  void fill_with(const color& color) noexcept
+  {
+    const auto oldColor = get_color();
+
+    set_color(color);
+    fill();
+
+    set_color(oldColor);
+  }
+
+  /**
+   * \brief Renders the outline of a rectangle in the currently selected color.
+   *
+   * \tparam U the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename U>
+  auto draw_rect(const basic_rect<U>& rect) noexcept -> result
+  {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
+      return SDL_RenderDrawRect(get(), rect.data()) == 0;
+    }
+    else
+    {
+      return SDL_RenderDrawRectF(get(), rect.data()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a filled rectangle in the currently selected color.
+   *
+   * \tparam U the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename U>
+  auto fill_rect(const basic_rect<U>& rect) noexcept -> result
+  {
+    if constexpr (basic_rect<U>::isIntegral)
+    {
+      return SDL_RenderFillRect(get(), rect.data()) == 0;
+    }
+    else
+    {
+      return SDL_RenderFillRectF(get(), rect.data()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a line between the supplied points, in the currently
+   * selected color.
+   *
+   * \tparam U The representation type used by the points.
+   *
+   * \param start the start point of the line.
+   * \param end the end point of the line.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename U>
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
+      -> result
+  {
+    if constexpr (basic_point<U>::isIntegral)
+    {
+      return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
+    }
+    else
+    {
+      return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a collection of lines.
+   *
+   * \details This function requires the the `Container` type provides the
+   * public member `value_type` and subsequently, that the `value_type`
+   * in turn provides a `value_type` member. The former would correspond to
+   * the actual point type, and the latter corresponds to either `int` or
+   * `float`.
+   *
+   * \warning `Container` *must* be a collection that stores its data
+   * contiguously! The behaviour of this function is undefined if this condition
+   * isn't met.
+   *
+   * \tparam Container the container type. Must store its elements
+   * contiguously, such as `std::vector` or `std::array`.
+   *
+   * \param container the container that holds the points that will be used
+   * to render the line.
+   *
+   * \return `success` if the lines were successfully rendered; `failure` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename Container>
+  auto draw_lines(const Container& container) noexcept -> result
+  {
+    using point_t = typename Container::value_type;  // a point of int or float
+    using value_t = typename point_t::value_type;    // either int or float
+
+    if (!container.empty())
+    {
+      const auto& front = container.front();
+      const auto* first = front.data();
+
+      if constexpr (std::is_same_v<value_t, int>)
+      {
+        return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
+      }
+      else
+      {
+        return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
+      }
+    }
+    else
+    {
+      return failure;
+    }
+  }
+
+  /**
+   * \brief Renders a point using the currently selected color.
+   *
+   * \tparam U the representation type used by the point.
+   *
+   * \param point the point that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 6.0.0
+   */
+  template <typename U>
+  auto draw_point(const basic_point<U>& point) noexcept -> result
+  {
+    if constexpr (basic_point<U>::isIntegral)
+    {
+      return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
+    }
+    else
+    {
+      return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a circle using the currently selected color.
+   *
+   * \tparam U the representation type used by the point.
+   *
+   * \param position the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename U>
+  void draw_circle(const basic_point<U>& position, const float radius) noexcept
+  {
+    using value_t = typename basic_point<U>::value_type;
+
+    auto error = -radius;
+    auto x = radius - 0.5f;
+    auto y = 0.5f;
+
+    const auto cx = static_cast<float>(position.x()) - 0.5f;
+    const auto cy = static_cast<float>(position.y()) - 0.5f;
+
+    while (x >= y)
+    {
+      draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
+      draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
+
+      if (x != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
+        draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
+      }
+
+      if (y != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
+        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
+      }
+
+      if (x != 0 && y != 0)
+      {
+        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
+        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
+      }
+
+      error += y;
+      ++y;
+      error += y;
+
+      if (error >= 0)
+      {
+        --x;
+        error -= x;
+        error -= x;
+      }
+    }
+  }
+
+  /**
+   * \brief Renders a filled circle using the currently selected color.
+   *
+   * \param center the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  void fill_circle(const fpoint center, const float radius)
+  {
+    const auto cx = center.x();
+    const auto cy = center.y();
+
+    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
+    {
+      const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
+      draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
+      draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
+    }
+  }
+
+  /// \} End of primitive rendering
+
+  /// \name Translated primitive rendering
+  /// \{
+
+  /**
+   * \brief Renders an outlined rectangle in the currently selected color.
+   *
+   * \details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam R the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.1.0
+   */
+  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
+  auto draw_rect_t(const basic_rect<R>& rect) noexcept -> result
+  {
+    return draw_rect(translate(rect));
+  }
+
+  /**
+   * \brief Renders a filled rectangle in the currently selected color.
+   *
+   * \details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam R the representation type used by the rectangle.
+   *
+   * \param rect the rectangle that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.1.0
+   */
+  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
+  auto fill_rect_t(const basic_rect<R>& rect) noexcept -> result
+  {
+    return fill_rect(translate(rect));
+  }
+
+  /**
+   * \brief Renders a point using the currently selected color.
+   *
+   * \details The rendered point will be translated using the current
+   * translation viewport.
+   *
+   * \tparam U the representation
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param point the point that will be rendered.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 6.0.0
+   */
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto draw_point_t(const basic_point<U>& point) noexcept -> result
+  {
+    return draw_point(translate(point));
+  }
+
+  /**
+   * \brief Renders a circle with the currently selected color.
+   *
+   * \details The rendered circle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam U the precision used by the point.
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param position the position of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  void draw_circle_t(const basic_point<U>& position, const float radius) noexcept
+  {
+    draw_circle(translate(position), radius);
+  }
+
+  /**
+   * \brief Renders a filled circle with the currently selected color.
+   *
+   * \details The rendered circle will be translated using the current
+   * translation viewport.
+   *
+   * \tparam TT dummy parameter for SFINAE.
+   *
+   * \param center the center of the rendered circle.
+   * \param radius the radius of the rendered circle.
+   *
+   * \since 6.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  void fill_circle_t(const fpoint center, const float radius)
+  {
+    fill_circle(translate(center), radius);
+  }
+
+  /// \} End of translated primitive rendering
+
+  /// \name Text rendering
+  /// \{
+
+  /**
+   * \brief Creates and returns a texture of blended UTF-8 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUTF8_Blended`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str, const font& font)
+      -> texture
+  {
+    assert(str);
+    return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_blended_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_blended_utf8(str.c_str(), font);
+  }
+
+  /**
+   * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This function will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * \param str the UTF-8 text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUTF8_Blended_Wrapped`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<czstring> str,
+                                                 const font& font,
+                                                 const u32 wrap) -> texture
+  {
+    assert(str);
+    return render_text(
+        TTF_RenderUTF8_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
+  }
+
+  /**
+   * \see render_blended_wrapped_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
+                                                 const font& font,
+                                                 const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_utf8(str.c_str(), font, wrap);
+  }
+
+  /**
+   * \brief Creates and returns a texture of shaded UTF-8 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * function when you want nice text, and can live with a box around it.
+   *
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUTF8_Shaded`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(const not_null<czstring> str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    assert(str);
+    return render_text(
+        TTF_RenderUTF8_Shaded(font.get(), str, get_color().get(), background.get()));
+  }
+
+  /**
+   * \see render_shaded_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(const std::string& str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    return render_shaded_utf8(str.c_str(), font, background);
+  }
+
+  /**
+   * \brief Creates and returns a texture of solid UTF-8 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderText_Solid`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str, const font& font)
+      -> texture
+  {
+    assert(str);
+    return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_solid_utf8()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_solid_utf8(str.c_str(), font);
+  }
+
+  /**
+   * \brief Creates and returns a texture of blended Latin-1 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderText_Blended`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str, const font& font)
+      -> texture
+  {
+    assert(str);
+    return render_text(TTF_RenderText_Blended(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_blended_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_blended_latin1(str.c_str(), font);
+  }
+
+  /**
+   * \brief Creates and returns a texture of blended and wrapped Latin-1 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This function will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * \param str the Latin-1 text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderText_Blended_Wrapped`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<czstring> str,
+                                                   const font& font,
+                                                   const u32 wrap) -> texture
+  {
+    assert(str);
+    return render_text(
+        TTF_RenderText_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
+  }
+
+  /**
+   * \see render_blended_wrapped_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
+                                                   const font& font,
+                                                   const u32 wrap) -> texture
+  {
+    return render_blended_wrapped_latin1(str.c_str(), font, wrap);
+  }
+
+  /**
+   * \brief Creates and returns a texture of shaded Latin-1 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * function when you want nice text, and can live with a box around it.
+   *
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderText_Shaded`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(const not_null<czstring> str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    assert(str);
+    return render_text(
+        TTF_RenderText_Shaded(font.get(), str, get_color().get(), background.get()));
+  }
+
+  /**
+   * \see render_shaded_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    return render_shaded_latin1(str.c_str(), font, background);
+  }
+
+  /**
+   * \brief Creates and returns a texture of solid Latin-1 text.
+   *
+   * \pre `str` can't be null.
+   *
+   * \details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderText_Solid`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str, const font& font)
+      -> texture
+  {
+    assert(str);
+    return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
+  }
+
+  /**
+   * \see render_solid_latin1()
+   * \since 5.3.0
+   */
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
+      -> texture
+  {
+    return render_solid_latin1(str.c_str(), font);
+  }
+
+  /**
+   * \brief Creates and returns a texture of blended Unicode text.
+   *
+   * \details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUNICODE_Blended`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
+      -> texture
+  {
+    return render_text(
+        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
+  }
+
+  /**
+   * \brief Creates and returns a texture of blended and wrapped Unicode text.
+   *
+   * \details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This function will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * \param str the Unicode text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUNICODE_Blended_Wrapped`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
+                                                    const font& font,
+                                                    const u32 wrap) -> texture
+  {
+    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
+                                                         str.data(),
+                                                         get_color().get(),
+                                                         wrap));
+  }
+
+  /**
+   * \brief Creates and returns a texture of shaded Unicode text.
+   *
+   * \details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * function when you want nice text, and can live with a box around it.
+   *
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUNICODE_Shaded`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
+                                           const font& font,
+                                           const color& background) -> texture
+  {
+    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
+                                                str.data(),
+                                                get_color().get(),
+                                                background.get()));
+  }
+
+  /**
+   * \brief Creates and returns a texture of solid Unicode text.
+   *
+   * \details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This function is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   *
+   * \return a texture that contains the rendered text.
+   *
+   * \see `TTF_RenderUNICODE_Solid`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
+      -> texture
+  {
+    return render_text(
+        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
+  }
+
+  /**
+   * \brief Renders a glyph at the specified position.
+   *
+   * \note This function has no effect if the glyph doesn't exist in the cache.
+   *
+   * \param cache the font cache that will be used.
+   * \param glyph the glyph, in unicode, that will be rendered.
+   * \param position the position of the rendered glyph.
+   *
+   * \return the x-coordinate of the next glyph to be rendered after the
+   * current glyph, or the same x-coordinate if no glyph was rendered.
+   *
+   * \since 5.0.0
+   */
+  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
+      -> int
+  {
+    if (const auto* data = cache.try_at(glyph))
+    {
+      const auto& [texture, metrics] = *data;
+
+      const auto outline = cache.get_font().outline();
+
+      // SDL_ttf handles the y-axis alignment
+      const auto x = position.x() + metrics.minX - outline;
+      const auto y = position.y() - outline;
+
+      render(texture, ipoint{x, y});
+
+      return x + metrics.advance;
+    }
+    else
+    {
+      return position.x();
+    }
+  }
+
+  /**
+   * \brief Renders a string.
+   *
+   * \details This function will not apply any clever conversions on the
+   * supplied string. The string is literally iterated, character-by-character,
+   * and each character is rendered using the `render_glyph` function.
+   *
+   * \pre Every character in the string must correspond to a valid Unicode
+   * glyph.
+   *
+   * \note This function is sensitive to newline-characters, and will render
+   * strings that contain such characters appropriately.
+   *
+   * \tparam String the type of the string, must be iterable and provide
+   * `unicode` characters.
+   *
+   * \param cache the font cache that will be used.
+   * \param str the string that will be rendered.
+   * \param position the position of the rendered text.
+   *
+   * \since 5.0.0
+   */
+  template <typename String>
+  void render_text(const font_cache& cache, const String& str, ipoint position)
+  {
+    const auto& font = cache.get_font();
+
+    const auto originalX = position.x();
+    const auto lineSkip = font.line_skip();
+
+    for (const unicode glyph : str)
+    {
+      if (glyph == '\n')
+      {
+        position.set_x(originalX);
+        position.set_y(position.y() + lineSkip);
+      }
+      else
+      {
+        const auto x = render_glyph(cache, glyph, position);
+        position.set_x(x);
+      }
+    }
+  }
+
+  /// \} End of text rendering
+
+  /// \name Texture rendering
+  /// \{
+
+  /**
+   * \brief Renders a texture at the specified position.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param position the position of the rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U>
+  auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
+  {
+    if constexpr (basic_point<P>::isFloating)
+    {
+      const auto size = cast<cen::farea>(texture.size());
+      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
+    }
+    else
+    {
+      const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
+      return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a texture according to the specified rectangle.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U>
+  auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
+  {
+    if constexpr (basic_rect<P>::isFloating)
+    {
+      return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
+    }
+    else
+    {
+      return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U>
+  auto render(const basic_texture<U>& texture,
+              const irect& source,
+              const basic_rect<P>& destination) noexcept -> result
+  {
+    if constexpr (basic_rect<P>::isFloating)
+    {
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
+             0;
+    }
+    else
+    {
+      return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U>
+  auto render(const basic_texture<U>& texture,
+              const irect& source,
+              const basic_rect<P>& destination,
+              const double angle) noexcept -> result
+  {
+    if constexpr (basic_rect<P>::isFloating)
+    {
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               nullptr,
+                               SDL_FLIP_NONE) == 0;
+    }
+    else
+    {
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              nullptr,
+                              SDL_FLIP_NONE) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * \param center specifies the point around which the rendered texture will
+   * be rotated.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename R, typename P, typename U>
+  auto render(const basic_texture<U>& texture,
+              const irect& source,
+              const basic_rect<R>& destination,
+              const double angle,
+              const basic_point<P>& center) noexcept -> result
+  {
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
+                  "Destination rectangle and center point must have the same "
+                  "value types (int or float)!");
+
+    if constexpr (basic_rect<R>::isFloating)
+    {
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               SDL_FLIP_NONE) == 0;
+    }
+    else
+    {
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              SDL_FLIP_NONE) == 0;
+    }
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * \param center specifies the point around which the rendered texture will be
+   * rotated.
+   * \param flip specifies how the rendered texture will be flipped.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename R, typename P, typename U>
+  auto render(const basic_texture<U>& texture,
+              const irect& source,
+              const basic_rect<R>& destination,
+              const double angle,
+              const basic_point<P>& center,
+              const SDL_RendererFlip flip) noexcept -> result
+  {
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
+                  "Destination rectangle and center point must have the same "
+                  "value types (int or float)!");
+
+    if constexpr (basic_rect<R>::isFloating)
+    {
+      return SDL_RenderCopyExF(get(),
+                               texture.get(),
+                               source.data(),
+                               destination.data(),
+                               angle,
+                               center.data(),
+                               flip) == 0;
+    }
+    else
+    {
+      return SDL_RenderCopyEx(get(),
+                              texture.get(),
+                              source.data(),
+                              destination.data(),
+                              angle,
+                              center.data(),
+                              flip) == 0;
+    }
+  }
+
+  /// \} End of texture rendering
+
+  /// \name Translated texture rendering.
+  /// \{
+
+  /**
+   * \brief Renders a texture at the specified position.
+   *
+   * \details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P The representation type used by the point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param position the position (pre-translation) of the rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
+      -> result
+  {
+    return render(texture, translate(position));
+  }
+
+  /**
+   * \brief Renders a texture according to the specified rectangle.
+   *
+   * \details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
+   * rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture,
+                const basic_rect<P>& destination) noexcept -> result
+  {
+    return render(texture, translate(destination));
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * \remarks This should be your preferred function of rendering textures. This
+   * function is efficient and simple.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
+   * rendered texture.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture,
+                const irect& source,
+                const basic_rect<P>& destination) noexcept -> result
+  {
+    return render(texture, source, translate(destination));
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
+   * rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture,
+                const irect& source,
+                const basic_rect<P>& destination,
+                const double angle) noexcept -> result
+  {
+    return render(texture, source, translate(destination), angle);
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
+   * rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * \param center specifies the point around which the rendered texture will
+   * be rotated.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture,
+                const irect& source,
+                const basic_rect<R>& destination,
+                const double angle,
+                const basic_point<P>& center) noexcept -> result
+  {
+    return render(texture, source, translate(destination), angle, center);
+  }
+
+  /**
+   * \brief Renders a texture.
+   *
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
+   *
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
+   * rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * \param center specifies the point around which the rendered texture will
+   * be rotated.
+   * \param flip specifies how the rendered texture will be flipped.
+   *
+   * \return `success` if the rendering was successful; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
+  auto render_t(const basic_texture<U>& texture,
+                const irect& source,
+                const basic_rect<R>& destination,
+                const double angle,
+                const basic_point<P>& center,
+                const SDL_RendererFlip flip) noexcept -> result
+  {
+    return render(texture, source, translate(destination), angle, center, flip);
+  }
+
+  /// \} End of translated texture rendering
+
+  /// \name Translation viewport
+  /// \{
+
+  /**
+   * \brief Sets the translation viewport that will be used by the renderer.
+   *
+   * \details This function should be called before calling any of the `_t`
+   * rendering methods, for automatic translation.
+   *
+   * \param viewport the rectangle that will be used as the translation
+   * viewport.
+   *
+   * \since 3.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  void set_translation_viewport(const frect& viewport) noexcept
+  {
+    m_renderer.translation = viewport;
+  }
+
+  /**
+   * \brief Returns the translation viewport that is currently being used.
+   *
+   * \details Set to (0, 0, 0, 0) by default.
+   *
+   * \return the translation viewport that is currently being used.
+   *
+   * \since 3.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
+  {
+    return m_renderer.translation;
+  }
+
+  /// \} End of translation viewport
+
+  /// \name Font handling
+  /// \{
+
+  /**
+   * \brief Adds a font to the renderer.
+   *
+   * \note This function overwrites any previously stored font associated
+   * with the specified ID.
+   *
+   * \param id the key that will be associated with the font.
+   * \param font the font that will be added.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  void add_font(const std::size_t id, font&& font)
+  {
+    auto& fonts = m_renderer.fonts;
+    if (const auto it = fonts.find(id); it != fonts.end())
+    {
+      fonts.erase(it);
+    }
+    fonts.try_emplace(id, std::move(font));
+  }
+
+  /**
+   * \brief Creates a font and adds it to the renderer.
+   *
+   * \note This function overwrites any previously stored font associated
+   * with the specified ID.
+   *
+   * \tparam Args the types of the arguments that will be forwarded.
+   *
+   * \param id the key that will be associated with the font.
+   * \param args the arguments that will be forwarded to the `font` constructor.
+   *
+   * \since 5.0.0
+   */
+  template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
+  void emplace_font(const std::size_t id, Args&&... args)
+  {
+    auto& fonts = m_renderer.fonts;
+    if (const auto it = fonts.find(id); it != fonts.end())
+    {
+      fonts.erase(it);
+    }
+    fonts.try_emplace(id, std::forward<Args>(args)...);
+  }
+
+  /**
+   * \brief Removes the font associated with the specified key.
+   *
+   * \details This function has no effect if there is no font associated with
+   * the specified key.
+   *
+   * \param id the key associated with the font that will be removed.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  void remove_font(const std::size_t id)
+  {
+    m_renderer.fonts.erase(id);
+  }
+
+  /**
+   * \brief Returns the font associated with the specified name.
+   *
+   * \pre There must be a font associated with the specified ID.
+   *
+   * \param id the key associated with the desired font.
+   *
+   * \return the font associated with the specified name.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  {
+    return m_renderer.fonts.at(id);
+  }
+
+  /**
+   * \copydoc get_font
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  {
+    return m_renderer.fonts.at(id);
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer has a font associated with
+   * the specified key.
+   *
+   * \param id the key that will be checked.
+   *
+   * \return `true` if the renderer has a font associated with the key;
+   * `false` otherwise.
+   *
+   * \since 4.1.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
+  {
+    return m_renderer.fonts.find(id) != m_renderer.fonts.end();
+  }
+
+  /// \} // end of font handling
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the color that will be used by the renderer.
+   *
+   * \param color the color that will be used by the renderer.
+   *
+   * \return `success` if the color was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_color(const color& color) noexcept -> result
+  {
+    return SDL_SetRenderDrawColor(get(),
+                                  color.red(),
+                                  color.green(),
+                                  color.blue(),
+                                  color.alpha()) == 0;
+  }
+
+  /**
+   * \brief Sets the clipping area rectangle.
+   *
+   * \details Clipping is disabled by default.
+   *
+   * \param area the clip area rectangle; or `std::nullopt` to disable clipping.
+   *
+   * \return `success` if the clip was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_clip(const std::optional<irect> area) noexcept -> result
+  {
+    return SDL_RenderSetClipRect(get(), area ? area->data() : nullptr) == 0;
+  }
+
+  /**
+   * \brief Sets the viewport that will be used by the renderer.
+   *
+   * \param viewport the viewport that will be used by the renderer.
+   *
+   * \return `success` if the viewport was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_viewport(const irect viewport) noexcept -> result
+  {
+    return SDL_RenderSetViewport(get(), viewport.data()) == 0;
+  }
+
+  /**
+   * \brief Sets the blend mode that will be used by the renderer.
+   *
+   * \param mode the blend mode that will be used by the renderer.
+   *
+   * \return `success` if the blend mode was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_blend_mode(const blend_mode mode) noexcept -> result
+  {
+    return SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode)) == 0;
+  }
+
+  /**
+   * \brief Sets the rendering target of the renderer.
+   *
+   * \pre `target` must be a texture that can be used as a render target.
+   *
+   * \param target the texture that will be used as a rendering target.
+   *
+   * \return `success` if the rendering target was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  template <typename U>
+  auto set_target(basic_texture<U>& target) noexcept -> result
+  {
+    assert(target.is_target());
+    return SDL_SetRenderTarget(get(), target.get()) == 0;
+  }
+
+  /**
+   * \brief Resets the rendering target to the default.
+   *
+   * \return `success` if the rendering target was successfully reset; `failure`
+   * otherwise.
+   *
+   * \since 6.0.0
+   */
+  auto reset_target() noexcept -> result
+  {
+    return SDL_SetRenderTarget(get(), nullptr) == 0;
+  }
+
+  /**
+   * \brief Sets the rendering scale.
+   *
+   * \pre `xScale` must be greater than zero.
+   * \pre `yScale` must be greater than zero.
+   *
+   * \param xScale the x-axis scale that will be used.
+   * \param yScale the y-axis scale that will be used.
+   *
+   * \return `success` if the scale was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_scale(const float xScale, const float yScale) noexcept -> result
+  {
+    assert(xScale > 0);
+    assert(yScale > 0);
+    return SDL_RenderSetScale(get(), xScale, yScale) == 0;
+  }
+
+  /**
+   * \brief Sets the logical size used by the renderer.
+   *
+   * \pre The supplied width and height must be greater than or equal to zero.
+   *
+   * \details This function is useful for resolution-independent rendering.
+   *
+   * \remarks This is also known as virtual size.
+   *
+   * \param size the logical width and height that will be used.
+   *
+   * \return `success` if the logical size was successfully set; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_logical_size(const iarea size) noexcept -> result
+  {
+    assert(size.width >= 0);
+    assert(size.height >= 0);
+    return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
+  }
+
+  /**
+   * \brief Sets whether or not to force integer scaling for the logical
+   * viewport.
+   *
+   * \details This function can be useful to combat visual artefacts when doing
+   * floating-point rendering.
+   *
+   * \param enabled `true` if integer scaling should be used; `false` otherwise.
+   *
+   * \return `success` if the option was successfully changed; `failure` otherwise.
+   *
+   * \since 3.0.0
+   */
+  auto set_logical_integer_scaling(const bool enabled) noexcept -> result
+  {
+    return SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled)) == 0;
+  }
+
+  /// \} End of setters
+
+  /// \name Queries
+  /// \{
+
+  /**
+   * \brief Returns a handle to the current render target.
+   *
+   * \return a handle to the current render target; empty if using the default
+   * target.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto get_render_target() noexcept -> texture_handle
+  {
+    return texture_handle{SDL_GetRenderTarget(get())};
+  }
+
+  /**
+   * \brief Returns the logical width that the renderer uses.
+   *
+   * \details By default, this property is set to 0.
+   *
+   * \return the logical width that the renderer uses.
+   *
+   * \see renderer::logical_size
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto logical_width() const noexcept -> int
+  {
+    int width{};
+    SDL_RenderGetLogicalSize(get(), &width, nullptr);
+    return width;
+  }
+
+  /**
+   * \brief Returns the logical height that the renderer uses.
+   *
+   * \details By default, this property is set to 0.
+   *
+   * \return the logical height that the renderer uses.
+   *
+   * \see renderer::logical_size
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto logical_height() const noexcept -> int
+  {
+    int height{};
+    SDL_RenderGetLogicalSize(get(), nullptr, &height);
+    return height;
+  }
+
+  /**
+   * \brief Returns the size of the logical (virtual) viewport.
+   *
+   * \note calling this function once is faster than calling both
+   * `logical_width` and `logical_height` for obtaining the size.
+   *
+   * \return the size of the logical (virtual) viewport.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto logical_size() const noexcept -> iarea
+  {
+    iarea size{};
+    SDL_RenderGetLogicalSize(get(), &size.width, &size.height);
+    return size;
+  }
+
+  /**
+   * \brief Returns the x-axis scale that the renderer uses.
+   *
+   * \return the x-axis scale that the renderer uses.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto x_scale() const noexcept -> float
+  {
+    float xScale{};
+    SDL_RenderGetScale(get(), &xScale, nullptr);
+    return xScale;
+  }
+
+  /**
+   * \brief Returns the y-axis scale that the renderer uses.
+   *
+   * \return the y-axis scale that the renderer uses.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto y_scale() const noexcept -> float
+  {
+    float yScale{};
+    SDL_RenderGetScale(get(), nullptr, &yScale);
+    return yScale;
+  }
+
+  /**
+   * \brief Returns the x- and y-scale used by the renderer.
+   *
+   * \note calling this function once is faster than calling both `x_scale`
+   * and `y_scale` for obtaining the scale.
+   *
+   * \return the x- and y-scale used by the renderer.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] auto scale() const noexcept -> std::pair<float, float>
+  {
+    float xScale{};
+    float yScale{};
+    SDL_RenderGetScale(get(), &xScale, &yScale);
+    return {xScale, yScale};
+  }
+
+  /**
+   * \brief Returns the current clipping rectangle, if there is one active.
+   *
+   * \return the current clipping rectangle; or `std::nullopt` if there is none.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
+  {
+    irect rect{};
+    SDL_RenderGetClipRect(get(), rect.data());
+    if (!rect.has_area())
+    {
+      return std::nullopt;
+    }
+    else
+    {
+      return rect;
+    }
+  }
+
+  /**
+   * \brief Returns the output width of the renderer.
+   *
+   * \return the output width of the renderer.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto output_width() const noexcept -> int
+  {
+    int width{};
+    SDL_GetRendererOutputSize(get(), &width, nullptr);
+    return width;
+  }
+
+  /**
+   * \brief Returns the output height of the renderer.
+   *
+   * \return the output height of the renderer.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto output_height() const noexcept -> int
+  {
+    int height{};
+    SDL_GetRendererOutputSize(get(), nullptr, &height);
+    return height;
+  }
+
+  /**
+   * \brief Returns the output size of the renderer.
+   *
+   * \note calling this function once is faster than calling `output_width`
+   * and `output_height` for obtaining the output size.
+   *
+   * \return the current output size of the renderer.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto output_size() const noexcept -> iarea
+  {
+    iarea size{};
+    SDL_GetRendererOutputSize(get(), &size.width, &size.height);
+    return size;
+  }
+
+  /**
+   * \brief Returns the blend mode that is being used by the renderer.
+   *
+   * \return the blend mode that is being used.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetRenderDrawBlendMode(get(), &mode);
+    return static_cast<blend_mode>(mode);
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer uses integer scaling values
+   * for logical viewports.
+   *
+   * \details By default, this property is set to false.
+   *
+   * \return `true` if the renderer uses integer scaling for logical
+   * viewports; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
+  {
+    return SDL_RenderGetIntegerScale(get());
+  }
+
+  /**
+   * \brief Indicates whether or not clipping is enabled.
+   *
+   * \details This is disabled by default.
+   *
+   * \return `true` if clipping is enabled; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
+  {
+    return SDL_RenderIsClipEnabled(get());
+  }
+
+  /**
+   * \brief Returns the currently selected rendering color.
+   *
+   * \return the currently selected rendering color.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto get_color() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    u8 alpha{};
+    SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
+    return {red, green, blue, alpha};
+  }
+
+  /**
+   * \brief Returns the viewport that the renderer uses.
+   *
+   * \return the viewport that the renderer uses.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto viewport() const noexcept -> irect
+  {
+    irect viewport{};
+    SDL_RenderGetViewport(get(), viewport.data());
+    return viewport;
+  }
+
+  /**
+   * \brief Returns a pointer to the associated SDL renderer.
+   *
+   * \warning Don't take ownership of the returned pointer!
+   *
+   * \return a pointer to the associated SDL_Renderer.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
+  {
+    if constexpr (detail::is_owning<T>())
+    {
+      return m_renderer.ptr.get();
+    }
+    else
+    {
+      return m_renderer;
+    }
+  }
+
+  /**
+   * \brief Returns the default flags used when creating renderers.
+   *
+   * \return the default renderer flags.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  {
+    return accelerated | vsync;
+  }
+
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the handle holds a non-null pointer.
+   *
+   * \warning It's undefined behaviour to invoke other member functions that
+   * use the internal pointer if this function returns `false`.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return m_renderer != nullptr;
+  }
+
+  /// \} End of conversions
+
+ private:
+  struct deleter final
+  {
+    void operator()(SDL_Renderer* renderer) noexcept
+    {
+      SDL_DestroyRenderer(renderer);
+    }
+  };
+
+  struct owning_data final
+  {
+    /*implicit*/ owning_data(SDL_Renderer* ptr) : ptr{ptr}  // NOLINT
+    {}
+
+    std::unique_ptr<SDL_Renderer, deleter> ptr;
+    frect translation{};
+    std::unordered_map<std::size_t, font> fonts{};
+  };
+
+  std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
+
+  [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
+  {
+    surface surface{s};
+    texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
+    return texture;
+  }
+
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
+      -> basic_point<U>
+  {
+    using value_type = typename basic_point<U>::value_type;
+
+    const auto& translation = m_renderer.translation;
+    const auto x = point.x() - static_cast<value_type>(translation.x());
+    const auto y = point.y() - static_cast<value_type>(translation.y());
+
+    return basic_point<U>{x, y};
+  }
+
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept -> basic_rect<U>
+  {
+    return basic_rect<U>{translate(rect.position()), rect.size()};
+  }
+};
+
+template <typename T>
+[[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
+{
+  return "renderer{data: " + detail::address_of(renderer.get()) + "}";
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std::ostream&
+{
+  return stream << to_string(renderer);
+}
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_RENDERER_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \class renderer_info
+ *
+ * \brief Provides information about a renderer.
+ *
+ * \see `get_info()`
+ *
+ * \since 6.0.0
+ */
+class renderer_info final
+{
+  template <typename T>
+  friend auto get_info(const basic_renderer<T>& renderer) noexcept
+      -> std::optional<renderer_info>;
+
+ public:
+  /**
+   * \brief Returns a mask of all of the supported renderer flags.
+   *
+   * \return a mask of the supported renderer flags.
+   *
+   * \see `basic_renderer::renderer_flags`
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto supported_flags() const noexcept -> u32
+  {
+    return m_info.flags;
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer supports VSync.
+   *
+   * \return `true` if the renderer has VSync support; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_vsync() const noexcept -> bool
+  {
+    return supported_flags() & SDL_RENDERER_PRESENTVSYNC;
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer supports target textures.
+   *
+   * \return `true` if the renderer has target texture support; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_target_textures() const noexcept -> bool
+  {
+    return supported_flags() & SDL_RENDERER_TARGETTEXTURE;
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer supports hardware acceleration.
+   *
+   * \return `true` if the renderer has hardware acceleration support; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_hardware_acceleration() const noexcept -> bool
+  {
+    return supported_flags() & SDL_RENDERER_ACCELERATED;
+  }
+
+  /**
+   * \brief Indicates whether or not the renderer supports software rendering.
+   *
+   * \return `true` if the renderer has software rendering support; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_software_renderer() const noexcept -> bool
+  {
+    return supported_flags() & SDL_RENDERER_SOFTWARE;
+  }
+
+  /**
+   * \brief Returns the name associated with the renderer.
+   *
+   * \return the name of the renderer.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto name() const noexcept -> czstring
+  {
+    return m_info.name;
+  }
+
+  /**
+   * \brief Returns the number of supported pixel formats.
+   *
+   * \return the amount of available pixel formats.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto format_count() const noexcept -> u32
+  {
+    return m_info.num_texture_formats;
+  }
+
+  /**
+   * \brief Returns the supported pixel format at the specified index.
+   *
+   * \pre `index` must be must be smaller than `pixel_format_count()`.
+   *
+   * \param index the index of the desired pixel format.
+   *
+   * \return the supported pixel format at the specified index.,
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto format(const std::size_t index) const noexcept -> pixel_format
+  {
+    assert(index < format_count());
+    return static_cast<pixel_format>(m_info.texture_formats[index]);
+  }
+
+  /**
+   * \brief Returns the maximum supported width of textures.
+   *
+   * \return the maximum texture width.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto max_texture_width() const noexcept -> int
+  {
+    return m_info.max_texture_width;
+  }
+
+  /**
+   * \brief Returns the maximum supported height of textures.
+   *
+   * \return the maximum texture height.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto max_texture_height() const noexcept -> int
+  {
+    return m_info.max_texture_height;
+  }
+
+  /**
+   * \brief Returns the maximum supported size of textures.
+   *
+   * \return the maximum texture size.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto max_texture_size() const noexcept -> iarea
+  {
+    return {max_texture_width(), max_texture_height()};
+  }
+
+ private:
+  SDL_RendererInfo m_info;
+
+  /**
+   * \brief Creates a `renderer_info` instance from an existing SDL info instance.
+   *
+   * \param info the information that will be copied.
+   *
+   * \since 6.0.0
+   */
+  explicit renderer_info(const SDL_RendererInfo info) noexcept : m_info{info}
+  {}
+};
+
+/**
+ * \brief Returns a textual representation of a `renderer_info` instance.
+ *
+ * \param info the renderer info instance that will be converted.
+ *
+ * \return a string that represents the `renderer_info` instance.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
+{
+  using namespace std::string_literals;
+  return "renderer_info{name: "s + str_or_na(info.name()) + "}";
+}
+
+/**
+ * \brief Prints a textual representation of a `renderer_info` instance.
+ *
+ * \param stream the stream that will be used.
+ * \param info the `renderer_info` instance that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::ostream&
+{
+  return stream << to_string(info);
+}
+
+/**
+ * \brief Returns information about a renderer.
+ *
+ * \tparam T the ownership semantics of the renderer.
+ *
+ * \param renderer the renderer to obtain information about.
+ *
+ * \return information about the supplied renderer; `std::nullopt` if something goes
+ * wrong.
+ *
+ * \since 6.0.0
+ */
+template <typename T>
+[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept
+    -> std::optional<renderer_info>
+{
+  SDL_RendererInfo info;
+  if (SDL_GetRendererInfo(renderer.get(), &info) == 0)
+  {
+    return renderer_info{info};
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_RENDERER_INFO_HEADER
 
 // #include "centurion/video/scale_mode.hpp"
 #ifndef CENTURION_SCALE_MODE_HEADER
@@ -89977,6 +94447,42 @@ namespace cen {
 /// \{
 
 /**
+ * \struct dpi_info
+ *
+ * \brief Provides diagonal, horizontal and vertical DPI values.
+ *
+ * \headerfile screen.hpp
+ *
+ * \since 5.0.0
+ */
+struct dpi_info final
+{
+  float diagonal{};    ///< The diagonal DPI value.
+  float horizontal{};  ///< The horizontal DPI value.
+  float vertical{};    ///< The vertical DPI value.
+};
+
+/**
+ * \enum screen_orientation
+ *
+ * \brief Represents different screen orientations.
+ *
+ * \since 5.0.0
+ *
+ * \see SDL_DisplayOrientation
+ *
+ * \headerfile screen.hpp
+ */
+enum class screen_orientation : int
+{
+  unknown = SDL_ORIENTATION_UNKNOWN,
+  landscape = SDL_ORIENTATION_LANDSCAPE,
+  landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
+  portrait = SDL_ORIENTATION_PORTRAIT,
+  portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
+};
+
+/**
  * \brief Sets whether or not screen savers are enabled.
  *
  * \note By default, screen savers are disabled.
@@ -90030,42 +94536,6 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
 namespace cen::screen {
 
 /**
- * \struct dpi_info
- *
- * \brief Provides diagonal, horizontal and vertical DPI values.
- *
- * \headerfile screen.hpp
- *
- * \since 5.0.0
- */
-struct dpi_info final
-{
-  float diagonal{};    ///< The diagonal DPI value.
-  float horizontal{};  ///< The horizontal DPI value.
-  float vertical{};    ///< The vertical DPI value.
-};
-
-/**
- * \enum orientation
- *
- * \brief Represents different screen orientations.
- *
- * \since 5.0.0
- *
- * \see SDL_DisplayOrientation
- *
- * \headerfile screen.hpp
- */
-enum class orientation
-{
-  unknown = SDL_ORIENTATION_UNKNOWN,
-  landscape = SDL_ORIENTATION_LANDSCAPE,
-  landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
-  portrait = SDL_ORIENTATION_PORTRAIT,
-  portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
-};
-
-/**
  * \brief Returns the amount of available displays.
  *
  * \return the number of available displays.
@@ -90102,9 +94572,10 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept -> orientation
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
+    -> screen_orientation
 {
-  return static_cast<orientation>(SDL_GetDisplayOrientation(index));
+  return static_cast<screen_orientation>(SDL_GetDisplayOrientation(index));
 }
 
 /// \name Display mode queries
@@ -90367,7 +94838,7 @@ enum class orientation
 [[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayBounds(index, &result.get()) == 0)
+  if (SDL_GetDisplayBounds(index, result.data()) == 0)
   {
     return result;
   }
@@ -90394,7 +94865,7 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayUsableBounds(index, &result.get()) == 0)
+  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0)
   {
     return result;
   }
@@ -90433,6 +94904,8 @@ enum class orientation
 // #include "../core/owner.hpp"
 
 // #include "../core/result.hpp"
+
+// #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
 
@@ -90581,7 +95054,7 @@ class basic_surface final
                                                  size.width,
                                                  size.height,
                                                  0,
-                                                 static_cast<u32>(pixelFormat))}
+                                                 to_underlying(pixelFormat))}
   {
     if (!m_surface)
     {
@@ -91019,10 +95492,9 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
     {
-      basic_surface result{ptr};
+      basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
@@ -91311,7 +95783,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "surface{ptr: " + detail::address_of(surface.get()) +
+  return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
          ", height: " + detail::to_string(surface.height()).value() + "}";
 }
@@ -91538,8 +96010,8 @@ class basic_texture final
                 const texture_access access,
                 const iarea size)
       : m_texture{SDL_CreateTexture(renderer.get(),
-                                    static_cast<u32>(format),
-                                    static_cast<int>(access),
+                                    to_underlying(format),
+                                    to_underlying(access),
                                     size.width,
                                     size.height)}
   {
@@ -92024,7 +96496,7 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  return "texture{ptr: " + detail::address_of(texture.get()) +
+  return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + detail::to_string(texture.width()).value() +
          ", height: " + detail::to_string(texture.height()).value() + "}";
 }
@@ -92076,7 +96548,7 @@ namespace cen {
  *
  * \headerfile texture_access.hpp
  */
-enum class texture_access
+enum class texture_access : int
 {
   no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
                                             ///< rarely, and isn't lockable.
@@ -92606,6 +97078,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -92613,9 +97086,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -92667,6 +97142,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -92687,8 +97178,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -92865,6 +97358,9 @@ namespace literals {
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -92985,6 +97481,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -93023,6 +97551,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -93030,9 +97559,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -93084,6 +97615,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -93127,6 +97674,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -93154,7 +97717,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -93167,7 +97730,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -93318,8 +97881,10 @@ namespace cen {
 /// \name Integer aliases
 /// \{
 
+/// Alias for an unsigned integer.
 using uint = unsigned int;
 
+/// Alias for the type used for integer literal operators.
 using ulonglong = unsigned long long;
 
 /// Alias for a 64-bit unsigned integer.
@@ -93566,6 +98131,9 @@ using maybe_owner = T;
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -93686,6 +98254,38 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -93721,9 +98321,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {
@@ -93881,6 +98481,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -93888,9 +98489,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -93942,6 +98545,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -93969,7 +98588,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -93982,7 +98601,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -94222,8 +98841,9 @@ class pointer_manager final
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -94379,7 +98999,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -94390,7 +99010,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -94399,11 +99019,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -94468,8 +99087,9 @@ template <typename To, typename From>
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -94625,7 +99245,7 @@ namespace cen::detail {
  * \remark On GCC, this function simply calls `std::to_string`, since the
  * `std::to_chars` implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
+ * \tparam BufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * \tparam T the type of the value that will be converted, must be arithmetic.
  *
@@ -94636,7 +99256,7 @@ namespace cen::detail {
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -94645,11 +99265,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }
@@ -94936,6 +99555,7 @@ namespace cen {
 
 // clang-format off
 
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
 template <typename T>
 using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
                                             (std::is_integral_v<T> ||
@@ -94943,9 +99563,11 @@ using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
 
 // clang-format on
 
+/// Enables a template if the type is a pointer.
 template <typename T>
 using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
+/// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
 using enable_if_convertible_t =
     std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
@@ -95629,14 +100251,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>
@@ -96673,6 +101295,40 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 // #include "../core/owner.hpp"
 
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
+
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "color.hpp"
@@ -97392,7 +102048,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -97563,7 +102219,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {
@@ -97815,6 +102471,8 @@ class basic_pixel_format_info final
 
 // #include "../core/result.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
@@ -98055,7 +102713,7 @@ class basic_surface final
                                                  size.width,
                                                  size.height,
                                                  0,
-                                                 static_cast<u32>(pixelFormat))}
+                                                 to_underlying(pixelFormat))}
   {
     if (!m_surface)
     {
@@ -98493,10 +103151,9 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
     {
-      basic_surface result{ptr};
+      basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
@@ -98785,7 +103442,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-  return "surface{ptr: " + detail::address_of(surface.get()) +
+  return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + detail::to_string(surface.width()).value() +
          ", height: " + detail::to_string(surface.height()).value() + "}";
 }
@@ -99592,6 +104249,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window has grabbed the input focus.
+   *
+   * \return `true` if the window has grabbed input focus; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_grabbed_input() const noexcept -> bool
+  {
+    return check_flag(input_grabbed);
+  }
+
+  /**
    * \brief Indicates whether or not the window has input focus.
    *
    * \note The window might have to be visible for this to be true.
@@ -99664,6 +104333,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or the window supports high-DPI mode.
+   *
+   * \return `true` if the window supports high-DPI mode; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_high_dpi() const noexcept -> bool
+  {
+    return check_flag(high_dpi);
+  }
+
+  /**
    * \brief Indicates whether or not the window is in fullscreen mode.
    *
    * \return `true` if the window is in fullscreen mode; `false` otherwise.
@@ -99701,6 +104382,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is hidden.
+   *
+   * \return `true` if the window isn't visible; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_hidden() const noexcept -> bool
+  {
+    return check_flag(hidden);
+  }
+
+  /**
    * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -99726,6 +104419,22 @@ class basic_window final
   {
     return check_flag(vulkan);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the window can be used as a Metal view.
+   *
+   * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_metal() const noexcept -> bool
+  {
+    return check_flag(metal);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Indicates whether or not the window wasn't created by SDL.
@@ -99787,6 +104496,54 @@ class basic_window final
   [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
     return check_flag(always_on_top);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a "utility" window.
+   *
+   * \return `true` if window is a "utility" window; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_utility() const noexcept -> bool
+  {
+    return check_flag(utility);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a tooltip.
+   *
+   * \return `true` if the window is a tooltip; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_tooltip() const noexcept -> bool
+  {
+    return check_flag(tooltip);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a popup menu.
+   *
+   * \return `true` if the window is a popup menu; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_popup_menu() const noexcept -> bool
+  {
+    return check_flag(popup_menu);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is excluded from the taskbar.
+   *
+   * \return `true` if the window is excluded from the taskbar; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_excluded_from_taskbar() const noexcept -> bool
+  {
+    return check_flag(skip_taskbar);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
@@ -100197,6 +104954,22 @@ using czstring = const char*;
  */
 using zstring = char*;
 
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
 /// \} End of group core
 
 }  // namespace cen
@@ -100224,7 +104997,7 @@ class cen_error : public std::exception
   cen_error() noexcept = default;
 
   /**
-   * \param what the message of the exception.
+   * \param what the message of the exception, can safely be null.
    *
    * \since 3.0.0
    */
@@ -100237,7 +105010,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**
@@ -101246,6 +106019,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window has grabbed the input focus.
+   *
+   * \return `true` if the window has grabbed input focus; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto has_grabbed_input() const noexcept -> bool
+  {
+    return check_flag(input_grabbed);
+  }
+
+  /**
    * \brief Indicates whether or not the window has input focus.
    *
    * \note The window might have to be visible for this to be true.
@@ -101318,6 +106103,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or the window supports high-DPI mode.
+   *
+   * \return `true` if the window supports high-DPI mode; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_high_dpi() const noexcept -> bool
+  {
+    return check_flag(high_dpi);
+  }
+
+  /**
    * \brief Indicates whether or not the window is in fullscreen mode.
    *
    * \return `true` if the window is in fullscreen mode; `false` otherwise.
@@ -101355,6 +106152,18 @@ class basic_window final
   }
 
   /**
+   * \brief Indicates whether or not the window is hidden.
+   *
+   * \return `true` if the window isn't visible; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_hidden() const noexcept -> bool
+  {
+    return check_flag(hidden);
+  }
+
+  /**
    * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -101380,6 +106189,22 @@ class basic_window final
   {
     return check_flag(vulkan);
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  /**
+   * \brief Indicates whether or not the window can be used as a Metal view.
+   *
+   * \return `true` if the window can be used as a Metal view; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_metal() const noexcept -> bool
+  {
+    return check_flag(metal);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   /**
    * \brief Indicates whether or not the window wasn't created by SDL.
@@ -101441,6 +106266,54 @@ class basic_window final
   [[nodiscard]] auto is_always_on_top() const noexcept -> bool
   {
     return check_flag(always_on_top);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a "utility" window.
+   *
+   * \return `true` if window is a "utility" window; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_utility() const noexcept -> bool
+  {
+    return check_flag(utility);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a tooltip.
+   *
+   * \return `true` if the window is a tooltip; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_tooltip() const noexcept -> bool
+  {
+    return check_flag(tooltip);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is a popup menu.
+   *
+   * \return `true` if the window is a popup menu; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_popup_menu() const noexcept -> bool
+  {
+    return check_flag(popup_menu);
+  }
+
+  /**
+   * \brief Indicates whether or not the window is excluded from the taskbar.
+   *
+   * \return `true` if the window is excluded from the taskbar; `false` otherwise.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] auto is_excluded_from_taskbar() const noexcept -> bool
+  {
+    return check_flag(skip_taskbar);
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
@@ -101708,2315 +106581,6 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 // #include "../math/area.hpp"
 
 // #include "renderer.hpp"
-#ifndef CENTURION_RENDERER_HEADER
-#define CENTURION_RENDERER_HEADER
-
-#include <SDL.h>
-
-#include <cassert>        // assert
-#include <cmath>          // floor, sqrt
-#include <cstddef>        // size_t
-#include <memory>         // unique_ptr
-#include <optional>       // optional
-#include <ostream>        // ostream
-#include <string>         // string
-#include <type_traits>    // conditional_t
-#include <unordered_map>  // unordered_map
-#include <utility>        // move, forward, pair
-
-// #include "../core/czstring.hpp"
-
-// #include "../core/integers.hpp"
-
-// #include "../core/not_null.hpp"
-
-// #include "../core/owner.hpp"
-
-// #include "../detail/address_of.hpp"
-
-// #include "../detail/convert_bool.hpp"
-
-// #include "../detail/owner_handle_api.hpp"
-
-// #include "../math/rect.hpp"
-
-// #include "blend_mode.hpp"
-
-// #include "color.hpp"
-
-// #include "colors.hpp"
-
-// #include "font.hpp"
-
-// #include "font_cache.hpp"
-
-// #include "surface.hpp"
-
-// #include "texture.hpp"
-
-// #include "unicode_string.hpp"
-
-
-namespace cen {
-
-/// \addtogroup video
-/// \{
-
-template <typename T>
-class basic_renderer;
-
-/**
- * \typedef renderer
- *
- * \brief Represents an owning renderer.
- *
- * \since 5.0.0
- */
-using renderer = basic_renderer<detail::owning_type>;
-
-/**
- * \typedef renderer_handle
- *
- * \brief Represents a non-owning renderer.
- *
- * \since 5.0.0
- */
-using renderer_handle = basic_renderer<detail::handle_type>;
-
-/**
- * \class basic_renderer
- *
- * \brief Provides hardware-accelerated 2D-rendering.
- *
- * \since 5.0.0
- *
- * \see `renderer`
- * \see `renderer_handle`
- *
- * \headerfile renderer.hpp
- */
-template <typename T>
-class basic_renderer final
-{
- public:
-  /**
-   * \enum renderer_flags
-   *
-   * \brief Represents different renderer features.
-   *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating renderers.
-   *
-   * \see `SDL_RendererFlags`
-   *
-   * \since 6.0.0
-   */
-  enum renderer_flags : u32
-  {
-    software = SDL_RENDERER_SOFTWARE,              ///< Software renderer
-    accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated
-    target_textures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures
-    vsync = SDL_RENDERER_PRESENTVSYNC              ///< Renderer Uses VSync
-  };
-
-  /// \name Construction
-  /// \{
-
-  // clang-format off
-
-  /**
-   * \brief Creates a renderer based on a pointer to an SDL renderer.
-   *
-   * \note The supplied pointer will be claimed by the renderer if the created
-   * renderer is owning.
-   *
-   * \param renderer a pointer to the associated SDL renderer.
-   *
-   * \since 3.0.0
-   */
-  explicit basic_renderer(maybe_owner<SDL_Renderer*> renderer) noexcept(!detail::is_owning<T>())
-      : m_renderer{renderer}
-  {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!get())
-      {
-        throw cen_error{"Cannot create renderer from null pointer!"};
-      }
-    }
-  }
-
-  // clang-format on
-
-  /**
-   * \brief Creates an owning renderer based on the supplied window.
-   *
-   * \param window the associated window instance.
-   * \param flags the renderer flags that will be used, see `renderer_flags`.
-   *
-   * \throws sdl_error if something goes wrong when creating the renderer.
-   *
-   * \since 4.0.0
-   */
-  template <typename Window, typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_renderer(const Window& window, const u32 flags = default_flags())
-      : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
-  {
-    if (!get())
-    {
-      throw sdl_error{};
-    }
-  }
-
-  template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit basic_renderer(const renderer& owner) noexcept : m_renderer{owner.get()}
-  {}
-
-  /// \} End of construction
-
-  /**
-   * \brief Clears the rendering target with the currently selected color.
-   *
-   * \since 3.0.0
-   */
-  void clear() noexcept
-  {
-    SDL_RenderClear(get());
-  }
-
-  /**
-   * \brief Clears the rendering target with the specified color.
-   *
-   * \note This function doesn't change the currently selected color.
-   *
-   * \param color the color that will be used to clear the rendering target.
-   *
-   * \since 5.0.0
-   */
-  void clear_with(const color& color) noexcept
-  {
-    const auto oldColor = get_color();
-
-    set_color(color);
-    clear();
-
-    set_color(oldColor);
-  }
-
-  /**
-   * \brief Applies the previous rendering calls to the rendering target.
-   *
-   * \since 3.0.0
-   */
-  void present() noexcept
-  {
-    SDL_RenderPresent(get());
-  }
-
-  /**
-   * \brief Captures a snapshot of the current rendering target as a surface.
-   *
-   * \note The correct pixel format supplied to this function can easily be
-   * obtained using the `basic_window::get_pixel_format()` function.
-   *
-   * \param format the pixel format that will be used by the surface.
-   *
-   * \return a surface that mirrors the pixel data of the current render target.
-   *
-   * \throws sdl_error if something goes wrong.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto capture(const pixel_format format) const -> surface
-  {
-    surface image{output_size(), format};
-
-    if (!image.lock())
-    {
-      throw sdl_error{};
-    }
-
-    const auto result =
-        SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch());
-    if (result == -1)
-    {
-      throw sdl_error{};
-    }
-
-    image.unlock();
-    return image;
-  }
-
-  /// \name Primitive rendering
-  /// \{
-
-  /**
-   * \brief Fills the entire rendering target with the currently selected color.
-   *
-   * \details This function is different from `clear()` and `clear_with()` in
-   * that it can be used as an intermediate rendering command (just like all
-   * rendering functions). An example of a use case of this function could be
-   * for rendering a transparent background for game menus.
-   *
-   * \since 5.1.0
-   */
-  void fill() noexcept
-  {
-    fill_rect<int>({{}, output_size()});
-  }
-
-  /**
-   * \brief Fills the entire rendering target with the specified color.
-   *
-   * \note This function does not affect the currently set color.
-   *
-   * \copydetails fill()
-   */
-  void fill_with(const color& color) noexcept
-  {
-    const auto oldColor = get_color();
-
-    set_color(color);
-    fill();
-
-    set_color(oldColor);
-  }
-
-  /**
-   * \brief Renders the outline of a rectangle in the currently selected color.
-   *
-   * \tparam U the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.0.0
-   */
-  template <typename U>
-  void draw_rect(const basic_rect<U>& rect) noexcept
-  {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
-      SDL_RenderDrawRect(get(), rect.data());
-    }
-    else
-    {
-      SDL_RenderDrawRectF(get(), rect.data());
-    }
-  }
-
-  /**
-   * \brief Renders a filled rectangle in the currently selected color.
-   *
-   * \tparam U the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.0.0
-   */
-  template <typename U>
-  void fill_rect(const basic_rect<U>& rect) noexcept
-  {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
-      SDL_RenderFillRect(get(), rect.data());
-    }
-    else
-    {
-      SDL_RenderFillRectF(get(), rect.data());
-    }
-  }
-
-  /**
-   * \brief Renders a line between the supplied points, in the currently
-   * selected color.
-   *
-   * \tparam U The representation type used by the points.
-   *
-   * \param start the start point of the line.
-   * \param end the end point of the line.
-   *
-   * \since 4.0.0
-   */
-  template <typename U>
-  void draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
-  {
-    if constexpr (basic_point<U>::isIntegral)
-    {
-      SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y());
-    }
-    else
-    {
-      SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y());
-    }
-  }
-
-  /**
-   * \brief Renders a collection of lines.
-   *
-   * \details This function requires the the `Container` type provides the
-   * public member `value_type` and subsequently, that the `value_type`
-   * in turn provides a `value_type` member. The former would correspond to
-   * the actual point type, and the latter corresponds to either `int` or
-   * `float`.
-   *
-   * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined if this condition
-   * isn't met.
-   *
-   * \tparam Container the container type. Must store its elements
-   * contiguously, such as `std::vector` or `std::array`.
-   *
-   * \param container the container that holds the points that will be used
-   * to render the line.
-   *
-   * \since 5.0.0
-   */
-  template <typename Container>
-  void draw_lines(const Container& container) noexcept
-  {
-    using point_t = typename Container::value_type;  // a point of int or float
-    using value_t = typename point_t::value_type;    // either int or float
-
-    if (!container.empty())
-    {
-      const auto& front = container.front();
-      const auto* first = front.data();
-
-      if constexpr (std::is_same_v<value_t, int>)
-      {
-        SDL_RenderDrawLines(get(), first, isize(container));
-      }
-      else
-      {
-        SDL_RenderDrawLinesF(get(), first, isize(container));
-      }
-    }
-  }
-
-  /**
-   * \brief Renders a point using the currently selected color.
-   *
-   * \tparam U the representation type used by the point.
-   *
-   * \param point the point that will be rendered.
-   *
-   * \since 6.0.0
-   */
-  template <typename U>
-  void draw_point(const basic_point<U>& point) noexcept
-  {
-    if constexpr (basic_point<U>::isIntegral)
-    {
-      SDL_RenderDrawPoint(get(), point.x(), point.y());
-    }
-    else
-    {
-      SDL_RenderDrawPointF(get(), point.x(), point.y());
-    }
-  }
-
-  /**
-   * \brief Renders a circle using the currently selected color.
-   *
-   * \tparam U the representation type used by the point.
-   *
-   * \param position the position of the rendered circle.
-   * \param radius the radius of the rendered circle.
-   *
-   * \since 6.0.0
-   */
-  template <typename U>
-  void draw_circle(const basic_point<U>& position, const float radius) noexcept
-  {
-    using value_t = typename basic_point<U>::value_type;
-
-    auto error = -radius;
-    auto x = radius - 0.5f;
-    auto y = 0.5f;
-
-    const auto cx = static_cast<float>(position.x()) - 0.5f;
-    const auto cy = static_cast<float>(position.y()) - 0.5f;
-
-    while (x >= y)
-    {
-      draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
-      draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
-
-      if (x != 0)
-      {
-        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
-        draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
-      }
-
-      if (y != 0)
-      {
-        draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
-        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
-      }
-
-      if (x != 0 && y != 0)
-      {
-        draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
-        draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
-      }
-
-      error += y;
-      ++y;
-      error += y;
-
-      if (error >= 0)
-      {
-        --x;
-        error -= x;
-        error -= x;
-      }
-    }
-  }
-
-  /**
-   * \brief Renders a filled circle using the currently selected color.
-   *
-   * \param center the position of the rendered circle.
-   * \param radius the radius of the rendered circle.
-   *
-   * \since 6.0.0
-   */
-  void fill_circle(const fpoint center, const float radius)
-  {
-    const auto cx = center.x();
-    const auto cy = center.y();
-
-    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
-    {
-      const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
-      const auto x = cx - dx;
-
-      draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
-      draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
-    }
-  }
-
-  /// \} End of primitive rendering
-
-  /// \name Translated primitive rendering
-  /// \{
-
-  /**
-   * \brief Renders an outlined rectangle in the currently selected color.
-   *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam R the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.1.0
-   */
-  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_rect_t(const basic_rect<R>& rect) noexcept
-  {
-    draw_rect(translate(rect));
-  }
-
-  /**
-   * \brief Renders a filled rectangle in the currently selected color.
-   *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam R the representation type used by the rectangle.
-   *
-   * \param rect the rectangle that will be rendered.
-   *
-   * \since 4.1.0
-   */
-  template <typename R, typename TT = T, detail::is_owner<TT> = 0>
-  void fill_rect_t(const basic_rect<R>& rect) noexcept
-  {
-    fill_rect(translate(rect));
-  }
-
-  /**
-   * \brief Renders a point using the currently selected color.
-   *
-   * \details The rendered point will be translated using the current
-   * translation viewport.
-   *
-   * \tparam U the representation
-   * \tparam TT dummy parameter for SFINAE.
-   *
-   * \param point the point that will be rendered.
-   *
-   * \since 6.0.0
-   */
-  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_point_t(const basic_point<U>& point) noexcept
-  {
-    draw_point(translate(point));
-  }
-
-  /**
-   * \brief Renders a circle with the currently selected color.
-   *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam U the precision used by the point.
-   * \tparam TT dummy parameter for SFINAE.
-   *
-   * \param position the position of the rendered circle.
-   * \param radius the radius of the rendered circle.
-   *
-   * \since 6.0.0
-   */
-  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void draw_circle_t(const basic_point<U>& position, const float radius) noexcept
-  {
-    draw_circle(translate(position), radius);
-  }
-
-  /**
-   * \brief Renders a filled circle with the currently selected color.
-   *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam TT dummy parameter for SFINAE.
-   *
-   * \param center the center of the rendered circle.
-   * \param radius the radius of the rendered circle.
-   *
-   * \since 6.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  void fill_circle_t(const fpoint center, const float radius)
-  {
-    fill_circle(translate(center), radius);
-  }
-
-  /// \} End of translated primitive rendering
-
-  /// \name Text rendering
-  /// \{
-
-  /**
-   * \brief Creates and returns a texture of blended UTF-8 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
-   *
-   * \param str the UTF-8 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUTF8_Blended`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str, const font& font)
-      -> texture
-  {
-    assert(str);
-    return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
-  }
-
-  /**
-   * \see render_blended_utf8()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
-      -> texture
-  {
-    return render_blended_utf8(str.c_str(), font);
-  }
-
-  /**
-   * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
-   *
-   * \param str the UTF-8 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
-   * \param font the font that the text will be rendered in.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUTF8_Blended_Wrapped`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<czstring> str,
-                                                 const font& font,
-                                                 const u32 wrap) -> texture
-  {
-    assert(str);
-    return render_text(
-        TTF_RenderUTF8_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
-  }
-
-  /**
-   * \see render_blended_wrapped_utf8()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_blended_wrapped_utf8(const std::string& str,
-                                                 const font& font,
-                                                 const u32 wrap) -> texture
-  {
-    return render_blended_wrapped_utf8(str.c_str(), font, wrap);
-  }
-
-  /**
-   * \brief Creates and returns a texture of shaded UTF-8 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
-   *
-   * \param str the UTF-8 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   * \param background the background color used for the box.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUTF8_Shaded`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_shaded_utf8(const not_null<czstring> str,
-                                        const font& font,
-                                        const color& background) -> texture
-  {
-    assert(str);
-    return render_text(
-        TTF_RenderUTF8_Shaded(font.get(), str, get_color().get(), background.get()));
-  }
-
-  /**
-   * \see render_shaded_utf8()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_shaded_utf8(const std::string& str,
-                                        const font& font,
-                                        const color& background) -> texture
-  {
-    return render_shaded_utf8(str.c_str(), font, background);
-  }
-
-  /**
-   * \brief Creates and returns a texture of solid UTF-8 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
-   *
-   * \param str the UTF-8 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderText_Solid`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str, const font& font)
-      -> texture
-  {
-    assert(str);
-    return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
-  }
-
-  /**
-   * \see render_solid_utf8()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
-      -> texture
-  {
-    return render_solid_utf8(str.c_str(), font);
-  }
-
-  /**
-   * \brief Creates and returns a texture of blended Latin-1 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
-   *
-   * \param str the Latin-1 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderText_Blended`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str, const font& font)
-      -> texture
-  {
-    assert(str);
-    return render_text(TTF_RenderText_Blended(font.get(), str, get_color().get()));
-  }
-
-  /**
-   * \see render_blended_latin1()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
-      -> texture
-  {
-    return render_blended_latin1(str.c_str(), font);
-  }
-
-  /**
-   * \brief Creates and returns a texture of blended and wrapped Latin-1 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
-   *
-   * \param str the Latin-1 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
-   * \param font the font that the text will be rendered in.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderText_Blended_Wrapped`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<czstring> str,
-                                                   const font& font,
-                                                   const u32 wrap) -> texture
-  {
-    assert(str);
-    return render_text(
-        TTF_RenderText_Blended_Wrapped(font.get(), str, get_color().get(), wrap));
-  }
-
-  /**
-   * \see render_blended_wrapped_latin1()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_blended_wrapped_latin1(const std::string& str,
-                                                   const font& font,
-                                                   const u32 wrap) -> texture
-  {
-    return render_blended_wrapped_latin1(str.c_str(), font, wrap);
-  }
-
-  /**
-   * \brief Creates and returns a texture of shaded Latin-1 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
-   *
-   * \param str the Latin-1 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   * \param background the background color used for the box.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderText_Shaded`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_shaded_latin1(const not_null<czstring> str,
-                                          const font& font,
-                                          const color& background) -> texture
-  {
-    assert(str);
-    return render_text(
-        TTF_RenderText_Shaded(font.get(), str, get_color().get(), background.get()));
-  }
-
-  /**
-   * \see render_shaded_latin1()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_shaded_latin1(const std::string& str,
-                                          const font& font,
-                                          const color& background) -> texture
-  {
-    return render_shaded_latin1(str.c_str(), font, background);
-  }
-
-  /**
-   * \brief Creates and returns a texture of solid Latin-1 text.
-   *
-   * \pre `str` can't be null.
-   *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
-   *
-   * \param str the Latin-1 text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderText_Solid`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str, const font& font)
-      -> texture
-  {
-    assert(str);
-    return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
-  }
-
-  /**
-   * \see render_solid_latin1()
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
-      -> texture
-  {
-    return render_solid_latin1(str.c_str(), font);
-  }
-
-  /**
-   * \brief Creates and returns a texture of blended Unicode text.
-   *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
-   *
-   * \param str the Unicode text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUNICODE_Blended`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
-      -> texture
-  {
-    return render_text(
-        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
-  }
-
-  /**
-   * \brief Creates and returns a texture of blended and wrapped Unicode text.
-   *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
-   *
-   * \param str the Unicode text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
-   * \param font the font that the text will be rendered in.
-   * \param wrap the width in pixels after which the text will be wrapped.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUNICODE_Blended_Wrapped`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
-                                                    const font& font,
-                                                    const u32 wrap) -> texture
-  {
-    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                                         str.data(),
-                                                         get_color().get(),
-                                                         wrap));
-  }
-
-  /**
-   * \brief Creates and returns a texture of shaded Unicode text.
-   *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
-   *
-   * \param str the Unicode text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   * \param background the background color used for the box.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUNICODE_Shaded`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
-                                           const font& font,
-                                           const color& background) -> texture
-  {
-    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
-                                                str.data(),
-                                                get_color().get(),
-                                                background.get()));
-  }
-
-  /**
-   * \brief Creates and returns a texture of solid Unicode text.
-   *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
-   *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
-   *
-   * \param str the Unicode text that will be rendered.
-   * \param font the font that the text will be rendered in.
-   *
-   * \return a texture that contains the rendered text.
-   *
-   * \see `TTF_RenderUNICODE_Solid`
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
-      -> texture
-  {
-    return render_text(
-        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
-  }
-
-  /**
-   * \brief Renders a glyph at the specified position.
-   *
-   * \note This function has no effect if the glyph doesn't exist in the cache.
-   *
-   * \param cache the font cache that will be used.
-   * \param glyph the glyph, in unicode, that will be rendered.
-   * \param position the position of the rendered glyph.
-   *
-   * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph, or the same x-coordinate if no glyph was rendered.
-   *
-   * \since 5.0.0
-   */
-  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
-      -> int
-  {
-    if (const auto* data = cache.try_at(glyph))
-    {
-      const auto& [texture, metrics] = *data;
-
-      const auto outline = cache.get_font().outline();
-
-      // SDL_ttf handles the y-axis alignment
-      const auto x = position.x() + metrics.minX - outline;
-      const auto y = position.y() - outline;
-
-      render(texture, ipoint{x, y});
-
-      return x + metrics.advance;
-    }
-    else
-    {
-      return position.x();
-    }
-  }
-
-  /**
-   * \brief Renders a string.
-   *
-   * \details This function will not apply any clever conversions on the
-   * supplied string. The string is literally iterated, character-by-character,
-   * and each character is rendered using the `render_glyph` function.
-   *
-   * \pre Every character in the string must correspond to a valid Unicode
-   * glyph.
-   *
-   * \note This function is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
-   *
-   * \tparam String the type of the string, must be iterable and provide
-   * `unicode` characters.
-   *
-   * \param cache the font cache that will be used.
-   * \param str the string that will be rendered.
-   * \param position the position of the rendered text.
-   *
-   * \since 5.0.0
-   */
-  template <typename String>
-  void render_text(const font_cache& cache, const String& str, ipoint position)
-  {
-    const auto& font = cache.get_font();
-
-    const auto originalX = position.x();
-    const auto lineSkip = font.line_skip();
-
-    for (const unicode glyph : str)
-    {
-      if (glyph == '\n')
-      {
-        position.set_x(originalX);
-        position.set_y(position.y() + lineSkip);
-      }
-      else
-      {
-        const auto x = render_glyph(cache, glyph, position);
-        position.set_x(x);
-      }
-    }
-  }
-
-  /// \} End of text rendering
-
-  /// \name Texture rendering
-  /// \{
-
-  /**
-   * \brief Renders a texture at the specified position.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param position the position of the rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
-  {
-    if constexpr (basic_point<P>::isFloating)
-    {
-      const auto size = cast<cen::farea>(texture.size());
-      const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
-      SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
-    }
-    else
-    {
-      const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
-      SDL_RenderCopy(get(), texture.get(), nullptr, &dst);
-    }
-  }
-
-  /**
-   * \brief Renders a texture according to the specified rectangle.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param destination the position and size of the rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U>
-  void render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
-  {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data());
-    }
-    else
-    {
-      SDL_RenderCopy(get(), texture.get(), nullptr, destination.data());
-    }
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \remarks This should be your preferred function of rendering textures. This
-   * function is efficient and simple.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position and size of the rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<P>& destination) noexcept
-  {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data());
-    }
-    else
-    {
-      SDL_RenderCopy(get(), texture.get(), source.data(), destination.data());
-    }
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<P>& destination,
-              const double angle) noexcept
-  {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        nullptr,
-                        SDL_FLIP_NONE);
-    }
-    else
-    {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       nullptr,
-                       SDL_FLIP_NONE);
-    }
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam R the representation type used by the destination rectangle.
-   * \tparam P the representation type used by the center point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
-   *
-   * \since 4.0.0
-   */
-  template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<R>& destination,
-              const double angle,
-              const basic_point<P>& center) noexcept
-  {
-    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
-                                 typename basic_point<P>::value_type>,
-                  "Destination rectangle and center point must have the same "
-                  "value types (int or float)!");
-
-    if constexpr (basic_rect<R>::isFloating)
-    {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        SDL_FLIP_NONE);
-    }
-    else
-    {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       SDL_FLIP_NONE);
-    }
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam R the representation type used by the destination rectangle.
-   * \tparam P the representation type used by the center point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will be
-   * rotated.
-   * \param flip specifies how the rendered texture will be flipped.
-   *
-   * \since 4.0.0
-   */
-  template <typename R, typename P, typename U>
-  void render(const basic_texture<U>& texture,
-              const irect& source,
-              const basic_rect<R>& destination,
-              const double angle,
-              const basic_point<P>& center,
-              const SDL_RendererFlip flip) noexcept
-  {
-    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
-                                 typename basic_point<P>::value_type>,
-                  "Destination rectangle and center point must have the same "
-                  "value types (int or float)!");
-
-    if constexpr (basic_rect<R>::isFloating)
-    {
-      SDL_RenderCopyExF(get(),
-                        texture.get(),
-                        source.data(),
-                        destination.data(),
-                        angle,
-                        center.data(),
-                        flip);
-    }
-    else
-    {
-      SDL_RenderCopyEx(get(),
-                       texture.get(),
-                       source.data(),
-                       destination.data(),
-                       angle,
-                       center.data(),
-                       flip);
-    }
-  }
-
-  /// \} End of texture rendering
-
-  /// \name Translated texture rendering.
-  /// \{
-
-  /**
-   * \brief Renders a texture at the specified position.
-   *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P The representation type used by the point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param position the position (pre-translation) of the rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
-  {
-    render(texture, translate(position));
-  }
-
-  /**
-   * \brief Renders a texture according to the specified rectangle.
-   *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the destination rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept
-  {
-    render(texture, translate(destination));
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * \remarks This should be your preferred function of rendering textures. This
-   * function is efficient and simple.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the destination rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<P>& destination) noexcept
-  {
-    render(texture, source, translate(destination));
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam P the representation type used by the destination rectangle.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   *
-   * \since 4.0.0
-   */
-  template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<P>& destination,
-                const double angle) noexcept
-  {
-    render(texture, source, translate(destination), angle);
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam R the representation type used by the destination rectangle.
-   * \tparam P the representation type used by the center-of-rotation point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
-   *
-   * \since 4.0.0
-   */
-  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<R>& destination,
-                const double angle,
-                const basic_point<P>& center) noexcept
-  {
-    render(texture, source, translate(destination), angle, center);
-  }
-
-  /**
-   * \brief Renders a texture.
-   *
-   * \tparam U the ownership tag of the texture.
-   * \tparam R the representation type used by the destination rectangle.
-   * \tparam P the representation type used by the center-of-rotation point.
-   *
-   * \param texture the texture that will be rendered.
-   * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
-   * \param flip specifies how the rendered texture will be flipped.
-   *
-   * \since 4.0.0
-   */
-  template <typename R, typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  void render_t(const basic_texture<U>& texture,
-                const irect& source,
-                const basic_rect<R>& destination,
-                const double angle,
-                const basic_point<P>& center,
-                const SDL_RendererFlip flip) noexcept
-  {
-    render(texture, source, translate(destination), angle, center, flip);
-  }
-
-  /// \} End of translated texture rendering
-
-  /// \name Translation viewport
-  /// \{
-
-  /**
-   * \brief Sets the translation viewport that will be used by the renderer.
-   *
-   * \details This function should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
-   *
-   * \param viewport the rectangle that will be used as the translation
-   * viewport.
-   *
-   * \since 3.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  void set_translation_viewport(const frect& viewport) noexcept
-  {
-    m_renderer.translation = viewport;
-  }
-
-  /**
-   * \brief Returns the translation viewport that is currently being used.
-   *
-   * \details Set to (0, 0, 0, 0) by default.
-   *
-   * \return the translation viewport that is currently being used.
-   *
-   * \since 3.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
-  {
-    return m_renderer.translation;
-  }
-
-  /// \} End of translation viewport
-
-  /// \name Font handling
-  /// \{
-
-  /**
-   * \brief Adds a font to the renderer.
-   *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
-   *
-   * \param id the key that will be associated with the font.
-   * \param font the font that will be added.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
-  {
-    auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
-    {
-      remove_font(id);
-    }
-    fonts.emplace(id, std::move(font));
-  }
-
-  /**
-   * \brief Creates a font and adds it to the renderer.
-   *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
-   *
-   * \tparam Args the types of the arguments that will be forwarded.
-   *
-   * \param id the key that will be associated with the font.
-   * \param args the arguments that will be forwarded to the `font` constructor.
-   *
-   * \since 5.0.0
-   */
-  template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const std::size_t id, Args&&... args)
-  {
-    auto& fonts = m_renderer.fonts;
-    if (fonts.find(id) != fonts.end())
-    {
-      remove_font(id);
-    }
-    fonts.try_emplace(id, std::forward<Args>(args)...);
-  }
-
-  /**
-   * \brief Removes the font associated with the specified key.
-   *
-   * \details This function has no effect if there is no font associated with
-   * the specified key.
-   *
-   * \param id the key associated with the font that will be removed.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const std::size_t id)
-  {
-    m_renderer.fonts.erase(id);
-  }
-
-  /**
-   * \brief Returns the font associated with the specified name.
-   *
-   * \pre There must be a font associated with the specified ID.
-   *
-   * \param id the key associated with the desired font.
-   *
-   * \return the font associated with the specified name.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
-  {
-    return m_renderer.fonts.at(id);
-  }
-
-  /**
-   * \copydoc get_font
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
-  {
-    return m_renderer.fonts.at(id);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer has a font associated with
-   * the specified key.
-   *
-   * \param id the key that will be checked.
-   *
-   * \return `true` if the renderer has a font associated with the key;
-   * `false` otherwise.
-   *
-   * \since 4.1.0
-   */
-  template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
-  {
-    return static_cast<bool>(m_renderer.fonts.count(id));
-  }
-
-  /// \} // end of font handling
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the color that will be used by the renderer.
-   *
-   * \param color the color that will be used by the renderer.
-   *
-   * \since 3.0.0
-   */
-  void set_color(const color& color) noexcept
-  {
-    SDL_SetRenderDrawColor(get(),
-                           color.red(),
-                           color.green(),
-                           color.blue(),
-                           color.alpha());
-  }
-
-  /**
-   * \brief Sets the clipping area rectangle.
-   *
-   * \details Clipping is disabled by default.
-   *
-   * \param area the clip area rectangle; or `std::nullopt` to disable clipping.
-   *
-   * \since 3.0.0
-   */
-  void set_clip(const std::optional<irect> area) noexcept
-  {
-    if (area)
-    {
-      SDL_RenderSetClipRect(get(), area->data());
-    }
-    else
-    {
-      SDL_RenderSetClipRect(get(), nullptr);
-    }
-  }
-
-  /**
-   * \brief Sets the viewport that will be used by the renderer.
-   *
-   * \param viewport the viewport that will be used by the renderer.
-   *
-   * \since 3.0.0
-   */
-  void set_viewport(const irect viewport) noexcept
-  {
-    SDL_RenderSetViewport(get(), viewport.data());
-  }
-
-  /**
-   * \brief Sets the blend mode that will be used by the renderer.
-   *
-   * \param mode the blend mode that will be used by the renderer.
-   *
-   * \since 3.0.0
-   */
-  void set_blend_mode(const blend_mode mode) noexcept
-  {
-    SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode));
-  }
-
-  /**
-   * \brief Sets the rendering target of the renderer.
-   *
-   * \details The supplied texture must support being a render target.
-   * Otherwise, this function will reset the render target.
-   *
-   * \param target a pointer to the new target texture; `nullptr` indicates
-   * that the default rendering target should be used.
-   *
-   * \since 3.0.0
-   */
-  void set_target(const texture* target) noexcept
-  {
-    if (target && target->is_target())
-    {
-      SDL_SetRenderTarget(get(), target->get());
-    }
-    else
-    {
-      SDL_SetRenderTarget(get(), nullptr);
-    }
-  }
-
-  /**
-   * \brief Sets the rendering scale.
-   *
-   * \note This function has no effect if any of the arguments aren't
-   * greater than zero.
-   *
-   * \param xScale the x-axis scale that will be used.
-   * \param yScale the y-axis scale that will be used.
-   *
-   * \since 3.0.0
-   */
-  void set_scale(const float xScale, const float yScale) noexcept
-  {
-    if ((xScale > 0) && (yScale > 0))
-    {
-      SDL_RenderSetScale(get(), xScale, yScale);
-    }
-  }
-
-  /**
-   * \brief Sets the logical size used by the renderer.
-   *
-   * \details This function is useful for resolution-independent rendering.
-   *
-   * \remarks This is also known as *virtual size* in other frameworks.
-   *
-   * \note This function has no effect if either of the supplied dimensions
-   * aren't greater than zero.
-   *
-   * \param size the logical width and height that will be used.
-   *
-   * \since 3.0.0
-   */
-  void set_logical_size(const iarea size) noexcept
-  {
-    if ((size.width >= 0) && (size.height >= 0))
-    {
-      SDL_RenderSetLogicalSize(get(), size.width, size.height);
-    }
-  }
-
-  /**
-   * \brief Sets whether or not to force integer scaling for the logical
-   * viewport.
-   *
-   * \details This function can be useful to combat visual artefacts when doing
-   * floating-point rendering.
-   *
-   * \param enabled `true` if integer scaling should be used; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  void set_logical_integer_scaling(const bool enabled) noexcept
-  {
-    SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
-  }
-
-  /// \} End of setters
-
-  /// \name Queries
-  /// \{
-
-  /**
-   * \brief Returns a handle to the current render target.
-   *
-   * \return a handle to the current render target; empty if using the default
-   * target.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto get_render_target() noexcept -> texture_handle
-  {
-    return texture_handle{SDL_GetRenderTarget(get())};
-  }
-
-  /**
-   * \brief Returns the logical width that the renderer uses.
-   *
-   * \details By default, this property is set to 0.
-   *
-   * \return the logical width that the renderer uses.
-   *
-   * \see renderer::logical_size
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto logical_width() const noexcept -> int
-  {
-    int width{};
-    SDL_RenderGetLogicalSize(get(), &width, nullptr);
-    return width;
-  }
-
-  /**
-   * \brief Returns the logical height that the renderer uses.
-   *
-   * \details By default, this property is set to 0.
-   *
-   * \return the logical height that the renderer uses.
-   *
-   * \see renderer::logical_size
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto logical_height() const noexcept -> int
-  {
-    int height{};
-    SDL_RenderGetLogicalSize(get(), nullptr, &height);
-    return height;
-  }
-
-  /**
-   * \brief Returns the size of the logical (virtual) viewport.
-   *
-   * \note calling this function once is faster than calling both
-   * `logical_width` and `logical_height` for obtaining the size.
-   *
-   * \return the size of the logical (virtual) viewport.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto logical_size() const noexcept -> iarea
-  {
-    int width{};
-    int height{};
-    SDL_RenderGetLogicalSize(get(), &width, &height);
-    return {width, height};
-  }
-
-  /**
-   * \brief Returns the x-axis scale that the renderer uses.
-   *
-   * \return the x-axis scale that the renderer uses.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto x_scale() const noexcept -> float
-  {
-    float xScale{};
-    SDL_RenderGetScale(get(), &xScale, nullptr);
-    return xScale;
-  }
-
-  /**
-   * \brief Returns the y-axis scale that the renderer uses.
-   *
-   * \return the y-axis scale that the renderer uses.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto y_scale() const noexcept -> float
-  {
-    float yScale{};
-    SDL_RenderGetScale(get(), nullptr, &yScale);
-    return yScale;
-  }
-
-  /**
-   * \brief Returns the x- and y-scale used by the renderer.
-   *
-   * \note calling this function once is faster than calling both `x_scale`
-   * and `y_scale` for obtaining the scale.
-   *
-   * \return the x- and y-scale used by the renderer.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto scale() const noexcept -> std::pair<float, float>
-  {
-    float xScale{};
-    float yScale{};
-    SDL_RenderGetScale(get(), &xScale, &yScale);
-    return {xScale, yScale};
-  }
-
-  /**
-   * \brief Returns the current clipping rectangle, if there is one active.
-   *
-   * \return the current clipping rectangle; or `std::nullopt` if there is none.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
-  {
-    irect rect{};
-    SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area())
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return rect;
-    }
-  }
-
-  /**
-   * \brief Returns information about the renderer.
-   *
-   * \return information about the renderer; `std::nullopt` if something went
-   * wrong.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
-  {
-    SDL_RendererInfo info{};
-    const auto result = SDL_GetRendererInfo(get(), &info);
-    if (result == 0)
-    {
-      return info;
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
-   * \brief Returns the output width of the renderer.
-   *
-   * \return the output width of the renderer.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto output_width() const noexcept -> int
-  {
-    int width{};
-    SDL_GetRendererOutputSize(get(), &width, nullptr);
-    return width;
-  }
-
-  /**
-   * \brief Returns the output height of the renderer.
-   *
-   * \return the output height of the renderer.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto output_height() const noexcept -> int
-  {
-    int height{};
-    SDL_GetRendererOutputSize(get(), nullptr, &height);
-    return height;
-  }
-
-  /**
-   * \brief Returns the output size of the renderer.
-   *
-   * \note calling this function once is faster than calling `output_width`
-   * and `output_height` for obtaining the output size.
-   *
-   * \return the current output size of the renderer.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto output_size() const noexcept -> iarea
-  {
-    int width{};
-    int height{};
-    SDL_GetRendererOutputSize(get(), &width, &height);
-    return {width, height};
-  }
-
-  /**
-   * \brief Returns the blend mode that is being used by the renderer.
-   *
-   * \return the blend mode that is being used.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
-  {
-    SDL_BlendMode mode{};
-    SDL_GetRenderDrawBlendMode(get(), &mode);
-    return static_cast<blend_mode>(mode);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer uses integer scaling values
-   * for logical viewports.
-   *
-   * \details By default, this property is set to false.
-   *
-   * \return `true` if the renderer uses integer scaling for logical
-   * viewports; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
-  {
-    return SDL_RenderGetIntegerScale(get());
-  }
-
-  /**
-   * \brief Indicates whether or not clipping is enabled.
-   *
-   * \details This is disabled by default.
-   *
-   * \return `true` if clipping is enabled; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
-  {
-    return SDL_RenderIsClipEnabled(get());
-  }
-
-  /**
-   * \brief Returns the currently selected rendering color.
-   *
-   * \return the currently selected rendering color.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto get_color() const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
-    SDL_GetRenderDrawColor(get(), &red, &green, &blue, &alpha);
-    return {red, green, blue, alpha};
-  }
-
-  /**
-   * \brief Returns the viewport that the renderer uses.
-   *
-   * \return the viewport that the renderer uses.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto viewport() const noexcept -> irect
-  {
-    irect viewport{};
-    SDL_RenderGetViewport(get(), viewport.data());
-    return viewport;
-  }
-
-  /// \} End of queries
-
-  /// \name Flag-related queries.
-  /// \{
-
-  /**
-   * \brief Returns a bit mask of the current renderer flags.
-   *
-   * \note There are multiple other methods for checking if a flag is set,
-   * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
-   * this function.
-   *
-   * \return a bit mask of the current renderer flags.
-   *
-   * \see `SDL_RendererFlags`
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto flags() const noexcept -> u32
-  {
-    SDL_RendererInfo info{};
-    SDL_GetRendererInfo(get(), &info);
-    return info.flags;
-  }
-
-  /**
-   * \brief Indicates whether or not the `present` function is synced with
-   * the refresh rate of the screen.
-   *
-   * \return `true` if vsync is enabled; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is hardware accelerated.
-   *
-   * \return `true` if the renderer is hardware accelerated; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_accelerated() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is using software rendering.
-   *
-   * \return `true` if the renderer is software-based; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_software_based() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer supports rendering to a
-   * target texture.
-   *
-   * \return `true` if the renderer supports target texture rendering; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
-  }
-
-  /**
-   * \brief Returns the default flags used when creating renderers.
-   *
-   * \return the default renderer flags.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
-  {
-    return accelerated | vsync;
-  }
-
-  /// \} End of flag queries
-
-  /**
-   * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit operator bool() const noexcept
-  {
-    return m_renderer != nullptr;
-  }
-
-  /**
-   * \brief Returns a pointer to the associated SDL renderer.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated SDL_Renderer.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
-  {
-    if constexpr (detail::is_owning<T>())
-    {
-      return m_renderer.ptr.get();
-    }
-    else
-    {
-      return m_renderer;
-    }
-  }
-
- private:
-  struct deleter final
-  {
-    void operator()(SDL_Renderer* renderer) noexcept
-    {
-      SDL_DestroyRenderer(renderer);
-    }
-  };
-
-  struct owning_data final
-  {
-    /*implicit*/ owning_data(SDL_Renderer* ptr) : ptr{ptr}  // NOLINT
-    {}
-
-    std::unique_ptr<SDL_Renderer, deleter> ptr;
-    frect translation{};
-    std::unordered_map<std::size_t, font> fonts{};
-  };
-
-  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
-
-  rep_t m_renderer;
-
-  [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
-  {
-    surface surface{s};
-    texture texture{SDL_CreateTextureFromSurface(get(), surface.get())};
-    return texture;
-  }
-
-  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
-  {
-    using value_type = typename basic_point<U>::value_type;
-
-    const auto& translation = m_renderer.translation;
-    const auto x = point.x() - static_cast<value_type>(translation.x());
-    const auto y = point.y() - static_cast<value_type>(translation.y());
-
-    return basic_point<U>{x, y};
-  }
-
-  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept -> basic_rect<U>
-  {
-    return basic_rect<U>{translate(rect.position()), rect.size()};
-  }
-};
-
-template <typename T>
-[[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
-{
-  return "renderer{data: " + detail::address_of(renderer.get()) + "}";
-}
-
-template <typename T>
-auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std::ostream&
-{
-  return stream << to_string(renderer);
-}
-
-/// \} End of group video
-
-}  // namespace cen
-
-#endif  // CENTURION_RENDERER_HEADER
 
 // #include "window.hpp"
 

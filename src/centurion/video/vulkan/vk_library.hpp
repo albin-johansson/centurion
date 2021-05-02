@@ -32,8 +32,7 @@ class vk_library final
    */
   explicit vk_library(const czstring path = nullptr)
   {
-    const auto result = SDL_Vulkan_LoadLibrary(path);
-    if (result == -1)
+    if (SDL_Vulkan_LoadLibrary(path) == -1)
     {
       throw sdl_error{};
     }

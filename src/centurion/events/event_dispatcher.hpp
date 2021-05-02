@@ -228,11 +228,11 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* e = m_event.template try_get<Event>())
+    if (const auto* event = m_event.template try_get<Event>())
     {
-      if (auto& func = get_sink<Event>().function())
+      if (auto& function = get_sink<Event>().function())
       {
-        func(*e);
+        function(*event);
       }
 
       return true;

@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "common_event.hpp"
 
 namespace cen {
@@ -18,7 +19,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class joy_hat_position
+enum class joy_hat_position : u8
 {
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
@@ -85,7 +86,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    */
   void set_position(const joy_hat_position value) noexcept
   {
-    m_event.value = static_cast<u8>(value);
+    m_event.value = to_underlying(value);
   }
 
   /**

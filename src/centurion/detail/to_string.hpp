@@ -44,10 +44,9 @@ template <std::size_t BufferSize = 16, typename T>
   else
   {
     std::array<char, BufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }

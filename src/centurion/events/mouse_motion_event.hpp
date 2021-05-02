@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../input/mouse_button.hpp"
 #include "common_event.hpp"
 
@@ -190,7 +191,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    */
   [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
   {
-    return m_event.state & SDL_BUTTON(static_cast<u32>(button));
+    return m_event.state & SDL_BUTTON(to_underlying(button));
   }
 
   /**

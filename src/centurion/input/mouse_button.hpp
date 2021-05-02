@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/integers.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -17,7 +19,7 @@ namespace cen {
  *
  * \headerfile mouse_button.hpp
  */
-enum class mouse_button
+enum class mouse_button : u8
 {
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,

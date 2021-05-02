@@ -81,7 +81,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   void set_button(const mouse_button button) noexcept
   {
-    m_event.button = static_cast<u8>(button);
+    m_event.button = to_underlying(button);
   }
 
   /**

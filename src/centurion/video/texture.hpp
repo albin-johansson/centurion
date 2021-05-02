@@ -625,18 +625,18 @@ class basic_texture final
   {
     if (pitch)
     {
-      const auto result =
-          SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             pitch) == 0;
     }
     else
     {
       int dummyPitch;
-      const auto result = SDL_LockTexture(m_texture,
-                                          nullptr,
-                                          reinterpret_cast<void**>(pixels),
-                                          &dummyPitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
     }
   }
 

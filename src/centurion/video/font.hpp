@@ -12,6 +12,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/to_string.hpp"
 #include "../math/area.hpp"
@@ -49,7 +50,7 @@ struct glyph_metrics final
  *
  * \headerfile font.hpp
  */
-enum class font_hint
+enum class font_hint : int
 {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
@@ -230,7 +231,7 @@ class font final
    */
   void set_font_hinting(const font_hint hint) noexcept
   {
-    TTF_SetFontHinting(m_font.get(), static_cast<int>(hint));
+    TTF_SetFontHinting(m_font.get(), to_underlying(hint));
   }
 
   /**

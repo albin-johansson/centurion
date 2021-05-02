@@ -73,18 +73,17 @@ enum class music_type
  * \brief Represents a music file.
  *
  * \details The supported audio formats are the following:
- * <ul>
- *   <li>WAVE/RIFF (.wav)</li>
- *   <li>AIFF (.aiff)</li>
- *   <li>VOC (.voc)</li>
- *   <li>MOD (.mod .xm .s3m .669 .it .med and more)</li>
- *   <li>MIDI (.mid)</li>
- *   <li>OggVorbis (.ogg)</li>
- *   <li>MP3 (.mp3)</li>
- *   <li>FLAC (.flac)</li>
- * </ul>
+ *   - WAVE/RIFF (.wav)
+ *   - AIFF (.aiff)
+ *   - VOC (.voc)
+ *   - MOD (.mod .xm .s3m .669 .it .med and more)
+ *   - MIDI (.mid)
+ *   - OggVorbis (.ogg)
+ *   - MP3 (.mp3)
+ *   - FLAC (.flac)
  *
- * \note Only one music instance can ever be playing at any time.
+ * \note Only one music instance can ever be playing at any time, which means that many of
+ * the functions in this class are static.
  *
  * \todo Look into special effects API (also applies for sound effects).
  *
@@ -92,8 +91,6 @@ enum class music_type
  * \see `sound_effect`
  *
  * \since 3.0.0
- *
- * \headerfile music.hpp
  */
 class music final
 {

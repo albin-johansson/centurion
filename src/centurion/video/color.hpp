@@ -21,14 +21,13 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
+ *
+ * \see `cen::colors`
  */
 class color final
 {

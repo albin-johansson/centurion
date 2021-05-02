@@ -75,17 +75,18 @@ using frect = basic_rect<float>;
 /**
  * \class basic_rect
  *
- * \brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
- * \tparam T the representation type. Must be convertible to either `int` or
- * `float`.
+ * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`
  * \see `frect`
+ * \see `rect()`
+ * \see `intersects()`
+ * \see `collides()`
+ * \see `get_union()`
  *
  * \since 4.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final

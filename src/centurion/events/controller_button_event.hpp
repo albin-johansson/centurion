@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../input/controller.hpp"
 #include "common_event.hpp"
 
@@ -68,7 +69,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    */
   void set_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**

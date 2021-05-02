@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/integers.hpp"
+
 namespace cen {
 
 /**
@@ -18,7 +20,7 @@ namespace cen {
  *
  * \headerfile button_state.hpp
  */
-enum class button_state
+enum class button_state : u8
 {
   released = SDL_RELEASED,  ///< Corresponds to `SDL_RELEASED`.
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.

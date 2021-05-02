@@ -15,6 +15,7 @@
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
@@ -418,7 +419,7 @@ class basic_joystick final
    */
   auto set_virtual_button(const int button, const button_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualButton(m_joystick, button, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualButton(m_joystick, button, to_underlying(state)) == 0;
   }
 
   /**

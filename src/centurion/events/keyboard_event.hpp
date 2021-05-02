@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../input/button_state.hpp"
 #include "../input/key_code.hpp"
 #include "../input/key_modifier.hpp"
@@ -81,7 +82,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_button_state(const button_state state) noexcept
   {
-    m_event.state = static_cast<u8>(state);
+    m_event.state = to_underlying(state);
   }
 
   /**

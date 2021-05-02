@@ -16,6 +16,42 @@ namespace cen {
 /// \{
 
 /**
+ * \struct dpi_info
+ *
+ * \brief Provides diagonal, horizontal and vertical DPI values.
+ *
+ * \headerfile screen.hpp
+ *
+ * \since 5.0.0
+ */
+struct dpi_info final
+{
+  float diagonal{};    ///< The diagonal DPI value.
+  float horizontal{};  ///< The horizontal DPI value.
+  float vertical{};    ///< The vertical DPI value.
+};
+
+/**
+ * \enum screen_orientation
+ *
+ * \brief Represents different screen orientations.
+ *
+ * \since 5.0.0
+ *
+ * \see SDL_DisplayOrientation
+ *
+ * \headerfile screen.hpp
+ */
+enum class screen_orientation : int
+{
+  unknown = SDL_ORIENTATION_UNKNOWN,
+  landscape = SDL_ORIENTATION_LANDSCAPE,
+  landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
+  portrait = SDL_ORIENTATION_PORTRAIT,
+  portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
+};
+
+/**
  * \brief Sets whether or not screen savers are enabled.
  *
  * \note By default, screen savers are disabled.
@@ -69,42 +105,6 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
 namespace cen::screen {
 
 /**
- * \struct dpi_info
- *
- * \brief Provides diagonal, horizontal and vertical DPI values.
- *
- * \headerfile screen.hpp
- *
- * \since 5.0.0
- */
-struct dpi_info final
-{
-  float diagonal{};    ///< The diagonal DPI value.
-  float horizontal{};  ///< The horizontal DPI value.
-  float vertical{};    ///< The vertical DPI value.
-};
-
-/**
- * \enum orientation
- *
- * \brief Represents different screen orientations.
- *
- * \since 5.0.0
- *
- * \see SDL_DisplayOrientation
- *
- * \headerfile screen.hpp
- */
-enum class orientation
-{
-  unknown = SDL_ORIENTATION_UNKNOWN,
-  landscape = SDL_ORIENTATION_LANDSCAPE,
-  landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,
-  portrait = SDL_ORIENTATION_PORTRAIT,
-  portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
-};
-
-/**
  * \brief Returns the amount of available displays.
  *
  * \return the number of available displays.
@@ -141,9 +141,10 @@ enum class orientation
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept -> orientation
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
+    -> screen_orientation
 {
-  return static_cast<orientation>(SDL_GetDisplayOrientation(index));
+  return static_cast<screen_orientation>(SDL_GetDisplayOrientation(index));
 }
 
 /// \name Display mode queries

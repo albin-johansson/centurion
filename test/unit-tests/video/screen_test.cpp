@@ -112,7 +112,7 @@ TEST(Screen, GetOrientation)
               static_cast<SDL_DisplayOrientation>(orientation));
   }
 
-  EXPECT_EQ(cen::screen::orientation::unknown,
+  EXPECT_EQ(cen::screen_orientation::unknown,
             cen::screen::get_orientation(cen::screen::count()));
 }
 
@@ -169,19 +169,19 @@ TEST(Screen, GetPixelFormat)
 TEST(Screen, OrientationEnum)
 {
   using sdl_orientation = SDL_DisplayOrientation;
-  using cen::screen::orientation;
 
-  EXPECT_EQ(SDL_ORIENTATION_UNKNOWN, static_cast<sdl_orientation>(orientation::unknown));
+  EXPECT_EQ(SDL_ORIENTATION_UNKNOWN,
+            static_cast<sdl_orientation>(cen::screen_orientation::unknown));
 
   EXPECT_EQ(SDL_ORIENTATION_LANDSCAPE,
-            static_cast<sdl_orientation>(orientation::landscape));
+            static_cast<sdl_orientation>(cen::screen_orientation::landscape));
 
   EXPECT_EQ(SDL_ORIENTATION_LANDSCAPE_FLIPPED,
-            static_cast<sdl_orientation>(orientation::landscape_flipped));
+            static_cast<sdl_orientation>(cen::screen_orientation::landscape_flipped));
 
   EXPECT_EQ(SDL_ORIENTATION_PORTRAIT,
-            static_cast<sdl_orientation>(orientation::portrait));
+            static_cast<sdl_orientation>(cen::screen_orientation::portrait));
 
   EXPECT_EQ(SDL_ORIENTATION_PORTRAIT_FLIPPED,
-            static_cast<sdl_orientation>(orientation::portrait_flipped));
+            static_cast<sdl_orientation>(cen::screen_orientation::portrait_flipped));
 }

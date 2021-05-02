@@ -180,9 +180,6 @@ class renderer_info final
   /**
    * \brief Creates a `renderer_info` instance from an existing SDL info instance.
    *
-   * \note Client code is not intended to use this constructor directly, use the
-   * `get_info()` function instead.
-   *
    * \param info the information that will be copied.
    *
    * \since 6.0.0

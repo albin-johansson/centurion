@@ -31,7 +31,7 @@ namespace cen {
 class renderer_info final
 {
   template <typename T>
-  friend auto get_info(basic_renderer<T>& renderer) noexcept
+  friend auto get_info(const basic_renderer<T>& renderer) noexcept
       -> std::optional<renderer_info>;
 
  public:

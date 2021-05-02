@@ -8,6 +8,7 @@
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "color.hpp"
 
@@ -27,7 +28,7 @@ namespace cen {
  *
  * \headerfile pixel_format.hpp
  */
-enum class pixel_format
+enum class pixel_format : u32
 {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
@@ -198,7 +199,7 @@ class basic_pixel_format_info final
    */
   template <typename BB = B, detail::is_owner<BB> = 0>
   explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(static_cast<u32>(format))}
+      : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format)
     {

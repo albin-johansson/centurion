@@ -14,6 +14,7 @@
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/to_string.hpp"
@@ -153,7 +154,7 @@ class basic_surface final
                                                  size.width,
                                                  size.height,
                                                  0,
-                                                 static_cast<u32>(pixelFormat))}
+                                                 to_underlying(pixelFormat))}
   {
     if (!m_surface)
     {
@@ -591,10 +592,9 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    const auto rawFormat = static_cast<u32>(format);
-    if (auto* ptr = SDL_ConvertSurfaceFormat(m_surface, rawFormat, 0))
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
     {
-      basic_surface result{ptr};
+      basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }

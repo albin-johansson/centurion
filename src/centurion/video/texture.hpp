@@ -180,8 +180,8 @@ class basic_texture final
                 const texture_access access,
                 const iarea size)
       : m_texture{SDL_CreateTexture(renderer.get(),
-                                    static_cast<u32>(format),
                                     static_cast<int>(access),
+                                    to_underlying(format),
                                     size.width,
                                     size.height)}
   {

@@ -175,7 +175,16 @@ using controller_handle = basic_controller<detail::handle_type>;
 /**
  * \class basic_controller
  *
- * \brief Represents a game controller, e.g. an xbox-controller.
+ * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
+ *
+ * \details You may need to load appropriate game controller mappings before you can begin
+ * using the game controller API with certain controllers. This can be accomplished using
+ * the `cen::hint::controller::config_file` hint, or the `load_mappings()` and
+ * `add_mapping()` functions.
+ *
+ * \details For a community managed database file of game controller mappings, see
+ * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn’t work for some
+ * reason, you should be able to find a copy in the Centurion test resources folder).
  *
  * \since 5.0.0
  *

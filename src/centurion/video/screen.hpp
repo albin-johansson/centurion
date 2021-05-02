@@ -406,7 +406,7 @@ enum class orientation
 [[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayBounds(index, &result.get()) == 0)
+  if (SDL_GetDisplayBounds(index, result.data()) == 0)
   {
     return result;
   }

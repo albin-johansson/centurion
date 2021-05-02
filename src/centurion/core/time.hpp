@@ -58,25 +58,33 @@ using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 namespace literals {
 
-constexpr auto operator"" _ns(const ulonglong value) noexcept -> nanoseconds<u32>
+// clang-format off
+
+[[nodiscard]] constexpr auto operator"" _ns(const ulonglong value) noexcept(noexcept(nanoseconds<u32>{}))
+    -> nanoseconds<u32>
 {
   return nanoseconds<u32>{value};
 }
 
-constexpr auto operator"" _us(const ulonglong value) noexcept -> microseconds<u32>
+[[nodiscard]] constexpr auto operator"" _us(const ulonglong value) noexcept(noexcept(microseconds<u32>{}))
+    -> microseconds<u32>
 {
   return microseconds<u32>{value};
 }
 
-constexpr auto operator"" _ms(const ulonglong value) noexcept -> milliseconds<u32>
+[[nodiscard]] constexpr auto operator"" _ms(const ulonglong value) noexcept(noexcept(milliseconds<u32>{}))
+    -> milliseconds<u32>
 {
   return milliseconds<u32>{value};
 }
 
-constexpr auto operator"" _s(const ulonglong value) noexcept -> seconds<u32>
+[[nodiscard]] constexpr auto operator"" _s(const ulonglong value) noexcept(noexcept(seconds<u32>{}))
+    -> seconds<u32>
 {
   return seconds<u32>{value};
 }
+
+// clang-format on
 
 }  // namespace literals
 

@@ -222,8 +222,10 @@ class basic_controller final
   explicit basic_controller(maybe_owner<SDL_GameController*> controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
-    if constexpr (detail::is_owning<T>()) {
-      if (!m_controller) {
+    if constexpr (detail::is_owning<T>()) 
+    {
+      if (!m_controller) 
+      {
         throw cen_error{"Cannot create controller from null pointer!"};
       }
     }

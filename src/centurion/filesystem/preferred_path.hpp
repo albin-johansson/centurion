@@ -36,12 +36,10 @@ namespace cen {
 [[nodiscard]] inline auto preferred_path(const not_null<czstring> org,
                                          const not_null<czstring> app) -> sdl_string
 {
-  /*
-     Looking at the SDL source code, it actually seems fine to supply a null
+  /* Looking at the SDL source code, it actually seems fine to supply a null
      string for the organization name. However, I haven't been able to find any
      documentation providing this guarantee, so we simply disallow null
-     organization names.
-  */
+     organization names. */
   assert(org);
   assert(app);
   return sdl_string{SDL_GetPrefPath(org, app)};

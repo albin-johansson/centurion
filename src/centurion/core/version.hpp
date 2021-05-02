@@ -95,7 +95,7 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are default-initialized to the current
+ * \details The members of this struct are by default initialized to the current
  * Centurion version values.
  *
  * \version 6.0.0

@@ -26,9 +26,9 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream address;
-    address << static_cast<const void*>(ptr);
-    return address.str();
+    std::ostringstream stream;
+    stream << static_cast<const void*>(ptr);
+    return stream.str();
   }
   else
   {

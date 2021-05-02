@@ -6,6 +6,7 @@
 #include <utility>  // move
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "event_type.hpp"
 
 namespace cen {
@@ -88,7 +89,7 @@ class common_event
    */
   void set_type(const event_type type) noexcept
   {
-    m_event.type = static_cast<u32>(type);
+    m_event.type = to_underlying(type);
   }
 
   /**

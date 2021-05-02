@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/integers.hpp"
+
 namespace cen {
 
 /// \addtogroup event
@@ -19,7 +21,7 @@ namespace cen {
  *
  * \headerfile event_type.hpp
  */
-enum class event_type
+enum class event_type : u32
 {
   quit = SDL_QUIT,
 

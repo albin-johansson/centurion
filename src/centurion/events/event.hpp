@@ -8,6 +8,7 @@
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
 #include "../core/result.hpp"
+#include "../core/to_underlying.hpp"
 #include "audio_device_event.hpp"
 #include "common_event.hpp"
 #include "controller_axis_event.hpp"
@@ -226,7 +227,7 @@ class event final
   [[nodiscard]] static auto queue_count(const event_type type) noexcept
       -> std::optional<int>
   {
-    const auto id = static_cast<u32>(type);
+    const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
     if (num != -1)
     {

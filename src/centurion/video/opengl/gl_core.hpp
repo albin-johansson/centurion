@@ -13,6 +13,7 @@
 #include "../../core/czstring.hpp"
 #include "../../core/not_null.hpp"
 #include "../../core/result.hpp"
+#include "../../core/to_underlying.hpp"
 #include "../../math/area.hpp"
 #include "../window.hpp"
 #include "gl_attribute.hpp"
@@ -29,7 +30,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-enum class gl_swap_interval
+enum class gl_swap_interval : int
 {
   immediate = 0,       ///< Immediate updates.
   synchronized = 1,    ///< Updates synchronized with vertical retrace (VSync).
@@ -155,7 +156,7 @@ inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
  */
 inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> result
 {
-  return SDL_GL_SetSwapInterval(static_cast<int>(interval)) == 0;
+  return SDL_GL_SetSwapInterval(to_underlying(interval)) == 0;
 }
 
 /**

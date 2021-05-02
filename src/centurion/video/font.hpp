@@ -61,13 +61,14 @@ enum class font_hint : int
 /**
  * \class font
  *
- * \brief Represents a True Type font.
+ * \brief Represents a TrueType font.
+ *
+ * \details This class provides information about a TrueType font, but it can also be used
+ * for text rendering and obtaining information about the size of rendered strings, etc.
  *
  * \see `TTF_Font`
  *
  * \since 3.0.0
- *
- * \headerfile font.hpp
  */
 class font final
 {

@@ -13,6 +13,7 @@
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/stack_resource.hpp"
 #include "color.hpp"
 #include "colors.hpp"
@@ -95,7 +96,7 @@ class message_box final
    *
    * \headerfile message_box.hpp
    */
-  enum class default_button
+  enum class default_button : u32
   {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
@@ -110,7 +111,7 @@ class message_box final
    *
    * \headerfile message_box.hpp
    */
-  enum class color_id
+  enum class color_id : int
   {
     background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
     text = SDL_MESSAGEBOX_COLOR_TEXT,
@@ -155,7 +156,7 @@ class message_box final
      */
     void set_color(const color_id id, const color& color) noexcept
     {
-      m_scheme.colors[static_cast<int>(id)] = static_cast<SDL_MessageBoxColor>(color);
+      m_scheme.colors[to_underlying(id)] = static_cast<SDL_MessageBoxColor>(color);
     }
 
     /**
@@ -481,7 +482,7 @@ class message_box final
     {
       SDL_MessageBoxButtonData result{};
 
-      result.flags = static_cast<u32>(m_defaultButton);
+      result.flags = to_underlying(m_defaultButton);
       result.buttonid = m_id;
       result.text = m_text.c_str();
 
@@ -515,7 +516,7 @@ class message_box final
                                                const button_order buttonOrder) noexcept
       -> u32
   {
-    return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
+    return to_underlying(type) | to_underlying(buttonOrder);
   }
 
   static void show(SDL_Window* parent,

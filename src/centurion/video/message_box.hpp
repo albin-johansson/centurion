@@ -71,9 +71,10 @@ enum class button_order : u32
  * \brief Represents a modal message box that can be used display
  * information, warnings and errors.
  *
- * \since 3.0.0
+ * \note The appearance of message boxes varies depending on the platform, and certain
+ * styling options are not available on all platforms.
  *
- * \headerfile message_box.hpp
+ * \since 3.0.0
  */
 class message_box final
 {

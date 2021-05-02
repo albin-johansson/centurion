@@ -433,7 +433,7 @@ enum class orientation
     -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayUsableBounds(index, &result.get()) == 0)
+  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0)
   {
     return result;
   }

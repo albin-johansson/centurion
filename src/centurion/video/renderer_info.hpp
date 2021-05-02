@@ -6,6 +6,8 @@
 #include <cassert>   // assert
 #include <cstddef>   // size_t
 #include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, string_literals
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -187,6 +189,38 @@ class renderer_info final
   explicit renderer_info(const SDL_RendererInfo info) noexcept : m_info{info}
   {}
 };
+
+/**
+ * \brief Returns a textual representation of a `renderer_info` instance.
+ *
+ * \param info the renderer info instance that will be converted.
+ *
+ * \return a string that represents the `renderer_info` instance.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
+{
+  using namespace std::string_literals;
+
+  const auto name = info.name();
+  return "renderer_info{name: "s + (name ? name : "n/a") + "}";
+}
+
+/**
+ * \brief Prints a textual representation of a `renderer_info` instance.
+ *
+ * \param stream the stream that will be used.
+ * \param info the `renderer_info` instance that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::ostream&
+{
+  return stream << to_string(info);
+}
 
 /**
  * \brief Returns information about a renderer.

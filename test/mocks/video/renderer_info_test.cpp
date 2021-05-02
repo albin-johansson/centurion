@@ -3,13 +3,16 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
-#include <array>  // array
+#include <array>     // array
+#include <iostream>  // cout
 
 #include "core_mocks.hpp"
 
 extern "C" {
 FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 }
+
+namespace {
 
 inline constexpr auto name = "foobar";
 inline constexpr int max_texture_width = 123;
@@ -20,7 +23,7 @@ inline constexpr Uint32 texture_format_0 = SDL_PIXELFORMAT_RGBA8888;
 inline constexpr Uint32 texture_format_1 = SDL_PIXELFORMAT_RGBA4444;
 inline constexpr Uint32 texture_format_2 = SDL_PIXELFORMAT_RGB444;
 
-auto get_renderer_info(SDL_Renderer*, SDL_RendererInfo* info) -> int
+inline auto get_renderer_info(SDL_Renderer*, SDL_RendererInfo* info) -> int
 {
   if (info)
   {
@@ -38,6 +41,8 @@ auto get_renderer_info(SDL_Renderer*, SDL_RendererInfo* info) -> int
 
   return 0;
 }
+
+}  // namespace
 
 class RendererInfoTest : public testing::Test
 {
@@ -77,4 +82,6 @@ TEST_F(RendererInfoTest, Foo)
   ASSERT_EQ(texture_format_0, static_cast<Uint32>(info->format(0)));
   ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->format(1)));
   ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->format(2)));
+
+  std::cout << "COUT: " << *info << '\n';
 }

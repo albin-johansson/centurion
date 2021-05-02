@@ -102,11 +102,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -114,6 +114,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
+ * \see `point()`
+ * \see `distance()`
  *
  * \headerfile point.hpp
  */

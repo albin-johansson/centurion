@@ -239,7 +239,7 @@ class basic_cursor final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SYSTEM_CURSORS);
+    return SDL_NUM_SYSTEM_CURSORS;
   }
 
   /// \} End of static members

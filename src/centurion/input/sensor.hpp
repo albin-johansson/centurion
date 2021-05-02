@@ -271,8 +271,7 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
-    if (result != -1)
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
     }

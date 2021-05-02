@@ -67,6 +67,16 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * compared to its non-owning counterpart, with support for font handling and translated
  * rendering.
  *
+ * \details Three different text encodings are supported: UTF-8, Latin-1 and Unicode. Each
+ * of these encodings can be rendered in four different styles: "blended", "shaded",
+ * "solid" and "blended and wrapped". All of the text rendering functions feature the same
+ * names except for a distinguishing suffix, i.e. `_utf8`, `_latin1` or `_unicode`.
+ *   - Blended: The best looking option but also the slowest. Uses anti-aliasing.
+ *   - Blended and wrapped: Same as blended, but the text will be wrapped to fit a
+ *     specified width.
+ *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
+ *   - Shaded: The same as blended, but with a colored rectangle behind it.
+ *
  * \note Each window can feature at most associated renderer.
  *
  * \since 5.0.0

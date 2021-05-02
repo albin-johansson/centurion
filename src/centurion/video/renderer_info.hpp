@@ -201,7 +201,7 @@ class renderer_info final
  * \since 6.0.0
  */
 template <typename T>
-[[nodiscard]] auto get_info(basic_renderer<T>& renderer) noexcept
+[[nodiscard]] auto get_info(const basic_renderer<T>& renderer) noexcept
     -> std::optional<renderer_info>
 {
   SDL_RendererInfo info;

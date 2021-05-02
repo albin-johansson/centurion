@@ -825,8 +825,7 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    const auto result = SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0)
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
     {
       return change;
     }

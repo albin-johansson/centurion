@@ -312,8 +312,7 @@ class basic_surface final
   auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = SDL_SaveBMP(get(), file);
-    return result != -1;
+    return SDL_SaveBMP(get(), file) != -1;
   }
 
   /**
@@ -337,8 +336,7 @@ class basic_surface final
   auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = IMG_SavePNG(get(), file);
-    return result != -1;
+    return IMG_SavePNG(get(), file) != -1;
   }
 
   /**
@@ -368,8 +366,7 @@ class basic_surface final
       -> result
   {
     assert(file);
-    const auto result = IMG_SaveJPG(get(), file, quality);
-    return result != -1;
+    return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
   /**
@@ -402,8 +399,7 @@ class basic_surface final
   {
     if (must_lock())
     {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
+      return SDL_LockSurface(m_surface) == 0;
     }
     else
     {

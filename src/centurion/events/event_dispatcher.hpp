@@ -202,6 +202,20 @@ class event_dispatcher final
     return index;
   }
 
+  template <typename Event>
+  [[nodiscard]] auto get_sink() -> event_sink<Event>&
+  {
+    constexpr auto index = index_of<Event>();
+    return std::get<index>(m_sinks);
+  }
+
+  template <typename Event>
+  [[nodiscard]] auto get_sink() const -> const event_sink<Event>&
+  {
+    constexpr auto index = index_of<Event>();
+    return std::get<index>(m_sinks);
+  }
+
   /**
    * \brief Checks for the specified event type in the event handler.
    *
@@ -216,9 +230,7 @@ class event_dispatcher final
   {
     if (const auto* e = m_event.template try_get<Event>())
     {
-      constexpr auto index = index_of<Event>();
-
-      if (auto& func = std::get<index>(m_sinks).function())
+      if (auto& func = get_sink<Event>().function())
       {
         func(*e);
       }
@@ -229,20 +241,6 @@ class event_dispatcher final
     {
       return false;
     }
-  }
-
-  template <typename Event>
-  [[nodiscard]] auto get_sink() -> event_sink<Event>&
-  {
-    constexpr auto index = index_of<Event>();
-    return std::get<index>(m_sinks);
-  }
-
-  template <typename Event>
-  [[nodiscard]] auto get_sink() const -> const event_sink<Event>&
-  {
-    constexpr auto index = index_of<Event>();
-    return std::get<index>(m_sinks);
   }
 
  public:

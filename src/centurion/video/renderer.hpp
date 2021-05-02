@@ -73,6 +73,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \see `renderer`
  * \see `renderer_handle`
+ * \see `renderer_info`
  *
  * \headerfile renderer.hpp
  */
@@ -2019,27 +2020,6 @@ class basic_renderer final
   }
 
   /**
-   * \brief Returns information about the renderer.
-   *
-   * \return information about the renderer; `std::nullopt` if something went
-   * wrong.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
-  {
-    SDL_RendererInfo info{};
-    if (SDL_GetRendererInfo(get(), &info) == 0)
-    {
-      return info;
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
    * \brief Returns the output width of the renderer.
    *
    * \return the output width of the renderer.
@@ -2159,113 +2139,6 @@ class basic_renderer final
     return viewport;
   }
 
-  /// \} End of queries
-
-  /// \name Flag-related queries.
-  /// \{
-
-  /**
-   * \brief Returns a bit mask of the current renderer flags.
-   *
-   * \note There are multiple other methods for checking if a flag is set,
-   * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
-   * this function.
-   *
-   * \return a bit mask of the current renderer flags.
-   *
-   * \see `SDL_RendererFlags`
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto flags() const noexcept -> u32
-  {
-    SDL_RendererInfo info{};
-    SDL_GetRendererInfo(get(), &info);
-    return info.flags;
-  }
-
-  /**
-   * \brief Indicates whether or not the `present` function is synced with
-   * the refresh rate of the screen.
-   *
-   * \return `true` if vsync is enabled; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & vsync);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is hardware accelerated.
-   *
-   * \return `true` if the renderer is hardware accelerated; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_accelerated() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & accelerated);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer is using software rendering.
-   *
-   * \return `true` if the renderer is software-based; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto is_software_based() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & software);
-  }
-
-  /**
-   * \brief Indicates whether or not the renderer supports rendering to a
-   * target texture.
-   *
-   * \return `true` if the renderer supports target texture rendering; `false`
-   * otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & target_textures);
-  }
-
-  /**
-   * \brief Returns the default flags used when creating renderers.
-   *
-   * \return the default renderer flags.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
-  {
-    return accelerated | vsync;
-  }
-
-  /// \} End of flag queries
-
-  /**
-   * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.0.0
-   */
-  template <typename TT = T, detail::is_handle<TT> = 0>
-  explicit operator bool() const noexcept
-  {
-    return m_renderer != nullptr;
-  }
-
   /**
    * \brief Returns a pointer to the associated SDL renderer.
    *
@@ -2286,6 +2159,41 @@ class basic_renderer final
       return m_renderer;
     }
   }
+
+  /**
+   * \brief Returns the default flags used when creating renderers.
+   *
+   * \return the default renderer flags.
+   *
+   * \since 6.0.0
+   */
+  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
+  {
+    return accelerated | vsync;
+  }
+
+  /// \} End of queries
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not the handle holds a non-null pointer.
+   *
+   * \warning It's undefined behaviour to invoke other member functions that
+   * use the internal pointer if this function returns `false`.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return m_renderer != nullptr;
+  }
+
+  /// \} End of conversions
 
  private:
   struct deleter final

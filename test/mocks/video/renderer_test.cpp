@@ -35,7 +35,6 @@ FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
 FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
-FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
 }
@@ -71,7 +70,6 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderSetClipRect)
     RESET_FAKE(SDL_RenderSetViewport)
     RESET_FAKE(SDL_SetRenderDrawBlendMode)
-    RESET_FAKE(SDL_GetRendererInfo)
     RESET_FAKE(SDL_RenderGetIntegerScale)
     RESET_FAKE(SDL_RenderIsClipEnabled)
     RESET_FAKE(SDL_SetRenderTarget)
@@ -487,13 +485,6 @@ TEST_F(RendererTest, SetTarget)
   ASSERT_EQ(2, SDL_SetRenderTarget_fake.call_count);
 }
 
-TEST_F(RendererTest, Info)
-{
-  SDL_GetRendererInfo_fake.return_val = -1;
-  EXPECT_FALSE(m_renderer.info().has_value());
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
-}
-
 TEST_F(RendererTest, OutputWidth)
 {
   const auto width [[maybe_unused]] = m_renderer.output_width();
@@ -508,36 +499,6 @@ TEST_F(RendererTest, OutputHeight)
   EXPECT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
   EXPECT_EQ(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
   EXPECT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
-}
-
-TEST_F(RendererTest, Flags)
-{
-  const auto flags [[maybe_unused]] = m_renderer.flags();
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
-}
-
-TEST_F(RendererTest, IsVSyncEnabled)
-{
-  const auto enabled [[maybe_unused]] = m_renderer.is_vsync_enabled();
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
-}
-
-TEST_F(RendererTest, IsAccelerated)
-{
-  const auto accelerated [[maybe_unused]] = m_renderer.is_accelerated();
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
-}
-
-TEST_F(RendererTest, IsSoftwareBased)
-{
-  const auto software [[maybe_unused]] = m_renderer.is_software_based();
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
-}
-
-TEST_F(RendererTest, SupportsTargetTextures)
-{
-  const auto support [[maybe_unused]] = m_renderer.supports_target_textures();
-  EXPECT_EQ(1, SDL_GetRendererInfo_fake.call_count);
 }
 
 TEST_F(RendererTest, IsUsingIntegerLogicalScaling)

@@ -343,11 +343,6 @@ TEST_F(RendererTest, Clip)
   EXPECT_FALSE(m_renderer->clip().has_value());
 }
 
-TEST_F(RendererTest, Info)
-{
-  EXPECT_TRUE(m_renderer->info().has_value());
-}
-
 TEST_F(RendererTest, Capture)
 {
   m_window->show();

@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include "../core/integers.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -19,7 +21,7 @@ namespace cen {
  *
  * \headerfile key_modifier.hpp
  */
-enum class key_modifier
+enum class key_modifier : u16
 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,

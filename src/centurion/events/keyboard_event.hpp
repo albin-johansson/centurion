@@ -97,11 +97,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   {
     if (active)
     {
-      m_event.keysym.mod |= static_cast<u16>(modifier);
+      m_event.keysym.mod |= to_underlying(modifier);
     }
     else
     {
-      m_event.keysym.mod &= ~static_cast<u16>(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifier);
     }
   }
 
@@ -176,7 +176,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
   {
-    return m_event.keysym.mod & static_cast<u16>(modifier);
+    return m_event.keysym.mod & to_underlying(modifier);
   }
 
   /**

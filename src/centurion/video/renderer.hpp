@@ -61,7 +61,13 @@ using renderer_handle = basic_renderer<detail::handle_type>;
 /**
  * \class basic_renderer
  *
- * \brief Provides hardware-accelerated 2D-rendering.
+ * \brief Provides 2D-rendering that is potentially hardware-accelerated.
+ *
+ * \details The owning version of this class, `renderer`, features an extended API
+ * compared to its non-owning counterpart, with support for font handling and translated
+ * rendering.
+ *
+ * \note Each window can feature at most associated renderer.
  *
  * \since 5.0.0
  *

@@ -529,14 +529,13 @@ class font final
       -> std::optional<glyph_metrics>
   {
     glyph_metrics metrics{};
-    const auto result = TTF_GlyphMetrics(m_font.get(),
-                                         glyph,
-                                         &metrics.minX,
-                                         &metrics.maxX,
-                                         &metrics.minY,
-                                         &metrics.maxY,
-                                         &metrics.advance);
-    if (result != -1)
+    if (TTF_GlyphMetrics(m_font.get(),
+                         glyph,
+                         &metrics.minX,
+                         &metrics.maxX,
+                         &metrics.minY,
+                         &metrics.maxY,
+                         &metrics.advance) != -1)
     {
       return metrics;
     }

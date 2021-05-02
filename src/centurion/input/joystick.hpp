@@ -58,7 +58,7 @@ enum class joystick_power
  *
  * \headerfile joystick.hpp
  */
-enum class hat_state
+enum class hat_state : u8
 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
@@ -434,7 +434,7 @@ class basic_joystick final
    */
   auto set_virtual_hat(const int hat, const hat_state state) noexcept -> result
   {
-    return SDL_JoystickSetVirtualHat(m_joystick, hat, static_cast<u8>(state)) == 0;
+    return SDL_JoystickSetVirtualHat(m_joystick, hat, to_underlying(state)) == 0;
   }
 
   /**

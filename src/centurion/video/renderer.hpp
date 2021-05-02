@@ -1837,12 +1837,11 @@ class basic_renderer final
   /**
    * \brief Sets the logical size used by the renderer.
    *
+   * \pre The supplied width and height must be greater than or equal to zero.
+   *
    * \details This function is useful for resolution-independent rendering.
    *
-   * \remarks This is also known as *virtual size* in other frameworks.
-   *
-   * \note This function has no effect if either of the supplied dimensions
-   * aren't greater than zero.
+   * \remarks This is also known as virtual size.
    *
    * \param size the logical width and height that will be used.
    *
@@ -1852,14 +1851,9 @@ class basic_renderer final
    */
   auto set_logical_size(const iarea size) noexcept -> result
   {
-    if ((size.width >= 0) && (size.height >= 0))
-    {
-      return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
-    }
-    else
-    {
-      return failure;
-    }
+    assert(size.width >= 0);
+    assert(size.height >= 0);
+    return SDL_RenderSetLogicalSize(get(), size.width, size.height) == 0;
   }
 
   /**

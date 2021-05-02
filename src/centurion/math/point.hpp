@@ -371,14 +371,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{X: " + detail::to_string(point.x()).value() +
-         ", Y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
 }
 
 template <typename T>

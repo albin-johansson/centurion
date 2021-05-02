@@ -1216,8 +1216,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**

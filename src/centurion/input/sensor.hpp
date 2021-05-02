@@ -424,10 +424,9 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-  const auto name = sensor.name();
-  const std::string nameStr = name ? name : "N/A";
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() + ", name: " + nameStr + "}";
+         ", id: " + detail::to_string(sensor.id()).value() +
+         ", name: " + str_or_na(sensor.name()) + "}";
 }
 
 /**

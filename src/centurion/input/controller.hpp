@@ -1365,8 +1365,7 @@ template <typename T>
   }
 
   return "controller{data: " + detail::address_of(controller.get()) +
-         ", name: " + (name ? name : "N/A") + ", serial: " + (serial ? serial : "N/A") +
-         "}";
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**

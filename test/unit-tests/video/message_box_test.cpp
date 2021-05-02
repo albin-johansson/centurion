@@ -94,7 +94,7 @@ TEST(MessageBox, Title)
 TEST(MessageBox, Message)
 {
   const cen::message_box mb;
-  EXPECT_EQ("N/A", mb.message());
+  EXPECT_EQ("n/a", mb.message());
 }
 
 TEST(MessageBox, GetType)

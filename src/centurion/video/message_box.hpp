@@ -402,7 +402,7 @@ class message_box final
   /**
    * \brief Returns the message of the message box.
    *
-   * \details The default message is "N/A".
+   * \details The default message is "n/a".
    *
    * \return the message of the message box.
    *
@@ -497,7 +497,7 @@ class message_box final
 
   std::vector<button> m_buttons;
   std::string m_title{"Message box"};
-  std::string m_message{"N/A"};
+  std::string m_message{"n/a"};
   std::optional<color_scheme> m_colorScheme;
   message_box_type m_type{default_type()};
   button_order m_buttonOrder{default_order()};

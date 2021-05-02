@@ -43,7 +43,7 @@ class cen_error : public std::exception
   }
 
  private:
-  czstring m_what{"N/A"};
+  czstring m_what{"n/a"};
 };
 
 /**

@@ -202,9 +202,7 @@ class renderer_info final
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
   using namespace std::string_literals;
-
-  const auto name = info.name();
-  return "renderer_info{name: "s + (name ? name : "n/a") + "}";
+  return "renderer_info{name: "s + str_or_na(info.name()) + "}";
 }
 
 /**

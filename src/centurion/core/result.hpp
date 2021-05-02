@@ -1,6 +1,9 @@
 #ifndef CENTURION_RESULT_HEADER
 #define CENTURION_RESULT_HEADER
 
+#include <ostream>  // ostream
+#include <string>   // string
+
 namespace cen {
 
 /// \addtogroup core
@@ -120,6 +123,38 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+/**
+ * \brief Returns a string that represents a result value.
+ *
+ * \note The returned string is in a slightly different format compared to other Centurion
+ * components.
+ *
+ * \param result the value that will be converted.
+ *
+ * \return `"success"` for a successful result; `"failure"` otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto to_string(const result result) -> std::string
+{
+  return result ? "success" : "failure";
+}
+
+/**
+ * \brief Prints a textual representation of a result value using a stream.
+ *
+ * \param stream the stream that will be used.
+ * \param result the result value that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.0.0
+ */
+inline auto operator<<(std::ostream& stream, const result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /// \} End of group core
 

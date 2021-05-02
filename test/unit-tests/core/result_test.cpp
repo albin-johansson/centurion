@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 TEST(Result, Values)
 {
   EXPECT_EQ(cen::result{true}, cen::success);
@@ -14,4 +16,10 @@ TEST(Result, Values)
 
   EXPECT_TRUE(cen::success);
   EXPECT_FALSE(cen::failure);
+}
+
+TEST(Result, ToString)
+{
+  std::cout << "result (success): \"" << cen::success << "\"\n";
+  std::cout << "result (failure): \"" << cen::failure << "\"\n";
 }

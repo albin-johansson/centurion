@@ -40,16 +40,13 @@ using texture_handle = basic_texture<detail::handle_type>;
 /**
  * \class basic_texture
  *
- * \brief Represents an hardware-accelerated image. This class is used for all
- * non-primitive rendering.
+ * \brief Represents an hardware-accelerated image, intended to be rendered using
+ * the `basic_renderer` class.
  *
  * \since 3.0.0
  *
- * \see `SDL_Texture`
  * \see `texture`
  * \see `texture_handle`
- *
- * \headerfile texture.hpp
  */
 template <typename T>
 class basic_texture final

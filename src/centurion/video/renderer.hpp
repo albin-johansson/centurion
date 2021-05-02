@@ -1817,8 +1817,8 @@ class basic_renderer final
   /**
    * \brief Sets the rendering scale.
    *
-   * \note This function has no effect if any of the arguments aren't
-   * greater than zero.
+   * \pre `xScale` must be greater than zero.
+   * \pre `yScale` must be greater than zero.
    *
    * \param xScale the x-axis scale that will be used.
    * \param yScale the y-axis scale that will be used.
@@ -1829,14 +1829,9 @@ class basic_renderer final
    */
   auto set_scale(const float xScale, const float yScale) noexcept -> result
   {
-    if ((xScale > 0) && (yScale > 0))
-    {
-      return SDL_RenderSetScale(get(), xScale, yScale) == 0;
-    }
-    else
-    {
-      return failure;
-    }
+    assert(xScale > 0);
+    assert(yScale > 0);
+    return SDL_RenderSetScale(get(), xScale, yScale) == 0;
   }
 
   /**

@@ -200,7 +200,7 @@ class scan_code final
    */
   [[nodiscard]] constexpr static auto count() noexcept -> int
   {
-    return static_cast<int>(SDL_NUM_SCANCODES);
+    return SDL_NUM_SCANCODES;
   }
 
   /**

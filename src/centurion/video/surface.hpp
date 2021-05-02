@@ -53,19 +53,21 @@ using surface_handle = basic_surface<detail::handle_type>;
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated collection of pixels that constitute an
- * image.
+ * \brief Represents a non-accelerated image.
  *
- * \details Surfaces are often used for icons and snapshots, as an
- * "intermediate" representation that can be manually manipulated, unlike
- * textures. There is no support for directly rendering surfaces, but they can
- * be converted to textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
+ * representation that can be manipulated, unlike textures. There is no support
+ * for directly rendering surfaces. However, surfaces can be converted to textures, which
+ * in turn can be rendered.
  *
- * \tparam B Used to determine the ownership semantics of the class.
+ * \note Unlike most other Centurion components, surfaces can be copied.
+ *
+ * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
- * \headerfile surface.hpp
+ * \see `surface`
+ * \see `surface_handle`
  */
 template <typename T>
 class basic_surface final

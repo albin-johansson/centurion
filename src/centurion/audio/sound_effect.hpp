@@ -52,25 +52,21 @@ using sound_effect_handle = basic_sound_effect<detail::handle_type>;
  *
  * \brief Represents a sound effect.
  *
- * \details Unlike with the music API, multiple sound effects can be played at
- * the same time, which is the main difference between `music` and
- * `sound_effect`.
+ * \details Unlike with the music API, multiple sound effects can be played at the same
+ * time, which is the main difference between the `music` and `sound_effect` APIs.
  *
  * \details The supported file formats are the following:
- * <ul>
- *   <li>WAVE/RIFF (.wav)</li>
- *   <li>AIFF (.aiff)</li>
- *   <li>VOC (.voc)</li>
- *   <li>OGG (.ogg)</li>
- *   <li>VOC (.voc)</li>
- * </ul>
+ *   - WAVE/RIFF (.wav)
+ *   - AIFF (.aiff)
+ *   - VOC (.voc)
+ *   - OGG (.ogg)
+ *   - VOC (.voc)
  *
  * \since 3.0.0
  *
  * \see `Mix_Chunk`
  * \see `music`
- *
- * \headerfile sound_effect.hpp
+ * \see `get_sound()`
  */
 template <typename T>
 class basic_sound_effect final

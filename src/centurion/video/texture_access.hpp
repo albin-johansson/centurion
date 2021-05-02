@@ -22,7 +22,7 @@ namespace cen {
  *
  * \headerfile texture_access.hpp
  */
-enum class texture_access
+enum class texture_access : int
 {
   no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
                                             ///< rarely, and isn't lockable.

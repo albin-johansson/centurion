@@ -84,6 +84,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \see `renderer`
  * \see `renderer_handle`
  * \see `renderer_info`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  *
  * \headerfile renderer.hpp
  */

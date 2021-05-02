@@ -10,6 +10,7 @@
 #include "czstring.hpp"
 #include "macros.hpp"
 #include "not_null.hpp"
+#include "to_underlying.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
@@ -34,7 +35,7 @@ namespace cen {
  *
  * \headerfile log.hpp
  */
-enum class log_priority
+enum class log_priority : int
 {
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
@@ -55,7 +56,7 @@ enum class log_priority
  *
  * \headerfile log.hpp
  */
-enum class log_category
+enum class log_category : int
 {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
@@ -420,7 +421,7 @@ inline void set_priority(const log_priority priority) noexcept
 inline void set_priority(const log_category category,
                          const log_priority priority) noexcept
 {
-  SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(priority));
+  SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
 
 /**
@@ -434,7 +435,7 @@ inline void set_priority(const log_category category,
 [[nodiscard]] inline auto get_priority(const log_category category) noexcept
     -> log_priority
 {
-  return static_cast<log_priority>(SDL_LogGetPriority(static_cast<int>(category)));
+  return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
 
 /**

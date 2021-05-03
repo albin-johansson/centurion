@@ -32,8 +32,6 @@ namespace cen {
  * \see `SDL_LogPriority`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_priority : int
 {
@@ -53,8 +51,6 @@ enum class log_priority : int
  * \see `SDL_LogCategory`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_category : int
 {
@@ -79,12 +75,10 @@ enum class log_category : int
  *
  * \brief Contains easy-to-use logging facilities.
  *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
+ * \details The usage of the logging API will be very familiar to most people that have
+ * used the `printf` and/or the `SDL_Log` facilities.
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 namespace log {
 
@@ -94,12 +88,10 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This method has no effect if the supplied string is null. Usage
- * of this method is quite bulky, so refer to the other logging methods for
- * casual logging.
+ * \details This method has no effect if the supplied string is null. Usage of this method
+ * is quite bulky, so refer to the other logging methods for casual logging.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param priority the priority that will be used.
  * \param category the category that will be used.
@@ -125,8 +117,7 @@ void msg(const log_priority priority,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -147,8 +138,7 @@ void info(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -166,8 +156,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -188,8 +177,7 @@ void warn(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -207,8 +195,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -229,8 +216,7 @@ void verbose(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -248,8 +234,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -270,8 +255,7 @@ void debug(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -289,8 +273,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -311,8 +294,7 @@ void critical(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -330,8 +312,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -348,8 +329,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 /**
  * \brief Logs a message with the `priority::error` and `category::app`.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -365,9 +345,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a string.
  *
- * \details This function is meant to be used for casual logging, where you
- * just want to log a string. The message will be logged with
- * `priority::info` and `category::app`.
+ * \details This function is meant to be used for casual logging, where you just want to
+ * log a string. The message will be logged with `priority::info` and `category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -439,13 +418,12 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Returns the maximum size, i.e the maximum amount of characters that
- * a string can contain and successfully be logged without being truncated.
+ * \brief Returns the maximum size, i.e the maximum amount of characters that a string can
+ * contain and successfully be logged without being truncated.
  *
  * \note Strings longer that this value will be truncated.
  *
- * \return the maximum amount of characters that a loggable string can
- * contain.
+ * \return the maximum amount of characters that a loggable string can contain.
  *
  * \see `SDL_MAX_LOG_MESSAGE`
  *
@@ -487,8 +465,7 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Indicates whether or not the two log priorities values aren't the
- * same.
+ * \brief Indicates whether or not the two log priorities values aren't the same.
  *
  * \param lhs the left-hand side log priority value.
  * \param rhs the right-hand side log priority value.

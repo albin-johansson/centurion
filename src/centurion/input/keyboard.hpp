@@ -25,9 +25,10 @@ namespace cen {
  * \details Using the keyboard state is an alternative to using events for
  * keyboard input.
  *
- * \since 3.0.0
+ * \see `mouse`
+ * \see `has_screen_keyboard()`
  *
- * \headerfile keyboard.hpp
+ * \since 3.0.0
  */
 class keyboard final
 {
@@ -91,8 +92,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key has been pressed during
-   * more than one update of the key state.
+   * \brief Indicates whether or not the specified key has been pressed during more than
+   * one update of the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -110,8 +111,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key has been pressed during
-   * more than one update of the key state.
+   * \brief Indicates whether or not the specified key has been pressed during more than
+   * one update of the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -129,8 +130,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not a key just became pressed in the last
-   * update of the key state.
+   * \brief Indicates whether or not a key just became pressed in the last update of the
+   * key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -148,8 +149,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not a key just became pressed in the last
-   * update of the key state.
+   * \brief Indicates whether or not a key just became pressed in the last update of the
+   * key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -167,8 +168,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key was released in the last
-   * update of the key state.
+   * \brief Indicates whether or not the specified key was released in the last update of
+   * the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -187,8 +188,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key was released in the last
-   * update of the key state.
+   * \brief Indicates whether or not the specified key was released in the last update of
+   * the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -259,15 +260,15 @@ class keyboard final
  *
  * \brief This is provided for backwards compatibility with Centurion 5.
  *
- * \deprecated This was deprecated in Centurion 6.0.0.
+ * \deprecated This is deprecated since Centurion 6.0.0.
  */
 using key_state [[deprecated]] = keyboard;
 
 /**
  * \brief Indicates whether or not the platform has screen keyboard support.
  *
- * \return `true` if the current platform has some form of screen keyboard
- * support; `false` otherwise.
+ * \return `true` if the current platform has some form of screen keyboard support;
+ * `false` otherwise.
  *
  * \since 6.0.0
  */

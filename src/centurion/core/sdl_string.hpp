@@ -18,8 +18,8 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
  *
@@ -53,8 +53,7 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null pointer.
    *
    * \return a copy of the internal string.
    *

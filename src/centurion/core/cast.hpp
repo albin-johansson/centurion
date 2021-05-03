@@ -9,9 +9,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.

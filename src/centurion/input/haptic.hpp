@@ -40,8 +40,6 @@ inline constexpr u32 haptic_infinity = SDL_HAPTIC_INFINITY;
  * \brief Provides values that represent all of the haptic features.
  *
  * \since 5.2.0
- *
- * \headerfile haptic_feature
  */
 enum class haptic_feature
 {
@@ -69,8 +67,6 @@ enum class haptic_feature
  * \brief Represents the different types of haptic directions.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 enum class haptic_direction_type
 {
@@ -85,8 +81,6 @@ enum class haptic_direction_type
  * \brief Represents a haptic direction, used by haptic effects.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_direction final
 {
@@ -106,8 +100,7 @@ class haptic_direction final
   }
 
   /**
-   * \brief Creates a haptic direction based on an `SDL_HapticDirection`
-   * instance.
+   * \brief Creates a haptic direction based on an `SDL_HapticDirection` instance.
    *
    * \param direction the direction that will be copied.
    *
@@ -188,8 +181,8 @@ class haptic_direction final
  *
  * \brief Represents a haptic effect.
  *
- * \details The following is an illustration of the different stages of a haptic
- * effect, copied from the SDL documentation, albeit with tweaked terms.
+ * \details The following is an illustration of the different stages of a haptic effect,
+ * copied from the SDL documentation, albeit with tweaked terms.
  * \verbatim
     Strength
     ^
@@ -210,11 +203,9 @@ class haptic_direction final
     delay               duration
     \endverbatim
  *
- * \tparam Derived the type of the subclass for CRTP.
+ * \tparam Derived the type of the subclass, for CRTP.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 template <typename Derived>
 class haptic_effect
@@ -240,8 +231,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param direction the new direction of the effect.
    *
    * \since 5.2.0
@@ -254,8 +243,6 @@ class haptic_effect
 
   /**
    * \brief Returns the haptic direction associated with the effect.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the current direction associated with the effect.
    *
@@ -275,8 +262,8 @@ class haptic_effect
   /**
    * \brief Sets the effect to be repeated indefinitely when run.
    *
-   * \details This function makes the effect repeat forever when run, but the
-   * attack and fade are not repeated.
+   * \details This function makes the effect repeat forever when run, but the attack and
+   * fade are not repeated.
    *
    * \since 5.2.0
    */
@@ -288,13 +275,13 @@ class haptic_effect
   /**
    * \brief Sets the duration of the effect.
    *
-   * \param ms the duration of the effect.
+   * \param duration the duration of the effect.
    *
    * \since 5.2.0
    */
-  void set_duration(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
+  void set_duration(const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
   {
-    rep().length = ms.count();
+    rep().length = duration.count();
   }
 
   /**
@@ -302,16 +289,14 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the delay before before the effect is started.
+   * \param delay the delay before before the effect is started.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_delay<D> = 0>
-  void set_delay(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_delay(const milliseconds<u16> delay) noexcept(noexcept(delay.count()))
   {
-    rep().delay = ms.count();
+    rep().delay = delay.count();
   }
 
   /**
@@ -330,8 +315,6 @@ class haptic_effect
    * \brief Returns the delay before before the effect is started.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the delay before before the effect is started.
    *
@@ -353,8 +336,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param button the button that triggers the effect.
    *
    * \since 5.2.0
@@ -370,24 +351,20 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the minimum interval in between activations of the effect.
+   * \param interval the minimum interval in between activations of the effect.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  void set_interval(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_interval(const milliseconds<u16> interval) noexcept(noexcept(interval.count()))
   {
-    rep().interval = ms.count();
+    rep().interval = interval.count();
   }
 
   /**
    * \brief Returns the button that triggers the effect.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the button that triggers the effect.
    *
@@ -403,8 +380,6 @@ class haptic_effect
    * \brief Returns the minimum interval in between activations of the effect.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the minimum interval in between activations of the effect.
    *
@@ -426,8 +401,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param level the level at the start of the attack.
    *
    * \since 5.2.0
@@ -443,8 +416,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param level the level at the *end* of the fade out.
    *
    * \since 5.2.0
@@ -455,21 +426,21 @@ class haptic_effect
     rep().fade_level = level;
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the attack.
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the duration of the attack.
+   * \param duration the duration of the attack.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_attack_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_attack_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
   {
-    rep().attack_length = ms.count();
+    rep().attack_length = duration.count();
   }
 
   /**
@@ -477,24 +448,22 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the duration of the fade out.
+   * \param duration the duration of the fade out.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_fade_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_fade_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
   {
-    rep().fade_length = ms.count();
+    rep().fade_length = duration.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Returns the level at the *start* of the attack.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the the level at the *start* of the attack.
    *
@@ -511,8 +480,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \return the level at the *end* of the fade.
    *
    * \since 5.2.0
@@ -528,8 +495,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \return the duration of the attack.
    *
    * \since 5.2.0
@@ -544,8 +509,6 @@ class haptic_effect
    * \brief Returns the duration of the fade out.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the duration of the fade out.
    *
@@ -619,17 +582,14 @@ class haptic_effect
 /**
  * \class haptic_constant
  *
- * \brief Represents a haptic effect that applies a constant force in some
- * direction.
+ * \brief Represents a haptic effect that applies a constant force in some direction.
  *
- * \note See the SDL documentation for `SDL_HapticConstant` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticConstant` for  more detailed
+ * documentation.
  *
  * \see SDL_HapticConstant
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_constant final : public haptic_effect<haptic_constant>
 {
@@ -676,14 +636,11 @@ class haptic_constant final : public haptic_effect<haptic_constant>
  *
  * \brief Represents a wave-shaped haptic effect that repeats itself over time.
  *
- * \note See the SDL documentation for `SDL_HapticPeriodic` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticPeriodic` for detailed documentation.
  *
  * \see SDL_HapticPeriodic
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
@@ -713,8 +670,6 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \brief Creates a periodic haptic effect.
    *
-   * \details The type of the effects defaults to `sine`.
-   *
    * \since 5.2.0
    */
   explicit haptic_periodic(const periodic_type type = sine) noexcept
@@ -738,20 +693,20 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \brief Sets the period of the wave.
    *
-   * \param ms the period duration of the wave.
+   * \param period the period duration of the wave.
    *
    * \since 5.2.0
    */
-  void set_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
   {
-    representation().period = ms.count();
+    representation().period = period.count();
   }
 
   /**
    * \brief Sets the magnitude (peak value) of the wave.
    *
-   * \note If the supplied magnitude is negative, that is interpreted as an
-   * extra phase_shift shift of 180 degrees.
+   * \note If the supplied magnitude is negative, that is interpreted as an extra phase
+   * shift of 180 degrees.
    *
    * \param magnitude the magnitude of the wave, can be negative.
    *
@@ -775,10 +730,9 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   }
 
   /**
-   * \brief Sets the phase_shift shift.
+   * \brief Sets the phase shift.
    *
-   * \param shift the positive phase_shift shift, interpreted as hundredths of a
-   * degree.
+   * \param shift the positive phase shift, interpreted as hundredths of a degree.
    *
    * \since 5.2.0
    */
@@ -847,9 +801,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
     return m_effect.periodic;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation();
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticPeriodic&
   {
     return m_effect.periodic;
@@ -861,14 +813,11 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
  *
  * \brief Represents a linear or quadratic haptic effect.
  *
- * \note See the SDL documentation for `SDL_HapticRamp` for much more detailed
- * related documentation.
+ * \note See the SDL documentation for `SDL_HapticRamp` for more detailed documentation.
  *
  * \see SDL_HapticRamp
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
@@ -949,9 +898,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
     return m_effect.ramp;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation();
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticRamp&
   {
     return m_effect.ramp;
@@ -963,14 +910,11 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
  *
  * \brief Represents a custom haptic effect, similar to a periodic effect.
  *
- * \note See the SDL documentation for `SDL_HapticCustom` for much more detailed
- * related documentation.
+ * \note See the SDL documentation for `SDL_HapticCustom` for detailed documentation.
  *
  * \see SDL_HapticCustom
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_custom final : public haptic_effect<haptic_custom>
 {
@@ -1006,17 +950,21 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     representation().channels = detail::max(u8{1}, count);
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the sample periods.
    *
-   * \param ms duration of sample periods.
+   * \param period duration of sample periods.
    *
    * \since 5.2.0
    */
-  void set_sample_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_sample_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
   {
-    representation().period = ms.count();
+    representation().period = period.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Sets the number of samples.
@@ -1035,8 +983,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \note The data must be allocated and managed by you.
    *
-   * \details The data should consist of `sample_count()` * `axis_count()`
-   * sample items.
+   * \details The data should consist of `sample_count() * axis_count()` sample items.
    *
    * \param data a pointer to the custom sample data.
    *
@@ -1107,9 +1054,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     return m_effect.custom;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation()
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCustom&
   {
     return m_effect.custom;
@@ -1121,14 +1066,11 @@ class haptic_custom final : public haptic_effect<haptic_custom>
  *
  * \brief Represents an axes-based haptic effect.
  *
- * \note See the SDL documentation for `SDL_HapticCondition` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticCondition` for detailed documentation.
  *
  * \see SDL_HapticCondition
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_condition final : public haptic_effect<haptic_condition>
 {
@@ -1372,14 +1314,11 @@ class haptic_condition final : public haptic_effect<haptic_condition>
  * \brief Represents a haptic effect based on controlling the large and small
  * motors featured in many modern game controllers.
  *
- * \note See the SDL documentation for `SDL_HapticLeftRight` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticLeftRight` for detailed documentation.
  *
  * \see SDL_HapticLeftRight
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_left_right final : public haptic_effect<haptic_left_right>
 {
@@ -1500,10 +1439,8 @@ using haptic_handle = basic_haptic<detail::handle_type>;
  * \see `haptic_handle`
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
-template <typename B>
+template <typename T>
 class basic_haptic final
 {
  public:
@@ -1515,20 +1452,19 @@ class basic_haptic final
   /**
    * \brief Creates a haptic instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param haptic a pointer to the haptic device data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<B>())
+  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<T>())
       : m_haptic{haptic}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_haptic)
       {
@@ -1542,15 +1478,13 @@ class basic_haptic final
    *
    * \note This constructor is only available for owning haptic instances.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param index the device index of the desired haptic device.
    *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic)
@@ -1562,13 +1496,11 @@ class basic_haptic final
   /**
    * \brief Creates a handle based on an owning haptic instance.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param owner the associated owning haptic device.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
   {}
 
@@ -1576,8 +1508,6 @@ class basic_haptic final
    * \brief Creates a haptic device based on a joystick.
    *
    * \note This function is only available for owning haptic instances.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param joystick a joystick handle to the associated joystick.
    *
@@ -1587,8 +1517,8 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
-  [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick)
       -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
@@ -1606,15 +1536,13 @@ class basic_haptic final
    *
    * \note This function is only available for owning haptic instances.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
    * \see `is_mouse_haptic()`
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromMouse())
@@ -1635,8 +1563,8 @@ class basic_haptic final
   /**
    * \brief Initializes rumble playback for the haptic device.
    *
-   * \return `success` if rumble playback was successfully initialized;
-   * `failure` otherwise.
+   * \return `success` if rumble playback was successfully initialized; `failure`
+   * otherwise.
    *
    * \since 5.2.0
    */
@@ -1648,7 +1576,7 @@ class basic_haptic final
   /**
    * \brief Plays a rumble effect.
    *
-   * \note Make sure to call ``init_rumble()`` before calling this function!
+   * \note Make sure to call `init_rumble()` before calling this function!
    *
    * \param strength the strength of the rumble effect, clamped to [0, 1].
    * \param duration the duration of the rumble effect.
@@ -1669,8 +1597,7 @@ class basic_haptic final
   /**
    * \brief Stops the current rumble effect.
    *
-   * \return `success` if the rumble was successfully stopped; `failure`
-   * otherwise.
+   * \return `success` if the rumble was successfully stopped; `failure` otherwise.
    *
    * \since 5.2.0
    */
@@ -1731,8 +1658,8 @@ class basic_haptic final
    *
    * \param effect the effect that will be uploaded to the device.
    *
-   * \return the ID associated with the uploaded effect; `std::nullopt` if
-   * something went wrong.
+   * \return the ID associated with the uploaded effect; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -1754,8 +1681,7 @@ class basic_haptic final
   /**
    * \brief Attempts to update the effect associated with the specified ID.
    *
-   * \note It is not possible to change the type of the effect through this
-   * function.
+   * \note It is not possible to change the type of the effect through this function.
    *
    * \note You might experience strange results if you call this function for an
    * effect that is currently playing, but it is possible.
@@ -1777,12 +1703,12 @@ class basic_haptic final
   /**
    * \brief Runs the specified effect.
    *
-   * \note If you want to repeat the effect indefinitely without repeating the
-   * attack and fade, see `haptic_effect::set_repeat_forever()`.
+   * \note If you want to repeat the effect indefinitely without repeating the attack and
+   * fade, see `haptic_effect::set_repeat_forever()`.
    *
    * \param id the ID associated with the effect that will be run.
-   * \param iterations the number of iterations, can be `haptic_infinity` to
-   * repeat the effect forever (including the attack and fade).
+   * \param iterations the number of iterations, can be `haptic_infinity` to repeat the
+   * effect forever (including the attack and fade).
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -1824,8 +1750,8 @@ class basic_haptic final
    *
    * \note This is done automatically when the device is destructed.
    *
-   * \details The effect will be destroyed will be stopped if it is running
-   * by the time this function is invoked.
+   * \details The effect will be destroyed will be stopped if it is running by the time
+   * this function is invoked.
    *
    * \param id the ID associated with the effect that will be destroyed.
    *
@@ -1864,8 +1790,8 @@ class basic_haptic final
    * \pre `autocenter` must be greater or equal to zero.
    * \pre `autocenter` must be less than or equal to zero.
    *
-   * \param autocenter the value of the autocenter that will be used, in the
-   * interval [0, 100]. Autocentering will be disabled if this value is zero.
+   * \param autocenter the value of the autocenter that will be used, in the interval [0,
+   * 100]. Autocentering will be disabled if this value is zero.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -1896,13 +1822,11 @@ class basic_haptic final
   }
 
   /**
-   * \brief Indicates whether or not the specified effect is playing on the
-   * device.
+   * \brief Indicates whether or not the specified effect is playing on the device.
    *
    * \pre The device must support the `status` feature.
    *
-   * \return `true` on if the effect is playing on the device; `false`
-   * otherwise.
+   * \return `true` on if the effect is playing on the device; `false` otherwise.
    *
    * \since 5.2.0
    */
@@ -2163,8 +2087,8 @@ class basic_haptic final
   /**
    * \brief Returns the index associated with the haptic device.
    *
-   * \return the index associated with the haptic device; `std::nullopt` if
-   * something goes wrong.
+   * \return the index associated with the haptic device; `std::nullopt` if something goes
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -2184,8 +2108,8 @@ class basic_haptic final
   /**
    * \brief Attempts to return the name associated with the haptic device.
    *
-   * \return the name associated with the haptic device; a null pointer is
-   * returned if no name was found.
+   * \return the name associated with the haptic device; a null pointer is returned if no
+   * name was found.
    *
    * \since 5.2.0
    */
@@ -2204,11 +2128,11 @@ class basic_haptic final
   /**
    * \brief Returns the maximum amount of effect the device can store.
    *
-   * \note This function isn't supported on all platforms and the returned value
-   * should be treated as an approximation.
+   * \note This function isn't supported on all platforms and the returned value should be
+   * treated as an approximation.
    *
-   * \return the maximum number of effects the the haptic device can store;
-   * `std::nullopt` if something goes wrong.
+   * \return the maximum number of effects the the haptic device can store; `std::nullopt`
+   * if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -2226,8 +2150,7 @@ class basic_haptic final
   }
 
   /**
-   * \brief Returns the maximum amount of effects that can be played
-   * simultaneously.
+   * \brief Returns the maximum amount of effects that can be played simultaneously.
    *
    * \note This function isn't supported on all platforms.
    *
@@ -2284,8 +2207,8 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T>
-  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<T>& joystick) noexcept
+  template <typename U>
+  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<U>& joystick) noexcept
       -> bool
   {
     return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;
@@ -2321,13 +2244,11 @@ class basic_haptic final
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_haptic != nullptr;
@@ -2355,11 +2276,10 @@ class basic_haptic final
       SDL_HapticClose(haptic);
     }
   };
-  detail::pointer_manager<B, SDL_Haptic, deleter> m_haptic;
+  detail::pointer_manager<T, SDL_Haptic, deleter> m_haptic;
 
   /**
-   * \brief Indicates whether or not the haptic device supports the specified
-   features.
+   * \brief Indicates whether or not the haptic device supports the specified features.
    *
    * \details The supplied value must be a masked subset of the following flags:
    *
@@ -2391,14 +2311,12 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const uint flag) const noexcept -> bool
   {
-    return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
+    return flag & SDL_HapticQuery(m_haptic);
   }
 };
 
 /**
  * \brief Returns a textual representation of a haptic device.
- *
- * \tparam B the ownership semantics parameter for the haptic type.
  *
  * \param haptic the haptic device that will be converted.
  *
@@ -2406,8 +2324,8 @@ class basic_haptic final
  *
  * \since 5.2.0
  */
-template <typename B>
-[[nodiscard]] auto to_string(const basic_haptic<B>& haptic) -> std::string
+template <typename T>
+[[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
   return "haptic{data: " + detail::address_of(haptic.get()) +
          ", name: " + str_or_na(haptic.name()) + "}";
@@ -2416,8 +2334,6 @@ template <typename B>
 /**
  * \brief Prints a textual representation of a haptic device using a stream.
  *
- * \tparam B the ownership semantics parameter for the haptic type.
- *
  * \param stream the stream that will be used.
  * \param haptic the haptic device that will be printed.
  *
@@ -2425,8 +2341,8 @@ template <typename B>
  *
  * \since 5.2.0
  */
-template <typename B>
-auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ostream&
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ostream&
 {
   return stream << to_string(haptic);
 }

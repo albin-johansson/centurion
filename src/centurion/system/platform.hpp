@@ -21,12 +21,9 @@ namespace cen {
 /**
  * \enum platform_id
  *
- * \brief Provides values that represent various different operating
- * systems.
+ * \brief Provides values that represent various different operating systems.
  *
  * \since 3.0.0
- *
- * \headerfile platform.hpp
  */
 enum class platform_id
 {
@@ -41,15 +38,14 @@ enum class platform_id
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
 /**
- * \brief Attempts to open a URL using a web browser or even a file manager for
- * local files.
+ * \brief Attempts to open a URL using a web browser or even a file manager for local
+ * files.
  *
- * \note This function will return `success` if there was at least an "attempt" to
- * open the specified URL, but it doesn't mean that the URL was successfully
- * loaded.
+ * \note This function will return `success` if there was at least an "attempt" to open
+ * the specified URL, but it doesn't mean that the URL was successfully loaded.
  *
- * \remarks This function will differ greatly in its effects depending on the
- * current platform.
+ * \remarks This function will differ greatly in its effects depending on the current
+ * platform.
  *
  * \param url the URL that should be opened, cannot be null.
  *
@@ -65,10 +61,8 @@ inline auto open_url(const not_null<czstring> url) noexcept -> result
   return SDL_OpenURL(url) == 0;
 }
 
-/**
- * \see open_url()
- * \since 5.3.0
- */
+/// \see open_url()
+/// \since 5.3.0
 inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
@@ -175,8 +169,7 @@ inline auto open_url(const std::string& url) noexcept -> result
 /**
  * \brief Returns the name of the current platform.
  *
- * \return the name of the current platform; `std::nullopt` if the name cannot
- * be deduced.
+ * \return the name of the current platform; `std::nullopt` if the name cannot be deduced.
  *
  * \since 3.0.0
  */
@@ -225,7 +218,6 @@ inline auto open_url(const std::string& url) noexcept -> result
 
 /**
  * \brief Indicates whether or not the current OS is 64-bit Windows.
- *
  *
  * \return `true` if the current OS is 64-bit Windows; `false` otherwise.
  *

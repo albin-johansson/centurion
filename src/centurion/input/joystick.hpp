@@ -846,22 +846,13 @@ class basic_joystick final
    *
    * \param axis the ID of the axis to query.
    *
-   * \return a 16-bit signed integer that represents the position of the
-   * specified axis; `std::nullopt` if something goes wrong.
+   * \return the position of the specified axis.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> i16
   {
-    const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return result;
-    }
+    return SDL_JoystickGetAxis(m_joystick, axis);
   }
 
   /**

@@ -261,10 +261,9 @@ TEST_F(JoystickTest, AxisPos)
   std::array values{0_i16, 123_i16};
   SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_joystick.axis_pos(0).has_value());
-  EXPECT_EQ(123, m_joystick.axis_pos(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetAxis_fake.call_count);
+  ASSERT_EQ(0, m_joystick.axis_pos(0));
+  ASSERT_EQ(123, m_joystick.axis_pos(0));
+  ASSERT_EQ(2, SDL_JoystickGetAxis_fake.call_count);
 }
 
 TEST_F(JoystickTest, AxisInitialState)

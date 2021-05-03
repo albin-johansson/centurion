@@ -40,8 +40,8 @@ using texture_handle = basic_texture<detail::handle_type>;
 /**
  * \class basic_texture
  *
- * \brief Represents an hardware-accelerated image, intended to be rendered using
- * the `basic_renderer` class.
+ * \brief Represents an hardware-accelerated image, intended to be rendered using the
+ * `basic_renderer` class.
  *
  * \since 3.0.0
  *
@@ -62,8 +62,7 @@ class basic_texture final
    *
    * \param source a pointer to the associated SDL texture.
    *
-   * \throws cen_error if the supplied pointer is null *and* the texture is
-   * owning.
+   * \throws cen_error if the supplied pointer is null *and* the texture is owning.
    *
    * \since 3.0.0
    */
@@ -95,8 +94,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture, can't be null.
@@ -118,8 +116,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture.
@@ -136,8 +133,7 @@ class basic_texture final
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param surface the surface that the texture will be based on.
@@ -159,8 +155,7 @@ class basic_texture final
   /**
    * \brief Creates an texture with the specified characteristics.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the associated renderer instance.
    * \param format the pixel format of the created texture.
@@ -191,15 +186,13 @@ class basic_texture final
   /**
    * \brief Creates and returns a texture with streaming access.
    *
-   * \details The created texture is based on the image at the specified path
-   * with the `streaming` texture access.
+   * \details The created texture is based on the image at the specified path with the
+   * `streaming` texture access.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
-   * \param path the path of the image file to base the texture on, can't be
-   * null.
+   * \param path the path of the image file to base the texture on, can't be null.
    * \param format the pixel format that will be used by the texture.
    *
    * \throws cen_error if something goes wrong.
@@ -256,8 +249,8 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the texture access isn't
-   * `Streaming` or if the coordinate is out-of-bounds.
+   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
    * \param color the new color of the pixel.
@@ -320,8 +313,7 @@ class basic_texture final
    *
    * \note The alpha component in the color struct is ignored by this method.
    *
-   * \param color the color that will be used to modulate the color of the
-   * texture.
+   * \param color the color that will be used to modulate the color of the texture.
    *
    * \since 3.0.0
    */
@@ -423,8 +415,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture is a possible render target.
    *
-   * \return `true` if the texture is a possible render target; `false`
-   * otherwise.
+   * \return `true` if the texture is a possible render target; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -448,8 +439,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture has streaming texture access.
    *
-   * \return `true` if the texture has streaming texture access; `false`
-   * otherwise.
+   * \return `true` if the texture has streaming texture access; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -521,13 +511,11 @@ class basic_texture final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Releases ownership of the associated SDL texture and returns a
-   * pointer to it.
+   * \brief Releases ownership of the associated SDL texture and returns a pointer to it.
    *
-   * \warning Usage of this function should be considered dangerous, since
-   * you might run into memory leak issues. You **must** call
-   * `SDL_DestroyTexture` on the returned pointer to free the associated
-   * memory.
+   * \warning Usage of this function should be considered dangerous, since you might run
+   * into memory leak issues. You **must** call `SDL_DestroyTexture` on the returned
+   * pointer to free the associated memory.
    *
    * \return a pointer to the associated SDL texture.
    *
@@ -558,8 +546,6 @@ class basic_texture final
 
   /**
    * \brief Indicates whether or not a texture handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -610,12 +596,12 @@ class basic_texture final
   /**
    * \brief Locks the texture for write-only pixel access.
    *
-   * \remarks This method is only applicable if the texture access of the
-   * texture is `Streaming`.
+   * \remarks This method is only applicable if the texture access of the texture is
+   * `Streaming`.
    *
    * \param pixels this will be filled with a pointer to the locked pixels.
-   * \param pitch This is filled in with the pitch of the locked pixels, can
-   * safely be null if it isn't needed.
+   * \param pitch This is filled in with the pitch of the locked pixels, can safely be
+   * null if it isn't needed.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -672,7 +658,7 @@ template <typename T>
  * \brief Prints a textual representation of a texture.
  *
  * \param stream the stream that will be used.
- * \param texture
+ * \param texture the texture that will be printed
  *
  * \return the used stream.
  *
@@ -681,8 +667,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
 {
-  stream << to_string(texture);
-  return stream;
+  return stream << to_string(texture);
 }
 
 /// \}

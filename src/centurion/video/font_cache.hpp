@@ -27,23 +27,20 @@ namespace cen {
  *
  * \details This class provides two different optimizations.
  *
- * Firstly, this class can be used to cache glyph textures that can then be used
- * to render strings, by simply looking up the individual glyphs and rendering
- * the existing textures. Note, this will not result in accurate kerning.
- * However, this might not be noticeable and/or worth the performance boost.
- * This approach is *very* efficient for rendering pieces of text that
- * frequently changes, since other approaches would require dynamic allocation
- * and de-allocation for every new rendered string.
+ * Firstly, this class can be used to cache glyph textures that can then be used to render
+ * strings, by simply looking up the individual glyphs and rendering the existing
+ * textures. Note, this will not result in accurate kerning. However, this might not be
+ * noticeable and/or worth the performance boost. This approach is *very* efficient for
+ * rendering pieces of text that frequently changes, since other approaches would require
+ * dynamic allocation and de-allocation for every new rendered string.
  *
  * Secondly, it's possible to cache complete strings and associate them with a
- * user-provided identifier. In contrast with the first approach, this will
- * result in accurate kerning. The only problem is that it's hard to know the
- * exact strings you will render at compile-time. Use this option if you know
- * that you're going to render some specific string a lot.
+ * user-provided identifier. In contrast with the first approach, this will result in
+ * accurate kerning. The only problem is that it's hard to know the exact strings you will
+ * render at compile-time. Use this option if you know that you're going to render some
+ * specific string a lot.
  *
  * \since 5.0.0
- *
- * \headerfile font_cache.hpp
  */
 class font_cache final
 {
@@ -56,8 +53,6 @@ class font_cache final
    * \brief Simple aggregate that contains a texture and metrics for a glyph.
    *
    * \since 5.0.0
-   *
-   * \headerfile font_cache.hpp
    */
   struct glyph_data final
   {
@@ -81,11 +76,10 @@ class font_cache final
   {}
 
   /**
-   * \brief Creates an empty font cache, and creates the associated font
-   * in-place.
+   * \brief Creates an empty font cache, and creates the associated font in-place.
    *
-   * \note This constructor throws whatever exceptions that the `font`
-   * constructor might throw.
+   * \note This constructor throws whatever exceptions that the `font` constructor might
+   * throw.
    *
    * \tparam Args the types of the arguments forwarded to the font constructor.
    *
@@ -105,17 +99,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_utf8`
+   * \see `basic_renderer::render_blended_utf8()`
    *
    * \since 5.0.0
    */
@@ -141,18 +134,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_utf8`
+   * \see `basic_renderer::render_blended_wrapped_utf8()`
    *
    * \since 5.0.0
    */
@@ -182,18 +174,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_utf8`
+   * \see `basic_renderer::render_shaded_utf8()`
    *
    * \since 5.0.0
    */
@@ -223,17 +214,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_utf8`
+   * \see `basic_renderer::render_solid_utf8()`
    *
    * \since 5.0.0
    */
@@ -259,17 +249,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_latin1`
+   * \see `basic_renderer::render_blended_latin1()`
    *
    * \since 5.0.0
    */
@@ -297,18 +286,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_latin1`
+   * \see `basic_renderer::render_blended_wrapped_latin1()`
    *
    * \since 5.0.0
    */
@@ -338,18 +326,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_latin1`
+   * \see `basic_renderer::render_shaded_latin1()`
    *
    * \since 5.0.0
    */
@@ -379,17 +366,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_latin1`
+   * \see `basic_renderer::render_solid_latin1()`
    *
    * \since 5.0.0
    */
@@ -415,17 +401,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_unicode`
+   * \see `basic_renderer::render_blended_unicode()`
    *
    * \since 5.0.0
    */
@@ -440,18 +425,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_unicode`
+   * \see `basic_renderer::render_blended_wrapped_unicode()`
    *
    * \since 5.0.0
    */
@@ -467,18 +451,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_unicode`
+   * \see `basic_renderer::render_shaded_unicode()`
    *
    * \since 5.0.0
    */
@@ -494,17 +477,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_unicode`
+   * \see `basic_renderer::render_solid_unicode()`
    *
    * \since 5.0.0
    */
@@ -517,13 +499,13 @@ class font_cache final
   }
 
   /**
-   * \brief Indicates whether or not there is a cached string texture associated
-   * with the specified key.
+   * \brief Indicates whether or not there is a cached string texture associated with the
+   * specified key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if there is a cached texture associated with the key;
-   * `false` otherwise.
+   * \return `true` if there is a cached texture associated with the key; `false`
+   * otherwise.
    *
    * \since 5.0.0
    */
@@ -551,14 +533,13 @@ class font_cache final
   /**
    * \brief Returns a pointer to the texture associated with the specified key.
    *
-   * \note The returned pointer is not suitable for storing for longer than
-   * absolutely necessary, as it might get invalidated by modifications of
-   * the font cache.
+   * \note The returned pointer is not suitable for storing for longer than absolutely
+   * necessary, as it might get invalidated by modifications of the font cache.
    *
    * \param id the key of the desired texture.
    *
-   * \return a pointer to the texture associated with the specified key;
-   * `nullptr` if no texture is found.
+   * \return a pointer to the texture associated with the specified key; `nullptr` if no
+   * texture is found.
    *
    * \since 5.0.0
    */
@@ -583,8 +564,8 @@ class font_cache final
   /**
    * \brief Adds a glyph to the font cache.
    *
-   * \details This function has no effect if the supplied glyph isn't provided
-   * by the associated font, or if the supplied glyph has already been cached.
+   * \details This function has no effect if the supplied glyph isn't provided by the
+   * associated font, or if the supplied glyph has already been cached.
    *
    * \tparam Renderer the type of the renderer.
    *
@@ -609,16 +590,15 @@ class font_cache final
   /**
    * \brief Caches the glyphs in the specified range.
    *
-   * \details The range is interpreted as [min, max), i.e. the the `min`
-   * value is included, and `max` is excluded.
+   * \details The range is interpreted as [min, max), i.e. the the `min` value is
+   * included, and `max` is excluded.
    *
    * \remark For an overview of the various Unicode blocks, see <a
    * href="https://unicode-table.com/en/blocks/">this</a>.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    * \param begin the first glyph that will be included.
    * \param end the "end" glyph in the range, will not be included.
    *
@@ -636,14 +616,13 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable basic latin characters.
    *
-   * \details The basic latin set provides the most common characters, such as
-   * upper- and lower-case latin letters, numbers and symbols. This function
-   * might throw if something goes wrong when creating the textures.
+   * \details The basic latin set provides the most common characters, such as upper- and
+   * lower-case latin letters, numbers and symbols. This function might throw if something
+   * goes wrong when creating the textures.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -659,8 +638,7 @@ class font_cache final
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -674,13 +652,12 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable Latin-1 characters.
    *
-   * \note This function is effectively equivalent to calling both
-   * `add_basic_latin` and `add_latin1_supplement`.
+   * \note This function is effectively equivalent to calling both `add_basic_latin` and
+   * `add_latin1_supplement`.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -742,16 +719,16 @@ class font_cache final
   /**
    * \brief Returns the data associated with the specified glyph, if it exists.
    *
-   * \details This function is a non-throwing alternative to the `at()` and
-   * `operator[]` functions.
+   * \details This function is a non-throwing alternative to the `at()` and `operator[]`
+   * functions.
    *
-   * \note Do not store the returned pointer for longer than absolutely
-   * necessary, it may get invalidated upon modification of the font cache.
+   * \note Do not store the returned pointer for longer than absolutely necessary, it may
+   * get invalidated upon modification of the font cache.
    *
    * \param glyph the desired glyph to lookup the data for.
    *
-   * \return a pointer to the associated glyph data; a null pointer if no
-   * matching data was found.
+   * \return a pointer to the associated glyph data; a null pointer if no matching data
+   * was found.
    *
    * \since 5.2.0
    */

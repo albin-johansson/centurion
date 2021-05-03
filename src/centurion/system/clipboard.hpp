@@ -24,11 +24,10 @@
 namespace cen::clipboard {
 
 /**
- * \brief Indicates whether or not there is a clipboard exists and that it
- * contains non-empty text.
+ * \brief Indicates whether or not there is a clipboard exists and that it contains
+ * non-empty text.
  *
- * \return `true` if there is a clipboard that contains non-empty text; `false`
- * otherwise.
+ * \return `true` if there is a clipboard that contains non-empty text; `false` otherwise.
  *
  * \since 5.0.0
  */
@@ -40,8 +39,7 @@ namespace cen::clipboard {
 /**
  * \brief Returns the current text in the clipboard.
  *
- * \note If the clipboard cannot be obtained, this function returns the empty
- * string.
+ * \note If the clipboard cannot be obtained, this function returns the empty string.
  *
  * \return the current clipboard text.
  *

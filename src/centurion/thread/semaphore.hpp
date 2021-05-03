@@ -22,8 +22,6 @@ namespace cen {
  * \brief Represents a semaphore with a set of "tokens" (or permits).
  *
  * \since 5.0.0
- *
- * \headerfile semaphore.hpp
  */
 class semaphore final
 {
@@ -64,8 +62,8 @@ class semaphore final
    *
    * \param ms the maximum amount of time to wait.
    *
-   * \return `success` if a token was acquired; `timed_out` if no token was
-   * acquired in the specified duration; `error` if something goes wrong.
+   * \return `success` if a token was acquired; `timed_out` if no token was acquired in
+   * the specified duration; `error` if something goes wrong.
    *
    * \since 5.0.0
    */
@@ -77,8 +75,8 @@ class semaphore final
   /**
    * \brief Attempts to acquire a token from the semaphore.
    *
-   * \return `success` if a token was acquired; `timed_out` if the thread
-   * would've been blocked; `error` if something goes wrong.
+   * \return `success` if a token was acquired; `timed_out` if the thread would've been
+   * blocked; `error` if something goes wrong.
    *
    * \since 5.0.0
    */

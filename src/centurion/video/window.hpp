@@ -66,8 +66,6 @@ using window_handle = basic_window<detail::handle_type>;
  * \see `keyboard_focus_window()`
  * \see `get_renderer()`
  * \see `make_window_and_renderer()`
- *
- * \headerfile window.hpp
  */
 template <typename T>
 class basic_window final
@@ -78,9 +76,8 @@ class basic_window final
    *
    * \brief Represents different window features and options.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating windows and to obtain information
-   * from created windows.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating windows and to obtain information from created windows.
    *
    * \see `SDL_WindowFlags`
    *
@@ -121,12 +118,12 @@ class basic_window final
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
-   * \note If you're creating a `window` instance, then ownership of the pointer
-   * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
-   * *not* claimed.
+   * \note If you're creating a `window` instance, then ownership of the pointer is
+   * claimed. Furthermore, if you're creating a `window_handle`, ownership is *not*
+   * claimed.
    *
-   * \param window a pointer to the associated SDL window. Ownership of this
-   * pointer is claimed if the window is owning.
+   * \param window a pointer to the associated SDL window. Ownership of this pointer is
+   * claimed if the window is owning.
    *
    * \since 5.0.0
    */
@@ -151,8 +148,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -215,8 +211,8 @@ class basic_window final
   /**
    * \brief Creates a window.
    *
-   * \details The window will use the size obtained from `default_size()` as its
-   * initial size.
+   * \details The window will use the size obtained from `default_size()` as its initial
+   * size.
    *
    * \throws sdl_error if the window cannot be created.
    *
@@ -293,8 +289,7 @@ class basic_window final
   }
 
   /**
-   * \brief Restores the position and size of the window if it's minimized or
-   * maximized.
+   * \brief Restores the position and size of the window if it's minimized or maximized.
    *
    * \since 5.3.0
    */
@@ -306,8 +301,7 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `success` if the surface was successfully updated; `failure`
-   * otherwise.
+   * \return `success` if the surface was successfully updated; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -324,8 +318,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen; `false` for
-   * windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -341,8 +334,8 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen desktop; `false`
-   * for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false` for
+   * windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -358,8 +351,7 @@ class basic_window final
    *
    * \details This is enabled by default.
    *
-   * \param decorated `true` if the window should be decorated; `false`
-   * otherwise.
+   * \param decorated `true` if the window should be decorated; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -371,8 +363,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window should be resizable.
    *
-   * \param resizable `true` if the window should be resizable; `false`
-   * otherwise.
+   * \param resizable `true` if the window should be resizable; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -421,8 +412,7 @@ class basic_window final
   /**
    * \brief Sets the opacity of the window.
    *
-   * \details The supplied opacity will be clamped to a value in the legal
-   * range.
+   * \details The supplied opacity will be clamped to a value in the legal range.
    *
    * \param opacity the opacity, in the range [0, 1].
    *
@@ -440,8 +430,8 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window;
-   * `false` otherwise.
+   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -453,13 +443,12 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \note A brightness value outside the legal range will be clamped to the
-   * closest valid value.
+   * \note A brightness value outside the legal range will be clamped to the closest valid
+   * value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `success` if the brightness was successfully set; `failure`
-   * otherwise.
+   * \return `success` if the brightness was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
@@ -471,11 +460,9 @@ class basic_window final
   /**
    * \brief Sets whether or not the mouse should be captured.
    *
-   * \note A window might have to be visible in order for the mouse to be
-   * captured.
+   * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false`
-   * otherwise.
+   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
@@ -532,8 +519,8 @@ class basic_window final
   /**
    * \brief Sets the position of the window.
    *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED` as
+   * any of the components of the point.
    *
    * \param position the new position of the window.
    *
@@ -621,49 +608,48 @@ class basic_window final
   /**
    * \brief Sets the size of the window.
    *
-   * \details The supplied dimensions are capped to be at least 1.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the new size of the window, components must be greater than
-   * zero.
+   * \param size the new size of the window.
    *
    * \since 5.0.0
    */
   void set_size(const iarea size) noexcept
   {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
+    assert(size.width > 0);
+    assert(size.height > 0);
+    SDL_SetWindowSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the minimum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
+   * \param size the minimum size of the window.
    *
    * \since 3.0.0
    */
   void set_min_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the maximum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
+   * \param size the maximum size of the window.
    *
    * \since 3.0.0
    */
   void set_max_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
@@ -694,8 +680,8 @@ class basic_window final
   /**
    * \brief Returns the current size of the window.
    *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
+   * \note Calling this function is slightly faster than calling both `width` and `height`
+   * to obtain the window size.
    *
    * \return the size of the window.
    *
@@ -775,9 +761,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -793,9 +778,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(cen::window::fullscreen)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(cen::window::fullscreen)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -919,8 +903,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
+   * \return `true` if the window is in fullscreen desktop mode; `false` otherwise.
    *
    * \since 4.0.0
    */
@@ -954,11 +937,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
+   * \brief Indicates whether or not the window is usable with an OpenGL-context.
    *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
+   * \return `true` if the window is compatible with an OpenGL-context; false otherwise.
    *
    * \since 4.0.0
    */
@@ -970,8 +951,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
+   * \return `true` if the window is is usable as a Vulkan surface; false otherwise.
    *
    * \since 4.0.0
    */
@@ -1045,11 +1025,10 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
+   * \brief Indicates whether or not the window is set to be always on top of other
+   * windows.
    *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
+   * \return `true` if the window is always on top of other windows; false otherwise.
    *
    * \since 4.0.0
    */
@@ -1132,8 +1111,8 @@ class basic_window final
   /**
    * \brief Returns the display index associated with the window.
    *
-   * \return the display index associated with the window; `std::nullopt` if the
-   * display index cannot be obtained.
+   * \return the display index associated with the window; `std::nullopt` if the display
+   * index cannot be obtained.
    *
    * \since 3.1.0
    */
@@ -1205,11 +1184,10 @@ class basic_window final
   /**
    * \brief Returns a handle to the window framebuffer surface.
    *
-   * \warning It is not possible use the framebuffer surface with the 3D or 2D
-   * rendering APIs.
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D rendering
+   * APIs.
    *
-   * \return a handle to the window surface, might not contain a valid surface
-   * pointer.
+   * \return a handle to the window surface, might not contain a valid surface pointer.
    *
    * \since 5.0.0
    */
@@ -1219,8 +1197,7 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Indicates whether or not the window is currently grabbing the mouse input.
    *
    * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
@@ -1232,11 +1209,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the screen keyboard is shown for the
-   * window.
+   * \brief Indicates whether or not the screen keyboard is shown for the window.
    *
-   * \return `true` if the screen keyboard is shown for the window; `false`
-   * otherwise.
+   * \return `true` if the screen keyboard is shown for the window; `false` otherwise.
    *
    * \since 6.0.0
    */
@@ -1293,8 +1268,8 @@ class basic_window final
    *
    * \note This function is only available for window handles.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *

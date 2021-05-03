@@ -106,8 +106,8 @@ class palette final
   /**
    * \brief Returns the color in the palette at the specified index.
    *
-   * \warning This function performs no bounds checking, see `at()` for a bounds
-   * checked version of this function.
+   * \warning This function performs no bounds checking, see `at()` for a bounds checked
+   * version of this function.
    *
    * \pre `index` must not be negative.
    * \pre `index` must be less than the size of the palette.

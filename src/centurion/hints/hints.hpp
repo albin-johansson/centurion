@@ -115,13 +115,13 @@ template <typename Hint>
  *
  * \brief Represents a handle for dealing with hint callbacks.
  *
- * \details This class provides methods for easily connecting and disconnecting
- * a callback from receiving updates.
+ * \details This class provides methods for easily connecting and disconnecting a callback
+ * from receiving updates.
  *
- * \tparam Hint the type of the associated hint. Should be one of the hint
- * types defined in the `hints.hpp` header.
+ * \tparam Hint the type of the associated hint. Should be one of the hint types defined
+ * in the `hints.hpp` header.
  *
- * \tparam UserData the type of the user data, defaults to `void`.
+ * \tparam UserData the type of the user data.
  *
  * \since 4.1.0
  */
@@ -130,11 +130,10 @@ class hint_callback final
 {
  public:
   /**
-   * \brief Creates a `hint_callback`.
+   * \brief Creates a hint callback.
    *
-   * \param callback the function object that will be called whenever the
-   * associated hint is updated. The signature should be `void(void*,
-   * czstring, czstring, czstring)`.
+   * \param callback the function object that will be called whenever the associated hint
+   * is updated. The signature should be `void(void*, czstring, czstring, czstring)`.
    * \param userData a pointer to some user data. Defaults to `nullptr`.
    *
    * \throws cen_error if the supplied function pointer is null.
@@ -152,8 +151,7 @@ class hint_callback final
   }
 
   /**
-   * \brief Registers the callback to be invoked whenever the associated hint is
-   * updated.
+   * \brief Registers the callback to be invoked whenever the associated hint is updated.
    *
    * \see `SDL_AddHintCallback`
    *
@@ -165,8 +163,8 @@ class hint_callback final
   }
 
   /**
-   * \brief Unregisters the callback from being updated whenever the associated
-   * hint is updated.
+   * \brief Unregisters the callback from being updated whenever the associated hint is
+   * updated.
    *
    * \see `SDL_DelHintCallback`
    *
@@ -178,11 +176,11 @@ class hint_callback final
   }
 
   /**
-   * \brief Returns a pointer to the function that is invoked when the
-   * associated hint is updated.
+   * \brief Returns a pointer to the function that is invoked when the associated hint is
+   * updated.
    *
-   * \return a pointer to the function that is invoked when the associated
-   * hint is updated.
+   * \return a pointer to the function that is invoked when the associated hint is
+   * updated.
    *
    * \since 4.1.0
    */
@@ -194,8 +192,7 @@ class hint_callback final
   /**
    * \brief Returns a pointer to the user data associated with the callback.
    *
-   * \return a pointer to the user data associated with the callback, can be
-   * null.
+   * \return a pointer to the user data associated with the callback, can be null.
    *
    * \since 4.1.0
    */
@@ -212,29 +209,24 @@ class hint_callback final
 /**
  * \brief Adds a callback to observe changes of the value of the specified hint.
  *
- * \details A callback handle object is returned, which can be used to easily
- * disconnect the callback later. This function can be used with any function
- * object that is stateless, such as traditional function pointers and lambdas.
- * The simplest way to add a callback is with a lambda and no explicit user
- * data.
+ * \details A callback handle object is returned, which can be used to easily disconnect
+ * the callback later. This function can be used with any function object that is
+ * stateless, such as traditional function pointers and lambdas. The simplest way to add a
+ * callback is with a lambda and no explicit user data.
  *
- * \note The callback will be immediately invoked with the current value of
- * the hint.
+ * \note The callback will be immediately invoked with the current value of the hint.
  *
- * \note In a future version of centurion (that supports C++20), the
- * signature of the function object will be dependent on the `UserData` type.
- * Unfortunately, this isn't really doable with C++17. Since it requires
- * default-constructible stateless lambdas.
+ * \note In a future version of centurion (that supports C++20), the signature of the
+ * function object will be dependent on the `UserData` type. Unfortunately, this isn't
+ * really doable with C++17. Since it requires default-constructible stateless lambdas.
  *
- * \tparam Hint should one of the many hint types defined in this header.
- * However, all it requires is that the type provides a static method that
- * returns a `czstring`.
+ * \tparam Hint should one of the many hint types defined in this header. However, all it
+ * requires is that the type provides a static method that returns a `czstring`.
  * \tparam UserData the type of the user data, defaults to void.
  *
- * \param fun the function object that will be invoked when the hint is
- * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
- * \param userData the user data to associate with the callback, defaults to
- * `nullptr`.
+ * \param fun the function object that will be invoked when the hint is updated. The
+ * signature should be `void(void*, czstring, czstring, czstring)`.
+ * \param userData the user data to associate with the callback.
  *
  * \return a handle to the added callback.
  *

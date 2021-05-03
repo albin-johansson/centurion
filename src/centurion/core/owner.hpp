@@ -12,9 +12,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -24,12 +24,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */

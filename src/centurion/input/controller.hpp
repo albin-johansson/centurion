@@ -1233,20 +1233,18 @@ class basic_controller final
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
-   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
-   * mappings for previously known GUIDs will overwrite the previous mappings.
-   * Furthermore, mappings for different platforms than the current platform
-   * will be ignored.
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New mappings for
+   * previously known GUIDs will overwrite the previous mappings. Furthermore, mappings
+   * for different platforms than the current platform will be ignored.
    *
-   * \remarks It's possible to call this function several times to use multiple
-   * mapping files.
+   * \remarks It's possible to call this function several times to use multiple mapping
+   * files.
    *
    * \note The text database is stored entirely in memory during processing.
    *
    * \param file the path of the mapping file.
    *
-   * \return the amount of mappings added; `std::nullopt` if something went
-   * wrong.
+   * \return the amount of mappings added; `std::nullopt` if something went wrong.
    *
    * \since 5.3.0
    */

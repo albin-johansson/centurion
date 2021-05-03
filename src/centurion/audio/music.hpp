@@ -96,8 +96,7 @@ class music final
 {
  public:
   /**
-   * \brief A constant that indicates that the music should be looped
-   * indefinitely.
+   * \brief A constant that indicates that the music should be looped indefinitely.
    *
    * \since 5.1.0
    */
@@ -109,8 +108,7 @@ class music final
   /**
    * \brief Creates a `music` instance based on the file at the specified path.
    *
-   * \param file the file path of the music file that will be loaded, cannot
-   * be null.
+   * \param file the file path of the music file that will be loaded, cannot be null.
    *
    * \throws mix_error if the music file cannot be loaded.
    *
@@ -144,14 +142,13 @@ class music final
   /**
    * \brief Plays the music associated with this instance.
    *
-   * \details Any previously playing music will be halted. However, this
-   * method will wait for music that was fading out to complete.
+   * \details Any previously playing music will be halted. However, this method will wait
+   * for music that was fading out to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played
-   * forever. Furthermore, the values 0 and 1 both results in the music being
-   * played *one time*. Except for these "special" values, the function behaves
-   * as expected.
+   * documentation. A negative value indicates that the music should be played forever.
+   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
+   * Except for these "special" values, the function behaves as expected.
    *
    * \param nLoops the number of times to loop the music, `music::forever` can
    * be supplied to loop the music indefinitely.
@@ -178,8 +175,8 @@ class music final
   /**
    * \brief Resumes playing the music.
    *
-   * \details This method can safely be invoked with halted, paused and even
-   * currently playing music.
+   * \details This method can safely be invoked with halted, paused and even currently
+   * playing music.
    *
    * \since 3.0.0
    */
@@ -191,8 +188,8 @@ class music final
   /**
    * \brief Pauses any currently playing music.
    *
-   * \note This method only affects music that is currently playing, which
-   * doesn't include music that is being faded in/out.
+   * \note This method only affects music that is currently playing, which doesn't include
+   * music that is being faded in/out.
    *
    * \since 3.0.0
    */
@@ -222,7 +219,7 @@ class music final
    */
   [[nodiscard]] static auto is_playing() noexcept -> bool
   {
-    return static_cast<bool>(Mix_PlayingMusic());
+    return Mix_PlayingMusic();
   }
 
   /**
@@ -234,7 +231,7 @@ class music final
    */
   [[nodiscard]] static auto is_paused() noexcept -> bool
   {
-    return static_cast<bool>(Mix_PausedMusic());
+    return Mix_PausedMusic();
   }
 
   /// \} Playback functions
@@ -247,21 +244,19 @@ class music final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details The fade effect is only applied to the first iteration of
-   * the playback of the music. Any previously playing music will be halted.
-   * However, if other music is currently being faded out, this music will
-   * wait for that to complete.
+   * \details The fade effect is only applied to the first iteration of the playback of
+   * the music. Any previously playing music will be halted. However, if other music is
+   * currently being faded out, this music will wait for that to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played
-   * forever. Furthermore, the values 0 and 1 both results in the music being
-   * played *one time*. Except for these "special" values, the method behaves as
-   * expected.
+   * documentation. A negative value indicates that the music should be played forever.
+   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
+   * Except for these "special" values, the method behaves as expected.
    *
    * \param ms the amount of time it takes for the fade to complete.
    *
-   * \param nLoops the number of iterations to play the music, `music::forever`
-   * can be supplied to loop the music indefinitely.
+   * \param nLoops the number of iterations to play the music, `music::forever` can be
+   * supplied to loop the music indefinitely.
    *
    * \return `success` if the fade is successful; `failure` otherwise.
    *
@@ -277,14 +272,13 @@ class music final
   }
 
   /**
-   * \brief Fades out any currently playing music over the specified amount of
-   * time.
+   * \brief Fades out any currently playing music over the specified amount of time.
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method only affects music that is currently playing and
-   * not currently fading out. In other words, this method has no effect if
-   * music is currently being faded by the time the method is invoked.
+   * \details This method only affects music that is currently playing and not currently
+   * fading out. In other words, this method has no effect if music is currently being
+   * faded by the time the method is invoked.
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
@@ -307,11 +301,9 @@ class music final
   }
 
   /**
-   * \brief Indicates whether or not any music is currently being faded in or
-   * out.
+   * \brief Indicates whether or not any music is currently being faded in or out.
    *
-   * \return `true` if music is currently being faded in or out; `false`
-   * otherwise.
+   * \return `true` if music is currently being faded in or out; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -374,9 +366,8 @@ class music final
   /**
    * \brief Sets the volume of all music.
    *
-   * \param volume the volume that will be used, in the range [0,
-   * `music::max_volume()`]. An out-of-bounds value will be clamped to the
-   * closest valid value.
+   * \param volume the volume that will be used, in the range [0, `music::max_volume()`].
+   * An out-of-bounds value will be clamped to the closest valid value.
    *
    * \since 3.0.0
    */
@@ -470,6 +461,8 @@ class music final
 
   /// \name Hook functions
   /// \{
+
+  // TODO document
 
   using music_hook_callback = void(SDLCALL*)(void*, u8*, int) noexcept;
 
@@ -566,11 +559,11 @@ class music final
 using music_finished_callback = void(SDLCALL*)() noexcept;
 
 /**
- * \brief Sets the callback that is invoked each time the music finishes
- * playing or is stopped as a result of `cen::music::halt()`.
+ * \brief Sets the callback that is invoked each time the music finishes playing or is
+ * stopped as a result of `cen::music::halt()`.
  *
- * \warning Make sure that your callback doesn't throw (or at least doesn't
- * leak) any exceptions.
+ * \warning Make sure that your callback doesn't throw (or at least doesn't leak) any
+ * exceptions.
  *
  * \param callback the callback.
  *
@@ -617,8 +610,7 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 /// \{
 
 /**
- * \brief Indicates whether or not the fading status values represent are the
- * same.
+ * \brief Indicates whether or not the fading status values represent are the same.
  *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
@@ -641,14 +633,12 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 }
 
 /**
- * \brief Indicates whether or not the fading status values represent aren't the
- * same.
+ * \brief Indicates whether or not the fading status values represent aren't the same.
  *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
  *
- * \return `true` if the fading status values aren't the same; `false`
- * otherwise.
+ * \return `true` if the fading status values aren't the same; `false` otherwise.
  *
  * \since 5.0.0
  */

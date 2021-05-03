@@ -23,8 +23,6 @@ namespace cen {
  * \brief Represents a condition variable.
  *
  * \since 5.0.0
- *
- * \headerfile condition.hpp
  */
 class condition final
 {
@@ -38,8 +36,7 @@ class condition final
   }
 
   /**
-   * \brief Wakes up one of the threads that are waiting on the condition
-   * variable.
+   * \brief Wakes up one of the threads that are waiting on the condition variable.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -79,13 +76,13 @@ class condition final
   }
 
   /**
-   * \brief Waits until the condition variable is signaled or if the specified
-   * amount of time has passed.
+   * \brief Waits until the condition variable is signaled or if the specified amount of
+   * time has passed.
    *
    * \pre The mutex must be locked when the function is called!
    *
-   * \note This function is implemented by looping with a delay of 1 ms on some
-   * platforms, and should be avoided if possible.
+   * \note This function is implemented by looping with a delay of 1 ms on some platforms,
+   * and should be avoided if possible.
    *
    * \param mutex the mutex used to coordinate thread access.
    * \param ms the maximum amount of time to wait.

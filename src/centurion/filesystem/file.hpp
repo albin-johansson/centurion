@@ -25,12 +25,10 @@ namespace cen {
  *
  * \brief Provides values that represent different file modes.
  *
- * \details This enum provides values that directly correspond to each of the
- * possible SDL file mode strings, such as "r" or "rb".
+ * \details This enum provides values that directly correspond to each of the possible SDL
+ * file mode strings, such as "r" or "rb".
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 enum class file_mode
 {
@@ -59,8 +57,6 @@ enum class file_mode
  * \brief Provides values that represent various file seek modes.
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 enum class seek_mode
 {
@@ -75,8 +71,6 @@ enum class seek_mode
  * \brief Provides values that represent different file types.
  *
  * \since 5.3.0
- *
- * \headerfile file_type.hpp
  */
 enum class file_type : uint
 {
@@ -93,14 +87,12 @@ enum class file_type : uint
  *
  * \brief Represents a file "context" or handle.
  *
- * \note This class differs slightly from other library classes in that it is
- * owning, but it does *not* throw if the internal pointer can't be created,
- * etc. This is because file operations are error-prone, so we want to avoid
- * throwing a bunch of exceptions, for performance reasons.
+ * \note This class differs slightly from other library classes in that it is owning, but
+ * it does *not* throw if the internal pointer can't be created, etc. This is because file
+ * operations are error-prone, so we want to avoid throwing a bunch of exceptions, for
+ * performance reasons.
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 class file final
 {
@@ -140,9 +132,7 @@ class file final
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
-  /**
-   * \copydoc file(not_null<czstring>, file_mode)
-   */
+  /// \copydoc file(not_null<czstring>, file_mode)
   file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
   {}
 
@@ -194,8 +184,8 @@ class file final
   /**
    * \brief Writes the contents of a container to the file.
    *
-   * \pre `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined otherwise.
+   * \pre `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined otherwise.
    *
    * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
    *
@@ -222,8 +212,7 @@ class file final
    *
    * \param value the value that will be written.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -234,15 +223,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 16-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -253,15 +240,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 32-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -272,15 +257,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 64-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -291,15 +274,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 16-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -310,15 +291,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 32-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -329,15 +308,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 64-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -374,9 +351,9 @@ class file final
   }
 
   /**
-   * \brief Reads data from the file to an array whose size is known at
-   * compile-time. This function uses the size of the supplied array to
-   * determine the amount of elements to read.
+   * \brief Reads data from the file to an array whose size is known at compile-time. This
+   * function uses the size of the supplied array to determine the amount of elements to
+   * read.
    *
    * \pre the internal file context must not be null.
    *
@@ -398,15 +375,15 @@ class file final
   // clang-format off
 
   /**
-   * \brief Reads data from the file to a container. This function uses the size
-   * of the supplied container to determine the amount of elements to read.
+   * \brief Reads data from the file to a container. This function uses the size of the
+   * supplied container to determine the amount of elements to read.
    *
    * \pre the internal file context must not be null.
-   * \pre `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined otherwise.
+   * \pre `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined otherwise.
    *
-   * \tparam Container the type of the data that will be read, e.g.
-   * `std::vector` or `std::array`.
+   * \tparam Container the type of the data that will be read, e.g. `std::vector` or
+   * `std::array`.
    *
    * \param[out] container the container to which the read data will be written to.
    *
@@ -463,8 +440,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 16-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -479,8 +455,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 32-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -495,8 +470,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 64-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -511,8 +485,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 16-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -527,8 +500,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 32-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -543,8 +515,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 64-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -751,8 +722,7 @@ class file final
    * \param offset the offset to seek to.
    * \param mode the seek mode that will be used.
    *
-   * \return the resulting offset in the data stream; `std::nullopt` if
-   * something went wrong.
+   * \return the resulting offset in the data stream; `std::nullopt` if something went wrong.
    *
    * \since 5.3.0
    */

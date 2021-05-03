@@ -29,8 +29,6 @@ namespace cen {
  * \brief Provides metrics about a glyph in a font.
  *
  * \since 4.0.0
- *
- * \headerfile font.hpp
  */
 struct glyph_metrics final
 {
@@ -47,8 +45,6 @@ struct glyph_metrics final
  * \brief Provides different possible TrueType font hint values.
  *
  * \since 3.1.0
- *
- * \headerfile font.hpp
  */
 enum class font_hint : int
 {
@@ -173,8 +169,7 @@ class font final
   /**
    * \brief Sets whether the font is underlined.
    *
-   * \param underlined `true` if the font should be underlined; `false`
-   * otherwise.
+   * \param underlined `true` if the font should be underlined; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -193,8 +188,7 @@ class font final
   /**
    * \brief Sets whether the font is strikethrough.
    *
-   * \param strikethrough `true` if the font should be strikethrough; `false`
-   * otherwise.
+   * \param strikethrough `true` if the font should be strikethrough; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -213,8 +207,7 @@ class font final
   /**
    * \brief Sets the outline size of the font.
    *
-   * \param outline the outline size, in pixels; `0` is used to disable
-   * outlining.
+   * \param outline the outline size, in pixels; `0` is used to disable outlining.
    *
    * \since 5.0.0
    */
@@ -238,8 +231,8 @@ class font final
   /**
    * \brief Sets whether or not font kerning is allowed.
    *
-   * \details Kerning is the process of adjusting the spacing between certain
-   * characters in order to improve the appearance of a font.
+   * \details Kerning is the process of adjusting the spacing between certain characters
+   * in order to improve the appearance of a font.
    *
    * \param kerning `true` if kerning should be allowed; `false` otherwise.
    *
@@ -356,8 +349,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the bottom of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the bottom of the font characters.
    *
    * \details The returned value is negative, relative to the baseline.
    *
@@ -371,8 +363,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the top of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the top of the font characters.
    *
    * \details The returned value is positive, relative to the baseline.
    *
@@ -452,8 +443,7 @@ class font final
    *
    * \note This information may not be available.
    *
-   * \return the font face style name of the font; `nullptr` if it isn't
-   * available.
+   * \return the font face style name of the font; `nullptr` if it isn't available.
    *
    * \since 3.0.0
    */
@@ -480,12 +470,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the kerning amount between two glyphs in the font, if
-   * kerning would be enabled.
+   * \brief Returns the kerning amount between two glyphs in the font, if kerning would be
+   * enabled.
    *
-   * \details In other words, you can use this method to obtain the
-   * kerning amount between, for instance, the characters 'a' and 'V' if they
-   * were to be rendered next to each other.
+   * \details In other words, you can use this method to obtain the kerning amount
+   * between, for instance, the characters 'a' and 'V' if they were to be rendered next to
+   * each other.
    *
    * \param firstGlyph the first glyph.
    * \param secondGlyph the second glyph.
@@ -501,8 +491,7 @@ class font final
   }
 
   /**
-   * \brief Indicates whether or not the specified glyph is available in the
-   * font.
+   * \brief Indicates whether or not the specified glyph is available in the font.
    *
    * \param glyph the unicode glyph that will be checked.
    *
@@ -520,8 +509,8 @@ class font final
    *
    * \param glyph the glyph to obtain the metrics of.
    *
-   * \return the metrics of the specified glyph; std::nullopt if the metrics
-   * couldn't be obtained.
+   * \return the metrics of the specified glyph; std::nullopt if the metrics couldn't be
+   * obtained.
    *
    * \since 4.0.0
    */
@@ -551,13 +540,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of, can't be null.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 4.0.0
    */
@@ -578,13 +566,12 @@ class font final
   }
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 5.3.0
    */
@@ -595,13 +582,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of, can't be null.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -619,13 +605,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -636,13 +621,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of, can't be null.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -660,13 +644,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -710,8 +693,8 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended. However, it's useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However, it's useful since many SDL
+   * calls use non-const pointers even when no change will be applied.
    *
    * \warning Don't take ownership of the returned pointer!
    *

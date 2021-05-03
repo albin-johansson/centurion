@@ -87,14 +87,13 @@ class basic_sound_effect final
   /**
    * \brief Creates a sound effect based on an existing SDL sound effect.
    *
-   * \note The created sound effect claims ownership of the supplied pointer
-   * only if the sound effect has owning semantics.
+   * \note The created sound effect claims ownership of the supplied pointer only if the
+   * sound effect has owning semantics.
    *
-   * \param sound a pointer to the associated chunk instance, cannot be null if
-   * the sound effect is owning.
+   * \param sound a pointer to the associated chunk instance, cannot be null if the sound
+   * effect is owning.
    *
-   * \throws mix_error if the supplied pointer is null and the sound effect is
-   * owning.
+   * \throws mix_error if the supplied pointer is null and the sound effect is owning.
    *
    * \since 6.0.0
    */
@@ -113,8 +112,7 @@ class basic_sound_effect final
   // clang-format on
 
   /**
-   * \brief Creates a sound effect based on the audio file at the specified
-   * location.
+   * \brief Creates a sound effect based on the audio file at the specified location.
    *
    * \param file the file path of the audio file, cannot be null.
    *
@@ -132,8 +130,7 @@ class basic_sound_effect final
   }
 
   /**
-   * \brief Creates a sound effect based on the audio file at the specified
-   * location.
+   * \brief Creates a sound effect based on the audio file at the specified location.
    *
    * \param file the file path of the audio file.
    *
@@ -147,8 +144,6 @@ class basic_sound_effect final
 
   /**
    * \brief Creates a sound effect handle to on an existing sound effect.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param owner the owning sound effect.
    *
@@ -166,14 +161,12 @@ class basic_sound_effect final
   /**
    * \brief Plays the sound effect.
    *
-   * \note A negative value indicates that the sound effect should be looped
-   * forever.
+   * \note A negative value indicates that the sound effect should be looped forever.
    *
-   * \param nLoops the amount of loops, `sound_effect::forever` can be used to
-   * loop the sound effect indefinitely.
+   * \param nLoops the amount of loops, `sound_effect::forever` can be used to loop the
+   * sound effect indefinitely.
    *
-   * \return `success` if the sound was played successfully; `failure`
-   * otherwise.
+   * \return `success` if the sound was played successfully; `failure` otherwise.
    *
    * \see `sound_effect::forever`
    *
@@ -214,8 +207,7 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not any sound effects are currently playing.
    *
-   * \return `true` if any sound effect is playing on some channel; `false`
-   * otherwise.
+   * \return `true` if any sound effect is playing on some channel; `false` otherwise.
    *
    * \since 5.1.0
    */
@@ -235,8 +227,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect is currently
-   * playing.
+   * \details This method has no effect if the sound effect is currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -256,8 +247,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect isn't currently
-   * playing.
+   * \details This method has no effect if the sound effect isn't currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -275,9 +265,8 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not the sound effect is being faded.
    *
-   * \note If the sound effect is being faded, it's also playing so
-   * `is_playing()` will also return `true`. Keep this in mind if you want to
-   * differentiate between the two.
+   * \note If the sound effect is being faded, it's also playing so `is_playing()` will
+   * also return `true`. Keep this in mind if you want to differentiate between the two.
    *
    * \return `true` if the sound effect is being faded; `false` otherwise.
    *
@@ -296,8 +285,8 @@ class basic_sound_effect final
   /**
    * \brief Sets the volume of the sound effect.
    *
-   * \details This method will adjust input values outside the legal range to
-   * the closest legal value.
+   * \details This method will adjust input values outside the legal range to the closest
+   * legal value.
    *
    * \param volume the volume of the sound effect, in the range [0,
    * `sound_effect::max_volume()`].
@@ -372,8 +361,6 @@ class basic_sound_effect final
   /**
    * \brief Returns the name of the decoder associated with the specified index.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param index the index of the desired decoder.
    *
    * \return the name of the decoder associated with the specified index; a null string is
@@ -392,8 +379,6 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not the system has the specified sound effect decoder.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param name the name of the decoder to check.
    *
    * \return `true` if the system has the specified decoder; `false` otherwise.
@@ -410,8 +395,6 @@ class basic_sound_effect final
 
   /**
    * \brief Returns the number of available sound effect decoders.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return the number of available sound effect decoders.
    *
@@ -430,11 +413,11 @@ class basic_sound_effect final
   /**
    * \brief Returns the channel associated with the sound effect, if any.
    *
-   * \note Channels are not associated with sound effects for long, and might
-   * change in between playbacks.
+   * \note Channels are not associated with sound effects for long, and might change in
+   * between playbacks.
    *
-   * \return the channel currently associated with the sound effect;
-   * `std::nullopt` if there is none.
+   * \return the channel currently associated with the sound effect; `std::nullopt` if
+   * there is none.
    *
    * \since 5.1.0
    */
@@ -491,11 +474,11 @@ class basic_sound_effect final
 };
 
 /**
- * \brief Returns a handle to the sound effect currently associated with the
- * specified channel.
+ * \brief Returns a handle to the sound effect currently associated with the specified
+ * channel.
  *
- * \note There might not be a sound effect associated with the specified
- * channel, in which case the returned handle is null.
+ * \note There might not be a sound effect associated with the specified channel, in which
+ * case the returned handle is null.
  *
  * \param channel the channel associated with the desired sound effect.
  *

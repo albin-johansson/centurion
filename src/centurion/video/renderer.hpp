@@ -86,8 +86,6 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \see `renderer_info`
  * \see `get_renderer()`
  * \see `make_window_and_renderer()`
- *
- * \headerfile renderer.hpp
  */
 template <typename T>
 class basic_renderer final
@@ -98,8 +96,8 @@ class basic_renderer final
    *
    * \brief Represents different renderer features.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating renderers.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating renderers.
    *
    * \see `SDL_RendererFlags`
    *
@@ -121,8 +119,7 @@ class basic_renderer final
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * \note The supplied pointer will be claimed by the renderer if the created
-   * renderer is owning.
+   * \note The supplied pointer will be claimed by the renderer if the created renderer is owning.
    *
    * \param renderer a pointer to the associated SDL renderer.
    *
@@ -212,8 +209,8 @@ class basic_renderer final
   /**
    * \brief Captures a snapshot of the current rendering target as a surface.
    *
-   * \note The correct pixel format supplied to this function can easily be
-   * obtained using the `basic_window::get_pixel_format()` function.
+   * \note The correct pixel format supplied to this function can easily be obtained using
+   * the `basic_window::get_pixel_format()` function.
    *
    * \param format the pixel format that will be used by the surface.
    *
@@ -247,10 +244,10 @@ class basic_renderer final
   /**
    * \brief Fills the entire rendering target with the currently selected color.
    *
-   * \details This function is different from `clear()` and `clear_with()` in
-   * that it can be used as an intermediate rendering command (just like all
-   * rendering functions). An example of a use case of this function could be
-   * for rendering a transparent background for game menus.
+   * \details This function is different from `clear()` and `clear_with()` in that it can
+   * be used as an intermediate rendering command (just like all rendering functions). An
+   * example of a use case of this function could be for rendering a transparent
+   * background for game menus.
    *
    * \since 5.1.0
    */
@@ -325,8 +322,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Renders a line between the supplied points, in the currently
-   * selected color.
+   * \brief Renders a line between the supplied points, in the currently selected color.
    *
    * \tparam U The representation type used by the points.
    *
@@ -354,21 +350,19 @@ class basic_renderer final
   /**
    * \brief Renders a collection of lines.
    *
-   * \details This function requires the the `Container` type provides the
-   * public member `value_type` and subsequently, that the `value_type`
-   * in turn provides a `value_type` member. The former would correspond to
-   * the actual point type, and the latter corresponds to either `int` or
-   * `float`.
+   * \details This function requires the the `Container` type provides the public member
+   * `value_type` and subsequently, that the `value_type` in turn provides a `value_type`
+   * member. The former would correspond to the actual point type, and the latter
+   * corresponds to either `int` or `float`.
    *
-   * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined if this condition
-   * isn't met.
+   * \warning `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined if this condition isn't met.
    *
-   * \tparam Container the container type. Must store its elements
-   * contiguously, such as `std::vector` or `std::array`.
+   * \tparam Container the container type. Must store its elements contiguously, such as
+   * `std::vector` or `std::array`.
    *
-   * \param container the container that holds the points that will be used
-   * to render the line.
+   * \param container the container that holds the points that will be used to render the
+   * line.
    *
    * \return `success` if the lines were successfully rendered; `failure` otherwise.
    *
@@ -511,8 +505,8 @@ class basic_renderer final
   /**
    * \brief Renders an outlined rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -531,8 +525,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -551,11 +545,10 @@ class basic_renderer final
   /**
    * \brief Renders a point using the currently selected color.
    *
-   * \details The rendered point will be translated using the current
-   * translation viewport.
+   * \details The rendered point will be translated using the current translation
+   * viewport.
    *
    * \tparam U the representation
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param point the point that will be rendered.
    *
@@ -572,11 +565,10 @@ class basic_renderer final
   /**
    * \brief Renders a circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \tparam U the precision used by the point.
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param position the position of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -592,10 +584,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam TT dummy parameter for SFINAE.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \param center the center of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -618,14 +608,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -658,20 +647,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the UTF-8 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the UTF-8 text that will be rendered. You can insert newline characters in
+   * the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -706,15 +693,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -751,14 +737,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -791,14 +776,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -831,20 +815,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Latin-1 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Latin-1 text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -879,15 +861,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -924,14 +905,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -962,14 +942,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -990,20 +969,18 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended and wrapped Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Unicode text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Unicode text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -1026,15 +1003,14 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of shaded Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -1059,14 +1035,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of solid Unicode text.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -1093,8 +1068,8 @@ class basic_renderer final
    * \param glyph the glyph, in unicode, that will be rendered.
    * \param position the position of the rendered glyph.
    *
-   * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph, or the same x-coordinate if no glyph was rendered.
+   * \return the x-coordinate of the next glyph to be rendered after the current glyph, or
+   * the same x-coordinate if no glyph was rendered.
    *
    * \since 5.0.0
    */
@@ -1124,18 +1099,17 @@ class basic_renderer final
   /**
    * \brief Renders a string.
    *
-   * \details This function will not apply any clever conversions on the
-   * supplied string. The string is literally iterated, character-by-character,
-   * and each character is rendered using the `render_glyph` function.
+   * \details This function will not apply any clever conversions on the supplied string.
+   * The string is literally iterated, character-by-character, and each character is
+   * rendered using the `render_glyph` function.
    *
-   * \pre Every character in the string must correspond to a valid Unicode
-   * glyph.
+   * \pre Every character in the string must correspond to a valid Unicode glyph.
    *
-   * \note This function is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
+   * \note This function is sensitive to newline-characters, and will render strings that
+   * contain such characters appropriately.
    *
-   * \tparam String the type of the string, must be iterable and provide
-   * `unicode` characters.
+   * \tparam String the type of the string, must be iterable and provide `unicode`
+   * characters.
    *
    * \param cache the font cache that will be used.
    * \param str the string that will be rendered.
@@ -1174,8 +1148,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param position the position of the rendered texture.
@@ -1204,8 +1178,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
@@ -1231,11 +1205,11 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \remarks This should be your preferred function of rendering textures. This
-   * function is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This function
+   * is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -1264,14 +1238,14 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1308,17 +1282,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1361,17 +1334,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will be
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
    * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -1421,8 +1393,7 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P The representation type used by the point.
@@ -1444,15 +1415,13 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1468,19 +1437,17 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \remarks This should be your preferred function of rendering textures. This
    * function is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1497,18 +1464,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1526,21 +1491,18 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -1559,18 +1521,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -1596,11 +1556,10 @@ class basic_renderer final
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * \details This function should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
+   * \details This function should be called before calling any of the `_t` rendering
+   * methods, for automatic translation.
    *
-   * \param viewport the rectangle that will be used as the translation
-   * viewport.
+   * \param viewport the rectangle that will be used as the translation viewport.
    *
    * \since 3.0.0
    */
@@ -1633,8 +1592,8 @@ class basic_renderer final
   /**
    * \brief Adds a font to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \param id the key that will be associated with the font.
    * \param font the font that will be added.
@@ -1655,8 +1614,8 @@ class basic_renderer final
   /**
    * \brief Creates a font and adds it to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \tparam Args the types of the arguments that will be forwarded.
    *
@@ -1679,8 +1638,8 @@ class basic_renderer final
   /**
    * \brief Removes the font associated with the specified key.
    *
-   * \details This function has no effect if there is no font associated with
-   * the specified key.
+   * \details This function has no effect if there is no font associated with the
+   * specified key.
    *
    * \param id the key associated with the font that will be removed.
    *
@@ -1709,9 +1668,7 @@ class basic_renderer final
     return m_renderer.fonts.at(id);
   }
 
-  /**
-   * \copydoc get_font
-   */
+  /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
@@ -1719,13 +1676,12 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer has a font associated with
-   * the specified key.
+   * \brief Indicates whether or not the renderer has a font associated with the specified
+   * key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if the renderer has a font associated with the key;
-   * `false` otherwise.
+   * \return `true` if the renderer has a font associated with the key; `false` otherwise.
    *
    * \since 4.1.0
    */
@@ -1876,8 +1832,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Sets whether or not to force integer scaling for the logical
-   * viewport.
+   * \brief Sets whether or not to force integer scaling for the logical viewport.
    *
    * \details This function can be useful to combat visual artefacts when doing
    * floating-point rendering.
@@ -1901,8 +1856,7 @@ class basic_renderer final
   /**
    * \brief Returns a handle to the current render target.
    *
-   * \return a handle to the current render target; empty if using the default
-   * target.
+   * \return a handle to the current render target; empty if using the default target.
    *
    * \since 5.0.0
    */
@@ -1950,8 +1904,8 @@ class basic_renderer final
   /**
    * \brief Returns the size of the logical (virtual) viewport.
    *
-   * \note calling this function once is faster than calling both
-   * `logical_width` and `logical_height` for obtaining the size.
+   * \note calling this function once is faster than calling both `logical_width` and
+   * `logical_height` for obtaining the size.
    *
    * \return the size of the logical (virtual) viewport.
    *
@@ -1995,8 +1949,8 @@ class basic_renderer final
   /**
    * \brief Returns the x- and y-scale used by the renderer.
    *
-   * \note calling this function once is faster than calling both `x_scale`
-   * and `y_scale` for obtaining the scale.
+   * \note calling this function once is faster than calling both `x_scale` and `y_scale`
+   * for obtaining the scale.
    *
    * \return the x- and y-scale used by the renderer.
    *
@@ -2062,8 +2016,8 @@ class basic_renderer final
   /**
    * \brief Returns the output size of the renderer.
    *
-   * \note calling this function once is faster than calling `output_width`
-   * and `output_height` for obtaining the output size.
+   * \note calling this function once is faster than calling `output_width` and
+   * `output_height` for obtaining the output size.
    *
    * \return the current output size of the renderer.
    *
@@ -2091,13 +2045,13 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer uses integer scaling values
-   * for logical viewports.
+   * \brief Indicates whether or not the renderer uses integer scaling values for logical
+   * viewports.
    *
    * \details By default, this property is set to false.
    *
-   * \return `true` if the renderer uses integer scaling for logical
-   * viewports; `false` otherwise.
+   * \return `true` if the renderer uses integer scaling for logical viewports; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -2192,8 +2146,8 @@ class basic_renderer final
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *

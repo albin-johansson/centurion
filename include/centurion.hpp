@@ -57,8 +57,8 @@
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -107,13 +107,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -171,8 +170,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -959,8 +957,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -991,15 +987,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -1023,15 +1016,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -1055,15 +1045,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -1087,15 +1074,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -1161,16 +1145,14 @@ using not_null = T;
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -1204,8 +1186,7 @@ namespace cen::detail {
 // clang-format off
 
 /**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
  *
  * \tparam T the type of the value to look for.
  *
@@ -1214,8 +1195,7 @@ namespace cen::detail {
  * \param value the value to look for.
  * \param args the arguments that will be compared with the value.
  *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
  *
  * \since 5.1.0
  */
@@ -1250,8 +1230,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -1335,9 +1315,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -1355,12 +1335,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1372,8 +1351,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1389,8 +1367,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1406,8 +1383,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1423,8 +1399,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1440,8 +1415,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -1467,20 +1441,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -1526,8 +1500,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `Mix_Fading`
- *
- * \headerfile music.hpp
  */
 enum class fade_status
 {
@@ -1544,8 +1516,6 @@ enum class fade_status
  * \since 3.0.0
  *
  * \see `Mix_MusicType`
- *
- * \headerfile music.hpp
  */
 enum class music_type
 {
@@ -1566,18 +1536,17 @@ enum class music_type
  * \brief Represents a music file.
  *
  * \details The supported audio formats are the following:
- * <ul>
- *   <li>WAVE/RIFF (.wav)</li>
- *   <li>AIFF (.aiff)</li>
- *   <li>VOC (.voc)</li>
- *   <li>MOD (.mod .xm .s3m .669 .it .med and more)</li>
- *   <li>MIDI (.mid)</li>
- *   <li>OggVorbis (.ogg)</li>
- *   <li>MP3 (.mp3)</li>
- *   <li>FLAC (.flac)</li>
- * </ul>
+ *   - WAVE/RIFF (.wav)
+ *   - AIFF (.aiff)
+ *   - VOC (.voc)
+ *   - MOD (.mod .xm .s3m .669 .it .med and more)
+ *   - MIDI (.mid)
+ *   - OggVorbis (.ogg)
+ *   - MP3 (.mp3)
+ *   - FLAC (.flac)
  *
- * \note Only one music instance can ever be playing at any time.
+ * \note Only one music instance can ever be playing at any time, which means that many of
+ * the functions in this class are static.
  *
  * \todo Look into special effects API (also applies for sound effects).
  *
@@ -1585,15 +1554,12 @@ enum class music_type
  * \see `sound_effect`
  *
  * \since 3.0.0
- *
- * \headerfile music.hpp
  */
 class music final
 {
  public:
   /**
-   * \brief A constant that indicates that the music should be looped
-   * indefinitely.
+   * \brief A constant that indicates that the music should be looped indefinitely.
    *
    * \since 5.1.0
    */
@@ -1605,8 +1571,7 @@ class music final
   /**
    * \brief Creates a `music` instance based on the file at the specified path.
    *
-   * \param file the file path of the music file that will be loaded, cannot
-   * be null.
+   * \param file the file path of the music file that will be loaded, cannot be null.
    *
    * \throws mix_error if the music file cannot be loaded.
    *
@@ -1640,14 +1605,13 @@ class music final
   /**
    * \brief Plays the music associated with this instance.
    *
-   * \details Any previously playing music will be halted. However, this
-   * method will wait for music that was fading out to complete.
+   * \details Any previously playing music will be halted. However, this method will wait
+   * for music that was fading out to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played
-   * forever. Furthermore, the values 0 and 1 both results in the music being
-   * played *one time*. Except for these "special" values, the function behaves
-   * as expected.
+   * documentation. A negative value indicates that the music should be played forever.
+   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
+   * Except for these "special" values, the function behaves as expected.
    *
    * \param nLoops the number of times to loop the music, `music::forever` can
    * be supplied to loop the music indefinitely.
@@ -1674,8 +1638,8 @@ class music final
   /**
    * \brief Resumes playing the music.
    *
-   * \details This method can safely be invoked with halted, paused and even
-   * currently playing music.
+   * \details This method can safely be invoked with halted, paused and even currently
+   * playing music.
    *
    * \since 3.0.0
    */
@@ -1687,8 +1651,8 @@ class music final
   /**
    * \brief Pauses any currently playing music.
    *
-   * \note This method only affects music that is currently playing, which
-   * doesn't include music that is being faded in/out.
+   * \note This method only affects music that is currently playing, which doesn't include
+   * music that is being faded in/out.
    *
    * \since 3.0.0
    */
@@ -1718,7 +1682,7 @@ class music final
    */
   [[nodiscard]] static auto is_playing() noexcept -> bool
   {
-    return static_cast<bool>(Mix_PlayingMusic());
+    return Mix_PlayingMusic();
   }
 
   /**
@@ -1730,7 +1694,7 @@ class music final
    */
   [[nodiscard]] static auto is_paused() noexcept -> bool
   {
-    return static_cast<bool>(Mix_PausedMusic());
+    return Mix_PausedMusic();
   }
 
   /// \} Playback functions
@@ -1743,21 +1707,19 @@ class music final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details The fade effect is only applied to the first iteration of
-   * the playback of the music. Any previously playing music will be halted.
-   * However, if other music is currently being faded out, this music will
-   * wait for that to complete.
+   * \details The fade effect is only applied to the first iteration of the playback of
+   * the music. Any previously playing music will be halted. However, if other music is
+   * currently being faded out, this music will wait for that to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played
-   * forever. Furthermore, the values 0 and 1 both results in the music being
-   * played *one time*. Except for these "special" values, the method behaves as
-   * expected.
+   * documentation. A negative value indicates that the music should be played forever.
+   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
+   * Except for these "special" values, the method behaves as expected.
    *
    * \param ms the amount of time it takes for the fade to complete.
    *
-   * \param nLoops the number of iterations to play the music, `music::forever`
-   * can be supplied to loop the music indefinitely.
+   * \param nLoops the number of iterations to play the music, `music::forever` can be
+   * supplied to loop the music indefinitely.
    *
    * \return `success` if the fade is successful; `failure` otherwise.
    *
@@ -1773,14 +1735,13 @@ class music final
   }
 
   /**
-   * \brief Fades out any currently playing music over the specified amount of
-   * time.
+   * \brief Fades out any currently playing music over the specified amount of time.
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method only affects music that is currently playing and
-   * not currently fading out. In other words, this method has no effect if
-   * music is currently being faded by the time the method is invoked.
+   * \details This method only affects music that is currently playing and not currently
+   * fading out. In other words, this method has no effect if music is currently being
+   * faded by the time the method is invoked.
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
@@ -1803,11 +1764,9 @@ class music final
   }
 
   /**
-   * \brief Indicates whether or not any music is currently being faded in or
-   * out.
+   * \brief Indicates whether or not any music is currently being faded in or out.
    *
-   * \return `true` if music is currently being faded in or out; `false`
-   * otherwise.
+   * \return `true` if music is currently being faded in or out; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -1870,9 +1829,8 @@ class music final
   /**
    * \brief Sets the volume of all music.
    *
-   * \param volume the volume that will be used, in the range [0,
-   * `music::max_volume()`]. An out-of-bounds value will be clamped to the
-   * closest valid value.
+   * \param volume the volume that will be used, in the range [0, `music::max_volume()`].
+   * An out-of-bounds value will be clamped to the closest valid value.
    *
    * \since 3.0.0
    */
@@ -1966,6 +1924,8 @@ class music final
 
   /// \name Hook functions
   /// \{
+
+  // TODO document
 
   using music_hook_callback = void(SDLCALL*)(void*, u8*, int) noexcept;
 
@@ -2062,11 +2022,11 @@ class music final
 using music_finished_callback = void(SDLCALL*)() noexcept;
 
 /**
- * \brief Sets the callback that is invoked each time the music finishes
- * playing or is stopped as a result of `cen::music::halt()`.
+ * \brief Sets the callback that is invoked each time the music finishes playing or is
+ * stopped as a result of `cen::music::halt()`.
  *
- * \warning Make sure that your callback doesn't throw (or at least doesn't
- * leak) any exceptions.
+ * \warning Make sure that your callback doesn't throw (or at least doesn't leak) any
+ * exceptions.
  *
  * \param callback the callback.
  *
@@ -2113,8 +2073,7 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 /// \{
 
 /**
- * \brief Indicates whether or not the fading status values represent are the
- * same.
+ * \brief Indicates whether or not the fading status values represent are the same.
  *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
@@ -2137,14 +2096,12 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 }
 
 /**
- * \brief Indicates whether or not the fading status values represent aren't the
- * same.
+ * \brief Indicates whether or not the fading status values represent aren't the same.
  *
  * \param lhs the left-hand side fading status value.
  * \param rhs the right-hand side fading status value.
  *
- * \return `true` if the fading status values aren't the same; `false`
- * otherwise.
+ * \return `true` if the fading status values aren't the same; `false` otherwise.
  *
  * \since 5.0.0
  */
@@ -2247,9 +2204,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -2259,12 +2216,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -2421,8 +2376,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -2453,15 +2406,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -2485,15 +2435,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -2517,15 +2464,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -2549,15 +2493,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -2712,25 +2653,21 @@ using sound_effect_handle = basic_sound_effect<detail::handle_type>;
  *
  * \brief Represents a sound effect.
  *
- * \details Unlike with the music API, multiple sound effects can be played at
- * the same time, which is the main difference between `music` and
- * `sound_effect`.
+ * \details Unlike with the music API, multiple sound effects can be played at the same
+ * time, which is the main difference between the `music` and `sound_effect` APIs.
  *
  * \details The supported file formats are the following:
- * <ul>
- *   <li>WAVE/RIFF (.wav)</li>
- *   <li>AIFF (.aiff)</li>
- *   <li>VOC (.voc)</li>
- *   <li>OGG (.ogg)</li>
- *   <li>VOC (.voc)</li>
- * </ul>
+ *   - WAVE/RIFF (.wav)
+ *   - AIFF (.aiff)
+ *   - VOC (.voc)
+ *   - OGG (.ogg)
+ *   - VOC (.voc)
  *
  * \since 3.0.0
  *
  * \see `Mix_Chunk`
  * \see `music`
- *
- * \headerfile sound_effect.hpp
+ * \see `get_sound()`
  */
 template <typename T>
 class basic_sound_effect final
@@ -2751,14 +2688,13 @@ class basic_sound_effect final
   /**
    * \brief Creates a sound effect based on an existing SDL sound effect.
    *
-   * \note The created sound effect claims ownership of the supplied pointer
-   * only if the sound effect has owning semantics.
+   * \note The created sound effect claims ownership of the supplied pointer only if the
+   * sound effect has owning semantics.
    *
-   * \param sound a pointer to the associated chunk instance, cannot be null if
-   * the sound effect is owning.
+   * \param sound a pointer to the associated chunk instance, cannot be null if the sound
+   * effect is owning.
    *
-   * \throws mix_error if the supplied pointer is null and the sound effect is
-   * owning.
+   * \throws mix_error if the supplied pointer is null and the sound effect is owning.
    *
    * \since 6.0.0
    */
@@ -2777,8 +2713,7 @@ class basic_sound_effect final
   // clang-format on
 
   /**
-   * \brief Creates a sound effect based on the audio file at the specified
-   * location.
+   * \brief Creates a sound effect based on the audio file at the specified location.
    *
    * \param file the file path of the audio file, cannot be null.
    *
@@ -2796,8 +2731,7 @@ class basic_sound_effect final
   }
 
   /**
-   * \brief Creates a sound effect based on the audio file at the specified
-   * location.
+   * \brief Creates a sound effect based on the audio file at the specified location.
    *
    * \param file the file path of the audio file.
    *
@@ -2811,8 +2745,6 @@ class basic_sound_effect final
 
   /**
    * \brief Creates a sound effect handle to on an existing sound effect.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param owner the owning sound effect.
    *
@@ -2830,14 +2762,12 @@ class basic_sound_effect final
   /**
    * \brief Plays the sound effect.
    *
-   * \note A negative value indicates that the sound effect should be looped
-   * forever.
+   * \note A negative value indicates that the sound effect should be looped forever.
    *
-   * \param nLoops the amount of loops, `sound_effect::forever` can be used to
-   * loop the sound effect indefinitely.
+   * \param nLoops the amount of loops, `sound_effect::forever` can be used to loop the
+   * sound effect indefinitely.
    *
-   * \return `success` if the sound was played successfully; `failure`
-   * otherwise.
+   * \return `success` if the sound was played successfully; `failure` otherwise.
    *
    * \see `sound_effect::forever`
    *
@@ -2878,8 +2808,7 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not any sound effects are currently playing.
    *
-   * \return `true` if any sound effect is playing on some channel; `false`
-   * otherwise.
+   * \return `true` if any sound effect is playing on some channel; `false` otherwise.
    *
    * \since 5.1.0
    */
@@ -2899,8 +2828,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect is currently
-   * playing.
+   * \details This method has no effect if the sound effect is currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -2920,8 +2848,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect isn't currently
-   * playing.
+   * \details This method has no effect if the sound effect isn't currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -2939,9 +2866,8 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not the sound effect is being faded.
    *
-   * \note If the sound effect is being faded, it's also playing so
-   * `is_playing()` will also return `true`. Keep this in mind if you want to
-   * differentiate between the two.
+   * \note If the sound effect is being faded, it's also playing so `is_playing()` will
+   * also return `true`. Keep this in mind if you want to differentiate between the two.
    *
    * \return `true` if the sound effect is being faded; `false` otherwise.
    *
@@ -2960,8 +2886,8 @@ class basic_sound_effect final
   /**
    * \brief Sets the volume of the sound effect.
    *
-   * \details This method will adjust input values outside the legal range to
-   * the closest legal value.
+   * \details This method will adjust input values outside the legal range to the closest
+   * legal value.
    *
    * \param volume the volume of the sound effect, in the range [0,
    * `sound_effect::max_volume()`].
@@ -3036,8 +2962,6 @@ class basic_sound_effect final
   /**
    * \brief Returns the name of the decoder associated with the specified index.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param index the index of the desired decoder.
    *
    * \return the name of the decoder associated with the specified index; a null string is
@@ -3056,8 +2980,6 @@ class basic_sound_effect final
   /**
    * \brief Indicates whether or not the system has the specified sound effect decoder.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param name the name of the decoder to check.
    *
    * \return `true` if the system has the specified decoder; `false` otherwise.
@@ -3074,8 +2996,6 @@ class basic_sound_effect final
 
   /**
    * \brief Returns the number of available sound effect decoders.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return the number of available sound effect decoders.
    *
@@ -3094,11 +3014,11 @@ class basic_sound_effect final
   /**
    * \brief Returns the channel associated with the sound effect, if any.
    *
-   * \note Channels are not associated with sound effects for long, and might
-   * change in between playbacks.
+   * \note Channels are not associated with sound effects for long, and might change in
+   * between playbacks.
    *
-   * \return the channel currently associated with the sound effect;
-   * `std::nullopt` if there is none.
+   * \return the channel currently associated with the sound effect; `std::nullopt` if
+   * there is none.
    *
    * \since 5.1.0
    */
@@ -3155,11 +3075,11 @@ class basic_sound_effect final
 };
 
 /**
- * \brief Returns a handle to the sound effect currently associated with the
- * specified channel.
+ * \brief Returns a handle to the sound effect currently associated with the specified
+ * channel.
  *
- * \note There might not be a sound effect associated with the specified
- * channel, in which case the returned handle is null.
+ * \note There might not be a sound effect associated with the specified channel, in which
+ * case the returned handle is null.
  *
  * \param channel the channel associated with the desired sound effect.
  *
@@ -3298,9 +3218,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -3318,12 +3238,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3335,8 +3254,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3352,8 +3270,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3369,8 +3286,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3386,8 +3302,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3403,8 +3318,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -3435,9 +3349,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -3635,8 +3549,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -3667,15 +3579,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -3699,15 +3608,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -3731,15 +3637,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -3763,15 +3666,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -4054,8 +3954,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -4086,15 +3984,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -4118,15 +4013,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -4150,15 +4042,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -4182,15 +4071,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -4420,8 +4306,7 @@ namespace cen {
  *
  * \brief Used to specify how the library is initialized.
  *
- * \details All fields are initialized to the default values used by the
- * library.
+ * \details All fields are initialized to the default values used by the library.
  *
  * \since 4.0.0
  *
@@ -4441,29 +4326,22 @@ namespace cen {
  * Flags passed on to `SDL_Init()`, if \ref config.initCore is `true`.
  *
  * \var config::imageFlags
- * Flags passed on to `IMG_Init()`, if \ref config.initImage is
- * `true`.
+ * Flags passed on to `IMG_Init()`, if \ref config.initImage is `true`.
  *
  * \var config::mixerFlags
- * Flags passed on to `Mix_Init()`, if \ref config.initMixer is
- * `true`.
+ * Flags passed on to `Mix_Init()`, if \ref config.initMixer is `true`.
  *
  * \var config::mixerFreq
- * The frequency used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
+ * The frequency used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerFormat
  * The format used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerChannels
- * The amount of channels used by SDL2_mixer, if \ref config.initMixer
- * is `true`.
+ * The amount of channels used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerChunkSize
- * The chunk size used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
- *
- * \headerfile library.hpp
+ * The chunk size used by SDL2_mixer, if \ref config.initMixer is `true`.
  */
 struct config final
 {
@@ -4508,8 +4386,6 @@ struct config final
  * using the Centurion library!
  *
  * \since 3.0.0
- *
- * \headerfile library.hpp
  */
 class library final
 {
@@ -4517,12 +4393,12 @@ class library final
   /**
    * \brief Initializes the library.
    *
-   * \note Make sure to have the `library` instance as a local variable that
-   * will outlive the duration of your main program. It's not sufficient to just
-   * call the constructor but not store the result as a variable.
+   * \note Make sure to have the `library` instance as a local variable that will outlive
+   * the duration of your main program. It's not sufficient to just call the constructor
+   * but not store the result as a variable.
    *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
+   * \pre there mustn't exist any other instances of this class at the time of invocation
+   * of this constructor.
    *
    * \throws sdl_error if the core SDL2 library can't be initialized.
    * \throws img_error if the SDL2_image library can't be initialized.
@@ -4539,8 +4415,8 @@ class library final
   /**
    * \brief Initializes the library according to the supplied configuration.
    *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
+   * \pre there mustn't exist any other instances of this class at the time of invocation
+   * of this constructor.
    *
    * \param cfg the configuration spec, determines what gets initialized.
    *
@@ -4721,8 +4597,8 @@ class library final
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -4799,8 +4675,6 @@ namespace cen {
  * \see `SDL_LogPriority`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_priority : int
 {
@@ -4820,8 +4694,6 @@ enum class log_priority : int
  * \see `SDL_LogCategory`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_category : int
 {
@@ -4846,12 +4718,10 @@ enum class log_category : int
  *
  * \brief Contains easy-to-use logging facilities.
  *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
+ * \details The usage of the logging API will be very familiar to most people that have
+ * used the `printf` and/or the `SDL_Log` facilities.
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 namespace log {
 
@@ -4861,12 +4731,10 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This method has no effect if the supplied string is null. Usage
- * of this method is quite bulky, so refer to the other logging methods for
- * casual logging.
+ * \details This method has no effect if the supplied string is null. Usage of this method
+ * is quite bulky, so refer to the other logging methods for casual logging.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param priority the priority that will be used.
  * \param category the category that will be used.
@@ -4892,8 +4760,7 @@ void msg(const log_priority priority,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -4914,8 +4781,7 @@ void info(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -4933,8 +4799,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -4955,8 +4820,7 @@ void warn(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -4974,8 +4838,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -4996,8 +4859,7 @@ void verbose(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -5015,8 +4877,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -5037,8 +4898,7 @@ void debug(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -5056,8 +4916,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -5078,8 +4937,7 @@ void critical(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -5097,8 +4955,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -5115,8 +4972,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 /**
  * \brief Logs a message with the `priority::error` and `category::app`.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -5132,9 +4988,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a string.
  *
- * \details This function is meant to be used for casual logging, where you
- * just want to log a string. The message will be logged with
- * `priority::info` and `category::app`.
+ * \details This function is meant to be used for casual logging, where you just want to
+ * log a string. The message will be logged with `priority::info` and `category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -5206,13 +5061,12 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Returns the maximum size, i.e the maximum amount of characters that
- * a string can contain and successfully be logged without being truncated.
+ * \brief Returns the maximum size, i.e the maximum amount of characters that a string can
+ * contain and successfully be logged without being truncated.
  *
  * \note Strings longer that this value will be truncated.
  *
- * \return the maximum amount of characters that a loggable string can
- * contain.
+ * \return the maximum amount of characters that a loggable string can contain.
  *
  * \see `SDL_MAX_LOG_MESSAGE`
  *
@@ -5254,8 +5108,7 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Indicates whether or not the two log priorities values aren't the
- * same.
+ * \brief Indicates whether or not the two log priorities values aren't the same.
  *
  * \param lhs the left-hand side log priority value.
  * \param rhs the right-hand side log priority value.
@@ -5505,9 +5358,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -5517,12 +5370,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -5550,13 +5401,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -5614,8 +5464,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -5747,9 +5596,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -5759,12 +5608,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -5783,18 +5630,16 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -5818,8 +5663,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *
@@ -6079,11 +5924,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 /**
  * \def CENTURION_MAKE_VERSION_NUMBER
  *
- * \brief Helper macro for creating version numbers from a set of
- * major/minor/patch numbers.
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
  *
- * \details For example, if the version is 8.4.2, the resulting version number
- * would be 8402.
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
  *
  * \since 6.0.0
  */
@@ -6104,11 +5949,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 /**
  * \def CENTURION_VERSION_AT_LEAST
  *
- * \brief This macro is intended to be used for conditional compilation, based
- * on the Centurion version.
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
  *
- * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
- * where you use it as the condition with `#if` statements.
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
  *
  * \since 6.0.0
  */
@@ -6125,12 +5970,10 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are by default initialized to the current
- * Centurion version values.
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
  *
  * \version 6.0.0
- *
- * \headerfile version.hpp
  */
 struct version final
 {
@@ -6140,15 +5983,15 @@ struct version final
 };
 
 /**
- * \brief Indicates whether or not the current Centurion version is at least
- * equal to the specified version.
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
  *
  * \param major the major version value.
  * \param minor the minor version value.
  * \param patch the patch version value.
  *
- * \return `true` if the version of Centurion is at least the specified version;
- * `false` otherwise.
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
  *
  * \see `CENTURION_VERSION_AT_LEAST`
  *
@@ -6169,8 +6012,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2.
  *
@@ -6198,8 +6041,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_image that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_image.
  *
@@ -6227,8 +6070,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_mixer that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_mixer.
  *
@@ -6256,8 +6099,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_ttf that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2_ttf.
  *
@@ -6301,16 +6144,14 @@ struct version final
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -6344,8 +6185,7 @@ namespace cen::detail {
 // clang-format off
 
 /**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
  *
  * \tparam T the type of the value to look for.
  *
@@ -6354,8 +6194,7 @@ namespace cen::detail {
  * \param value the value to look for.
  * \param args the arguments that will be compared with the value.
  *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
  *
  * \since 5.1.0
  */
@@ -6390,8 +6229,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -6441,8 +6280,7 @@ template <typename T>
 namespace cen::detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
  *
  * \param b the boolean value that will be converted.
  *
@@ -6972,8 +6810,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -7004,15 +6840,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -7036,15 +6869,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -7068,15 +6898,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -7100,15 +6927,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -7139,13 +6963,12 @@ namespace cen::detail {
 /**
  * \class static_bimap
  *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
+ * \brief A bidirectional associative container for when keys and values are known at
+ * compile-time.
  *
  * \note This class is only meant to be used in constexpr contexts.
  *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
  *
  * \tparam Key the type of the keys, must provide an overloaded `operator==`.
  * \tparam Value the type of the values.
@@ -7153,14 +6976,12 @@ namespace cen::detail {
  * \tparam size the amount of key-value pairs.
  *
  * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
  */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
 class static_bimap final
 {
   using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
+  using storage_type = std::array<pair_type, Size>;
 
  public:
   storage_type data;
@@ -7593,11 +7414,11 @@ struct sdl_deleter final
 /**
  * \def CENTURION_MAKE_VERSION_NUMBER
  *
- * \brief Helper macro for creating version numbers from a set of
- * major/minor/patch numbers.
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
  *
- * \details For example, if the version is 8.4.2, the resulting version number
- * would be 8402.
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
  *
  * \since 6.0.0
  */
@@ -7618,11 +7439,11 @@ struct sdl_deleter final
 /**
  * \def CENTURION_VERSION_AT_LEAST
  *
- * \brief This macro is intended to be used for conditional compilation, based
- * on the Centurion version.
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
  *
- * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
- * where you use it as the condition with `#if` statements.
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
  *
  * \since 6.0.0
  */
@@ -7639,12 +7460,10 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are by default initialized to the current
- * Centurion version values.
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
  *
  * \version 6.0.0
- *
- * \headerfile version.hpp
  */
 struct version final
 {
@@ -7654,15 +7473,15 @@ struct version final
 };
 
 /**
- * \brief Indicates whether or not the current Centurion version is at least
- * equal to the specified version.
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
  *
  * \param major the major version value.
  * \param minor the minor version value.
  * \param patch the patch version value.
  *
- * \return `true` if the version of Centurion is at least the specified version;
- * `false` otherwise.
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
  *
  * \see `CENTURION_VERSION_AT_LEAST`
  *
@@ -7683,8 +7502,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2.
  *
@@ -7712,8 +7531,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_image that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_image.
  *
@@ -7741,8 +7560,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_mixer that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_mixer.
  *
@@ -7770,8 +7589,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_ttf that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2_ttf.
  *
@@ -7854,8 +7673,8 @@ namespace cen::detail {
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -7922,13 +7741,12 @@ namespace cen::detail {
 /**
  * \class static_bimap
  *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
+ * \brief A bidirectional associative container for when keys and values are known at
+ * compile-time.
  *
  * \note This class is only meant to be used in constexpr contexts.
  *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
  *
  * \tparam Key the type of the keys, must provide an overloaded `operator==`.
  * \tparam Value the type of the values.
@@ -7936,14 +7754,12 @@ namespace cen::detail {
  * \tparam size the amount of key-value pairs.
  *
  * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
  */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
 class static_bimap final
 {
   using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
+  using storage_type = std::array<pair_type, Size>;
 
  public:
   storage_type data;
@@ -8013,9 +7829,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -8033,12 +7849,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8050,8 +7865,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8067,8 +7881,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8084,8 +7897,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8101,8 +7913,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8118,8 +7929,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -8145,20 +7955,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -8209,7 +8019,7 @@ template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
   template <std::size_t... index>
-  constexpr static int find(std::index_sequence<index...>)
+  constexpr static auto find(std::index_sequence<index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
   }
@@ -8483,13 +8293,11 @@ namespace cen {
 /**
  * \enum event_type
  *
- * \brief Mirrors the `SDL_EventType` enum.
+ * \brief Represents the different event types.
  *
  * \see `SDL_EventType`
  *
  * \since 3.1.0
- *
- * \headerfile event_type.hpp
  */
 enum class event_type : u32
 {
@@ -8626,8 +8434,6 @@ namespace cen {
  * \tparam T an SDL event type.
  *
  * \since 4.0.0
- *
- * \headerfile common_event.hpp
  */
 template <typename T>
 class common_event
@@ -8753,14 +8559,12 @@ namespace cen {
 /**
  * \class audio_device_event
  *
- * \brief Represents an event that is associated with some sort of audio
- * device, either capture of output.
+ * \brief Represents an event that is associated with some sort of audio device, either
+ * capture of output.
  *
  * \see `SDL_AudioDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile audio_device_event.hpp
  */
 class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 {
@@ -8896,8 +8700,6 @@ namespace cen {
  * \tparam T an SDL event type.
  *
  * \since 4.0.0
- *
- * \headerfile common_event.hpp
  */
 template <typename T>
 class common_event
@@ -9212,8 +9014,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -9244,15 +9044,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -9276,15 +9073,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -9308,15 +9102,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -9340,15 +9131,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -9605,9 +9393,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -9617,12 +9405,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -9650,13 +9436,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -9714,8 +9499,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -9847,9 +9631,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -9859,12 +9643,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -9883,18 +9665,16 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -9918,8 +9698,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *
@@ -10256,16 +10036,14 @@ namespace literals {
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -10426,8 +10204,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -10458,15 +10234,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -10490,15 +10263,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -10522,15 +10292,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -10554,15 +10321,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -10741,11 +10505,11 @@ class pointer_manager final
 /**
  * \def CENTURION_MAKE_VERSION_NUMBER
  *
- * \brief Helper macro for creating version numbers from a set of
- * major/minor/patch numbers.
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
  *
- * \details For example, if the version is 8.4.2, the resulting version number
- * would be 8402.
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
  *
  * \since 6.0.0
  */
@@ -10766,11 +10530,11 @@ class pointer_manager final
 /**
  * \def CENTURION_VERSION_AT_LEAST
  *
- * \brief This macro is intended to be used for conditional compilation, based
- * on the Centurion version.
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
  *
- * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
- * where you use it as the condition with `#if` statements.
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
  *
  * \since 6.0.0
  */
@@ -10787,12 +10551,10 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are by default initialized to the current
- * Centurion version values.
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
  *
  * \version 6.0.0
- *
- * \headerfile version.hpp
  */
 struct version final
 {
@@ -10802,15 +10564,15 @@ struct version final
 };
 
 /**
- * \brief Indicates whether or not the current Centurion version is at least
- * equal to the specified version.
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
  *
  * \param major the major version value.
  * \param minor the minor version value.
  * \param patch the patch version value.
  *
- * \return `true` if the version of Centurion is at least the specified version;
- * `false` otherwise.
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
  *
  * \see `CENTURION_VERSION_AT_LEAST`
  *
@@ -10831,8 +10593,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2.
  *
@@ -10860,8 +10622,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_image that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_image.
  *
@@ -10889,8 +10651,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_mixer that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_mixer.
  *
@@ -10918,8 +10680,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_ttf that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2_ttf.
  *
@@ -11195,9 +10957,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -11215,12 +10977,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11232,8 +10993,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11249,8 +11009,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11266,8 +11025,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11283,8 +11041,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11300,8 +11057,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -11327,20 +11083,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -11383,12 +11139,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -11411,8 +11164,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -11436,8 +11188,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -11815,9 +11567,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -11836,8 +11587,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -11851,17 +11601,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -12078,8 +11826,6 @@ namespace cen {
  * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
  * \since 3.1.0
- *
- * \headerfile button_state.hpp
  */
 enum class button_state : u8
 {
@@ -12181,9 +11927,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -12201,12 +11947,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12218,8 +11963,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12235,8 +11979,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12252,8 +11995,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12269,8 +12011,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12286,8 +12027,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -12313,20 +12053,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -12374,8 +12114,6 @@ namespace cen {
  * \brief Provides values that represent different power states of a joystick.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_power
 {
@@ -12384,8 +12122,7 @@ enum class joystick_power
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
-                                          * worry about power. */
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
   max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
 };
 
@@ -12395,8 +12132,6 @@ enum class joystick_power
  * \brief Represents the various states of a joystick hat.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class hat_state : u8
 {
@@ -12417,8 +12152,6 @@ enum class hat_state : u8
  * \brief Provides values that represent different types of "joysticks".
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_type
 {
@@ -12440,21 +12173,14 @@ enum class joystick_type
  * \brief Represents the difference in a joystick ball axis position.
  *
  * \since 4.2.0
- * \headerfile joystick.hpp
- *
- * \var ball_axis_change::dx
- * Difference in x-axis position since last poll.
- *
- * \var ball_axis_change::dy
- * Difference in y-axis position since last poll.
  */
 struct ball_axis_change final
 {
-  int dx;
-  int dy;
+  int dx;  ///< Difference in x-axis position since last poll.
+  int dy;  ///< Difference in y-axis position since last poll.
 };
 
-template <typename B>
+template <typename T>
 class basic_joystick;
 
 /**
@@ -12480,17 +12206,15 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  *
  * \brief Represents a joystick device.
  *
- * \details The game controller API is built on top of the joystick API, which
- * means that the game controller is higher-level and easier to use.
+ * \details The game controller API is built on top of the joystick API, which means that
+ * the game controller is higher-level and easier to use.
  *
  * \since 4.2.0
  *
  * \see joystick
  * \see joystick_handle
- *
- * \headerfile joystick.hpp
  */
-template <typename B>
+template <typename T>
 class basic_joystick final
 {
  public:
@@ -12502,19 +12226,17 @@ class basic_joystick final
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
-   * \note The created instance will only claim ownership of the supplied
-   * pointer if the class has owning semantics, i.e. if it's a ``joystick``
-   * instance.
+   * \note The created instance will only claim ownership of the supplied pointer if the
+   * class has owning semantics, i.e. if it's a `joystick` instance.
    *
    * \param joystick a pointer to the existing joystick.
    *
-   * \throws cen_error if the supplied pointer is null and the joystick is
-   * owning.
+   * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
       : m_joystick{joystick}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_joystick)
       {
@@ -12528,13 +12250,11 @@ class basic_joystick final
   /**
    * \brief Creates an owning joystick based on a joystick device index.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param index the device index of the joystick.
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick)
@@ -12546,11 +12266,9 @@ class basic_joystick final
   /**
    * \brief Creates a handle to an owning joystick.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_joystick(const joystick& owner) noexcept : m_joystick{owner.get()}
   {}
 
@@ -12559,12 +12277,11 @@ class basic_joystick final
    *
    * \param id the joystick ID associated with the desired joystick.
    *
-   * \return a handle to the joystick associated with the supplied ID, might be
-   * empty.
+   * \return a handle to the joystick associated with the supplied ID, might be empty.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -12574,8 +12291,7 @@ class basic_joystick final
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Returns a handle to the joystick associated with the specified
-   * player index.
+   * \brief Returns a handle to the joystick associated with the specified player index.
    *
    * \param playerIndex the player index of the desired joystick.
    *
@@ -12583,7 +12299,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -12597,8 +12313,8 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this method cancels any previous rumble effects. This
-   * method has no effect if the joystick doesn't support rumble effects.
+   * \details Invoking this method cancels any previous rumble effects. This method has no
+   * effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
    * \param highFreq the intensity of the high frequency (right) motor.
@@ -12623,9 +12339,8 @@ class basic_joystick final
   /**
    * \brief Starts a rumble effect in the joystick's triggers.
    *
-   * \details Calls to this function cancels any previously active rumble
-   * effect. Furthermore, supplying 0 as intensities will stop the rumble
-   * effect.
+   * \details Calls to this function cancels any previously active rumble effect.
+   * Furthermore, supplying 0 as intensities will stop the rumble effect.
    *
    * \param left the intensity used by the left rumble motor.
    * \param right the intensity used by the right rumble motor.
@@ -12651,8 +12366,8 @@ class basic_joystick final
   /**
    * \brief Sets the color of the LED light, if the joystick has one.
    *
-   * \param color the color that will be used by the LED, note that the alpha
-   * component is ignored.
+   * \param color the color that will be used by the LED, note that the alpha component is
+   * ignored.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -12694,8 +12409,8 @@ class basic_joystick final
    * \param nButtons the number of buttons.
    * \param nHats the number of joystick hats.
    *
-   * \return the device index of the virtual joystick; `std::nullopt` if
-   * something went wrong.
+   * \return the device index of the virtual joystick; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -12803,28 +12518,28 @@ class basic_joystick final
    *
    * \details For XInput controllers this returns the XInput user index.
    *
-   * \return the player index associated with the joystick; `std::nullopt` if it
-   * can't be obtained
+   * \return the player index associated with the joystick; `std::nullopt` if it can't be
+   * obtained
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the type associated with the joystick.
    *
-   * \return a `joystick::Type` value that represents the type of the joystick.
+   * \return the type of the joystick.
    *
    * \since 4.2.0
    */
@@ -12836,63 +12551,62 @@ class basic_joystick final
   /**
    * \brief Returns the USB vendor ID of the joystick.
    *
-   * \return the USB vendor ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB vendor ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the USB product ID of the joystick.
    *
-   * \return the USB product ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB product ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the product version of the joystick, if available.
    *
-   * \return the product version of the joystick; `std::nullopt` if it isn't
-   * available.
+   * \return the product version of the joystick; `std::nullopt` if it isn't available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
@@ -12941,8 +12655,8 @@ class basic_joystick final
   /**
    * \brief Returns the serial number associated with the joystick.
    *
-   * \return the serial number of the joystick; a null pointer is returned if
-   * the serial number isn't available.
+   * \return the serial number of the joystick; a null pointer is returned if the serial
+   * number isn't available.
    *
    * \since 5.2.0
    */
@@ -12971,15 +12685,15 @@ class basic_joystick final
   /// \{
 
   /**
-   * \brief Returns the player index of the joystick associated with the
-   * specified device index.
+   * \brief Returns the player index of the joystick associated with the specified device
+   * index.
    *
    * \note This method can be called before any joysticks are opened.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the player index of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the player index of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -12987,19 +12701,18 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the type of the joystick associated with the specified
-   * device index.
+   * \brief Returns the type of the joystick associated with the specified device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
@@ -13013,61 +12726,61 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the USB vendor ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB vendor ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the USB product ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB product ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB product ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB product ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the product version for the joystick associated with the
-   * specified device index.
+   * \brief Returns the product version for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the product version of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the product version of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -13075,25 +12788,23 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the GUID for the joystick associated with the specified
-   * device index.
+   * \brief Returns the GUID for the joystick associated with the specified device index.
    *
    * \note The GUID is implementation-dependent.
    * \note This function can be called before any joysticks are opened.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
    * \return the GUID of the joystick associated with the device index.
    *
@@ -13105,14 +12816,12 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the associated with the joystick with the specified
-   * device index.
+   * \brief Returns the associated with the joystick with the specified device index.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
-   * \return the name associated with the joystick; `nullptr` if no name is
-   * found.
+   * \return the name associated with the joystick; a null string is returned if no name
+   * is found.
    *
    * \since 4.2.0
    */
@@ -13122,13 +12831,13 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the instance ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the instance ID for the joystick associated with the specified device
+   * index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
-   * be obtained.
+   * \return the instance ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -13136,13 +12845,13 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1)
+    if (id != -1)
     {
-      return std::nullopt;
+      return id;
     }
     else
     {
-      return id;
+      return std::nullopt;
     }
   }
 
@@ -13151,13 +12860,13 @@ class basic_joystick final
   /**
    * \brief Returns the ball axis change since the last poll.
    *
-   * \note Trackballs can only return relative motion since the last call, these
-   * motion deltas are placed into the `BallAxisChange` struct.
+   * \note Trackballs can only return relative motion since the last call, these motion
+   * deltas are placed into the `BallAxisChange` struct.
    *
    * \param ball the ball index to check, start at 0.
    *
-   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something
-   * goes wrong.
+   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something goes
+   * wrong.
    *
    * \since 4.2.0
    */
@@ -13165,8 +12874,7 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    const auto result = SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0)
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
     {
       return change;
     }
@@ -13179,30 +12887,21 @@ class basic_joystick final
   /**
    * \brief Returns the current position of the specified axis.
    *
-   * \details Most modern joysticks let the X-axis be represented by 0
-   * and the Y-axis by 1. To account for jitter, it may be necessary to impose
-   * some kind of tolerance on the returned value.
+   * \details Most modern joysticks let the X-axis be represented by 0 and the Y-axis
+   * by 1. To account for jitter, it may be necessary to impose some kind of tolerance on
+   * the returned value.
    *
    * \note Some joysticks use axes 2 and 3 for extra buttons.
    *
    * \param axis the ID of the axis to query.
    *
-   * \return a 16-bit signed integer that represents the position of the
-   * specified axis; `std::nullopt` if something goes wrong.
+   * \return the position of the specified axis.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> i16
   {
-    const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return result;
-    }
+    return SDL_JoystickGetAxis(m_joystick, axis);
   }
 
   /**
@@ -13210,8 +12909,8 @@ class basic_joystick final
    *
    * \param axis the axis that will be queried. Starts at 0.
    *
-   * \return the initial state of the axis; `std::nullopt` if the axis doesn't
-   * have an initial state.
+   * \return the initial state of the axis; `std::nullopt` if the axis doesn't have an
+   * initial state.
    *
    * \since 4.2.0
    */
@@ -13219,9 +12918,7 @@ class basic_joystick final
       -> std::optional<i16>
   {
     i16 state{};
-    const auto hadInitialState =
-        SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState)
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
     {
       return state;
     }
@@ -13294,7 +12991,7 @@ class basic_joystick final
   /**
    * \brief Returns the current power level of the joystick.
    *
-   * \return a `joystick::Power` value that represents the current power level.
+   * \return the current power level.
    *
    * \since 4.2.0
    */
@@ -13322,11 +13019,9 @@ class basic_joystick final
    *
    * \param hat the index of the hat to query, indices start at 0.
    *
-   * \return a `HatState` value that represents the current state of the hat.
+   * \return the current state of the hat.
    *
    * \since 4.2.0
-   *
-   * \see `joystick::HatState`
    */
   [[nodiscard]] auto get_hat_state(const int hat) const noexcept -> hat_state
   {
@@ -13336,8 +13031,8 @@ class basic_joystick final
   /**
    * \brief Updates the state of all open joysticks.
    *
-   * \note This is done automatically by the event loop if any joystick
-   * events are enabled.
+   * \note This is done automatically by the event loop if any joystick events are
+   * enabled.
    *
    * \since 4.2.0
    */
@@ -13349,10 +13044,9 @@ class basic_joystick final
   /**
    * \brief Locks the access to all joysticks.
    *
-   * \details If you are using the joystick API from multiple threads you
-   * should use this method to restrict access to the joysticks.
+   * \details If you are using the joystick API from multiple threads you should use this
+   * method to restrict access to the joysticks.
    *
-   * \see SDL_LockJoysticks
    * \since 4.2.0
    */
   static void lock() noexcept
@@ -13363,7 +13057,6 @@ class basic_joystick final
   /**
    * \brief Unlocks the access to all joysticks.
    *
-   * \see SDL_UnlockJoysticks
    * \since 4.2.0
    */
   static void unlock() noexcept
@@ -13375,17 +13068,14 @@ class basic_joystick final
    * \brief Specifies whether or not joystick event polling is enabled.
    *
    * \details If joystick event polling is disabled, then you must manually call
-   * `joystick::update()` in order to update the joystick state.
+   * `basic_joystick::update()` in order to update the joystick state.
    *
    * \note It's recommended to leave joystick event polling enabled.
    *
-   * \warning Calling this function might cause all events currently in
-   * the event queue to be deleted.
+   * \warning Calling this function might cause all events currently in the event queue to
+   * be deleted.
    *
-   * \param enabled `true` if joystick event polling should be enabled;
-   * `false` otherwise.
-   *
-   * \see SDL_JoystickEventState(int)
+   * \param enabled `true` if joystick event polling should be enabled; `false` otherwise.
    *
    * \since 4.2.0
    */
@@ -13409,21 +13099,21 @@ class basic_joystick final
   /**
    * \brief Returns the amount of currently available joysticks.
    *
-   * \return the current amount of available joysticks; `std::nullopt` if
-   * something goes wrong.
+   * \return the current amount of available joysticks; `std::nullopt` if something goes
+   * wrong.
    *
    * \since 5.1.0
    */
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0)
+    if (result >= 0)
     {
-      return std::nullopt;
+      return result;
     }
     else
     {
-      return result;
+      return std::nullopt;
     }
   }
 
@@ -13433,8 +13123,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID, can't be null.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 4.2.0
    */
@@ -13451,8 +13139,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 5.3.0
    */
@@ -13489,12 +13175,11 @@ class basic_joystick final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam U dummy parameter for SFINAE.
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -13503,13 +13188,9 @@ class basic_joystick final
   /**
    * \brief Returns a pointer to the associated `SDL_Joystick`.
    *
-   * \warning Use of this method is not recommended. However, it can be useful
-   * since many SDL calls use non-const pointers even when no change will be
-   * applied.
-   *
    * \warning Don't take ownership of the returned pointer!
    *
-   * \return a pointer to the internal `SDL_Joystick`.
+   * \return a pointer to the associated `SDL_Joystick`.
    *
    * \since 4.2.0
    */
@@ -13529,7 +13210,7 @@ class basic_joystick final
       }
     }
   };
-  detail::pointer_manager<B, SDL_Joystick, deleter> m_joystick;
+  detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
 };
 
 /**
@@ -13546,8 +13227,6 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  const auto* name = joystick.name();
-
   czstring serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
@@ -13556,7 +13235,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+         ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -13804,12 +13483,10 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \brief Represents a sensor device.
  *
- * \see sensor
- * \see sensor_handle
+ * \see `sensor`
+ * \see `sensor_handle`
  *
  * \since 5.2.0
- *
- * \headerfile sensor.hpp
  */
 template <typename T>
 class basic_sensor final
@@ -13821,13 +13498,12 @@ class basic_sensor final
   /**
    * \brief Creates a sensor instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -13845,8 +13521,6 @@ class basic_sensor final
 
   /**
    * \brief Creates an owning sensor instance based on a device index.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param index the device index of the sensor.
    *
@@ -13866,8 +13540,6 @@ class basic_sensor final
   /**
    * \brief Creates a sensor handle based on an owning sensor.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param owner the associated owning sensor.
    *
    * \since 5.2.0
@@ -13881,8 +13553,7 @@ class basic_sensor final
   /**
    * \brief Updates the state of all open sensors.
    *
-   * \note This is done automatically by the event loop if sensor events are
-   * enabled.
+   * \note This is done automatically by the event loop if sensor events are enabled.
    *
    * \since 5.2.0
    */
@@ -13953,8 +13624,8 @@ class basic_sensor final
   /**
    * \brief Returns the name associated with the sensor device.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available.
    *
    * \since 5.2.0
    */
@@ -13992,8 +13663,7 @@ class basic_sensor final
    *
    * \tparam size the number of data elements, varies from sensor to sensor.
    *
-   * \return the data associated with the sensor; `std::nullopt` if something
-   * goes wrong.
+   * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -14001,8 +13671,7 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
-    if (result != -1)
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
     }
@@ -14036,8 +13705,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the unique instance ID associated with a sensor; `std::nullopt` if
-   * the index is invalid.
+   * \return the unique instance ID associated with a sensor; `std::nullopt` if the index
+   * is invalid.
    *
    * \since 5.2.0
    */
@@ -14059,8 +13728,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available or if the index was invalid.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available or if the index was invalid.
    *
    * \since 5.2.0
    */
@@ -14088,8 +13757,7 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return a non-portable sensor type value; `std::nullopt` if the index is
-   * invalid.
+   * \return a non-portable sensor type value; `std::nullopt` if the index is invalid.
    *
    * \since 5.2.0
    */
@@ -14114,8 +13782,6 @@ class basic_sensor final
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -14143,8 +13809,6 @@ class basic_sensor final
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
- * \tparam T the ownership semantics type of the sensor class.
- *
  * \param sensor the sensor that will be converted.
  *
  * \return a string that represents a sensor instance.
@@ -14161,8 +13825,6 @@ template <typename T>
 
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
- *
- * \tparam T the ownership semantics type of the sensor class.
  *
  * \param stream the stream that will be used.
  * \param sensor the sensor that will be printed.
@@ -14279,8 +13941,6 @@ namespace cen::touch {
  * \brief Represents the state of a finger.
  *
  * \since 5.2.0
- *
- * \headerfile touch.hpp
  */
 struct finger_state final
 {
@@ -14295,30 +13955,18 @@ struct finger_state final
  *
  * \brief Provides values that represent different touch device types.
  *
- * \var device_type::invalid
- * Indicates an invalid touch device type.
- *
- * \var device_type::direct
- * Indicates a touch screen with window-relative coordinates.
- *
- * \var device_type::indirect_absolute
- * Indicates a trackpad with absolute device coordinates.
- *
- * \var device_type::indirect_relative
- * Indicates a trackpad with screen cursor-relative coordinates.
- *
  * \see `SDL_TouchDeviceType`
  *
  * \since 4.3.0
- *
- * \headerfile touch.hpp
  */
 enum class device_type
 {
-  invalid = SDL_TOUCH_DEVICE_INVALID,
-  direct = SDL_TOUCH_DEVICE_DIRECT,
-  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
-  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
+  // clang-format off
+  invalid = SDL_TOUCH_DEVICE_INVALID,                     ///< Invalid touch device.
+  direct = SDL_TOUCH_DEVICE_DIRECT,                       ///< Touch screen with window-relative coordinates.
+  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE, ///< Trackpad with absolute device coordinates.
+  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE  ///< Trackpad with screen cursor-relative coordinates.
+  // clang-format on
 };
 
 /**
@@ -14338,7 +13986,8 @@ enum class device_type
  *
  * \param index the index of the desired touch device.
  *
- * \return a `SDL_TouchID` value; or `std::nullopt` if there is no such value.
+ * \return the touch device ID associated with the index; `std::nullopt` if there is no
+ * such value.
  *
  * \since 4.3.0
  */
@@ -14390,8 +14039,7 @@ enum class device_type
  * \param id the touch ID of the finger.
  * \param index the index of the finger object.
  *
- * \return an `SDL_Finger` instance; or `std::nullopt` if no such instance could
- * be obtained.
+ * \return the associated finger; `std::nullopt` if no such instance could be obtained.
  *
  * \since 4.3.0
  */
@@ -14409,8 +14057,7 @@ enum class device_type
 }
 
 /**
- * \brief Returns the device ID used for mouse events simulated with touch
- * input.
+ * \brief Returns the device ID used for mouse events simulated with touch input.
  *
  * \return a device ID.
  *
@@ -14422,10 +14069,9 @@ enum class device_type
 }
 
 /**
- * \brief Returns the `SDL_TouchID` used by touch events simulated with mouse
- * input.
+ * \brief Returns the touch ID used by touch events simulated with mouse input.
  *
- * \return a `SDL_TouchID` value.
+ * \return the touch ID used by touch events simulated with mouse input.
  *
  * \since 4.3.0
  */
@@ -14501,13 +14147,11 @@ namespace cen {
 /**
  * \enum controller_type
  *
- * \brief Mirrors the `SDL_GameControllerType` enum.
+ * \brief Represents different game controller types.
  *
  * \see `SDL_GameControllerType`
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_type
 {
@@ -14533,13 +14177,11 @@ enum class controller_type
 /**
  * \enum controller_axis
  *
- * \brief Mirrors the values of the `SDL_GameControllerAxis` enum.
+ * \brief Represents different game controller axes.
  *
  * \see `SDL_GameControllerAxis`
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_axis
 {
@@ -14556,11 +14198,11 @@ enum class controller_axis
 /**
  * \enum controller_button
  *
- * \brief Mirrors the values of the `SDL_GameControllerButton` enum.
+ * \brief Represents different game controller buttons.
+ *
+ * \see `SDL_GameControllerButton`
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_button
 {
@@ -14601,11 +14243,11 @@ enum class controller_button
 /**
  * \enum controller_bind_type
  *
- * \brief Mirrors the values of the `SDL_GameControllerBindType` enum.
+ * \brief Represents different game controller bind types.
+ *
+ * \see `SDL_GameControllerBindType`
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_bind_type
 {
@@ -14639,14 +14281,21 @@ using controller_handle = basic_controller<detail::handle_type>;
 /**
  * \class basic_controller
  *
- * \brief Represents a game controller, e.g. an xbox-controller.
+ * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
+ *
+ * \details You may need to load appropriate game controller mappings before you can begin
+ * using the game controller API with certain controllers. This can be accomplished using
+ * the `cen::hint::controller::config_file` hint, or the `load_mappings()` and
+ * `add_mapping()` functions.
+ *
+ * \details For a community managed database file of game controller mappings, see
+ * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn’t work for some
+ * reason, you should be able to find a copy in the Centurion test resources folder).
  *
  * \since 5.0.0
  *
- * \see controller
- * \see controller_handle
- *
- * \headerfile controller.hpp
+ * \see `controller`
+ * \see `controller_handle`
  */
 template <typename T>
 class basic_controller final
@@ -15688,20 +15337,18 @@ class basic_controller final
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
-   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
-   * mappings for previously known GUIDs will overwrite the previous mappings.
-   * Furthermore, mappings for different platforms than the current platform
-   * will be ignored.
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New mappings for
+   * previously known GUIDs will overwrite the previous mappings. Furthermore, mappings
+   * for different platforms than the current platform will be ignored.
    *
-   * \remarks It's possible to call this function several times to use multiple
-   * mapping files.
+   * \remarks It's possible to call this function several times to use multiple mapping
+   * files.
    *
    * \note The text database is stored entirely in memory during processing.
    *
    * \param file the path of the mapping file.
    *
-   * \return the amount of mappings added; `std::nullopt` if something went
-   * wrong.
+   * \return the amount of mappings added; `std::nullopt` if something went wrong.
    *
    * \since 5.3.0
    */
@@ -16073,8 +15720,6 @@ namespace cen {
  * \brief Represents an event triggered by game controller axis motion.
  *
  * \since 4.0.0
- *
- * \headerfile controller_axis_event.hpp
  */
 class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 {
@@ -16218,8 +15863,6 @@ namespace cen {
  * \see `SDL_ControllerButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_button_event.hpp
  */
 class controller_button_event final : public common_event<SDL_ControllerButtonEvent>
 {
@@ -16382,8 +16025,6 @@ namespace cen {
  * \see `SDL_ControllerDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_device_event.hpp
  */
 class controller_device_event final : public common_event<SDL_ControllerDeviceEvent>
 {
@@ -16480,8 +16121,6 @@ namespace cen {
  * \see `SDL_DollarGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile dollar_gesture_event.hpp
  */
 class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
 {
@@ -16695,8 +16334,6 @@ namespace cen {
  * \see `SDL_DropEvent`
  *
  * \since 4.0.0
- *
- * \headerfile drop_event.hpp
  */
 class drop_event final : public common_event<SDL_DropEvent>
 {
@@ -16888,13 +16525,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -16952,8 +16588,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -17056,14 +16691,12 @@ namespace cen {
 /**
  * \class audio_device_event
  *
- * \brief Represents an event that is associated with some sort of audio
- * device, either capture of output.
+ * \brief Represents an event that is associated with some sort of audio device, either
+ * capture of output.
  *
  * \see `SDL_AudioDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile audio_device_event.hpp
  */
 class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 {
@@ -17194,8 +16827,6 @@ namespace cen {
  * \brief Represents an event triggered by game controller axis motion.
  *
  * \since 4.0.0
- *
- * \headerfile controller_axis_event.hpp
  */
 class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 {
@@ -17339,8 +16970,6 @@ namespace cen {
  * \see `SDL_ControllerButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_button_event.hpp
  */
 class controller_button_event final : public common_event<SDL_ControllerButtonEvent>
 {
@@ -17503,8 +17132,6 @@ namespace cen {
  * \see `SDL_ControllerDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_device_event.hpp
  */
 class controller_device_event final : public common_event<SDL_ControllerDeviceEvent>
 {
@@ -17601,8 +17228,6 @@ namespace cen {
  * \see `SDL_DollarGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile dollar_gesture_event.hpp
  */
 class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
 {
@@ -17816,8 +17441,6 @@ namespace cen {
  * \see `SDL_DropEvent`
  *
  * \since 4.0.0
- *
- * \headerfile drop_event.hpp
  */
 class drop_event final : public common_event<SDL_DropEvent>
 {
@@ -18008,8 +17631,6 @@ namespace cen {
  * \see `SDL_JoyAxisEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_axis_event.hpp
  */
 class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 {
@@ -18144,8 +17765,6 @@ namespace cen {
  * \see `SDL_JoyBallEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_ball_event.hpp
  */
 class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 {
@@ -18316,8 +17935,6 @@ namespace cen {
  * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
  * \since 3.1.0
- *
- * \headerfile button_state.hpp
  */
 enum class button_state : u8
 {
@@ -18345,8 +17962,6 @@ namespace cen {
  * \see `SDL_JoyButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_button_event.hpp
  */
 class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 {
@@ -18507,8 +18122,6 @@ namespace cen {
  * \see `SDL_JoyDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_device_event.hpp
  */
 class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 {
@@ -18623,8 +18236,6 @@ enum class joy_hat_position : u8
  * \see `SDL_JoyHatEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_hat_event.hpp
  */
 class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 {
@@ -18764,8 +18375,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -18798,28 +18409,25 @@ namespace cen {
  *
  * \brief Represents a key code (or virtual key).
  *
- * \details Key codes are mapped to the current layout of the keyboard and
- * correlate to a `scan_code`. Whilst scan codes identify the *location* of
- * a key press, the corresponding key codes give the key press *meaning* in
- * the context of the current keyboard layout.
+ * \details Key codes are mapped to the current layout of the keyboard and correlate to a
+ * `scan_code`. Whilst scan codes identify the *location* of a key press, the
+ * corresponding key codes give the key press *meaning* in the context of the current
+ * keyboard layout.
  *
- * Keycodes are meant to be layout-dependent. Think of this as "the user pressed
- * the key that is labelled 'Q' on a specific keyboard."
+ * Keycodes are meant to be layout-dependent. Think of this as "the user pressed the key
+ * that is labelled 'Q' on a specific keyboard."
  *
- * For example, if you pressed the key that's two keys to the right of CAPS
- * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
- * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
- * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
+ * For example, if you pressed the key that's two keys to the right of CAPS LOCK on a US
+ * QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a keycode of SDLK_S. The
+ * same key on a Dvorak keyboard, will report a scancode of SDL_SCANCODE_S and a keycode
+ * of SDLK_O.
  *
- * \note Key codes are sometimes referred to as "keysyms" in the SDL
- * documentation.
+ * \note Key codes are sometimes referred to as "keysyms" in the SDL documentation.
  *
  * \since 5.0.0
  *
  * \see `scan_code`
  * \see `cen::keycodes`
- *
- * \headerfile key_code.hpp
  */
 class key_code final
 {
@@ -18954,11 +18562,10 @@ class key_code final
   }
 
   /**
-   * \brief Sets the key code used to be the one associated with the
-   * specified name.
+   * \brief Sets the key code used to be the one associated with the specified name.
    *
-   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
-   * the key code.
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as the key
+   * code.
    *
    * \param name the name of the key.
    *
@@ -18979,8 +18586,7 @@ class key_code final
   /**
    * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
    *
-   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
-   * otherwise.
+   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -19063,7 +18669,7 @@ class key_code final
    *
    * \return the scan code associated with the internal key code.
    *
-   * \see `SDL_GetScancodeFromKey`
+   * \see `to_scan_code()`
    *
    * \since 5.0.0
    */
@@ -19077,9 +18683,8 @@ class key_code final
   /**
    * \brief Serializes the key code.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -19168,8 +18773,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
  *
  * \brief Provides a collection of `key_code` constants.
  *
- * \details Far from all key codes are provided. Instead, some of the most
- * commonly used key codes are available.
+ * \details Far from all key codes are provided. Instead, some of the most commonly used
+ * key codes are available.
  *
  * \since 5.0.0
  */
@@ -19179,8 +18784,6 @@ namespace keycodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code unknown;
 
@@ -19188,8 +18791,6 @@ inline constexpr key_code unknown;
  * \brief Represents the key with the label "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code a{SDLK_a};
 
@@ -19197,8 +18798,6 @@ inline constexpr key_code a{SDLK_a};
  * \brief Represents the key with the label "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code b{SDLK_b};
 
@@ -19206,8 +18805,6 @@ inline constexpr key_code b{SDLK_b};
  * \brief Represents the key with the label "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code c{SDLK_c};
 
@@ -19215,8 +18812,6 @@ inline constexpr key_code c{SDLK_c};
  * \brief Represents the key with the label "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code d{SDLK_d};
 
@@ -19224,8 +18819,6 @@ inline constexpr key_code d{SDLK_d};
  * \brief Represents the key with the label "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code e{SDLK_e};
 
@@ -19233,8 +18826,6 @@ inline constexpr key_code e{SDLK_e};
  * \brief Represents the key with the label "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f{SDLK_f};
 
@@ -19242,8 +18833,6 @@ inline constexpr key_code f{SDLK_f};
  * \brief Represents the key with the label "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code g{SDLK_g};
 
@@ -19251,8 +18840,6 @@ inline constexpr key_code g{SDLK_g};
  * \brief Represents the key with the label "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code h{SDLK_h};
 
@@ -19260,8 +18847,6 @@ inline constexpr key_code h{SDLK_h};
  * \brief Represents the key with the label "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code i{SDLK_i};
 
@@ -19269,8 +18854,6 @@ inline constexpr key_code i{SDLK_i};
  * \brief Represents the key with the label "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code j{SDLK_j};
 
@@ -19278,8 +18861,6 @@ inline constexpr key_code j{SDLK_j};
  * \brief Represents the key with the label "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code k{SDLK_k};
 
@@ -19287,8 +18868,6 @@ inline constexpr key_code k{SDLK_k};
  * \brief Represents the key with the label "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code l{SDLK_l};
 
@@ -19296,8 +18875,6 @@ inline constexpr key_code l{SDLK_l};
  * \brief Represents the key with the label "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code m{SDLK_m};
 
@@ -19305,8 +18882,6 @@ inline constexpr key_code m{SDLK_m};
  * \brief Represents the key with the label "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code n{SDLK_n};
 
@@ -19314,8 +18889,6 @@ inline constexpr key_code n{SDLK_n};
  * \brief Represents the key with the label "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code o{SDLK_o};
 
@@ -19323,8 +18896,6 @@ inline constexpr key_code o{SDLK_o};
  * \brief Represents the key with the label "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code p{SDLK_p};
 
@@ -19332,8 +18903,6 @@ inline constexpr key_code p{SDLK_p};
  * \brief Represents the key with the label "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code q{SDLK_q};
 
@@ -19341,8 +18910,6 @@ inline constexpr key_code q{SDLK_q};
  * \brief Represents the key with the label "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code r{SDLK_r};
 
@@ -19350,8 +18917,6 @@ inline constexpr key_code r{SDLK_r};
  * \brief Represents the key with the label "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code s{SDLK_s};
 
@@ -19359,8 +18924,6 @@ inline constexpr key_code s{SDLK_s};
  * \brief Represents the key with the label "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code t{SDLK_t};
 
@@ -19368,8 +18931,6 @@ inline constexpr key_code t{SDLK_t};
  * \brief Represents the key with the label "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code u{SDLK_u};
 
@@ -19377,8 +18938,6 @@ inline constexpr key_code u{SDLK_u};
  * \brief Represents the key with the label "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code v{SDLK_v};
 
@@ -19386,8 +18945,6 @@ inline constexpr key_code v{SDLK_v};
  * \brief Represents the key with the label "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code w{SDLK_w};
 
@@ -19395,8 +18952,6 @@ inline constexpr key_code w{SDLK_w};
  * \brief Represents the key with the label "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code x{SDLK_x};
 
@@ -19404,8 +18959,6 @@ inline constexpr key_code x{SDLK_x};
  * \brief Represents the key with the label "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code y{SDLK_y};
 
@@ -19413,8 +18966,6 @@ inline constexpr key_code y{SDLK_y};
  * \brief Represents the key with the label "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code z{SDLK_z};
 
@@ -19424,8 +18975,6 @@ inline constexpr key_code z{SDLK_z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code one{SDLK_1};
 
@@ -19435,8 +18984,6 @@ inline constexpr key_code one{SDLK_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code two{SDLK_2};
 
@@ -19446,8 +18993,6 @@ inline constexpr key_code two{SDLK_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code three{SDLK_3};
 
@@ -19457,8 +19002,6 @@ inline constexpr key_code three{SDLK_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code four{SDLK_4};
 
@@ -19468,8 +19011,6 @@ inline constexpr key_code four{SDLK_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code five{SDLK_5};
 
@@ -19479,8 +19020,6 @@ inline constexpr key_code five{SDLK_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code six{SDLK_6};
 
@@ -19490,8 +19029,6 @@ inline constexpr key_code six{SDLK_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code seven{SDLK_7};
 
@@ -19501,8 +19038,6 @@ inline constexpr key_code seven{SDLK_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code eight{SDLK_8};
 
@@ -19512,8 +19047,6 @@ inline constexpr key_code eight{SDLK_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code nine{SDLK_9};
 
@@ -19523,8 +19056,6 @@ inline constexpr key_code nine{SDLK_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code zero{SDLK_0};
 
@@ -19532,8 +19063,6 @@ inline constexpr key_code zero{SDLK_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f1{SDLK_F1};
 
@@ -19541,8 +19070,6 @@ inline constexpr key_code f1{SDLK_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f2{SDLK_F2};
 
@@ -19550,8 +19077,6 @@ inline constexpr key_code f2{SDLK_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f3{SDLK_F3};
 
@@ -19559,8 +19084,6 @@ inline constexpr key_code f3{SDLK_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f4{SDLK_F4};
 
@@ -19568,8 +19091,6 @@ inline constexpr key_code f4{SDLK_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f5{SDLK_F5};
 
@@ -19577,8 +19098,6 @@ inline constexpr key_code f5{SDLK_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f6{SDLK_F6};
 
@@ -19586,8 +19105,6 @@ inline constexpr key_code f6{SDLK_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f7{SDLK_F7};
 
@@ -19595,8 +19112,6 @@ inline constexpr key_code f7{SDLK_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f8{SDLK_F8};
 
@@ -19604,8 +19119,6 @@ inline constexpr key_code f8{SDLK_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f9{SDLK_F9};
 
@@ -19613,8 +19126,6 @@ inline constexpr key_code f9{SDLK_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f10{SDLK_F10};
 
@@ -19622,8 +19133,6 @@ inline constexpr key_code f10{SDLK_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f11{SDLK_F11};
 
@@ -19631,8 +19140,6 @@ inline constexpr key_code f11{SDLK_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f12{SDLK_F12};
 
@@ -19640,8 +19147,6 @@ inline constexpr key_code f12{SDLK_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left{SDLK_LEFT};
 
@@ -19649,8 +19154,6 @@ inline constexpr key_code left{SDLK_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right{SDLK_RIGHT};
 
@@ -19658,8 +19161,6 @@ inline constexpr key_code right{SDLK_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code up{SDLK_UP};
 
@@ -19667,8 +19168,6 @@ inline constexpr key_code up{SDLK_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code down{SDLK_DOWN};
 
@@ -19676,8 +19175,6 @@ inline constexpr key_code down{SDLK_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code space{SDLK_SPACE};
 
@@ -19687,8 +19184,6 @@ inline constexpr key_code space{SDLK_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code enter{SDLK_RETURN};
 
@@ -19696,8 +19191,6 @@ inline constexpr key_code enter{SDLK_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code escape{SDLK_ESCAPE};
 
@@ -19705,8 +19198,6 @@ inline constexpr key_code escape{SDLK_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code backspace{SDLK_BACKSPACE};
 
@@ -19714,8 +19205,6 @@ inline constexpr key_code backspace{SDLK_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code tab{SDLK_TAB};
 
@@ -19723,8 +19212,6 @@ inline constexpr key_code tab{SDLK_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
 
@@ -19732,8 +19219,6 @@ inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_shift{SDLK_LSHIFT};
 
@@ -19741,8 +19226,6 @@ inline constexpr key_code left_shift{SDLK_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_shift{SDLK_RSHIFT};
 
@@ -19750,8 +19233,6 @@ inline constexpr key_code right_shift{SDLK_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_ctrl{SDLK_LCTRL};
 
@@ -19759,8 +19240,6 @@ inline constexpr key_code left_ctrl{SDLK_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_ctrl{SDLK_RCTRL};
 
@@ -19768,8 +19247,6 @@ inline constexpr key_code right_ctrl{SDLK_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_alt{SDLK_LALT};
 
@@ -19777,32 +19254,24 @@ inline constexpr key_code left_alt{SDLK_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_alt{SDLK_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_gui{SDLK_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_gui{SDLK_RGUI};
 
@@ -19835,8 +19304,6 @@ namespace cen {
  * \see `SDL_Keymod`
  *
  * \since 3.1.0
- *
- * \headerfile key_modifier.hpp
  */
 enum class key_modifier : u16
 {
@@ -19899,8 +19366,6 @@ namespace cen {
  *
  * \see `key_code`
  * \see `cen::scancodes`
- *
- * \headerfile scan_code.hpp
  */
 class scan_code final
 {
@@ -20247,10 +19712,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \brief Provides a collection of `scan_code` constants.
  *
- * \details Far from all scan codes are provided. Instead, the most
- * commonly used scan codes are available.
- *
- * \since 5.0.0
+ * \details Far from all scan codes are provided. Instead, the most commonly used scan
+ * codes are available.
  */
 namespace scancodes {
 
@@ -20258,8 +19721,6 @@ namespace scancodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code unknown;
 
@@ -20267,8 +19728,6 @@ inline constexpr scan_code unknown;
  * \brief Represents the key "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code a{SDL_SCANCODE_A};
 
@@ -20276,8 +19735,6 @@ inline constexpr scan_code a{SDL_SCANCODE_A};
  * \brief Represents the key "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code b{SDL_SCANCODE_B};
 
@@ -20285,8 +19742,6 @@ inline constexpr scan_code b{SDL_SCANCODE_B};
  * \brief Represents the key "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code c{SDL_SCANCODE_C};
 
@@ -20294,8 +19749,6 @@ inline constexpr scan_code c{SDL_SCANCODE_C};
  * \brief Represents the key "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code d{SDL_SCANCODE_D};
 
@@ -20303,8 +19756,6 @@ inline constexpr scan_code d{SDL_SCANCODE_D};
  * \brief Represents the key "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code e{SDL_SCANCODE_E};
 
@@ -20312,8 +19763,6 @@ inline constexpr scan_code e{SDL_SCANCODE_E};
  * \brief Represents the key "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f{SDL_SCANCODE_F};
 
@@ -20321,8 +19770,6 @@ inline constexpr scan_code f{SDL_SCANCODE_F};
  * \brief Represents the key "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code g{SDL_SCANCODE_G};
 
@@ -20330,8 +19777,6 @@ inline constexpr scan_code g{SDL_SCANCODE_G};
  * \brief Represents the key "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code h{SDL_SCANCODE_H};
 
@@ -20339,8 +19784,6 @@ inline constexpr scan_code h{SDL_SCANCODE_H};
  * \brief Represents the key "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code i{SDL_SCANCODE_I};
 
@@ -20348,8 +19791,6 @@ inline constexpr scan_code i{SDL_SCANCODE_I};
  * \brief Represents the key "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code j{SDL_SCANCODE_J};
 
@@ -20357,8 +19798,6 @@ inline constexpr scan_code j{SDL_SCANCODE_J};
  * \brief Represents the key "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code k{SDL_SCANCODE_K};
 
@@ -20366,8 +19805,6 @@ inline constexpr scan_code k{SDL_SCANCODE_K};
  * \brief Represents the key "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code l{SDL_SCANCODE_L};
 
@@ -20375,8 +19812,6 @@ inline constexpr scan_code l{SDL_SCANCODE_L};
  * \brief Represents the key "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code m{SDL_SCANCODE_M};
 
@@ -20384,8 +19819,6 @@ inline constexpr scan_code m{SDL_SCANCODE_M};
  * \brief Represents the key "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code n{SDL_SCANCODE_N};
 
@@ -20393,8 +19826,6 @@ inline constexpr scan_code n{SDL_SCANCODE_N};
  * \brief Represents the key "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code o{SDL_SCANCODE_O};
 
@@ -20402,8 +19833,6 @@ inline constexpr scan_code o{SDL_SCANCODE_O};
  * \brief Represents the key "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code p{SDL_SCANCODE_P};
 
@@ -20411,8 +19840,6 @@ inline constexpr scan_code p{SDL_SCANCODE_P};
  * \brief Represents the key "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code q{SDL_SCANCODE_Q};
 
@@ -20420,8 +19847,6 @@ inline constexpr scan_code q{SDL_SCANCODE_Q};
  * \brief Represents the key "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code r{SDL_SCANCODE_R};
 
@@ -20429,8 +19854,6 @@ inline constexpr scan_code r{SDL_SCANCODE_R};
  * \brief Represents the key "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code s{SDL_SCANCODE_S};
 
@@ -20438,8 +19861,6 @@ inline constexpr scan_code s{SDL_SCANCODE_S};
  * \brief Represents the key "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code t{SDL_SCANCODE_T};
 
@@ -20447,8 +19868,6 @@ inline constexpr scan_code t{SDL_SCANCODE_T};
  * \brief Represents the key "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code u{SDL_SCANCODE_U};
 
@@ -20456,8 +19875,6 @@ inline constexpr scan_code u{SDL_SCANCODE_U};
  * \brief Represents the key "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code v{SDL_SCANCODE_V};
 
@@ -20465,8 +19882,6 @@ inline constexpr scan_code v{SDL_SCANCODE_V};
  * \brief Represents the key "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code w{SDL_SCANCODE_W};
 
@@ -20474,8 +19889,6 @@ inline constexpr scan_code w{SDL_SCANCODE_W};
  * \brief Represents the key "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code x{SDL_SCANCODE_X};
 
@@ -20483,8 +19896,6 @@ inline constexpr scan_code x{SDL_SCANCODE_X};
  * \brief Represents the key "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code y{SDL_SCANCODE_Y};
 
@@ -20492,8 +19903,6 @@ inline constexpr scan_code y{SDL_SCANCODE_Y};
  * \brief Represents the key "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code z{SDL_SCANCODE_Z};
 
@@ -20503,8 +19912,6 @@ inline constexpr scan_code z{SDL_SCANCODE_Z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code one{SDL_SCANCODE_1};
 
@@ -20514,8 +19921,6 @@ inline constexpr scan_code one{SDL_SCANCODE_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code two{SDL_SCANCODE_2};
 
@@ -20525,8 +19930,6 @@ inline constexpr scan_code two{SDL_SCANCODE_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code three{SDL_SCANCODE_3};
 
@@ -20536,8 +19939,6 @@ inline constexpr scan_code three{SDL_SCANCODE_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code four{SDL_SCANCODE_4};
 
@@ -20547,8 +19948,6 @@ inline constexpr scan_code four{SDL_SCANCODE_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code five{SDL_SCANCODE_5};
 
@@ -20558,8 +19957,6 @@ inline constexpr scan_code five{SDL_SCANCODE_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code six{SDL_SCANCODE_6};
 
@@ -20569,8 +19966,6 @@ inline constexpr scan_code six{SDL_SCANCODE_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code seven{SDL_SCANCODE_7};
 
@@ -20580,8 +19975,6 @@ inline constexpr scan_code seven{SDL_SCANCODE_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code eight{SDL_SCANCODE_8};
 
@@ -20591,8 +19984,6 @@ inline constexpr scan_code eight{SDL_SCANCODE_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code nine{SDL_SCANCODE_9};
 
@@ -20602,8 +19993,6 @@ inline constexpr scan_code nine{SDL_SCANCODE_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code zero{SDL_SCANCODE_0};
 
@@ -20611,8 +20000,6 @@ inline constexpr scan_code zero{SDL_SCANCODE_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f1{SDL_SCANCODE_F1};
 
@@ -20620,8 +20007,6 @@ inline constexpr scan_code f1{SDL_SCANCODE_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f2{SDL_SCANCODE_F2};
 
@@ -20629,8 +20014,6 @@ inline constexpr scan_code f2{SDL_SCANCODE_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f3{SDL_SCANCODE_F3};
 
@@ -20638,8 +20021,6 @@ inline constexpr scan_code f3{SDL_SCANCODE_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f4{SDL_SCANCODE_F4};
 
@@ -20647,8 +20028,6 @@ inline constexpr scan_code f4{SDL_SCANCODE_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f5{SDL_SCANCODE_F5};
 
@@ -20656,8 +20035,6 @@ inline constexpr scan_code f5{SDL_SCANCODE_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f6{SDL_SCANCODE_F6};
 
@@ -20665,8 +20042,6 @@ inline constexpr scan_code f6{SDL_SCANCODE_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f7{SDL_SCANCODE_F7};
 
@@ -20674,8 +20049,6 @@ inline constexpr scan_code f7{SDL_SCANCODE_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f8{SDL_SCANCODE_F8};
 
@@ -20683,8 +20056,6 @@ inline constexpr scan_code f8{SDL_SCANCODE_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f9{SDL_SCANCODE_F9};
 
@@ -20692,8 +20063,6 @@ inline constexpr scan_code f9{SDL_SCANCODE_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f10{SDL_SCANCODE_F10};
 
@@ -20701,8 +20070,6 @@ inline constexpr scan_code f10{SDL_SCANCODE_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f11{SDL_SCANCODE_F11};
 
@@ -20710,8 +20077,6 @@ inline constexpr scan_code f11{SDL_SCANCODE_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f12{SDL_SCANCODE_F12};
 
@@ -20719,8 +20084,6 @@ inline constexpr scan_code f12{SDL_SCANCODE_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left{SDL_SCANCODE_LEFT};
 
@@ -20728,8 +20091,6 @@ inline constexpr scan_code left{SDL_SCANCODE_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
 
@@ -20737,8 +20098,6 @@ inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code up{SDL_SCANCODE_UP};
 
@@ -20746,8 +20105,6 @@ inline constexpr scan_code up{SDL_SCANCODE_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code down{SDL_SCANCODE_DOWN};
 
@@ -20755,8 +20112,6 @@ inline constexpr scan_code down{SDL_SCANCODE_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code space{SDL_SCANCODE_SPACE};
 
@@ -20766,8 +20121,6 @@ inline constexpr scan_code space{SDL_SCANCODE_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
 
@@ -20775,8 +20128,6 @@ inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
 
@@ -20784,8 +20135,6 @@ inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
 
@@ -20793,8 +20142,6 @@ inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code tab{SDL_SCANCODE_TAB};
 
@@ -20802,8 +20149,6 @@ inline constexpr scan_code tab{SDL_SCANCODE_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
 
@@ -20811,8 +20156,6 @@ inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
 
@@ -20820,8 +20163,6 @@ inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
 
@@ -20829,8 +20170,6 @@ inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
 
@@ -20838,8 +20177,6 @@ inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
 
@@ -20847,8 +20184,6 @@ inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
 
@@ -20856,32 +20191,24 @@ inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
@@ -20909,8 +20236,6 @@ namespace cen {
  * \see `SDL_KeyboardEvent`
  *
  * \since 4.0.0
- *
- * \headerfile keyboard_event.hpp
  */
 class keyboard_event final : public common_event<SDL_KeyboardEvent>
 {
@@ -21278,8 +20603,6 @@ namespace cen {
  * \brief Provides values that represent various mouse buttons.
  *
  * \since 3.1.0
- *
- * \headerfile mouse_button.hpp
  */
 enum class mouse_button : u8
 {
@@ -21311,8 +20634,6 @@ namespace cen {
  * \see `SDL_MouseButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 {
@@ -21573,8 +20894,6 @@ namespace cen {
  * \see `SDL_MouseMotionEvent`
  *
  * \since 4.0.0
- *
- * \headerfile mouse_motion_event.hpp
  */
 class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 {
@@ -21828,13 +21147,11 @@ namespace cen {
 /**
  * \enum mouse_wheel_direction
  *
- * \brief Mirrors the the `SDL_MouseWheelDirection` enum.
+ * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class mouse_wheel_direction
 {
@@ -21850,8 +21167,6 @@ enum class mouse_wheel_direction
  * \see `SDL_MouseWheelEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 {
@@ -22098,8 +21413,6 @@ namespace cen {
  * \see `SDL_MultiGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 {
@@ -22321,8 +21634,6 @@ namespace cen {
  * \see `SDL_QuitEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class quit_event final : public common_event<SDL_QuitEvent>
 {
@@ -22494,8 +21805,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -22554,8 +21865,6 @@ namespace cen {
  * \see `SDL_TextEditingEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_editing_event.hpp
  */
 class text_editing_event final : public common_event<SDL_TextEditingEvent>
 {
@@ -22722,8 +22031,6 @@ namespace cen {
  * \see `SDL_TextInputEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_input_event.hpp
  */
 class text_input_event final : public common_event<SDL_TextInputEvent>
 {
@@ -22824,8 +22131,6 @@ namespace cen {
  * \see `SDL_TouchFingerEvent`
  *
  * \since 4.0.0
- *
- * \headerfile touch_finger_event.hpp
  */
 class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 {
@@ -23112,11 +22417,10 @@ namespace cen {
 /**
  * \enum window_event_id
  *
- * \brief Mirrors the `SDL_WindowEventID` enum.
+ * \brief Represents different flavours of window events.
  *
  * \details Depending on the event ID of a `window_event` instance, the
- * `window_event::data_1()` and `window_event::data_2()` methods have special
- * meanings.
+ * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
  * <table style="width:100%">
  *   <tr>
@@ -23212,8 +22516,6 @@ namespace cen {
  * </table>
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class window_event_id
 {
@@ -23245,8 +22547,6 @@ enum class window_event_id
  * \see `SDL_WindowEvent`
  *
  * \since 4.0.0
- *
- * \headerfile window_event.hpp
  */
 class window_event final : public common_event<SDL_WindowEvent>
 {
@@ -23400,8 +22700,6 @@ namespace cen {
  * \see `SDL_Event`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class event final
 {
@@ -23889,9 +23187,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -23909,12 +23207,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -23926,8 +23223,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -23943,8 +23239,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -23960,8 +23255,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -23977,8 +23271,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -23994,8 +23287,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -24021,20 +23313,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -24085,7 +23377,7 @@ template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
   template <std::size_t... index>
-  constexpr static int find(std::index_sequence<index...>)
+  constexpr static auto find(std::index_sequence<index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
   }
@@ -24176,8 +23468,6 @@ namespace cen {
  * \see `SDL_Event`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class event final
 {
@@ -24641,8 +23931,6 @@ namespace cen {
  *
  * \tparam E the event type, e.g. `window_event`.
  *
- * \headerfile event_dispatcher.hpp
- *
  * \see `event_dispatcher`
  *
  * \since 5.1.0
@@ -24779,8 +24067,6 @@ class event_sink final
  * \since 5.1.0
  *
  * \see `cen::event`
- *
- * \headerfile event_dispatcher.hpp
  */
 template <typename... E>
 class event_dispatcher final
@@ -24980,13 +24266,11 @@ namespace cen {
 /**
  * \enum event_type
  *
- * \brief Mirrors the `SDL_EventType` enum.
+ * \brief Represents the different event types.
  *
  * \see `SDL_EventType`
  *
  * \since 3.1.0
- *
- * \headerfile event_type.hpp
  */
 enum class event_type : u32
 {
@@ -25131,8 +24415,6 @@ namespace cen {
  * \see `SDL_JoyAxisEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_axis_event.hpp
  */
 class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 {
@@ -25267,8 +24549,6 @@ namespace cen {
  * \see `SDL_JoyBallEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_ball_event.hpp
  */
 class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 {
@@ -25437,8 +24717,6 @@ namespace cen {
  * \see `SDL_JoyButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_button_event.hpp
  */
 class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 {
@@ -25599,8 +24877,6 @@ namespace cen {
  * \see `SDL_JoyDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_device_event.hpp
  */
 class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 {
@@ -25715,8 +24991,6 @@ enum class joy_hat_position : u8
  * \see `SDL_JoyHatEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_hat_event.hpp
  */
 class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 {
@@ -25837,8 +25111,6 @@ namespace cen {
  * \see `SDL_KeyboardEvent`
  *
  * \since 4.0.0
- *
- * \headerfile keyboard_event.hpp
  */
 class keyboard_event final : public common_event<SDL_KeyboardEvent>
 {
@@ -26204,8 +25476,6 @@ namespace cen {
  * \see `SDL_MouseButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 {
@@ -26466,8 +25736,6 @@ namespace cen {
  * \see `SDL_MouseMotionEvent`
  *
  * \since 4.0.0
- *
- * \headerfile mouse_motion_event.hpp
  */
 class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 {
@@ -26721,13 +25989,11 @@ namespace cen {
 /**
  * \enum mouse_wheel_direction
  *
- * \brief Mirrors the the `SDL_MouseWheelDirection` enum.
+ * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class mouse_wheel_direction
 {
@@ -26743,8 +26009,6 @@ enum class mouse_wheel_direction
  * \see `SDL_MouseWheelEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 {
@@ -26991,8 +26255,6 @@ namespace cen {
  * \see `SDL_MultiGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 {
@@ -27214,8 +26476,6 @@ namespace cen {
  * \see `SDL_QuitEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class quit_event final : public common_event<SDL_QuitEvent>
 {
@@ -27286,8 +26546,6 @@ namespace cen {
  * \see `SDL_TextEditingEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_editing_event.hpp
  */
 class text_editing_event final : public common_event<SDL_TextEditingEvent>
 {
@@ -27454,8 +26712,6 @@ namespace cen {
  * \see `SDL_TextInputEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_input_event.hpp
  */
 class text_input_event final : public common_event<SDL_TextInputEvent>
 {
@@ -27556,8 +26812,6 @@ namespace cen {
  * \see `SDL_TouchFingerEvent`
  *
  * \since 4.0.0
- *
- * \headerfile touch_finger_event.hpp
  */
 class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 {
@@ -27844,11 +27098,10 @@ namespace cen {
 /**
  * \enum window_event_id
  *
- * \brief Mirrors the `SDL_WindowEventID` enum.
+ * \brief Represents different flavours of window events.
  *
  * \details Depending on the event ID of a `window_event` instance, the
- * `window_event::data_1()` and `window_event::data_2()` methods have special
- * meanings.
+ * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
  * <table style="width:100%">
  *   <tr>
@@ -27944,8 +27197,6 @@ namespace cen {
  * </table>
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class window_event_id
 {
@@ -27977,8 +27228,6 @@ enum class window_event_id
  * \see `SDL_WindowEvent`
  *
  * \since 4.0.0
- *
- * \headerfile window_event.hpp
  */
 class window_event final : public common_event<SDL_WindowEvent>
 {
@@ -28279,9 +27528,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -28291,12 +27540,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -28315,18 +27562,16 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -28350,8 +27595,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *
@@ -28401,14 +27646,13 @@ namespace cen {
  * \brief Returns the "base" path associated with the application.
  *
  * \details The returned string represents the path to the directory from which
- * application was run from, and will end with a path separator (e.g. "\\" or
- * "/").
+ * application was run from, and will end with a path separator (e.g. "\\" or "/").
  *
- * \note This might be an expensive operation, so it's recommended to only call
- * this function once and cache the returned path.
+ * \note This might be an expensive operation, so it's recommended to only call this
+ * function once and cache the returned path.
  *
- * \return the base path of the application; a null string is returned if the
- * path cannot be obtained.
+ * \return the base path of the application; a null string is returned if the path cannot
+ * be obtained.
  *
  * \since 5.2.0
  */
@@ -28719,13 +27963,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -28783,8 +28026,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -28877,12 +28119,10 @@ namespace cen {
  *
  * \brief Provides values that represent different file modes.
  *
- * \details This enum provides values that directly correspond to each of the
- * possible SDL file mode strings, such as "r" or "rb".
+ * \details This enum provides values that directly correspond to each of the possible SDL
+ * file mode strings, such as "r" or "rb".
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 enum class file_mode
 {
@@ -28911,8 +28151,6 @@ enum class file_mode
  * \brief Provides values that represent various file seek modes.
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 enum class seek_mode
 {
@@ -28927,8 +28165,6 @@ enum class seek_mode
  * \brief Provides values that represent different file types.
  *
  * \since 5.3.0
- *
- * \headerfile file_type.hpp
  */
 enum class file_type : uint
 {
@@ -28945,14 +28181,12 @@ enum class file_type : uint
  *
  * \brief Represents a file "context" or handle.
  *
- * \note This class differs slightly from other library classes in that it is
- * owning, but it does *not* throw if the internal pointer can't be created,
- * etc. This is because file operations are error-prone, so we want to avoid
- * throwing a bunch of exceptions, for performance reasons.
+ * \note This class differs slightly from other library classes in that it is owning, but
+ * it does *not* throw if the internal pointer can't be created, etc. This is because file
+ * operations are error-prone, so we want to avoid throwing a bunch of exceptions, for
+ * performance reasons.
  *
  * \since 5.3.0
- *
- * \headerfile file.hpp
  */
 class file final
 {
@@ -28992,9 +28226,7 @@ class file final
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
-  /**
-   * \copydoc file(not_null<czstring>, file_mode)
-   */
+  /// \copydoc file(not_null<czstring>, file_mode)
   file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
   {}
 
@@ -29046,8 +28278,8 @@ class file final
   /**
    * \brief Writes the contents of a container to the file.
    *
-   * \pre `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined otherwise.
+   * \pre `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined otherwise.
    *
    * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
    *
@@ -29074,8 +28306,7 @@ class file final
    *
    * \param value the value that will be written.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29086,15 +28317,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 16-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29105,15 +28334,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 32-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29124,15 +28351,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a little endian
-   * value.
+   * \brief Writes an unsigned 64-bit integer to the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29143,15 +28368,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 16-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29162,15 +28385,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 32-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29181,15 +28402,13 @@ class file final
   }
 
   /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a big endian
-   * value.
+   * \brief Writes an unsigned 64-bit integer to the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
    * \param value the value that will be written, in the native endianness.
    *
-   * \return `success` if the value was written to the file; `failure`
-   * otherwise.
+   * \return `success` if the value was written to the file; `failure` otherwise.
    *
    * \since 5.3.0
    */
@@ -29226,9 +28445,9 @@ class file final
   }
 
   /**
-   * \brief Reads data from the file to an array whose size is known at
-   * compile-time. This function uses the size of the supplied array to
-   * determine the amount of elements to read.
+   * \brief Reads data from the file to an array whose size is known at compile-time. This
+   * function uses the size of the supplied array to determine the amount of elements to
+   * read.
    *
    * \pre the internal file context must not be null.
    *
@@ -29250,15 +28469,15 @@ class file final
   // clang-format off
 
   /**
-   * \brief Reads data from the file to a container. This function uses the size
-   * of the supplied container to determine the amount of elements to read.
+   * \brief Reads data from the file to a container. This function uses the size of the
+   * supplied container to determine the amount of elements to read.
    *
    * \pre the internal file context must not be null.
-   * \pre `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined otherwise.
+   * \pre `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined otherwise.
    *
-   * \tparam Container the type of the data that will be read, e.g.
-   * `std::vector` or `std::array`.
+   * \tparam Container the type of the data that will be read, e.g. `std::vector` or
+   * `std::array`.
    *
    * \param[out] container the container to which the read data will be written to.
    *
@@ -29315,8 +28534,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 16-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29331,8 +28549,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 32-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29347,8 +28564,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a little endian
-   * value.
+   * \brief Reads an unsigned 64-bit integer from the file, as a little endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29363,8 +28579,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 16-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29379,8 +28594,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 32-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29395,8 +28609,7 @@ class file final
   }
 
   /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a big endian
-   * value.
+   * \brief Reads an unsigned 64-bit integer from the file, as a big endian value.
    *
    * \pre the internal file context must not be null.
    *
@@ -29603,8 +28816,8 @@ class file final
    * \param offset the offset to seek to.
    * \param mode the seek mode that will be used.
    *
-   * \return the resulting offset in the data stream; `std::nullopt` if
-   * something went wrong.
+   * \return the resulting offset in the data stream; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.3.0
    */
@@ -29780,18 +28993,18 @@ namespace cen {
 /**
  * \brief Returns the preferred path for storing application related files.
  *
- * \details This function returns the path to the directory to which
- * applications are meant to write files such as preferences and save data, etc.
- * This directory will be unique per user and application. The returned path
- * will end with a path separator (e.g. "\\" or "/").
+ * \details This function returns the path to the directory to which applications are
+ * meant to write files such as preferences and save data, etc. This directory will be
+ * unique per user and application. The returned path will end with a path separator (e.g.
+ * "\\" or "/").
  *
  * \note Only use letters, numbers, and spaces in the supplied names!
  *
  * \param org the name of the organization, cannot be null.
  * \param app the name of the application, cannot be null.
  *
- * \return an absolute path to the preferred path for storing application files;
- * a null string is returned if something goes wrong.
+ * \return an absolute path to the preferred path for storing application files; a null
+ * string is returned if something goes wrong.
  *
  * \since 5.2.0
  */
@@ -29810,18 +29023,18 @@ namespace cen {
 /**
  * \brief Returns the preferred path for storing application related files.
  *
- * \details This function returns the path to the directory to which
- * applications are meant to write files such as preferences and save data, etc.
- * This directory will be unique per user and application. The returned path
- * will end with a path separator (e.g. "\\" or "/").
+ * \details This function returns the path to the directory to which applications are
+ * meant to write files such as preferences and save data, etc. This directory will be
+ * unique per user and application. The returned path will end with a path separator (e.g.
+ * "\\" or "/").
  *
  * \note Only use letters, numbers, and spaces in the supplied names!
  *
  * \param org the name of the organization.
  * \param app the name of the application.
  *
- * \return an absolute path to the preferred path for storing application files;
- * a null string is returned if something goes wrong.
+ * \return an absolute path to the preferred path for storing application files; a null
+ * string is returned if something goes wrong.
  *
  * \since 6.0.0
  */
@@ -30396,8 +29609,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -30428,15 +29639,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -30460,15 +29668,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -30492,15 +29697,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -30524,15 +29726,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -30563,13 +29762,12 @@ namespace cen::detail {
 /**
  * \class static_bimap
  *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
+ * \brief A bidirectional associative container for when keys and values are known at
+ * compile-time.
  *
  * \note This class is only meant to be used in constexpr contexts.
  *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
  *
  * \tparam Key the type of the keys, must provide an overloaded `operator==`.
  * \tparam Value the type of the values.
@@ -30577,14 +29775,12 @@ namespace cen::detail {
  * \tparam size the amount of key-value pairs.
  *
  * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
  */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
 class static_bimap final
 {
   using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
+  using storage_type = std::array<pair_type, Size>;
 
  public:
   storage_type data;
@@ -31123,8 +30319,6 @@ namespace cen::hint {
  * \class render_driver
  *
  * \brief Used to specify the render driver that will be used.
- *
- * \headerfile hints.hpp
  */
 struct render_driver final : enum_hint<render_driver>
 {
@@ -32011,8 +31205,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -32043,15 +31235,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -32075,15 +31264,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -32107,15 +31293,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -32139,15 +31322,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -32213,8 +31393,8 @@ class mix_error final : public cen_error
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -32291,8 +31471,6 @@ namespace cen {
  * \see `SDL_LogPriority`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_priority : int
 {
@@ -32312,8 +31490,6 @@ enum class log_priority : int
  * \see `SDL_LogCategory`
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 enum class log_category : int
 {
@@ -32338,12 +31514,10 @@ enum class log_category : int
  *
  * \brief Contains easy-to-use logging facilities.
  *
- * \details The usage of the logging API will be very familiar to most people
- * that have used the `printf` and/or the `SDL_Log` facilities.
+ * \details The usage of the logging API will be very familiar to most people that have
+ * used the `printf` and/or the `SDL_Log` facilities.
  *
  * \since 3.0.0
- *
- * \headerfile log.hpp
  */
 namespace log {
 
@@ -32353,12 +31527,10 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This method has no effect if the supplied string is null. Usage
- * of this method is quite bulky, so refer to the other logging methods for
- * casual logging.
+ * \details This method has no effect if the supplied string is null. Usage of this method
+ * is quite bulky, so refer to the other logging methods for casual logging.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param priority the priority that will be used.
  * \param category the category that will be used.
@@ -32384,8 +31556,7 @@ void msg(const log_priority priority,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32406,8 +31577,7 @@ void info(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32425,8 +31595,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32447,8 +31616,7 @@ void warn(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32466,8 +31634,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32488,8 +31655,7 @@ void verbose(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32507,8 +31673,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32529,8 +31694,7 @@ void debug(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32548,8 +31712,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32570,8 +31733,7 @@ void critical(const log_category category,
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32589,8 +31751,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  *
  * \details This method has no effect if the supplied string is null.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param category the category that will be used.
  * \param fmt the formatted string that will be logged, cannot be null.
@@ -32607,8 +31768,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 /**
  * \brief Logs a message with the `priority::error` and `category::app`.
  *
- * \tparam Args the types of the arguments that will be used in the
- * formatted string.
+ * \tparam Args the types of the arguments that will be used in the formatted string.
  *
  * \param fmt the formatted string that will be logged, cannot be null.
  * \param args the arguments that will be used by the formatted string.
@@ -32624,9 +31784,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a string.
  *
- * \details This function is meant to be used for casual logging, where you
- * just want to log a string. The message will be logged with
- * `priority::info` and `category::app`.
+ * \details This function is meant to be used for casual logging, where you just want to
+ * log a string. The message will be logged with `priority::info` and `category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -32698,13 +31857,12 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Returns the maximum size, i.e the maximum amount of characters that
- * a string can contain and successfully be logged without being truncated.
+ * \brief Returns the maximum size, i.e the maximum amount of characters that a string can
+ * contain and successfully be logged without being truncated.
  *
  * \note Strings longer that this value will be truncated.
  *
- * \return the maximum amount of characters that a loggable string can
- * contain.
+ * \return the maximum amount of characters that a loggable string can contain.
  *
  * \see `SDL_MAX_LOG_MESSAGE`
  *
@@ -32746,8 +31904,7 @@ inline void set_priority(const log_category category,
 }
 
 /**
- * \brief Indicates whether or not the two log priorities values aren't the
- * same.
+ * \brief Indicates whether or not the two log priorities values aren't the same.
  *
  * \param lhs the left-hand side log priority value.
  * \param rhs the right-hand side log priority value.
@@ -32972,13 +32129,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -33036,8 +32192,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -33134,8 +32289,6 @@ namespace cen {
  * \since 4.1.0
  *
  * \see `SDL_HintPriority`
- *
- * \headerfile hints.hpp
  */
 enum class hint_priority
 {
@@ -33199,28 +32352,25 @@ template <typename Hint>
  *
  * \brief Represents a handle for dealing with hint callbacks.
  *
- * \details This class provides methods for easily connecting and disconnecting
- * a callback from receiving updates.
+ * \details This class provides methods for easily connecting and disconnecting a callback
+ * from receiving updates.
  *
- * \tparam Hint the type of the associated hint. Should be one of the hint
- * types defined in the `hints.hpp` header.
+ * \tparam Hint the type of the associated hint. Should be one of the hint types defined
+ * in the `hints.hpp` header.
  *
- * \tparam UserData the type of the user data, defaults to `void`.
+ * \tparam UserData the type of the user data.
  *
  * \since 4.1.0
- *
- * \headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
 class hint_callback final
 {
  public:
   /**
-   * \brief Creates a `hint_callback`.
+   * \brief Creates a hint callback.
    *
-   * \param callback the function object that will be called whenever the
-   * associated hint is updated. The signature should be `void(void*,
-   * czstring, czstring, czstring)`.
+   * \param callback the function object that will be called whenever the associated hint
+   * is updated. The signature should be `void(void*, czstring, czstring, czstring)`.
    * \param userData a pointer to some user data. Defaults to `nullptr`.
    *
    * \throws cen_error if the supplied function pointer is null.
@@ -33238,8 +32388,7 @@ class hint_callback final
   }
 
   /**
-   * \brief Registers the callback to be invoked whenever the associated hint is
-   * updated.
+   * \brief Registers the callback to be invoked whenever the associated hint is updated.
    *
    * \see `SDL_AddHintCallback`
    *
@@ -33251,8 +32400,8 @@ class hint_callback final
   }
 
   /**
-   * \brief Unregisters the callback from being updated whenever the associated
-   * hint is updated.
+   * \brief Unregisters the callback from being updated whenever the associated hint is
+   * updated.
    *
    * \see `SDL_DelHintCallback`
    *
@@ -33264,11 +32413,11 @@ class hint_callback final
   }
 
   /**
-   * \brief Returns a pointer to the function that is invoked when the
-   * associated hint is updated.
+   * \brief Returns a pointer to the function that is invoked when the associated hint is
+   * updated.
    *
-   * \return a pointer to the function that is invoked when the associated
-   * hint is updated.
+   * \return a pointer to the function that is invoked when the associated hint is
+   * updated.
    *
    * \since 4.1.0
    */
@@ -33280,8 +32429,7 @@ class hint_callback final
   /**
    * \brief Returns a pointer to the user data associated with the callback.
    *
-   * \return a pointer to the user data associated with the callback, can be
-   * null.
+   * \return a pointer to the user data associated with the callback, can be null.
    *
    * \since 4.1.0
    */
@@ -33298,29 +32446,24 @@ class hint_callback final
 /**
  * \brief Adds a callback to observe changes of the value of the specified hint.
  *
- * \details A callback handle object is returned, which can be used to easily
- * disconnect the callback later. This function can be used with any function
- * object that is stateless, such as traditional function pointers and lambdas.
- * The simplest way to add a callback is with a lambda and no explicit user
- * data.
+ * \details A callback handle object is returned, which can be used to easily disconnect
+ * the callback later. This function can be used with any function object that is
+ * stateless, such as traditional function pointers and lambdas. The simplest way to add a
+ * callback is with a lambda and no explicit user data.
  *
- * \note The callback will be immediately invoked with the current value of
- * the hint.
+ * \note The callback will be immediately invoked with the current value of the hint.
  *
- * \note In a future version of centurion (that supports C++20), the
- * signature of the function object will be dependent on the `UserData` type.
- * Unfortunately, this isn't really doable with C++17. Since it requires
- * default-constructible stateless lambdas.
+ * \note In a future version of centurion (that supports C++20), the signature of the
+ * function object will be dependent on the `UserData` type. Unfortunately, this isn't
+ * really doable with C++17. Since it requires default-constructible stateless lambdas.
  *
- * \tparam Hint should one of the many hint types defined in this header.
- * However, all it requires is that the type provides a static method that
- * returns a `czstring`.
+ * \tparam Hint should one of the many hint types defined in this header. However, all it
+ * requires is that the type provides a static method that returns a `czstring`.
  * \tparam UserData the type of the user data, defaults to void.
  *
- * \param fun the function object that will be invoked when the hint is
- * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
- * \param userData the user data to associate with the callback, defaults to
- * `nullptr`.
+ * \param fun the function object that will be invoked when the hint is updated. The
+ * signature should be `void(void*, czstring, czstring, czstring)`.
+ * \param userData the user data to associate with the callback.
  *
  * \return a handle to the added callback.
  *
@@ -34131,8 +33274,6 @@ namespace cen {
  * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
  * \since 3.1.0
- *
- * \headerfile button_state.hpp
  */
 enum class button_state : u8
 {
@@ -34333,8 +33474,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -34365,15 +33504,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -34397,15 +33533,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -34429,15 +33562,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -34461,15 +33591,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -34538,9 +33665,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -34550,12 +33677,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -34583,13 +33708,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -34647,8 +33771,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -34780,9 +33903,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -34792,12 +33915,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -34816,18 +33937,16 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -34851,8 +33970,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *
@@ -35189,16 +34308,14 @@ namespace literals {
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -35359,8 +34476,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -35391,15 +34506,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -35423,15 +34535,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -35455,15 +34564,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -35487,15 +34593,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -35674,11 +34777,11 @@ class pointer_manager final
 /**
  * \def CENTURION_MAKE_VERSION_NUMBER
  *
- * \brief Helper macro for creating version numbers from a set of
- * major/minor/patch numbers.
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
  *
- * \details For example, if the version is 8.4.2, the resulting version number
- * would be 8402.
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
  *
  * \since 6.0.0
  */
@@ -35699,11 +34802,11 @@ class pointer_manager final
 /**
  * \def CENTURION_VERSION_AT_LEAST
  *
- * \brief This macro is intended to be used for conditional compilation, based
- * on the Centurion version.
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
  *
- * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
- * where you use it as the condition with `#if` statements.
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
  *
  * \since 6.0.0
  */
@@ -35720,12 +34823,10 @@ namespace cen {
  *
  * \brief Represents a set of major/minor/patch version numbers.
  *
- * \details The members of this struct are by default initialized to the current
- * Centurion version values.
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
  *
  * \version 6.0.0
- *
- * \headerfile version.hpp
  */
 struct version final
 {
@@ -35735,15 +34836,15 @@ struct version final
 };
 
 /**
- * \brief Indicates whether or not the current Centurion version is at least
- * equal to the specified version.
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
  *
  * \param major the major version value.
  * \param minor the minor version value.
  * \param patch the patch version value.
  *
- * \return `true` if the version of Centurion is at least the specified version;
- * `false` otherwise.
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
  *
  * \see `CENTURION_VERSION_AT_LEAST`
  *
@@ -35764,8 +34865,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2.
  *
@@ -35793,8 +34894,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_image that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_image.
  *
@@ -35822,8 +34923,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_mixer that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_mixer.
  *
@@ -35851,8 +34952,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_ttf that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2_ttf.
  *
@@ -36128,9 +35229,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -36148,12 +35249,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36165,8 +35265,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36182,8 +35281,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36199,8 +35297,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36216,8 +35313,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36233,8 +35329,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -36260,20 +35355,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -36316,12 +35411,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -36344,8 +35436,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -36369,8 +35460,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -36748,9 +35839,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -36769,8 +35859,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -36784,17 +35873,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -37011,8 +36098,6 @@ namespace cen {
  * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
  * \since 3.1.0
- *
- * \headerfile button_state.hpp
  */
 enum class button_state : u8
 {
@@ -37114,9 +36199,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -37134,12 +36219,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37151,8 +36235,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37168,8 +36251,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37185,8 +36267,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37202,8 +36283,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37219,8 +36299,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -37246,20 +36325,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -37307,8 +36386,6 @@ namespace cen {
  * \brief Provides values that represent different power states of a joystick.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_power
 {
@@ -37317,8 +36394,7 @@ enum class joystick_power
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
-                                          * worry about power. */
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
   max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
 };
 
@@ -37328,8 +36404,6 @@ enum class joystick_power
  * \brief Represents the various states of a joystick hat.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class hat_state : u8
 {
@@ -37350,8 +36424,6 @@ enum class hat_state : u8
  * \brief Provides values that represent different types of "joysticks".
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_type
 {
@@ -37373,21 +36445,14 @@ enum class joystick_type
  * \brief Represents the difference in a joystick ball axis position.
  *
  * \since 4.2.0
- * \headerfile joystick.hpp
- *
- * \var ball_axis_change::dx
- * Difference in x-axis position since last poll.
- *
- * \var ball_axis_change::dy
- * Difference in y-axis position since last poll.
  */
 struct ball_axis_change final
 {
-  int dx;
-  int dy;
+  int dx;  ///< Difference in x-axis position since last poll.
+  int dy;  ///< Difference in y-axis position since last poll.
 };
 
-template <typename B>
+template <typename T>
 class basic_joystick;
 
 /**
@@ -37413,17 +36478,15 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  *
  * \brief Represents a joystick device.
  *
- * \details The game controller API is built on top of the joystick API, which
- * means that the game controller is higher-level and easier to use.
+ * \details The game controller API is built on top of the joystick API, which means that
+ * the game controller is higher-level and easier to use.
  *
  * \since 4.2.0
  *
  * \see joystick
  * \see joystick_handle
- *
- * \headerfile joystick.hpp
  */
-template <typename B>
+template <typename T>
 class basic_joystick final
 {
  public:
@@ -37435,19 +36498,17 @@ class basic_joystick final
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
-   * \note The created instance will only claim ownership of the supplied
-   * pointer if the class has owning semantics, i.e. if it's a ``joystick``
-   * instance.
+   * \note The created instance will only claim ownership of the supplied pointer if the
+   * class has owning semantics, i.e. if it's a `joystick` instance.
    *
    * \param joystick a pointer to the existing joystick.
    *
-   * \throws cen_error if the supplied pointer is null and the joystick is
-   * owning.
+   * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
       : m_joystick{joystick}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_joystick)
       {
@@ -37461,13 +36522,11 @@ class basic_joystick final
   /**
    * \brief Creates an owning joystick based on a joystick device index.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param index the device index of the joystick.
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick)
@@ -37479,11 +36538,9 @@ class basic_joystick final
   /**
    * \brief Creates a handle to an owning joystick.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_joystick(const joystick& owner) noexcept : m_joystick{owner.get()}
   {}
 
@@ -37492,12 +36549,11 @@ class basic_joystick final
    *
    * \param id the joystick ID associated with the desired joystick.
    *
-   * \return a handle to the joystick associated with the supplied ID, might be
-   * empty.
+   * \return a handle to the joystick associated with the supplied ID, might be empty.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -37507,8 +36563,7 @@ class basic_joystick final
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Returns a handle to the joystick associated with the specified
-   * player index.
+   * \brief Returns a handle to the joystick associated with the specified player index.
    *
    * \param playerIndex the player index of the desired joystick.
    *
@@ -37516,7 +36571,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -37530,8 +36585,8 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this method cancels any previous rumble effects. This
-   * method has no effect if the joystick doesn't support rumble effects.
+   * \details Invoking this method cancels any previous rumble effects. This method has no
+   * effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
    * \param highFreq the intensity of the high frequency (right) motor.
@@ -37556,9 +36611,8 @@ class basic_joystick final
   /**
    * \brief Starts a rumble effect in the joystick's triggers.
    *
-   * \details Calls to this function cancels any previously active rumble
-   * effect. Furthermore, supplying 0 as intensities will stop the rumble
-   * effect.
+   * \details Calls to this function cancels any previously active rumble effect.
+   * Furthermore, supplying 0 as intensities will stop the rumble effect.
    *
    * \param left the intensity used by the left rumble motor.
    * \param right the intensity used by the right rumble motor.
@@ -37584,8 +36638,8 @@ class basic_joystick final
   /**
    * \brief Sets the color of the LED light, if the joystick has one.
    *
-   * \param color the color that will be used by the LED, note that the alpha
-   * component is ignored.
+   * \param color the color that will be used by the LED, note that the alpha component is
+   * ignored.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -37627,8 +36681,8 @@ class basic_joystick final
    * \param nButtons the number of buttons.
    * \param nHats the number of joystick hats.
    *
-   * \return the device index of the virtual joystick; `std::nullopt` if
-   * something went wrong.
+   * \return the device index of the virtual joystick; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -37736,28 +36790,28 @@ class basic_joystick final
    *
    * \details For XInput controllers this returns the XInput user index.
    *
-   * \return the player index associated with the joystick; `std::nullopt` if it
-   * can't be obtained
+   * \return the player index associated with the joystick; `std::nullopt` if it can't be
+   * obtained
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the type associated with the joystick.
    *
-   * \return a `joystick::Type` value that represents the type of the joystick.
+   * \return the type of the joystick.
    *
    * \since 4.2.0
    */
@@ -37769,63 +36823,62 @@ class basic_joystick final
   /**
    * \brief Returns the USB vendor ID of the joystick.
    *
-   * \return the USB vendor ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB vendor ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the USB product ID of the joystick.
    *
-   * \return the USB product ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB product ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the product version of the joystick, if available.
    *
-   * \return the product version of the joystick; `std::nullopt` if it isn't
-   * available.
+   * \return the product version of the joystick; `std::nullopt` if it isn't available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
@@ -37874,8 +36927,8 @@ class basic_joystick final
   /**
    * \brief Returns the serial number associated with the joystick.
    *
-   * \return the serial number of the joystick; a null pointer is returned if
-   * the serial number isn't available.
+   * \return the serial number of the joystick; a null pointer is returned if the serial
+   * number isn't available.
    *
    * \since 5.2.0
    */
@@ -37904,15 +36957,15 @@ class basic_joystick final
   /// \{
 
   /**
-   * \brief Returns the player index of the joystick associated with the
-   * specified device index.
+   * \brief Returns the player index of the joystick associated with the specified device
+   * index.
    *
    * \note This method can be called before any joysticks are opened.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the player index of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the player index of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -37920,19 +36973,18 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the type of the joystick associated with the specified
-   * device index.
+   * \brief Returns the type of the joystick associated with the specified device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
@@ -37946,61 +36998,61 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the USB vendor ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB vendor ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the USB product ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB product ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB product ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB product ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the product version for the joystick associated with the
-   * specified device index.
+   * \brief Returns the product version for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the product version of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the product version of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -38008,25 +37060,23 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the GUID for the joystick associated with the specified
-   * device index.
+   * \brief Returns the GUID for the joystick associated with the specified device index.
    *
    * \note The GUID is implementation-dependent.
    * \note This function can be called before any joysticks are opened.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
    * \return the GUID of the joystick associated with the device index.
    *
@@ -38038,14 +37088,12 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the associated with the joystick with the specified
-   * device index.
+   * \brief Returns the associated with the joystick with the specified device index.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
-   * \return the name associated with the joystick; `nullptr` if no name is
-   * found.
+   * \return the name associated with the joystick; a null string is returned if no name
+   * is found.
    *
    * \since 4.2.0
    */
@@ -38055,13 +37103,13 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the instance ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the instance ID for the joystick associated with the specified device
+   * index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
-   * be obtained.
+   * \return the instance ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -38069,13 +37117,13 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1)
+    if (id != -1)
     {
-      return std::nullopt;
+      return id;
     }
     else
     {
-      return id;
+      return std::nullopt;
     }
   }
 
@@ -38084,13 +37132,13 @@ class basic_joystick final
   /**
    * \brief Returns the ball axis change since the last poll.
    *
-   * \note Trackballs can only return relative motion since the last call, these
-   * motion deltas are placed into the `BallAxisChange` struct.
+   * \note Trackballs can only return relative motion since the last call, these motion
+   * deltas are placed into the `BallAxisChange` struct.
    *
    * \param ball the ball index to check, start at 0.
    *
-   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something
-   * goes wrong.
+   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something goes
+   * wrong.
    *
    * \since 4.2.0
    */
@@ -38098,8 +37146,7 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    const auto result = SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0)
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
     {
       return change;
     }
@@ -38112,30 +37159,21 @@ class basic_joystick final
   /**
    * \brief Returns the current position of the specified axis.
    *
-   * \details Most modern joysticks let the X-axis be represented by 0
-   * and the Y-axis by 1. To account for jitter, it may be necessary to impose
-   * some kind of tolerance on the returned value.
+   * \details Most modern joysticks let the X-axis be represented by 0 and the Y-axis
+   * by 1. To account for jitter, it may be necessary to impose some kind of tolerance on
+   * the returned value.
    *
    * \note Some joysticks use axes 2 and 3 for extra buttons.
    *
    * \param axis the ID of the axis to query.
    *
-   * \return a 16-bit signed integer that represents the position of the
-   * specified axis; `std::nullopt` if something goes wrong.
+   * \return the position of the specified axis.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> i16
   {
-    const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return result;
-    }
+    return SDL_JoystickGetAxis(m_joystick, axis);
   }
 
   /**
@@ -38143,8 +37181,8 @@ class basic_joystick final
    *
    * \param axis the axis that will be queried. Starts at 0.
    *
-   * \return the initial state of the axis; `std::nullopt` if the axis doesn't
-   * have an initial state.
+   * \return the initial state of the axis; `std::nullopt` if the axis doesn't have an
+   * initial state.
    *
    * \since 4.2.0
    */
@@ -38152,9 +37190,7 @@ class basic_joystick final
       -> std::optional<i16>
   {
     i16 state{};
-    const auto hadInitialState =
-        SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState)
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
     {
       return state;
     }
@@ -38227,7 +37263,7 @@ class basic_joystick final
   /**
    * \brief Returns the current power level of the joystick.
    *
-   * \return a `joystick::Power` value that represents the current power level.
+   * \return the current power level.
    *
    * \since 4.2.0
    */
@@ -38255,11 +37291,9 @@ class basic_joystick final
    *
    * \param hat the index of the hat to query, indices start at 0.
    *
-   * \return a `HatState` value that represents the current state of the hat.
+   * \return the current state of the hat.
    *
    * \since 4.2.0
-   *
-   * \see `joystick::HatState`
    */
   [[nodiscard]] auto get_hat_state(const int hat) const noexcept -> hat_state
   {
@@ -38269,8 +37303,8 @@ class basic_joystick final
   /**
    * \brief Updates the state of all open joysticks.
    *
-   * \note This is done automatically by the event loop if any joystick
-   * events are enabled.
+   * \note This is done automatically by the event loop if any joystick events are
+   * enabled.
    *
    * \since 4.2.0
    */
@@ -38282,10 +37316,9 @@ class basic_joystick final
   /**
    * \brief Locks the access to all joysticks.
    *
-   * \details If you are using the joystick API from multiple threads you
-   * should use this method to restrict access to the joysticks.
+   * \details If you are using the joystick API from multiple threads you should use this
+   * method to restrict access to the joysticks.
    *
-   * \see SDL_LockJoysticks
    * \since 4.2.0
    */
   static void lock() noexcept
@@ -38296,7 +37329,6 @@ class basic_joystick final
   /**
    * \brief Unlocks the access to all joysticks.
    *
-   * \see SDL_UnlockJoysticks
    * \since 4.2.0
    */
   static void unlock() noexcept
@@ -38308,17 +37340,14 @@ class basic_joystick final
    * \brief Specifies whether or not joystick event polling is enabled.
    *
    * \details If joystick event polling is disabled, then you must manually call
-   * `joystick::update()` in order to update the joystick state.
+   * `basic_joystick::update()` in order to update the joystick state.
    *
    * \note It's recommended to leave joystick event polling enabled.
    *
-   * \warning Calling this function might cause all events currently in
-   * the event queue to be deleted.
+   * \warning Calling this function might cause all events currently in the event queue to
+   * be deleted.
    *
-   * \param enabled `true` if joystick event polling should be enabled;
-   * `false` otherwise.
-   *
-   * \see SDL_JoystickEventState(int)
+   * \param enabled `true` if joystick event polling should be enabled; `false` otherwise.
    *
    * \since 4.2.0
    */
@@ -38342,21 +37371,21 @@ class basic_joystick final
   /**
    * \brief Returns the amount of currently available joysticks.
    *
-   * \return the current amount of available joysticks; `std::nullopt` if
-   * something goes wrong.
+   * \return the current amount of available joysticks; `std::nullopt` if something goes
+   * wrong.
    *
    * \since 5.1.0
    */
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0)
+    if (result >= 0)
     {
-      return std::nullopt;
+      return result;
     }
     else
     {
-      return result;
+      return std::nullopt;
     }
   }
 
@@ -38366,8 +37395,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID, can't be null.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 4.2.0
    */
@@ -38384,8 +37411,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 5.3.0
    */
@@ -38422,12 +37447,11 @@ class basic_joystick final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam U dummy parameter for SFINAE.
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -38436,13 +37460,9 @@ class basic_joystick final
   /**
    * \brief Returns a pointer to the associated `SDL_Joystick`.
    *
-   * \warning Use of this method is not recommended. However, it can be useful
-   * since many SDL calls use non-const pointers even when no change will be
-   * applied.
-   *
    * \warning Don't take ownership of the returned pointer!
    *
-   * \return a pointer to the internal `SDL_Joystick`.
+   * \return a pointer to the associated `SDL_Joystick`.
    *
    * \since 4.2.0
    */
@@ -38462,7 +37482,7 @@ class basic_joystick final
       }
     }
   };
-  detail::pointer_manager<B, SDL_Joystick, deleter> m_joystick;
+  detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
 };
 
 /**
@@ -38479,8 +37499,6 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  const auto* name = joystick.name();
-
   czstring serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
@@ -38489,7 +37507,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+         ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -38737,12 +37755,10 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \brief Represents a sensor device.
  *
- * \see sensor
- * \see sensor_handle
+ * \see `sensor`
+ * \see `sensor_handle`
  *
  * \since 5.2.0
- *
- * \headerfile sensor.hpp
  */
 template <typename T>
 class basic_sensor final
@@ -38754,13 +37770,12 @@ class basic_sensor final
   /**
    * \brief Creates a sensor instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -38778,8 +37793,6 @@ class basic_sensor final
 
   /**
    * \brief Creates an owning sensor instance based on a device index.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param index the device index of the sensor.
    *
@@ -38799,8 +37812,6 @@ class basic_sensor final
   /**
    * \brief Creates a sensor handle based on an owning sensor.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param owner the associated owning sensor.
    *
    * \since 5.2.0
@@ -38814,8 +37825,7 @@ class basic_sensor final
   /**
    * \brief Updates the state of all open sensors.
    *
-   * \note This is done automatically by the event loop if sensor events are
-   * enabled.
+   * \note This is done automatically by the event loop if sensor events are enabled.
    *
    * \since 5.2.0
    */
@@ -38886,8 +37896,8 @@ class basic_sensor final
   /**
    * \brief Returns the name associated with the sensor device.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available.
    *
    * \since 5.2.0
    */
@@ -38925,8 +37935,7 @@ class basic_sensor final
    *
    * \tparam size the number of data elements, varies from sensor to sensor.
    *
-   * \return the data associated with the sensor; `std::nullopt` if something
-   * goes wrong.
+   * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -38934,8 +37943,7 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
-    if (result != -1)
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
     }
@@ -38969,8 +37977,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the unique instance ID associated with a sensor; `std::nullopt` if
-   * the index is invalid.
+   * \return the unique instance ID associated with a sensor; `std::nullopt` if the index
+   * is invalid.
    *
    * \since 5.2.0
    */
@@ -38992,8 +38000,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available or if the index was invalid.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available or if the index was invalid.
    *
    * \since 5.2.0
    */
@@ -39021,8 +38029,7 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return a non-portable sensor type value; `std::nullopt` if the index is
-   * invalid.
+   * \return a non-portable sensor type value; `std::nullopt` if the index is invalid.
    *
    * \since 5.2.0
    */
@@ -39047,8 +38054,6 @@ class basic_sensor final
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -39076,8 +38081,6 @@ class basic_sensor final
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
- * \tparam T the ownership semantics type of the sensor class.
- *
  * \param sensor the sensor that will be converted.
  *
  * \return a string that represents a sensor instance.
@@ -39094,8 +38097,6 @@ template <typename T>
 
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
- *
- * \tparam T the ownership semantics type of the sensor class.
  *
  * \param stream the stream that will be used.
  * \param sensor the sensor that will be printed.
@@ -39212,8 +38213,6 @@ namespace cen::touch {
  * \brief Represents the state of a finger.
  *
  * \since 5.2.0
- *
- * \headerfile touch.hpp
  */
 struct finger_state final
 {
@@ -39228,30 +38227,18 @@ struct finger_state final
  *
  * \brief Provides values that represent different touch device types.
  *
- * \var device_type::invalid
- * Indicates an invalid touch device type.
- *
- * \var device_type::direct
- * Indicates a touch screen with window-relative coordinates.
- *
- * \var device_type::indirect_absolute
- * Indicates a trackpad with absolute device coordinates.
- *
- * \var device_type::indirect_relative
- * Indicates a trackpad with screen cursor-relative coordinates.
- *
  * \see `SDL_TouchDeviceType`
  *
  * \since 4.3.0
- *
- * \headerfile touch.hpp
  */
 enum class device_type
 {
-  invalid = SDL_TOUCH_DEVICE_INVALID,
-  direct = SDL_TOUCH_DEVICE_DIRECT,
-  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
-  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
+  // clang-format off
+  invalid = SDL_TOUCH_DEVICE_INVALID,                     ///< Invalid touch device.
+  direct = SDL_TOUCH_DEVICE_DIRECT,                       ///< Touch screen with window-relative coordinates.
+  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE, ///< Trackpad with absolute device coordinates.
+  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE  ///< Trackpad with screen cursor-relative coordinates.
+  // clang-format on
 };
 
 /**
@@ -39271,7 +38258,8 @@ enum class device_type
  *
  * \param index the index of the desired touch device.
  *
- * \return a `SDL_TouchID` value; or `std::nullopt` if there is no such value.
+ * \return the touch device ID associated with the index; `std::nullopt` if there is no
+ * such value.
  *
  * \since 4.3.0
  */
@@ -39323,8 +38311,7 @@ enum class device_type
  * \param id the touch ID of the finger.
  * \param index the index of the finger object.
  *
- * \return an `SDL_Finger` instance; or `std::nullopt` if no such instance could
- * be obtained.
+ * \return the associated finger; `std::nullopt` if no such instance could be obtained.
  *
  * \since 4.3.0
  */
@@ -39342,8 +38329,7 @@ enum class device_type
 }
 
 /**
- * \brief Returns the device ID used for mouse events simulated with touch
- * input.
+ * \brief Returns the device ID used for mouse events simulated with touch input.
  *
  * \return a device ID.
  *
@@ -39355,10 +38341,9 @@ enum class device_type
 }
 
 /**
- * \brief Returns the `SDL_TouchID` used by touch events simulated with mouse
- * input.
+ * \brief Returns the touch ID used by touch events simulated with mouse input.
  *
- * \return a `SDL_TouchID` value.
+ * \return the touch ID used by touch events simulated with mouse input.
  *
  * \since 4.3.0
  */
@@ -39434,13 +38419,11 @@ namespace cen {
 /**
  * \enum controller_type
  *
- * \brief Mirrors the `SDL_GameControllerType` enum.
+ * \brief Represents different game controller types.
  *
  * \see `SDL_GameControllerType`
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_type
 {
@@ -39466,13 +38449,11 @@ enum class controller_type
 /**
  * \enum controller_axis
  *
- * \brief Mirrors the values of the `SDL_GameControllerAxis` enum.
+ * \brief Represents different game controller axes.
  *
  * \see `SDL_GameControllerAxis`
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_axis
 {
@@ -39489,11 +38470,11 @@ enum class controller_axis
 /**
  * \enum controller_button
  *
- * \brief Mirrors the values of the `SDL_GameControllerButton` enum.
+ * \brief Represents different game controller buttons.
+ *
+ * \see `SDL_GameControllerButton`
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_button
 {
@@ -39534,11 +38515,11 @@ enum class controller_button
 /**
  * \enum controller_bind_type
  *
- * \brief Mirrors the values of the `SDL_GameControllerBindType` enum.
+ * \brief Represents different game controller bind types.
+ *
+ * \see `SDL_GameControllerBindType`
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_bind_type
 {
@@ -39572,14 +38553,21 @@ using controller_handle = basic_controller<detail::handle_type>;
 /**
  * \class basic_controller
  *
- * \brief Represents a game controller, e.g. an xbox-controller.
+ * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
+ *
+ * \details You may need to load appropriate game controller mappings before you can begin
+ * using the game controller API with certain controllers. This can be accomplished using
+ * the `cen::hint::controller::config_file` hint, or the `load_mappings()` and
+ * `add_mapping()` functions.
+ *
+ * \details For a community managed database file of game controller mappings, see
+ * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn’t work for some
+ * reason, you should be able to find a copy in the Centurion test resources folder).
  *
  * \since 5.0.0
  *
- * \see controller
- * \see controller_handle
- *
- * \headerfile controller.hpp
+ * \see `controller`
+ * \see `controller_handle`
  */
 template <typename T>
 class basic_controller final
@@ -40621,20 +39609,18 @@ class basic_controller final
    * \brief Loads a set of game controller mappings from a file.
    *
    * \details A collection of game controller mappings can be found at <a
-   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
-   * mappings for previously known GUIDs will overwrite the previous mappings.
-   * Furthermore, mappings for different platforms than the current platform
-   * will be ignored.
+   * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New mappings for
+   * previously known GUIDs will overwrite the previous mappings. Furthermore, mappings
+   * for different platforms than the current platform will be ignored.
    *
-   * \remarks It's possible to call this function several times to use multiple
-   * mapping files.
+   * \remarks It's possible to call this function several times to use multiple mapping
+   * files.
    *
    * \note The text database is stored entirely in memory during processing.
    *
    * \param file the path of the mapping file.
    *
-   * \return the amount of mappings added; `std::nullopt` if something went
-   * wrong.
+   * \return the amount of mappings added; `std::nullopt` if something went wrong.
    *
    * \since 5.3.0
    */
@@ -41035,8 +40021,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -41129,9 +40115,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -41149,12 +40135,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41166,8 +40151,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41183,8 +40167,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41200,8 +40183,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41217,8 +40199,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41234,8 +40215,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -41261,20 +40241,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -41320,8 +40300,6 @@ namespace cen {
  * \tparam T the representation type, e.g. `float` or `double`.
  *
  * \since 5.2.0
- *
- * \headerfile vector3.hpp
  */
 template <typename T>
 struct vector3 final
@@ -41354,9 +40332,8 @@ struct vector3 final
 /**
  * \brief Serializes a 3D-vector.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the vector components.
@@ -41479,8 +40456,6 @@ inline constexpr u32 haptic_infinity = SDL_HAPTIC_INFINITY;
  * \brief Provides values that represent all of the haptic features.
  *
  * \since 5.2.0
- *
- * \headerfile haptic_feature
  */
 enum class haptic_feature
 {
@@ -41508,8 +40483,6 @@ enum class haptic_feature
  * \brief Represents the different types of haptic directions.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 enum class haptic_direction_type
 {
@@ -41524,8 +40497,6 @@ enum class haptic_direction_type
  * \brief Represents a haptic direction, used by haptic effects.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_direction final
 {
@@ -41545,8 +40516,7 @@ class haptic_direction final
   }
 
   /**
-   * \brief Creates a haptic direction based on an `SDL_HapticDirection`
-   * instance.
+   * \brief Creates a haptic direction based on an `SDL_HapticDirection` instance.
    *
    * \param direction the direction that will be copied.
    *
@@ -41627,8 +40597,8 @@ class haptic_direction final
  *
  * \brief Represents a haptic effect.
  *
- * \details The following is an illustration of the different stages of a haptic
- * effect, copied from the SDL documentation, albeit with tweaked terms.
+ * \details The following is an illustration of the different stages of a haptic effect,
+ * copied from the SDL documentation, albeit with tweaked terms.
  * \verbatim
     Strength
     ^
@@ -41649,11 +40619,9 @@ class haptic_direction final
     delay               duration
     \endverbatim
  *
- * \tparam Derived the type of the subclass for CRTP.
+ * \tparam Derived the type of the subclass, for CRTP.
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 template <typename Derived>
 class haptic_effect
@@ -41679,8 +40647,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param direction the new direction of the effect.
    *
    * \since 5.2.0
@@ -41693,8 +40659,6 @@ class haptic_effect
 
   /**
    * \brief Returns the haptic direction associated with the effect.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the current direction associated with the effect.
    *
@@ -41714,8 +40678,8 @@ class haptic_effect
   /**
    * \brief Sets the effect to be repeated indefinitely when run.
    *
-   * \details This function makes the effect repeat forever when run, but the
-   * attack and fade are not repeated.
+   * \details This function makes the effect repeat forever when run, but the attack and
+   * fade are not repeated.
    *
    * \since 5.2.0
    */
@@ -41727,13 +40691,13 @@ class haptic_effect
   /**
    * \brief Sets the duration of the effect.
    *
-   * \param ms the duration of the effect.
+   * \param duration the duration of the effect.
    *
    * \since 5.2.0
    */
-  void set_duration(const milliseconds<u32> ms) noexcept(noexcept(ms.count()))
+  void set_duration(const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
   {
-    rep().length = ms.count();
+    rep().length = duration.count();
   }
 
   /**
@@ -41741,16 +40705,14 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the delay before before the effect is started.
+   * \param delay the delay before before the effect is started.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_delay<D> = 0>
-  void set_delay(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_delay(const milliseconds<u16> delay) noexcept(noexcept(delay.count()))
   {
-    rep().delay = ms.count();
+    rep().delay = delay.count();
   }
 
   /**
@@ -41769,8 +40731,6 @@ class haptic_effect
    * \brief Returns the delay before before the effect is started.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the delay before before the effect is started.
    *
@@ -41792,8 +40752,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param button the button that triggers the effect.
    *
    * \since 5.2.0
@@ -41809,24 +40767,20 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the minimum interval in between activations of the effect.
+   * \param interval the minimum interval in between activations of the effect.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_trigger<D> = 0>
-  void set_interval(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_interval(const milliseconds<u16> interval) noexcept(noexcept(interval.count()))
   {
-    rep().interval = ms.count();
+    rep().interval = interval.count();
   }
 
   /**
    * \brief Returns the button that triggers the effect.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the button that triggers the effect.
    *
@@ -41842,8 +40796,6 @@ class haptic_effect
    * \brief Returns the minimum interval in between activations of the effect.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the minimum interval in between activations of the effect.
    *
@@ -41865,8 +40817,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param level the level at the start of the attack.
    *
    * \since 5.2.0
@@ -41882,8 +40832,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \param level the level at the *end* of the fade out.
    *
    * \since 5.2.0
@@ -41894,21 +40842,21 @@ class haptic_effect
     rep().fade_level = level;
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the attack.
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the duration of the attack.
+   * \param duration the duration of the attack.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_attack_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_attack_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
   {
-    rep().attack_length = ms.count();
+    rep().attack_length = duration.count();
   }
 
   /**
@@ -41916,24 +40864,22 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
-   * \param ms the duration of the fade out.
+   * \param duration the duration of the fade out.
    *
    * \since 5.2.0
    */
   template <typename D = Derived, has_envelope<D> = 0>
-  void set_fade_duration(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_fade_duration(const milliseconds<u16> duration) noexcept(noexcept(duration.count()))
   {
-    rep().fade_length = ms.count();
+    rep().fade_length = duration.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Returns the level at the *start* of the attack.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the the level at the *start* of the attack.
    *
@@ -41950,8 +40896,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \return the level at the *end* of the fade.
    *
    * \since 5.2.0
@@ -41967,8 +40911,6 @@ class haptic_effect
    *
    * \note This function is not available for all haptic effects.
    *
-   * \tparam D dummy parameter for SFINAE.
-   *
    * \return the duration of the attack.
    *
    * \since 5.2.0
@@ -41983,8 +40925,6 @@ class haptic_effect
    * \brief Returns the duration of the fade out.
    *
    * \note This function is not available for all haptic effects.
-   *
-   * \tparam D dummy parameter for SFINAE.
    *
    * \return the duration of the fade out.
    *
@@ -42058,17 +40998,14 @@ class haptic_effect
 /**
  * \class haptic_constant
  *
- * \brief Represents a haptic effect that applies a constant force in some
- * direction.
+ * \brief Represents a haptic effect that applies a constant force in some direction.
  *
- * \note See the SDL documentation for `SDL_HapticConstant` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticConstant` for  more detailed
+ * documentation.
  *
  * \see SDL_HapticConstant
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_constant final : public haptic_effect<haptic_constant>
 {
@@ -42115,14 +41052,11 @@ class haptic_constant final : public haptic_effect<haptic_constant>
  *
  * \brief Represents a wave-shaped haptic effect that repeats itself over time.
  *
- * \note See the SDL documentation for `SDL_HapticPeriodic` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticPeriodic` for detailed documentation.
  *
  * \see SDL_HapticPeriodic
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_periodic final : public haptic_effect<haptic_periodic>
 {
@@ -42152,8 +41086,6 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \brief Creates a periodic haptic effect.
    *
-   * \details The type of the effects defaults to `sine`.
-   *
    * \since 5.2.0
    */
   explicit haptic_periodic(const periodic_type type = sine) noexcept
@@ -42177,20 +41109,20 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   /**
    * \brief Sets the period of the wave.
    *
-   * \param ms the period duration of the wave.
+   * \param period the period duration of the wave.
    *
    * \since 5.2.0
    */
-  void set_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
   {
-    representation().period = ms.count();
+    representation().period = period.count();
   }
 
   /**
    * \brief Sets the magnitude (peak value) of the wave.
    *
-   * \note If the supplied magnitude is negative, that is interpreted as an
-   * extra phase_shift shift of 180 degrees.
+   * \note If the supplied magnitude is negative, that is interpreted as an extra phase
+   * shift of 180 degrees.
    *
    * \param magnitude the magnitude of the wave, can be negative.
    *
@@ -42214,10 +41146,9 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
   }
 
   /**
-   * \brief Sets the phase_shift shift.
+   * \brief Sets the phase shift.
    *
-   * \param shift the positive phase_shift shift, interpreted as hundredths of a
-   * degree.
+   * \param shift the positive phase shift, interpreted as hundredths of a degree.
    *
    * \since 5.2.0
    */
@@ -42286,9 +41217,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
     return m_effect.periodic;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation();
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticPeriodic&
   {
     return m_effect.periodic;
@@ -42300,14 +41229,11 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
  *
  * \brief Represents a linear or quadratic haptic effect.
  *
- * \note See the SDL documentation for `SDL_HapticRamp` for much more detailed
- * related documentation.
+ * \note See the SDL documentation for `SDL_HapticRamp` for more detailed documentation.
  *
  * \see SDL_HapticRamp
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_ramp final : public haptic_effect<haptic_ramp>
 {
@@ -42388,9 +41314,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
     return m_effect.ramp;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation();
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticRamp&
   {
     return m_effect.ramp;
@@ -42402,14 +41326,11 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
  *
  * \brief Represents a custom haptic effect, similar to a periodic effect.
  *
- * \note See the SDL documentation for `SDL_HapticCustom` for much more detailed
- * related documentation.
+ * \note See the SDL documentation for `SDL_HapticCustom` for detailed documentation.
  *
  * \see SDL_HapticCustom
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_custom final : public haptic_effect<haptic_custom>
 {
@@ -42445,17 +41366,21 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     representation().channels = detail::max(u8{1}, count);
   }
 
+  // clang-format off
+
   /**
    * \brief Sets the duration of the sample periods.
    *
-   * \param ms duration of sample periods.
+   * \param period duration of sample periods.
    *
    * \since 5.2.0
    */
-  void set_sample_period(const milliseconds<u16> ms) noexcept(noexcept(ms.count()))
+  void set_sample_period(const milliseconds<u16> period) noexcept(noexcept(period.count()))
   {
-    representation().period = ms.count();
+    representation().period = period.count();
   }
+
+  // clang-format on
 
   /**
    * \brief Sets the number of samples.
@@ -42474,8 +41399,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
    *
    * \note The data must be allocated and managed by you.
    *
-   * \details The data should consist of `sample_count()` * `axis_count()`
-   * sample items.
+   * \details The data should consist of `sample_count() * axis_count()` sample items.
    *
    * \param data a pointer to the custom sample data.
    *
@@ -42546,9 +41470,7 @@ class haptic_custom final : public haptic_effect<haptic_custom>
     return m_effect.custom;
   }
 
-  /**
-   * \copydoc representation();
-   */
+  /// \copydoc representation()
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticCustom&
   {
     return m_effect.custom;
@@ -42560,14 +41482,11 @@ class haptic_custom final : public haptic_effect<haptic_custom>
  *
  * \brief Represents an axes-based haptic effect.
  *
- * \note See the SDL documentation for `SDL_HapticCondition` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticCondition` for detailed documentation.
  *
  * \see SDL_HapticCondition
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_condition final : public haptic_effect<haptic_condition>
 {
@@ -42811,14 +41730,11 @@ class haptic_condition final : public haptic_effect<haptic_condition>
  * \brief Represents a haptic effect based on controlling the large and small
  * motors featured in many modern game controllers.
  *
- * \note See the SDL documentation for `SDL_HapticLeftRight` for much more
- * detailed related documentation.
+ * \note See the SDL documentation for `SDL_HapticLeftRight` for detailed documentation.
  *
  * \see SDL_HapticLeftRight
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
 class haptic_left_right final : public haptic_effect<haptic_left_right>
 {
@@ -42939,10 +41855,8 @@ using haptic_handle = basic_haptic<detail::handle_type>;
  * \see `haptic_handle`
  *
  * \since 5.2.0
- *
- * \headerfile haptic.hpp
  */
-template <typename B>
+template <typename T>
 class basic_haptic final
 {
  public:
@@ -42954,20 +41868,19 @@ class basic_haptic final
   /**
    * \brief Creates a haptic instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param haptic a pointer to the haptic device data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
-  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<B>())
+  explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<T>())
       : m_haptic{haptic}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_haptic)
       {
@@ -42981,15 +41894,13 @@ class basic_haptic final
    *
    * \note This constructor is only available for owning haptic instances.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param index the device index of the desired haptic device.
    *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic)
@@ -43001,13 +41912,11 @@ class basic_haptic final
   /**
    * \brief Creates a handle based on an owning haptic instance.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param owner the associated owning haptic device.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_haptic(const haptic& owner) noexcept : m_haptic{owner.get()}
   {}
 
@@ -43015,8 +41924,6 @@ class basic_haptic final
    * \brief Creates a haptic device based on a joystick.
    *
    * \note This function is only available for owning haptic instances.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param joystick a joystick handle to the associated joystick.
    *
@@ -43026,8 +41933,8 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T, typename BB = B, detail::is_owner<BB> = 0>
-  [[nodiscard]] static auto from_joystick(const basic_joystick<T>& joystick)
+  template <typename U, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick)
       -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
@@ -43045,15 +41952,13 @@ class basic_haptic final
    *
    * \note This function is only available for owning haptic instances.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \throws sdl_error if the haptic device couldn't be opened.
    *
    * \see `is_mouse_haptic()`
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
     if (auto* ptr = SDL_HapticOpenFromMouse())
@@ -43074,8 +41979,8 @@ class basic_haptic final
   /**
    * \brief Initializes rumble playback for the haptic device.
    *
-   * \return `success` if rumble playback was successfully initialized;
-   * `failure` otherwise.
+   * \return `success` if rumble playback was successfully initialized; `failure`
+   * otherwise.
    *
    * \since 5.2.0
    */
@@ -43087,7 +41992,7 @@ class basic_haptic final
   /**
    * \brief Plays a rumble effect.
    *
-   * \note Make sure to call ``init_rumble()`` before calling this function!
+   * \note Make sure to call `init_rumble()` before calling this function!
    *
    * \param strength the strength of the rumble effect, clamped to [0, 1].
    * \param duration the duration of the rumble effect.
@@ -43108,8 +42013,7 @@ class basic_haptic final
   /**
    * \brief Stops the current rumble effect.
    *
-   * \return `success` if the rumble was successfully stopped; `failure`
-   * otherwise.
+   * \return `success` if the rumble was successfully stopped; `failure` otherwise.
    *
    * \since 5.2.0
    */
@@ -43170,8 +42074,8 @@ class basic_haptic final
    *
    * \param effect the effect that will be uploaded to the device.
    *
-   * \return the ID associated with the uploaded effect; `std::nullopt` if
-   * something went wrong.
+   * \return the ID associated with the uploaded effect; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -43193,8 +42097,7 @@ class basic_haptic final
   /**
    * \brief Attempts to update the effect associated with the specified ID.
    *
-   * \note It is not possible to change the type of the effect through this
-   * function.
+   * \note It is not possible to change the type of the effect through this function.
    *
    * \note You might experience strange results if you call this function for an
    * effect that is currently playing, but it is possible.
@@ -43216,12 +42119,12 @@ class basic_haptic final
   /**
    * \brief Runs the specified effect.
    *
-   * \note If you want to repeat the effect indefinitely without repeating the
-   * attack and fade, see `haptic_effect::set_repeat_forever()`.
+   * \note If you want to repeat the effect indefinitely without repeating the attack and
+   * fade, see `haptic_effect::set_repeat_forever()`.
    *
    * \param id the ID associated with the effect that will be run.
-   * \param iterations the number of iterations, can be `haptic_infinity` to
-   * repeat the effect forever (including the attack and fade).
+   * \param iterations the number of iterations, can be `haptic_infinity` to repeat the
+   * effect forever (including the attack and fade).
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -43263,8 +42166,8 @@ class basic_haptic final
    *
    * \note This is done automatically when the device is destructed.
    *
-   * \details The effect will be destroyed will be stopped if it is running
-   * by the time this function is invoked.
+   * \details The effect will be destroyed will be stopped if it is running by the time
+   * this function is invoked.
    *
    * \param id the ID associated with the effect that will be destroyed.
    *
@@ -43303,8 +42206,8 @@ class basic_haptic final
    * \pre `autocenter` must be greater or equal to zero.
    * \pre `autocenter` must be less than or equal to zero.
    *
-   * \param autocenter the value of the autocenter that will be used, in the
-   * interval [0, 100]. Autocentering will be disabled if this value is zero.
+   * \param autocenter the value of the autocenter that will be used, in the interval [0,
+   * 100]. Autocentering will be disabled if this value is zero.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -43335,13 +42238,11 @@ class basic_haptic final
   }
 
   /**
-   * \brief Indicates whether or not the specified effect is playing on the
-   * device.
+   * \brief Indicates whether or not the specified effect is playing on the device.
    *
    * \pre The device must support the `status` feature.
    *
-   * \return `true` on if the effect is playing on the device; `false`
-   * otherwise.
+   * \return `true` on if the effect is playing on the device; `false` otherwise.
    *
    * \since 5.2.0
    */
@@ -43602,8 +42503,8 @@ class basic_haptic final
   /**
    * \brief Returns the index associated with the haptic device.
    *
-   * \return the index associated with the haptic device; `std::nullopt` if
-   * something goes wrong.
+   * \return the index associated with the haptic device; `std::nullopt` if something goes
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -43623,8 +42524,8 @@ class basic_haptic final
   /**
    * \brief Attempts to return the name associated with the haptic device.
    *
-   * \return the name associated with the haptic device; a null pointer is
-   * returned if no name was found.
+   * \return the name associated with the haptic device; a null pointer is returned if no
+   * name was found.
    *
    * \since 5.2.0
    */
@@ -43643,11 +42544,11 @@ class basic_haptic final
   /**
    * \brief Returns the maximum amount of effect the device can store.
    *
-   * \note This function isn't supported on all platforms and the returned value
-   * should be treated as an approximation.
+   * \note This function isn't supported on all platforms and the returned value should be
+   * treated as an approximation.
    *
-   * \return the maximum number of effects the the haptic device can store;
-   * `std::nullopt` if something goes wrong.
+   * \return the maximum number of effects the the haptic device can store; `std::nullopt`
+   * if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -43665,8 +42566,7 @@ class basic_haptic final
   }
 
   /**
-   * \brief Returns the maximum amount of effects that can be played
-   * simultaneously.
+   * \brief Returns the maximum amount of effects that can be played simultaneously.
    *
    * \note This function isn't supported on all platforms.
    *
@@ -43723,8 +42623,8 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  template <typename T>
-  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<T>& joystick) noexcept
+  template <typename U>
+  [[nodiscard]] static auto is_joystick_haptic(const basic_joystick<U>& joystick) noexcept
       -> bool
   {
     return SDL_JoystickIsHaptic(joystick.get()) == SDL_TRUE;
@@ -43760,13 +42660,11 @@ class basic_haptic final
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_haptic != nullptr;
@@ -43794,11 +42692,10 @@ class basic_haptic final
       SDL_HapticClose(haptic);
     }
   };
-  detail::pointer_manager<B, SDL_Haptic, deleter> m_haptic;
+  detail::pointer_manager<T, SDL_Haptic, deleter> m_haptic;
 
   /**
-   * \brief Indicates whether or not the haptic device supports the specified
-   features.
+   * \brief Indicates whether or not the haptic device supports the specified features.
    *
    * \details The supplied value must be a masked subset of the following flags:
    *
@@ -43830,14 +42727,12 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const uint flag) const noexcept -> bool
   {
-    return static_cast<bool>(flag & SDL_HapticQuery(m_haptic));
+    return flag & SDL_HapticQuery(m_haptic);
   }
 };
 
 /**
  * \brief Returns a textual representation of a haptic device.
- *
- * \tparam B the ownership semantics parameter for the haptic type.
  *
  * \param haptic the haptic device that will be converted.
  *
@@ -43845,8 +42740,8 @@ class basic_haptic final
  *
  * \since 5.2.0
  */
-template <typename B>
-[[nodiscard]] auto to_string(const basic_haptic<B>& haptic) -> std::string
+template <typename T>
+[[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
   return "haptic{data: " + detail::address_of(haptic.get()) +
          ", name: " + str_or_na(haptic.name()) + "}";
@@ -43855,8 +42750,6 @@ template <typename B>
 /**
  * \brief Prints a textual representation of a haptic device using a stream.
  *
- * \tparam B the ownership semantics parameter for the haptic type.
- *
  * \param stream the stream that will be used.
  * \param haptic the haptic device that will be printed.
  *
@@ -43864,8 +42757,8 @@ template <typename B>
  *
  * \since 5.2.0
  */
-template <typename B>
-auto operator<<(std::ostream& stream, const basic_haptic<B>& haptic) -> std::ostream&
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ostream&
 {
   return stream << to_string(haptic);
 }
@@ -43927,8 +42820,6 @@ namespace cen {
  * \brief Provides values that represent different power states of a joystick.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_power
 {
@@ -43937,8 +42828,7 @@ enum class joystick_power
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
-                                          * worry about power. */
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
   max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
 };
 
@@ -43948,8 +42838,6 @@ enum class joystick_power
  * \brief Represents the various states of a joystick hat.
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class hat_state : u8
 {
@@ -43970,8 +42858,6 @@ enum class hat_state : u8
  * \brief Provides values that represent different types of "joysticks".
  *
  * \since 4.2.0
- *
- * \headerfile joystick.hpp
  */
 enum class joystick_type
 {
@@ -43993,21 +42879,14 @@ enum class joystick_type
  * \brief Represents the difference in a joystick ball axis position.
  *
  * \since 4.2.0
- * \headerfile joystick.hpp
- *
- * \var ball_axis_change::dx
- * Difference in x-axis position since last poll.
- *
- * \var ball_axis_change::dy
- * Difference in y-axis position since last poll.
  */
 struct ball_axis_change final
 {
-  int dx;
-  int dy;
+  int dx;  ///< Difference in x-axis position since last poll.
+  int dy;  ///< Difference in y-axis position since last poll.
 };
 
-template <typename B>
+template <typename T>
 class basic_joystick;
 
 /**
@@ -44033,17 +42912,15 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  *
  * \brief Represents a joystick device.
  *
- * \details The game controller API is built on top of the joystick API, which
- * means that the game controller is higher-level and easier to use.
+ * \details The game controller API is built on top of the joystick API, which means that
+ * the game controller is higher-level and easier to use.
  *
  * \since 4.2.0
  *
  * \see joystick
  * \see joystick_handle
- *
- * \headerfile joystick.hpp
  */
-template <typename B>
+template <typename T>
 class basic_joystick final
 {
  public:
@@ -44055,19 +42932,17 @@ class basic_joystick final
   /**
    * \brief Creates a joystick instance based on an existing SDL joystick.
    *
-   * \note The created instance will only claim ownership of the supplied
-   * pointer if the class has owning semantics, i.e. if it's a ``joystick``
-   * instance.
+   * \note The created instance will only claim ownership of the supplied pointer if the
+   * class has owning semantics, i.e. if it's a `joystick` instance.
    *
    * \param joystick a pointer to the existing joystick.
    *
-   * \throws cen_error if the supplied pointer is null and the joystick is
-   * owning.
+   * \throws cen_error if the supplied pointer is null and the joystick is owning.
    */
-  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<B>())
+  explicit basic_joystick(maybe_owner<SDL_Joystick*> joystick) noexcept(!detail::is_owning<T>())
       : m_joystick{joystick}
   {
-    if constexpr (detail::is_owning<B>())
+    if constexpr (detail::is_owning<T>())
     {
       if (!m_joystick)
       {
@@ -44081,13 +42956,11 @@ class basic_joystick final
   /**
    * \brief Creates an owning joystick based on a joystick device index.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param index the device index of the joystick.
    *
    * \throws sdl_error if the joystick couldn't be opened.
    */
-  template <typename BB = B, detail::is_owner<BB> = 0>
+  template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick)
@@ -44099,11 +42972,9 @@ class basic_joystick final
   /**
    * \brief Creates a handle to an owning joystick.
    *
-   * \tparam BB dummy parameter for SFINAE.
-   *
    * \param owner the owning joystick instance.
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit basic_joystick(const joystick& owner) noexcept : m_joystick{owner.get()}
   {}
 
@@ -44112,12 +42983,11 @@ class basic_joystick final
    *
    * \param id the joystick ID associated with the desired joystick.
    *
-   * \return a handle to the joystick associated with the supplied ID, might be
-   * empty.
+   * \return a handle to the joystick associated with the supplied ID, might be empty.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> joystick_handle
   {
@@ -44127,8 +42997,7 @@ class basic_joystick final
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Returns a handle to the joystick associated with the specified
-   * player index.
+   * \brief Returns a handle to the joystick associated with the specified player index.
    *
    * \param playerIndex the player index of the desired joystick.
    *
@@ -44136,7 +43005,7 @@ class basic_joystick final
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> joystick_handle
   {
@@ -44150,8 +43019,8 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this method cancels any previous rumble effects. This
-   * method has no effect if the joystick doesn't support rumble effects.
+   * \details Invoking this method cancels any previous rumble effects. This method has no
+   * effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
    * \param highFreq the intensity of the high frequency (right) motor.
@@ -44176,9 +43045,8 @@ class basic_joystick final
   /**
    * \brief Starts a rumble effect in the joystick's triggers.
    *
-   * \details Calls to this function cancels any previously active rumble
-   * effect. Furthermore, supplying 0 as intensities will stop the rumble
-   * effect.
+   * \details Calls to this function cancels any previously active rumble effect.
+   * Furthermore, supplying 0 as intensities will stop the rumble effect.
    *
    * \param left the intensity used by the left rumble motor.
    * \param right the intensity used by the right rumble motor.
@@ -44204,8 +43072,8 @@ class basic_joystick final
   /**
    * \brief Sets the color of the LED light, if the joystick has one.
    *
-   * \param color the color that will be used by the LED, note that the alpha
-   * component is ignored.
+   * \param color the color that will be used by the LED, note that the alpha component is
+   * ignored.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -44247,8 +43115,8 @@ class basic_joystick final
    * \param nButtons the number of buttons.
    * \param nHats the number of joystick hats.
    *
-   * \return the device index of the virtual joystick; `std::nullopt` if
-   * something went wrong.
+   * \return the device index of the virtual joystick; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.2.0
    */
@@ -44356,28 +43224,28 @@ class basic_joystick final
    *
    * \details For XInput controllers this returns the XInput user index.
    *
-   * \return the player index associated with the joystick; `std::nullopt` if it
-   * can't be obtained
+   * \return the player index associated with the joystick; `std::nullopt` if it can't be
+   * obtained
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the type associated with the joystick.
    *
-   * \return a `joystick::Type` value that represents the type of the joystick.
+   * \return the type of the joystick.
    *
    * \since 4.2.0
    */
@@ -44389,63 +43257,62 @@ class basic_joystick final
   /**
    * \brief Returns the USB vendor ID of the joystick.
    *
-   * \return the USB vendor ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB vendor ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the USB product ID of the joystick.
    *
-   * \return the USB product ID associated with the joystick; `std::nullopt` if
-   * it isn't available.
+   * \return the USB product ID associated with the joystick; `std::nullopt` if it isn't
+   * available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
    * \brief Returns the product version of the joystick, if available.
    *
-   * \return the product version of the joystick; `std::nullopt` if it isn't
-   * available.
+   * \return the product version of the joystick; `std::nullopt` if it isn't available.
    *
    * \since 4.2.0
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
@@ -44494,8 +43361,8 @@ class basic_joystick final
   /**
    * \brief Returns the serial number associated with the joystick.
    *
-   * \return the serial number of the joystick; a null pointer is returned if
-   * the serial number isn't available.
+   * \return the serial number of the joystick; a null pointer is returned if the serial
+   * number isn't available.
    *
    * \since 5.2.0
    */
@@ -44524,15 +43391,15 @@ class basic_joystick final
   /// \{
 
   /**
-   * \brief Returns the player index of the joystick associated with the
-   * specified device index.
+   * \brief Returns the player index of the joystick associated with the specified device
+   * index.
    *
    * \note This method can be called before any joysticks are opened.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the player index of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the player index of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -44540,19 +43407,18 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the type of the joystick associated with the specified
-   * device index.
+   * \brief Returns the type of the joystick associated with the specified device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
@@ -44566,61 +43432,61 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the USB vendor ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB vendor ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the USB product ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the USB product ID for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the USB product ID of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the USB product ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the product version for the joystick associated with the
-   * specified device index.
+   * \brief Returns the product version for the joystick associated with the specified
+   * device index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the product version of the desired joystick; `std::nullopt` if it
-   * can't be obtained.
+   * \return the product version of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -44628,25 +43494,23 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
   /**
-   * \brief Returns the GUID for the joystick associated with the specified
-   * device index.
+   * \brief Returns the GUID for the joystick associated with the specified device index.
    *
    * \note The GUID is implementation-dependent.
    * \note This function can be called before any joysticks are opened.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
    * \return the GUID of the joystick associated with the device index.
    *
@@ -44658,14 +43522,12 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the associated with the joystick with the specified
-   * device index.
+   * \brief Returns the associated with the joystick with the specified device index.
    *
-   * \param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
+   * \param deviceIndex refers to the N'th joystick that is currently recognized by SDL.
    *
-   * \return the name associated with the joystick; `nullptr` if no name is
-   * found.
+   * \return the name associated with the joystick; a null string is returned if no name
+   * is found.
    *
    * \since 4.2.0
    */
@@ -44675,13 +43537,13 @@ class basic_joystick final
   }
 
   /**
-   * \brief Returns the instance ID for the joystick associated with the
-   * specified device index.
+   * \brief Returns the instance ID for the joystick associated with the specified device
+   * index.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
-   * be obtained.
+   * \return the instance ID of the desired joystick; `std::nullopt` if it can't be
+   * obtained.
    *
    * \since 4.2.0
    */
@@ -44689,13 +43551,13 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1)
+    if (id != -1)
     {
-      return std::nullopt;
+      return id;
     }
     else
     {
-      return id;
+      return std::nullopt;
     }
   }
 
@@ -44704,13 +43566,13 @@ class basic_joystick final
   /**
    * \brief Returns the ball axis change since the last poll.
    *
-   * \note Trackballs can only return relative motion since the last call, these
-   * motion deltas are placed into the `BallAxisChange` struct.
+   * \note Trackballs can only return relative motion since the last call, these motion
+   * deltas are placed into the `BallAxisChange` struct.
    *
    * \param ball the ball index to check, start at 0.
    *
-   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something
-   * goes wrong.
+   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something goes
+   * wrong.
    *
    * \since 4.2.0
    */
@@ -44718,8 +43580,7 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    const auto result = SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
-    if (result == 0)
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
     {
       return change;
     }
@@ -44732,30 +43593,21 @@ class basic_joystick final
   /**
    * \brief Returns the current position of the specified axis.
    *
-   * \details Most modern joysticks let the X-axis be represented by 0
-   * and the Y-axis by 1. To account for jitter, it may be necessary to impose
-   * some kind of tolerance on the returned value.
+   * \details Most modern joysticks let the X-axis be represented by 0 and the Y-axis
+   * by 1. To account for jitter, it may be necessary to impose some kind of tolerance on
+   * the returned value.
    *
    * \note Some joysticks use axes 2 and 3 for extra buttons.
    *
    * \param axis the ID of the axis to query.
    *
-   * \return a 16-bit signed integer that represents the position of the
-   * specified axis; `std::nullopt` if something goes wrong.
+   * \return the position of the specified axis.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept -> i16
   {
-    const auto result = SDL_JoystickGetAxis(m_joystick, axis);
-    if (result == 0)
-    {
-      return std::nullopt;
-    }
-    else
-    {
-      return result;
-    }
+    return SDL_JoystickGetAxis(m_joystick, axis);
   }
 
   /**
@@ -44763,8 +43615,8 @@ class basic_joystick final
    *
    * \param axis the axis that will be queried. Starts at 0.
    *
-   * \return the initial state of the axis; `std::nullopt` if the axis doesn't
-   * have an initial state.
+   * \return the initial state of the axis; `std::nullopt` if the axis doesn't have an
+   * initial state.
    *
    * \since 4.2.0
    */
@@ -44772,9 +43624,7 @@ class basic_joystick final
       -> std::optional<i16>
   {
     i16 state{};
-    const auto hadInitialState =
-        SDL_JoystickGetAxisInitialState(m_joystick, axis, &state);
-    if (hadInitialState)
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
     {
       return state;
     }
@@ -44847,7 +43697,7 @@ class basic_joystick final
   /**
    * \brief Returns the current power level of the joystick.
    *
-   * \return a `joystick::Power` value that represents the current power level.
+   * \return the current power level.
    *
    * \since 4.2.0
    */
@@ -44875,11 +43725,9 @@ class basic_joystick final
    *
    * \param hat the index of the hat to query, indices start at 0.
    *
-   * \return a `HatState` value that represents the current state of the hat.
+   * \return the current state of the hat.
    *
    * \since 4.2.0
-   *
-   * \see `joystick::HatState`
    */
   [[nodiscard]] auto get_hat_state(const int hat) const noexcept -> hat_state
   {
@@ -44889,8 +43737,8 @@ class basic_joystick final
   /**
    * \brief Updates the state of all open joysticks.
    *
-   * \note This is done automatically by the event loop if any joystick
-   * events are enabled.
+   * \note This is done automatically by the event loop if any joystick events are
+   * enabled.
    *
    * \since 4.2.0
    */
@@ -44902,10 +43750,9 @@ class basic_joystick final
   /**
    * \brief Locks the access to all joysticks.
    *
-   * \details If you are using the joystick API from multiple threads you
-   * should use this method to restrict access to the joysticks.
+   * \details If you are using the joystick API from multiple threads you should use this
+   * method to restrict access to the joysticks.
    *
-   * \see SDL_LockJoysticks
    * \since 4.2.0
    */
   static void lock() noexcept
@@ -44916,7 +43763,6 @@ class basic_joystick final
   /**
    * \brief Unlocks the access to all joysticks.
    *
-   * \see SDL_UnlockJoysticks
    * \since 4.2.0
    */
   static void unlock() noexcept
@@ -44928,17 +43774,14 @@ class basic_joystick final
    * \brief Specifies whether or not joystick event polling is enabled.
    *
    * \details If joystick event polling is disabled, then you must manually call
-   * `joystick::update()` in order to update the joystick state.
+   * `basic_joystick::update()` in order to update the joystick state.
    *
    * \note It's recommended to leave joystick event polling enabled.
    *
-   * \warning Calling this function might cause all events currently in
-   * the event queue to be deleted.
+   * \warning Calling this function might cause all events currently in the event queue to
+   * be deleted.
    *
-   * \param enabled `true` if joystick event polling should be enabled;
-   * `false` otherwise.
-   *
-   * \see SDL_JoystickEventState(int)
+   * \param enabled `true` if joystick event polling should be enabled; `false` otherwise.
    *
    * \since 4.2.0
    */
@@ -44962,21 +43805,21 @@ class basic_joystick final
   /**
    * \brief Returns the amount of currently available joysticks.
    *
-   * \return the current amount of available joysticks; `std::nullopt` if
-   * something goes wrong.
+   * \return the current amount of available joysticks; `std::nullopt` if something goes
+   * wrong.
    *
    * \since 5.1.0
    */
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0)
+    if (result >= 0)
     {
-      return std::nullopt;
+      return result;
     }
     else
     {
-      return result;
+      return std::nullopt;
     }
   }
 
@@ -44986,8 +43829,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID, can't be null.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 4.2.0
    */
@@ -45004,8 +43845,6 @@ class basic_joystick final
    * \param str the string used to obtain the GUID.
    *
    * \return the obtained GUID.
-   *
-   * \see `SDL_JoystickGetGUIDFromString`
    *
    * \since 5.3.0
    */
@@ -45042,12 +43881,11 @@ class basic_joystick final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam U dummy parameter for SFINAE.
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.0.0
    */
-  template <typename BB = B, detail::is_handle<BB> = 0>
+  template <typename TT = T, detail::is_handle<TT> = 0>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;
@@ -45056,13 +43894,9 @@ class basic_joystick final
   /**
    * \brief Returns a pointer to the associated `SDL_Joystick`.
    *
-   * \warning Use of this method is not recommended. However, it can be useful
-   * since many SDL calls use non-const pointers even when no change will be
-   * applied.
-   *
    * \warning Don't take ownership of the returned pointer!
    *
-   * \return a pointer to the internal `SDL_Joystick`.
+   * \return a pointer to the associated `SDL_Joystick`.
    *
    * \since 4.2.0
    */
@@ -45082,7 +43916,7 @@ class basic_joystick final
       }
     }
   };
-  detail::pointer_manager<B, SDL_Joystick, deleter> m_joystick;
+  detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
 };
 
 /**
@@ -45099,8 +43933,6 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  const auto* name = joystick.name();
-
   czstring serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
@@ -45109,7 +43941,7 @@ template <typename T>
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + detail::to_string(joystick.instance_id()).value() +
-         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+         ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
 /**
@@ -45315,8 +44147,8 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -45349,28 +44181,25 @@ namespace cen {
  *
  * \brief Represents a key code (or virtual key).
  *
- * \details Key codes are mapped to the current layout of the keyboard and
- * correlate to a `scan_code`. Whilst scan codes identify the *location* of
- * a key press, the corresponding key codes give the key press *meaning* in
- * the context of the current keyboard layout.
+ * \details Key codes are mapped to the current layout of the keyboard and correlate to a
+ * `scan_code`. Whilst scan codes identify the *location* of a key press, the
+ * corresponding key codes give the key press *meaning* in the context of the current
+ * keyboard layout.
  *
- * Keycodes are meant to be layout-dependent. Think of this as "the user pressed
- * the key that is labelled 'Q' on a specific keyboard."
+ * Keycodes are meant to be layout-dependent. Think of this as "the user pressed the key
+ * that is labelled 'Q' on a specific keyboard."
  *
- * For example, if you pressed the key that's two keys to the right of CAPS
- * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
- * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
- * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
+ * For example, if you pressed the key that's two keys to the right of CAPS LOCK on a US
+ * QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a keycode of SDLK_S. The
+ * same key on a Dvorak keyboard, will report a scancode of SDL_SCANCODE_S and a keycode
+ * of SDLK_O.
  *
- * \note Key codes are sometimes referred to as "keysyms" in the SDL
- * documentation.
+ * \note Key codes are sometimes referred to as "keysyms" in the SDL documentation.
  *
  * \since 5.0.0
  *
  * \see `scan_code`
  * \see `cen::keycodes`
- *
- * \headerfile key_code.hpp
  */
 class key_code final
 {
@@ -45505,11 +44334,10 @@ class key_code final
   }
 
   /**
-   * \brief Sets the key code used to be the one associated with the
-   * specified name.
+   * \brief Sets the key code used to be the one associated with the specified name.
    *
-   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
-   * the key code.
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as the key
+   * code.
    *
    * \param name the name of the key.
    *
@@ -45530,8 +44358,7 @@ class key_code final
   /**
    * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
    *
-   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
-   * otherwise.
+   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -45614,7 +44441,7 @@ class key_code final
    *
    * \return the scan code associated with the internal key code.
    *
-   * \see `SDL_GetScancodeFromKey`
+   * \see `to_scan_code()`
    *
    * \since 5.0.0
    */
@@ -45628,9 +44455,8 @@ class key_code final
   /**
    * \brief Serializes the key code.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -45719,8 +44545,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
  *
  * \brief Provides a collection of `key_code` constants.
  *
- * \details Far from all key codes are provided. Instead, some of the most
- * commonly used key codes are available.
+ * \details Far from all key codes are provided. Instead, some of the most commonly used
+ * key codes are available.
  *
  * \since 5.0.0
  */
@@ -45730,8 +44556,6 @@ namespace keycodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code unknown;
 
@@ -45739,8 +44563,6 @@ inline constexpr key_code unknown;
  * \brief Represents the key with the label "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code a{SDLK_a};
 
@@ -45748,8 +44570,6 @@ inline constexpr key_code a{SDLK_a};
  * \brief Represents the key with the label "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code b{SDLK_b};
 
@@ -45757,8 +44577,6 @@ inline constexpr key_code b{SDLK_b};
  * \brief Represents the key with the label "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code c{SDLK_c};
 
@@ -45766,8 +44584,6 @@ inline constexpr key_code c{SDLK_c};
  * \brief Represents the key with the label "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code d{SDLK_d};
 
@@ -45775,8 +44591,6 @@ inline constexpr key_code d{SDLK_d};
  * \brief Represents the key with the label "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code e{SDLK_e};
 
@@ -45784,8 +44598,6 @@ inline constexpr key_code e{SDLK_e};
  * \brief Represents the key with the label "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f{SDLK_f};
 
@@ -45793,8 +44605,6 @@ inline constexpr key_code f{SDLK_f};
  * \brief Represents the key with the label "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code g{SDLK_g};
 
@@ -45802,8 +44612,6 @@ inline constexpr key_code g{SDLK_g};
  * \brief Represents the key with the label "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code h{SDLK_h};
 
@@ -45811,8 +44619,6 @@ inline constexpr key_code h{SDLK_h};
  * \brief Represents the key with the label "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code i{SDLK_i};
 
@@ -45820,8 +44626,6 @@ inline constexpr key_code i{SDLK_i};
  * \brief Represents the key with the label "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code j{SDLK_j};
 
@@ -45829,8 +44633,6 @@ inline constexpr key_code j{SDLK_j};
  * \brief Represents the key with the label "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code k{SDLK_k};
 
@@ -45838,8 +44640,6 @@ inline constexpr key_code k{SDLK_k};
  * \brief Represents the key with the label "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code l{SDLK_l};
 
@@ -45847,8 +44647,6 @@ inline constexpr key_code l{SDLK_l};
  * \brief Represents the key with the label "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code m{SDLK_m};
 
@@ -45856,8 +44654,6 @@ inline constexpr key_code m{SDLK_m};
  * \brief Represents the key with the label "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code n{SDLK_n};
 
@@ -45865,8 +44661,6 @@ inline constexpr key_code n{SDLK_n};
  * \brief Represents the key with the label "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code o{SDLK_o};
 
@@ -45874,8 +44668,6 @@ inline constexpr key_code o{SDLK_o};
  * \brief Represents the key with the label "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code p{SDLK_p};
 
@@ -45883,8 +44675,6 @@ inline constexpr key_code p{SDLK_p};
  * \brief Represents the key with the label "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code q{SDLK_q};
 
@@ -45892,8 +44682,6 @@ inline constexpr key_code q{SDLK_q};
  * \brief Represents the key with the label "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code r{SDLK_r};
 
@@ -45901,8 +44689,6 @@ inline constexpr key_code r{SDLK_r};
  * \brief Represents the key with the label "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code s{SDLK_s};
 
@@ -45910,8 +44696,6 @@ inline constexpr key_code s{SDLK_s};
  * \brief Represents the key with the label "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code t{SDLK_t};
 
@@ -45919,8 +44703,6 @@ inline constexpr key_code t{SDLK_t};
  * \brief Represents the key with the label "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code u{SDLK_u};
 
@@ -45928,8 +44710,6 @@ inline constexpr key_code u{SDLK_u};
  * \brief Represents the key with the label "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code v{SDLK_v};
 
@@ -45937,8 +44717,6 @@ inline constexpr key_code v{SDLK_v};
  * \brief Represents the key with the label "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code w{SDLK_w};
 
@@ -45946,8 +44724,6 @@ inline constexpr key_code w{SDLK_w};
  * \brief Represents the key with the label "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code x{SDLK_x};
 
@@ -45955,8 +44731,6 @@ inline constexpr key_code x{SDLK_x};
  * \brief Represents the key with the label "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code y{SDLK_y};
 
@@ -45964,8 +44738,6 @@ inline constexpr key_code y{SDLK_y};
  * \brief Represents the key with the label "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code z{SDLK_z};
 
@@ -45975,8 +44747,6 @@ inline constexpr key_code z{SDLK_z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code one{SDLK_1};
 
@@ -45986,8 +44756,6 @@ inline constexpr key_code one{SDLK_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code two{SDLK_2};
 
@@ -45997,8 +44765,6 @@ inline constexpr key_code two{SDLK_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code three{SDLK_3};
 
@@ -46008,8 +44774,6 @@ inline constexpr key_code three{SDLK_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code four{SDLK_4};
 
@@ -46019,8 +44783,6 @@ inline constexpr key_code four{SDLK_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code five{SDLK_5};
 
@@ -46030,8 +44792,6 @@ inline constexpr key_code five{SDLK_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code six{SDLK_6};
 
@@ -46041,8 +44801,6 @@ inline constexpr key_code six{SDLK_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code seven{SDLK_7};
 
@@ -46052,8 +44810,6 @@ inline constexpr key_code seven{SDLK_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code eight{SDLK_8};
 
@@ -46063,8 +44819,6 @@ inline constexpr key_code eight{SDLK_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code nine{SDLK_9};
 
@@ -46074,8 +44828,6 @@ inline constexpr key_code nine{SDLK_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code zero{SDLK_0};
 
@@ -46083,8 +44835,6 @@ inline constexpr key_code zero{SDLK_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f1{SDLK_F1};
 
@@ -46092,8 +44842,6 @@ inline constexpr key_code f1{SDLK_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f2{SDLK_F2};
 
@@ -46101,8 +44849,6 @@ inline constexpr key_code f2{SDLK_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f3{SDLK_F3};
 
@@ -46110,8 +44856,6 @@ inline constexpr key_code f3{SDLK_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f4{SDLK_F4};
 
@@ -46119,8 +44863,6 @@ inline constexpr key_code f4{SDLK_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f5{SDLK_F5};
 
@@ -46128,8 +44870,6 @@ inline constexpr key_code f5{SDLK_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f6{SDLK_F6};
 
@@ -46137,8 +44877,6 @@ inline constexpr key_code f6{SDLK_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f7{SDLK_F7};
 
@@ -46146,8 +44884,6 @@ inline constexpr key_code f7{SDLK_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f8{SDLK_F8};
 
@@ -46155,8 +44891,6 @@ inline constexpr key_code f8{SDLK_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f9{SDLK_F9};
 
@@ -46164,8 +44898,6 @@ inline constexpr key_code f9{SDLK_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f10{SDLK_F10};
 
@@ -46173,8 +44905,6 @@ inline constexpr key_code f10{SDLK_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f11{SDLK_F11};
 
@@ -46182,8 +44912,6 @@ inline constexpr key_code f11{SDLK_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f12{SDLK_F12};
 
@@ -46191,8 +44919,6 @@ inline constexpr key_code f12{SDLK_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left{SDLK_LEFT};
 
@@ -46200,8 +44926,6 @@ inline constexpr key_code left{SDLK_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right{SDLK_RIGHT};
 
@@ -46209,8 +44933,6 @@ inline constexpr key_code right{SDLK_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code up{SDLK_UP};
 
@@ -46218,8 +44940,6 @@ inline constexpr key_code up{SDLK_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code down{SDLK_DOWN};
 
@@ -46227,8 +44947,6 @@ inline constexpr key_code down{SDLK_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code space{SDLK_SPACE};
 
@@ -46238,8 +44956,6 @@ inline constexpr key_code space{SDLK_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code enter{SDLK_RETURN};
 
@@ -46247,8 +44963,6 @@ inline constexpr key_code enter{SDLK_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code escape{SDLK_ESCAPE};
 
@@ -46256,8 +44970,6 @@ inline constexpr key_code escape{SDLK_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code backspace{SDLK_BACKSPACE};
 
@@ -46265,8 +44977,6 @@ inline constexpr key_code backspace{SDLK_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code tab{SDLK_TAB};
 
@@ -46274,8 +44984,6 @@ inline constexpr key_code tab{SDLK_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
 
@@ -46283,8 +44991,6 @@ inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_shift{SDLK_LSHIFT};
 
@@ -46292,8 +44998,6 @@ inline constexpr key_code left_shift{SDLK_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_shift{SDLK_RSHIFT};
 
@@ -46301,8 +45005,6 @@ inline constexpr key_code right_shift{SDLK_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_ctrl{SDLK_LCTRL};
 
@@ -46310,8 +45012,6 @@ inline constexpr key_code left_ctrl{SDLK_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_ctrl{SDLK_RCTRL};
 
@@ -46319,8 +45019,6 @@ inline constexpr key_code right_ctrl{SDLK_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_alt{SDLK_LALT};
 
@@ -46328,32 +45026,24 @@ inline constexpr key_code left_alt{SDLK_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_alt{SDLK_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_gui{SDLK_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_gui{SDLK_RGUI};
 
@@ -46386,8 +45076,6 @@ namespace cen {
  * \see `SDL_Keymod`
  *
  * \since 3.1.0
- *
- * \headerfile key_modifier.hpp
  */
 enum class key_modifier : u16
 {
@@ -46433,9 +45121,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -46453,12 +45141,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46470,8 +45157,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46487,8 +45173,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46504,8 +45189,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46521,8 +45205,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46538,8 +45221,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -46587,28 +45269,25 @@ namespace cen {
  *
  * \brief Represents a key code (or virtual key).
  *
- * \details Key codes are mapped to the current layout of the keyboard and
- * correlate to a `scan_code`. Whilst scan codes identify the *location* of
- * a key press, the corresponding key codes give the key press *meaning* in
- * the context of the current keyboard layout.
+ * \details Key codes are mapped to the current layout of the keyboard and correlate to a
+ * `scan_code`. Whilst scan codes identify the *location* of a key press, the
+ * corresponding key codes give the key press *meaning* in the context of the current
+ * keyboard layout.
  *
- * Keycodes are meant to be layout-dependent. Think of this as "the user pressed
- * the key that is labelled 'Q' on a specific keyboard."
+ * Keycodes are meant to be layout-dependent. Think of this as "the user pressed the key
+ * that is labelled 'Q' on a specific keyboard."
  *
- * For example, if you pressed the key that's two keys to the right of CAPS
- * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
- * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
- * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
+ * For example, if you pressed the key that's two keys to the right of CAPS LOCK on a US
+ * QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a keycode of SDLK_S. The
+ * same key on a Dvorak keyboard, will report a scancode of SDL_SCANCODE_S and a keycode
+ * of SDLK_O.
  *
- * \note Key codes are sometimes referred to as "keysyms" in the SDL
- * documentation.
+ * \note Key codes are sometimes referred to as "keysyms" in the SDL documentation.
  *
  * \since 5.0.0
  *
  * \see `scan_code`
  * \see `cen::keycodes`
- *
- * \headerfile key_code.hpp
  */
 class key_code final
 {
@@ -46743,11 +45422,10 @@ class key_code final
   }
 
   /**
-   * \brief Sets the key code used to be the one associated with the
-   * specified name.
+   * \brief Sets the key code used to be the one associated with the specified name.
    *
-   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
-   * the key code.
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as the key
+   * code.
    *
    * \param name the name of the key.
    *
@@ -46768,8 +45446,7 @@ class key_code final
   /**
    * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
    *
-   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
-   * otherwise.
+   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -46852,7 +45529,7 @@ class key_code final
    *
    * \return the scan code associated with the internal key code.
    *
-   * \see `SDL_GetScancodeFromKey`
+   * \see `to_scan_code()`
    *
    * \since 5.0.0
    */
@@ -46866,9 +45543,8 @@ class key_code final
   /**
    * \brief Serializes the key code.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -46957,8 +45633,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
  *
  * \brief Provides a collection of `key_code` constants.
  *
- * \details Far from all key codes are provided. Instead, some of the most
- * commonly used key codes are available.
+ * \details Far from all key codes are provided. Instead, some of the most commonly used
+ * key codes are available.
  *
  * \since 5.0.0
  */
@@ -46968,8 +45644,6 @@ namespace keycodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code unknown;
 
@@ -46977,8 +45651,6 @@ inline constexpr key_code unknown;
  * \brief Represents the key with the label "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code a{SDLK_a};
 
@@ -46986,8 +45658,6 @@ inline constexpr key_code a{SDLK_a};
  * \brief Represents the key with the label "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code b{SDLK_b};
 
@@ -46995,8 +45665,6 @@ inline constexpr key_code b{SDLK_b};
  * \brief Represents the key with the label "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code c{SDLK_c};
 
@@ -47004,8 +45672,6 @@ inline constexpr key_code c{SDLK_c};
  * \brief Represents the key with the label "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code d{SDLK_d};
 
@@ -47013,8 +45679,6 @@ inline constexpr key_code d{SDLK_d};
  * \brief Represents the key with the label "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code e{SDLK_e};
 
@@ -47022,8 +45686,6 @@ inline constexpr key_code e{SDLK_e};
  * \brief Represents the key with the label "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f{SDLK_f};
 
@@ -47031,8 +45693,6 @@ inline constexpr key_code f{SDLK_f};
  * \brief Represents the key with the label "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code g{SDLK_g};
 
@@ -47040,8 +45700,6 @@ inline constexpr key_code g{SDLK_g};
  * \brief Represents the key with the label "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code h{SDLK_h};
 
@@ -47049,8 +45707,6 @@ inline constexpr key_code h{SDLK_h};
  * \brief Represents the key with the label "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code i{SDLK_i};
 
@@ -47058,8 +45714,6 @@ inline constexpr key_code i{SDLK_i};
  * \brief Represents the key with the label "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code j{SDLK_j};
 
@@ -47067,8 +45721,6 @@ inline constexpr key_code j{SDLK_j};
  * \brief Represents the key with the label "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code k{SDLK_k};
 
@@ -47076,8 +45728,6 @@ inline constexpr key_code k{SDLK_k};
  * \brief Represents the key with the label "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code l{SDLK_l};
 
@@ -47085,8 +45735,6 @@ inline constexpr key_code l{SDLK_l};
  * \brief Represents the key with the label "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code m{SDLK_m};
 
@@ -47094,8 +45742,6 @@ inline constexpr key_code m{SDLK_m};
  * \brief Represents the key with the label "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code n{SDLK_n};
 
@@ -47103,8 +45749,6 @@ inline constexpr key_code n{SDLK_n};
  * \brief Represents the key with the label "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code o{SDLK_o};
 
@@ -47112,8 +45756,6 @@ inline constexpr key_code o{SDLK_o};
  * \brief Represents the key with the label "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code p{SDLK_p};
 
@@ -47121,8 +45763,6 @@ inline constexpr key_code p{SDLK_p};
  * \brief Represents the key with the label "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code q{SDLK_q};
 
@@ -47130,8 +45770,6 @@ inline constexpr key_code q{SDLK_q};
  * \brief Represents the key with the label "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code r{SDLK_r};
 
@@ -47139,8 +45777,6 @@ inline constexpr key_code r{SDLK_r};
  * \brief Represents the key with the label "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code s{SDLK_s};
 
@@ -47148,8 +45784,6 @@ inline constexpr key_code s{SDLK_s};
  * \brief Represents the key with the label "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code t{SDLK_t};
 
@@ -47157,8 +45791,6 @@ inline constexpr key_code t{SDLK_t};
  * \brief Represents the key with the label "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code u{SDLK_u};
 
@@ -47166,8 +45798,6 @@ inline constexpr key_code u{SDLK_u};
  * \brief Represents the key with the label "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code v{SDLK_v};
 
@@ -47175,8 +45805,6 @@ inline constexpr key_code v{SDLK_v};
  * \brief Represents the key with the label "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code w{SDLK_w};
 
@@ -47184,8 +45812,6 @@ inline constexpr key_code w{SDLK_w};
  * \brief Represents the key with the label "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code x{SDLK_x};
 
@@ -47193,8 +45819,6 @@ inline constexpr key_code x{SDLK_x};
  * \brief Represents the key with the label "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code y{SDLK_y};
 
@@ -47202,8 +45826,6 @@ inline constexpr key_code y{SDLK_y};
  * \brief Represents the key with the label "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code z{SDLK_z};
 
@@ -47213,8 +45835,6 @@ inline constexpr key_code z{SDLK_z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code one{SDLK_1};
 
@@ -47224,8 +45844,6 @@ inline constexpr key_code one{SDLK_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code two{SDLK_2};
 
@@ -47235,8 +45853,6 @@ inline constexpr key_code two{SDLK_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code three{SDLK_3};
 
@@ -47246,8 +45862,6 @@ inline constexpr key_code three{SDLK_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code four{SDLK_4};
 
@@ -47257,8 +45871,6 @@ inline constexpr key_code four{SDLK_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code five{SDLK_5};
 
@@ -47268,8 +45880,6 @@ inline constexpr key_code five{SDLK_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code six{SDLK_6};
 
@@ -47279,8 +45889,6 @@ inline constexpr key_code six{SDLK_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code seven{SDLK_7};
 
@@ -47290,8 +45898,6 @@ inline constexpr key_code seven{SDLK_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code eight{SDLK_8};
 
@@ -47301,8 +45907,6 @@ inline constexpr key_code eight{SDLK_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code nine{SDLK_9};
 
@@ -47312,8 +45916,6 @@ inline constexpr key_code nine{SDLK_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code zero{SDLK_0};
 
@@ -47321,8 +45923,6 @@ inline constexpr key_code zero{SDLK_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f1{SDLK_F1};
 
@@ -47330,8 +45930,6 @@ inline constexpr key_code f1{SDLK_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f2{SDLK_F2};
 
@@ -47339,8 +45937,6 @@ inline constexpr key_code f2{SDLK_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f3{SDLK_F3};
 
@@ -47348,8 +45944,6 @@ inline constexpr key_code f3{SDLK_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f4{SDLK_F4};
 
@@ -47357,8 +45951,6 @@ inline constexpr key_code f4{SDLK_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f5{SDLK_F5};
 
@@ -47366,8 +45958,6 @@ inline constexpr key_code f5{SDLK_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f6{SDLK_F6};
 
@@ -47375,8 +45965,6 @@ inline constexpr key_code f6{SDLK_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f7{SDLK_F7};
 
@@ -47384,8 +45972,6 @@ inline constexpr key_code f7{SDLK_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f8{SDLK_F8};
 
@@ -47393,8 +45979,6 @@ inline constexpr key_code f8{SDLK_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f9{SDLK_F9};
 
@@ -47402,8 +45986,6 @@ inline constexpr key_code f9{SDLK_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f10{SDLK_F10};
 
@@ -47411,8 +45993,6 @@ inline constexpr key_code f10{SDLK_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f11{SDLK_F11};
 
@@ -47420,8 +46000,6 @@ inline constexpr key_code f11{SDLK_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f12{SDLK_F12};
 
@@ -47429,8 +46007,6 @@ inline constexpr key_code f12{SDLK_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left{SDLK_LEFT};
 
@@ -47438,8 +46014,6 @@ inline constexpr key_code left{SDLK_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right{SDLK_RIGHT};
 
@@ -47447,8 +46021,6 @@ inline constexpr key_code right{SDLK_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code up{SDLK_UP};
 
@@ -47456,8 +46028,6 @@ inline constexpr key_code up{SDLK_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code down{SDLK_DOWN};
 
@@ -47465,8 +46035,6 @@ inline constexpr key_code down{SDLK_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code space{SDLK_SPACE};
 
@@ -47476,8 +46044,6 @@ inline constexpr key_code space{SDLK_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code enter{SDLK_RETURN};
 
@@ -47485,8 +46051,6 @@ inline constexpr key_code enter{SDLK_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code escape{SDLK_ESCAPE};
 
@@ -47494,8 +46058,6 @@ inline constexpr key_code escape{SDLK_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code backspace{SDLK_BACKSPACE};
 
@@ -47503,8 +46065,6 @@ inline constexpr key_code backspace{SDLK_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code tab{SDLK_TAB};
 
@@ -47512,8 +46072,6 @@ inline constexpr key_code tab{SDLK_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
 
@@ -47521,8 +46079,6 @@ inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_shift{SDLK_LSHIFT};
 
@@ -47530,8 +46086,6 @@ inline constexpr key_code left_shift{SDLK_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_shift{SDLK_RSHIFT};
 
@@ -47539,8 +46093,6 @@ inline constexpr key_code right_shift{SDLK_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_ctrl{SDLK_LCTRL};
 
@@ -47548,8 +46100,6 @@ inline constexpr key_code left_ctrl{SDLK_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_ctrl{SDLK_RCTRL};
 
@@ -47557,8 +46107,6 @@ inline constexpr key_code right_ctrl{SDLK_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_alt{SDLK_LALT};
 
@@ -47566,32 +46114,24 @@ inline constexpr key_code left_alt{SDLK_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_alt{SDLK_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_gui{SDLK_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_gui{SDLK_RGUI};
 
@@ -47624,8 +46164,6 @@ namespace cen {
  * \see `SDL_Keymod`
  *
  * \since 3.1.0
- *
- * \headerfile key_modifier.hpp
  */
 enum class key_modifier : u16
 {
@@ -47688,8 +46226,6 @@ namespace cen {
  *
  * \see `key_code`
  * \see `cen::scancodes`
- *
- * \headerfile scan_code.hpp
  */
 class scan_code final
 {
@@ -48036,10 +46572,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \brief Provides a collection of `scan_code` constants.
  *
- * \details Far from all scan codes are provided. Instead, the most
- * commonly used scan codes are available.
- *
- * \since 5.0.0
+ * \details Far from all scan codes are provided. Instead, the most commonly used scan
+ * codes are available.
  */
 namespace scancodes {
 
@@ -48047,8 +46581,6 @@ namespace scancodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code unknown;
 
@@ -48056,8 +46588,6 @@ inline constexpr scan_code unknown;
  * \brief Represents the key "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code a{SDL_SCANCODE_A};
 
@@ -48065,8 +46595,6 @@ inline constexpr scan_code a{SDL_SCANCODE_A};
  * \brief Represents the key "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code b{SDL_SCANCODE_B};
 
@@ -48074,8 +46602,6 @@ inline constexpr scan_code b{SDL_SCANCODE_B};
  * \brief Represents the key "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code c{SDL_SCANCODE_C};
 
@@ -48083,8 +46609,6 @@ inline constexpr scan_code c{SDL_SCANCODE_C};
  * \brief Represents the key "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code d{SDL_SCANCODE_D};
 
@@ -48092,8 +46616,6 @@ inline constexpr scan_code d{SDL_SCANCODE_D};
  * \brief Represents the key "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code e{SDL_SCANCODE_E};
 
@@ -48101,8 +46623,6 @@ inline constexpr scan_code e{SDL_SCANCODE_E};
  * \brief Represents the key "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f{SDL_SCANCODE_F};
 
@@ -48110,8 +46630,6 @@ inline constexpr scan_code f{SDL_SCANCODE_F};
  * \brief Represents the key "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code g{SDL_SCANCODE_G};
 
@@ -48119,8 +46637,6 @@ inline constexpr scan_code g{SDL_SCANCODE_G};
  * \brief Represents the key "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code h{SDL_SCANCODE_H};
 
@@ -48128,8 +46644,6 @@ inline constexpr scan_code h{SDL_SCANCODE_H};
  * \brief Represents the key "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code i{SDL_SCANCODE_I};
 
@@ -48137,8 +46651,6 @@ inline constexpr scan_code i{SDL_SCANCODE_I};
  * \brief Represents the key "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code j{SDL_SCANCODE_J};
 
@@ -48146,8 +46658,6 @@ inline constexpr scan_code j{SDL_SCANCODE_J};
  * \brief Represents the key "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code k{SDL_SCANCODE_K};
 
@@ -48155,8 +46665,6 @@ inline constexpr scan_code k{SDL_SCANCODE_K};
  * \brief Represents the key "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code l{SDL_SCANCODE_L};
 
@@ -48164,8 +46672,6 @@ inline constexpr scan_code l{SDL_SCANCODE_L};
  * \brief Represents the key "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code m{SDL_SCANCODE_M};
 
@@ -48173,8 +46679,6 @@ inline constexpr scan_code m{SDL_SCANCODE_M};
  * \brief Represents the key "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code n{SDL_SCANCODE_N};
 
@@ -48182,8 +46686,6 @@ inline constexpr scan_code n{SDL_SCANCODE_N};
  * \brief Represents the key "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code o{SDL_SCANCODE_O};
 
@@ -48191,8 +46693,6 @@ inline constexpr scan_code o{SDL_SCANCODE_O};
  * \brief Represents the key "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code p{SDL_SCANCODE_P};
 
@@ -48200,8 +46700,6 @@ inline constexpr scan_code p{SDL_SCANCODE_P};
  * \brief Represents the key "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code q{SDL_SCANCODE_Q};
 
@@ -48209,8 +46707,6 @@ inline constexpr scan_code q{SDL_SCANCODE_Q};
  * \brief Represents the key "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code r{SDL_SCANCODE_R};
 
@@ -48218,8 +46714,6 @@ inline constexpr scan_code r{SDL_SCANCODE_R};
  * \brief Represents the key "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code s{SDL_SCANCODE_S};
 
@@ -48227,8 +46721,6 @@ inline constexpr scan_code s{SDL_SCANCODE_S};
  * \brief Represents the key "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code t{SDL_SCANCODE_T};
 
@@ -48236,8 +46728,6 @@ inline constexpr scan_code t{SDL_SCANCODE_T};
  * \brief Represents the key "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code u{SDL_SCANCODE_U};
 
@@ -48245,8 +46735,6 @@ inline constexpr scan_code u{SDL_SCANCODE_U};
  * \brief Represents the key "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code v{SDL_SCANCODE_V};
 
@@ -48254,8 +46742,6 @@ inline constexpr scan_code v{SDL_SCANCODE_V};
  * \brief Represents the key "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code w{SDL_SCANCODE_W};
 
@@ -48263,8 +46749,6 @@ inline constexpr scan_code w{SDL_SCANCODE_W};
  * \brief Represents the key "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code x{SDL_SCANCODE_X};
 
@@ -48272,8 +46756,6 @@ inline constexpr scan_code x{SDL_SCANCODE_X};
  * \brief Represents the key "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code y{SDL_SCANCODE_Y};
 
@@ -48281,8 +46763,6 @@ inline constexpr scan_code y{SDL_SCANCODE_Y};
  * \brief Represents the key "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code z{SDL_SCANCODE_Z};
 
@@ -48292,8 +46772,6 @@ inline constexpr scan_code z{SDL_SCANCODE_Z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code one{SDL_SCANCODE_1};
 
@@ -48303,8 +46781,6 @@ inline constexpr scan_code one{SDL_SCANCODE_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code two{SDL_SCANCODE_2};
 
@@ -48314,8 +46790,6 @@ inline constexpr scan_code two{SDL_SCANCODE_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code three{SDL_SCANCODE_3};
 
@@ -48325,8 +46799,6 @@ inline constexpr scan_code three{SDL_SCANCODE_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code four{SDL_SCANCODE_4};
 
@@ -48336,8 +46808,6 @@ inline constexpr scan_code four{SDL_SCANCODE_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code five{SDL_SCANCODE_5};
 
@@ -48347,8 +46817,6 @@ inline constexpr scan_code five{SDL_SCANCODE_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code six{SDL_SCANCODE_6};
 
@@ -48358,8 +46826,6 @@ inline constexpr scan_code six{SDL_SCANCODE_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code seven{SDL_SCANCODE_7};
 
@@ -48369,8 +46835,6 @@ inline constexpr scan_code seven{SDL_SCANCODE_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code eight{SDL_SCANCODE_8};
 
@@ -48380,8 +46844,6 @@ inline constexpr scan_code eight{SDL_SCANCODE_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code nine{SDL_SCANCODE_9};
 
@@ -48391,8 +46853,6 @@ inline constexpr scan_code nine{SDL_SCANCODE_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code zero{SDL_SCANCODE_0};
 
@@ -48400,8 +46860,6 @@ inline constexpr scan_code zero{SDL_SCANCODE_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f1{SDL_SCANCODE_F1};
 
@@ -48409,8 +46867,6 @@ inline constexpr scan_code f1{SDL_SCANCODE_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f2{SDL_SCANCODE_F2};
 
@@ -48418,8 +46874,6 @@ inline constexpr scan_code f2{SDL_SCANCODE_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f3{SDL_SCANCODE_F3};
 
@@ -48427,8 +46881,6 @@ inline constexpr scan_code f3{SDL_SCANCODE_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f4{SDL_SCANCODE_F4};
 
@@ -48436,8 +46888,6 @@ inline constexpr scan_code f4{SDL_SCANCODE_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f5{SDL_SCANCODE_F5};
 
@@ -48445,8 +46895,6 @@ inline constexpr scan_code f5{SDL_SCANCODE_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f6{SDL_SCANCODE_F6};
 
@@ -48454,8 +46902,6 @@ inline constexpr scan_code f6{SDL_SCANCODE_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f7{SDL_SCANCODE_F7};
 
@@ -48463,8 +46909,6 @@ inline constexpr scan_code f7{SDL_SCANCODE_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f8{SDL_SCANCODE_F8};
 
@@ -48472,8 +46916,6 @@ inline constexpr scan_code f8{SDL_SCANCODE_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f9{SDL_SCANCODE_F9};
 
@@ -48481,8 +46923,6 @@ inline constexpr scan_code f9{SDL_SCANCODE_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f10{SDL_SCANCODE_F10};
 
@@ -48490,8 +46930,6 @@ inline constexpr scan_code f10{SDL_SCANCODE_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f11{SDL_SCANCODE_F11};
 
@@ -48499,8 +46937,6 @@ inline constexpr scan_code f11{SDL_SCANCODE_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f12{SDL_SCANCODE_F12};
 
@@ -48508,8 +46944,6 @@ inline constexpr scan_code f12{SDL_SCANCODE_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left{SDL_SCANCODE_LEFT};
 
@@ -48517,8 +46951,6 @@ inline constexpr scan_code left{SDL_SCANCODE_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
 
@@ -48526,8 +46958,6 @@ inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code up{SDL_SCANCODE_UP};
 
@@ -48535,8 +46965,6 @@ inline constexpr scan_code up{SDL_SCANCODE_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code down{SDL_SCANCODE_DOWN};
 
@@ -48544,8 +46972,6 @@ inline constexpr scan_code down{SDL_SCANCODE_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code space{SDL_SCANCODE_SPACE};
 
@@ -48555,8 +46981,6 @@ inline constexpr scan_code space{SDL_SCANCODE_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
 
@@ -48564,8 +46988,6 @@ inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
 
@@ -48573,8 +46995,6 @@ inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
 
@@ -48582,8 +47002,6 @@ inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code tab{SDL_SCANCODE_TAB};
 
@@ -48591,8 +47009,6 @@ inline constexpr scan_code tab{SDL_SCANCODE_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
 
@@ -48600,8 +47016,6 @@ inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
 
@@ -48609,8 +47023,6 @@ inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
 
@@ -48618,8 +47030,6 @@ inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
 
@@ -48627,8 +47037,6 @@ inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
 
@@ -48636,8 +47044,6 @@ inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
 
@@ -48645,32 +47051,24 @@ inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
@@ -48695,9 +47093,10 @@ namespace cen {
  * \details Using the keyboard state is an alternative to using events for
  * keyboard input.
  *
- * \since 3.0.0
+ * \see `mouse`
+ * \see `has_screen_keyboard()`
  *
- * \headerfile keyboard.hpp
+ * \since 3.0.0
  */
 class keyboard final
 {
@@ -48761,8 +47160,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key has been pressed during
-   * more than one update of the key state.
+   * \brief Indicates whether or not the specified key has been pressed during more than
+   * one update of the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48780,8 +47179,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key has been pressed during
-   * more than one update of the key state.
+   * \brief Indicates whether or not the specified key has been pressed during more than
+   * one update of the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48799,8 +47198,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not a key just became pressed in the last
-   * update of the key state.
+   * \brief Indicates whether or not a key just became pressed in the last update of the
+   * key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48818,8 +47217,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not a key just became pressed in the last
-   * update of the key state.
+   * \brief Indicates whether or not a key just became pressed in the last update of the
+   * key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48837,8 +47236,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key was released in the last
-   * update of the key state.
+   * \brief Indicates whether or not the specified key was released in the last update of
+   * the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48857,8 +47256,8 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key was released in the last
-   * update of the key state.
+   * \brief Indicates whether or not the specified key was released in the last update of
+   * the key state.
    *
    * \details This method returns false if the supplied key isn't recognized.
    *
@@ -48929,15 +47328,15 @@ class keyboard final
  *
  * \brief This is provided for backwards compatibility with Centurion 5.
  *
- * \deprecated This was deprecated in Centurion 6.0.0.
+ * \deprecated This is deprecated since Centurion 6.0.0.
  */
 using key_state [[deprecated]] = keyboard;
 
 /**
  * \brief Indicates whether or not the platform has screen keyboard support.
  *
- * \return `true` if the current platform has some form of screen keyboard
- * support; `false` otherwise.
+ * \return `true` if the current platform has some form of screen keyboard support;
+ * `false` otherwise.
  *
  * \since 6.0.0
  */
@@ -48980,9 +47379,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -49046,16 +47445,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -49112,9 +47509,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -49318,8 +47714,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -49393,11 +47787,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -49405,8 +47799,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -49580,9 +47974,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -49606,13 +47999,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -49684,8 +48075,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -49704,8 +48095,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -49724,13 +48115,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -49745,13 +48135,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -49829,12 +48218,12 @@ namespace cen {
 /**
  * \class mouse
  *
- * \brief Provides information about the mouse state, which is an
- * alternative to dealing with mouse events.
+ * \brief Provides information about the mouse state, which is an alternative to dealing
+ * with mouse events.
  *
  * \since 3.0.0
  *
- * \headerfile mouse.hpp
+ * \see `keyboard`
  */
 class mouse final
 {
@@ -49847,8 +48236,8 @@ class mouse final
   mouse() noexcept = default;
 
   /**
-   * \brief Updates the mouse state. The window width and height will be
-   * adjusted to be at least 1.
+   * \brief Updates the mouse state. The window width and height will be adjusted to be at
+   * least 1.
    *
    * \param windowWidth the current window width, set to 1 by default.
    * \param windowHeight the current window height, set to 1 by default.
@@ -49895,8 +48284,7 @@ class mouse final
   }
 
   /**
-   * \brief Resets the screen and logical dimensions of the mouse state
-   * instance.
+   * \brief Resets the screen and logical dimensions of the mouse state instance.
    *
    * \since 3.0.0
    */
@@ -49907,13 +48295,12 @@ class mouse final
   }
 
   /**
-   * \brief Sets the logical width that will be used to determine the mouse
-   * position.
+   * \brief Sets the logical width that will be used to determine the mouse position.
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalWidth the logical width that will be used to determine the
-   * mouse position.
+   * \param logicalWidth the logical width that will be used to determine the mouse
+   * position.
    *
    * \since 3.0.0
    */
@@ -49923,13 +48310,12 @@ class mouse final
   }
 
   /**
-   * \brief Sets the logical height that will be used to determine the mouse
-   * position.
+   * \brief Sets the logical height that will be used to determine the mouse position.
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalHeight the logical height that will be used to determine the
-   * mouse position.
+   * \param logicalHeight the logical height that will be used to determine the mouse
+   * position.
    *
    * \since 3.0.0
    */
@@ -49941,8 +48327,7 @@ class mouse final
   /**
    * \brief Sets the current logical window size.
    *
-   * \param size the logical size that will be used to determine the mouse
-   * position.
+   * \param size the logical size that will be used to determine the mouse position.
    *
    * \since 5.3.0
    */
@@ -50027,8 +48412,7 @@ class mouse final
   /**
    * \brief Returns the logical width used by the mouse state instance.
    *
-   * \return the logical width used by the mouse state instance, 1 is used by
-   * default.
+   * \return the logical width used by the mouse state instance, 1 is used by default.
    *
    * \since 3.0.0
    */
@@ -50040,8 +48424,7 @@ class mouse final
   /**
    * \brief Returns the logical height used by the mouse state instance.
    *
-   * \return the logical height used by the mouse state instance, 1 is used by
-   * default.
+   * \return the logical height used by the mouse state instance, 1 is used by default.
    *
    * \since 3.0.0
    */
@@ -50075,8 +48458,7 @@ class mouse final
   }
 
   /**
-   * \brief Indicates whether or not the right mouse button is currently
-   * pressed.
+   * \brief Indicates whether or not the right mouse button is currently pressed.
    *
    * \return `true` if the right mouse button is pressed; `false` otherwise.
    *
@@ -50154,8 +48536,6 @@ namespace cen {
  *
  * \see `key_code`
  * \see `cen::scancodes`
- *
- * \headerfile scan_code.hpp
  */
 class scan_code final
 {
@@ -50502,10 +48882,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \brief Provides a collection of `scan_code` constants.
  *
- * \details Far from all scan codes are provided. Instead, the most
- * commonly used scan codes are available.
- *
- * \since 5.0.0
+ * \details Far from all scan codes are provided. Instead, the most commonly used scan
+ * codes are available.
  */
 namespace scancodes {
 
@@ -50513,8 +48891,6 @@ namespace scancodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code unknown;
 
@@ -50522,8 +48898,6 @@ inline constexpr scan_code unknown;
  * \brief Represents the key "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code a{SDL_SCANCODE_A};
 
@@ -50531,8 +48905,6 @@ inline constexpr scan_code a{SDL_SCANCODE_A};
  * \brief Represents the key "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code b{SDL_SCANCODE_B};
 
@@ -50540,8 +48912,6 @@ inline constexpr scan_code b{SDL_SCANCODE_B};
  * \brief Represents the key "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code c{SDL_SCANCODE_C};
 
@@ -50549,8 +48919,6 @@ inline constexpr scan_code c{SDL_SCANCODE_C};
  * \brief Represents the key "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code d{SDL_SCANCODE_D};
 
@@ -50558,8 +48926,6 @@ inline constexpr scan_code d{SDL_SCANCODE_D};
  * \brief Represents the key "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code e{SDL_SCANCODE_E};
 
@@ -50567,8 +48933,6 @@ inline constexpr scan_code e{SDL_SCANCODE_E};
  * \brief Represents the key "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f{SDL_SCANCODE_F};
 
@@ -50576,8 +48940,6 @@ inline constexpr scan_code f{SDL_SCANCODE_F};
  * \brief Represents the key "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code g{SDL_SCANCODE_G};
 
@@ -50585,8 +48947,6 @@ inline constexpr scan_code g{SDL_SCANCODE_G};
  * \brief Represents the key "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code h{SDL_SCANCODE_H};
 
@@ -50594,8 +48954,6 @@ inline constexpr scan_code h{SDL_SCANCODE_H};
  * \brief Represents the key "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code i{SDL_SCANCODE_I};
 
@@ -50603,8 +48961,6 @@ inline constexpr scan_code i{SDL_SCANCODE_I};
  * \brief Represents the key "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code j{SDL_SCANCODE_J};
 
@@ -50612,8 +48968,6 @@ inline constexpr scan_code j{SDL_SCANCODE_J};
  * \brief Represents the key "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code k{SDL_SCANCODE_K};
 
@@ -50621,8 +48975,6 @@ inline constexpr scan_code k{SDL_SCANCODE_K};
  * \brief Represents the key "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code l{SDL_SCANCODE_L};
 
@@ -50630,8 +48982,6 @@ inline constexpr scan_code l{SDL_SCANCODE_L};
  * \brief Represents the key "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code m{SDL_SCANCODE_M};
 
@@ -50639,8 +48989,6 @@ inline constexpr scan_code m{SDL_SCANCODE_M};
  * \brief Represents the key "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code n{SDL_SCANCODE_N};
 
@@ -50648,8 +48996,6 @@ inline constexpr scan_code n{SDL_SCANCODE_N};
  * \brief Represents the key "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code o{SDL_SCANCODE_O};
 
@@ -50657,8 +49003,6 @@ inline constexpr scan_code o{SDL_SCANCODE_O};
  * \brief Represents the key "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code p{SDL_SCANCODE_P};
 
@@ -50666,8 +49010,6 @@ inline constexpr scan_code p{SDL_SCANCODE_P};
  * \brief Represents the key "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code q{SDL_SCANCODE_Q};
 
@@ -50675,8 +49017,6 @@ inline constexpr scan_code q{SDL_SCANCODE_Q};
  * \brief Represents the key "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code r{SDL_SCANCODE_R};
 
@@ -50684,8 +49024,6 @@ inline constexpr scan_code r{SDL_SCANCODE_R};
  * \brief Represents the key "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code s{SDL_SCANCODE_S};
 
@@ -50693,8 +49031,6 @@ inline constexpr scan_code s{SDL_SCANCODE_S};
  * \brief Represents the key "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code t{SDL_SCANCODE_T};
 
@@ -50702,8 +49038,6 @@ inline constexpr scan_code t{SDL_SCANCODE_T};
  * \brief Represents the key "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code u{SDL_SCANCODE_U};
 
@@ -50711,8 +49045,6 @@ inline constexpr scan_code u{SDL_SCANCODE_U};
  * \brief Represents the key "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code v{SDL_SCANCODE_V};
 
@@ -50720,8 +49052,6 @@ inline constexpr scan_code v{SDL_SCANCODE_V};
  * \brief Represents the key "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code w{SDL_SCANCODE_W};
 
@@ -50729,8 +49059,6 @@ inline constexpr scan_code w{SDL_SCANCODE_W};
  * \brief Represents the key "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code x{SDL_SCANCODE_X};
 
@@ -50738,8 +49066,6 @@ inline constexpr scan_code x{SDL_SCANCODE_X};
  * \brief Represents the key "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code y{SDL_SCANCODE_Y};
 
@@ -50747,8 +49073,6 @@ inline constexpr scan_code y{SDL_SCANCODE_Y};
  * \brief Represents the key "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code z{SDL_SCANCODE_Z};
 
@@ -50758,8 +49082,6 @@ inline constexpr scan_code z{SDL_SCANCODE_Z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code one{SDL_SCANCODE_1};
 
@@ -50769,8 +49091,6 @@ inline constexpr scan_code one{SDL_SCANCODE_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code two{SDL_SCANCODE_2};
 
@@ -50780,8 +49100,6 @@ inline constexpr scan_code two{SDL_SCANCODE_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code three{SDL_SCANCODE_3};
 
@@ -50791,8 +49109,6 @@ inline constexpr scan_code three{SDL_SCANCODE_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code four{SDL_SCANCODE_4};
 
@@ -50802,8 +49118,6 @@ inline constexpr scan_code four{SDL_SCANCODE_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code five{SDL_SCANCODE_5};
 
@@ -50813,8 +49127,6 @@ inline constexpr scan_code five{SDL_SCANCODE_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code six{SDL_SCANCODE_6};
 
@@ -50824,8 +49136,6 @@ inline constexpr scan_code six{SDL_SCANCODE_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code seven{SDL_SCANCODE_7};
 
@@ -50835,8 +49145,6 @@ inline constexpr scan_code seven{SDL_SCANCODE_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code eight{SDL_SCANCODE_8};
 
@@ -50846,8 +49154,6 @@ inline constexpr scan_code eight{SDL_SCANCODE_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code nine{SDL_SCANCODE_9};
 
@@ -50857,8 +49163,6 @@ inline constexpr scan_code nine{SDL_SCANCODE_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code zero{SDL_SCANCODE_0};
 
@@ -50866,8 +49170,6 @@ inline constexpr scan_code zero{SDL_SCANCODE_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f1{SDL_SCANCODE_F1};
 
@@ -50875,8 +49177,6 @@ inline constexpr scan_code f1{SDL_SCANCODE_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f2{SDL_SCANCODE_F2};
 
@@ -50884,8 +49184,6 @@ inline constexpr scan_code f2{SDL_SCANCODE_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f3{SDL_SCANCODE_F3};
 
@@ -50893,8 +49191,6 @@ inline constexpr scan_code f3{SDL_SCANCODE_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f4{SDL_SCANCODE_F4};
 
@@ -50902,8 +49198,6 @@ inline constexpr scan_code f4{SDL_SCANCODE_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f5{SDL_SCANCODE_F5};
 
@@ -50911,8 +49205,6 @@ inline constexpr scan_code f5{SDL_SCANCODE_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f6{SDL_SCANCODE_F6};
 
@@ -50920,8 +49212,6 @@ inline constexpr scan_code f6{SDL_SCANCODE_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f7{SDL_SCANCODE_F7};
 
@@ -50929,8 +49219,6 @@ inline constexpr scan_code f7{SDL_SCANCODE_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f8{SDL_SCANCODE_F8};
 
@@ -50938,8 +49226,6 @@ inline constexpr scan_code f8{SDL_SCANCODE_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f9{SDL_SCANCODE_F9};
 
@@ -50947,8 +49233,6 @@ inline constexpr scan_code f9{SDL_SCANCODE_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f10{SDL_SCANCODE_F10};
 
@@ -50956,8 +49240,6 @@ inline constexpr scan_code f10{SDL_SCANCODE_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f11{SDL_SCANCODE_F11};
 
@@ -50965,8 +49247,6 @@ inline constexpr scan_code f11{SDL_SCANCODE_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code f12{SDL_SCANCODE_F12};
 
@@ -50974,8 +49254,6 @@ inline constexpr scan_code f12{SDL_SCANCODE_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left{SDL_SCANCODE_LEFT};
 
@@ -50983,8 +49261,6 @@ inline constexpr scan_code left{SDL_SCANCODE_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
 
@@ -50992,8 +49268,6 @@ inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code up{SDL_SCANCODE_UP};
 
@@ -51001,8 +49275,6 @@ inline constexpr scan_code up{SDL_SCANCODE_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code down{SDL_SCANCODE_DOWN};
 
@@ -51010,8 +49282,6 @@ inline constexpr scan_code down{SDL_SCANCODE_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code space{SDL_SCANCODE_SPACE};
 
@@ -51021,8 +49291,6 @@ inline constexpr scan_code space{SDL_SCANCODE_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
 
@@ -51030,8 +49298,6 @@ inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
 
@@ -51039,8 +49305,6 @@ inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
 
@@ -51048,8 +49312,6 @@ inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code tab{SDL_SCANCODE_TAB};
 
@@ -51057,8 +49319,6 @@ inline constexpr scan_code tab{SDL_SCANCODE_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
 
@@ -51066,8 +49326,6 @@ inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
 
@@ -51075,8 +49333,6 @@ inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
 
@@ -51084,8 +49340,6 @@ inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
 
@@ -51093,8 +49347,6 @@ inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
 
@@ -51102,8 +49354,6 @@ inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
 
@@ -51111,32 +49361,24 @@ inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
@@ -51231,12 +49473,10 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \brief Represents a sensor device.
  *
- * \see sensor
- * \see sensor_handle
+ * \see `sensor`
+ * \see `sensor_handle`
  *
  * \since 5.2.0
- *
- * \headerfile sensor.hpp
  */
 template <typename T>
 class basic_sensor final
@@ -51248,13 +49488,12 @@ class basic_sensor final
   /**
    * \brief Creates a sensor instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -51272,8 +49511,6 @@ class basic_sensor final
 
   /**
    * \brief Creates an owning sensor instance based on a device index.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param index the device index of the sensor.
    *
@@ -51293,8 +49530,6 @@ class basic_sensor final
   /**
    * \brief Creates a sensor handle based on an owning sensor.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param owner the associated owning sensor.
    *
    * \since 5.2.0
@@ -51308,8 +49543,7 @@ class basic_sensor final
   /**
    * \brief Updates the state of all open sensors.
    *
-   * \note This is done automatically by the event loop if sensor events are
-   * enabled.
+   * \note This is done automatically by the event loop if sensor events are enabled.
    *
    * \since 5.2.0
    */
@@ -51380,8 +49614,8 @@ class basic_sensor final
   /**
    * \brief Returns the name associated with the sensor device.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available.
    *
    * \since 5.2.0
    */
@@ -51419,8 +49653,7 @@ class basic_sensor final
    *
    * \tparam size the number of data elements, varies from sensor to sensor.
    *
-   * \return the data associated with the sensor; `std::nullopt` if something
-   * goes wrong.
+   * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -51428,8 +49661,7 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
   {
     std::array<float, size> array{};
-    const auto result = SDL_SensorGetData(m_sensor, array.data(), isize(array));
-    if (result != -1)
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
     }
@@ -51463,8 +49695,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the unique instance ID associated with a sensor; `std::nullopt` if
-   * the index is invalid.
+   * \return the unique instance ID associated with a sensor; `std::nullopt` if the index
+   * is invalid.
    *
    * \since 5.2.0
    */
@@ -51486,8 +49718,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available or if the index was invalid.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available or if the index was invalid.
    *
    * \since 5.2.0
    */
@@ -51515,8 +49747,7 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return a non-portable sensor type value; `std::nullopt` if the index is
-   * invalid.
+   * \return a non-portable sensor type value; `std::nullopt` if the index is invalid.
    *
    * \since 5.2.0
    */
@@ -51541,8 +49772,6 @@ class basic_sensor final
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -51570,8 +49799,6 @@ class basic_sensor final
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
- * \tparam T the ownership semantics type of the sensor class.
- *
  * \param sensor the sensor that will be converted.
  *
  * \return a string that represents a sensor instance.
@@ -51588,8 +49815,6 @@ template <typename T>
 
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
- *
- * \tparam T the ownership semantics type of the sensor class.
  *
  * \param stream the stream that will be used.
  * \param sensor the sensor that will be printed.
@@ -51706,8 +49931,6 @@ namespace cen::touch {
  * \brief Represents the state of a finger.
  *
  * \since 5.2.0
- *
- * \headerfile touch.hpp
  */
 struct finger_state final
 {
@@ -51722,30 +49945,18 @@ struct finger_state final
  *
  * \brief Provides values that represent different touch device types.
  *
- * \var device_type::invalid
- * Indicates an invalid touch device type.
- *
- * \var device_type::direct
- * Indicates a touch screen with window-relative coordinates.
- *
- * \var device_type::indirect_absolute
- * Indicates a trackpad with absolute device coordinates.
- *
- * \var device_type::indirect_relative
- * Indicates a trackpad with screen cursor-relative coordinates.
- *
  * \see `SDL_TouchDeviceType`
  *
  * \since 4.3.0
- *
- * \headerfile touch.hpp
  */
 enum class device_type
 {
-  invalid = SDL_TOUCH_DEVICE_INVALID,
-  direct = SDL_TOUCH_DEVICE_DIRECT,
-  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
-  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
+  // clang-format off
+  invalid = SDL_TOUCH_DEVICE_INVALID,                     ///< Invalid touch device.
+  direct = SDL_TOUCH_DEVICE_DIRECT,                       ///< Touch screen with window-relative coordinates.
+  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE, ///< Trackpad with absolute device coordinates.
+  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE  ///< Trackpad with screen cursor-relative coordinates.
+  // clang-format on
 };
 
 /**
@@ -51765,7 +49976,8 @@ enum class device_type
  *
  * \param index the index of the desired touch device.
  *
- * \return a `SDL_TouchID` value; or `std::nullopt` if there is no such value.
+ * \return the touch device ID associated with the index; `std::nullopt` if there is no
+ * such value.
  *
  * \since 4.3.0
  */
@@ -51817,8 +50029,7 @@ enum class device_type
  * \param id the touch ID of the finger.
  * \param index the index of the finger object.
  *
- * \return an `SDL_Finger` instance; or `std::nullopt` if no such instance could
- * be obtained.
+ * \return the associated finger; `std::nullopt` if no such instance could be obtained.
  *
  * \since 4.3.0
  */
@@ -51836,8 +50047,7 @@ enum class device_type
 }
 
 /**
- * \brief Returns the device ID used for mouse events simulated with touch
- * input.
+ * \brief Returns the device ID used for mouse events simulated with touch input.
  *
  * \return a device ID.
  *
@@ -51849,10 +50059,9 @@ enum class device_type
 }
 
 /**
- * \brief Returns the `SDL_TouchID` used by touch events simulated with mouse
- * input.
+ * \brief Returns the touch ID used by touch events simulated with mouse input.
  *
- * \return a `SDL_TouchID` value.
+ * \return the touch ID used by touch events simulated with mouse input.
  *
  * \since 4.3.0
  */
@@ -51937,9 +50146,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -51986,9 +50195,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -52006,12 +50215,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52023,8 +50231,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52040,8 +50247,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52057,8 +50263,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52074,8 +50279,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52091,8 +50295,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -52118,20 +50321,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -52204,16 +50407,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -52270,9 +50471,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -52476,8 +50676,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -52551,11 +50749,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -52563,8 +50761,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -52738,9 +50936,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -52764,13 +50961,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -52842,8 +51037,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -52862,8 +51057,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -52882,13 +51077,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -52903,13 +51097,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -53083,16 +51276,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -53149,9 +51340,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -53321,8 +51511,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -53396,11 +51584,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -53408,8 +51596,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -53583,9 +51771,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -53609,13 +51796,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -53687,8 +51872,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -53707,8 +51892,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -53727,13 +51912,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -53748,13 +51932,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -53834,8 +52017,8 @@ namespace cen {
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
- * \note Whilst it is possible to supply a type that isn't `int` or `float`,
- * rectangles will always use one of them as the representation type.
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`, rectangles
+ * will always use one of them as the representation type.
  *
  * \tparam T the representation type, must be convertible to `int` or `float`.
  *
@@ -53844,8 +52027,6 @@ namespace cen {
  * \see `frect`
  *
  * \since 5.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
@@ -53884,17 +52065,18 @@ using frect = basic_rect<float>;
 /**
  * \class basic_rect
  *
- * \brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
- * \tparam T the representation type. Must be convertible to either `int` or
- * `float`.
+ * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`
  * \see `frect`
+ * \see `rect()`
+ * \see `intersects()`
+ * \see `collides()`
+ * \see `get_union()`
  *
  * \since 4.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final
@@ -54060,8 +52242,8 @@ class basic_rect final
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_x()` with
-   * the sum of `x()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_x()` with the sum of
+   * `x()` and `offset`.
    *
    * \param offset the offset to the x-coordinate of the rectangle.
    *
@@ -54075,8 +52257,8 @@ class basic_rect final
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_y()` with
-   * the sum of `y()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_y()` with the sum of
+   * `y()` and `offset`.
    *
    * \param offset the offset to the y-coordinate of the rectangle.
    *
@@ -54090,8 +52272,8 @@ class basic_rect final
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_width()`
-   * with the sum of `width()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_width()` with the
+   * sum of `width()` and `offset`.
    *
    * \param offset the offset to the width of the rectangle.
    *
@@ -54105,8 +52287,8 @@ class basic_rect final
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_height()`
-   * with the sum of `height()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_height()` with the
+   * sum of `height()` and `offset`.
    *
    * \param offset the offset to the height of the rectangle.
    *
@@ -54120,9 +52302,8 @@ class basic_rect final
   /**
    * \brief Sets the position of the rectangle.
    *
-   * \note Some frameworks have this kind of function change the size of the
-   * rectangle. However, this function does *not* change the size of the
-   * rectangle.
+   * \note Some frameworks have this kind of function change the size of the rectangle.
+   * However, this function does *not* change the size of the rectangle.
    *
    * \param pos the new position of the rectangle.
    *
@@ -54431,9 +52612,8 @@ class basic_rect final
   /**
    * \brief Serializes the rectangle.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -54457,10 +52637,9 @@ class basic_rect final
 /**
  * \brief Creates a rectangle with automatically deduced precision.
  *
- * \note The only supported precisions for rectangles are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for rectangles are `int` and `float`, so this
+ * function will cast the supplied values to the corresponding type. For example, if you
+ * supply doubles to this function, the returned point will use float as the precision.
  *
  * \tparam T the deduced precision type.
  *
@@ -54490,9 +52669,8 @@ template <typename T, enable_if_number_t<T> = 0>
 /**
  * \brief Indicates whether or not the two rectangles intersect.
  *
- * \details This function does *not* consider rectangles with overlapping
- * borders as intersecting. If you want such behaviour, see the
- * `collides` function.
+ * \details This function does *not* consider rectangles with overlapping borders as
+ * intersecting. If you want such behaviour, see the `collides` function.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -54516,8 +52694,7 @@ template <typename T>
 /**
  * \brief Indicates whether or not two rectangles are colliding.
  *
- * \details This function considers rectangles with overlapping borders as
- * colliding.
+ * \details This function considers rectangles with overlapping borders as colliding.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -54716,8 +52893,6 @@ namespace cen {
  * \tparam T the representation type, e.g. `float` or `double`.
  *
  * \since 5.2.0
- *
- * \headerfile vector3.hpp
  */
 template <typename T>
 struct vector3 final
@@ -54750,9 +52925,8 @@ struct vector3 final
 /**
  * \brief Serializes a 3D-vector.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the vector components.
@@ -55159,8 +53333,7 @@ namespace cen::detail {
 // clang-format off
 
 /**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
  *
  * \tparam T the type of the value to look for.
  *
@@ -55169,8 +53342,7 @@ namespace cen::detail {
  * \param value the value to look for.
  * \param args the arguments that will be compared with the value.
  *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
  *
  * \since 5.1.0
  */
@@ -55202,8 +53374,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_PowerState`
- *
- * \headerfile battery.hpp
  */
 enum class power_state
 {
@@ -55226,8 +53396,8 @@ namespace battery {
 /**
  * \brief Returns the seconds of battery life that is remaining.
  *
- * \return seconds of remaining battery life; `std::nullopt` if the value cannot
- * be computed.
+ * \return seconds of remaining battery life; `std::nullopt` if the value cannot be
+ * computed.
  *
  * \since 3.0.0
  */
@@ -55248,8 +53418,8 @@ namespace battery {
 /**
  * \brief Returns the amount of minutes of battery life that is remaining.
  *
- * \return minutes of remaining battery life; `std::nullopt` if the value cannot
- * be computed.
+ * \return minutes of remaining battery life; `std::nullopt` if the value cannot be
+ * computed.
  *
  * \since 3.0.0
  */
@@ -55268,8 +53438,8 @@ namespace battery {
 /**
  * \brief Returns the percentage of battery life that is currently left.
  *
- * \return percentage of remaining battery life, in the range [0, 100];
- * `std::nullopt` if the battery percentage isn't available.
+ * \return percentage of remaining battery life, in the range [0, 100]; `std::nullopt` if
+ * the battery percentage isn't available.
  *
  * \since 3.0.0
  */
@@ -55320,8 +53490,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not the battery is being charged.
  *
- * \details This convenience function is equivalent to checking if
- * `battery::state()` is equal to `power_state::charging`.
+ * \details This convenience function is equivalent to checking if `battery::state()` is
+ * equal to `power_state::charging`.
  *
  * \return `true` if the battery is charging; `false` otherwise.
  *
@@ -55335,8 +53505,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not the battery is charged.
  *
- * \details This convenience function is equivalent to checking if
- * `battery::state()` is equal to `power_state::charged`.
+ * \details This convenience function is equivalent to checking if `battery::state()` is
+ * equal to `power_state::charged`.
  *
  * \return `true` if the battery is charged; `false` otherwise.
  *
@@ -55350,8 +53520,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not a battery is available.
  *
- * \details This convenience function considers a battery available if the state
- * returned from `battery::state()` is neither `no_battery` nor `unknown`.
+ * \details This convenience function considers a battery available if the state returned
+ * from `battery::state()` is neither `no_battery` nor `unknown`.
  *
  * \return `true` if a battery is available; `false` otherwise.
  *
@@ -55899,13 +54069,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -55963,8 +54132,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -56142,9 +54310,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -56154,12 +54322,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -56178,18 +54344,16 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to
- * be freed using `SDL_free`.
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
+ * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -56213,8 +54377,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string
-   * is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *
@@ -56268,11 +54432,10 @@ class sdl_string final
 namespace cen::clipboard {
 
 /**
- * \brief Indicates whether or not there is a clipboard exists and that it
- * contains non-empty text.
+ * \brief Indicates whether or not there is a clipboard exists and that it contains
+ * non-empty text.
  *
- * \return `true` if there is a clipboard that contains non-empty text; `false`
- * otherwise.
+ * \return `true` if there is a clipboard that contains non-empty text; `false` otherwise.
  *
  * \since 5.0.0
  */
@@ -56284,8 +54447,7 @@ namespace cen::clipboard {
 /**
  * \brief Returns the current text in the clipboard.
  *
- * \note If the clipboard cannot be obtained, this function returns the empty
- * string.
+ * \note If the clipboard cannot be obtained, this function returns the empty string.
  *
  * \return the current clipboard text.
  *
@@ -56352,8 +54514,6 @@ inline auto set_text(const std::string& text) noexcept -> result
  * \brief Provides timing utilities.
  *
  * \since 5.0.0
- *
- * \headerfile counter.hpp
  */
 namespace cen::counter {
 
@@ -56400,8 +54560,7 @@ template <typename T>
 }
 
 /**
- * \brief Returns the amount of milliseconds since the library was
- * initialized.
+ * \brief Returns the amount of milliseconds since the library was initialized.
  *
  * \return the amount of milliseconds since the library was initialized.
  *
@@ -56438,8 +54597,6 @@ namespace cen {
  * \brief Represents a block of memory, allocated in SIMD-friendly way.
  *
  * \since 5.2.0
- *
- * \headerfile cpu.hpp
  */
 class simd_block final
 {
@@ -56447,8 +54604,7 @@ class simd_block final
   /**
    * \brief Allocates a block of SIMD-friendly memory.
    *
-   * \note The allocation might fail, in which case the internal pointer is
-   * null.
+   * \note The allocation might fail, in which case the internal pointer is null.
    *
    * \param size the size of the memory block.
    *
@@ -56468,9 +54624,8 @@ class simd_block final
    */
   void reallocate(const std::size_t size) noexcept
   {
-    // We temporarily release the ownership of the pointer in order to avoid a
-    // double delete, since the reallocation will free the previously allocated
-    // memory.
+    /* We temporarily release the ownership of the pointer in order to avoid a double
+       delete, since the reallocation will free the previously allocated memory. */
     auto* ptr = m_data.release();
     m_data.reset(SDL_SIMDRealloc(ptr, size));
   }
@@ -56489,9 +54644,7 @@ class simd_block final
     return m_data.get();
   }
 
-  /**
-   * \copydoc data()
-   */
+  /// \copydoc data()
   [[nodiscard]] auto data() const noexcept -> const void*
   {
     return m_data.get();
@@ -56500,8 +54653,8 @@ class simd_block final
   /**
    * \brief Returns a reinterpreted pointer to the associated memory block.
    *
-   * \warning It's your responsibility to make sure to avoid any potential
-   * undefined behaviour using this function, since it uses `reinterpret_cast`.
+   * \warning It's your responsibility to make sure to avoid any potential undefined
+   * behaviour using this function, since it uses `reinterpret_cast`.
    *
    * \tparam T the type used when reinterpreting the internal pointer.
    *
@@ -56515,9 +54668,7 @@ class simd_block final
     return reinterpret_cast<T*>(data());
   }
 
-  /**
-   * \copydoc cast_data()
-   */
+  /// \copydoc cast_data()
   template <typename T>
   [[nodiscard]] auto cast_data() const noexcept -> const T*
   {
@@ -56555,8 +54706,6 @@ class simd_block final
  * \brief Provides methods for obtaining information about the processor.
  *
  * \since 5.0.0
- *
- * \headerfile cpu.hpp
  */
 namespace cen::cpu {
 
@@ -56757,11 +54906,11 @@ namespace cen::cpu {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
- * \brief Returns the minimum number of bytes to which a pointer must be
- * aligned to be compatible with SIMD instructions on the current CPU.
+ * \brief Returns the minimum number of bytes to which a pointer must be aligned to be
+ * compatible with SIMD instructions on the current CPU.
  *
- * \return the minimum number of bytes to which a pointer must be
- * aligned to be compatible with SIMD instructions.
+ * \return the minimum number of bytes to which a pointer must be aligned to be compatible
+ * with SIMD instructions.
  *
  * \since 4.0.0
  */
@@ -56785,8 +54934,7 @@ namespace cen::cpu {
 /**
  * \brief Indicates whether or not the CPU uses little-endian byte ordering.
  *
- * \return `true` if the CPU uses little-endian byte ordering; `false`
- * otherwise.
+ * \return `true` if the CPU uses little-endian byte ordering; `false` otherwise.
  *
  * \since 3.1.0
  */
@@ -56996,8 +55144,6 @@ namespace cen {
  * \brief Represents a set of locale entries.
  *
  * \since 5.2.0
- *
- * \headerfile locale.hpp
  */
 class locale final
 {
@@ -57005,8 +55151,7 @@ class locale final
   /**
    * \brief Returns the current preferred locales on the system.
    *
-   * \note The preferred locales might change during the execution of the
-   * program.
+   * \note The preferred locales might change during the execution of the program.
    *
    * \return the preferred locales on the system.
    *
@@ -57018,15 +55163,14 @@ class locale final
   }
 
   /**
-   * \brief Indicates whether or not a language (and optionally a country) is
-   * part of the locale.
+   * \brief Indicates whether or not a language (and optionally a country) is part of the
+   * locale.
    *
    * \param language the language that will be checked, e.g. "en" for english.
-   * \param country optional country code that will be checked, e.g. "US" or
-   * "GB".
+   * \param country optional country code that will be checked, e.g. "US" or "GB".
    *
-   * \return `true` if the specified language and country is a part of the
-   * locale; `false` otherwise.
+   * \return `true` if the specified language and country is a part of the locale; `false`
+   * otherwise.
    *
    * \since 5.2.0
    */
@@ -57087,12 +55231,11 @@ class locale final
   /**
    * \brief Indicates whether or not the locale contains a non-null pointer.
    *
-   * \note It's safe to call all member functions of this class, no matter if
-   * there is a non-null internal pointer. This is intended as a quick and easy
-   * check to determine whether or not there are any entries at all.
+   * \note It's safe to call all member functions of this class, no matter if there is a
+   * non-null internal pointer. This is intended as a quick and easy check to determine
+   * whether or not there are any entries at all.
    *
-   * \return `true` if the locale contains a non-null pointer; `false`
-   * otherwise.
+   * \return `true` if the locale contains a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
    */
@@ -57317,8 +55460,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -57349,15 +55490,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -57381,15 +55519,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -57413,15 +55548,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -57445,15 +55577,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -57710,9 +55839,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -57722,12 +55851,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -57908,8 +56035,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -57940,15 +56065,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -57972,15 +56094,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -58004,15 +56123,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -58036,15 +56152,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -58204,9 +56317,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -58224,12 +56337,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58241,8 +56353,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58258,8 +56369,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58275,8 +56385,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58292,8 +56401,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58309,8 +56417,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -58336,20 +56443,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -58392,12 +56499,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -58420,8 +56524,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -58445,8 +56548,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -58824,9 +56927,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -58845,8 +56947,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -58860,17 +56961,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -59075,13 +57174,11 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -59190,8 +57287,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -59202,8 +57299,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -59222,8 +57317,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -59264,8 +57358,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -59402,8 +57494,6 @@ class basic_pixel_format_info final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
@@ -59492,12 +57582,9 @@ namespace cen {
 /**
  * \enum platform_id
  *
- * \brief Provides values that represent various different operating
- * systems.
+ * \brief Provides values that represent various different operating systems.
  *
  * \since 3.0.0
- *
- * \headerfile platform.hpp
  */
 enum class platform_id
 {
@@ -59512,15 +57599,14 @@ enum class platform_id
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
 /**
- * \brief Attempts to open a URL using a web browser or even a file manager for
- * local files.
+ * \brief Attempts to open a URL using a web browser or even a file manager for local
+ * files.
  *
- * \note This function will return `success` if there was at least an "attempt" to
- * open the specified URL, but it doesn't mean that the URL was successfully
- * loaded.
+ * \note This function will return `success` if there was at least an "attempt" to open
+ * the specified URL, but it doesn't mean that the URL was successfully loaded.
  *
- * \remarks This function will differ greatly in its effects depending on the
- * current platform.
+ * \remarks This function will differ greatly in its effects depending on the current
+ * platform.
  *
  * \param url the URL that should be opened, cannot be null.
  *
@@ -59536,10 +57622,8 @@ inline auto open_url(const not_null<czstring> url) noexcept -> result
   return SDL_OpenURL(url) == 0;
 }
 
-/**
- * \see open_url()
- * \since 5.3.0
- */
+/// \see open_url()
+/// \since 5.3.0
 inline auto open_url(const std::string& url) noexcept -> result
 {
   return open_url(url.c_str());
@@ -59646,8 +57730,7 @@ inline auto open_url(const std::string& url) noexcept -> result
 /**
  * \brief Returns the name of the current platform.
  *
- * \return the name of the current platform; `std::nullopt` if the name cannot
- * be deduced.
+ * \return the name of the current platform; `std::nullopt` if the name cannot be deduced.
  *
  * \since 3.0.0
  */
@@ -59696,7 +57779,6 @@ inline auto open_url(const std::string& url) noexcept -> result
 
 /**
  * \brief Indicates whether or not the current OS is 64-bit Windows.
- *
  *
  * \return `true` if the current OS is 64-bit Windows; `false` otherwise.
  *
@@ -59779,8 +57861,6 @@ inline auto open_url(const std::string& url) noexcept -> result
  * \brief Contains functions related to the system memory.
  *
  * \since 5.0.0
- *
- * \headerfile ram.hpp
  */
 namespace cen::ram {
 
@@ -59849,8 +57929,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -59881,15 +57959,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -59913,15 +57988,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -59945,15 +58017,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -59977,15 +58046,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -60020,12 +58086,10 @@ namespace cen {
 /**
  * \class shared_object
  *
- * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and
- * `.dll` files).
+ * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and `.dll`
+ * files).
  *
  * \since 5.3.0
- *
- * \headerfile shared_object.hpp
  */
 class shared_object final
 {
@@ -60069,8 +58133,7 @@ class shared_object final
    *
    * \param name the name of the function in the shared object.
    *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
+   * \return the loaded function; a null pointer is returned if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -60090,8 +58153,7 @@ class shared_object final
    *
    * \param name the name of the function in the shared object.
    *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
+   * \return the loaded function; a null pointer is returned if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -60260,8 +58322,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -60292,15 +58352,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -60324,15 +58381,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -60356,15 +58410,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -60388,15 +58439,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -60628,13 +58676,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -60692,8 +58739,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -61091,15 +59137,13 @@ enum class lock_status
  *
  * \brief Represents a recursive mutex.
  *
- * \details The fact that the mutex is recursive mutex means that it's possible
- * to nest lock and unlock calls with the same mutex.
+ * \details The fact that the mutex is recursive mutex means that it's possible to nest
+ * lock and unlock calls with the same mutex.
  *
  * \since 5.0.0
  *
  * \see `scoped_lock`
  * \see `try_lock`
- *
- * \headerfile mutex.hpp
  */
 class mutex final
 {
@@ -61122,8 +59166,7 @@ class mutex final
   /**
    * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
    *
-   * \return `success` if the mutex was successfully locked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully locked; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -61147,8 +59190,7 @@ class mutex final
   /**
    * \brief Attempts to unlock the mutex.
    *
-   * \return `success` if the mutex was successfully unlocked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully unlocked; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -61210,14 +59252,12 @@ namespace cen {
 /**
  * \class scoped_lock
  *
- * \brief Represents an RAII-style blocking lock that automatically unlocks the
- * associated mutex upon destruction.
+ * \brief Represents an RAII-style blocking lock that automatically unlocks the associated
+ * mutex upon destruction.
  *
  * \remarks This class is purposefully similar to `std::scoped_lock`.
  *
  * \since 5.0.0
- *
- * \headerfile scoped_lock.hpp
  */
 class scoped_lock final
 {
@@ -61275,8 +59315,6 @@ namespace cen {
  * \brief Represents a condition variable.
  *
  * \since 5.0.0
- *
- * \headerfile condition.hpp
  */
 class condition final
 {
@@ -61290,8 +59328,7 @@ class condition final
   }
 
   /**
-   * \brief Wakes up one of the threads that are waiting on the condition
-   * variable.
+   * \brief Wakes up one of the threads that are waiting on the condition variable.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -61331,13 +59368,13 @@ class condition final
   }
 
   /**
-   * \brief Waits until the condition variable is signaled or if the specified
-   * amount of time has passed.
+   * \brief Waits until the condition variable is signaled or if the specified amount of
+   * time has passed.
    *
    * \pre The mutex must be locked when the function is called!
    *
-   * \note This function is implemented by looping with a delay of 1 ms on some
-   * platforms, and should be avoided if possible.
+   * \note This function is implemented by looping with a delay of 1 ms on some platforms,
+   * and should be avoided if possible.
    *
    * \param mutex the mutex used to coordinate thread access.
    * \param ms the maximum amount of time to wait.
@@ -61401,15 +59438,13 @@ enum class lock_status
  *
  * \brief Represents a recursive mutex.
  *
- * \details The fact that the mutex is recursive mutex means that it's possible
- * to nest lock and unlock calls with the same mutex.
+ * \details The fact that the mutex is recursive mutex means that it's possible to nest
+ * lock and unlock calls with the same mutex.
  *
  * \since 5.0.0
  *
  * \see `scoped_lock`
  * \see `try_lock`
- *
- * \headerfile mutex.hpp
  */
 class mutex final
 {
@@ -61432,8 +59467,7 @@ class mutex final
   /**
    * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
    *
-   * \return `success` if the mutex was successfully locked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully locked; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -61457,8 +59491,7 @@ class mutex final
   /**
    * \brief Attempts to unlock the mutex.
    *
-   * \return `success` if the mutex was successfully unlocked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully unlocked; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -61520,14 +59553,12 @@ namespace cen {
 /**
  * \class scoped_lock
  *
- * \brief Represents an RAII-style blocking lock that automatically unlocks the
- * associated mutex upon destruction.
+ * \brief Represents an RAII-style blocking lock that automatically unlocks the associated
+ * mutex upon destruction.
  *
  * \remarks This class is purposefully similar to `std::scoped_lock`.
  *
  * \since 5.0.0
- *
- * \headerfile scoped_lock.hpp
  */
 class scoped_lock final
 {
@@ -61603,8 +59634,6 @@ namespace cen {
  * \brief Represents a semaphore with a set of "tokens" (or permits).
  *
  * \since 5.0.0
- *
- * \headerfile semaphore.hpp
  */
 class semaphore final
 {
@@ -61645,8 +59674,8 @@ class semaphore final
    *
    * \param ms the maximum amount of time to wait.
    *
-   * \return `success` if a token was acquired; `timed_out` if no token was
-   * acquired in the specified duration; `error` if something goes wrong.
+   * \return `success` if a token was acquired; `timed_out` if no token was acquired in
+   * the specified duration; `error` if something goes wrong.
    *
    * \since 5.0.0
    */
@@ -61658,8 +59687,8 @@ class semaphore final
   /**
    * \brief Attempts to acquire a token from the semaphore.
    *
-   * \return `success` if a token was acquired; `timed_out` if the thread
-   * would've been blocked; `error` if something goes wrong.
+   * \return `success` if a token was acquired; `timed_out` if the thread would've been
+   * blocked; `error` if something goes wrong.
    *
    * \since 5.0.0
    */
@@ -61813,16 +59842,14 @@ using not_null = T;
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -61872,9 +59899,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -61892,12 +59919,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -61909,8 +59935,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -61926,8 +59951,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -61943,8 +59967,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -61960,8 +59983,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -61977,8 +59999,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62004,20 +60025,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -62060,12 +60081,9 @@ namespace cen {
  *
  * \brief Represents different thread priorities.
  *
- * \note You might need higher privileges to use `high` or `critical`
- * priorities.
+ * \note You might need higher privileges to use `high` or `critical` priorities.
  *
  * \since 5.0.0
- *
- * \headerfile thread.hpp
  */
 enum class thread_priority
 {
@@ -62081,20 +60099,17 @@ enum class thread_priority
  *
  * \brief Represents a single thread of execution.
  *
- * \remarks This class purposefully features an API similar to that of
- * `std::thread`. However, unlike `std::thread`, this class will
- * automatically join itself upon destruction if it wasn't already detached
- * or joined.
+ * \remarks This class purposefully features an API similar to that of `std::thread`.
+ * However, unlike `std::thread`, this class will automatically join itself upon
+ * destruction if it wasn't already detached or joined.
  *
- * \note Beware that the C++ standard provides `std::thread` and
- * `std::jthread`, along with several other threading utilities. If possible,
- * you should prefer using the standard library API.
+ * \note Beware that the C++ standard provides `std::thread` and `std::jthread`, along
+ * with several other threading utilities. If possible, you should prefer using the
+ * standard library API.
  *
  * \since 5.0.0
  *
  * \todo C++20: Support templated user data instead of just `void*`.
- *
- * \headerfile thread.hpp
  */
 class thread final
 {
@@ -62125,8 +60140,8 @@ class thread final
    *
    * \param task the task that will be performed.
    * \param name the name of the thread, cannot be null.
-   * \param data a pointer to optional user data that will be supplied to the
-   * task function object.
+   * \param data a pointer to optional user data that will be supplied to the task
+   * function object.
    *
    * \throws sdl_error if the thread cannot be created.
    *
@@ -62163,12 +60178,10 @@ class thread final
   /// \} End of construction/destruction
 
   /**
-   * \brief Forces the current thread to halt for at least the specified
-   * duration.
+   * \brief Forces the current thread to halt for at least the specified duration.
    *
-   * \note The actual time spent sleeping may differ, depending on the
-   * scheduling of the operating system. You shouldn't use this function for
-   * precise timing.
+   * \note The actual time spent sleeping may differ, depending on the scheduling of the
+   * operating system. You shouldn't use this function for precise timing.
    *
    * \param ms the minimum amount of time to sleep for, in milliseconds.
    *
@@ -62182,8 +60195,7 @@ class thread final
   /**
    * \brief Sets the priority of the current thread.
    *
-   * \note You might need elevated privileges to use `high` or `critical`
-   * priorities.
+   * \note You might need elevated privileges to use `high` or `critical` priorities.
    *
    * \param priority the priority that will be used.
    *
@@ -62203,8 +60215,7 @@ class thread final
   /**
    * \brief Lets the thread terminate without having another thread join it.
    *
-   * \note This function has no effect if the thread has already been joined
-   * or detached.
+   * \note This function has no effect if the thread has already been joined or detached.
    *
    * \since 5.0.0
    */
@@ -62224,8 +60235,8 @@ class thread final
   /**
    * \brief Waits for the thread to finish its execution.
    *
-   * \note This function just returns `0` if the thread has already been
-   * joined or detached.
+   * \note This function just returns `0` if the thread has already been joined or
+   * detached.
    *
    * \return the status code.
    *
@@ -62255,8 +60266,7 @@ class thread final
   /**
    * \brief Indicates whether or not the thread can be joined.
    *
-   * \details A thread is joinable if it hasn't been previously detached or
-   * joined.
+   * \details A thread is joinable if it hasn't been previously detached or joined.
    *
    * \note A joinable thread is also detachable.
    *
@@ -62343,9 +60353,7 @@ class thread final
     return m_thread;
   }
 
-  /**
-   * \copydoc get
-   */
+  /// \copydoc get
   [[nodiscard]] auto get() const noexcept -> const SDL_Thread*
   {
     return m_thread;
@@ -62464,12 +60472,10 @@ namespace cen {
 /**
  * \class try_lock
  *
- * \brief Represents an RAII-style non-blocking lock that automatically unlocks
- * the associated mutex upon destruction.
+ * \brief Represents an RAII-style non-blocking lock that automatically unlocks the
+ * associated mutex upon destruction.
  *
  * \since 5.0.0
- *
- * \headerfile try_lock.hpp
  */
 class try_lock final
 {
@@ -62526,8 +60532,7 @@ class try_lock final
   }
 
   /**
-   * \brief Indicates whether or not the lock timed out whilst trying to lock
-   * the mutex.
+   * \brief Indicates whether or not the lock timed out whilst trying to lock the mutex.
    *
    * \return `true` if the locking timed out; `false` otherwise.
    *
@@ -62539,11 +60544,9 @@ class try_lock final
   }
 
   /**
-   * \brief Indicates whether or not there was an error whilst locking the
-   * mutex.
+   * \brief Indicates whether or not there was an error whilst locking the mutex.
    *
-   * \return `true` if something went wrong whilst locking the mutex; `false`
-   * otherwise.
+   * \return `true` if something went wrong whilst locking the mutex; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -62552,9 +60555,7 @@ class try_lock final
     return get_status() == lock_status::error;
   }
 
-  /**
-   * \copydoc success()
-   */
+  /// \copydoc success()
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return success();
@@ -62590,8 +60591,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_BlendMode`
- *
- * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {
@@ -62893,9 +60892,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -62913,12 +60912,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62930,8 +60928,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62947,8 +60944,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62964,8 +60960,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62981,8 +60976,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -62998,8 +60992,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -63025,20 +61018,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -63081,12 +61074,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -63109,8 +61099,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -63134,8 +61123,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -63513,9 +61502,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -63534,8 +61522,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -63549,17 +61536,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -63785,12 +61770,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -63813,8 +61795,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -63838,8 +61819,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -64217,9 +62198,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -64238,8 +62218,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -64253,17 +62232,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -65664,8 +63641,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -65696,15 +63671,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -65728,15 +63700,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -65760,15 +63729,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -65792,15 +63758,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -65944,9 +63907,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -66029,9 +63992,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -66049,12 +64012,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66066,8 +64028,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66083,8 +64044,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66100,8 +64060,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66117,8 +64076,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66134,8 +64092,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -66161,20 +64118,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -66222,8 +64179,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -66297,11 +64252,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -66309,8 +64264,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -66484,9 +64439,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -66510,13 +64464,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -66588,8 +64540,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -66608,8 +64560,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -66628,13 +64580,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -66649,13 +64600,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -66912,8 +64862,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -66944,15 +64892,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -66976,15 +64921,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -67008,15 +64950,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -67040,15 +64979,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -67117,9 +65053,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -67129,12 +65065,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -67162,13 +65096,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -67226,8 +65159,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -67354,16 +65286,14 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -67444,16 +65374,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -67510,9 +65438,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -67754,16 +65681,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -67820,9 +65745,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -67992,8 +65916,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -68067,11 +65989,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -68079,8 +66001,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -68254,9 +66176,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -68280,13 +66201,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -68358,8 +66277,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -68378,8 +66297,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -68398,13 +66317,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -68419,13 +66337,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -68505,8 +66422,8 @@ namespace cen {
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
- * \note Whilst it is possible to supply a type that isn't `int` or `float`,
- * rectangles will always use one of them as the representation type.
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`, rectangles
+ * will always use one of them as the representation type.
  *
  * \tparam T the representation type, must be convertible to `int` or `float`.
  *
@@ -68515,8 +66432,6 @@ namespace cen {
  * \see `frect`
  *
  * \since 5.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
@@ -68555,17 +66470,18 @@ using frect = basic_rect<float>;
 /**
  * \class basic_rect
  *
- * \brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
- * \tparam T the representation type. Must be convertible to either `int` or
- * `float`.
+ * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`
  * \see `frect`
+ * \see `rect()`
+ * \see `intersects()`
+ * \see `collides()`
+ * \see `get_union()`
  *
  * \since 4.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final
@@ -68731,8 +66647,8 @@ class basic_rect final
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_x()` with
-   * the sum of `x()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_x()` with the sum of
+   * `x()` and `offset`.
    *
    * \param offset the offset to the x-coordinate of the rectangle.
    *
@@ -68746,8 +66662,8 @@ class basic_rect final
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_y()` with
-   * the sum of `y()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_y()` with the sum of
+   * `y()` and `offset`.
    *
    * \param offset the offset to the y-coordinate of the rectangle.
    *
@@ -68761,8 +66677,8 @@ class basic_rect final
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_width()`
-   * with the sum of `width()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_width()` with the
+   * sum of `width()` and `offset`.
    *
    * \param offset the offset to the width of the rectangle.
    *
@@ -68776,8 +66692,8 @@ class basic_rect final
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_height()`
-   * with the sum of `height()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_height()` with the
+   * sum of `height()` and `offset`.
    *
    * \param offset the offset to the height of the rectangle.
    *
@@ -68791,9 +66707,8 @@ class basic_rect final
   /**
    * \brief Sets the position of the rectangle.
    *
-   * \note Some frameworks have this kind of function change the size of the
-   * rectangle. However, this function does *not* change the size of the
-   * rectangle.
+   * \note Some frameworks have this kind of function change the size of the rectangle.
+   * However, this function does *not* change the size of the rectangle.
    *
    * \param pos the new position of the rectangle.
    *
@@ -69102,9 +67017,8 @@ class basic_rect final
   /**
    * \brief Serializes the rectangle.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -69128,10 +67042,9 @@ class basic_rect final
 /**
  * \brief Creates a rectangle with automatically deduced precision.
  *
- * \note The only supported precisions for rectangles are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for rectangles are `int` and `float`, so this
+ * function will cast the supplied values to the corresponding type. For example, if you
+ * supply doubles to this function, the returned point will use float as the precision.
  *
  * \tparam T the deduced precision type.
  *
@@ -69161,9 +67074,8 @@ template <typename T, enable_if_number_t<T> = 0>
 /**
  * \brief Indicates whether or not the two rectangles intersect.
  *
- * \details This function does *not* consider rectangles with overlapping
- * borders as intersecting. If you want such behaviour, see the
- * `collides` function.
+ * \details This function does *not* consider rectangles with overlapping borders as
+ * intersecting. If you want such behaviour, see the `collides` function.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -69187,8 +67099,7 @@ template <typename T>
 /**
  * \brief Indicates whether or not two rectangles are colliding.
  *
- * \details This function considers rectangles with overlapping borders as
- * colliding.
+ * \details This function considers rectangles with overlapping borders as colliding.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -69383,8 +67294,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_BlendMode`
- *
- * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {
@@ -69492,13 +67401,11 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -69607,8 +67514,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -69619,8 +67526,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -69639,8 +67544,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -69681,8 +67585,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -69819,8 +67721,6 @@ class basic_pixel_format_info final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
@@ -69930,19 +67830,21 @@ using surface_handle = basic_surface<detail::handle_type>;
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated collection of pixels that constitute an
- * image.
+ * \brief Represents a non-accelerated image.
  *
- * \details Surfaces are often used for icons and snapshots, as an
- * "intermediate" representation that can be manually manipulated, unlike
- * textures. There is no support for directly rendering surfaces, but they can
- * be converted to textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
+ * representation that can be manipulated, unlike textures. There is no support
+ * for directly rendering surfaces. However, surfaces can be converted to textures, which
+ * in turn can be rendered.
  *
- * \tparam B Used to determine the ownership semantics of the class.
+ * \note Unlike most other Centurion components, surfaces can be copied.
+ *
+ * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
- * \headerfile surface.hpp
+ * \see `surface`
+ * \see `surface_handle`
  */
 template <typename T>
 class basic_surface final
@@ -70187,8 +68089,7 @@ class basic_surface final
   auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = SDL_SaveBMP(get(), file);
-    return result != -1;
+    return SDL_SaveBMP(get(), file) != -1;
   }
 
   /**
@@ -70212,8 +68113,7 @@ class basic_surface final
   auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = IMG_SavePNG(get(), file);
-    return result != -1;
+    return IMG_SavePNG(get(), file) != -1;
   }
 
   /**
@@ -70243,8 +68143,7 @@ class basic_surface final
       -> result
   {
     assert(file);
-    const auto result = IMG_SaveJPG(get(), file, quality);
-    return result != -1;
+    return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
   /**
@@ -70277,8 +68176,7 @@ class basic_surface final
   {
     if (must_lock())
     {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
+      return SDL_LockSurface(m_surface) == 0;
     }
     else
     {
@@ -70802,8 +68700,6 @@ namespace cen {
  * \since 4.0.0
  *
  * \see `SDL_SystemCursor`
- *
- * \headerfile cursor.hpp
  */
 enum class system_cursor
 {
@@ -70847,15 +68743,13 @@ using cursor_handle = basic_cursor<detail::handle_type>;
  *
  * \brief Represents a mouse cursor.
  *
- * \details Depending on the template type parameter, this class can
- * represent either an owning or non-owning cursor.
+ * \details Depending on the template type parameter, this class can represent either an
+ * owning or non-owning cursor.
  *
  * \since 5.0.0
  *
  * \see cursor
  * \see cursor_handle
- *
- * \headerfile cursor.hpp
  */
 template <typename T>
 class basic_cursor final
@@ -70866,8 +68760,6 @@ class basic_cursor final
 
   /**
    * \brief Creates a cursor based on a cursor type.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param cursor the type of the cursor that will be created.
    *
@@ -70888,11 +68780,9 @@ class basic_cursor final
   /**
    * \brief Creates a cursor based on a surface and an associated hotspot.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param surface the icon associated with the cursor.
-   * \param hotspot the hotspot that will be used to determine the location
-   * of mouse clicks.
+   * \param hotspot the hotspot that will be used to determine the location of mouse
+   * clicks.
    *
    * \throws sdl_error if the cursor cannot be created.
    *
@@ -70911,11 +68801,9 @@ class basic_cursor final
   /**
    * \brief Creates a handle to a cursor based on a raw pointer.
    *
-   * \note This constructor is only available for handles since it would be
-   * very easy to introduce subtle bugs by creating owning cursors from
-   * `SDL_GetCursor` or `SDL_GetDefaultCursor`, which should not be freed.
-   *
-   * \tparam TT dummy parameter for SFINAE.
+   * \note This constructor is only available for handles since it would be very easy to
+   * introduce subtle bugs by creating owning cursors from `SDL_GetCursor` or
+   * `SDL_GetDefaultCursor`, which should not be freed.
    *
    * \param cursor a pointer to the associated cursor.
    *
@@ -70927,8 +68815,6 @@ class basic_cursor final
 
   /**
    * \brief Creates a handle to an owning cursor.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param owner the associated owning cursor.
    *
@@ -70978,8 +68864,7 @@ class basic_cursor final
   /**
    * \brief Returns a handle to the default cursor for the system.
    *
-   * \return a handle to the default cursor for the system; might not be
-   * present.
+   * \return a handle to the default cursor for the system; might not be present.
    *
    * \since 5.0.0
    */
@@ -71042,9 +68927,8 @@ class basic_cursor final
   /**
    * \brief Indicates whether or not this cursor is currently active.
    *
-   * \note This function checks whether or not the associated cursor is
-   * active by comparing the pointer obtained from `SDL_GetCursor` with the
-   * internal pointer.
+   * \note This function checks whether or not the associated cursor is active by
+   * comparing the pointer obtained from `SDL_GetCursor` with the internal pointer.
    *
    * \return `true` if the cursor is currently enabled; `false` otherwise.
    *
@@ -71076,8 +68960,6 @@ class basic_cursor final
 
   /**
    * \brief Indicates whether or not the cursor handle holds a non-null pointer.
-   *
-   * \tparam U dummy template parameter used for SFINAE.
    *
    * \return `true` if the internal pointer is not null; `false` otherwise.
    *
@@ -71208,9 +69090,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -71228,12 +69110,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71245,8 +69126,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71262,8 +69142,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71279,8 +69158,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71296,8 +69174,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71313,8 +69190,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -71355,10 +69231,8 @@ using unicode = u16;
  *
  * \brief Represents a null-terminated string encoded in unicode.
  *
- * \details This class is a wrapper around a `std::vector<unicode>`, that
- * provides a similar interface to that of `std::string`.
- *
- * \headerfile unicode_string.hpp
+ * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
+ * similar interface to that of `std::string`.
  */
 class unicode_string final
 {
@@ -71412,10 +69286,9 @@ class unicode_string final
   /**
    * \brief Reserves enough memory to hold the specified amount of elements.
    *
-   * \details Use this method to optimize additions to the string when you
-   * know or can approximate the amount of elements that will be added. This
-   * can reduce the amount of unnecessary allocations and copies of the
-   * underlying array.
+   * \details Use this method to optimize additions to the string when you know or can
+   * approximate the amount of elements that will be added. This can reduce the amount of
+   * unnecessary allocations and copies of the underlying array.
    *
    * \param n the amount of elements to allocate memory for.
    *
@@ -71457,9 +69330,7 @@ class unicode_string final
     (append(code), ...);
   }
 
-  /**
-   * \copydoc append(unicode)
-   */
+  /// \copydoc append(unicode)
   void operator+=(const unicode ch)
   {
     append(ch);
@@ -71497,8 +69368,8 @@ class unicode_string final
   /**
    * \brief Returns the capacity of the string.
    *
-   * \return the capacity of the string (the amount of elements that can be
-   * stored before needing to allocate more memory).
+   * \return the capacity of the string (the amount of elements that can be stored before
+   * needing to allocate more memory).
    *
    * \since 5.0.0
    */
@@ -71510,8 +69381,7 @@ class unicode_string final
   /**
    * \brief Indicates whether or not the string is empty.
    *
-   * \note The string is considered empty if the only element is the
-   * null-terminator.
+   * \note The string is considered empty if the only element is the null-terminator.
    *
    * \return `true` if the string is empty; `false` otherwise.
    *
@@ -71534,9 +69404,7 @@ class unicode_string final
     return m_data.data();
   }
 
-  /**
-   * \copydoc data
-   */
+  /// \copydoc data
   [[nodiscard]] auto data() const noexcept -> const_pointer
   {
     return m_data.data();
@@ -71545,8 +69413,7 @@ class unicode_string final
   /**
    * \brief Returns an iterator that points to the first element in the string.
    *
-   * \details Iteration using the iterator is done consecutively, as you
-   * would expect.
+   * \details Iteration using the iterator is done consecutively, as you would expect.
    *
    * \return an iterator that points to the first element in the string.
    *
@@ -71557,22 +69424,18 @@ class unicode_string final
     return m_data.begin();
   }
 
-  /**
-   * \copydoc begin
-   */
+  /// \copydoc begin
   [[nodiscard]] auto begin() const noexcept -> const_iterator
   {
     return m_data.begin();
   }
 
   /**
-   * \brief Returns an iterator that points one-past the last element in the
-   * string.
+   * \brief Returns an iterator that points one-past the last element in the string.
    *
    * \note The null-terminator is purposefully skipped.
    *
-   * \return an iterator that points one-past the last element in the
-   * string.
+   * \return an iterator that points one-past the last element in the string.
    *
    * \since 5.0.0
    */
@@ -71581,9 +69444,7 @@ class unicode_string final
     return m_data.end() - 1;
   }
 
-  /**
-   * \copydoc end
-   */
+  /// \copydoc end
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
     return m_data.end() - 1;
@@ -71592,8 +69453,7 @@ class unicode_string final
   /**
    * \brief Returns the element at the specified index.
    *
-   * \details This method will throw an exception if the supplied index is
-   * out-of-bounds.
+   * \details This method will throw an exception if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -71606,9 +69466,7 @@ class unicode_string final
     return m_data.at(index);
   }
 
-  /**
-   * \copydoc at
-   */
+  /// \copydoc at
   [[nodiscard]] auto at(const size_type index) const -> const_reference
   {
     return m_data.at(index);
@@ -71619,9 +69477,8 @@ class unicode_string final
    *
    * \pre `index` **must** be in the range [0, `size()`);
    *
-   * \details This method will does *not* perform bounds-checking. However, in
-   * debug-mode, an assertion will abort the program if the supplied index is
-   * out-of-bounds.
+   * \details This method will does *not* perform bounds-checking. However, in debug-mode,
+   * an assertion will abort the program if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -71635,9 +69492,7 @@ class unicode_string final
     return m_data[index];
   }
 
-  /**
-   * \copydoc operator[]
-   */
+  /// \copydoc operator[]
   [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc())
       -> const_reference
   {
@@ -71648,9 +69503,8 @@ class unicode_string final
   /**
    * \brief Serializes the string.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -71765,8 +69619,6 @@ namespace cen {
  * \brief Provides metrics about a glyph in a font.
  *
  * \since 4.0.0
- *
- * \headerfile font.hpp
  */
 struct glyph_metrics final
 {
@@ -71783,8 +69635,6 @@ struct glyph_metrics final
  * \brief Provides different possible TrueType font hint values.
  *
  * \since 3.1.0
- *
- * \headerfile font.hpp
  */
 enum class font_hint : int
 {
@@ -71797,13 +69647,14 @@ enum class font_hint : int
 /**
  * \class font
  *
- * \brief Represents a True Type font.
+ * \brief Represents a TrueType font.
+ *
+ * \details This class provides information about a TrueType font, but it can also be used
+ * for text rendering and obtaining information about the size of rendered strings, etc.
  *
  * \see `TTF_Font`
  *
  * \since 3.0.0
- *
- * \headerfile font.hpp
  */
 class font final
 {
@@ -71908,8 +69759,7 @@ class font final
   /**
    * \brief Sets whether the font is underlined.
    *
-   * \param underlined `true` if the font should be underlined; `false`
-   * otherwise.
+   * \param underlined `true` if the font should be underlined; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -71928,8 +69778,7 @@ class font final
   /**
    * \brief Sets whether the font is strikethrough.
    *
-   * \param strikethrough `true` if the font should be strikethrough; `false`
-   * otherwise.
+   * \param strikethrough `true` if the font should be strikethrough; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -71948,8 +69797,7 @@ class font final
   /**
    * \brief Sets the outline size of the font.
    *
-   * \param outline the outline size, in pixels; `0` is used to disable
-   * outlining.
+   * \param outline the outline size, in pixels; `0` is used to disable outlining.
    *
    * \since 5.0.0
    */
@@ -71973,8 +69821,8 @@ class font final
   /**
    * \brief Sets whether or not font kerning is allowed.
    *
-   * \details Kerning is the process of adjusting the spacing between certain
-   * characters in order to improve the appearance of a font.
+   * \details Kerning is the process of adjusting the spacing between certain characters
+   * in order to improve the appearance of a font.
    *
    * \param kerning `true` if kerning should be allowed; `false` otherwise.
    *
@@ -72091,8 +69939,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the bottom of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the bottom of the font characters.
    *
    * \details The returned value is negative, relative to the baseline.
    *
@@ -72106,8 +69953,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the top of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the top of the font characters.
    *
    * \details The returned value is positive, relative to the baseline.
    *
@@ -72187,8 +70033,7 @@ class font final
    *
    * \note This information may not be available.
    *
-   * \return the font face style name of the font; `nullptr` if it isn't
-   * available.
+   * \return the font face style name of the font; `nullptr` if it isn't available.
    *
    * \since 3.0.0
    */
@@ -72215,12 +70060,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the kerning amount between two glyphs in the font, if
-   * kerning would be enabled.
+   * \brief Returns the kerning amount between two glyphs in the font, if kerning would be
+   * enabled.
    *
-   * \details In other words, you can use this method to obtain the
-   * kerning amount between, for instance, the characters 'a' and 'V' if they
-   * were to be rendered next to each other.
+   * \details In other words, you can use this method to obtain the kerning amount
+   * between, for instance, the characters 'a' and 'V' if they were to be rendered next to
+   * each other.
    *
    * \param firstGlyph the first glyph.
    * \param secondGlyph the second glyph.
@@ -72236,8 +70081,7 @@ class font final
   }
 
   /**
-   * \brief Indicates whether or not the specified glyph is available in the
-   * font.
+   * \brief Indicates whether or not the specified glyph is available in the font.
    *
    * \param glyph the unicode glyph that will be checked.
    *
@@ -72255,8 +70099,8 @@ class font final
    *
    * \param glyph the glyph to obtain the metrics of.
    *
-   * \return the metrics of the specified glyph; std::nullopt if the metrics
-   * couldn't be obtained.
+   * \return the metrics of the specified glyph; std::nullopt if the metrics couldn't be
+   * obtained.
    *
    * \since 4.0.0
    */
@@ -72264,14 +70108,13 @@ class font final
       -> std::optional<glyph_metrics>
   {
     glyph_metrics metrics{};
-    const auto result = TTF_GlyphMetrics(m_font.get(),
-                                         glyph,
-                                         &metrics.minX,
-                                         &metrics.maxX,
-                                         &metrics.minY,
-                                         &metrics.maxY,
-                                         &metrics.advance);
-    if (result != -1)
+    if (TTF_GlyphMetrics(m_font.get(),
+                         glyph,
+                         &metrics.minX,
+                         &metrics.maxX,
+                         &metrics.minY,
+                         &metrics.maxY,
+                         &metrics.advance) != -1)
     {
       return metrics;
     }
@@ -72287,13 +70130,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of, can't be null.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 4.0.0
    */
@@ -72314,13 +70156,12 @@ class font final
   }
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 5.3.0
    */
@@ -72331,13 +70172,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of, can't be null.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -72355,13 +70195,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -72372,13 +70211,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of, can't be null.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -72396,13 +70234,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -72446,8 +70283,8 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended. However, it's useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However, it's useful since many SDL
+   * calls use non-const pointers even when no change will be applied.
    *
    * \warning Don't take ownership of the returned pointer!
    *
@@ -72594,8 +70431,6 @@ namespace cen {
  * \brief Provides metrics about a glyph in a font.
  *
  * \since 4.0.0
- *
- * \headerfile font.hpp
  */
 struct glyph_metrics final
 {
@@ -72612,8 +70447,6 @@ struct glyph_metrics final
  * \brief Provides different possible TrueType font hint values.
  *
  * \since 3.1.0
- *
- * \headerfile font.hpp
  */
 enum class font_hint : int
 {
@@ -72626,13 +70459,14 @@ enum class font_hint : int
 /**
  * \class font
  *
- * \brief Represents a True Type font.
+ * \brief Represents a TrueType font.
+ *
+ * \details This class provides information about a TrueType font, but it can also be used
+ * for text rendering and obtaining information about the size of rendered strings, etc.
  *
  * \see `TTF_Font`
  *
  * \since 3.0.0
- *
- * \headerfile font.hpp
  */
 class font final
 {
@@ -72737,8 +70571,7 @@ class font final
   /**
    * \brief Sets whether the font is underlined.
    *
-   * \param underlined `true` if the font should be underlined; `false`
-   * otherwise.
+   * \param underlined `true` if the font should be underlined; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -72757,8 +70590,7 @@ class font final
   /**
    * \brief Sets whether the font is strikethrough.
    *
-   * \param strikethrough `true` if the font should be strikethrough; `false`
-   * otherwise.
+   * \param strikethrough `true` if the font should be strikethrough; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -72777,8 +70609,7 @@ class font final
   /**
    * \brief Sets the outline size of the font.
    *
-   * \param outline the outline size, in pixels; `0` is used to disable
-   * outlining.
+   * \param outline the outline size, in pixels; `0` is used to disable outlining.
    *
    * \since 5.0.0
    */
@@ -72802,8 +70633,8 @@ class font final
   /**
    * \brief Sets whether or not font kerning is allowed.
    *
-   * \details Kerning is the process of adjusting the spacing between certain
-   * characters in order to improve the appearance of a font.
+   * \details Kerning is the process of adjusting the spacing between certain characters
+   * in order to improve the appearance of a font.
    *
    * \param kerning `true` if kerning should be allowed; `false` otherwise.
    *
@@ -72920,8 +70751,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the bottom of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the bottom of the font characters.
    *
    * \details The returned value is negative, relative to the baseline.
    *
@@ -72935,8 +70765,7 @@ class font final
   }
 
   /**
-   * \brief Returns the offset from the baseline to the top of the font
-   * characters.
+   * \brief Returns the offset from the baseline to the top of the font characters.
    *
    * \details The returned value is positive, relative to the baseline.
    *
@@ -73016,8 +70845,7 @@ class font final
    *
    * \note This information may not be available.
    *
-   * \return the font face style name of the font; `nullptr` if it isn't
-   * available.
+   * \return the font face style name of the font; `nullptr` if it isn't available.
    *
    * \since 3.0.0
    */
@@ -73044,12 +70872,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the kerning amount between two glyphs in the font, if
-   * kerning would be enabled.
+   * \brief Returns the kerning amount between two glyphs in the font, if kerning would be
+   * enabled.
    *
-   * \details In other words, you can use this method to obtain the
-   * kerning amount between, for instance, the characters 'a' and 'V' if they
-   * were to be rendered next to each other.
+   * \details In other words, you can use this method to obtain the kerning amount
+   * between, for instance, the characters 'a' and 'V' if they were to be rendered next to
+   * each other.
    *
    * \param firstGlyph the first glyph.
    * \param secondGlyph the second glyph.
@@ -73065,8 +70893,7 @@ class font final
   }
 
   /**
-   * \brief Indicates whether or not the specified glyph is available in the
-   * font.
+   * \brief Indicates whether or not the specified glyph is available in the font.
    *
    * \param glyph the unicode glyph that will be checked.
    *
@@ -73084,8 +70911,8 @@ class font final
    *
    * \param glyph the glyph to obtain the metrics of.
    *
-   * \return the metrics of the specified glyph; std::nullopt if the metrics
-   * couldn't be obtained.
+   * \return the metrics of the specified glyph; std::nullopt if the metrics couldn't be
+   * obtained.
    *
    * \since 4.0.0
    */
@@ -73093,14 +70920,13 @@ class font final
       -> std::optional<glyph_metrics>
   {
     glyph_metrics metrics{};
-    const auto result = TTF_GlyphMetrics(m_font.get(),
-                                         glyph,
-                                         &metrics.minX,
-                                         &metrics.maxX,
-                                         &metrics.minY,
-                                         &metrics.maxY,
-                                         &metrics.advance);
-    if (result != -1)
+    if (TTF_GlyphMetrics(m_font.get(),
+                         glyph,
+                         &metrics.minX,
+                         &metrics.maxX,
+                         &metrics.minY,
+                         &metrics.maxY,
+                         &metrics.advance) != -1)
     {
       return metrics;
     }
@@ -73116,13 +70942,12 @@ class font final
   /// \{
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of, can't be null.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 4.0.0
    */
@@ -73143,13 +70968,12 @@ class font final
   }
 
   /**
-   * \brief Returns the size of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the size of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the size of.
    *
-   * \return the size of the string, if it was rendered using the font;
-   * `std::nullopt` if something goes wrong.
+   * \return the size of the string, if it was rendered using the font; `std::nullopt` if
+   * something goes wrong.
    *
    * \since 5.3.0
    */
@@ -73160,13 +70984,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of, can't be null.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -73184,13 +71007,12 @@ class font final
   }
 
   /**
-   * \brief Returns the width of the supplied string, if it was rendered using
-   * the font.
+   * \brief Returns the width of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the width of.
    *
-   * \return the width of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the width of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -73201,13 +71023,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of, can't be null.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 3.0.0
    */
@@ -73225,13 +71046,12 @@ class font final
   }
 
   /**
-   * \brief Returns the height of the supplied string, if it was rendered
-   * using the font.
+   * \brief Returns the height of the supplied string, if it was rendered using the font.
    *
    * \param str the string to determine the height of.
    *
-   * \return the height of the supplied string, if it was rendered using the
-   * font; `std::nullopt` if something goes wrong.
+   * \return the height of the supplied string, if it was rendered using the font;
+   * `std::nullopt` if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -73275,8 +71095,8 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended. However, it's useful since
-   * many SDL calls use non-const pointers even when no change will be applied.
+   * \warning Use of this method is not recommended. However, it's useful since many SDL
+   * calls use non-const pointers even when no change will be applied.
    *
    * \warning Don't take ownership of the returned pointer!
    *
@@ -73428,13 +71248,11 @@ namespace cen {
 /**
  * \enum scale_mode
  *
- * \brief Mirrors the `SDL_ScaleMode` enum.
+ * \brief Represents different texture scale modes.
  *
  * \since 4.0.0
  *
  * \see `SDL_ScaleMode`
- *
- * \headerfile scale_mode.hpp
  */
 enum class scale_mode
 {
@@ -73513,25 +71331,20 @@ namespace cen {
 /**
  * \enum texture_access
  *
- * \brief Mirrors the `SDL_TextureAccess` enum.
+ * \brief Represents different texture access modes.
  *
- * \note The `no_lock` enumerator is also referred to as "static" texture
- * access.
+ * \note The `no_lock` enumerator is also referred to as "static" texture access.
  *
  * \since 3.0.0
  *
  * \see `SDL_TextureAccess`
- *
- * \headerfile texture_access.hpp
  */
 enum class texture_access : int
 {
-  no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
-                                            ///< rarely, and isn't lockable.
-  streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Indicates that the texture changes
-                                            ///< frequently, and is lockable.
-  target = SDL_TEXTUREACCESS_TARGET         ///< Indicates that the texture can be used
-                                            ///< as a render target.
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely, and isn't lockable.
+  streaming =
+      SDL_TEXTUREACCESS_STREAMING,   ///< Texture changes frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Texture can be used as a render target.
 };
 
 /**
@@ -73558,8 +71371,7 @@ enum class texture_access : int
 }
 
 /**
- * \brief Indicates whether or not the two texture access values aren't the
- * same.
+ * \brief Indicates whether or not the two texture access values aren't the same.
  *
  * \param lhs the lhs texture access value.
  * \param rhs the rhs texture access value.
@@ -73603,16 +71415,13 @@ using texture_handle = basic_texture<detail::handle_type>;
 /**
  * \class basic_texture
  *
- * \brief Represents an hardware-accelerated image. This class is used for all
- * non-primitive rendering.
+ * \brief Represents an hardware-accelerated image, intended to be rendered using the
+ * `basic_renderer` class.
  *
  * \since 3.0.0
  *
- * \see `SDL_Texture`
  * \see `texture`
  * \see `texture_handle`
- *
- * \headerfile texture.hpp
  */
 template <typename T>
 class basic_texture final
@@ -73628,8 +71437,7 @@ class basic_texture final
    *
    * \param source a pointer to the associated SDL texture.
    *
-   * \throws cen_error if the supplied pointer is null *and* the texture is
-   * owning.
+   * \throws cen_error if the supplied pointer is null *and* the texture is owning.
    *
    * \since 3.0.0
    */
@@ -73661,8 +71469,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture, can't be null.
@@ -73684,8 +71491,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture.
@@ -73702,8 +71508,7 @@ class basic_texture final
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param surface the surface that the texture will be based on.
@@ -73725,8 +71530,7 @@ class basic_texture final
   /**
    * \brief Creates an texture with the specified characteristics.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the associated renderer instance.
    * \param format the pixel format of the created texture.
@@ -73757,15 +71561,13 @@ class basic_texture final
   /**
    * \brief Creates and returns a texture with streaming access.
    *
-   * \details The created texture is based on the image at the specified path
-   * with the `streaming` texture access.
+   * \details The created texture is based on the image at the specified path with the
+   * `streaming` texture access.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
-   * \param path the path of the image file to base the texture on, can't be
-   * null.
+   * \param path the path of the image file to base the texture on, can't be null.
    * \param format the pixel format that will be used by the texture.
    *
    * \throws cen_error if something goes wrong.
@@ -73822,8 +71624,8 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the texture access isn't
-   * `Streaming` or if the coordinate is out-of-bounds.
+   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
    * \param color the new color of the pixel.
@@ -73886,8 +71688,7 @@ class basic_texture final
    *
    * \note The alpha component in the color struct is ignored by this method.
    *
-   * \param color the color that will be used to modulate the color of the
-   * texture.
+   * \param color the color that will be used to modulate the color of the texture.
    *
    * \since 3.0.0
    */
@@ -73989,8 +71790,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture is a possible render target.
    *
-   * \return `true` if the texture is a possible render target; `false`
-   * otherwise.
+   * \return `true` if the texture is a possible render target; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -74014,8 +71814,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture has streaming texture access.
    *
-   * \return `true` if the texture has streaming texture access; `false`
-   * otherwise.
+   * \return `true` if the texture has streaming texture access; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -74087,13 +71886,11 @@ class basic_texture final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Releases ownership of the associated SDL texture and returns a
-   * pointer to it.
+   * \brief Releases ownership of the associated SDL texture and returns a pointer to it.
    *
-   * \warning Usage of this function should be considered dangerous, since
-   * you might run into memory leak issues. You **must** call
-   * `SDL_DestroyTexture` on the returned pointer to free the associated
-   * memory.
+   * \warning Usage of this function should be considered dangerous, since you might run
+   * into memory leak issues. You **must** call `SDL_DestroyTexture` on the returned
+   * pointer to free the associated memory.
    *
    * \return a pointer to the associated SDL texture.
    *
@@ -74124,8 +71921,6 @@ class basic_texture final
 
   /**
    * \brief Indicates whether or not a texture handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -74176,12 +71971,12 @@ class basic_texture final
   /**
    * \brief Locks the texture for write-only pixel access.
    *
-   * \remarks This method is only applicable if the texture access of the
-   * texture is `Streaming`.
+   * \remarks This method is only applicable if the texture access of the texture is
+   * `Streaming`.
    *
    * \param pixels this will be filled with a pointer to the locked pixels.
-   * \param pitch This is filled in with the pitch of the locked pixels, can
-   * safely be null if it isn't needed.
+   * \param pitch This is filled in with the pitch of the locked pixels, can safely be
+   * null if it isn't needed.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -74191,18 +71986,18 @@ class basic_texture final
   {
     if (pitch)
     {
-      const auto result =
-          SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             pitch) == 0;
     }
     else
     {
       int dummyPitch;
-      const auto result = SDL_LockTexture(m_texture,
-                                          nullptr,
-                                          reinterpret_cast<void**>(pixels),
-                                          &dummyPitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
     }
   }
 
@@ -74238,7 +72033,7 @@ template <typename T>
  * \brief Prints a textual representation of a texture.
  *
  * \param stream the stream that will be used.
- * \param texture
+ * \param texture the texture that will be printed
  *
  * \return the used stream.
  *
@@ -74247,8 +72042,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
 {
-  stream << to_string(texture);
-  return stream;
+  return stream << to_string(texture);
 }
 
 /// \}
@@ -74271,23 +72065,20 @@ namespace cen {
  *
  * \details This class provides two different optimizations.
  *
- * Firstly, this class can be used to cache glyph textures that can then be used
- * to render strings, by simply looking up the individual glyphs and rendering
- * the existing textures. Note, this will not result in accurate kerning.
- * However, this might not be noticeable and/or worth the performance boost.
- * This approach is *very* efficient for rendering pieces of text that
- * frequently changes, since other approaches would require dynamic allocation
- * and de-allocation for every new rendered string.
+ * Firstly, this class can be used to cache glyph textures that can then be used to render
+ * strings, by simply looking up the individual glyphs and rendering the existing
+ * textures. Note, this will not result in accurate kerning. However, this might not be
+ * noticeable and/or worth the performance boost. This approach is *very* efficient for
+ * rendering pieces of text that frequently changes, since other approaches would require
+ * dynamic allocation and de-allocation for every new rendered string.
  *
  * Secondly, it's possible to cache complete strings and associate them with a
- * user-provided identifier. In contrast with the first approach, this will
- * result in accurate kerning. The only problem is that it's hard to know the
- * exact strings you will render at compile-time. Use this option if you know
- * that you're going to render some specific string a lot.
+ * user-provided identifier. In contrast with the first approach, this will result in
+ * accurate kerning. The only problem is that it's hard to know the exact strings you will
+ * render at compile-time. Use this option if you know that you're going to render some
+ * specific string a lot.
  *
  * \since 5.0.0
- *
- * \headerfile font_cache.hpp
  */
 class font_cache final
 {
@@ -74300,8 +72091,6 @@ class font_cache final
    * \brief Simple aggregate that contains a texture and metrics for a glyph.
    *
    * \since 5.0.0
-   *
-   * \headerfile font_cache.hpp
    */
   struct glyph_data final
   {
@@ -74325,11 +72114,10 @@ class font_cache final
   {}
 
   /**
-   * \brief Creates an empty font cache, and creates the associated font
-   * in-place.
+   * \brief Creates an empty font cache, and creates the associated font in-place.
    *
-   * \note This constructor throws whatever exceptions that the `font`
-   * constructor might throw.
+   * \note This constructor throws whatever exceptions that the `font` constructor might
+   * throw.
    *
    * \tparam Args the types of the arguments forwarded to the font constructor.
    *
@@ -74349,17 +72137,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_utf8`
+   * \see `basic_renderer::render_blended_utf8()`
    *
    * \since 5.0.0
    */
@@ -74385,18 +72172,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_utf8`
+   * \see `basic_renderer::render_blended_wrapped_utf8()`
    *
    * \since 5.0.0
    */
@@ -74426,18 +72212,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_utf8`
+   * \see `basic_renderer::render_shaded_utf8()`
    *
    * \since 5.0.0
    */
@@ -74467,17 +72252,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_utf8`
+   * \see `basic_renderer::render_solid_utf8()`
    *
    * \since 5.0.0
    */
@@ -74503,17 +72287,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_latin1`
+   * \see `basic_renderer::render_blended_latin1()`
    *
    * \since 5.0.0
    */
@@ -74541,18 +72324,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_latin1`
+   * \see `basic_renderer::render_blended_wrapped_latin1()`
    *
    * \since 5.0.0
    */
@@ -74582,18 +72364,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_latin1`
+   * \see `basic_renderer::render_shaded_latin1()`
    *
    * \since 5.0.0
    */
@@ -74623,17 +72404,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_latin1`
+   * \see `basic_renderer::render_solid_latin1()`
    *
    * \since 5.0.0
    */
@@ -74659,17 +72439,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_unicode`
+   * \see `basic_renderer::render_blended_unicode()`
    *
    * \since 5.0.0
    */
@@ -74684,18 +72463,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_unicode`
+   * \see `basic_renderer::render_blended_wrapped_unicode()`
    *
    * \since 5.0.0
    */
@@ -74711,18 +72489,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_unicode`
+   * \see `basic_renderer::render_shaded_unicode()`
    *
    * \since 5.0.0
    */
@@ -74738,17 +72515,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_unicode`
+   * \see `basic_renderer::render_solid_unicode()`
    *
    * \since 5.0.0
    */
@@ -74761,13 +72537,13 @@ class font_cache final
   }
 
   /**
-   * \brief Indicates whether or not there is a cached string texture associated
-   * with the specified key.
+   * \brief Indicates whether or not there is a cached string texture associated with the
+   * specified key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if there is a cached texture associated with the key;
-   * `false` otherwise.
+   * \return `true` if there is a cached texture associated with the key; `false`
+   * otherwise.
    *
    * \since 5.0.0
    */
@@ -74795,14 +72571,13 @@ class font_cache final
   /**
    * \brief Returns a pointer to the texture associated with the specified key.
    *
-   * \note The returned pointer is not suitable for storing for longer than
-   * absolutely necessary, as it might get invalidated by modifications of
-   * the font cache.
+   * \note The returned pointer is not suitable for storing for longer than absolutely
+   * necessary, as it might get invalidated by modifications of the font cache.
    *
    * \param id the key of the desired texture.
    *
-   * \return a pointer to the texture associated with the specified key;
-   * `nullptr` if no texture is found.
+   * \return a pointer to the texture associated with the specified key; `nullptr` if no
+   * texture is found.
    *
    * \since 5.0.0
    */
@@ -74827,8 +72602,8 @@ class font_cache final
   /**
    * \brief Adds a glyph to the font cache.
    *
-   * \details This function has no effect if the supplied glyph isn't provided
-   * by the associated font, or if the supplied glyph has already been cached.
+   * \details This function has no effect if the supplied glyph isn't provided by the
+   * associated font, or if the supplied glyph has already been cached.
    *
    * \tparam Renderer the type of the renderer.
    *
@@ -74853,16 +72628,15 @@ class font_cache final
   /**
    * \brief Caches the glyphs in the specified range.
    *
-   * \details The range is interpreted as [min, max), i.e. the the `min`
-   * value is included, and `max` is excluded.
+   * \details The range is interpreted as [min, max), i.e. the the `min` value is
+   * included, and `max` is excluded.
    *
    * \remark For an overview of the various Unicode blocks, see <a
    * href="https://unicode-table.com/en/blocks/">this</a>.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    * \param begin the first glyph that will be included.
    * \param end the "end" glyph in the range, will not be included.
    *
@@ -74880,14 +72654,13 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable basic latin characters.
    *
-   * \details The basic latin set provides the most common characters, such as
-   * upper- and lower-case latin letters, numbers and symbols. This function
-   * might throw if something goes wrong when creating the textures.
+   * \details The basic latin set provides the most common characters, such as upper- and
+   * lower-case latin letters, numbers and symbols. This function might throw if something
+   * goes wrong when creating the textures.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -74903,8 +72676,7 @@ class font_cache final
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -74918,13 +72690,12 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable Latin-1 characters.
    *
-   * \note This function is effectively equivalent to calling both
-   * `add_basic_latin` and `add_latin1_supplement`.
+   * \note This function is effectively equivalent to calling both `add_basic_latin` and
+   * `add_latin1_supplement`.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -74986,16 +72757,16 @@ class font_cache final
   /**
    * \brief Returns the data associated with the specified glyph, if it exists.
    *
-   * \details This function is a non-throwing alternative to the `at()` and
-   * `operator[]` functions.
+   * \details This function is a non-throwing alternative to the `at()` and `operator[]`
+   * functions.
    *
-   * \note Do not store the returned pointer for longer than absolutely
-   * necessary, it may get invalidated upon modification of the font cache.
+   * \note Do not store the returned pointer for longer than absolutely necessary, it may
+   * get invalidated upon modification of the font cache.
    *
    * \param glyph the desired glyph to lookup the data for.
    *
-   * \return a pointer to the associated glyph data; a null pointer if no
-   * matching data was found.
+   * \return a pointer to the associated glyph data; a null pointer if no matching data
+   * was found.
    *
    * \since 5.2.0
    */
@@ -75118,8 +72889,8 @@ namespace cen {
  *
  * \param index the index of the rendering driver to query.
  *
- * \return information about the specified rendering driver; `std::nullopt` if
- * something went wrong.
+ * \return information about the specified rendering driver; `std::nullopt` if something
+ * went wrong.
  *
  * \since 5.0.0
  */
@@ -75127,8 +72898,7 @@ namespace cen {
     -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info{};
-  const auto result = SDL_GetRenderDriverInfo(index, &info);
-  if (result == 0)
+  if (SDL_GetRenderDriverInfo(index, &info) == 0)
   {
     return info;
   }
@@ -75198,8 +72968,8 @@ namespace cen {
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */
@@ -76361,8 +74131,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -76412,8 +74182,7 @@ template <typename T>
 namespace cen::detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
  *
  * \param b the boolean value that will be converted.
  *
@@ -76497,8 +74266,12 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \see `window`
  * \see `window_handle`
- *
- * \headerfile window.hpp
+ * \see `get_window()`
+ * \see `get_grabbed_window()`
+ * \see `mouse_focus_window()`
+ * \see `keyboard_focus_window()`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_window final
@@ -76509,9 +74282,8 @@ class basic_window final
    *
    * \brief Represents different window features and options.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating windows and to obtain information
-   * from created windows.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating windows and to obtain information from created windows.
    *
    * \see `SDL_WindowFlags`
    *
@@ -76552,12 +74324,12 @@ class basic_window final
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
-   * \note If you're creating a `window` instance, then ownership of the pointer
-   * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
-   * *not* claimed.
+   * \note If you're creating a `window` instance, then ownership of the pointer is
+   * claimed. Furthermore, if you're creating a `window_handle`, ownership is *not*
+   * claimed.
    *
-   * \param window a pointer to the associated SDL window. Ownership of this
-   * pointer is claimed if the window is owning.
+   * \param window a pointer to the associated SDL window. Ownership of this pointer is
+   * claimed if the window is owning.
    *
    * \since 5.0.0
    */
@@ -76582,8 +74354,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -76646,8 +74417,8 @@ class basic_window final
   /**
    * \brief Creates a window.
    *
-   * \details The window will use the size obtained from `default_size()` as its
-   * initial size.
+   * \details The window will use the size obtained from `default_size()` as its initial
+   * size.
    *
    * \throws sdl_error if the window cannot be created.
    *
@@ -76724,8 +74495,7 @@ class basic_window final
   }
 
   /**
-   * \brief Restores the position and size of the window if it's minimized or
-   * maximized.
+   * \brief Restores the position and size of the window if it's minimized or maximized.
    *
    * \since 5.3.0
    */
@@ -76737,8 +74507,7 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `success` if the surface was successfully updated; `failure`
-   * otherwise.
+   * \return `success` if the surface was successfully updated; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -76755,8 +74524,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen; `false` for
-   * windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -76772,8 +74540,8 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen desktop; `false`
-   * for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false` for
+   * windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -76789,8 +74557,7 @@ class basic_window final
    *
    * \details This is enabled by default.
    *
-   * \param decorated `true` if the window should be decorated; `false`
-   * otherwise.
+   * \param decorated `true` if the window should be decorated; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -76802,8 +74569,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window should be resizable.
    *
-   * \param resizable `true` if the window should be resizable; `false`
-   * otherwise.
+   * \param resizable `true` if the window should be resizable; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -76852,8 +74618,7 @@ class basic_window final
   /**
    * \brief Sets the opacity of the window.
    *
-   * \details The supplied opacity will be clamped to a value in the legal
-   * range.
+   * \details The supplied opacity will be clamped to a value in the legal range.
    *
    * \param opacity the opacity, in the range [0, 1].
    *
@@ -76871,8 +74636,8 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window;
-   * `false` otherwise.
+   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -76884,13 +74649,12 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \note A brightness value outside the legal range will be clamped to the
-   * closest valid value.
+   * \note A brightness value outside the legal range will be clamped to the closest valid
+   * value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `success` if the brightness was successfully set; `failure`
-   * otherwise.
+   * \return `success` if the brightness was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
@@ -76902,11 +74666,9 @@ class basic_window final
   /**
    * \brief Sets whether or not the mouse should be captured.
    *
-   * \note A window might have to be visible in order for the mouse to be
-   * captured.
+   * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false`
-   * otherwise.
+   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
@@ -76963,8 +74725,8 @@ class basic_window final
   /**
    * \brief Sets the position of the window.
    *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED` as
+   * any of the components of the point.
    *
    * \param position the new position of the window.
    *
@@ -77052,49 +74814,48 @@ class basic_window final
   /**
    * \brief Sets the size of the window.
    *
-   * \details The supplied dimensions are capped to be at least 1.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the new size of the window, components must be greater than
-   * zero.
+   * \param size the new size of the window.
    *
    * \since 5.0.0
    */
   void set_size(const iarea size) noexcept
   {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
+    assert(size.width > 0);
+    assert(size.height > 0);
+    SDL_SetWindowSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the minimum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
+   * \param size the minimum size of the window.
    *
    * \since 3.0.0
    */
   void set_min_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the maximum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
+   * \param size the maximum size of the window.
    *
    * \since 3.0.0
    */
   void set_max_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
@@ -77125,8 +74886,8 @@ class basic_window final
   /**
    * \brief Returns the current size of the window.
    *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
+   * \note Calling this function is slightly faster than calling both `width` and `height`
+   * to obtain the window size.
    *
    * \return the size of the window.
    *
@@ -77206,9 +74967,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -77224,9 +74984,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(cen::window::fullscreen)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(cen::window::fullscreen)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -77350,8 +75109,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
+   * \return `true` if the window is in fullscreen desktop mode; `false` otherwise.
    *
    * \since 4.0.0
    */
@@ -77385,11 +75143,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
+   * \brief Indicates whether or not the window is usable with an OpenGL-context.
    *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
+   * \return `true` if the window is compatible with an OpenGL-context; false otherwise.
    *
    * \since 4.0.0
    */
@@ -77401,8 +75157,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
+   * \return `true` if the window is is usable as a Vulkan surface; false otherwise.
    *
    * \since 4.0.0
    */
@@ -77476,11 +75231,10 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
+   * \brief Indicates whether or not the window is set to be always on top of other
+   * windows.
    *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
+   * \return `true` if the window is always on top of other windows; false otherwise.
    *
    * \since 4.0.0
    */
@@ -77563,8 +75317,8 @@ class basic_window final
   /**
    * \brief Returns the display index associated with the window.
    *
-   * \return the display index associated with the window; `std::nullopt` if the
-   * display index cannot be obtained.
+   * \return the display index associated with the window; `std::nullopt` if the display
+   * index cannot be obtained.
    *
    * \since 3.1.0
    */
@@ -77636,11 +75390,10 @@ class basic_window final
   /**
    * \brief Returns a handle to the window framebuffer surface.
    *
-   * \warning It is not possible use the framebuffer surface with the 3D or 2D
-   * rendering APIs.
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D rendering
+   * APIs.
    *
-   * \return a handle to the window surface, might not contain a valid surface
-   * pointer.
+   * \return a handle to the window surface, might not contain a valid surface pointer.
    *
    * \since 5.0.0
    */
@@ -77650,8 +75403,7 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Indicates whether or not the window is currently grabbing the mouse input.
    *
    * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
@@ -77663,11 +75415,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the screen keyboard is shown for the
-   * window.
+   * \brief Indicates whether or not the screen keyboard is shown for the window.
    *
-   * \return `true` if the screen keyboard is shown for the window; `false`
-   * otherwise.
+   * \return `true` if the screen keyboard is shown for the window; `false` otherwise.
    *
    * \since 6.0.0
    */
@@ -77724,8 +75474,8 @@ class basic_window final
    *
    * \note This function is only available for window handles.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -77798,12 +75548,10 @@ namespace cen {
 /**
  * \enum message_box_type
  *
- * \brief Serves as a hint of the purpose of a message box. Message boxes
- * can indicate errors, warnings and general information.
+ * \brief Serves as a hint of the purpose of a message box. Message boxes can indicate
+ * errors, warnings and general information.
  *
  * \since 5.0.0
- *
- * \headerfile message_box.hpp
  */
 enum class message_box_type : u32
 {
@@ -77815,15 +75563,12 @@ enum class message_box_type : u32
 /**
  * \enum button_order
  *
- * \brief Provides hints for how the buttons in a message box should be
- * aligned, either left-to-right or right-to-left.
+ * \brief Provides hints for how the buttons in a message box should be aligned, either
+ * left-to-right or right-to-left.
  *
- * \note This enum has no effect and shouldn't be used if you're using
- * SDL 2.0.10.
+ * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10.
  *
  * \since 4.0.0
- *
- * \headerfile message_box.hpp
  */
 enum class button_order : u32
 {
@@ -77839,12 +75584,13 @@ enum class button_order : u32
 /**
  * \class message_box
  *
- * \brief Represents a modal message box that can be used display
- * information, warnings and errors.
+ * \brief Represents a modal message box that can be used display information, warnings
+ * and errors.
+ *
+ * \note The appearance of message boxes varies depending on the platform, and certain
+ * styling options are not available on all platforms.
  *
  * \since 3.0.0
- *
- * \headerfile message_box.hpp
  */
 class message_box final
 {
@@ -77861,11 +75607,11 @@ class message_box final
   /**
    * \enum default_button
    *
-   * \brief Mirrors the `SDL_MessageBoxButtonFlags` enum.
+   * \brief Provides identifiers that represent default buttons of message boxes.
+   *
+   * \see `SDL_MessageBoxButtonFlags`
    *
    * \since 3.0.0
-   *
-   * \headerfile message_box.hpp
    */
   enum class default_button : u32
   {
@@ -77876,11 +75622,11 @@ class message_box final
   /**
    * \enum color_id
    *
-   * \brief Mirrors the `SDL_MessageBoxColorType` enum.
+   * \brief Represents different message box aspects that can be colored.
+   *
+   * \see `SDL_MessageBoxColorType`
    *
    * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
    */
   enum class color_id : int
   {
@@ -77897,8 +75643,6 @@ class message_box final
    * \brief A simple wrapper around a `SDL_MessageBoxColorScheme` instance.
    *
    * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
    */
   class color_scheme final
   {
@@ -77969,14 +75713,11 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \tparam T the traits used by the window.
-   *
    * \param parent the parent window.
    * \param title the title of the message box.
    * \param message the message that will be displayed.
    * \param type the type of the message box, defaults to `information`.
-   * \param buttonOrder the button order that will be used, defaults to
-   * `left_to_right`.
+   * \param buttonOrder the button order that will be used, defaults to `left_to_right`.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -77998,8 +75739,7 @@ class message_box final
    * \param title the title of the message box.
    * \param message the message that will be displayed.
    * \param type the type of the message box, defaults to `information`.
-   * \param buttonOrder the button order that will be used, defaults to
-   * `left_to_right`.
+   * \param buttonOrder the button order that will be used, defaults to `left_to_right`.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -78016,12 +75756,9 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \tparam T the traits used by the window.
-   *
    * \param parent the parent window.
    *
-   * \return the ID of the pressed button; `std::nullopt` if no button was
-   * pressed.
+   * \return the ID of the pressed button; `std::nullopt` if no button was pressed.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -78036,11 +75773,10 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \details If no buttons have been added by the time this function is
-   * called, then an "OK" button is automatically added.
+   * \details If no buttons have been added by the time this function is called, then an
+   * "OK" button is automatically added.
    *
-   * \return the ID of the pressed button; `std::nullopt` if no button was
-   * pressed.
+   * \return the ID of the pressed button; `std::nullopt` if no button was pressed.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -78100,8 +75836,8 @@ class message_box final
   /**
    * \brief Sets the color scheme that will be used by the message box.
    *
-   * \note This is not supported on all platforms, so this property is simply
-   * not set by default.
+   * \note This is not supported on all platforms, so this property is simply not set by
+   * default.
    *
    * \param scheme the color scheme that will be used.
    *
@@ -78137,13 +75873,13 @@ class message_box final
   }
 
   /**
-   * \brief Indicates whether or not the message box has a button associated
-   * with the specified ID.
+   * \brief Indicates whether or not the message box has a button associated with the
+   * specified ID.
    *
    * \param id the ID that will be checked.
    *
-   * \return `true` if there is a button associated with the supplied ID;
-   * `false` otherwise.
+   * \return `true` if there is a button associated with the supplied ID; `false`
+   * otherwise.
    *
    * \since 5.0.0
    */
@@ -78213,9 +75949,6 @@ class message_box final
   }
 
  private:
-  /**
-   *
-   */
   class button final
   {
    public:
@@ -78238,12 +75971,11 @@ class message_box final
     }
 
     /**
-     * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds
-     * to the button.
-     *
-     * \note The returned instance holds a pointer to the string text
-     * associated with the button, so it mustn't outlive the lifetime of the
+     * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds to the
      * button.
+     *
+     * \note The returned instance holds a pointer to the string text associated with the
+     * button, so it mustn't outlive the lifetime of the button.
      *
      * \return an `SDL_MessageBoxButtonData` instance.
      *
@@ -78478,8 +76210,6 @@ namespace cen {
  * \brief Provides identifiers for different OpenGL attributes.
  *
  * \since 6.0.0
- *
- * \headerfile gl_attribute.hpp
  */
 enum class gl_attribute
 {
@@ -78664,8 +76394,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -78696,15 +76424,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -78728,15 +76453,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -78760,15 +76482,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -78792,15 +76511,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -78840,9 +76556,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -78852,12 +76568,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -78885,13 +76599,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -78949,8 +76662,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -79169,8 +76881,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -79201,15 +76911,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79233,15 +76940,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79265,15 +76969,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79297,15 +76998,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79614,8 +77312,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -79646,15 +77342,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79678,15 +77371,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79710,15 +77400,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -79742,15 +77429,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -80007,9 +77691,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -80019,12 +77703,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -80052,13 +77734,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -80116,8 +77797,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -80210,16 +77890,14 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -80260,8 +77938,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -80311,8 +77989,7 @@ template <typename T>
 namespace cen::detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
  *
  * \param b the boolean value that will be converted.
  *
@@ -80485,8 +78162,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -80517,15 +78192,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -80549,15 +78221,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -80581,15 +78250,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -80613,15 +78279,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -80768,9 +78431,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -80788,12 +78451,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80805,8 +78467,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80822,8 +78483,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80839,8 +78499,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80856,8 +78515,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80873,8 +78531,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -80900,20 +78557,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -80965,9 +78622,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -81014,9 +78671,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -81034,12 +78691,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81051,8 +78707,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81068,8 +78723,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81085,8 +78739,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81102,8 +78755,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81119,8 +78771,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -81146,20 +78797,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -81232,16 +78883,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -81298,9 +78947,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -81576,16 +79224,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -81642,9 +79288,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -81814,8 +79459,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -81889,11 +79532,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -81901,8 +79544,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -82076,9 +79719,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -82102,13 +79744,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -82180,8 +79820,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -82200,8 +79840,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -82220,13 +79860,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -82241,13 +79880,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -82327,8 +79965,8 @@ namespace cen {
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
- * \note Whilst it is possible to supply a type that isn't `int` or `float`,
- * rectangles will always use one of them as the representation type.
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`, rectangles
+ * will always use one of them as the representation type.
  *
  * \tparam T the representation type, must be convertible to `int` or `float`.
  *
@@ -82337,8 +79975,6 @@ namespace cen {
  * \see `frect`
  *
  * \since 5.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
@@ -82377,17 +80013,18 @@ using frect = basic_rect<float>;
 /**
  * \class basic_rect
  *
- * \brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
- * \tparam T the representation type. Must be convertible to either `int` or
- * `float`.
+ * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`
  * \see `frect`
+ * \see `rect()`
+ * \see `intersects()`
+ * \see `collides()`
+ * \see `get_union()`
  *
  * \since 4.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final
@@ -82553,8 +80190,8 @@ class basic_rect final
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_x()` with
-   * the sum of `x()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_x()` with the sum of
+   * `x()` and `offset`.
    *
    * \param offset the offset to the x-coordinate of the rectangle.
    *
@@ -82568,8 +80205,8 @@ class basic_rect final
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_y()` with
-   * the sum of `y()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_y()` with the sum of
+   * `y()` and `offset`.
    *
    * \param offset the offset to the y-coordinate of the rectangle.
    *
@@ -82583,8 +80220,8 @@ class basic_rect final
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_width()`
-   * with the sum of `width()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_width()` with the
+   * sum of `width()` and `offset`.
    *
    * \param offset the offset to the width of the rectangle.
    *
@@ -82598,8 +80235,8 @@ class basic_rect final
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_height()`
-   * with the sum of `height()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_height()` with the
+   * sum of `height()` and `offset`.
    *
    * \param offset the offset to the height of the rectangle.
    *
@@ -82613,9 +80250,8 @@ class basic_rect final
   /**
    * \brief Sets the position of the rectangle.
    *
-   * \note Some frameworks have this kind of function change the size of the
-   * rectangle. However, this function does *not* change the size of the
-   * rectangle.
+   * \note Some frameworks have this kind of function change the size of the rectangle.
+   * However, this function does *not* change the size of the rectangle.
    *
    * \param pos the new position of the rectangle.
    *
@@ -82924,9 +80560,8 @@ class basic_rect final
   /**
    * \brief Serializes the rectangle.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -82950,10 +80585,9 @@ class basic_rect final
 /**
  * \brief Creates a rectangle with automatically deduced precision.
  *
- * \note The only supported precisions for rectangles are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for rectangles are `int` and `float`, so this
+ * function will cast the supplied values to the corresponding type. For example, if you
+ * supply doubles to this function, the returned point will use float as the precision.
  *
  * \tparam T the deduced precision type.
  *
@@ -82983,9 +80617,8 @@ template <typename T, enable_if_number_t<T> = 0>
 /**
  * \brief Indicates whether or not the two rectangles intersect.
  *
- * \details This function does *not* consider rectangles with overlapping
- * borders as intersecting. If you want such behaviour, see the
- * `collides` function.
+ * \details This function does *not* consider rectangles with overlapping borders as
+ * intersecting. If you want such behaviour, see the `collides` function.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -83009,8 +80642,7 @@ template <typename T>
 /**
  * \brief Indicates whether or not two rectangles are colliding.
  *
- * \details This function considers rectangles with overlapping borders as
- * colliding.
+ * \details This function considers rectangles with overlapping borders as colliding.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -83264,12 +80896,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -83292,8 +80921,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -83317,8 +80945,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -83696,9 +81324,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -83717,8 +81344,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -83732,17 +81358,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -83947,13 +81571,11 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -84062,8 +81684,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -84074,8 +81696,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -84094,8 +81714,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -84136,8 +81755,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -84274,8 +81891,6 @@ class basic_pixel_format_info final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
@@ -84409,8 +82024,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_BlendMode`
- *
- * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {
@@ -84519,19 +82132,21 @@ using surface_handle = basic_surface<detail::handle_type>;
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated collection of pixels that constitute an
- * image.
+ * \brief Represents a non-accelerated image.
  *
- * \details Surfaces are often used for icons and snapshots, as an
- * "intermediate" representation that can be manually manipulated, unlike
- * textures. There is no support for directly rendering surfaces, but they can
- * be converted to textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
+ * representation that can be manipulated, unlike textures. There is no support
+ * for directly rendering surfaces. However, surfaces can be converted to textures, which
+ * in turn can be rendered.
  *
- * \tparam B Used to determine the ownership semantics of the class.
+ * \note Unlike most other Centurion components, surfaces can be copied.
+ *
+ * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
- * \headerfile surface.hpp
+ * \see `surface`
+ * \see `surface_handle`
  */
 template <typename T>
 class basic_surface final
@@ -84776,8 +82391,7 @@ class basic_surface final
   auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = SDL_SaveBMP(get(), file);
-    return result != -1;
+    return SDL_SaveBMP(get(), file) != -1;
   }
 
   /**
@@ -84801,8 +82415,7 @@ class basic_surface final
   auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = IMG_SavePNG(get(), file);
-    return result != -1;
+    return IMG_SavePNG(get(), file) != -1;
   }
 
   /**
@@ -84832,8 +82445,7 @@ class basic_surface final
       -> result
   {
     assert(file);
-    const auto result = IMG_SaveJPG(get(), file, quality);
-    return result != -1;
+    return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
   /**
@@ -84866,8 +82478,7 @@ class basic_surface final
   {
     if (must_lock())
     {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
+      return SDL_LockSurface(m_surface) == 0;
     }
     else
     {
@@ -85413,8 +83024,12 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \see `window`
  * \see `window_handle`
- *
- * \headerfile window.hpp
+ * \see `get_window()`
+ * \see `get_grabbed_window()`
+ * \see `mouse_focus_window()`
+ * \see `keyboard_focus_window()`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_window final
@@ -85425,9 +83040,8 @@ class basic_window final
    *
    * \brief Represents different window features and options.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating windows and to obtain information
-   * from created windows.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating windows and to obtain information from created windows.
    *
    * \see `SDL_WindowFlags`
    *
@@ -85468,12 +83082,12 @@ class basic_window final
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
-   * \note If you're creating a `window` instance, then ownership of the pointer
-   * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
-   * *not* claimed.
+   * \note If you're creating a `window` instance, then ownership of the pointer is
+   * claimed. Furthermore, if you're creating a `window_handle`, ownership is *not*
+   * claimed.
    *
-   * \param window a pointer to the associated SDL window. Ownership of this
-   * pointer is claimed if the window is owning.
+   * \param window a pointer to the associated SDL window. Ownership of this pointer is
+   * claimed if the window is owning.
    *
    * \since 5.0.0
    */
@@ -85498,8 +83112,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -85562,8 +83175,8 @@ class basic_window final
   /**
    * \brief Creates a window.
    *
-   * \details The window will use the size obtained from `default_size()` as its
-   * initial size.
+   * \details The window will use the size obtained from `default_size()` as its initial
+   * size.
    *
    * \throws sdl_error if the window cannot be created.
    *
@@ -85640,8 +83253,7 @@ class basic_window final
   }
 
   /**
-   * \brief Restores the position and size of the window if it's minimized or
-   * maximized.
+   * \brief Restores the position and size of the window if it's minimized or maximized.
    *
    * \since 5.3.0
    */
@@ -85653,8 +83265,7 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `success` if the surface was successfully updated; `failure`
-   * otherwise.
+   * \return `success` if the surface was successfully updated; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -85671,8 +83282,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen; `false` for
-   * windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -85688,8 +83298,8 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen desktop; `false`
-   * for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false` for
+   * windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -85705,8 +83315,7 @@ class basic_window final
    *
    * \details This is enabled by default.
    *
-   * \param decorated `true` if the window should be decorated; `false`
-   * otherwise.
+   * \param decorated `true` if the window should be decorated; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -85718,8 +83327,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window should be resizable.
    *
-   * \param resizable `true` if the window should be resizable; `false`
-   * otherwise.
+   * \param resizable `true` if the window should be resizable; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -85768,8 +83376,7 @@ class basic_window final
   /**
    * \brief Sets the opacity of the window.
    *
-   * \details The supplied opacity will be clamped to a value in the legal
-   * range.
+   * \details The supplied opacity will be clamped to a value in the legal range.
    *
    * \param opacity the opacity, in the range [0, 1].
    *
@@ -85787,8 +83394,8 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window;
-   * `false` otherwise.
+   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -85800,13 +83407,12 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \note A brightness value outside the legal range will be clamped to the
-   * closest valid value.
+   * \note A brightness value outside the legal range will be clamped to the closest valid
+   * value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `success` if the brightness was successfully set; `failure`
-   * otherwise.
+   * \return `success` if the brightness was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
@@ -85818,11 +83424,9 @@ class basic_window final
   /**
    * \brief Sets whether or not the mouse should be captured.
    *
-   * \note A window might have to be visible in order for the mouse to be
-   * captured.
+   * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false`
-   * otherwise.
+   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
@@ -85879,8 +83483,8 @@ class basic_window final
   /**
    * \brief Sets the position of the window.
    *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED` as
+   * any of the components of the point.
    *
    * \param position the new position of the window.
    *
@@ -85968,49 +83572,48 @@ class basic_window final
   /**
    * \brief Sets the size of the window.
    *
-   * \details The supplied dimensions are capped to be at least 1.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the new size of the window, components must be greater than
-   * zero.
+   * \param size the new size of the window.
    *
    * \since 5.0.0
    */
   void set_size(const iarea size) noexcept
   {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
+    assert(size.width > 0);
+    assert(size.height > 0);
+    SDL_SetWindowSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the minimum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
+   * \param size the minimum size of the window.
    *
    * \since 3.0.0
    */
   void set_min_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the maximum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
+   * \param size the maximum size of the window.
    *
    * \since 3.0.0
    */
   void set_max_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
@@ -86041,8 +83644,8 @@ class basic_window final
   /**
    * \brief Returns the current size of the window.
    *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
+   * \note Calling this function is slightly faster than calling both `width` and `height`
+   * to obtain the window size.
    *
    * \return the size of the window.
    *
@@ -86122,9 +83725,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -86140,9 +83742,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(cen::window::fullscreen)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(cen::window::fullscreen)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -86266,8 +83867,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
+   * \return `true` if the window is in fullscreen desktop mode; `false` otherwise.
    *
    * \since 4.0.0
    */
@@ -86301,11 +83901,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
+   * \brief Indicates whether or not the window is usable with an OpenGL-context.
    *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
+   * \return `true` if the window is compatible with an OpenGL-context; false otherwise.
    *
    * \since 4.0.0
    */
@@ -86317,8 +83915,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
+   * \return `true` if the window is is usable as a Vulkan surface; false otherwise.
    *
    * \since 4.0.0
    */
@@ -86392,11 +83989,10 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
+   * \brief Indicates whether or not the window is set to be always on top of other
+   * windows.
    *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
+   * \return `true` if the window is always on top of other windows; false otherwise.
    *
    * \since 4.0.0
    */
@@ -86479,8 +84075,8 @@ class basic_window final
   /**
    * \brief Returns the display index associated with the window.
    *
-   * \return the display index associated with the window; `std::nullopt` if the
-   * display index cannot be obtained.
+   * \return the display index associated with the window; `std::nullopt` if the display
+   * index cannot be obtained.
    *
    * \since 3.1.0
    */
@@ -86552,11 +84148,10 @@ class basic_window final
   /**
    * \brief Returns a handle to the window framebuffer surface.
    *
-   * \warning It is not possible use the framebuffer surface with the 3D or 2D
-   * rendering APIs.
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D rendering
+   * APIs.
    *
-   * \return a handle to the window surface, might not contain a valid surface
-   * pointer.
+   * \return a handle to the window surface, might not contain a valid surface pointer.
    *
    * \since 5.0.0
    */
@@ -86566,8 +84161,7 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Indicates whether or not the window is currently grabbing the mouse input.
    *
    * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
@@ -86579,11 +84173,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the screen keyboard is shown for the
-   * window.
+   * \brief Indicates whether or not the screen keyboard is shown for the window.
    *
-   * \return `true` if the screen keyboard is shown for the window; `false`
-   * otherwise.
+   * \return `true` if the screen keyboard is shown for the window; `false` otherwise.
    *
    * \since 6.0.0
    */
@@ -86640,8 +84232,8 @@ class basic_window final
    *
    * \note This function is only available for window handles.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -86983,9 +84575,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -87032,9 +84624,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -87052,12 +84644,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87069,8 +84660,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87086,8 +84676,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87103,8 +84692,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87120,8 +84708,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87137,8 +84724,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -87164,20 +84750,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -87250,16 +84836,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -87316,9 +84900,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -87477,8 +85060,6 @@ namespace cen {
  * \brief Provides identifiers for different OpenGL attributes.
  *
  * \since 6.0.0
- *
- * \headerfile gl_attribute.hpp
  */
 enum class gl_attribute
 {
@@ -87917,8 +85498,6 @@ namespace cen {
  * \brief Manages the initialization and de-initialization of an OpenGL library.
  *
  * \since 6.0.0
- *
- * \headerfile gl_library.hpp
  */
 class gl_library final
 {
@@ -88103,8 +85682,8 @@ class palette final
   /**
    * \brief Returns the color in the palette at the specified index.
    *
-   * \warning This function performs no bounds checking, see `at()` for a bounds
-   * checked version of this function.
+   * \warning This function performs no bounds checking, see `at()` for a bounds checked
+   * version of this function.
    *
    * \pre `index` must not be negative.
    * \pre `index` must be less than the size of the palette.
@@ -88268,13 +85847,11 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -88383,8 +85960,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -88395,8 +85972,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -88415,8 +85990,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -88457,8 +86031,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -88594,8 +86166,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
-   *
-   * \tparam BB dummy template parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -88755,23 +86325,20 @@ namespace cen {
  *
  * \details This class provides two different optimizations.
  *
- * Firstly, this class can be used to cache glyph textures that can then be used
- * to render strings, by simply looking up the individual glyphs and rendering
- * the existing textures. Note, this will not result in accurate kerning.
- * However, this might not be noticeable and/or worth the performance boost.
- * This approach is *very* efficient for rendering pieces of text that
- * frequently changes, since other approaches would require dynamic allocation
- * and de-allocation for every new rendered string.
+ * Firstly, this class can be used to cache glyph textures that can then be used to render
+ * strings, by simply looking up the individual glyphs and rendering the existing
+ * textures. Note, this will not result in accurate kerning. However, this might not be
+ * noticeable and/or worth the performance boost. This approach is *very* efficient for
+ * rendering pieces of text that frequently changes, since other approaches would require
+ * dynamic allocation and de-allocation for every new rendered string.
  *
  * Secondly, it's possible to cache complete strings and associate them with a
- * user-provided identifier. In contrast with the first approach, this will
- * result in accurate kerning. The only problem is that it's hard to know the
- * exact strings you will render at compile-time. Use this option if you know
- * that you're going to render some specific string a lot.
+ * user-provided identifier. In contrast with the first approach, this will result in
+ * accurate kerning. The only problem is that it's hard to know the exact strings you will
+ * render at compile-time. Use this option if you know that you're going to render some
+ * specific string a lot.
  *
  * \since 5.0.0
- *
- * \headerfile font_cache.hpp
  */
 class font_cache final
 {
@@ -88784,8 +86351,6 @@ class font_cache final
    * \brief Simple aggregate that contains a texture and metrics for a glyph.
    *
    * \since 5.0.0
-   *
-   * \headerfile font_cache.hpp
    */
   struct glyph_data final
   {
@@ -88809,11 +86374,10 @@ class font_cache final
   {}
 
   /**
-   * \brief Creates an empty font cache, and creates the associated font
-   * in-place.
+   * \brief Creates an empty font cache, and creates the associated font in-place.
    *
-   * \note This constructor throws whatever exceptions that the `font`
-   * constructor might throw.
+   * \note This constructor throws whatever exceptions that the `font` constructor might
+   * throw.
    *
    * \tparam Args the types of the arguments forwarded to the font constructor.
    *
@@ -88833,17 +86397,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_utf8`
+   * \see `basic_renderer::render_blended_utf8()`
    *
    * \since 5.0.0
    */
@@ -88869,18 +86432,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_utf8`
+   * \see `basic_renderer::render_blended_wrapped_utf8()`
    *
    * \since 5.0.0
    */
@@ -88910,18 +86472,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_utf8`
+   * \see `basic_renderer::render_shaded_utf8()`
    *
    * \since 5.0.0
    */
@@ -88951,17 +86512,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_utf8`
+   * \see `basic_renderer::render_solid_utf8()`
    *
    * \since 5.0.0
    */
@@ -88987,17 +86547,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_latin1`
+   * \see `basic_renderer::render_blended_latin1()`
    *
    * \since 5.0.0
    */
@@ -89025,18 +86584,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_latin1`
+   * \see `basic_renderer::render_blended_wrapped_latin1()`
    *
    * \since 5.0.0
    */
@@ -89066,18 +86624,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_latin1`
+   * \see `basic_renderer::render_shaded_latin1()`
    *
    * \since 5.0.0
    */
@@ -89107,17 +86664,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_latin1`
+   * \see `basic_renderer::render_solid_latin1()`
    *
    * \since 5.0.0
    */
@@ -89143,17 +86699,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_blended_unicode`
+   * \see `basic_renderer::render_blended_unicode()`
    *
    * \since 5.0.0
    */
@@ -89168,18 +86723,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * \see `basic_renderer::render_blended_wrapped_unicode`
+   * \see `basic_renderer::render_blended_wrapped_unicode()`
    *
    * \since 5.0.0
    */
@@ -89195,18 +86749,17 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    * \param background the color used for the background box.
    *
-   * \see `basic_renderer::render_shaded_unicode`
+   * \see `basic_renderer::render_shaded_unicode()`
    *
    * \since 5.0.0
    */
@@ -89222,17 +86775,16 @@ class font_cache final
   /**
    * \brief Caches the supplied string by rendering it to a texture.
    *
-   * \details This function respects the kerning of the font. Any previous
-   * cached string associated with the supplied ID will be overwritten.
+   * \details This function respects the kerning of the font. Any previous cached string
+   * associated with the supplied ID will be overwritten.
    *
    * \tparam Renderer the type of the renderer that will be used.
    *
    * \param id the identifier that will be associated with the texture.
    * \param string the string that will be cached.
-   * \param renderer the renderer that will be used to create the string
-   * texture.
+   * \param renderer the renderer that will be used to create the string texture.
    *
-   * \see `basic_renderer::render_solid_unicode`
+   * \see `basic_renderer::render_solid_unicode()`
    *
    * \since 5.0.0
    */
@@ -89245,13 +86797,13 @@ class font_cache final
   }
 
   /**
-   * \brief Indicates whether or not there is a cached string texture associated
-   * with the specified key.
+   * \brief Indicates whether or not there is a cached string texture associated with the
+   * specified key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if there is a cached texture associated with the key;
-   * `false` otherwise.
+   * \return `true` if there is a cached texture associated with the key; `false`
+   * otherwise.
    *
    * \since 5.0.0
    */
@@ -89279,14 +86831,13 @@ class font_cache final
   /**
    * \brief Returns a pointer to the texture associated with the specified key.
    *
-   * \note The returned pointer is not suitable for storing for longer than
-   * absolutely necessary, as it might get invalidated by modifications of
-   * the font cache.
+   * \note The returned pointer is not suitable for storing for longer than absolutely
+   * necessary, as it might get invalidated by modifications of the font cache.
    *
    * \param id the key of the desired texture.
    *
-   * \return a pointer to the texture associated with the specified key;
-   * `nullptr` if no texture is found.
+   * \return a pointer to the texture associated with the specified key; `nullptr` if no
+   * texture is found.
    *
    * \since 5.0.0
    */
@@ -89311,8 +86862,8 @@ class font_cache final
   /**
    * \brief Adds a glyph to the font cache.
    *
-   * \details This function has no effect if the supplied glyph isn't provided
-   * by the associated font, or if the supplied glyph has already been cached.
+   * \details This function has no effect if the supplied glyph isn't provided by the
+   * associated font, or if the supplied glyph has already been cached.
    *
    * \tparam Renderer the type of the renderer.
    *
@@ -89337,16 +86888,15 @@ class font_cache final
   /**
    * \brief Caches the glyphs in the specified range.
    *
-   * \details The range is interpreted as [min, max), i.e. the the `min`
-   * value is included, and `max` is excluded.
+   * \details The range is interpreted as [min, max), i.e. the the `min` value is
+   * included, and `max` is excluded.
    *
    * \remark For an overview of the various Unicode blocks, see <a
    * href="https://unicode-table.com/en/blocks/">this</a>.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    * \param begin the first glyph that will be included.
    * \param end the "end" glyph in the range, will not be included.
    *
@@ -89364,14 +86914,13 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable basic latin characters.
    *
-   * \details The basic latin set provides the most common characters, such as
-   * upper- and lower-case latin letters, numbers and symbols. This function
-   * might throw if something goes wrong when creating the textures.
+   * \details The basic latin set provides the most common characters, such as upper- and
+   * lower-case latin letters, numbers and symbols. This function might throw if something
+   * goes wrong when creating the textures.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -89387,8 +86936,7 @@ class font_cache final
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -89402,13 +86950,12 @@ class font_cache final
   /**
    * \brief Attempts to cache all printable Latin-1 characters.
    *
-   * \note This function is effectively equivalent to calling both
-   * `add_basic_latin` and `add_latin1_supplement`.
+   * \note This function is effectively equivalent to calling both `add_basic_latin` and
+   * `add_latin1_supplement`.
    *
    * \tparam Renderer the type of the renderer.
    *
-   * \param renderer the renderer that will be used to create the glyph
-   * textures.
+   * \param renderer the renderer that will be used to create the glyph textures.
    *
    * \since 5.0.0
    */
@@ -89470,16 +87017,16 @@ class font_cache final
   /**
    * \brief Returns the data associated with the specified glyph, if it exists.
    *
-   * \details This function is a non-throwing alternative to the `at()` and
-   * `operator[]` functions.
+   * \details This function is a non-throwing alternative to the `at()` and `operator[]`
+   * functions.
    *
-   * \note Do not store the returned pointer for longer than absolutely
-   * necessary, it may get invalidated upon modification of the font cache.
+   * \note Do not store the returned pointer for longer than absolutely necessary, it may
+   * get invalidated upon modification of the font cache.
    *
    * \param glyph the desired glyph to lookup the data for.
    *
-   * \return a pointer to the associated glyph data; a null pointer if no
-   * matching data was found.
+   * \return a pointer to the associated glyph data; a null pointer if no matching data
+   * was found.
    *
    * \since 5.2.0
    */
@@ -89596,9 +87143,20 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
  *
- * \details The owning version of this class, `renderer`, features an extended API
+ * \details Rendering primitives such as points, rectangles, lines and circles are
+ * supported. The owning version of this class, `renderer`, features an extended API
  * compared to its non-owning counterpart, with support for font handling and translated
  * rendering.
+ *
+ * \details Three different text encodings are supported: UTF-8, Latin-1 and Unicode. Each
+ * of these encodings can be rendered in four different styles: "blended", "shaded",
+ * "solid" and "blended and wrapped". All of the text rendering functions feature the same
+ * names except for a distinguishing suffix, i.e. `_utf8`, `_latin1` or `_unicode`.
+ *   - Blended: The best looking option but also the slowest. Uses anti-aliasing.
+ *   - Blended and wrapped: Same as blended, but the text will be wrapped to fit a
+ *     specified width.
+ *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
+ *   - Shaded: The same as blended, but with a colored rectangle behind it.
  *
  * \note Each window can feature at most associated renderer.
  *
@@ -89607,8 +87165,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \see `renderer`
  * \see `renderer_handle`
  * \see `renderer_info`
- *
- * \headerfile renderer.hpp
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_renderer final
@@ -89619,8 +87177,8 @@ class basic_renderer final
    *
    * \brief Represents different renderer features.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating renderers.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating renderers.
    *
    * \see `SDL_RendererFlags`
    *
@@ -89642,8 +87200,7 @@ class basic_renderer final
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * \note The supplied pointer will be claimed by the renderer if the created
-   * renderer is owning.
+   * \note The supplied pointer will be claimed by the renderer if the created renderer is owning.
    *
    * \param renderer a pointer to the associated SDL renderer.
    *
@@ -89733,8 +87290,8 @@ class basic_renderer final
   /**
    * \brief Captures a snapshot of the current rendering target as a surface.
    *
-   * \note The correct pixel format supplied to this function can easily be
-   * obtained using the `basic_window::get_pixel_format()` function.
+   * \note The correct pixel format supplied to this function can easily be obtained using
+   * the `basic_window::get_pixel_format()` function.
    *
    * \param format the pixel format that will be used by the surface.
    *
@@ -89768,10 +87325,10 @@ class basic_renderer final
   /**
    * \brief Fills the entire rendering target with the currently selected color.
    *
-   * \details This function is different from `clear()` and `clear_with()` in
-   * that it can be used as an intermediate rendering command (just like all
-   * rendering functions). An example of a use case of this function could be
-   * for rendering a transparent background for game menus.
+   * \details This function is different from `clear()` and `clear_with()` in that it can
+   * be used as an intermediate rendering command (just like all rendering functions). An
+   * example of a use case of this function could be for rendering a transparent
+   * background for game menus.
    *
    * \since 5.1.0
    */
@@ -89846,8 +87403,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Renders a line between the supplied points, in the currently
-   * selected color.
+   * \brief Renders a line between the supplied points, in the currently selected color.
    *
    * \tparam U The representation type used by the points.
    *
@@ -89875,21 +87431,19 @@ class basic_renderer final
   /**
    * \brief Renders a collection of lines.
    *
-   * \details This function requires the the `Container` type provides the
-   * public member `value_type` and subsequently, that the `value_type`
-   * in turn provides a `value_type` member. The former would correspond to
-   * the actual point type, and the latter corresponds to either `int` or
-   * `float`.
+   * \details This function requires the the `Container` type provides the public member
+   * `value_type` and subsequently, that the `value_type` in turn provides a `value_type`
+   * member. The former would correspond to the actual point type, and the latter
+   * corresponds to either `int` or `float`.
    *
-   * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined if this condition
-   * isn't met.
+   * \warning `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined if this condition isn't met.
    *
-   * \tparam Container the container type. Must store its elements
-   * contiguously, such as `std::vector` or `std::array`.
+   * \tparam Container the container type. Must store its elements contiguously, such as
+   * `std::vector` or `std::array`.
    *
-   * \param container the container that holds the points that will be used
-   * to render the line.
+   * \param container the container that holds the points that will be used to render the
+   * line.
    *
    * \return `success` if the lines were successfully rendered; `failure` otherwise.
    *
@@ -90032,8 +87586,8 @@ class basic_renderer final
   /**
    * \brief Renders an outlined rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -90052,8 +87606,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -90072,11 +87626,10 @@ class basic_renderer final
   /**
    * \brief Renders a point using the currently selected color.
    *
-   * \details The rendered point will be translated using the current
-   * translation viewport.
+   * \details The rendered point will be translated using the current translation
+   * viewport.
    *
    * \tparam U the representation
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param point the point that will be rendered.
    *
@@ -90093,11 +87646,10 @@ class basic_renderer final
   /**
    * \brief Renders a circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \tparam U the precision used by the point.
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param position the position of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -90113,10 +87665,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam TT dummy parameter for SFINAE.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \param center the center of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -90139,14 +87689,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90179,20 +87728,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the UTF-8 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the UTF-8 text that will be rendered. You can insert newline characters in
+   * the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -90227,15 +87774,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90272,14 +87818,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90312,14 +87857,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90352,20 +87896,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Latin-1 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Latin-1 text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -90400,15 +87942,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90445,14 +87986,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90483,14 +88023,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90511,20 +88050,18 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended and wrapped Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Unicode text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Unicode text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -90547,15 +88084,14 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of shaded Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90580,14 +88116,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of solid Unicode text.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -90614,8 +88149,8 @@ class basic_renderer final
    * \param glyph the glyph, in unicode, that will be rendered.
    * \param position the position of the rendered glyph.
    *
-   * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph, or the same x-coordinate if no glyph was rendered.
+   * \return the x-coordinate of the next glyph to be rendered after the current glyph, or
+   * the same x-coordinate if no glyph was rendered.
    *
    * \since 5.0.0
    */
@@ -90645,18 +88180,17 @@ class basic_renderer final
   /**
    * \brief Renders a string.
    *
-   * \details This function will not apply any clever conversions on the
-   * supplied string. The string is literally iterated, character-by-character,
-   * and each character is rendered using the `render_glyph` function.
+   * \details This function will not apply any clever conversions on the supplied string.
+   * The string is literally iterated, character-by-character, and each character is
+   * rendered using the `render_glyph` function.
    *
-   * \pre Every character in the string must correspond to a valid Unicode
-   * glyph.
+   * \pre Every character in the string must correspond to a valid Unicode glyph.
    *
-   * \note This function is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
+   * \note This function is sensitive to newline-characters, and will render strings that
+   * contain such characters appropriately.
    *
-   * \tparam String the type of the string, must be iterable and provide
-   * `unicode` characters.
+   * \tparam String the type of the string, must be iterable and provide `unicode`
+   * characters.
    *
    * \param cache the font cache that will be used.
    * \param str the string that will be rendered.
@@ -90695,8 +88229,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param position the position of the rendered texture.
@@ -90725,8 +88259,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
@@ -90752,11 +88286,11 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \remarks This should be your preferred function of rendering textures. This
-   * function is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This function
+   * is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -90785,14 +88319,14 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -90829,17 +88363,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -90882,17 +88415,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will be
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
    * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -90942,8 +88474,7 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P The representation type used by the point.
@@ -90965,15 +88496,13 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -90989,19 +88518,17 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \remarks This should be your preferred function of rendering textures. This
    * function is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -91018,18 +88545,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -91047,21 +88572,18 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -91080,18 +88602,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -91117,11 +88637,10 @@ class basic_renderer final
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * \details This function should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
+   * \details This function should be called before calling any of the `_t` rendering
+   * methods, for automatic translation.
    *
-   * \param viewport the rectangle that will be used as the translation
-   * viewport.
+   * \param viewport the rectangle that will be used as the translation viewport.
    *
    * \since 3.0.0
    */
@@ -91154,8 +88673,8 @@ class basic_renderer final
   /**
    * \brief Adds a font to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \param id the key that will be associated with the font.
    * \param font the font that will be added.
@@ -91176,8 +88695,8 @@ class basic_renderer final
   /**
    * \brief Creates a font and adds it to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \tparam Args the types of the arguments that will be forwarded.
    *
@@ -91200,8 +88719,8 @@ class basic_renderer final
   /**
    * \brief Removes the font associated with the specified key.
    *
-   * \details This function has no effect if there is no font associated with
-   * the specified key.
+   * \details This function has no effect if there is no font associated with the
+   * specified key.
    *
    * \param id the key associated with the font that will be removed.
    *
@@ -91230,9 +88749,7 @@ class basic_renderer final
     return m_renderer.fonts.at(id);
   }
 
-  /**
-   * \copydoc get_font
-   */
+  /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
@@ -91240,13 +88757,12 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer has a font associated with
-   * the specified key.
+   * \brief Indicates whether or not the renderer has a font associated with the specified
+   * key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if the renderer has a font associated with the key;
-   * `false` otherwise.
+   * \return `true` if the renderer has a font associated with the key; `false` otherwise.
    *
    * \since 4.1.0
    */
@@ -91397,8 +88913,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Sets whether or not to force integer scaling for the logical
-   * viewport.
+   * \brief Sets whether or not to force integer scaling for the logical viewport.
    *
    * \details This function can be useful to combat visual artefacts when doing
    * floating-point rendering.
@@ -91422,8 +88937,7 @@ class basic_renderer final
   /**
    * \brief Returns a handle to the current render target.
    *
-   * \return a handle to the current render target; empty if using the default
-   * target.
+   * \return a handle to the current render target; empty if using the default target.
    *
    * \since 5.0.0
    */
@@ -91471,8 +88985,8 @@ class basic_renderer final
   /**
    * \brief Returns the size of the logical (virtual) viewport.
    *
-   * \note calling this function once is faster than calling both
-   * `logical_width` and `logical_height` for obtaining the size.
+   * \note calling this function once is faster than calling both `logical_width` and
+   * `logical_height` for obtaining the size.
    *
    * \return the size of the logical (virtual) viewport.
    *
@@ -91516,8 +89030,8 @@ class basic_renderer final
   /**
    * \brief Returns the x- and y-scale used by the renderer.
    *
-   * \note calling this function once is faster than calling both `x_scale`
-   * and `y_scale` for obtaining the scale.
+   * \note calling this function once is faster than calling both `x_scale` and `y_scale`
+   * for obtaining the scale.
    *
    * \return the x- and y-scale used by the renderer.
    *
@@ -91583,8 +89097,8 @@ class basic_renderer final
   /**
    * \brief Returns the output size of the renderer.
    *
-   * \note calling this function once is faster than calling `output_width`
-   * and `output_height` for obtaining the output size.
+   * \note calling this function once is faster than calling `output_width` and
+   * `output_height` for obtaining the output size.
    *
    * \return the current output size of the renderer.
    *
@@ -91612,13 +89126,13 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer uses integer scaling values
-   * for logical viewports.
+   * \brief Indicates whether or not the renderer uses integer scaling values for logical
+   * viewports.
    *
    * \details By default, this property is set to false.
    *
-   * \return `true` if the renderer uses integer scaling for logical
-   * viewports; `false` otherwise.
+   * \return `true` if the renderer uses integer scaling for logical viewports; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -91713,8 +89227,8 @@ class basic_renderer final
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -91899,9 +89413,20 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
  *
- * \details The owning version of this class, `renderer`, features an extended API
+ * \details Rendering primitives such as points, rectangles, lines and circles are
+ * supported. The owning version of this class, `renderer`, features an extended API
  * compared to its non-owning counterpart, with support for font handling and translated
  * rendering.
+ *
+ * \details Three different text encodings are supported: UTF-8, Latin-1 and Unicode. Each
+ * of these encodings can be rendered in four different styles: "blended", "shaded",
+ * "solid" and "blended and wrapped". All of the text rendering functions feature the same
+ * names except for a distinguishing suffix, i.e. `_utf8`, `_latin1` or `_unicode`.
+ *   - Blended: The best looking option but also the slowest. Uses anti-aliasing.
+ *   - Blended and wrapped: Same as blended, but the text will be wrapped to fit a
+ *     specified width.
+ *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
+ *   - Shaded: The same as blended, but with a colored rectangle behind it.
  *
  * \note Each window can feature at most associated renderer.
  *
@@ -91910,8 +89435,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \see `renderer`
  * \see `renderer_handle`
  * \see `renderer_info`
- *
- * \headerfile renderer.hpp
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_renderer final
@@ -91922,8 +89447,8 @@ class basic_renderer final
    *
    * \brief Represents different renderer features.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating renderers.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating renderers.
    *
    * \see `SDL_RendererFlags`
    *
@@ -91945,8 +89470,7 @@ class basic_renderer final
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * \note The supplied pointer will be claimed by the renderer if the created
-   * renderer is owning.
+   * \note The supplied pointer will be claimed by the renderer if the created renderer is owning.
    *
    * \param renderer a pointer to the associated SDL renderer.
    *
@@ -92036,8 +89560,8 @@ class basic_renderer final
   /**
    * \brief Captures a snapshot of the current rendering target as a surface.
    *
-   * \note The correct pixel format supplied to this function can easily be
-   * obtained using the `basic_window::get_pixel_format()` function.
+   * \note The correct pixel format supplied to this function can easily be obtained using
+   * the `basic_window::get_pixel_format()` function.
    *
    * \param format the pixel format that will be used by the surface.
    *
@@ -92071,10 +89595,10 @@ class basic_renderer final
   /**
    * \brief Fills the entire rendering target with the currently selected color.
    *
-   * \details This function is different from `clear()` and `clear_with()` in
-   * that it can be used as an intermediate rendering command (just like all
-   * rendering functions). An example of a use case of this function could be
-   * for rendering a transparent background for game menus.
+   * \details This function is different from `clear()` and `clear_with()` in that it can
+   * be used as an intermediate rendering command (just like all rendering functions). An
+   * example of a use case of this function could be for rendering a transparent
+   * background for game menus.
    *
    * \since 5.1.0
    */
@@ -92149,8 +89673,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Renders a line between the supplied points, in the currently
-   * selected color.
+   * \brief Renders a line between the supplied points, in the currently selected color.
    *
    * \tparam U The representation type used by the points.
    *
@@ -92178,21 +89701,19 @@ class basic_renderer final
   /**
    * \brief Renders a collection of lines.
    *
-   * \details This function requires the the `Container` type provides the
-   * public member `value_type` and subsequently, that the `value_type`
-   * in turn provides a `value_type` member. The former would correspond to
-   * the actual point type, and the latter corresponds to either `int` or
-   * `float`.
+   * \details This function requires the the `Container` type provides the public member
+   * `value_type` and subsequently, that the `value_type` in turn provides a `value_type`
+   * member. The former would correspond to the actual point type, and the latter
+   * corresponds to either `int` or `float`.
    *
-   * \warning `Container` *must* be a collection that stores its data
-   * contiguously! The behaviour of this function is undefined if this condition
-   * isn't met.
+   * \warning `Container` *must* be a collection that stores its data contiguously! The
+   * behaviour of this function is undefined if this condition isn't met.
    *
-   * \tparam Container the container type. Must store its elements
-   * contiguously, such as `std::vector` or `std::array`.
+   * \tparam Container the container type. Must store its elements contiguously, such as
+   * `std::vector` or `std::array`.
    *
-   * \param container the container that holds the points that will be used
-   * to render the line.
+   * \param container the container that holds the points that will be used to render the
+   * line.
    *
    * \return `success` if the lines were successfully rendered; `failure` otherwise.
    *
@@ -92335,8 +89856,8 @@ class basic_renderer final
   /**
    * \brief Renders an outlined rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -92355,8 +89876,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled rectangle in the currently selected color.
    *
-   * \details The rendered rectangle will be translated using the current
-   * translation viewport.
+   * \details The rendered rectangle will be translated using the current translation
+   * viewport.
    *
    * \tparam R the representation type used by the rectangle.
    *
@@ -92375,11 +89896,10 @@ class basic_renderer final
   /**
    * \brief Renders a point using the currently selected color.
    *
-   * \details The rendered point will be translated using the current
-   * translation viewport.
+   * \details The rendered point will be translated using the current translation
+   * viewport.
    *
    * \tparam U the representation
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param point the point that will be rendered.
    *
@@ -92396,11 +89916,10 @@ class basic_renderer final
   /**
    * \brief Renders a circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \tparam U the precision used by the point.
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param position the position of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -92416,10 +89935,8 @@ class basic_renderer final
   /**
    * \brief Renders a filled circle with the currently selected color.
    *
-   * \details The rendered circle will be translated using the current
-   * translation viewport.
-   *
-   * \tparam TT dummy parameter for SFINAE.
+   * \details The rendered circle will be translated using the current translation
+   * viewport.
    *
    * \param center the center of the rendered circle.
    * \param radius the radius of the rendered circle.
@@ -92442,14 +89959,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92482,20 +89998,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the UTF-8 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the UTF-8 text that will be rendered. You can insert newline characters in
+   * the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -92530,15 +90044,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92575,14 +90088,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the UTF-8 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the UTF-8 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the UTF-8 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92615,14 +90127,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92655,20 +90166,18 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Latin-1 text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Latin-1 text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -92703,15 +90212,14 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the Latin-1 text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Latin-1 text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92748,14 +90256,13 @@ class basic_renderer final
    *
    * \pre `str` can't be null.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Latin-1 text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92786,14 +90293,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92814,20 +90320,18 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of blended and wrapped Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This function will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
+   * This function renders the text at the highest quality and uses anti-aliasing. Use
+   * this when you want high quality text, but beware that this is the slowest
+   * alternative. This function will wrap the supplied text to fit the specified width.
+   * Furthermore, you can also manually control the line breaks by inserting newline
+   * characters at the desired breakpoints.
    *
-   * \param str the Unicode text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * \param str the Unicode text that will be rendered. You can insert newline characters
+   * in the string to indicate breakpoints.
    * \param font the font that the text will be rendered in.
    * \param wrap the width in pixels after which the text will be wrapped.
    *
@@ -92850,15 +90354,14 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of shaded Unicode text.
    *
-   * \details Attempts to render the Unicode text in the supplied font using
-   * the currently selected color and returns a texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the Unicode text in the supplied font using the currently
+   * selected color and returns a texture that contains the result. Use the returned
+   * texture to actually render the text to the screen.
    *
-   * This function renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * function when you want nice text, and can live with a box around it.
+   * This function renders the text using anti-aliasing and with a box behind the text.
+   * This alternative is probably a bit slower than rendering solid text but about as fast
+   * as blended text. Use this function when you want nice text, and can live with a box
+   * around it.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92883,14 +90386,13 @@ class basic_renderer final
   /**
    * \brief Creates and returns a texture of solid Unicode text.
    *
-   * \details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen.
+   * \details Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result. Use the
+   * returned texture to actually render the text to the screen.
    *
-   * This function is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this function
-   * when quality isn't as big of a concern and speed is important.
+   * This function is the fastest at rendering text to a texture. It doesn't use
+   * anti-aliasing so the text isn't very smooth. Use this function when quality isn't as
+   * big of a concern and speed is important.
    *
    * \param str the Unicode text that will be rendered.
    * \param font the font that the text will be rendered in.
@@ -92917,8 +90419,8 @@ class basic_renderer final
    * \param glyph the glyph, in unicode, that will be rendered.
    * \param position the position of the rendered glyph.
    *
-   * \return the x-coordinate of the next glyph to be rendered after the
-   * current glyph, or the same x-coordinate if no glyph was rendered.
+   * \return the x-coordinate of the next glyph to be rendered after the current glyph, or
+   * the same x-coordinate if no glyph was rendered.
    *
    * \since 5.0.0
    */
@@ -92948,18 +90450,17 @@ class basic_renderer final
   /**
    * \brief Renders a string.
    *
-   * \details This function will not apply any clever conversions on the
-   * supplied string. The string is literally iterated, character-by-character,
-   * and each character is rendered using the `render_glyph` function.
+   * \details This function will not apply any clever conversions on the supplied string.
+   * The string is literally iterated, character-by-character, and each character is
+   * rendered using the `render_glyph` function.
    *
-   * \pre Every character in the string must correspond to a valid Unicode
-   * glyph.
+   * \pre Every character in the string must correspond to a valid Unicode glyph.
    *
-   * \note This function is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
+   * \note This function is sensitive to newline-characters, and will render strings that
+   * contain such characters appropriately.
    *
-   * \tparam String the type of the string, must be iterable and provide
-   * `unicode` characters.
+   * \tparam String the type of the string, must be iterable and provide `unicode`
+   * characters.
    *
    * \param cache the font cache that will be used.
    * \param str the string that will be rendered.
@@ -92998,8 +90499,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param position the position of the rendered texture.
@@ -93028,8 +90529,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
@@ -93055,11 +90556,11 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \remarks This should be your preferred function of rendering textures. This
-   * function is efficient and simple.
+   * \remarks This should be your preferred function of rendering textures. This function
+   * is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -93088,14 +90589,14 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93132,17 +90633,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93185,17 +90685,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will be
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
    * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -93245,8 +90744,7 @@ class basic_renderer final
   /**
    * \brief Renders a texture at the specified position.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P The representation type used by the point.
@@ -93268,15 +90766,13 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93292,19 +90788,17 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \remarks This should be your preferred function of rendering textures. This
    * function is efficient and simple.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
+   * \param destination the position (pre-translation) and size of the rendered texture.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93321,18 +90815,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
    * \tparam U the ownership tag of the texture.
    * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93350,21 +90842,18 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \details The rendered texture will be translated using the translation
-   * viewport.
+   * \details The rendered texture will be translated using the translation viewport.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
    *
@@ -93383,18 +90872,16 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the ownership tag of the texture.
    * \tparam R the representation type used by the destination rectangle.
    * \tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
-   * \param destination the position (pre-translation) and size of the
-   * rendered texture.
-   * \param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * \param center specifies the point around which the rendered texture will
-   * be rotated.
+   * \param destination the position (pre-translation) and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered texture will be
+   * rotated.
+   * \param center specifies the point around which the rendered texture will be rotated.
    * \param flip specifies how the rendered texture will be flipped.
    *
    * \return `success` if the rendering was successful; `failure` otherwise.
@@ -93420,11 +90907,10 @@ class basic_renderer final
   /**
    * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * \details This function should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
+   * \details This function should be called before calling any of the `_t` rendering
+   * methods, for automatic translation.
    *
-   * \param viewport the rectangle that will be used as the translation
-   * viewport.
+   * \param viewport the rectangle that will be used as the translation viewport.
    *
    * \since 3.0.0
    */
@@ -93457,8 +90943,8 @@ class basic_renderer final
   /**
    * \brief Adds a font to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \param id the key that will be associated with the font.
    * \param font the font that will be added.
@@ -93479,8 +90965,8 @@ class basic_renderer final
   /**
    * \brief Creates a font and adds it to the renderer.
    *
-   * \note This function overwrites any previously stored font associated
-   * with the specified ID.
+   * \note This function overwrites any previously stored font associated with the
+   * specified ID.
    *
    * \tparam Args the types of the arguments that will be forwarded.
    *
@@ -93503,8 +90989,8 @@ class basic_renderer final
   /**
    * \brief Removes the font associated with the specified key.
    *
-   * \details This function has no effect if there is no font associated with
-   * the specified key.
+   * \details This function has no effect if there is no font associated with the
+   * specified key.
    *
    * \param id the key associated with the font that will be removed.
    *
@@ -93533,9 +91019,7 @@ class basic_renderer final
     return m_renderer.fonts.at(id);
   }
 
-  /**
-   * \copydoc get_font
-   */
+  /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
@@ -93543,13 +91027,12 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer has a font associated with
-   * the specified key.
+   * \brief Indicates whether or not the renderer has a font associated with the specified
+   * key.
    *
    * \param id the key that will be checked.
    *
-   * \return `true` if the renderer has a font associated with the key;
-   * `false` otherwise.
+   * \return `true` if the renderer has a font associated with the key; `false` otherwise.
    *
    * \since 4.1.0
    */
@@ -93700,8 +91183,7 @@ class basic_renderer final
   }
 
   /**
-   * \brief Sets whether or not to force integer scaling for the logical
-   * viewport.
+   * \brief Sets whether or not to force integer scaling for the logical viewport.
    *
    * \details This function can be useful to combat visual artefacts when doing
    * floating-point rendering.
@@ -93725,8 +91207,7 @@ class basic_renderer final
   /**
    * \brief Returns a handle to the current render target.
    *
-   * \return a handle to the current render target; empty if using the default
-   * target.
+   * \return a handle to the current render target; empty if using the default target.
    *
    * \since 5.0.0
    */
@@ -93774,8 +91255,8 @@ class basic_renderer final
   /**
    * \brief Returns the size of the logical (virtual) viewport.
    *
-   * \note calling this function once is faster than calling both
-   * `logical_width` and `logical_height` for obtaining the size.
+   * \note calling this function once is faster than calling both `logical_width` and
+   * `logical_height` for obtaining the size.
    *
    * \return the size of the logical (virtual) viewport.
    *
@@ -93819,8 +91300,8 @@ class basic_renderer final
   /**
    * \brief Returns the x- and y-scale used by the renderer.
    *
-   * \note calling this function once is faster than calling both `x_scale`
-   * and `y_scale` for obtaining the scale.
+   * \note calling this function once is faster than calling both `x_scale` and `y_scale`
+   * for obtaining the scale.
    *
    * \return the x- and y-scale used by the renderer.
    *
@@ -93886,8 +91367,8 @@ class basic_renderer final
   /**
    * \brief Returns the output size of the renderer.
    *
-   * \note calling this function once is faster than calling `output_width`
-   * and `output_height` for obtaining the output size.
+   * \note calling this function once is faster than calling `output_width` and
+   * `output_height` for obtaining the output size.
    *
    * \return the current output size of the renderer.
    *
@@ -93915,13 +91396,13 @@ class basic_renderer final
   }
 
   /**
-   * \brief Indicates whether or not the renderer uses integer scaling values
-   * for logical viewports.
+   * \brief Indicates whether or not the renderer uses integer scaling values for logical
+   * viewports.
    *
    * \details By default, this property is set to false.
    *
-   * \return `true` if the renderer uses integer scaling for logical
-   * viewports; `false` otherwise.
+   * \return `true` if the renderer uses integer scaling for logical viewports; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -94016,8 +91497,8 @@ class basic_renderer final
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -94355,13 +91836,11 @@ namespace cen {
 /**
  * \enum scale_mode
  *
- * \brief Mirrors the `SDL_ScaleMode` enum.
+ * \brief Represents different texture scale modes.
  *
  * \since 4.0.0
  *
  * \see `SDL_ScaleMode`
- *
- * \headerfile scale_mode.hpp
  */
 enum class scale_mode
 {
@@ -94451,8 +91930,6 @@ namespace cen {
  *
  * \brief Provides diagonal, horizontal and vertical DPI values.
  *
- * \headerfile screen.hpp
- *
  * \since 5.0.0
  */
 struct dpi_info final
@@ -94470,8 +91947,6 @@ struct dpi_info final
  * \since 5.0.0
  *
  * \see SDL_DisplayOrientation
- *
- * \headerfile screen.hpp
  */
 enum class screen_orientation : int
 {
@@ -94530,8 +92005,6 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
  * \brief Contains functions that provide information about screen(s).
  *
  * \since 5.0.0
- *
- * \headerfile screen.hpp
  */
 namespace cen::screen {
 
@@ -94611,8 +92084,7 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the refresh rate of the screen; `std::nullopt` if something goes
- * wrong.
+ * \return the refresh rate of the screen; `std::nullopt` if something goes wrong.
  *
  * \since 3.0.0
  */
@@ -94631,15 +92103,14 @@ namespace cen::screen {
 /**
  * \brief Returns the pixel format of the desktop display mode.
  *
- * \note This function returns the pixel format used by the desktop display
- * mode, i.e. the fullscreen display mode, so it might not be accurate for
- * non-fullscreen windows.
+ * \note This function returns the pixel format used by the desktop display mode, i.e. the
+ * fullscreen display mode, so it might not be accurate for non-fullscreen windows.
  *
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the pixel format of the desktop display mode; `std::nullopt` if
- * something goes wrong.
+ * \return the pixel format of the desktop display mode; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 3.0.0
  */
@@ -94728,8 +92199,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return DPI information about the specified display; `std::nullopt` if
- * something went wrong.
+ * \return DPI information about the specified display; `std::nullopt` if something went
+ * wrong.
  *
  * \see SDL_GetDisplayDPI
  *
@@ -94738,9 +92209,7 @@ namespace cen::screen {
 [[nodiscard]] inline auto dpi(const int index = 0) noexcept -> std::optional<dpi_info>
 {
   dpi_info info;
-  const auto res =
-      SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical);
-  if (res == 0)
+  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0)
   {
     return info;
   }
@@ -94756,8 +92225,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the vertical DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the vertical DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -94780,8 +92249,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the diagonal DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the diagonal DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -94804,8 +92273,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the horizontal DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the horizontal DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -94828,8 +92297,7 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the bounds of the specified display; `std::nullopt` if something went
- * wrong.
+ * \return the bounds of the specified display; `std::nullopt` if something went wrong.
  *
  * \see SDL_GetDisplayBounds
  *
@@ -94854,8 +92322,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the usable bounds of the specified display; `std::nullopt` if
- * something went wrong.
+ * \return the usable bounds of the specified display; `std::nullopt` if something went
+ * wrong.
  *
  * \see SDL_GetDisplayUsableBounds
  *
@@ -94953,19 +92421,21 @@ using surface_handle = basic_surface<detail::handle_type>;
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated collection of pixels that constitute an
- * image.
+ * \brief Represents a non-accelerated image.
  *
- * \details Surfaces are often used for icons and snapshots, as an
- * "intermediate" representation that can be manually manipulated, unlike
- * textures. There is no support for directly rendering surfaces, but they can
- * be converted to textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
+ * representation that can be manipulated, unlike textures. There is no support
+ * for directly rendering surfaces. However, surfaces can be converted to textures, which
+ * in turn can be rendered.
  *
- * \tparam B Used to determine the ownership semantics of the class.
+ * \note Unlike most other Centurion components, surfaces can be copied.
+ *
+ * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
- * \headerfile surface.hpp
+ * \see `surface`
+ * \see `surface_handle`
  */
 template <typename T>
 class basic_surface final
@@ -95210,8 +92680,7 @@ class basic_surface final
   auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = SDL_SaveBMP(get(), file);
-    return result != -1;
+    return SDL_SaveBMP(get(), file) != -1;
   }
 
   /**
@@ -95235,8 +92704,7 @@ class basic_surface final
   auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = IMG_SavePNG(get(), file);
-    return result != -1;
+    return IMG_SavePNG(get(), file) != -1;
   }
 
   /**
@@ -95266,8 +92734,7 @@ class basic_surface final
       -> result
   {
     assert(file);
-    const auto result = IMG_SaveJPG(get(), file, quality);
-    return result != -1;
+    return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
   /**
@@ -95300,8 +92767,7 @@ class basic_surface final
   {
     if (must_lock())
     {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
+      return SDL_LockSurface(m_surface) == 0;
     }
     else
     {
@@ -95870,16 +93336,13 @@ using texture_handle = basic_texture<detail::handle_type>;
 /**
  * \class basic_texture
  *
- * \brief Represents an hardware-accelerated image. This class is used for all
- * non-primitive rendering.
+ * \brief Represents an hardware-accelerated image, intended to be rendered using the
+ * `basic_renderer` class.
  *
  * \since 3.0.0
  *
- * \see `SDL_Texture`
  * \see `texture`
  * \see `texture_handle`
- *
- * \headerfile texture.hpp
  */
 template <typename T>
 class basic_texture final
@@ -95895,8 +93358,7 @@ class basic_texture final
    *
    * \param source a pointer to the associated SDL texture.
    *
-   * \throws cen_error if the supplied pointer is null *and* the texture is
-   * owning.
+   * \throws cen_error if the supplied pointer is null *and* the texture is owning.
    *
    * \since 3.0.0
    */
@@ -95928,8 +93390,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture, can't be null.
@@ -95951,8 +93412,7 @@ class basic_texture final
   /**
    * \brief Creates a texture based the image at the specified path.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param path the file path of the texture.
@@ -95969,8 +93429,7 @@ class basic_texture final
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
    * \param surface the surface that the texture will be based on.
@@ -95992,8 +93451,7 @@ class basic_texture final
   /**
    * \brief Creates an texture with the specified characteristics.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the associated renderer instance.
    * \param format the pixel format of the created texture.
@@ -96024,15 +93482,13 @@ class basic_texture final
   /**
    * \brief Creates and returns a texture with streaming access.
    *
-   * \details The created texture is based on the image at the specified path
-   * with the `streaming` texture access.
+   * \details The created texture is based on the image at the specified path with the
+   * `streaming` texture access.
    *
-   * \tparam Renderer the type of the renderer, e.g. `renderer` or
-   * `renderer_handle`.
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
    *
    * \param renderer the renderer that will be used to create the texture.
-   * \param path the path of the image file to base the texture on, can't be
-   * null.
+   * \param path the path of the image file to base the texture on, can't be null.
    * \param format the pixel format that will be used by the texture.
    *
    * \throws cen_error if something goes wrong.
@@ -96089,8 +93545,8 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the texture access isn't
-   * `Streaming` or if the coordinate is out-of-bounds.
+   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
    * \param color the new color of the pixel.
@@ -96153,8 +93609,7 @@ class basic_texture final
    *
    * \note The alpha component in the color struct is ignored by this method.
    *
-   * \param color the color that will be used to modulate the color of the
-   * texture.
+   * \param color the color that will be used to modulate the color of the texture.
    *
    * \since 3.0.0
    */
@@ -96256,8 +93711,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture is a possible render target.
    *
-   * \return `true` if the texture is a possible render target; `false`
-   * otherwise.
+   * \return `true` if the texture is a possible render target; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -96281,8 +93735,7 @@ class basic_texture final
   /**
    * \brief Indicates whether or not the texture has streaming texture access.
    *
-   * \return `true` if the texture has streaming texture access; `false`
-   * otherwise.
+   * \return `true` if the texture has streaming texture access; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -96354,13 +93807,11 @@ class basic_texture final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   /**
-   * \brief Releases ownership of the associated SDL texture and returns a
-   * pointer to it.
+   * \brief Releases ownership of the associated SDL texture and returns a pointer to it.
    *
-   * \warning Usage of this function should be considered dangerous, since
-   * you might run into memory leak issues. You **must** call
-   * `SDL_DestroyTexture` on the returned pointer to free the associated
-   * memory.
+   * \warning Usage of this function should be considered dangerous, since you might run
+   * into memory leak issues. You **must** call `SDL_DestroyTexture` on the returned
+   * pointer to free the associated memory.
    *
    * \return a pointer to the associated SDL texture.
    *
@@ -96391,8 +93842,6 @@ class basic_texture final
 
   /**
    * \brief Indicates whether or not a texture handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -96443,12 +93892,12 @@ class basic_texture final
   /**
    * \brief Locks the texture for write-only pixel access.
    *
-   * \remarks This method is only applicable if the texture access of the
-   * texture is `Streaming`.
+   * \remarks This method is only applicable if the texture access of the texture is
+   * `Streaming`.
    *
    * \param pixels this will be filled with a pointer to the locked pixels.
-   * \param pitch This is filled in with the pitch of the locked pixels, can
-   * safely be null if it isn't needed.
+   * \param pitch This is filled in with the pitch of the locked pixels, can safely be
+   * null if it isn't needed.
    *
    * \return `success` if nothing went wrong; `failure` otherwise.
    *
@@ -96458,18 +93907,18 @@ class basic_texture final
   {
     if (pitch)
     {
-      const auto result =
-          SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             pitch) == 0;
     }
     else
     {
       int dummyPitch;
-      const auto result = SDL_LockTexture(m_texture,
-                                          nullptr,
-                                          reinterpret_cast<void**>(pixels),
-                                          &dummyPitch);
-      return result == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
     }
   }
 
@@ -96505,7 +93954,7 @@ template <typename T>
  * \brief Prints a textual representation of a texture.
  *
  * \param stream the stream that will be used.
- * \param texture
+ * \param texture the texture that will be printed
  *
  * \return the used stream.
  *
@@ -96514,8 +93963,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
 {
-  stream << to_string(texture);
-  return stream;
+  return stream << to_string(texture);
 }
 
 /// \}
@@ -96537,25 +93985,20 @@ namespace cen {
 /**
  * \enum texture_access
  *
- * \brief Mirrors the `SDL_TextureAccess` enum.
+ * \brief Represents different texture access modes.
  *
- * \note The `no_lock` enumerator is also referred to as "static" texture
- * access.
+ * \note The `no_lock` enumerator is also referred to as "static" texture access.
  *
  * \since 3.0.0
  *
  * \see `SDL_TextureAccess`
- *
- * \headerfile texture_access.hpp
  */
 enum class texture_access : int
 {
-  no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Indicates that the texture changes
-                                            ///< rarely, and isn't lockable.
-  streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Indicates that the texture changes
-                                            ///< frequently, and is lockable.
-  target = SDL_TEXTUREACCESS_TARGET         ///< Indicates that the texture can be used
-                                            ///< as a render target.
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely, and isn't lockable.
+  streaming =
+      SDL_TEXTUREACCESS_STREAMING,   ///< Texture changes frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Texture can be used as a render target.
 };
 
 /**
@@ -96582,8 +94025,7 @@ enum class texture_access : int
 }
 
 /**
- * \brief Indicates whether or not the two texture access values aren't the
- * same.
+ * \brief Indicates whether or not the two texture access values aren't the same.
  *
  * \param lhs the lhs texture access value.
  * \param rhs the rhs texture access value.
@@ -96645,10 +94087,8 @@ using unicode = u16;
  *
  * \brief Represents a null-terminated string encoded in unicode.
  *
- * \details This class is a wrapper around a `std::vector<unicode>`, that
- * provides a similar interface to that of `std::string`.
- *
- * \headerfile unicode_string.hpp
+ * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
+ * similar interface to that of `std::string`.
  */
 class unicode_string final
 {
@@ -96702,10 +94142,9 @@ class unicode_string final
   /**
    * \brief Reserves enough memory to hold the specified amount of elements.
    *
-   * \details Use this method to optimize additions to the string when you
-   * know or can approximate the amount of elements that will be added. This
-   * can reduce the amount of unnecessary allocations and copies of the
-   * underlying array.
+   * \details Use this method to optimize additions to the string when you know or can
+   * approximate the amount of elements that will be added. This can reduce the amount of
+   * unnecessary allocations and copies of the underlying array.
    *
    * \param n the amount of elements to allocate memory for.
    *
@@ -96747,9 +94186,7 @@ class unicode_string final
     (append(code), ...);
   }
 
-  /**
-   * \copydoc append(unicode)
-   */
+  /// \copydoc append(unicode)
   void operator+=(const unicode ch)
   {
     append(ch);
@@ -96787,8 +94224,8 @@ class unicode_string final
   /**
    * \brief Returns the capacity of the string.
    *
-   * \return the capacity of the string (the amount of elements that can be
-   * stored before needing to allocate more memory).
+   * \return the capacity of the string (the amount of elements that can be stored before
+   * needing to allocate more memory).
    *
    * \since 5.0.0
    */
@@ -96800,8 +94237,7 @@ class unicode_string final
   /**
    * \brief Indicates whether or not the string is empty.
    *
-   * \note The string is considered empty if the only element is the
-   * null-terminator.
+   * \note The string is considered empty if the only element is the null-terminator.
    *
    * \return `true` if the string is empty; `false` otherwise.
    *
@@ -96824,9 +94260,7 @@ class unicode_string final
     return m_data.data();
   }
 
-  /**
-   * \copydoc data
-   */
+  /// \copydoc data
   [[nodiscard]] auto data() const noexcept -> const_pointer
   {
     return m_data.data();
@@ -96835,8 +94269,7 @@ class unicode_string final
   /**
    * \brief Returns an iterator that points to the first element in the string.
    *
-   * \details Iteration using the iterator is done consecutively, as you
-   * would expect.
+   * \details Iteration using the iterator is done consecutively, as you would expect.
    *
    * \return an iterator that points to the first element in the string.
    *
@@ -96847,22 +94280,18 @@ class unicode_string final
     return m_data.begin();
   }
 
-  /**
-   * \copydoc begin
-   */
+  /// \copydoc begin
   [[nodiscard]] auto begin() const noexcept -> const_iterator
   {
     return m_data.begin();
   }
 
   /**
-   * \brief Returns an iterator that points one-past the last element in the
-   * string.
+   * \brief Returns an iterator that points one-past the last element in the string.
    *
    * \note The null-terminator is purposefully skipped.
    *
-   * \return an iterator that points one-past the last element in the
-   * string.
+   * \return an iterator that points one-past the last element in the string.
    *
    * \since 5.0.0
    */
@@ -96871,9 +94300,7 @@ class unicode_string final
     return m_data.end() - 1;
   }
 
-  /**
-   * \copydoc end
-   */
+  /// \copydoc end
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
     return m_data.end() - 1;
@@ -96882,8 +94309,7 @@ class unicode_string final
   /**
    * \brief Returns the element at the specified index.
    *
-   * \details This method will throw an exception if the supplied index is
-   * out-of-bounds.
+   * \details This method will throw an exception if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -96896,9 +94322,7 @@ class unicode_string final
     return m_data.at(index);
   }
 
-  /**
-   * \copydoc at
-   */
+  /// \copydoc at
   [[nodiscard]] auto at(const size_type index) const -> const_reference
   {
     return m_data.at(index);
@@ -96909,9 +94333,8 @@ class unicode_string final
    *
    * \pre `index` **must** be in the range [0, `size()`);
    *
-   * \details This method will does *not* perform bounds-checking. However, in
-   * debug-mode, an assertion will abort the program if the supplied index is
-   * out-of-bounds.
+   * \details This method will does *not* perform bounds-checking. However, in debug-mode,
+   * an assertion will abort the program if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -96925,9 +94348,7 @@ class unicode_string final
     return m_data[index];
   }
 
-  /**
-   * \copydoc operator[]
-   */
+  /// \copydoc operator[]
   [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc())
       -> const_reference
   {
@@ -96938,9 +94359,8 @@ class unicode_string final
   /**
    * \brief Serializes the string.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -97372,13 +94792,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -97436,8 +94855,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -97707,8 +95125,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -97739,15 +95155,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -97771,15 +95184,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -97803,15 +95213,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -97835,15 +95242,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -98100,9 +95504,9 @@ namespace cen {
  *
  * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \details If a function takes an `owner<T*>` as a parameter, then the
- * function will claim ownership of that pointer. Subsequently, if a function
- * returns an `owner<T*>`, then ownership is transferred to the caller.
+ * \details If a function takes an `owner<T*>` as a parameter, then the function will
+ * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
+ * then ownership is transferred to the caller.
  */
 template <typename T, enable_if_pointer_v<T> = 0>
 using owner = T;
@@ -98112,12 +95516,10 @@ using owner = T;
  *
  * \ingroup core
  *
- * \brief Tag used to denote conditional ownership of raw pointers directly in
- * code.
+ * \brief Tag used to denote conditional ownership of raw pointers directly in code.
  *
- * \details This is primarily used in constructors of owner/handle classes,
- * where the owner version will claim ownership of the pointer, whilst the
- * handle does not.
+ * \details This is primarily used in constructors of owner/handle classes, where the
+ * owner version will claim ownership of the pointer, whilst the handle does not.
  *
  * \since 6.0.0
  */
@@ -98145,13 +95547,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -98209,8 +95610,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *
@@ -98303,16 +95703,14 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */
@@ -98353,8 +95751,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -98404,8 +95802,7 @@ template <typename T>
 namespace cen::detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
  *
  * \param b the boolean value that will be converted.
  *
@@ -98578,8 +95975,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -98610,15 +96005,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -98642,15 +96034,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -98674,15 +96063,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -98706,15 +96092,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -98861,9 +96244,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -98881,12 +96264,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98898,8 +96280,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98915,8 +96296,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98932,8 +96312,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98949,8 +96328,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98966,8 +96344,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -98993,20 +96370,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -99058,9 +96435,9 @@ namespace cen {
  * \ingroup core
  *
  * \details This is the default implementation, which simply attempts to use
- * `static_cast`. The idea is that this function will be specialized for
- * various Centurion and SDL types. This is useful because it isn't always
- * possible to implement conversion operators as members.
+ * `static_cast`. The idea is that this function will be specialized for various Centurion
+ * and SDL types. This is useful because it isn't always possible to implement conversion
+ * operators as members.
  *
  * \tparam To the type of the value that will be converted.
  * \tparam From the type that the value will be casted to.
@@ -99107,9 +96484,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -99127,12 +96504,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99144,8 +96520,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99161,8 +96536,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99178,8 +96552,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99195,8 +96568,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99212,8 +96584,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99239,20 +96610,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
@@ -99325,16 +96696,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -99391,9 +96760,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -99669,16 +97037,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -99735,9 +97101,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.
@@ -99907,8 +97272,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -99982,11 +97345,11 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
- * \details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the type parameter.
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
  *
- * \note This point class will only use `int` or `float` as the actual
- * internal representation.
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
  *
  * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
@@ -99994,8 +97357,8 @@ using fpoint = basic_point<float>;
  *
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
+ * \see `point()`
+ * \see `distance()`
  */
 template <typename T>
 class basic_point final
@@ -100169,9 +97532,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -100195,13 +97557,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -100273,8 +97633,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -100293,8 +97653,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -100313,13 +97673,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -100334,13 +97693,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */
@@ -100420,8 +97778,8 @@ namespace cen {
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
- * \note Whilst it is possible to supply a type that isn't `int` or `float`,
- * rectangles will always use one of them as the representation type.
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`, rectangles
+ * will always use one of them as the representation type.
  *
  * \tparam T the representation type, must be convertible to `int` or `float`.
  *
@@ -100430,8 +97788,6 @@ namespace cen {
  * \see `frect`
  *
  * \since 5.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
@@ -100470,17 +97826,18 @@ using frect = basic_rect<float>;
 /**
  * \class basic_rect
  *
- * \brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
- * \tparam T the representation type. Must be convertible to either `int` or
- * `float`.
+ * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`
  * \see `frect`
+ * \see `rect()`
+ * \see `intersects()`
+ * \see `collides()`
+ * \see `get_union()`
  *
  * \since 4.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final
@@ -100646,8 +98003,8 @@ class basic_rect final
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_x()` with
-   * the sum of `x()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_x()` with the sum of
+   * `x()` and `offset`.
    *
    * \param offset the offset to the x-coordinate of the rectangle.
    *
@@ -100661,8 +98018,8 @@ class basic_rect final
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_y()` with
-   * the sum of `y()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_y()` with the sum of
+   * `y()` and `offset`.
    *
    * \param offset the offset to the y-coordinate of the rectangle.
    *
@@ -100676,8 +98033,8 @@ class basic_rect final
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_width()`
-   * with the sum of `width()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_width()` with the
+   * sum of `width()` and `offset`.
    *
    * \param offset the offset to the width of the rectangle.
    *
@@ -100691,8 +98048,8 @@ class basic_rect final
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_height()`
-   * with the sum of `height()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_height()` with the
+   * sum of `height()` and `offset`.
    *
    * \param offset the offset to the height of the rectangle.
    *
@@ -100706,9 +98063,8 @@ class basic_rect final
   /**
    * \brief Sets the position of the rectangle.
    *
-   * \note Some frameworks have this kind of function change the size of the
-   * rectangle. However, this function does *not* change the size of the
-   * rectangle.
+   * \note Some frameworks have this kind of function change the size of the rectangle.
+   * However, this function does *not* change the size of the rectangle.
    *
    * \param pos the new position of the rectangle.
    *
@@ -101017,9 +98373,8 @@ class basic_rect final
   /**
    * \brief Serializes the rectangle.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -101043,10 +98398,9 @@ class basic_rect final
 /**
  * \brief Creates a rectangle with automatically deduced precision.
  *
- * \note The only supported precisions for rectangles are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for rectangles are `int` and `float`, so this
+ * function will cast the supplied values to the corresponding type. For example, if you
+ * supply doubles to this function, the returned point will use float as the precision.
  *
  * \tparam T the deduced precision type.
  *
@@ -101076,9 +98430,8 @@ template <typename T, enable_if_number_t<T> = 0>
 /**
  * \brief Indicates whether or not the two rectangles intersect.
  *
- * \details This function does *not* consider rectangles with overlapping
- * borders as intersecting. If you want such behaviour, see the
- * `collides` function.
+ * \details This function does *not* consider rectangles with overlapping borders as
+ * intersecting. If you want such behaviour, see the `collides` function.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -101102,8 +98455,7 @@ template <typename T>
 /**
  * \brief Indicates whether or not two rectangles are colliding.
  *
- * \details This function considers rectangles with overlapping borders as
- * colliding.
+ * \details This function considers rectangles with overlapping borders as colliding.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -101357,12 +98709,9 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
- * \details This class is designed to interact with the SDL colors,
- * `SDL_Color` and `SDL_MessageBoxColor`.
- *
- * \headerfile color.hpp
- *
- * \see `colors.hpp`
+ * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
+ * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
+ * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
  */
@@ -101385,8 +98734,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -101410,8 +98758,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -101789,9 +99137,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -101810,8 +99157,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -101825,17 +99171,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *
@@ -102040,13 +99384,11 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -102155,8 +99497,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -102167,8 +99509,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -102187,8 +99527,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -102229,8 +99568,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -102367,8 +99704,6 @@ class basic_pixel_format_info final
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
    *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
@@ -102502,8 +99837,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_BlendMode`
- *
- * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {
@@ -102612,19 +99945,21 @@ using surface_handle = basic_surface<detail::handle_type>;
 /**
  * \class basic_surface
  *
- * \brief Represents a non-accelerated collection of pixels that constitute an
- * image.
+ * \brief Represents a non-accelerated image.
  *
- * \details Surfaces are often used for icons and snapshots, as an
- * "intermediate" representation that can be manually manipulated, unlike
- * textures. There is no support for directly rendering surfaces, but they can
- * be converted to textures, which in turn can be rendered.
+ * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
+ * representation that can be manipulated, unlike textures. There is no support
+ * for directly rendering surfaces. However, surfaces can be converted to textures, which
+ * in turn can be rendered.
  *
- * \tparam B Used to determine the ownership semantics of the class.
+ * \note Unlike most other Centurion components, surfaces can be copied.
+ *
+ * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
- * \headerfile surface.hpp
+ * \see `surface`
+ * \see `surface_handle`
  */
 template <typename T>
 class basic_surface final
@@ -102869,8 +100204,7 @@ class basic_surface final
   auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = SDL_SaveBMP(get(), file);
-    return result != -1;
+    return SDL_SaveBMP(get(), file) != -1;
   }
 
   /**
@@ -102894,8 +100228,7 @@ class basic_surface final
   auto save_as_png(const not_null<czstring> file) const noexcept -> result
   {
     assert(file);
-    const auto result = IMG_SavePNG(get(), file);
-    return result != -1;
+    return IMG_SavePNG(get(), file) != -1;
   }
 
   /**
@@ -102925,8 +100258,7 @@ class basic_surface final
       -> result
   {
     assert(file);
-    const auto result = IMG_SaveJPG(get(), file, quality);
-    return result != -1;
+    return IMG_SaveJPG(get(), file, quality) != -1;
   }
 
   /**
@@ -102959,8 +100291,7 @@ class basic_surface final
   {
     if (must_lock())
     {
-      const auto result = SDL_LockSurface(m_surface);
-      return result == 0;
+      return SDL_LockSurface(m_surface) == 0;
     }
     else
     {
@@ -103506,8 +100837,12 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \see `window`
  * \see `window_handle`
- *
- * \headerfile window.hpp
+ * \see `get_window()`
+ * \see `get_grabbed_window()`
+ * \see `mouse_focus_window()`
+ * \see `keyboard_focus_window()`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_window final
@@ -103518,9 +100853,8 @@ class basic_window final
    *
    * \brief Represents different window features and options.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating windows and to obtain information
-   * from created windows.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating windows and to obtain information from created windows.
    *
    * \see `SDL_WindowFlags`
    *
@@ -103561,12 +100895,12 @@ class basic_window final
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
-   * \note If you're creating a `window` instance, then ownership of the pointer
-   * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
-   * *not* claimed.
+   * \note If you're creating a `window` instance, then ownership of the pointer is
+   * claimed. Furthermore, if you're creating a `window_handle`, ownership is *not*
+   * claimed.
    *
-   * \param window a pointer to the associated SDL window. Ownership of this
-   * pointer is claimed if the window is owning.
+   * \param window a pointer to the associated SDL window. Ownership of this pointer is
+   * claimed if the window is owning.
    *
    * \since 5.0.0
    */
@@ -103591,8 +100925,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -103655,8 +100988,8 @@ class basic_window final
   /**
    * \brief Creates a window.
    *
-   * \details The window will use the size obtained from `default_size()` as its
-   * initial size.
+   * \details The window will use the size obtained from `default_size()` as its initial
+   * size.
    *
    * \throws sdl_error if the window cannot be created.
    *
@@ -103733,8 +101066,7 @@ class basic_window final
   }
 
   /**
-   * \brief Restores the position and size of the window if it's minimized or
-   * maximized.
+   * \brief Restores the position and size of the window if it's minimized or maximized.
    *
    * \since 5.3.0
    */
@@ -103746,8 +101078,7 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `success` if the surface was successfully updated; `failure`
-   * otherwise.
+   * \return `success` if the surface was successfully updated; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -103764,8 +101095,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen; `false` for
-   * windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -103781,8 +101111,8 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen desktop; `false`
-   * for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false` for
+   * windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -103798,8 +101128,7 @@ class basic_window final
    *
    * \details This is enabled by default.
    *
-   * \param decorated `true` if the window should be decorated; `false`
-   * otherwise.
+   * \param decorated `true` if the window should be decorated; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -103811,8 +101140,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window should be resizable.
    *
-   * \param resizable `true` if the window should be resizable; `false`
-   * otherwise.
+   * \param resizable `true` if the window should be resizable; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -103861,8 +101189,7 @@ class basic_window final
   /**
    * \brief Sets the opacity of the window.
    *
-   * \details The supplied opacity will be clamped to a value in the legal
-   * range.
+   * \details The supplied opacity will be clamped to a value in the legal range.
    *
    * \param opacity the opacity, in the range [0, 1].
    *
@@ -103880,8 +101207,8 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window;
-   * `false` otherwise.
+   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -103893,13 +101220,12 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \note A brightness value outside the legal range will be clamped to the
-   * closest valid value.
+   * \note A brightness value outside the legal range will be clamped to the closest valid
+   * value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `success` if the brightness was successfully set; `failure`
-   * otherwise.
+   * \return `success` if the brightness was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
@@ -103911,11 +101237,9 @@ class basic_window final
   /**
    * \brief Sets whether or not the mouse should be captured.
    *
-   * \note A window might have to be visible in order for the mouse to be
-   * captured.
+   * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false`
-   * otherwise.
+   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
@@ -103972,8 +101296,8 @@ class basic_window final
   /**
    * \brief Sets the position of the window.
    *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED` as
+   * any of the components of the point.
    *
    * \param position the new position of the window.
    *
@@ -104061,49 +101385,48 @@ class basic_window final
   /**
    * \brief Sets the size of the window.
    *
-   * \details The supplied dimensions are capped to be at least 1.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the new size of the window, components must be greater than
-   * zero.
+   * \param size the new size of the window.
    *
    * \since 5.0.0
    */
   void set_size(const iarea size) noexcept
   {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
+    assert(size.width > 0);
+    assert(size.height > 0);
+    SDL_SetWindowSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the minimum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
+   * \param size the minimum size of the window.
    *
    * \since 3.0.0
    */
   void set_min_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the maximum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
+   * \param size the maximum size of the window.
    *
    * \since 3.0.0
    */
   void set_max_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
@@ -104134,8 +101457,8 @@ class basic_window final
   /**
    * \brief Returns the current size of the window.
    *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
+   * \note Calling this function is slightly faster than calling both `width` and `height`
+   * to obtain the window size.
    *
    * \return the size of the window.
    *
@@ -104215,9 +101538,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -104233,9 +101555,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(cen::window::fullscreen)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(cen::window::fullscreen)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -104359,8 +101680,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
+   * \return `true` if the window is in fullscreen desktop mode; `false` otherwise.
    *
    * \since 4.0.0
    */
@@ -104394,11 +101714,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
+   * \brief Indicates whether or not the window is usable with an OpenGL-context.
    *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
+   * \return `true` if the window is compatible with an OpenGL-context; false otherwise.
    *
    * \since 4.0.0
    */
@@ -104410,8 +101728,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
+   * \return `true` if the window is is usable as a Vulkan surface; false otherwise.
    *
    * \since 4.0.0
    */
@@ -104485,11 +101802,10 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
+   * \brief Indicates whether or not the window is set to be always on top of other
+   * windows.
    *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
+   * \return `true` if the window is always on top of other windows; false otherwise.
    *
    * \since 4.0.0
    */
@@ -104572,8 +101888,8 @@ class basic_window final
   /**
    * \brief Returns the display index associated with the window.
    *
-   * \return the display index associated with the window; `std::nullopt` if the
-   * display index cannot be obtained.
+   * \return the display index associated with the window; `std::nullopt` if the display
+   * index cannot be obtained.
    *
    * \since 3.1.0
    */
@@ -104645,11 +101961,10 @@ class basic_window final
   /**
    * \brief Returns a handle to the window framebuffer surface.
    *
-   * \warning It is not possible use the framebuffer surface with the 3D or 2D
-   * rendering APIs.
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D rendering
+   * APIs.
    *
-   * \return a handle to the window surface, might not contain a valid surface
-   * pointer.
+   * \return a handle to the window surface, might not contain a valid surface pointer.
    *
    * \since 5.0.0
    */
@@ -104659,8 +101974,7 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Indicates whether or not the window is currently grabbing the mouse input.
    *
    * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
@@ -104672,11 +101986,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the screen keyboard is shown for the
-   * window.
+   * \brief Indicates whether or not the screen keyboard is shown for the window.
    *
-   * \return `true` if the screen keyboard is shown for the window; `false`
-   * otherwise.
+   * \return `true` if the screen keyboard is shown for the window; `false` otherwise.
    *
    * \since 6.0.0
    */
@@ -104733,8 +102045,8 @@ class basic_window final
    *
    * \note This function is only available for window handles.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -104987,8 +102299,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -105019,15 +102329,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -105051,15 +102358,12 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -105083,15 +102387,12 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -105115,15 +102416,12 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */
@@ -105171,8 +102469,7 @@ class vk_library final
    */
   explicit vk_library(const czstring path = nullptr)
   {
-    const auto result = SDL_Vulkan_LoadLibrary(path);
-    if (result == -1)
+    if (SDL_Vulkan_LoadLibrary(path) == -1)
     {
       throw sdl_error{};
     }
@@ -105276,8 +102573,12 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \see `window`
  * \see `window_handle`
- *
- * \headerfile window.hpp
+ * \see `get_window()`
+ * \see `get_grabbed_window()`
+ * \see `mouse_focus_window()`
+ * \see `keyboard_focus_window()`
+ * \see `get_renderer()`
+ * \see `make_window_and_renderer()`
  */
 template <typename T>
 class basic_window final
@@ -105288,9 +102589,8 @@ class basic_window final
    *
    * \brief Represents different window features and options.
    *
-   * \details Values of this enum are intended to be used to create flag
-   * bitmasks, that can be used when creating windows and to obtain information
-   * from created windows.
+   * \details Values of this enum are intended to be used to create flag bitmasks, that
+   * can be used when creating windows and to obtain information from created windows.
    *
    * \see `SDL_WindowFlags`
    *
@@ -105331,12 +102631,12 @@ class basic_window final
   /**
    * \brief Creates a window from a pointer to an SDL window.
    *
-   * \note If you're creating a `window` instance, then ownership of the pointer
-   * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
-   * *not* claimed.
+   * \note If you're creating a `window` instance, then ownership of the pointer is
+   * claimed. Furthermore, if you're creating a `window_handle`, ownership is *not*
+   * claimed.
    *
-   * \param window a pointer to the associated SDL window. Ownership of this
-   * pointer is claimed if the window is owning.
+   * \param window a pointer to the associated SDL window. Ownership of this pointer is
+   * claimed if the window is owning.
    *
    * \since 5.0.0
    */
@@ -105361,8 +102661,7 @@ class basic_window final
    * \param size the size of the window, components must be greater than zero.
    * \param flags the window flags.
    *
-   * \throws cen_error if the supplied width or height aren't
-   * greater than zero.
+   * \throws cen_error if the supplied width or height aren't greater than zero.
    * \throws sdl_error if the window cannot be created.
    *
    * \see `default_size()`
@@ -105425,8 +102724,8 @@ class basic_window final
   /**
    * \brief Creates a window.
    *
-   * \details The window will use the size obtained from `default_size()` as its
-   * initial size.
+   * \details The window will use the size obtained from `default_size()` as its initial
+   * size.
    *
    * \throws sdl_error if the window cannot be created.
    *
@@ -105503,8 +102802,7 @@ class basic_window final
   }
 
   /**
-   * \brief Restores the position and size of the window if it's minimized or
-   * maximized.
+   * \brief Restores the position and size of the window if it's minimized or maximized.
    *
    * \since 5.3.0
    */
@@ -105516,8 +102814,7 @@ class basic_window final
   /**
    * \brief Updates the window surface.
    *
-   * \return `success` if the surface was successfully updated; `failure`
-   * otherwise.
+   * \return `success` if the surface was successfully updated; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -105534,8 +102831,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen; `false` for
-   * windowed mode.
+   * \param enabled `true` if the window should be fullscreen; `false` for windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -105551,8 +102847,8 @@ class basic_window final
    *
    * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * \param enabled `true` if the window should be fullscreen desktop; `false`
-   * for windowed mode.
+   * \param enabled `true` if the window should be fullscreen desktop; `false` for
+   * windowed mode.
    *
    * \return `success` if the display mode was changed; `failure` otherwise.
    *
@@ -105568,8 +102864,7 @@ class basic_window final
    *
    * \details This is enabled by default.
    *
-   * \param decorated `true` if the window should be decorated; `false`
-   * otherwise.
+   * \param decorated `true` if the window should be decorated; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -105581,8 +102876,7 @@ class basic_window final
   /**
    * \brief Sets whether or not the window should be resizable.
    *
-   * \param resizable `true` if the window should be resizable; `false`
-   * otherwise.
+   * \param resizable `true` if the window should be resizable; `false` otherwise.
    *
    * \since 3.0.0
    */
@@ -105631,8 +102925,7 @@ class basic_window final
   /**
    * \brief Sets the opacity of the window.
    *
-   * \details The supplied opacity will be clamped to a value in the legal
-   * range.
+   * \details The supplied opacity will be clamped to a value in the legal range.
    *
    * \param opacity the opacity, in the range [0, 1].
    *
@@ -105650,8 +102943,8 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window;
-   * `false` otherwise.
+   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * otherwise.
    *
    * \since 3.0.0
    */
@@ -105663,13 +102956,12 @@ class basic_window final
   /**
    * \brief Sets the overall brightness of the window.
    *
-   * \note A brightness value outside the legal range will be clamped to the
-   * closest valid value.
+   * \note A brightness value outside the legal range will be clamped to the closest valid
+   * value.
    *
    * \param brightness the brightness value, in the range [0, 1].
    *
-   * \return `success` if the brightness was successfully set; `failure`
-   * otherwise.
+   * \return `success` if the brightness was successfully set; `failure` otherwise.
    *
    * \since 3.0.0
    */
@@ -105681,11 +102973,9 @@ class basic_window final
   /**
    * \brief Sets whether or not the mouse should be captured.
    *
-   * \note A window might have to be visible in order for the mouse to be
-   * captured.
+   * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false`
-   * otherwise.
+   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
@@ -105742,8 +103032,8 @@ class basic_window final
   /**
    * \brief Sets the position of the window.
    *
-   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED` as
+   * any of the components of the point.
    *
    * \param position the new position of the window.
    *
@@ -105831,49 +103121,48 @@ class basic_window final
   /**
    * \brief Sets the size of the window.
    *
-   * \details The supplied dimensions are capped to be at least 1.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the new size of the window, components must be greater than
-   * zero.
+   * \param size the new size of the window.
    *
    * \since 5.0.0
    */
   void set_size(const iarea size) noexcept
   {
-    const auto width = detail::max(size.width, 1);
-    const auto height = detail::max(size.height, 1);
-    SDL_SetWindowSize(m_window, width, height);
+    assert(size.width > 0);
+    assert(size.height > 0);
+    SDL_SetWindowSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the minimum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the minimum size of the window, components must be greater
-   * than zero.
+   * \param size the minimum size of the window.
    *
    * \since 3.0.0
    */
   void set_min_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMinimumSize(m_window, size.width, size.height);
   }
 
   /**
    * \brief Sets the maximum size of the window.
    *
-   * \details This method has no effect if any of the components aren't greater
-   * than zero.
+   * \pre The supplied width and height must be greater than zero.
    *
-   * \param size the maximum size of the window, components must be greater
-   * than zero.
+   * \param size the maximum size of the window.
    *
    * \since 3.0.0
    */
   void set_max_size(const iarea size) noexcept
   {
+    assert(size.width > 0);
+    assert(size.height > 0);
     SDL_SetWindowMaximumSize(m_window, size.width, size.height);
   }
 
@@ -105904,8 +103193,8 @@ class basic_window final
   /**
    * \brief Returns the current size of the window.
    *
-   * \note Calling this function is slightly faster than calling both `width`
-   * and `height` to obtain the window size.
+   * \note Calling this function is slightly faster than calling both `width` and `height`
+   * to obtain the window size.
    *
    * \return the size of the window.
    *
@@ -105985,9 +103274,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(SDL_WINDOW_FULLSCREEN)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -106003,9 +103291,8 @@ class basic_window final
   /**
    * \brief Indicates whether or not a flag is set.
    *
-   * \details Some of the use cases of this function can be replaced by more
-   * explicit functions, e.g. `is_fullscreen()` instead of
-   * `check_flag(cen::window::fullscreen)`.
+   * \details Some of the use cases of this function can be replaced by more explicit
+   * functions, e.g. `is_fullscreen()` instead of `check_flag(cen::window::fullscreen)`.
    *
    * \param flag the flag that will be tested.
    *
@@ -106129,8 +103416,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * \return `true` if the window is in fullscreen desktop mode;
-   * `false` otherwise.
+   * \return `true` if the window is in fullscreen desktop mode; `false` otherwise.
    *
    * \since 4.0.0
    */
@@ -106164,11 +103450,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
+   * \brief Indicates whether or not the window is usable with an OpenGL-context.
    *
-   * \return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
+   * \return `true` if the window is compatible with an OpenGL-context; false otherwise.
    *
    * \since 4.0.0
    */
@@ -106180,8 +103464,7 @@ class basic_window final
   /**
    * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * \return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
+   * \return `true` if the window is is usable as a Vulkan surface; false otherwise.
    *
    * \since 4.0.0
    */
@@ -106255,11 +103538,10 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is set to be always on top of
-   * other windows.
+   * \brief Indicates whether or not the window is set to be always on top of other
+   * windows.
    *
-   * \return `true` if the window is always on top of other windows; false
-   * otherwise.
+   * \return `true` if the window is always on top of other windows; false otherwise.
    *
    * \since 4.0.0
    */
@@ -106342,8 +103624,8 @@ class basic_window final
   /**
    * \brief Returns the display index associated with the window.
    *
-   * \return the display index associated with the window; `std::nullopt` if the
-   * display index cannot be obtained.
+   * \return the display index associated with the window; `std::nullopt` if the display
+   * index cannot be obtained.
    *
    * \since 3.1.0
    */
@@ -106415,11 +103697,10 @@ class basic_window final
   /**
    * \brief Returns a handle to the window framebuffer surface.
    *
-   * \warning It is not possible use the framebuffer surface with the 3D or 2D
-   * rendering APIs.
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D rendering
+   * APIs.
    *
-   * \return a handle to the window surface, might not contain a valid surface
-   * pointer.
+   * \return a handle to the window surface, might not contain a valid surface pointer.
    *
    * \since 5.0.0
    */
@@ -106429,8 +103710,7 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
+   * \brief Indicates whether or not the window is currently grabbing the mouse input.
    *
    * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
@@ -106442,11 +103722,9 @@ class basic_window final
   }
 
   /**
-   * \brief Indicates whether or not the screen keyboard is shown for the
-   * window.
+   * \brief Indicates whether or not the screen keyboard is shown for the window.
    *
-   * \return `true` if the screen keyboard is shown for the window; `false`
-   * otherwise.
+   * \return `true` if the screen keyboard is shown for the window; `false` otherwise.
    *
    * \since 6.0.0
    */
@@ -106503,8 +103781,8 @@ class basic_window final
    *
    * \note This function is only available for window handles.
    *
-   * \warning It's undefined behaviour to invoke other member functions that
-   * use the internal pointer if this function returns `false`.
+   * \warning It's undefined behaviour to invoke other member functions that use the
+   * internal pointer if this function returns `false`.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -106593,8 +103871,8 @@ namespace cen {
 /**
  * \brief Returns a handle to the currently grabbed window.
  *
- * \return a handle to the currently grabbed window, might not refer to a
- * valid window if there is no grabbed window.
+ * \return a handle to the currently grabbed window, might not refer to a valid window if
+ * there is no grabbed window.
  *
  * \since 5.0.0
  */
@@ -106632,8 +103910,8 @@ namespace cen {
  *
  * \param id the ID associated with the desired window.
  *
- * \return a handle to the window associated with the ID, might not refer to a
- * valid window if there no matching window.
+ * \return a handle to the window associated with the ID, might not refer to a valid
+ * window if there no matching window.
  *
  * \since 5.0.0
  */
@@ -106645,18 +103923,18 @@ namespace cen {
 /**
  * \brief Returns a handle to the renderer associated with a window.
  *
- * \details The returned handle will be null if the supplied window doesn't
- * have an associated renderer.
+ * \details The returned handle will be null if the supplied window doesn't have an
+ * associated renderer.
  *
- * \note You should always check whether or not the returned handle contains
- * a valid renderer pointer before using it!
+ * \note You should always check whether or not the returned handle contains a valid
+ * renderer pointer before using it!
  *
  * \tparam T the type of the derived window.
  *
  * \param window the window associated with the desired renderer.
  *
- * \return a handle to the associated renderer, might not contain a valid
- * renderer pointer.
+ * \return a handle to the associated renderer, might not contain a valid renderer
+ * pointer.
  *
  * \since 5.0.0
  */

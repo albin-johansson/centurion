@@ -15,13 +15,12 @@ namespace cen {
  * \brief A simple indicator for the result of different operations.
  *
  * \details The idea behind this class is to make results of various operations
- * unambiguous. Quite an amount of functions in the library may fail, and
- * earlier versions of Centurion would usually return a `bool` in those cases,
- * where `true` and `false` would indicate success and failure, respectively.
- * This class is a development of that practice. For instance, this class is
- * contextually convertible to `bool`, where a successful result is still
- * converted to `true`, and vice versa. However, this class also enables
- * explicit checks against `success` and `failure` constants, which makes
+ * unambiguous. Quite an amount of functions in the library may fail, and earlier versions
+ * of Centurion would usually return a `bool` in those cases, where `true` and `false`
+ * would indicate success and failure, respectively. This class is a development of that
+ * practice. For instance, this class is contextually convertible to `bool`, where a
+ * successful result is still converted to `true`, and vice versa. However, this class
+ * also enables explicit checks against `success` and `failure` constants, which makes
  * code very easy to read and unambiguous.
  * \code{cpp}
  *   cen::window window;
@@ -79,8 +78,7 @@ class result final
   }
 
   /**
-   * \brief Indicates whether or not two results don't have the same success
-   * value.
+   * \brief Indicates whether or not two results don't have the same success value.
    *
    * \param other the other result.
    *

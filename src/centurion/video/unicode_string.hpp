@@ -28,8 +28,8 @@ using unicode = u16;
  *
  * \brief Represents a null-terminated string encoded in unicode.
  *
- * \details This class is a wrapper around a `std::vector<unicode>`, that
- * provides a similar interface to that of `std::string`.
+ * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
+ * similar interface to that of `std::string`.
  *
  * \headerfile unicode_string.hpp
  */
@@ -85,10 +85,9 @@ class unicode_string final
   /**
    * \brief Reserves enough memory to hold the specified amount of elements.
    *
-   * \details Use this method to optimize additions to the string when you
-   * know or can approximate the amount of elements that will be added. This
-   * can reduce the amount of unnecessary allocations and copies of the
-   * underlying array.
+   * \details Use this method to optimize additions to the string when you know or can
+   * approximate the amount of elements that will be added. This can reduce the amount of
+   * unnecessary allocations and copies of the underlying array.
    *
    * \param n the amount of elements to allocate memory for.
    *
@@ -130,9 +129,7 @@ class unicode_string final
     (append(code), ...);
   }
 
-  /**
-   * \copydoc append(unicode)
-   */
+  /// \copydoc append(unicode)
   void operator+=(const unicode ch)
   {
     append(ch);
@@ -170,8 +167,8 @@ class unicode_string final
   /**
    * \brief Returns the capacity of the string.
    *
-   * \return the capacity of the string (the amount of elements that can be
-   * stored before needing to allocate more memory).
+   * \return the capacity of the string (the amount of elements that can be stored before
+   * needing to allocate more memory).
    *
    * \since 5.0.0
    */
@@ -183,8 +180,7 @@ class unicode_string final
   /**
    * \brief Indicates whether or not the string is empty.
    *
-   * \note The string is considered empty if the only element is the
-   * null-terminator.
+   * \note The string is considered empty if the only element is the null-terminator.
    *
    * \return `true` if the string is empty; `false` otherwise.
    *
@@ -207,9 +203,7 @@ class unicode_string final
     return m_data.data();
   }
 
-  /**
-   * \copydoc data
-   */
+  /// \copydoc data
   [[nodiscard]] auto data() const noexcept -> const_pointer
   {
     return m_data.data();
@@ -218,8 +212,7 @@ class unicode_string final
   /**
    * \brief Returns an iterator that points to the first element in the string.
    *
-   * \details Iteration using the iterator is done consecutively, as you
-   * would expect.
+   * \details Iteration using the iterator is done consecutively, as you would expect.
    *
    * \return an iterator that points to the first element in the string.
    *
@@ -230,22 +223,18 @@ class unicode_string final
     return m_data.begin();
   }
 
-  /**
-   * \copydoc begin
-   */
+  /// \copydoc begin
   [[nodiscard]] auto begin() const noexcept -> const_iterator
   {
     return m_data.begin();
   }
 
   /**
-   * \brief Returns an iterator that points one-past the last element in the
-   * string.
+   * \brief Returns an iterator that points one-past the last element in the string.
    *
    * \note The null-terminator is purposefully skipped.
    *
-   * \return an iterator that points one-past the last element in the
-   * string.
+   * \return an iterator that points one-past the last element in the string.
    *
    * \since 5.0.0
    */
@@ -254,9 +243,7 @@ class unicode_string final
     return m_data.end() - 1;
   }
 
-  /**
-   * \copydoc end
-   */
+  /// \copydoc end
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
     return m_data.end() - 1;
@@ -265,8 +252,7 @@ class unicode_string final
   /**
    * \brief Returns the element at the specified index.
    *
-   * \details This method will throw an exception if the supplied index is
-   * out-of-bounds.
+   * \details This method will throw an exception if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -279,9 +265,7 @@ class unicode_string final
     return m_data.at(index);
   }
 
-  /**
-   * \copydoc at
-   */
+  /// \copydoc at
   [[nodiscard]] auto at(const size_type index) const -> const_reference
   {
     return m_data.at(index);
@@ -292,9 +276,8 @@ class unicode_string final
    *
    * \pre `index` **must** be in the range [0, `size()`);
    *
-   * \details This method will does *not* perform bounds-checking. However, in
-   * debug-mode, an assertion will abort the program if the supplied index is
-   * out-of-bounds.
+   * \details This method will does *not* perform bounds-checking. However, in debug-mode,
+   * an assertion will abort the program if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -308,9 +291,7 @@ class unicode_string final
     return m_data[index];
   }
 
-  /**
-   * \copydoc operator[]
-   */
+  /// \copydoc operator[]
   [[nodiscard]] auto operator[](const size_type index) const noexcept(on_msvc())
       -> const_reference
   {
@@ -321,9 +302,8 @@ class unicode_string final
   /**
    * \brief Serializes the string.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *

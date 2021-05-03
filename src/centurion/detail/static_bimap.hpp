@@ -13,13 +13,12 @@ namespace cen::detail {
 /**
  * \class static_bimap
  *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
+ * \brief A bidirectional associative container for when keys and values are known at
+ * compile-time.
  *
  * \note This class is only meant to be used in constexpr contexts.
  *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
  *
  * \tparam Key the type of the keys, must provide an overloaded `operator==`.
  * \tparam Value the type of the values.

@@ -41,8 +41,8 @@ namespace cen {
  *
  * \param index the index of the rendering driver to query.
  *
- * \return information about the specified rendering driver; `std::nullopt` if
- * something went wrong.
+ * \return information about the specified rendering driver; `std::nullopt` if something
+ * went wrong.
  *
  * \since 5.0.0
  */

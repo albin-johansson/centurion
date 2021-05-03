@@ -447,13 +447,13 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
@@ -480,13 +480,13 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
@@ -501,13 +501,13 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
@@ -521,13 +521,13 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
@@ -622,13 +622,13 @@ class basic_joystick final
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index == -1)
+    if (index != -1)
     {
-      return std::nullopt;
+      return index;
     }
     else
     {
-      return index;
+      return std::nullopt;
     }
   }
 
@@ -660,13 +660,13 @@ class basic_joystick final
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor == 0)
+    if (vendor != 0)
     {
-      return std::nullopt;
+      return vendor;
     }
     else
     {
-      return vendor;
+      return std::nullopt;
     }
   }
 
@@ -684,13 +684,13 @@ class basic_joystick final
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product == 0)
+    if (product != 0)
     {
-      return std::nullopt;
+      return product;
     }
     else
     {
-      return product;
+      return std::nullopt;
     }
   }
 
@@ -709,13 +709,13 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version == 0)
+    if (version != 0)
     {
-      return std::nullopt;
+      return version;
     }
     else
     {
-      return version;
+      return std::nullopt;
     }
   }
 
@@ -766,13 +766,13 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id == -1)
+    if (id != -1)
     {
-      return std::nullopt;
+      return id;
     }
     else
     {
-      return id;
+      return std::nullopt;
     }
   }
 
@@ -1028,13 +1028,13 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result < 0)
+    if (result >= 0)
     {
-      return std::nullopt;
+      return result;
     }
     else
     {
-      return result;
+      return std::nullopt;
     }
   }
 

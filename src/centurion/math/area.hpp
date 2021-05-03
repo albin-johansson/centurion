@@ -48,16 +48,14 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
+ * \tparam T the type of the components of the area. Must be either an integral or
+ * floating-point type. Can't be `bool`.
  *
  * \since 4.0.0
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
- *
- * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area final
@@ -114,9 +112,8 @@ template <typename T>
 /**
  * \brief Serializes an area instance.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the area components.

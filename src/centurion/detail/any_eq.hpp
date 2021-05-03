@@ -7,8 +7,7 @@ namespace cen::detail {
 // clang-format off
 
 /**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
  *
  * \tparam T the type of the value to look for.
  *
@@ -17,8 +16,7 @@ namespace cen::detail {
  * \param value the value to look for.
  * \param args the arguments that will be compared with the value.
  *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
  *
  * \since 5.1.0
  */

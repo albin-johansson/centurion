@@ -25,15 +25,13 @@ enum class lock_status
  *
  * \brief Represents a recursive mutex.
  *
- * \details The fact that the mutex is recursive mutex means that it's possible
- * to nest lock and unlock calls with the same mutex.
+ * \details The fact that the mutex is recursive mutex means that it's possible to nest
+ * lock and unlock calls with the same mutex.
  *
  * \since 5.0.0
  *
  * \see `scoped_lock`
  * \see `try_lock`
- *
- * \headerfile mutex.hpp
  */
 class mutex final
 {
@@ -56,8 +54,7 @@ class mutex final
   /**
    * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
    *
-   * \return `success` if the mutex was successfully locked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully locked; `failure` otherwise.
    *
    * \since 5.0.0
    */
@@ -81,8 +78,7 @@ class mutex final
   /**
    * \brief Attempts to unlock the mutex.
    *
-   * \return `success` if the mutex was successfully unlocked; `failure`
-   * otherwise.
+   * \return `success` if the mutex was successfully unlocked; `failure` otherwise.
    *
    * \since 5.0.0
    */

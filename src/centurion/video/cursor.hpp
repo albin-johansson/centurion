@@ -20,8 +20,6 @@ namespace cen {
  * \since 4.0.0
  *
  * \see `SDL_SystemCursor`
- *
- * \headerfile cursor.hpp
  */
 enum class system_cursor
 {
@@ -65,15 +63,13 @@ using cursor_handle = basic_cursor<detail::handle_type>;
  *
  * \brief Represents a mouse cursor.
  *
- * \details Depending on the template type parameter, this class can
- * represent either an owning or non-owning cursor.
+ * \details Depending on the template type parameter, this class can represent either an
+ * owning or non-owning cursor.
  *
  * \since 5.0.0
  *
  * \see cursor
  * \see cursor_handle
- *
- * \headerfile cursor.hpp
  */
 template <typename T>
 class basic_cursor final
@@ -84,8 +80,6 @@ class basic_cursor final
 
   /**
    * \brief Creates a cursor based on a cursor type.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param cursor the type of the cursor that will be created.
    *
@@ -106,11 +100,9 @@ class basic_cursor final
   /**
    * \brief Creates a cursor based on a surface and an associated hotspot.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param surface the icon associated with the cursor.
-   * \param hotspot the hotspot that will be used to determine the location
-   * of mouse clicks.
+   * \param hotspot the hotspot that will be used to determine the location of mouse
+   * clicks.
    *
    * \throws sdl_error if the cursor cannot be created.
    *
@@ -129,11 +121,9 @@ class basic_cursor final
   /**
    * \brief Creates a handle to a cursor based on a raw pointer.
    *
-   * \note This constructor is only available for handles since it would be
-   * very easy to introduce subtle bugs by creating owning cursors from
-   * `SDL_GetCursor` or `SDL_GetDefaultCursor`, which should not be freed.
-   *
-   * \tparam TT dummy parameter for SFINAE.
+   * \note This constructor is only available for handles since it would be very easy to
+   * introduce subtle bugs by creating owning cursors from `SDL_GetCursor` or
+   * `SDL_GetDefaultCursor`, which should not be freed.
    *
    * \param cursor a pointer to the associated cursor.
    *
@@ -145,8 +135,6 @@ class basic_cursor final
 
   /**
    * \brief Creates a handle to an owning cursor.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param owner the associated owning cursor.
    *
@@ -196,8 +184,7 @@ class basic_cursor final
   /**
    * \brief Returns a handle to the default cursor for the system.
    *
-   * \return a handle to the default cursor for the system; might not be
-   * present.
+   * \return a handle to the default cursor for the system; might not be present.
    *
    * \since 5.0.0
    */
@@ -260,9 +247,8 @@ class basic_cursor final
   /**
    * \brief Indicates whether or not this cursor is currently active.
    *
-   * \note This function checks whether or not the associated cursor is
-   * active by comparing the pointer obtained from `SDL_GetCursor` with the
-   * internal pointer.
+   * \note This function checks whether or not the associated cursor is active by
+   * comparing the pointer obtained from `SDL_GetCursor` with the internal pointer.
    *
    * \return `true` if the cursor is currently enabled; `false` otherwise.
    *
@@ -294,8 +280,6 @@ class basic_cursor final
 
   /**
    * \brief Indicates whether or not the cursor handle holds a non-null pointer.
-   *
-   * \tparam U dummy template parameter used for SFINAE.
    *
    * \return `true` if the internal pointer is not null; `false` otherwise.
    *

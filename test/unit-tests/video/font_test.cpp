@@ -28,11 +28,11 @@ static_assert(!std::is_copy_assignable_v<cen::font>);
 
 TEST(Font, Constructor)
 {
-  EXPECT_THROW(cen::font("", 1), cen::ttf_error);
-  EXPECT_THROW(cen::font(danielPath, 0), cen::cen_error);
+  ASSERT_THROW(cen::font("", 1), cen::ttf_error);
+  ASSERT_THROW(cen::font(danielPath, 0), cen::cen_error);
 
-  EXPECT_THROW(cen::font(""s, 1), cen::ttf_error);
-  EXPECT_THROW(cen::font(std::string{danielPath}, 0), cen::cen_error);
+  ASSERT_THROW(cen::font(""s, 1), cen::ttf_error);
+  ASSERT_THROW(cen::font(std::string{danielPath}, 0), cen::cen_error);
 }
 
 TEST(Font, Reset)
@@ -46,77 +46,77 @@ TEST(Font, Reset)
   font.set_strikethrough(true);
 
   font.reset();
-  EXPECT_FALSE(font.is_bold());
-  EXPECT_FALSE(font.is_italic());
-  EXPECT_FALSE(font.is_underlined());
-  EXPECT_FALSE(font.is_strikethrough());
+  ASSERT_FALSE(font.is_bold());
+  ASSERT_FALSE(font.is_italic());
+  ASSERT_FALSE(font.is_underlined());
+  ASSERT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetBold)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.is_bold());
+  ASSERT_FALSE(font.is_bold());
 
   font.set_bold(true);
-  EXPECT_TRUE(font.is_bold());
+  ASSERT_TRUE(font.is_bold());
 
   font.set_bold(false);
-  EXPECT_FALSE(font.is_bold());
+  ASSERT_FALSE(font.is_bold());
 }
 
 TEST(Font, SetItalic)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.is_italic());
+  ASSERT_FALSE(font.is_italic());
 
   font.set_italic(true);
-  EXPECT_TRUE(font.is_italic());
+  ASSERT_TRUE(font.is_italic());
 
   font.set_italic(false);
-  EXPECT_FALSE(font.is_italic());
+  ASSERT_FALSE(font.is_italic());
 }
 
 TEST(Font, SetUnderlined)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.is_underlined());
+  ASSERT_FALSE(font.is_underlined());
 
   font.set_underlined(true);
-  EXPECT_TRUE(font.is_underlined());
+  ASSERT_TRUE(font.is_underlined());
 
   font.set_underlined(false);
-  EXPECT_FALSE(font.is_underlined());
+  ASSERT_FALSE(font.is_underlined());
 }
 
 TEST(Font, SetStrikethrough)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.is_strikethrough());
+  ASSERT_FALSE(font.is_strikethrough());
 
   font.set_strikethrough(true);
-  EXPECT_TRUE(font.is_strikethrough());
+  ASSERT_TRUE(font.is_strikethrough());
 
   font.set_strikethrough(false);
-  EXPECT_FALSE(font.is_strikethrough());
+  ASSERT_FALSE(font.is_strikethrough());
 }
 
 TEST(Font, SetOutline)
 {
   cen::font font{typeWriterPath, 12};
 
-  EXPECT_FALSE(font.is_outlined());
+  ASSERT_FALSE(font.is_outlined());
 
   font.set_outline(2);
-  EXPECT_EQ(font.outline(), 2);
-  EXPECT_TRUE(font.is_outlined());
+  ASSERT_EQ(font.outline(), 2);
+  ASSERT_TRUE(font.is_outlined());
 
   font.set_outline(0);
-  EXPECT_EQ(font.outline(), 0);
-  EXPECT_FALSE(font.is_outlined());
+  ASSERT_EQ(font.outline(), 0);
+  ASSERT_FALSE(font.is_outlined());
 }
 
 TEST(Font, SetFontHinting)
@@ -124,16 +124,16 @@ TEST(Font, SetFontHinting)
   cen::font font{typeWriterPath, 12};
 
   font.set_font_hinting(cen::font_hint::mono);
-  EXPECT_EQ(font.font_hinting(), cen::font_hint::mono);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::mono);
 
   font.set_font_hinting(cen::font_hint::none);
-  EXPECT_EQ(font.font_hinting(), cen::font_hint::none);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::none);
 
   font.set_font_hinting(cen::font_hint::light);
-  EXPECT_EQ(font.font_hinting(), cen::font_hint::light);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::light);
 
   font.set_font_hinting(cen::font_hint::normal);
-  EXPECT_EQ(font.font_hinting(), cen::font_hint::normal);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, SetKerning)
@@ -141,10 +141,10 @@ TEST(Font, SetKerning)
   cen::font font{danielPath, 12};
 
   font.set_kerning(true);
-  EXPECT_TRUE(font.has_kerning());
+  ASSERT_TRUE(font.has_kerning());
 
   font.set_kerning(false);
-  EXPECT_FALSE(font.has_kerning());
+  ASSERT_FALSE(font.has_kerning());
 }
 
 TEST(Font, Size)
@@ -152,7 +152,7 @@ TEST(Font, Size)
   constexpr auto size = 12;
   const cen::font font{typeWriterPath, size};
 
-  EXPECT_EQ(font.size(), size);
+  ASSERT_EQ(font.size(), size);
 }
 
 TEST(Font, Height)
@@ -161,7 +161,7 @@ TEST(Font, Height)
   const cen::font font{typeWriterPath, size};
 
   // doesn't have to be equal, but should be close
-  EXPECT_EQ(font.height(), size);
+  ASSERT_EQ(font.height(), size);
 }
 
 TEST(Font, IsFixedWidth)
@@ -169,8 +169,8 @@ TEST(Font, IsFixedWidth)
   const cen::font firaCode{firaCodePath, 12};  // Fixed width
   const cen::font daniel{danielPath, 12};      // Not fixed width
 
-  EXPECT_TRUE(firaCode.is_fixed_width());
-  EXPECT_FALSE(daniel.is_fixed_width());
+  ASSERT_TRUE(firaCode.is_fixed_width());
+  ASSERT_FALSE(daniel.is_fixed_width());
 }
 
 TEST(Font, KerningAmount)
@@ -179,7 +179,7 @@ TEST(Font, KerningAmount)
   font.set_kerning(true);
 
   const auto amount = font.kerning_amount('A', 'A');
-  EXPECT_EQ(amount, 0);
+  ASSERT_EQ(amount, 0);
 
   // TODO test font with heavier kerning
 }
@@ -189,39 +189,39 @@ TEST(Font, GlyphMetrics)
   const cen::font font{danielPath, 12};
 
   const auto metrics = font.get_metrics('A');
-  EXPECT_TRUE(metrics.has_value());
+  ASSERT_TRUE(metrics.has_value());
 }
 
 TEST(Font, IsGlyphAvailable)
 {
   const cen::font font{firaCodePath, 12};
 
-  EXPECT_TRUE(font.is_glyph_provided('A'));
-  EXPECT_TRUE(font.is_glyph_provided(0x003D));  // U+003D is an equal sign
+  ASSERT_TRUE(font.is_glyph_provided('A'));
+  ASSERT_TRUE(font.is_glyph_provided(0x003D));  // U+003D is an equal sign
 }
 
 TEST(Font, FamilyName)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_STREQ(font.family_name(), "Type Writer");
+  ASSERT_STREQ(font.family_name(), "Type Writer");
 }
 
 TEST(Font, StyleName)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_STREQ(font.style_name(), "Regular");
+  ASSERT_STREQ(font.style_name(), "Regular");
 }
 
 TEST(Font, StringWidth)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.string_width("foo"s), 0);
+  ASSERT_GT(font.string_width("foo"s), 0);
 }
 
 TEST(Font, StringHeight)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.string_height("foo"s), 0);
+  ASSERT_GT(font.string_height("foo"s), 0);
 }
 
 TEST(Font, StringSize)
@@ -231,50 +231,50 @@ TEST(Font, StringSize)
   ASSERT_TRUE(font.string_size("bar"s));
 
   const auto [width, height] = font.string_size("bar"s).value();
-  EXPECT_GT(width, 0);
-  EXPECT_GT(height, 0);
+  ASSERT_GT(width, 0);
+  ASSERT_GT(height, 0);
 }
 
 TEST(Font, FontFaces)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GE(font.font_faces(), 1);
+  ASSERT_GE(font.font_faces(), 1);
 }
 
 TEST(Font, FontHinting)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_EQ(font.font_hinting(), cen::font_hint::normal);
+  ASSERT_EQ(font.font_hinting(), cen::font_hint::normal);
 }
 
 TEST(Font, HasKerning)
 {
   const cen::font font{danielPath, 12};
-  EXPECT_TRUE(font.has_kerning());
+  ASSERT_TRUE(font.has_kerning());
 }
 
 TEST(Font, LineSkip)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.line_skip(), 0);
+  ASSERT_GT(font.line_skip(), 0);
 }
 
 TEST(Font, Ascent)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_GT(font.ascent(), 0);
+  ASSERT_GT(font.ascent(), 0);
 }
 
 TEST(Font, Descent)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_LT(font.descent(), 0);
+  ASSERT_LT(font.descent(), 0);
 }
 
 TEST(Font, Get)
 {
   const cen::font font{typeWriterPath, 12};
-  EXPECT_TRUE(font.get());
+  ASSERT_TRUE(font.get());
 }
 
 TEST(Font, ConversionToPointer)
@@ -282,13 +282,13 @@ TEST(Font, ConversionToPointer)
   {
     cen::font font{typeWriterPath, 12};
     auto* ptr = static_cast<TTF_Font*>(font);
-    EXPECT_TRUE(ptr);
+    ASSERT_TRUE(ptr);
   }
 
   {
     const cen::font font{typeWriterPath, 12};
     const auto* ptr = static_cast<const TTF_Font*>(font);
-    EXPECT_TRUE(ptr);
+    ASSERT_TRUE(ptr);
   }
 }
 

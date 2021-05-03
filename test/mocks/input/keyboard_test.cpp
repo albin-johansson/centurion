@@ -15,7 +15,7 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
 TEST(Keyboard, Constructor)
 {
   [[maybe_unused]] cen::keyboard state;
-  EXPECT_EQ(1, SDL_GetKeyboardState_fake.call_count);
+  ASSERT_EQ(1, SDL_GetKeyboardState_fake.call_count);
 }
 
 TEST(Keyboard, HasScreenKeyboard)
@@ -23,7 +23,7 @@ TEST(Keyboard, HasScreenKeyboard)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasScreenKeyboardSupport, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(cen::has_screen_keyboard());
-  EXPECT_TRUE(cen::has_screen_keyboard());
-  EXPECT_EQ(2, SDL_HasScreenKeyboardSupport_fake.call_count);
+  ASSERT_FALSE(cen::has_screen_keyboard());
+  ASSERT_TRUE(cen::has_screen_keyboard());
+  ASSERT_EQ(2, SDL_HasScreenKeyboardSupport_fake.call_count);
 }

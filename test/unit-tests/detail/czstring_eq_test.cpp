@@ -10,17 +10,17 @@ TEST(CZStringEq, Correctness)
   ASSERT_NO_THROW(czstring_eq("", nullptr));
   ASSERT_NO_THROW(czstring_eq(nullptr, nullptr));
 
-  EXPECT_FALSE(czstring_eq(nullptr, nullptr));
-  EXPECT_FALSE(czstring_eq(nullptr, ""));
-  EXPECT_FALSE(czstring_eq("", nullptr));
+  ASSERT_FALSE(czstring_eq(nullptr, nullptr));
+  ASSERT_FALSE(czstring_eq(nullptr, ""));
+  ASSERT_FALSE(czstring_eq("", nullptr));
 
-  EXPECT_TRUE(czstring_eq("", ""));
+  ASSERT_TRUE(czstring_eq("", ""));
 
-  EXPECT_FALSE(czstring_eq("abc", "ABC"));
-  EXPECT_FALSE(czstring_eq("ABC", "abc"));
+  ASSERT_FALSE(czstring_eq("abc", "ABC"));
+  ASSERT_FALSE(czstring_eq("ABC", "abc"));
 
-  EXPECT_FALSE(czstring_eq("abc", "abcd"));
-  EXPECT_FALSE(czstring_eq("abcd", "abc"));
+  ASSERT_FALSE(czstring_eq("abc", "abcd"));
+  ASSERT_FALSE(czstring_eq("abcd", "abc"));
 
-  EXPECT_TRUE(czstring_eq("foo", "foo"));
+  ASSERT_TRUE(czstring_eq("foo", "foo"));
 }

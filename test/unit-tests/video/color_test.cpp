@@ -23,10 +23,10 @@ static_assert(std::is_nothrow_move_assignable_v<cen::color>);
 TEST(Color, DefaultConstruction)
 {
   constexpr cen::color color;
-  EXPECT_EQ(color.red(), 0);
-  EXPECT_EQ(color.red(), 0);
-  EXPECT_EQ(color.red(), 0);
-  EXPECT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(color.red(), 0);
+  ASSERT_EQ(color.red(), 0);
+  ASSERT_EQ(color.red(), 0);
+  ASSERT_EQ(color.alpha(), cen::color::max());
 }
 
 TEST(Color, ValueConstruction)
@@ -38,10 +38,10 @@ TEST(Color, ValueConstruction)
 
   constexpr cen::color color{red, green, blue, alpha};
 
-  EXPECT_EQ(color.red(), red);
-  EXPECT_EQ(color.green(), green);
-  EXPECT_EQ(color.blue(), blue);
-  EXPECT_EQ(color.alpha(), alpha);
+  ASSERT_EQ(color.red(), red);
+  ASSERT_EQ(color.green(), green);
+  ASSERT_EQ(color.blue(), blue);
+  ASSERT_EQ(color.alpha(), alpha);
 }
 
 TEST(Color, ValueConstructionDefaultedAlpha)
@@ -52,10 +52,10 @@ TEST(Color, ValueConstructionDefaultedAlpha)
 
   constexpr cen::color color{red, green, blue};
 
-  EXPECT_EQ(red, color.red());
-  EXPECT_EQ(green, color.green());
-  EXPECT_EQ(blue, color.blue());
-  EXPECT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(red, color.red());
+  ASSERT_EQ(green, color.green());
+  ASSERT_EQ(blue, color.blue());
+  ASSERT_EQ(color.alpha(), cen::color::max());
 }
 
 TEST(Color, FromSDLColor)
@@ -63,10 +63,10 @@ TEST(Color, FromSDLColor)
   constexpr SDL_Color sdlColor{0x3F, 0x9A, 0xCC, 0x17};
   constexpr cen::color color{sdlColor};
 
-  EXPECT_EQ(color.red(), sdlColor.r);
-  EXPECT_EQ(color.green(), sdlColor.g);
-  EXPECT_EQ(color.blue(), sdlColor.b);
-  EXPECT_EQ(color.alpha(), sdlColor.a);
+  ASSERT_EQ(color.red(), sdlColor.r);
+  ASSERT_EQ(color.green(), sdlColor.g);
+  ASSERT_EQ(color.blue(), sdlColor.b);
+  ASSERT_EQ(color.alpha(), sdlColor.a);
 }
 
 TEST(Color, FromSDLMessageBoxColor)
@@ -74,68 +74,68 @@ TEST(Color, FromSDLMessageBoxColor)
   constexpr SDL_MessageBoxColor msgColor{0xDA, 0x5E, 0x81};
   constexpr cen::color color{msgColor};
 
-  EXPECT_EQ(color.red(), msgColor.r);
-  EXPECT_EQ(color.green(), msgColor.g);
-  EXPECT_EQ(color.blue(), msgColor.b);
+  ASSERT_EQ(color.red(), msgColor.r);
+  ASSERT_EQ(color.green(), msgColor.g);
+  ASSERT_EQ(color.blue(), msgColor.b);
 
   // SDL_MessageBoxColor has no alpha component
-  EXPECT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(color.alpha(), cen::color::max());
 }
 
 TEST(Color, FromHSV)
 {
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(0, 0, 0));
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(359, 0, 0));
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsv(0, 100, 0));
-  EXPECT_EQ(cen::colors::white, cen::color::from_hsv(0, 0, 100));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(359, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 100, 0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsv(0, 0, 100));
 
-  EXPECT_EQ(cen::colors::red, cen::color::from_hsv(0, 100, 100));
-  EXPECT_EQ(cen::colors::lime, cen::color::from_hsv(120, 100, 100));
-  EXPECT_EQ(cen::colors::blue, cen::color::from_hsv(240, 100, 100));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsv(0, 100, 100));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsv(120, 100, 100));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsv(240, 100, 100));
 
   // Random colors
-  EXPECT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280, 75.5, 80));
-  EXPECT_EQ(cen::colors::turquoise, cen::color::from_hsv(174, 71.4, 87.8));
-  EXPECT_EQ(cen::colors::crimson, cen::color::from_hsv(348, 90.9, 86.3));
-  EXPECT_EQ(cen::colors::light_pink, cen::color::from_hsv(351, 28.6, 100));
-  EXPECT_EQ(cen::colors::thistle, cen::color::from_hsv(300, 11.6, 84.7));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280, 75.5, 80));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsv(174, 71.4, 87.8));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsv(348, 90.9, 86.3));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsv(351, 28.6, 100));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsv(300, 11.6, 84.7));
 
   {  // Maxed out
     const auto color = cen::color::from_hsv(359, 100, 100);
-    EXPECT_EQ(255, color.red());
-    EXPECT_EQ(0, color.green());
-    EXPECT_EQ(4, color.blue());
-    EXPECT_EQ(255, color.alpha());
+    ASSERT_EQ(255, color.red());
+    ASSERT_EQ(0, color.green());
+    ASSERT_EQ(4, color.blue());
+    ASSERT_EQ(255, color.alpha());
   }
 }
 
 TEST(Color, FromHSL)
 {
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
-  EXPECT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
-  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
 
-  EXPECT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
-  EXPECT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
-  EXPECT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
 
   // Random colors
-  EXPECT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6, 49.8));
-  EXPECT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1, 56.5));
-  EXPECT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3, 47.1));
-  EXPECT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7));
-  EXPECT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3, 79.8));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6, 49.8));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1, 56.5));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3, 47.1));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3, 79.8));
 
   // Maxed out
-  EXPECT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
 }
 
 TEST(Color, EqualityOperatorReflexivity)
 {
   const cen::color color{10, 20, 30, 40};
-  EXPECT_EQ(color, color);
-  EXPECT_FALSE(color != color);
+  ASSERT_EQ(color, color);
+  ASSERT_FALSE(color != color);
 }
 
 TEST(Color, EqualityOperatorComparison)
@@ -149,11 +149,11 @@ TEST(Color, EqualityOperatorComparison)
   constexpr SDL_MessageBoxColor msgColor{red, green, blue};
   constexpr cen::color color{red, green, blue, alpha};
 
-  EXPECT_EQ(color, sdlColor);
-  EXPECT_EQ(sdlColor, color);
+  ASSERT_EQ(color, sdlColor);
+  ASSERT_EQ(sdlColor, color);
 
-  EXPECT_EQ(color, msgColor);
-  EXPECT_EQ(msgColor, color);
+  ASSERT_EQ(color, msgColor);
+  ASSERT_EQ(msgColor, color);
 }
 
 TEST(Color, EqualityOperatorComparisonWithDifferentColors)
@@ -162,11 +162,11 @@ TEST(Color, EqualityOperatorComparisonWithDifferentColors)
   const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
   const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
 
-  EXPECT_NE(color, sdlColor);
-  EXPECT_NE(sdlColor, color);
+  ASSERT_NE(color, sdlColor);
+  ASSERT_NE(sdlColor, color);
 
-  EXPECT_NE(color, msgColor);
-  EXPECT_NE(msgColor, color);
+  ASSERT_NE(color, msgColor);
+  ASSERT_NE(msgColor, color);
 }
 
 TEST(Color, SetRed)
@@ -176,7 +176,7 @@ TEST(Color, SetRed)
   constexpr auto red = 0x3C;
   color.set_red(red);
 
-  EXPECT_EQ(color.red(), red);
+  ASSERT_EQ(color.red(), red);
 }
 
 TEST(Color, SetGreen)
@@ -186,7 +186,7 @@ TEST(Color, SetGreen)
   constexpr auto green = 0x79;
   color.set_green(green);
 
-  EXPECT_EQ(color.green(), green);
+  ASSERT_EQ(color.green(), green);
 }
 
 TEST(Color, SetBlue)
@@ -196,7 +196,7 @@ TEST(Color, SetBlue)
   constexpr auto blue = 0xEE;
   color.set_blue(blue);
 
-  EXPECT_EQ(color.blue(), blue);
+  ASSERT_EQ(color.blue(), blue);
 }
 
 TEST(Color, SetAlpha)
@@ -206,7 +206,7 @@ TEST(Color, SetAlpha)
   constexpr auto alpha = 0x28;
   color.set_alpha(alpha);
 
-  EXPECT_EQ(color.alpha(), alpha);
+  ASSERT_EQ(color.alpha(), alpha);
 }
 
 TEST(Color, WithAlpha)
@@ -214,28 +214,28 @@ TEST(Color, WithAlpha)
   constexpr auto other = cen::colors::maroon;
   constexpr auto color = other.with_alpha(0x12);
 
-  EXPECT_EQ(color.red(), other.red());
-  EXPECT_EQ(color.green(), other.green());
-  EXPECT_EQ(color.blue(), other.blue());
-  EXPECT_EQ(color.alpha(), 0x12);
+  ASSERT_EQ(color.red(), other.red());
+  ASSERT_EQ(color.green(), other.green());
+  ASSERT_EQ(color.blue(), other.blue());
+  ASSERT_EQ(color.alpha(), 0x12);
 }
 
 TEST(Color, Blend)
 {
-  EXPECT_EQ(cen::colors::gray, cen::color::blend(cen::colors::white, cen::colors::black));
-  EXPECT_EQ(cen::colors::white,
+  ASSERT_EQ(cen::colors::gray, cen::color::blend(cen::colors::white, cen::colors::black));
+  ASSERT_EQ(cen::colors::white,
             cen::color::blend(cen::colors::white, cen::colors::black, 0));
-  EXPECT_EQ(cen::colors::black,
+  ASSERT_EQ(cen::colors::black,
             cen::color::blend(cen::colors::white, cen::colors::black, 1));
 
   const auto a = cen::colors::light_pink;  // #FFB6C1
   const auto b = cen::colors::crimson;     // #DC143C
   const auto c = cen::color::blend(a, b, 0.4);
 
-  EXPECT_EQ(0xF1, c.red());
-  EXPECT_EQ(0x75, c.green());
-  EXPECT_EQ(0x8C, c.blue());
-  EXPECT_EQ(0xFF, c.alpha());
+  ASSERT_EQ(0xF1, c.red());
+  ASSERT_EQ(0x75, c.green());
+  ASSERT_EQ(0x8C, c.blue());
+  ASSERT_EQ(0xFF, c.alpha());
 }
 
 TEST(Color, Data)
@@ -243,8 +243,8 @@ TEST(Color, Data)
   auto white = cen::colors::white;
   const auto black = cen::colors::black;
 
-  EXPECT_TRUE(white.data());
-  EXPECT_TRUE(black.data());
+  ASSERT_TRUE(white.data());
+  ASSERT_TRUE(black.data());
 }
 
 TEST(Color, ConversionToSDLColor)
@@ -252,13 +252,13 @@ TEST(Color, ConversionToSDLColor)
   constexpr auto color = cen::colors::dark_orchid;
   constexpr auto sdlColor = static_cast<SDL_Color>(color);
 
-  EXPECT_EQ(color, sdlColor);
-  EXPECT_EQ(sdlColor, color);
+  ASSERT_EQ(color, sdlColor);
+  ASSERT_EQ(sdlColor, color);
 
-  EXPECT_EQ(color.red(), sdlColor.r);
-  EXPECT_EQ(color.green(), sdlColor.g);
-  EXPECT_EQ(color.blue(), sdlColor.b);
-  EXPECT_EQ(color.alpha(), sdlColor.a);
+  ASSERT_EQ(color.red(), sdlColor.r);
+  ASSERT_EQ(color.green(), sdlColor.g);
+  ASSERT_EQ(color.blue(), sdlColor.b);
+  ASSERT_EQ(color.alpha(), sdlColor.a);
 }
 
 TEST(Color, ConversionToSDLMessageBoxColor)
@@ -266,12 +266,12 @@ TEST(Color, ConversionToSDLMessageBoxColor)
   constexpr auto color = cen::colors::dark_orchid;
   constexpr auto msgColor = static_cast<SDL_MessageBoxColor>(color);
 
-  EXPECT_EQ(color, msgColor);
-  EXPECT_EQ(msgColor, color);
+  ASSERT_EQ(color, msgColor);
+  ASSERT_EQ(msgColor, color);
 
-  EXPECT_EQ(color.red(), msgColor.r);
-  EXPECT_EQ(color.green(), msgColor.g);
-  EXPECT_EQ(color.blue(), msgColor.b);
+  ASSERT_EQ(color.red(), msgColor.r);
+  ASSERT_EQ(color.green(), msgColor.g);
+  ASSERT_EQ(color.blue(), msgColor.b);
 }
 
 TEST(Color, ConversionToSDLColorPointer)
@@ -280,12 +280,12 @@ TEST(Color, ConversionToSDLColorPointer)
   const auto* sdlColor = static_cast<const SDL_Color*>(color);
 
   const void* colorAdr = &color;
-  EXPECT_EQ(sdlColor, colorAdr);
+  ASSERT_EQ(sdlColor, colorAdr);
 
-  EXPECT_EQ(color.red(), sdlColor->r);
-  EXPECT_EQ(color.green(), sdlColor->g);
-  EXPECT_EQ(color.blue(), sdlColor->b);
-  EXPECT_EQ(color.alpha(), sdlColor->a);
+  ASSERT_EQ(color.red(), sdlColor->r);
+  ASSERT_EQ(color.green(), sdlColor->g);
+  ASSERT_EQ(color.blue(), sdlColor->b);
+  ASSERT_EQ(color.alpha(), sdlColor->a);
 }
 
 TEST(Color, ToString)
@@ -309,8 +309,8 @@ TEST(Color, Serialization)
   serialize_save("color.binary", cen::color{red, green, blue, alpha});
 
   const auto color = serialize_create<cen::color>("color.binary");
-  EXPECT_EQ(red, color.red());
-  EXPECT_EQ(green, color.green());
-  EXPECT_EQ(blue, color.blue());
-  EXPECT_EQ(alpha, color.alpha());
+  ASSERT_EQ(red, color.red());
+  ASSERT_EQ(green, color.green());
+  ASSERT_EQ(blue, color.blue());
+  ASSERT_EQ(alpha, color.alpha());
 }

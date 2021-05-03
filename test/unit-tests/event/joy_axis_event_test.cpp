@@ -5,8 +5,8 @@
 TEST(JoyAxisEvent, Defaults)
 {
   cen::joy_axis_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::joystick_axis_motion, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::joystick_axis_motion, event.type());
 }
 
 TEST(JoyAxisEvent, SetWhich)
@@ -16,7 +16,7 @@ TEST(JoyAxisEvent, SetWhich)
   constexpr auto which = 3;
   event.set_which(which);
 
-  EXPECT_EQ(which, event.which());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(JoyAxisEvent, SetAxis)
@@ -26,7 +26,7 @@ TEST(JoyAxisEvent, SetAxis)
   constexpr auto axis = 7;
   event.set_axis(axis);
 
-  EXPECT_EQ(axis, event.axis());
+  ASSERT_EQ(axis, event.axis());
 }
 
 TEST(JoyAxisEvent, SetValue)
@@ -36,7 +36,7 @@ TEST(JoyAxisEvent, SetValue)
   constexpr auto value = 4'234;
   event.set_value(value);
 
-  EXPECT_EQ(value, event.value());
+  ASSERT_EQ(value, event.value());
 }
 
 TEST(JoyAxisEvent, Which)
@@ -45,7 +45,7 @@ TEST(JoyAxisEvent, Which)
   sdl.which = 23;
 
   const cen::joy_axis_event event{sdl};
-  EXPECT_EQ(sdl.which, event.which());
+  ASSERT_EQ(sdl.which, event.which());
 }
 
 TEST(JoyAxisEvent, Axis)
@@ -54,7 +54,7 @@ TEST(JoyAxisEvent, Axis)
   sdl.axis = 5;
 
   const cen::joy_axis_event event{sdl};
-  EXPECT_EQ(sdl.axis, event.axis());
+  ASSERT_EQ(sdl.axis, event.axis());
 }
 
 TEST(JoyAxisEvent, Value)
@@ -63,7 +63,7 @@ TEST(JoyAxisEvent, Value)
   sdl.value = 1'864;
 
   const cen::joy_axis_event event{sdl};
-  EXPECT_EQ(sdl.value, event.value());
+  ASSERT_EQ(sdl.value, event.value());
 }
 
 TEST(JoyAxisEvent, AsSDLEvent)
@@ -71,6 +71,6 @@ TEST(JoyAxisEvent, AsSDLEvent)
   const cen::joy_axis_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.jaxis.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.jaxis.timestamp, event.time());
+  ASSERT_EQ(sdl.jaxis.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.jaxis.timestamp, event.time());
 }

@@ -5,7 +5,7 @@
 TEST(GLAttributeEnum, Values)
 {
   const auto check = [](int expected, cen::gl_attribute attr) {
-    EXPECT_EQ(expected, static_cast<int>(attr));
+    ASSERT_EQ(expected, static_cast<int>(attr));
   };
 
   // clang-format off

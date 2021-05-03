@@ -5,8 +5,8 @@
 TEST(TouchFingerEvent, Defaults)
 {
   cen::touch_finger_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::touch_down, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::touch_down, event.type());
 }
 
 TEST(TouchFingerEvent, SetTouchId)
@@ -16,7 +16,7 @@ TEST(TouchFingerEvent, SetTouchId)
   constexpr auto id = 8;
   event.set_touch_id(id);
 
-  EXPECT_EQ(id, event.touch_id());
+  ASSERT_EQ(id, event.touch_id());
 }
 
 TEST(TouchFingerEvent, SetFingerId)
@@ -26,7 +26,7 @@ TEST(TouchFingerEvent, SetFingerId)
   constexpr auto id = 14;
   event.set_finger_id(id);
 
-  EXPECT_EQ(id, event.finger_id());
+  ASSERT_EQ(id, event.finger_id());
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -38,7 +38,7 @@ TEST(TouchFingerEvent, SetWindowId)
   constexpr auto id = 32;
   event.set_window_id(id);
 
-  EXPECT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(TouchFingerEvent, WindowId)
@@ -47,7 +47,7 @@ TEST(TouchFingerEvent, WindowId)
   sdl.windowID = 7;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
@@ -58,19 +58,19 @@ TEST(TouchFingerEvent, SetX)
 
   {  // Overflow
     event.set_x(1.1f);
-    EXPECT_EQ(1, event.x());
+    ASSERT_EQ(1, event.x());
   }
 
   {  // Underflow
     event.set_x(-0.1f);
-    EXPECT_EQ(0, event.x());
+    ASSERT_EQ(0, event.x());
   }
 
   {  // Good value
     constexpr auto x = 0.4f;
     event.set_x(x);
 
-    EXPECT_EQ(x, event.x());
+    ASSERT_EQ(x, event.x());
   }
 }
 
@@ -80,19 +80,19 @@ TEST(TouchFingerEvent, SetY)
 
   {  // Overflow
     event.set_y(1.1f);
-    EXPECT_EQ(1, event.y());
+    ASSERT_EQ(1, event.y());
   }
 
   {  // Underflow
     event.set_y(-0.1f);
-    EXPECT_EQ(0, event.y());
+    ASSERT_EQ(0, event.y());
   }
 
   {  // Good value
     constexpr auto y = 0.9f;
     event.set_y(y);
 
-    EXPECT_EQ(y, event.y());
+    ASSERT_EQ(y, event.y());
   }
 }
 
@@ -102,19 +102,19 @@ TEST(TouchFingerEvent, SetDx)
 
   {  // Overflow
     event.set_dx(1.1f);
-    EXPECT_EQ(1, event.dx());
+    ASSERT_EQ(1, event.dx());
   }
 
   {  // Underflow
     event.set_dx(-1.1f);
-    EXPECT_EQ(-1, event.dx());
+    ASSERT_EQ(-1, event.dx());
   }
 
   {  // Good value
     constexpr auto dx = -0.4f;
     event.set_dx(dx);
 
-    EXPECT_EQ(dx, event.dx());
+    ASSERT_EQ(dx, event.dx());
   }
 }
 
@@ -124,19 +124,19 @@ TEST(TouchFingerEvent, SetDy)
 
   {  // Overflow
     event.set_dy(1.1f);
-    EXPECT_EQ(1, event.dy());
+    ASSERT_EQ(1, event.dy());
   }
 
   {  // Underflow
     event.set_dy(-1.1f);
-    EXPECT_EQ(-1, event.dy());
+    ASSERT_EQ(-1, event.dy());
   }
 
   {  // Good value
     constexpr auto dy = 0.75f;
     event.set_dy(dy);
 
-    EXPECT_EQ(dy, event.dy());
+    ASSERT_EQ(dy, event.dy());
   }
 }
 
@@ -146,19 +146,19 @@ TEST(TouchFingerEvent, SetPressure)
 
   {  // Overflow
     event.set_pressure(1.1f);
-    EXPECT_EQ(1, event.pressure());
+    ASSERT_EQ(1, event.pressure());
   }
 
   {  // Underflow
     event.set_pressure(-0.1f);
-    EXPECT_EQ(0, event.pressure());
+    ASSERT_EQ(0, event.pressure());
   }
 
   {  // Good value
     constexpr auto pressure = 0.75f;
     event.set_pressure(pressure);
 
-    EXPECT_EQ(pressure, event.pressure());
+    ASSERT_EQ(pressure, event.pressure());
   }
 }
 
@@ -168,7 +168,7 @@ TEST(TouchFingerEvent, TouchId)
   sdl.touchId = 4;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.touchId, event.touch_id());
+  ASSERT_EQ(sdl.touchId, event.touch_id());
 }
 
 TEST(TouchFingerEvent, FingerId)
@@ -177,7 +177,7 @@ TEST(TouchFingerEvent, FingerId)
   sdl.fingerId = 18;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.fingerId, event.finger_id());
+  ASSERT_EQ(sdl.fingerId, event.finger_id());
 }
 
 TEST(TouchFingerEvent, X)
@@ -186,7 +186,7 @@ TEST(TouchFingerEvent, X)
   sdl.x = 0.4f;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.x, event.x());
+  ASSERT_EQ(sdl.x, event.x());
 }
 
 TEST(TouchFingerEvent, Y)
@@ -195,7 +195,7 @@ TEST(TouchFingerEvent, Y)
   sdl.y = 0.8f;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.y, event.y());
+  ASSERT_EQ(sdl.y, event.y());
 }
 
 TEST(TouchFingerEvent, Dx)
@@ -204,7 +204,7 @@ TEST(TouchFingerEvent, Dx)
   sdl.dx = -0.9f;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.dx, event.dx());
+  ASSERT_EQ(sdl.dx, event.dx());
 }
 
 TEST(TouchFingerEvent, Dy)
@@ -213,7 +213,7 @@ TEST(TouchFingerEvent, Dy)
   sdl.dy = 0.2f;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.dy, event.dy());
+  ASSERT_EQ(sdl.dy, event.dy());
 }
 
 TEST(TouchFingerEvent, Pressure)
@@ -222,7 +222,7 @@ TEST(TouchFingerEvent, Pressure)
   sdl.pressure = 0.6f;
 
   const cen::touch_finger_event event{sdl};
-  EXPECT_EQ(sdl.pressure, event.pressure());
+  ASSERT_EQ(sdl.pressure, event.pressure());
 }
 
 TEST(TouchFingerEvent, AsSDLEvent)
@@ -230,6 +230,6 @@ TEST(TouchFingerEvent, AsSDLEvent)
   const cen::touch_finger_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.tfinger.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.tfinger.timestamp, event.time());
+  ASSERT_EQ(sdl.tfinger.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.tfinger.timestamp, event.time());
 }

@@ -5,8 +5,8 @@
 TEST(KeyboardEvent, Defaults)
 {
   cen::keyboard_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::key_down, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::key_down, event.type());
 }
 
 TEST(KeyboardEvent, SetScanCode)
@@ -14,7 +14,7 @@ TEST(KeyboardEvent, SetScanCode)
   cen::keyboard_event event;
 
   event.set_scan_code(cen::scancodes::b);
-  EXPECT_EQ(cen::scancodes::b, event.get_scan_code());
+  ASSERT_EQ(cen::scancodes::b, event.get_scan_code());
 }
 
 TEST(KeyboardEvent, SetKeyCode)
@@ -22,7 +22,7 @@ TEST(KeyboardEvent, SetKeyCode)
   cen::keyboard_event event;
 
   event.set_key_code(cen::keycodes::n);
-  EXPECT_EQ(cen::keycodes::n, event.get_key_code());
+  ASSERT_EQ(cen::keycodes::n, event.get_key_code());
 }
 
 TEST(KeyboardEvent, SetModifier)
@@ -33,15 +33,15 @@ TEST(KeyboardEvent, SetModifier)
   constexpr auto caps = cen::key_modifier::caps;
 
   event.set_modifier(shift, true);
-  EXPECT_TRUE(event.modifier_active(shift));
+  ASSERT_TRUE(event.modifier_active(shift));
 
   event.set_modifier(caps, true);
-  EXPECT_TRUE(event.modifier_active(shift));
-  EXPECT_TRUE(event.modifier_active(caps));
+  ASSERT_TRUE(event.modifier_active(shift));
+  ASSERT_TRUE(event.modifier_active(caps));
 
   event.set_modifier(shift, false);
-  EXPECT_FALSE(event.modifier_active(shift));
-  EXPECT_TRUE(event.modifier_active(caps));
+  ASSERT_FALSE(event.modifier_active(shift));
+  ASSERT_TRUE(event.modifier_active(caps));
 }
 
 TEST(KeyboardEvent, SetRepeated)
@@ -49,10 +49,10 @@ TEST(KeyboardEvent, SetRepeated)
   cen::keyboard_event event;
 
   event.set_repeated(true);
-  EXPECT_TRUE(event.repeated());
+  ASSERT_TRUE(event.repeated());
 
   event.set_repeated(false);
-  EXPECT_FALSE(event.repeated());
+  ASSERT_FALSE(event.repeated());
 }
 
 TEST(KeyboardEvent, SetWindowId)
@@ -62,7 +62,7 @@ TEST(KeyboardEvent, SetWindowId)
   constexpr auto id = 79;
   event.set_window_id(id);
 
-  EXPECT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(KeyboardEvent, IsActive)
@@ -73,11 +73,11 @@ TEST(KeyboardEvent, IsActive)
 
   const cen::keyboard_event event{sdl};
 
-  EXPECT_TRUE(event.is_active(cen::keycodes::d));
-  EXPECT_TRUE(event.is_active(cen::scancodes::q));
+  ASSERT_TRUE(event.is_active(cen::keycodes::d));
+  ASSERT_TRUE(event.is_active(cen::scancodes::q));
 
-  EXPECT_FALSE(event.is_active(cen::keycodes::x));
-  EXPECT_FALSE(event.is_active(cen::scancodes::o));
+  ASSERT_FALSE(event.is_active(cen::keycodes::x));
+  ASSERT_FALSE(event.is_active(cen::scancodes::o));
 }
 
 TEST(KeyboardEvent, ModifierActive)
@@ -92,15 +92,15 @@ TEST(KeyboardEvent, ModifierActive)
   const cen::keyboard_event event{sdl};
 
   // Check that multiple key modifiers can be active at the same time
-  EXPECT_TRUE(event.modifier_active(cen::key_modifier::left_alt));
-  EXPECT_TRUE(event.modifier_active(cen::key_modifier::caps));
+  ASSERT_TRUE(event.modifier_active(cen::key_modifier::left_alt));
+  ASSERT_TRUE(event.modifier_active(cen::key_modifier::caps));
 }
 
 TEST(KeyboardEvent, ShiftActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.shift_active());
+    ASSERT_FALSE(event.shift_active());
   }
 
   {  // One modifier (Both LSHIFT and RSHIFT)
@@ -112,7 +112,7 @@ TEST(KeyboardEvent, ShiftActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.shift_active());
+    ASSERT_TRUE(event.shift_active());
   }
 
   {  // With other modifiers
@@ -124,7 +124,7 @@ TEST(KeyboardEvent, ShiftActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.shift_active());
+    ASSERT_TRUE(event.shift_active());
   }
 }
 
@@ -132,7 +132,7 @@ TEST(KeyboardEvent, CtrlActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.ctrl_active());
+    ASSERT_FALSE(event.ctrl_active());
   }
 
   {  // One modifier (Both LCTRL and RCTRL)
@@ -144,7 +144,7 @@ TEST(KeyboardEvent, CtrlActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.ctrl_active());
+    ASSERT_TRUE(event.ctrl_active());
   }
 
   {  // With other modifiers
@@ -156,7 +156,7 @@ TEST(KeyboardEvent, CtrlActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.ctrl_active());
+    ASSERT_TRUE(event.ctrl_active());
   }
 }
 
@@ -164,7 +164,7 @@ TEST(KeyboardEvent, AltActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.alt_active());
+    ASSERT_FALSE(event.alt_active());
   }
 
   {  // One modifier (Both LALT and RALT)
@@ -176,7 +176,7 @@ TEST(KeyboardEvent, AltActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.alt_active());
+    ASSERT_TRUE(event.alt_active());
   }
 
   {  // With other modifiers
@@ -188,7 +188,7 @@ TEST(KeyboardEvent, AltActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.alt_active());
+    ASSERT_TRUE(event.alt_active());
   }
 }
 
@@ -196,7 +196,7 @@ TEST(KeyboardEvent, GuiActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.gui_active());
+    ASSERT_FALSE(event.gui_active());
   }
 
   {  // One modifier (Both LGUI and RGUI)
@@ -208,7 +208,7 @@ TEST(KeyboardEvent, GuiActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.gui_active());
+    ASSERT_TRUE(event.gui_active());
   }
 
   {  // With other modifiers
@@ -220,7 +220,7 @@ TEST(KeyboardEvent, GuiActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.gui_active());
+    ASSERT_TRUE(event.gui_active());
   }
 }
 
@@ -228,7 +228,7 @@ TEST(KeyboardEvent, CapsActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.caps_active());
+    ASSERT_FALSE(event.caps_active());
   }
 
   {  // One modifier
@@ -240,7 +240,7 @@ TEST(KeyboardEvent, CapsActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.caps_active());
+    ASSERT_TRUE(event.caps_active());
   }
 
   {  // With other modifiers
@@ -252,7 +252,7 @@ TEST(KeyboardEvent, CapsActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.caps_active());
+    ASSERT_TRUE(event.caps_active());
   }
 }
 
@@ -260,7 +260,7 @@ TEST(KeyboardEvent, NumActive)
 {
   {  // No modifiers
     const cen::keyboard_event event;
-    EXPECT_FALSE(event.num_active());
+    ASSERT_FALSE(event.num_active());
   }
 
   {  // One modifier
@@ -272,7 +272,7 @@ TEST(KeyboardEvent, NumActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.num_active());
+    ASSERT_TRUE(event.num_active());
   }
 
   {  // With other modifiers
@@ -284,7 +284,7 @@ TEST(KeyboardEvent, NumActive)
     sdl.keysym = keysym;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.num_active());
+    ASSERT_TRUE(event.num_active());
   }
 }
 
@@ -300,16 +300,16 @@ TEST(KeyboardEvent, Repeated)
   const auto oneRepeat = createEvent(1);
   const auto twoRepeats = createEvent(2);
 
-  EXPECT_FALSE(noRepeat.repeated());
-  EXPECT_TRUE(oneRepeat.repeated());
-  EXPECT_TRUE(twoRepeats.repeated());
+  ASSERT_FALSE(noRepeat.repeated());
+  ASSERT_TRUE(oneRepeat.repeated());
+  ASSERT_TRUE(twoRepeats.repeated());
 }
 
 TEST(KeyboardEvent, State)
 {
   {  // Default button state
     const cen::keyboard_event event;
-    EXPECT_EQ(cen::button_state::released, event.state());
+    ASSERT_EQ(cen::button_state::released, event.state());
   }
 
   {  // Check valid state
@@ -319,7 +319,7 @@ TEST(KeyboardEvent, State)
     sdl.state = SDL_PRESSED;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_EQ(cen::button_state::pressed, event.state());
+    ASSERT_EQ(cen::button_state::pressed, event.state());
   }
 }
 
@@ -330,8 +330,8 @@ TEST(KeyboardEvent, Released)
     sdl.state = SDL_RELEASED;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.released());
-    EXPECT_EQ(cen::button_state::released, event.state());
+    ASSERT_TRUE(event.released());
+    ASSERT_EQ(cen::button_state::released, event.state());
   }
 
   {  // Not released
@@ -339,7 +339,7 @@ TEST(KeyboardEvent, Released)
     sdl.state = SDL_PRESSED;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_FALSE(event.released());
+    ASSERT_FALSE(event.released());
   }
 }
 
@@ -350,8 +350,8 @@ TEST(KeyboardEvent, Pressed)
     sdl.state = SDL_PRESSED;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_TRUE(event.pressed());
-    EXPECT_EQ(cen::button_state::pressed, event.state());
+    ASSERT_TRUE(event.pressed());
+    ASSERT_EQ(cen::button_state::pressed, event.state());
   }
 
   {  // Not pressed
@@ -359,7 +359,7 @@ TEST(KeyboardEvent, Pressed)
     sdl.state = SDL_RELEASED;
 
     const cen::keyboard_event event{sdl};
-    EXPECT_FALSE(event.pressed());
+    ASSERT_FALSE(event.pressed());
   }
 }
 
@@ -370,7 +370,7 @@ TEST(KeyboardEvent, GetScanCode)
   constexpr auto code = cen::scancodes::q;
   event.set_scan_code(code);
 
-  EXPECT_EQ(code, event.get_scan_code());
+  ASSERT_EQ(code, event.get_scan_code());
 }
 
 TEST(KeyboardEvent, GetKeyCode)
@@ -380,7 +380,7 @@ TEST(KeyboardEvent, GetKeyCode)
   constexpr auto code = cen::keycodes::x;
   event.set_key_code(code);
 
-  EXPECT_EQ(code, event.get_key_code());
+  ASSERT_EQ(code, event.get_key_code());
 }
 
 TEST(KeyboardEvent, WindowId)
@@ -389,7 +389,7 @@ TEST(KeyboardEvent, WindowId)
   sdl.windowID = 72;
 
   const cen::keyboard_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(KeyboardEvent, AsSDLEvent)
@@ -397,6 +397,6 @@ TEST(KeyboardEvent, AsSDLEvent)
   const cen::keyboard_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.key.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.key.timestamp, event.time());
+  ASSERT_EQ(sdl.key.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.key.timestamp, event.time());
 }

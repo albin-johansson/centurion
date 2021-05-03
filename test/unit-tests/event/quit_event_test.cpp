@@ -5,16 +5,16 @@
 TEST(QuitEvent, Defaults)
 {
   cen::quit_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::quit, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::quit, event.type());
 }
 
 TEST(QuitEvent, Construction)
 {
-  EXPECT_NO_THROW(cen::quit_event{});
+  ASSERT_NO_THROW(cen::quit_event{});
 
   SDL_QuitEvent e;
-  EXPECT_NO_THROW(cen::quit_event{e});
+  ASSERT_NO_THROW(cen::quit_event{e});
 }
 
 TEST(QuitEvent, AsSDLEvent)
@@ -22,6 +22,6 @@ TEST(QuitEvent, AsSDLEvent)
   const cen::quit_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.quit.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.quit.timestamp, event.time());
+  ASSERT_EQ(sdl.quit.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.quit.timestamp, event.time());
 }

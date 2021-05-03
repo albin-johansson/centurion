@@ -35,8 +35,8 @@ static_assert(noexcept(handle_t{nullptr}));
 
 TEST(OwnerHandleAPI, Constructor)
 {
-  EXPECT_NO_THROW(owner_t{nullptr});
-  EXPECT_NO_THROW(handle_t{nullptr});
+  ASSERT_NO_THROW(owner_t{nullptr});
+  ASSERT_NO_THROW(handle_t{nullptr});
 
   {
     int i = 42;
@@ -44,26 +44,26 @@ TEST(OwnerHandleAPI, Constructor)
     handle_t handle{&i};
     const auto& cHandle = handle;
 
-    EXPECT_TRUE(handle);
-    EXPECT_TRUE(cHandle);
-    EXPECT_TRUE(handle.get());
-    EXPECT_TRUE(cHandle.get());
-    EXPECT_TRUE(handle.operator->());
-    EXPECT_TRUE(cHandle.operator->());
-    EXPECT_NO_FATAL_FAILURE(handle.operator*());
-    EXPECT_NO_FATAL_FAILURE(cHandle.operator*());
+    ASSERT_TRUE(handle);
+    ASSERT_TRUE(cHandle);
+    ASSERT_TRUE(handle.get());
+    ASSERT_TRUE(cHandle.get());
+    ASSERT_TRUE(handle.operator->());
+    ASSERT_TRUE(cHandle.operator->());
+    ASSERT_NO_FATAL_FAILURE(handle.operator*());
+    ASSERT_NO_FATAL_FAILURE(cHandle.operator*());
   }
 
   {
     handle_t handle{nullptr};
     const auto& cHandle = handle;
 
-    EXPECT_FALSE(handle);
-    EXPECT_FALSE(cHandle);
-    EXPECT_FALSE(handle.get());
-    EXPECT_FALSE(cHandle.get());
-    EXPECT_FALSE(handle.operator->());
-    EXPECT_FALSE(cHandle.operator->());
+    ASSERT_FALSE(handle);
+    ASSERT_FALSE(cHandle);
+    ASSERT_FALSE(handle.get());
+    ASSERT_FALSE(cHandle.get());
+    ASSERT_FALSE(handle.operator->());
+    ASSERT_FALSE(cHandle.operator->());
   }
 }
 
@@ -74,12 +74,12 @@ TEST(OwnerHandleAPI, DeleteCorrectness)
   int i = 7;
   handle_t{&i};
 
-  EXPECT_EQ(1, deleteCount);
+  ASSERT_EQ(1, deleteCount);
 }
 
 TEST(OwnerHandleAPI, Get)
 {
   int i = 7;
   handle_t handle{&i};
-  EXPECT_EQ(&i, handle.get());
+  ASSERT_EQ(&i, handle.get());
 }

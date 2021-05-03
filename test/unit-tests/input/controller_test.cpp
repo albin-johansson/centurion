@@ -12,29 +12,29 @@
 
 TEST(Controller, PointerConstructor)
 {
-  EXPECT_THROW(cen::controller{nullptr}, cen::cen_error);
+  ASSERT_THROW(cen::controller{nullptr}, cen::cen_error);
 }
 
 TEST(Controller, IndexConstructor)
 {
-  EXPECT_THROW(cen::controller{}, cen::sdl_error);
+  ASSERT_THROW(cen::controller{}, cen::sdl_error);
 }
 
 TEST(Controller, FromJoystick)
 {
-  EXPECT_THROW(cen::controller::from_joystick(0), cen::sdl_error);
+  ASSERT_THROW(cen::controller::from_joystick(0), cen::sdl_error);
 }
 
 TEST(Controller, LoadMappings)
 {
   const auto path = "resources/controllers.txt";
-  EXPECT_GT(cen::controller::load_mappings(path), 0);
-  EXPECT_FALSE(cen::controller::load_mappings("foobar").has_value());
+  ASSERT_GT(cen::controller::load_mappings(path), 0);
+  ASSERT_FALSE(cen::controller::load_mappings("foobar").has_value());
 }
 
 TEST(Controller, MappingCount)
 {
-  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::mapping_count());
+  ASSERT_EQ(SDL_GameControllerNumMappings(), cen::controller::mapping_count());
 }
 
 TEST(Controller, Count)
@@ -48,123 +48,123 @@ TEST(Controller, Count)
     }
   }
 
-  EXPECT_EQ(nControllers, cen::controller::count());
+  ASSERT_EQ(nControllers, cen::controller::count());
 }
 
 TEST(Controller, ControllerAxisEnum)
 {
   using axis = cen::controller_axis;
 
-  EXPECT_EQ(axis::invalid, SDL_CONTROLLER_AXIS_INVALID);
-  EXPECT_EQ(axis::left_x, SDL_CONTROLLER_AXIS_LEFTX);
-  EXPECT_EQ(axis::left_y, SDL_CONTROLLER_AXIS_LEFTY);
-  EXPECT_EQ(axis::right_x, SDL_CONTROLLER_AXIS_RIGHTX);
-  EXPECT_EQ(axis::right_y, SDL_CONTROLLER_AXIS_RIGHTY);
-  EXPECT_EQ(axis::trigger_left, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  EXPECT_EQ(axis::trigger_right, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  EXPECT_EQ(axis::max, SDL_CONTROLLER_AXIS_MAX);
+  ASSERT_EQ(axis::invalid, SDL_CONTROLLER_AXIS_INVALID);
+  ASSERT_EQ(axis::left_x, SDL_CONTROLLER_AXIS_LEFTX);
+  ASSERT_EQ(axis::left_y, SDL_CONTROLLER_AXIS_LEFTY);
+  ASSERT_EQ(axis::right_x, SDL_CONTROLLER_AXIS_RIGHTX);
+  ASSERT_EQ(axis::right_y, SDL_CONTROLLER_AXIS_RIGHTY);
+  ASSERT_EQ(axis::trigger_left, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  ASSERT_EQ(axis::trigger_right, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  ASSERT_EQ(axis::max, SDL_CONTROLLER_AXIS_MAX);
 
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_INVALID, axis::invalid);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTX, axis::left_x);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTY, axis::left_y);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, axis::right_x);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, axis::right_y);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::trigger_left);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, axis::trigger_right);
-  EXPECT_EQ(SDL_CONTROLLER_AXIS_MAX, axis::max);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_INVALID, axis::invalid);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTX, axis::left_x);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTY, axis::left_y);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, axis::right_x);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, axis::right_y);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::trigger_left);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, axis::trigger_right);
+  ASSERT_EQ(SDL_CONTROLLER_AXIS_MAX, axis::max);
 
-  EXPECT_NE(axis::left_x, SDL_CONTROLLER_AXIS_MAX);
-  EXPECT_NE(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::right_x);
+  ASSERT_NE(axis::left_x, SDL_CONTROLLER_AXIS_MAX);
+  ASSERT_NE(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::right_x);
 }
 
 TEST(Controller, ControllerButtonEnum)
 {
   using button = cen::controller_button;
 
-  EXPECT_EQ(button::invalid, SDL_CONTROLLER_BUTTON_INVALID);
-  EXPECT_EQ(button::a, SDL_CONTROLLER_BUTTON_A);
-  EXPECT_EQ(button::b, SDL_CONTROLLER_BUTTON_B);
-  EXPECT_EQ(button::x, SDL_CONTROLLER_BUTTON_X);
-  EXPECT_EQ(button::y, SDL_CONTROLLER_BUTTON_Y);
-  EXPECT_EQ(button::back, SDL_CONTROLLER_BUTTON_BACK);
-  EXPECT_EQ(button::guide, SDL_CONTROLLER_BUTTON_GUIDE);
-  EXPECT_EQ(button::start, SDL_CONTROLLER_BUTTON_START);
-  EXPECT_EQ(button::left_stick, SDL_CONTROLLER_BUTTON_LEFTSTICK);
-  EXPECT_EQ(button::right_stick, SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-  EXPECT_EQ(button::left_shoulder, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-  EXPECT_EQ(button::right_shoulder, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-  EXPECT_EQ(button::dpad_up, SDL_CONTROLLER_BUTTON_DPAD_UP);
-  EXPECT_EQ(button::dpad_down, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-  EXPECT_EQ(button::dpad_right, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-  EXPECT_EQ(button::dpad_left, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-  EXPECT_EQ(button::max, SDL_CONTROLLER_BUTTON_MAX);
+  ASSERT_EQ(button::invalid, SDL_CONTROLLER_BUTTON_INVALID);
+  ASSERT_EQ(button::a, SDL_CONTROLLER_BUTTON_A);
+  ASSERT_EQ(button::b, SDL_CONTROLLER_BUTTON_B);
+  ASSERT_EQ(button::x, SDL_CONTROLLER_BUTTON_X);
+  ASSERT_EQ(button::y, SDL_CONTROLLER_BUTTON_Y);
+  ASSERT_EQ(button::back, SDL_CONTROLLER_BUTTON_BACK);
+  ASSERT_EQ(button::guide, SDL_CONTROLLER_BUTTON_GUIDE);
+  ASSERT_EQ(button::start, SDL_CONTROLLER_BUTTON_START);
+  ASSERT_EQ(button::left_stick, SDL_CONTROLLER_BUTTON_LEFTSTICK);
+  ASSERT_EQ(button::right_stick, SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+  ASSERT_EQ(button::left_shoulder, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  ASSERT_EQ(button::right_shoulder, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  ASSERT_EQ(button::dpad_up, SDL_CONTROLLER_BUTTON_DPAD_UP);
+  ASSERT_EQ(button::dpad_down, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+  ASSERT_EQ(button::dpad_right, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+  ASSERT_EQ(button::dpad_left, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  ASSERT_EQ(button::max, SDL_CONTROLLER_BUTTON_MAX);
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  EXPECT_EQ(button::misc1, SDL_CONTROLLER_BUTTON_MISC1);
-  EXPECT_EQ(button::paddle1, SDL_CONTROLLER_BUTTON_PADDLE1);
-  EXPECT_EQ(button::paddle2, SDL_CONTROLLER_BUTTON_PADDLE2);
-  EXPECT_EQ(button::paddle3, SDL_CONTROLLER_BUTTON_PADDLE3);
-  EXPECT_EQ(button::paddle4, SDL_CONTROLLER_BUTTON_PADDLE4);
-  EXPECT_EQ(button::touchpad, SDL_CONTROLLER_BUTTON_TOUCHPAD);
+  ASSERT_EQ(button::misc1, SDL_CONTROLLER_BUTTON_MISC1);
+  ASSERT_EQ(button::paddle1, SDL_CONTROLLER_BUTTON_PADDLE1);
+  ASSERT_EQ(button::paddle2, SDL_CONTROLLER_BUTTON_PADDLE2);
+  ASSERT_EQ(button::paddle3, SDL_CONTROLLER_BUTTON_PADDLE3);
+  ASSERT_EQ(button::paddle4, SDL_CONTROLLER_BUTTON_PADDLE4);
+  ASSERT_EQ(button::touchpad, SDL_CONTROLLER_BUTTON_TOUCHPAD);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  EXPECT_NE(button::right_stick, SDL_CONTROLLER_BUTTON_DPAD_UP);
-  EXPECT_NE(SDL_CONTROLLER_BUTTON_B, button::guide);
+  ASSERT_NE(button::right_stick, SDL_CONTROLLER_BUTTON_DPAD_UP);
+  ASSERT_NE(SDL_CONTROLLER_BUTTON_B, button::guide);
 }
 
 TEST(Controller, ControllerBindTypeEnum)
 {
   using bind_type = cen::controller_bind_type;
 
-  EXPECT_EQ(bind_type::axis, SDL_CONTROLLER_BINDTYPE_AXIS);
-  EXPECT_EQ(bind_type::button, SDL_CONTROLLER_BINDTYPE_BUTTON);
-  EXPECT_EQ(bind_type::none, SDL_CONTROLLER_BINDTYPE_NONE);
-  EXPECT_EQ(bind_type::hat, SDL_CONTROLLER_BINDTYPE_HAT);
+  ASSERT_EQ(bind_type::axis, SDL_CONTROLLER_BINDTYPE_AXIS);
+  ASSERT_EQ(bind_type::button, SDL_CONTROLLER_BINDTYPE_BUTTON);
+  ASSERT_EQ(bind_type::none, SDL_CONTROLLER_BINDTYPE_NONE);
+  ASSERT_EQ(bind_type::hat, SDL_CONTROLLER_BINDTYPE_HAT);
 
-  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, bind_type::axis);
-  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::button);
-  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, bind_type::none);
-  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, bind_type::hat);
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, bind_type::axis);
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::button);
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, bind_type::none);
+  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, bind_type::hat);
 
-  EXPECT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
-  EXPECT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
+  ASSERT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
+  ASSERT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST(Controller, FromIndex)
 {
-  EXPECT_THROW(cen::controller::from_index(0), cen::sdl_error);
+  ASSERT_THROW(cen::controller::from_index(0), cen::sdl_error);
 }
 
 TEST(Controller, ControllerTypeEnum)
 {
   using type = cen::controller_type;
 
-  EXPECT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
-  EXPECT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
-  EXPECT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
-  EXPECT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
-  EXPECT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
-  EXPECT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+  ASSERT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
+  ASSERT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
+  ASSERT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
+  ASSERT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
+  ASSERT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
+  ASSERT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
 
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  EXPECT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
-  EXPECT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
+  ASSERT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
+  ASSERT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
 
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
-  EXPECT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  EXPECT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-  EXPECT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
+  ASSERT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+  ASSERT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

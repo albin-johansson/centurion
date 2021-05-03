@@ -4,10 +4,10 @@
 
 TEST(RAM, AmountMB)
 {
-  EXPECT_EQ(SDL_GetSystemRAM(), cen::ram::amount_mb());
+  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram::amount_mb());
 }
 
 TEST(RAM, AmountGB)
 {
-  EXPECT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram::amount_gb());
+  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram::amount_gb());
 }

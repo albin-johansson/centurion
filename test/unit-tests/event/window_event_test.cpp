@@ -5,8 +5,8 @@
 TEST(WindowEvent, Defaults)
 {
   cen::window_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::window, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::window, event.type());
 }
 
 TEST(WindowEvent, EventId)
@@ -15,7 +15,7 @@ TEST(WindowEvent, EventId)
   sdl.event = SDL_WINDOWEVENT_FOCUS_GAINED;
 
   const cen::window_event event{sdl};
-  EXPECT_EQ(cen::window_event_id::focus_gained, event.event_id());
+  ASSERT_EQ(cen::window_event_id::focus_gained, event.event_id());
 }
 
 TEST(WindowEvent, Data1)
@@ -27,7 +27,7 @@ TEST(WindowEvent, Data1)
   sdl.data1 = width;
 
   const cen::window_event event{sdl};
-  EXPECT_EQ(width, event.data_1());
+  ASSERT_EQ(width, event.data_1());
 }
 
 TEST(WindowEvent, Data2)
@@ -39,7 +39,7 @@ TEST(WindowEvent, Data2)
   sdl.data2 = height;
 
   const cen::window_event event{sdl};
-  EXPECT_EQ(height, event.data_2());
+  ASSERT_EQ(height, event.data_2());
 }
 
 TEST(WindowEvent, AsSDLEvent)
@@ -47,6 +47,6 @@ TEST(WindowEvent, AsSDLEvent)
   const cen::window_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.window.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.window.timestamp, event.time());
+  ASSERT_EQ(sdl.window.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.window.timestamp, event.time());
 }

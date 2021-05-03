@@ -5,8 +5,8 @@
 TEST(TextEditingEvent, Defaults)
 {
   cen::text_editing_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::text_editing, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::text_editing, event.type());
 }
 
 TEST(TextEditingEvent, SetWindowId)
@@ -16,7 +16,7 @@ TEST(TextEditingEvent, SetWindowId)
   constexpr auto id = 8;
   event.set_window_id(id);
 
-  EXPECT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(TextEditingEvent, SetStart)
@@ -26,7 +26,7 @@ TEST(TextEditingEvent, SetStart)
   constexpr auto start = 4;
   event.set_start(start);
 
-  EXPECT_EQ(start, event.start());
+  ASSERT_EQ(start, event.start());
 }
 
 TEST(TextEditingEvent, SetLength)
@@ -36,13 +36,13 @@ TEST(TextEditingEvent, SetLength)
   constexpr auto length = 9;
   event.set_length(length);
 
-  EXPECT_EQ(length, event.length());
+  ASSERT_EQ(length, event.length());
 
   event.set_length(-1);
-  EXPECT_EQ(0, event.length());
+  ASSERT_EQ(0, event.length());
 
   event.set_length(33);
-  EXPECT_EQ(32, event.length());
+  ASSERT_EQ(32, event.length());
 }
 
 TEST(TextEditingEvent, WindowId)
@@ -51,7 +51,7 @@ TEST(TextEditingEvent, WindowId)
   sdl.windowID = 7;
 
   const cen::text_editing_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(TextEditingEvent, Start)
@@ -60,7 +60,7 @@ TEST(TextEditingEvent, Start)
   sdl.start = 4;
 
   const cen::text_editing_event event{sdl};
-  EXPECT_EQ(sdl.start, event.start());
+  ASSERT_EQ(sdl.start, event.start());
 }
 
 TEST(TextEditingEvent, Length)
@@ -70,7 +70,7 @@ TEST(TextEditingEvent, Length)
     sdl.length = 4;
 
     const cen::text_editing_event event{sdl};
-    EXPECT_EQ(sdl.length, event.length());
+    ASSERT_EQ(sdl.length, event.length());
   }
 
   {  // Underflow length
@@ -78,7 +78,7 @@ TEST(TextEditingEvent, Length)
     sdl.length = -1;
 
     const cen::text_editing_event event{sdl};
-    EXPECT_EQ(0, event.length());
+    ASSERT_EQ(0, event.length());
   }
 
   {  // Overflow length
@@ -86,7 +86,7 @@ TEST(TextEditingEvent, Length)
     sdl.length = 33;
 
     const cen::text_editing_event event{sdl};
-    EXPECT_EQ(32, event.length());
+    ASSERT_EQ(32, event.length());
   }
 }
 
@@ -95,6 +95,6 @@ TEST(TextEditingEvent, AsSDLEvent)
   const cen::text_editing_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.edit.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.edit.timestamp, event.time());
+  ASSERT_EQ(sdl.edit.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.edit.timestamp, event.time());
 }

@@ -9,7 +9,7 @@ TEST(AddressOf, Correctness)
   {  // Non-null pointer
     int i = 42;
     const auto str = cen::detail::address_of(&i);
-    EXPECT_FALSE(str.empty());
+    ASSERT_FALSE(str.empty());
     std::cout << "detail::address_of output: " << str << '\n';
   }
 
@@ -18,6 +18,6 @@ TEST(AddressOf, Correctness)
     ASSERT_NO_THROW(cen::detail::address_of(i));
 
     const auto str = cen::detail::address_of(i);
-    EXPECT_TRUE(str.empty());
+    ASSERT_TRUE(str.empty());
   }
 }

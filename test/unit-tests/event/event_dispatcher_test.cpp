@@ -62,9 +62,9 @@ TEST(EventDispatcher, Bind)
   ASSERT_TRUE(cen::event::push(buttonEvent));
 
   dispatcher.poll();
-  EXPECT_TRUE(buttonHandler.visited);
-  EXPECT_TRUE(visitedFreeFunction);
-  EXPECT_TRUE(visitedLambda);
+  ASSERT_TRUE(buttonHandler.visited);
+  ASSERT_TRUE(visitedFreeFunction);
+  ASSERT_TRUE(visitedLambda);
 }
 
 TEST(EventDispatcher, Reset)
@@ -81,43 +81,43 @@ TEST(EventDispatcher, Reset)
   dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {
   });
 
-  EXPECT_EQ(3, dispatcher.active_count());
+  ASSERT_EQ(3, dispatcher.active_count());
 
   dispatcher.reset();
-  EXPECT_EQ(0, dispatcher.active_count());
+  ASSERT_EQ(0, dispatcher.active_count());
 
-  EXPECT_NO_THROW(dispatcher.reset());
+  ASSERT_NO_THROW(dispatcher.reset());
 }
 
 TEST(EventDispatcher, ActiveCount)
 {
   event_dispatcher dispatcher;
-  EXPECT_EQ(0, dispatcher.active_count());
+  ASSERT_EQ(0, dispatcher.active_count());
 
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
   });
-  EXPECT_EQ(1, dispatcher.active_count());
+  ASSERT_EQ(1, dispatcher.active_count());
 
   // Bind same event to another lambda, should replace the previous handler
   dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
   });
-  EXPECT_EQ(1, dispatcher.active_count());
+  ASSERT_EQ(1, dispatcher.active_count());
 
   dispatcher.bind<cen::window_event>().to([](cen::window_event) {
   });
-  EXPECT_EQ(2, dispatcher.active_count());
+  ASSERT_EQ(2, dispatcher.active_count());
 }
 
 TEST(EventDispatcher, Size)
 {
   cen::event_dispatcher zero;
-  EXPECT_EQ(0, zero.size());
+  ASSERT_EQ(0, zero.size());
 
   cen::event_dispatcher<cen::quit_event> one;
-  EXPECT_EQ(1, one.size());
+  ASSERT_EQ(1, one.size());
 
   cen::event_dispatcher<cen::quit_event, cen::window_event> two;
-  EXPECT_EQ(2, two.size());
+  ASSERT_EQ(2, two.size());
 }
 
 TEST(EventDispatcher, ToString)

@@ -12,7 +12,7 @@ TEST(CommonEvent, SetTime)
   constexpr auto time = 8'934;
   event.set_time(time);
 
-  EXPECT_EQ(time, event.time());
+  ASSERT_EQ(time, event.time());
 }
 
 TEST(CommonEvent, SetType)
@@ -22,7 +22,7 @@ TEST(CommonEvent, SetType)
   const auto type = cen::event_type::app_low_memory;
   event.set_type(type);
 
-  EXPECT_EQ(type, event.type());
+  ASSERT_EQ(type, event.type());
 }
 
 TEST(CommonEvent, Time)
@@ -33,7 +33,7 @@ TEST(CommonEvent, Time)
   sdl.timestamp = time;
 
   const common_event event{sdl};
-  EXPECT_EQ(time, event.time());
+  ASSERT_EQ(time, event.time());
 }
 
 TEST(CommonEvent, Type)
@@ -42,7 +42,7 @@ TEST(CommonEvent, Type)
   sdl.type = SDL_MOUSEMOTION;
 
   const common_event event{sdl};
-  EXPECT_EQ(cen::event_type::mouse_motion, event.type());
+  ASSERT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
 TEST(CommonEvent, Get)
@@ -53,5 +53,5 @@ TEST(CommonEvent, Get)
   const common_event event{sdl};
   const auto& internal = event.get();
 
-  EXPECT_EQ(sdl.type, internal.type);
+  ASSERT_EQ(sdl.type, internal.type);
 }

@@ -32,17 +32,17 @@ class TextureHandleTest : public testing::Test
 TEST_F(TextureHandleTest, FromTexture)
 {
   cen::texture_handle handle{*m_texture};
-  EXPECT_TRUE(handle);
-  EXPECT_TRUE(handle.get());
+  ASSERT_TRUE(handle);
+  ASSERT_TRUE(handle.get());
 }
 
 TEST_F(TextureHandleTest, FromRawPointer)
 {
   cen::texture_handle bad{nullptr};
-  EXPECT_FALSE(bad);
-  EXPECT_FALSE(bad.get());
+  ASSERT_FALSE(bad);
+  ASSERT_FALSE(bad.get());
 
   cen::texture_handle good{m_texture->get()};
-  EXPECT_TRUE(good);
-  EXPECT_TRUE(good.get());
+  ASSERT_TRUE(good);
+  ASSERT_TRUE(good.get());
 }

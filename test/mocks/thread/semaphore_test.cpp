@@ -17,5 +17,5 @@ class SemaphoreTest : public testing::Test
 
 TEST_F(SemaphoreTest, Constructor)
 {
-  EXPECT_THROW(cen::semaphore{0}, cen::sdl_error);
+  ASSERT_THROW(cen::semaphore{0}, cen::sdl_error);
 }

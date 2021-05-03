@@ -4,5 +4,5 @@
 
 TEST(BasePath, NoExceptions)
 {
-  EXPECT_NO_THROW(cen::base_path());  // NOLINT
+  ASSERT_NO_THROW(cen::base_path());  // NOLINT
 }

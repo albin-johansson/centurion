@@ -4,19 +4,19 @@
 
 TEST(Clipboard, HasText)
 {
-  EXPECT_TRUE(cen::clipboard::set_text(""));
-  EXPECT_FALSE(cen::clipboard::has_text());
+  ASSERT_TRUE(cen::clipboard::set_text(""));
+  ASSERT_FALSE(cen::clipboard::has_text());
 
-  EXPECT_TRUE(cen::clipboard::set_text("foobar"));
-  EXPECT_TRUE(cen::clipboard::has_text());
+  ASSERT_TRUE(cen::clipboard::set_text("foobar"));
+  ASSERT_TRUE(cen::clipboard::has_text());
 }
 
 TEST(Clipboard, SetText)
 {
-  EXPECT_TRUE(cen::clipboard::set_text("foo"));
-  EXPECT_EQ(cen::clipboard::get_text(), "foo");
+  ASSERT_TRUE(cen::clipboard::set_text("foo"));
+  ASSERT_EQ(cen::clipboard::get_text(), "foo");
 
   using namespace std::string_literals;
-  EXPECT_TRUE(cen::clipboard::set_text("bar"s));
-  EXPECT_EQ(cen::clipboard::get_text(), "bar");
+  ASSERT_TRUE(cen::clipboard::set_text("bar"s));
+  ASSERT_EQ(cen::clipboard::get_text(), "bar");
 }

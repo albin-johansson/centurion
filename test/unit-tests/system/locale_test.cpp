@@ -12,10 +12,10 @@ TEST(Locale, GetPreferred)
   // available locale
   if (auto locale = cen::locale::get_preferred())
   {
-    EXPECT_LT(0, locale.count());
-    EXPECT_TRUE(locale.has_language("en"));
-    EXPECT_FALSE(locale.has_language("se"));
-    EXPECT_FALSE(locale.has_language("foo", "bar"));
+    ASSERT_LT(0, locale.count());
+    ASSERT_TRUE(locale.has_language("en"));
+    ASSERT_FALSE(locale.has_language("se"));
+    ASSERT_FALSE(locale.has_language("foo", "bar"));
   }
   else
   {

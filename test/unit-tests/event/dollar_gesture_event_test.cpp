@@ -5,8 +5,8 @@
 TEST(DollarGestureEvent, Defaults)
 {
   cen::dollar_gesture_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::dollar_gesture, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::dollar_gesture, event.type());
 }
 
 TEST(DollarGestureEvent, SetTouchId)
@@ -16,7 +16,7 @@ TEST(DollarGestureEvent, SetTouchId)
   constexpr auto id = 4;
   event.set_touch_id(id);
 
-  EXPECT_EQ(id, event.touch_id());
+  ASSERT_EQ(id, event.touch_id());
 }
 
 TEST(DollarGestureEvent, SetGestureId)
@@ -26,7 +26,7 @@ TEST(DollarGestureEvent, SetGestureId)
   constexpr auto id = 81;
   event.set_gesture_id(id);
 
-  EXPECT_EQ(id, event.gesture_id());
+  ASSERT_EQ(id, event.gesture_id());
 }
 
 TEST(DollarGestureEvent, SetFingers)
@@ -36,7 +36,7 @@ TEST(DollarGestureEvent, SetFingers)
   constexpr auto fingers = 2;
   event.set_fingers(fingers);
 
-  EXPECT_EQ(fingers, event.fingers());
+  ASSERT_EQ(fingers, event.fingers());
 }
 
 TEST(DollarGestureEvent, SetError)
@@ -46,7 +46,7 @@ TEST(DollarGestureEvent, SetError)
   constexpr auto error = 5.1f;
   event.set_error(error);
 
-  EXPECT_EQ(error, event.error());
+  ASSERT_EQ(error, event.error());
 }
 
 TEST(DollarGestureEvent, SetX)
@@ -56,7 +56,7 @@ TEST(DollarGestureEvent, SetX)
   constexpr auto x = 24.8f;
   event.set_x(x);
 
-  EXPECT_EQ(x, event.x());
+  ASSERT_EQ(x, event.x());
 }
 
 TEST(DollarGestureEvent, SetY)
@@ -66,7 +66,7 @@ TEST(DollarGestureEvent, SetY)
   constexpr auto y = -12.9f;
   event.set_y(y);
 
-  EXPECT_EQ(y, event.y());
+  ASSERT_EQ(y, event.y());
 }
 
 TEST(DollarGestureEvent, TouchId)
@@ -75,7 +75,7 @@ TEST(DollarGestureEvent, TouchId)
   sdl.touchId = 9;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.touchId, event.touch_id());
+  ASSERT_EQ(sdl.touchId, event.touch_id());
 }
 
 TEST(DollarGestureEvent, GestureId)
@@ -84,7 +84,7 @@ TEST(DollarGestureEvent, GestureId)
   sdl.gestureId = 1;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.gestureId, event.gesture_id());
+  ASSERT_EQ(sdl.gestureId, event.gesture_id());
 }
 
 TEST(DollarGestureEvent, Fingers)
@@ -93,7 +93,7 @@ TEST(DollarGestureEvent, Fingers)
   sdl.numFingers = 3;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.numFingers, event.fingers());
+  ASSERT_EQ(sdl.numFingers, event.fingers());
 }
 
 TEST(DollarGestureEvent, Error)
@@ -102,7 +102,7 @@ TEST(DollarGestureEvent, Error)
   sdl.error = 7.4f;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.error, event.error());
+  ASSERT_EQ(sdl.error, event.error());
 }
 
 TEST(DollarGestureEvent, X)
@@ -111,7 +111,7 @@ TEST(DollarGestureEvent, X)
   sdl.x = 56.8f;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.x, event.x());
+  ASSERT_EQ(sdl.x, event.x());
 }
 
 TEST(DollarGestureEvent, Y)
@@ -120,7 +120,7 @@ TEST(DollarGestureEvent, Y)
   sdl.y = 92.3f;
 
   const cen::dollar_gesture_event event{sdl};
-  EXPECT_EQ(sdl.y, event.y());
+  ASSERT_EQ(sdl.y, event.y());
 }
 
 TEST(DollarGestureEvent, AsSDLEvent)
@@ -128,6 +128,6 @@ TEST(DollarGestureEvent, AsSDLEvent)
   const cen::dollar_gesture_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.dgesture.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.dgesture.timestamp, event.time());
+  ASSERT_EQ(sdl.dgesture.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.dgesture.timestamp, event.time());
 }

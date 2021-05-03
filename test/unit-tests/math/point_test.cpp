@@ -35,10 +35,10 @@ TEST(Point, Point)
   const auto ipoint = cen::point(123, 456);
   const auto fpoint = cen::point(12.3f, 45.6f);
 
-  EXPECT_EQ(123, ipoint.x());
-  EXPECT_EQ(456, ipoint.y());
-  EXPECT_EQ(12.3f, fpoint.x());
-  EXPECT_EQ(45.6f, fpoint.y());
+  ASSERT_EQ(123, ipoint.x());
+  ASSERT_EQ(456, ipoint.y());
+  ASSERT_EQ(12.3f, fpoint.x());
+  ASSERT_EQ(45.6f, fpoint.y());
 }
 
 TEST(Point, DistanceUnitXStep)
@@ -46,8 +46,8 @@ TEST(Point, DistanceUnitXStep)
   const cen::ipoint a{0, 123};
   const cen::ipoint b{1, 123};
 
-  EXPECT_EQ(cen::distance(a, b), 1);
-  EXPECT_EQ(cen::distance(b, a), 1);
+  ASSERT_EQ(cen::distance(a, b), 1);
+  ASSERT_EQ(cen::distance(b, a), 1);
 }
 
 TEST(Point, DistanceUnitYStep)
@@ -55,8 +55,8 @@ TEST(Point, DistanceUnitYStep)
   const cen::ipoint a{123, 0};
   const cen::ipoint b{123, 1};
 
-  EXPECT_EQ(cen::distance(a, b), 1);
-  EXPECT_EQ(cen::distance(b, a), 1);
+  ASSERT_EQ(cen::distance(a, b), 1);
+  ASSERT_EQ(cen::distance(b, a), 1);
 }
 
 TEST(Point, Distance)
@@ -66,54 +66,54 @@ TEST(Point, Distance)
 
   const auto expected = std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
 
-  EXPECT_EQ(cen::distance(a, b), expected);
-  EXPECT_EQ(cen::distance(b, a), expected);
+  ASSERT_EQ(cen::distance(a, b), expected);
+  ASSERT_EQ(cen::distance(b, a), expected);
 }
 
 TEST(Point, EqualityOperatorReflexivity)
 {
   const cen::fpoint point;
-  EXPECT_EQ(point, point);
+  ASSERT_EQ(point, point);
 }
 
 TEST(Point, EqualityOperatorComparisonSame)
 {
   const cen::fpoint fst{211.5f, 823.1f};
   const cen::fpoint snd{fst};
-  EXPECT_EQ(fst, snd);
-  EXPECT_EQ(snd, fst);
-  EXPECT_FALSE(fst != snd);
-  EXPECT_FALSE(snd != fst);
+  ASSERT_EQ(fst, snd);
+  ASSERT_EQ(snd, fst);
+  ASSERT_FALSE(fst != snd);
+  ASSERT_FALSE(snd != fst);
 }
 
 TEST(Point, EqualityOperatorComparisonDifferent)
 {
   const cen::fpoint fst{531.5f, 8313.4f};
   const cen::fpoint snd{34.2f, 173.3f};
-  EXPECT_NE(fst, snd);
-  EXPECT_NE(snd, fst);
+  ASSERT_NE(fst, snd);
+  ASSERT_NE(snd, fst);
 }
 
 TEST(Point, InequalityOperatorSelf)
 {
   const cen::fpoint point;
-  EXPECT_FALSE(point != point);
+  ASSERT_FALSE(point != point);
 }
 
 TEST(Point, InequalityOperatorDifferent)
 {
   const cen::fpoint fst{8392.5f, 12452.4f};
   const cen::fpoint snd{5236.2f, 321.3f};
-  EXPECT_NE(fst, snd);
-  EXPECT_NE(snd, fst);
+  ASSERT_NE(fst, snd);
+  ASSERT_NE(snd, fst);
 }
 
 TEST(Point, InequalityOperatorEqual)
 {
   const cen::fpoint fst{211.5f, 823.1f};
   const cen::fpoint snd{fst};
-  EXPECT_FALSE(fst != snd);
-  EXPECT_FALSE(snd != fst);
+  ASSERT_FALSE(fst != snd);
+  ASSERT_FALSE(snd != fst);
 }
 
 TEST(Point, AdditionOperator)
@@ -125,12 +125,12 @@ TEST(Point, AdditionOperator)
   const auto expectedY = fst.y() + snd.y();
 
   const auto fstSnd = fst + snd;
-  EXPECT_EQ(fstSnd.x(), expectedX);
-  EXPECT_EQ(fstSnd.y(), expectedY);
+  ASSERT_EQ(fstSnd.x(), expectedX);
+  ASSERT_EQ(fstSnd.y(), expectedY);
 
   const auto sndFst = snd + fst;
-  EXPECT_EQ(sndFst.x(), expectedX);
-  EXPECT_EQ(sndFst.y(), expectedY);
+  ASSERT_EQ(sndFst.x(), expectedX);
+  ASSERT_EQ(sndFst.y(), expectedY);
 }
 
 TEST(Point, SubtractionOperator)
@@ -139,14 +139,14 @@ TEST(Point, SubtractionOperator)
   const cen::fpoint snd{-547, 451};
 
   const auto fstSnd = fst - snd;
-  EXPECT_EQ(fstSnd.x(), fst.x() - snd.x());
-  EXPECT_EQ(fstSnd.y(), fst.y() - snd.y());
+  ASSERT_EQ(fstSnd.x(), fst.x() - snd.x());
+  ASSERT_EQ(fstSnd.y(), fst.y() - snd.y());
 
   const auto sndFst = snd - fst;
-  EXPECT_EQ(sndFst.x(), snd.x() - fst.x());
-  EXPECT_EQ(sndFst.y(), snd.y() - fst.y());
+  ASSERT_EQ(sndFst.x(), snd.x() - fst.x());
+  ASSERT_EQ(sndFst.y(), snd.y() - fst.y());
 
-  EXPECT_NE(fstSnd, sndFst);
+  ASSERT_NE(fstSnd, sndFst);
 }
 
 TEST(Point, IPointToFPoint)
@@ -154,8 +154,8 @@ TEST(Point, IPointToFPoint)
   const cen::ipoint source{684, 912};
   const auto result = cen::cast<cen::fpoint>(source);
 
-  EXPECT_EQ(result.x(), static_cast<float>(source.x()));
-  EXPECT_EQ(result.y(), static_cast<float>(source.y()));
+  ASSERT_EQ(result.x(), static_cast<float>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<float>(source.y()));
 }
 
 TEST(Point, FPointToIPoint)
@@ -163,8 +163,8 @@ TEST(Point, FPointToIPoint)
   const cen::fpoint source{58.8f, 123.4f};
   const auto result = cen::cast<cen::ipoint>(source);
 
-  EXPECT_EQ(result.x(), static_cast<int>(source.x()));
-  EXPECT_EQ(result.y(), static_cast<int>(source.y()));
+  ASSERT_EQ(result.x(), static_cast<int>(source.x()));
+  ASSERT_EQ(result.y(), static_cast<int>(source.y()));
 }
 
 TEST(Point, ConversionToPointer)
@@ -172,12 +172,12 @@ TEST(Point, ConversionToPointer)
   cen::fpoint point{3813.3f, 892.5f};
 
   auto* ptr = static_cast<SDL_FPoint*>(point);
-  EXPECT_EQ(point.x(), ptr->x);
-  EXPECT_EQ(point.y(), ptr->y);
+  ASSERT_EQ(point.x(), ptr->x);
+  ASSERT_EQ(point.y(), ptr->y);
 
   const auto* cptr = static_cast<const SDL_FPoint*>(point);
-  EXPECT_EQ(point.x(), cptr->x);
-  EXPECT_EQ(point.y(), cptr->y);
+  ASSERT_EQ(point.x(), cptr->x);
+  ASSERT_EQ(point.y(), cptr->y);
 }
 
 TEST(Point, Get)
@@ -185,16 +185,16 @@ TEST(Point, Get)
   const cen::fpoint point{3923.3f, 7718.1f};
   const auto& ptr = point.get();
 
-  EXPECT_EQ(point.x(), ptr.x);
-  EXPECT_EQ(point.y(), ptr.y);
+  ASSERT_EQ(point.x(), ptr.x);
+  ASSERT_EQ(point.y(), ptr.y);
 }
 
 TEST(Point, Data)
 {
   const cen::ipoint ip{123, 456};
   ASSERT_TRUE(ip.data());
-  EXPECT_EQ(123, ip.data()->x);
-  EXPECT_EQ(456, ip.data()->y);
+  ASSERT_EQ(123, ip.data()->x);
+  ASSERT_EQ(456, ip.data()->y);
 }
 
 TEST(Point, ToString)
@@ -222,6 +222,6 @@ TEST(Point, Serialization)
   serialize_save("point.binary", cen::fpoint{x, y});
 
   const auto point = serialize_create<cen::fpoint>("point.binary");
-  EXPECT_EQ(x, point.x());
-  EXPECT_EQ(y, point.y());
+  ASSERT_EQ(x, point.x());
+  ASSERT_EQ(y, point.y());
 }

@@ -5,16 +5,16 @@
 TEST(ControllerButtonEvent, Defaults)
 {
   cen::controller_button_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::controller_button_down, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::controller_button_down, event.type());
 }
 
 TEST(ControllerButtonEvent, Constructors)
 {
-  EXPECT_NO_THROW(cen::controller_button_event{});
+  ASSERT_NO_THROW(cen::controller_button_event{});
 
   SDL_ControllerButtonEvent e;
-  EXPECT_NO_THROW(cen::controller_button_event{e});
+  ASSERT_NO_THROW(cen::controller_button_event{e});
 }
 
 TEST(ControllerButtonEvent, SetButton)
@@ -24,7 +24,7 @@ TEST(ControllerButtonEvent, SetButton)
   constexpr auto button = cen::controller_button::a;
   event.set_button(button);
 
-  EXPECT_EQ(button, event.button());
+  ASSERT_EQ(button, event.button());
 }
 
 TEST(ControllerButtonEvent, SetState)
@@ -34,7 +34,7 @@ TEST(ControllerButtonEvent, SetState)
   constexpr auto state = cen::button_state::pressed;
   event.set_state(state);
 
-  EXPECT_EQ(state, event.state());
+  ASSERT_EQ(state, event.state());
 }
 
 TEST(ControllerButtonEvent, SetWhich)
@@ -44,7 +44,7 @@ TEST(ControllerButtonEvent, SetWhich)
   constexpr auto which = 7;
   event.set_which(which);
 
-  EXPECT_EQ(which, event.which());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(ControllerButtonEvent, Button)
@@ -53,7 +53,7 @@ TEST(ControllerButtonEvent, Button)
   sdl.button = SDL_CONTROLLER_BUTTON_A;
 
   const cen::controller_button_event event{sdl};
-  EXPECT_EQ(cen::controller_button::a, event.button());
+  ASSERT_EQ(cen::controller_button::a, event.button());
 }
 
 TEST(ControllerButtonEvent, State)
@@ -62,7 +62,7 @@ TEST(ControllerButtonEvent, State)
   sdl.state = SDL_RELEASED;
 
   const cen::controller_button_event event{sdl};
-  EXPECT_EQ(cen::button_state::released, event.state());
+  ASSERT_EQ(cen::button_state::released, event.state());
 }
 
 TEST(ControllerButtonEvent, Released)
@@ -71,8 +71,8 @@ TEST(ControllerButtonEvent, Released)
   sdl.state = SDL_RELEASED;
 
   const cen::controller_button_event event{sdl};
-  EXPECT_TRUE(event.released());
-  EXPECT_FALSE(event.pressed());
+  ASSERT_TRUE(event.released());
+  ASSERT_FALSE(event.pressed());
 }
 
 TEST(ControllerButtonEvent, Pressed)
@@ -81,8 +81,8 @@ TEST(ControllerButtonEvent, Pressed)
   sdl.state = SDL_PRESSED;
 
   const cen::controller_button_event event{sdl};
-  EXPECT_TRUE(event.pressed());
-  EXPECT_FALSE(event.released());
+  ASSERT_TRUE(event.pressed());
+  ASSERT_FALSE(event.released());
 }
 
 TEST(ControllerButtonEvent, Which)
@@ -91,7 +91,7 @@ TEST(ControllerButtonEvent, Which)
   sdl.which = 16;
 
   const cen::controller_button_event event{sdl};
-  EXPECT_EQ(16, event.which());
+  ASSERT_EQ(16, event.which());
 }
 
 TEST(ControllerButtonEvent, AsSDLEvent)
@@ -99,6 +99,6 @@ TEST(ControllerButtonEvent, AsSDLEvent)
   const cen::controller_button_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.cbutton.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.cbutton.timestamp, event.time());
+  ASSERT_EQ(sdl.cbutton.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.cbutton.timestamp, event.time());
 }

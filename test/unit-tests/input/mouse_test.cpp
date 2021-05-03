@@ -15,19 +15,19 @@ static_assert(std::is_nothrow_copy_assignable_v<cen::mouse>);
 TEST(Mouse, Defaults)
 {
   const cen::mouse mouse;
-  EXPECT_EQ(1, mouse.logical_width());
-  EXPECT_EQ(1, mouse.logical_height());
+  ASSERT_EQ(1, mouse.logical_width());
+  ASSERT_EQ(1, mouse.logical_height());
 
-  EXPECT_EQ(0, mouse.x());
-  EXPECT_EQ(0, mouse.y());
+  ASSERT_EQ(0, mouse.x());
+  ASSERT_EQ(0, mouse.y());
 
-  EXPECT_EQ(cen::ipoint{}, mouse.position());
+  ASSERT_EQ(cen::ipoint{}, mouse.position());
 }
 
 TEST(Mouse, Update)
 {
   cen::mouse mouse;
-  EXPECT_NO_THROW(mouse.update({12, 632}));
+  ASSERT_NO_THROW(mouse.update({12, 632}));
 }
 
 TEST(Mouse, Reset)
@@ -39,8 +39,8 @@ TEST(Mouse, Reset)
 
   mouse.reset();
 
-  EXPECT_EQ(1, mouse.logical_width());
-  EXPECT_EQ(1, mouse.logical_height());
+  ASSERT_EQ(1, mouse.logical_width());
+  ASSERT_EQ(1, mouse.logical_height());
 }
 
 TEST(Mouse, SetLogicalWidth)
@@ -50,7 +50,7 @@ TEST(Mouse, SetLogicalWidth)
   const auto width = 821;
   mouse.set_logical_width(width);
 
-  EXPECT_EQ(width, mouse.logical_width());
+  ASSERT_EQ(width, mouse.logical_width());
 }
 
 TEST(Mouse, SetLogicalHeight)
@@ -60,7 +60,7 @@ TEST(Mouse, SetLogicalHeight)
   const auto height = 219;
   mouse.set_logical_height(height);
 
-  EXPECT_EQ(height, mouse.logical_height());
+  ASSERT_EQ(height, mouse.logical_height());
 }
 
 TEST(Mouse, SetLogicalSize)
@@ -69,7 +69,7 @@ TEST(Mouse, SetLogicalSize)
   const cen::iarea size{823, 569};
 
   mouse.set_logical_size(size);
-  EXPECT_EQ(size, mouse.logical_size());
+  ASSERT_EQ(size, mouse.logical_size());
 }
 
 TEST(Mouse, LogicalSize)
@@ -83,36 +83,36 @@ TEST(Mouse, LogicalSize)
   mouse.set_logical_height(height);
 
   const auto [actualWidth, actualHeight] = mouse.logical_size();
-  EXPECT_EQ(width, actualWidth);
-  EXPECT_EQ(height, actualHeight);
+  ASSERT_EQ(width, actualWidth);
+  ASSERT_EQ(height, actualHeight);
 }
 
 TEST(Mouse, IsLeftButtonPressed)
 {
   const cen::mouse mouse;
-  EXPECT_FALSE(mouse.is_left_button_pressed());
+  ASSERT_FALSE(mouse.is_left_button_pressed());
 }
 
 TEST(Mouse, IsRightButtonPressed)
 {
   const cen::mouse mouse;
-  EXPECT_FALSE(mouse.is_right_button_pressed());
+  ASSERT_FALSE(mouse.is_right_button_pressed());
 }
 
 TEST(Mouse, WasLeftButtonReleased)
 {
   const cen::mouse mouse;
-  EXPECT_FALSE(mouse.was_left_button_released());
+  ASSERT_FALSE(mouse.was_left_button_released());
 }
 
 TEST(Mouse, WasRightButtonReleased)
 {
   const cen::mouse mouse;
-  EXPECT_FALSE(mouse.was_right_button_released());
+  ASSERT_FALSE(mouse.was_right_button_released());
 }
 
 TEST(Mouse, WasMoved)
 {
   const cen::mouse mouse;
-  EXPECT_FALSE(mouse.was_moved());
+  ASSERT_FALSE(mouse.was_moved());
 }

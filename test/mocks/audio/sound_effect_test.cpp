@@ -47,17 +47,17 @@ TEST_F(SoundEffectTest, Play)
   std::array values{-1, 0};
   SET_RETURN_SEQ(Mix_PlayChannelTimed, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_sound.play());
-  EXPECT_EQ(1, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_FALSE(m_sound.play());
+  ASSERT_EQ(1, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
 
-  EXPECT_TRUE(m_sound.play(-2));
-  EXPECT_EQ(2, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_TRUE(m_sound.play(-2));
+  ASSERT_EQ(2, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
 
-  EXPECT_TRUE(m_sound.play(7));
-  EXPECT_EQ(3, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_TRUE(m_sound.play(7));
+  ASSERT_EQ(3, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
 }
 
 TEST_F(SoundEffectTest, Pause)
@@ -66,76 +66,76 @@ TEST_F(SoundEffectTest, Pause)
   SET_RETURN_SEQ(Mix_Playing, values.data(), cen::isize(values));
 
   m_sound.stop();  // Does not invoke Mix_Playing
-  EXPECT_EQ(0, Mix_Pause_fake.call_count);
+  ASSERT_EQ(0, Mix_Pause_fake.call_count);
 
   m_sound.set_channel(23);
 
   m_sound.stop();
-  EXPECT_EQ(0, Mix_Pause_fake.call_count);
+  ASSERT_EQ(0, Mix_Pause_fake.call_count);
 
   m_sound.stop();
-  EXPECT_EQ(1, Mix_Pause_fake.call_count);
+  ASSERT_EQ(1, Mix_Pause_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, FadeIn)
 {
   // Not playing
   m_sound.fade_in(ms{5});
-  EXPECT_EQ(1, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(1, Mix_FadeInChannelTimed_fake.call_count);
 
   // Not playing but with an associated channel
   m_sound.set_channel(1);
   m_sound.fade_in(ms{5});
-  EXPECT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
 
   // Already playing
   Mix_Playing_fake.return_val = 1;
   m_sound.fade_in(ms{5});
-  EXPECT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
+  ASSERT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, FadeOut)
 {
   // Not playing
   m_sound.fade_out(ms{5});
-  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+  ASSERT_EQ(0, Mix_FadeOutChannel_fake.call_count);
 
   // Not playing but with an associated channel
   m_sound.set_channel(7);
   m_sound.fade_out(ms{5});
-  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+  ASSERT_EQ(0, Mix_FadeOutChannel_fake.call_count);
 
   // Playing
   Mix_Playing_fake.return_val = 1;
   m_sound.fade_out(ms{5});
-  EXPECT_EQ(1, Mix_FadeOutChannel_fake.call_count);
+  ASSERT_EQ(1, Mix_FadeOutChannel_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, SetVolume)
 {
   m_sound.set_volume(-1);
-  EXPECT_EQ(0, Mix_VolumeChunk_fake.arg1_val);
+  ASSERT_EQ(0, Mix_VolumeChunk_fake.arg1_val);
 
   m_sound.set_volume(cen::sound_effect::max_volume() + 1);
-  EXPECT_EQ(cen::sound_effect::max_volume(), Mix_VolumeChunk_fake.arg1_val);
+  ASSERT_EQ(cen::sound_effect::max_volume(), Mix_VolumeChunk_fake.arg1_val);
 
   m_sound.set_volume(27);
-  EXPECT_EQ(27, Mix_VolumeChunk_fake.arg1_val);
+  ASSERT_EQ(27, Mix_VolumeChunk_fake.arg1_val);
 }
 
 TEST_F(SoundEffectTest, IsAnyPlaying)
 {
   const auto playing [[maybe_unused]] = cen::sound_effect::is_any_playing();
-  EXPECT_EQ(1, Mix_Playing_fake.call_count);
-  EXPECT_EQ(-1, Mix_Playing_fake.arg0_val);
+  ASSERT_EQ(1, Mix_Playing_fake.call_count);
+  ASSERT_EQ(-1, Mix_Playing_fake.arg0_val);
 }
 
 TEST_F(SoundEffectTest, Channel)
 {
-  EXPECT_FALSE(m_sound.channel().has_value());
+  ASSERT_FALSE(m_sound.channel().has_value());
 
   m_sound.set_channel(7);
-  EXPECT_EQ(7, m_sound.channel());
+  ASSERT_EQ(7, m_sound.channel());
 }
 
 TEST_F(SoundEffectTest, GetDecoder)
@@ -164,10 +164,10 @@ using SoundEffectDeathTest = SoundEffectTest;
 
 TEST_F(SoundEffectDeathTest, FadeIn)
 {
-  EXPECT_DEBUG_DEATH(m_sound.fade_in(ms::zero()), "");
+  ASSERT_DEBUG_DEATH(m_sound.fade_in(ms::zero()), "");
 }
 
 TEST_F(SoundEffectDeathTest, FadeOut)
 {
-  EXPECT_DEBUG_DEATH(m_sound.fade_out(ms::zero()), "");
+  ASSERT_DEBUG_DEATH(m_sound.fade_out(ms::zero()), "");
 }

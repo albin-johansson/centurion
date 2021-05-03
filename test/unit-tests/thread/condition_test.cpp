@@ -7,13 +7,13 @@
 TEST(Condition, Signal)
 {
   cen::condition cond;
-  EXPECT_TRUE(cond.signal());
+  ASSERT_TRUE(cond.signal());
 }
 
 TEST(Condition, Broadcast)
 {
   cen::condition cond;
-  EXPECT_TRUE(cond.broadcast());
+  ASSERT_TRUE(cond.broadcast());
 }
 
 TEST(Condition, Wait)
@@ -36,6 +36,6 @@ TEST(Condition, Wait)
                      "thread",
                      &cond};
 
-  EXPECT_TRUE(cond.wait(mutex));
-  EXPECT_TRUE(mutex.unlock());
+  ASSERT_TRUE(cond.wait(mutex));
+  ASSERT_TRUE(mutex.unlock());
 }

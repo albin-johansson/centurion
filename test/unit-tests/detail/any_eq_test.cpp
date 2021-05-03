@@ -14,13 +14,13 @@ static_assert(cen::detail::any_eq(1, 2, 3, 1));
 
 TEST(AnyEq, Correctness)
 {
-  EXPECT_FALSE(cen::detail::any_eq(1));
+  ASSERT_FALSE(cen::detail::any_eq(1));
 
-  EXPECT_TRUE(cen::detail::any_eq(1, 1));
-  EXPECT_TRUE(cen::detail::any_eq(1, 1, 1));
+  ASSERT_TRUE(cen::detail::any_eq(1, 1));
+  ASSERT_TRUE(cen::detail::any_eq(1, 1, 1));
 
-  EXPECT_FALSE(cen::detail::any_eq(1, 2));
-  EXPECT_FALSE(cen::detail::any_eq(1, 2, 3));
+  ASSERT_FALSE(cen::detail::any_eq(1, 2));
+  ASSERT_FALSE(cen::detail::any_eq(1, 2, 3));
 
-  EXPECT_TRUE(cen::detail::any_eq(1, 2, 3, 1));
+  ASSERT_TRUE(cen::detail::any_eq(1, 2, 3, 1));
 }

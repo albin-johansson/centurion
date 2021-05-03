@@ -38,15 +38,15 @@ class SurfaceTest : public testing::Test
 
 TEST_F(SurfaceTest, Convert)
 {
-  EXPECT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::sdl_error);
-  EXPECT_EQ(1, SDL_ConvertSurfaceFormat_fake.call_count);
+  ASSERT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::sdl_error);
+  ASSERT_EQ(1, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 
 TEST_F(SurfaceTest, Copy)
 {
   cen::surface dst;
-  EXPECT_THROW(dst = m_surface, cen::sdl_error);
-  EXPECT_EQ(1, SDL_DuplicateSurface_fake.call_count);
+  ASSERT_THROW(dst = m_surface, cen::sdl_error);
+  ASSERT_EQ(1, SDL_DuplicateSurface_fake.call_count);
 }
 
 TEST_F(SurfaceTest, SetRLEHint)
@@ -54,10 +54,10 @@ TEST_F(SurfaceTest, SetRLEHint)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_SetSurfaceRLE, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_surface.set_rle_hint(true));
-  EXPECT_TRUE(m_surface.set_rle_hint(true));
+  ASSERT_FALSE(m_surface.set_rle_hint(true));
+  ASSERT_TRUE(m_surface.set_rle_hint(true));
 
-  EXPECT_EQ(2, SDL_SetSurfaceRLE_fake.call_count);
+  ASSERT_EQ(2, SDL_SetSurfaceRLE_fake.call_count);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -67,10 +67,10 @@ TEST_F(SurfaceTest, IsRLEEnabled)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_HasSurfaceRLE, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_surface.is_rle_enabled());
-  EXPECT_TRUE(m_surface.is_rle_enabled());
+  ASSERT_FALSE(m_surface.is_rle_enabled());
+  ASSERT_TRUE(m_surface.is_rle_enabled());
 
-  EXPECT_EQ(2, SDL_HasSurfaceRLE_fake.call_count);
+  ASSERT_EQ(2, SDL_HasSurfaceRLE_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

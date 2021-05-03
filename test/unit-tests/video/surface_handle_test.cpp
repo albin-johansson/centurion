@@ -8,10 +8,10 @@ inline constexpr auto path = "resources/panda.png";
 
 TEST(SurfaceHandle, Constructor)
 {
-  EXPECT_FALSE(cen::surface_handle{nullptr});
+  ASSERT_FALSE(cen::surface_handle{nullptr});
 
   const cen::surface surface{path};
   cen::surface_handle handle{surface.get()};
 
-  EXPECT_TRUE(handle);
+  ASSERT_TRUE(handle);
 }

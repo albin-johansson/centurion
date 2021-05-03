@@ -12,8 +12,8 @@ static_assert(std::is_default_constructible_v<cen::message_box>);
 TEST(MessageBox, TitleMessageConstructor)
 {
   const cen::message_box mb{"foo", "bar"};
-  EXPECT_EQ("foo", mb.title());
-  EXPECT_EQ("bar", mb.message());
+  ASSERT_EQ("foo", mb.title());
+  ASSERT_EQ("bar", mb.message());
 }
 
 TEST(MessageBox, AddButton)
@@ -23,7 +23,7 @@ TEST(MessageBox, AddButton)
   constexpr auto id{3};
   mb.add_button(id, "Foo");
 
-  EXPECT_TRUE(mb.has_button(id));
+  ASSERT_TRUE(mb.has_button(id));
 }
 
 TEST(MessageBox, SetTitle)
@@ -31,7 +31,7 @@ TEST(MessageBox, SetTitle)
   cen::message_box mb;
 
   mb.set_title("foobar");
-  EXPECT_EQ("foobar", mb.title());
+  ASSERT_EQ("foobar", mb.title());
 }
 
 TEST(MessageBox, SetMessage)
@@ -39,14 +39,14 @@ TEST(MessageBox, SetMessage)
   cen::message_box mb;
 
   mb.set_message("barfoo");
-  EXPECT_EQ("barfoo", mb.message());
+  ASSERT_EQ("barfoo", mb.message());
 }
 
 TEST(MessageBox, SetColorScheme)
 {
   cen::message_box mb;
   cen::message_box::color_scheme scheme;
-  EXPECT_NO_THROW(mb.set_color_scheme(scheme));
+  ASSERT_NO_THROW(mb.set_color_scheme(scheme));
 }
 
 TEST(MessageBox, SetType)
@@ -54,13 +54,13 @@ TEST(MessageBox, SetType)
   cen::message_box mb;
 
   mb.set_type(cen::message_box_type::information);
-  EXPECT_EQ(cen::message_box_type::information, mb.type());
+  ASSERT_EQ(cen::message_box_type::information, mb.type());
 
   mb.set_type(cen::message_box_type::warning);
-  EXPECT_EQ(cen::message_box_type::warning, mb.type());
+  ASSERT_EQ(cen::message_box_type::warning, mb.type());
 
   mb.set_type(cen::message_box_type::error);
-  EXPECT_EQ(cen::message_box_type::error, mb.type());
+  ASSERT_EQ(cen::message_box_type::error, mb.type());
 }
 
 TEST(MessageBox, SetButtonOrder)
@@ -68,10 +68,10 @@ TEST(MessageBox, SetButtonOrder)
   cen::message_box mb;
 
   mb.set_button_order(cen::button_order::left_to_right);
-  EXPECT_EQ(cen::button_order::left_to_right, mb.get_button_order());
+  ASSERT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 
   mb.set_button_order(cen::button_order::right_to_left);
-  EXPECT_EQ(cen::button_order::right_to_left, mb.get_button_order());
+  ASSERT_EQ(cen::button_order::right_to_left, mb.get_button_order());
 }
 
 TEST(MessageBox, HasButton)
@@ -79,42 +79,42 @@ TEST(MessageBox, HasButton)
   cen::message_box mb;
 
   constexpr auto id = 7;
-  EXPECT_FALSE(mb.has_button(id));
+  ASSERT_FALSE(mb.has_button(id));
 
   mb.add_button(id, "foo");
-  EXPECT_TRUE(mb.has_button(id));
+  ASSERT_TRUE(mb.has_button(id));
 }
 
 TEST(MessageBox, Title)
 {
   const cen::message_box mb;
-  EXPECT_EQ("Message box", mb.title());
+  ASSERT_EQ("Message box", mb.title());
 }
 
 TEST(MessageBox, Message)
 {
   const cen::message_box mb;
-  EXPECT_EQ("n/a", mb.message());
+  ASSERT_EQ("n/a", mb.message());
 }
 
 TEST(MessageBox, GetType)
 {
   const cen::message_box mb;
-  EXPECT_EQ(cen::message_box_type::information, mb.type());
+  ASSERT_EQ(cen::message_box_type::information, mb.type());
 }
 
 TEST(MessageBox, GetButtonOrder)
 {
   const cen::message_box mb;
-  EXPECT_EQ(cen::button_order::left_to_right, mb.get_button_order());
+  ASSERT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 }
 
 TEST(MessageBox, TypeEnum)
 {
   using type = cen::message_box_type;
-  EXPECT_EQ(SDL_MESSAGEBOX_INFORMATION, static_cast<int>(type::information));
-  EXPECT_EQ(SDL_MESSAGEBOX_WARNING, static_cast<int>(type::warning));
-  EXPECT_EQ(SDL_MESSAGEBOX_ERROR, static_cast<int>(type::error));
+  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, static_cast<int>(type::information));
+  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, static_cast<int>(type::warning));
+  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, static_cast<int>(type::error));
 }
 
 TEST(MessageBox, ColorSchemeClass)
@@ -124,11 +124,11 @@ TEST(MessageBox, ColorSchemeClass)
     const auto* ptr = scheme.get();
 
     using cen::colors::white;
-    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]);
-    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_TEXT]);
-    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]);
-    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]);
-    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]);
+    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]);
+    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_TEXT]);
+    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]);
+    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]);
+    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]);
   }
 
   {  // Custom scheme
@@ -136,7 +136,7 @@ TEST(MessageBox, ColorSchemeClass)
 
     const auto check = [&](cen::message_box::color_id id, const cen::color& color) {
       scheme.set_color(id, color);
-      EXPECT_EQ(color, scheme.get()->colors[static_cast<cen::u32>(id)]);
+      ASSERT_EQ(color, scheme.get()->colors[static_cast<cen::u32>(id)]);
     };
 
     check(cen::message_box::color_id::background, cen::colors::pink);
@@ -151,40 +151,40 @@ TEST(MessageBox, DefaultButtonEnum)
 {
   using button = cen::message_box::default_button;
 
-  EXPECT_EQ(button::return_key, SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  EXPECT_EQ(button::escape_key, SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+  ASSERT_EQ(button::return_key, SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
+  ASSERT_EQ(button::escape_key, SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
 
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::return_key);
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, button::escape_key);
+  ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::return_key);
+  ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, button::escape_key);
 
-  EXPECT_NE(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::escape_key);
+  ASSERT_NE(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::escape_key);
 }
 
 TEST(MessageBox, ColorIdEnum)
 {
   using id = cen::message_box::color_id;
 
-  EXPECT_EQ(id::button_selected, SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  EXPECT_EQ(id::button_background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  EXPECT_EQ(id::button_border, SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
-  EXPECT_EQ(id::background, SDL_MESSAGEBOX_COLOR_BACKGROUND);
+  ASSERT_EQ(id::button_selected, SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
+  ASSERT_EQ(id::button_background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  ASSERT_EQ(id::button_border, SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
+  ASSERT_EQ(id::background, SDL_MESSAGEBOX_COLOR_BACKGROUND);
 
-  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED, id::button_selected);
-  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND, id::button_background);
-  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_border);
-  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND, id::background);
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED, id::button_selected);
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND, id::button_background);
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_border);
+  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND, id::background);
 
-  EXPECT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  EXPECT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
+  ASSERT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  ASSERT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST(MessageBox, ButtonOrderEnum)
 {
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+  ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
             static_cast<cen::u32>(cen::button_order::left_to_right));
-  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
+  ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
             static_cast<cen::u32>(cen::button_order::right_to_left));
 }
 

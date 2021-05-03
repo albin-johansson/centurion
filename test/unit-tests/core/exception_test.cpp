@@ -12,5 +12,5 @@ static_assert(std::is_nothrow_destructible_v<cen::cen_error>);
 TEST(Exception, CStringConstructor)
 {
   const cen::cen_error exception{"Foo"};
-  EXPECT_STREQ("Foo", exception.what());
+  ASSERT_STREQ("Foo", exception.what());
 }

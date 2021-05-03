@@ -5,8 +5,8 @@
 TEST(MouseMotionEvent, Defaults)
 {
   cen::mouse_motion_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::mouse_motion, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
 TEST(MouseMotionEvent, SetWindowId)
@@ -16,7 +16,7 @@ TEST(MouseMotionEvent, SetWindowId)
   constexpr auto id = 8;
   event.set_window_id(id);
 
-  EXPECT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(MouseMotionEvent, SetWhich)
@@ -26,7 +26,7 @@ TEST(MouseMotionEvent, SetWhich)
   constexpr auto which = 65;
   event.set_which(which);
 
-  EXPECT_EQ(which, event.which());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(MouseMotionEvent, SetState)
@@ -36,7 +36,7 @@ TEST(MouseMotionEvent, SetState)
   constexpr auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
   event.set_state(state);
 
-  EXPECT_EQ(state, event.state());
+  ASSERT_EQ(state, event.state());
 }
 
 TEST(MouseMotionEvent, SetX)
@@ -46,7 +46,7 @@ TEST(MouseMotionEvent, SetX)
   constexpr auto x = 745;
   event.set_x(x);
 
-  EXPECT_EQ(x, event.x());
+  ASSERT_EQ(x, event.x());
 }
 
 TEST(MouseMotionEvent, SetY)
@@ -56,7 +56,7 @@ TEST(MouseMotionEvent, SetY)
   constexpr auto y = 123;
   event.set_y(y);
 
-  EXPECT_EQ(y, event.y());
+  ASSERT_EQ(y, event.y());
 }
 
 TEST(MouseMotionEvent, SetDx)
@@ -66,7 +66,7 @@ TEST(MouseMotionEvent, SetDx)
   constexpr auto dx = -456;
   event.set_dx(dx);
 
-  EXPECT_EQ(dx, event.dx());
+  ASSERT_EQ(dx, event.dx());
 }
 
 TEST(MouseMotionEvent, SetDy)
@@ -76,7 +76,7 @@ TEST(MouseMotionEvent, SetDy)
   constexpr auto dy = 835;
   event.set_dy(dy);
 
-  EXPECT_EQ(dy, event.dy());
+  ASSERT_EQ(dy, event.dy());
 }
 
 TEST(MouseMotionEvent, Pressed)
@@ -84,12 +84,12 @@ TEST(MouseMotionEvent, Pressed)
   cen::mouse_motion_event event;
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
 
-  EXPECT_TRUE(event.pressed(cen::mouse_button::left));
-  EXPECT_TRUE(event.pressed(cen::mouse_button::middle));
+  ASSERT_TRUE(event.pressed(cen::mouse_button::left));
+  ASSERT_TRUE(event.pressed(cen::mouse_button::middle));
 
-  EXPECT_FALSE(event.pressed(cen::mouse_button::right));
-  EXPECT_FALSE(event.pressed(cen::mouse_button::x1));
-  EXPECT_FALSE(event.pressed(cen::mouse_button::x2));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::right));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::x1));
+  ASSERT_FALSE(event.pressed(cen::mouse_button::x2));
 }
 
 TEST(MouseMotionEvent, WindowId)
@@ -98,7 +98,7 @@ TEST(MouseMotionEvent, WindowId)
   sdl.windowID = 45;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(MouseMotionEvent, Which)
@@ -107,7 +107,7 @@ TEST(MouseMotionEvent, Which)
   sdl.which = 77;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.which, event.which());
+  ASSERT_EQ(sdl.which, event.which());
 }
 
 TEST(MouseMotionEvent, State)
@@ -116,7 +116,7 @@ TEST(MouseMotionEvent, State)
   sdl.state = SDL_BUTTON_LMASK;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.state, event.state());
+  ASSERT_EQ(sdl.state, event.state());
 }
 
 TEST(MouseMotionEvent, X)
@@ -125,7 +125,7 @@ TEST(MouseMotionEvent, X)
   sdl.x = 1'867;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.x, event.x());
+  ASSERT_EQ(sdl.x, event.x());
 }
 
 TEST(MouseMotionEvent, Y)
@@ -134,7 +134,7 @@ TEST(MouseMotionEvent, Y)
   sdl.y = 454;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.y, event.y());
+  ASSERT_EQ(sdl.y, event.y());
 }
 
 TEST(MouseMotionEvent, Dx)
@@ -143,7 +143,7 @@ TEST(MouseMotionEvent, Dx)
   sdl.xrel = 78;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.xrel, event.dx());
+  ASSERT_EQ(sdl.xrel, event.dx());
 }
 
 TEST(MouseMotionEvent, Dy)
@@ -152,7 +152,7 @@ TEST(MouseMotionEvent, Dy)
   sdl.yrel = -564;
 
   const cen::mouse_motion_event event{sdl};
-  EXPECT_EQ(sdl.yrel, event.dy());
+  ASSERT_EQ(sdl.yrel, event.dy());
 }
 
 TEST(MouseMotionEvent, AsSDLEvent)
@@ -160,6 +160,6 @@ TEST(MouseMotionEvent, AsSDLEvent)
   const cen::mouse_motion_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.motion.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.motion.timestamp, event.time());
+  ASSERT_EQ(sdl.motion.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.motion.timestamp, event.time());
 }

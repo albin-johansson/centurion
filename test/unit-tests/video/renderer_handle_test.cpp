@@ -30,15 +30,15 @@ TEST_F(RendererHandleTest, RawPointerConstructor)
 {
   {  // Null pointer
     cen::renderer_handle handle{nullptr};
-    EXPECT_FALSE(handle);
-    EXPECT_FALSE(handle.get());
+    ASSERT_FALSE(handle);
+    ASSERT_FALSE(handle.get());
   }
 
   {  // Valid pointer
     const cen::renderer_handle handle{m_renderer->get()};
 
-    EXPECT_TRUE(handle);
-    EXPECT_TRUE(handle.get());
+    ASSERT_TRUE(handle);
+    ASSERT_TRUE(handle.get());
   }
 }
 
@@ -46,8 +46,8 @@ TEST_F(RendererHandleTest, FromOwningRenderer)
 {
   const cen::renderer_handle handle{*m_renderer};
 
-  EXPECT_TRUE(handle);
-  EXPECT_TRUE(handle.get());
+  ASSERT_TRUE(handle);
+  ASSERT_TRUE(handle.get());
 }
 
 TEST_F(RendererHandleTest, ToStringAndStreamOperator)

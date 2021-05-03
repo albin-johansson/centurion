@@ -142,7 +142,7 @@ void test_string_hint(cen::czstring str)
 {
   test_hint<Hint>([str] {
     ASSERT_TRUE(cen::set_hint<Hint>(str));
-    EXPECT_STREQ(str, cen::get_hint<Hint>().value());
+    ASSERT_STREQ(str, cen::get_hint<Hint>().value());
   });
 }
 
@@ -150,7 +150,7 @@ template <typename Hint, typename T>
 void test_enum_value(const T& value)
 {
   ASSERT_TRUE(cen::set_hint<Hint>(value));
-  EXPECT_EQ(value, cen::get_hint<Hint>());
+  ASSERT_EQ(value, cen::get_hint<Hint>());
 }
 
 template <typename Hint, typename... T>
@@ -176,10 +176,10 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(BoolHintTest, HintTest, boolean_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(true));
-    EXPECT_TRUE(cen::get_hint<TypeParam>().value());
+    ASSERT_TRUE(cen::get_hint<TypeParam>().value());
 
     ASSERT_TRUE(cen::set_hint<TypeParam>(false));
-    EXPECT_FALSE(cen::get_hint<TypeParam>().value());
+    ASSERT_FALSE(cen::get_hint<TypeParam>().value());
   });
 }
 
@@ -187,10 +187,10 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1));
-    EXPECT_EQ(1, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(1, cen::get_hint<TypeParam>().value());
 
     ASSERT_TRUE(cen::set_hint<TypeParam>(0));
-    EXPECT_EQ(0, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(0, cen::get_hint<TypeParam>().value());
   });
 }
 
@@ -198,10 +198,10 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest, HintTest, unsigned_hint
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));
-    EXPECT_EQ(1u, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(1u, cen::get_hint<TypeParam>().value());
 
     ASSERT_TRUE(cen::set_hint<TypeParam>(0u));
-    EXPECT_EQ(0u, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(0u, cen::get_hint<TypeParam>().value());
   });
 }
 
@@ -209,10 +209,10 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(FloatHintTest, HintTest, float_hints)
 {
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
-    EXPECT_EQ(1.0f, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(1.0f, cen::get_hint<TypeParam>().value());
 
     ASSERT_TRUE(cen::set_hint<TypeParam>(0.75f));
-    EXPECT_EQ(0.75f, cen::get_hint<TypeParam>().value());
+    ASSERT_EQ(0.75f, cen::get_hint<TypeParam>().value());
   });
 }
 
@@ -458,15 +458,15 @@ TEST_F(BasicHintTest, AddHintCallback)
           const auto ptr = reinterpret_cast<int*>(data);
 
           ASSERT_TRUE(ptr);
-          EXPECT_EQ(7, *ptr);
+          ASSERT_EQ(7, *ptr);
 
-          EXPECT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
-          EXPECT_STREQ("software", oldVal);
-          EXPECT_STREQ("opengl", newVal);
+          ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
+          ASSERT_STREQ("software", oldVal);
+          ASSERT_STREQ("opengl", newVal);
         }
       },
       &data);
-  EXPECT_EQ(&data, handle.user_data());
+  ASSERT_EQ(&data, handle.user_data());
 
   cen::set_hint<render_driver, cen::hint_priority::override>(
       render_driver::value::software);
@@ -480,11 +480,11 @@ TEST_F(BasicHintTest, AddHintCallback)
 TEST_F(BasicHintTest, HintPriority)
 {
   using prio = cen::hint_priority;
-  EXPECT_EQ(prio::low, static_cast<prio>(SDL_HINT_DEFAULT));
-  EXPECT_EQ(prio::normal, static_cast<prio>(SDL_HINT_NORMAL));
-  EXPECT_EQ(prio::override, static_cast<prio>(SDL_HINT_OVERRIDE));
+  ASSERT_EQ(prio::low, static_cast<prio>(SDL_HINT_DEFAULT));
+  ASSERT_EQ(prio::normal, static_cast<prio>(SDL_HINT_NORMAL));
+  ASSERT_EQ(prio::override, static_cast<prio>(SDL_HINT_OVERRIDE));
 
-  EXPECT_EQ(static_cast<prio>(SDL_HINT_DEFAULT), prio::low);
-  EXPECT_EQ(static_cast<prio>(SDL_HINT_NORMAL), prio::normal);
-  EXPECT_EQ(static_cast<prio>(SDL_HINT_OVERRIDE), prio::override);
+  ASSERT_EQ(static_cast<prio>(SDL_HINT_DEFAULT), prio::low);
+  ASSERT_EQ(static_cast<prio>(SDL_HINT_NORMAL), prio::normal);
+  ASSERT_EQ(static_cast<prio>(SDL_HINT_OVERRIDE), prio::override);
 }

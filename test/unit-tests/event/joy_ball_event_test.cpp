@@ -5,8 +5,8 @@
 TEST(JoyBallEvent, Defaults)
 {
   cen::joy_ball_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::joystick_ball_motion, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::joystick_ball_motion, event.type());
 }
 
 TEST(JoyBallEvent, SetWhich)
@@ -16,7 +16,7 @@ TEST(JoyBallEvent, SetWhich)
   constexpr auto which = 3;
   event.set_which(which);
 
-  EXPECT_EQ(which, event.which());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(JoyBallEvent, SetBall)
@@ -26,7 +26,7 @@ TEST(JoyBallEvent, SetBall)
   constexpr auto ball = 7;
   event.set_ball(ball);
 
-  EXPECT_EQ(ball, event.ball());
+  ASSERT_EQ(ball, event.ball());
 }
 
 TEST(JoyBallEvent, SetDx)
@@ -36,7 +36,7 @@ TEST(JoyBallEvent, SetDx)
   constexpr auto dx = 173;
   event.set_dx(dx);
 
-  EXPECT_EQ(dx, event.dx());
+  ASSERT_EQ(dx, event.dx());
 }
 
 TEST(JoyBallEvent, SetDy)
@@ -46,7 +46,7 @@ TEST(JoyBallEvent, SetDy)
   constexpr auto dy = -57;
   event.set_dy(dy);
 
-  EXPECT_EQ(dy, event.dy());
+  ASSERT_EQ(dy, event.dy());
 }
 
 TEST(JoyBallEvent, Which)
@@ -55,7 +55,7 @@ TEST(JoyBallEvent, Which)
   sdl.which = 5;
 
   const cen::joy_ball_event event{sdl};
-  EXPECT_EQ(sdl.which, event.which());
+  ASSERT_EQ(sdl.which, event.which());
 }
 
 TEST(JoyBallEvent, Ball)
@@ -64,7 +64,7 @@ TEST(JoyBallEvent, Ball)
   sdl.ball = 17;
 
   const cen::joy_ball_event event{sdl};
-  EXPECT_EQ(sdl.ball, event.ball());
+  ASSERT_EQ(sdl.ball, event.ball());
 }
 
 TEST(JoyBallEvent, Dx)
@@ -73,7 +73,7 @@ TEST(JoyBallEvent, Dx)
   sdl.xrel = 723;
 
   const cen::joy_ball_event event{sdl};
-  EXPECT_EQ(sdl.xrel, event.dx());
+  ASSERT_EQ(sdl.xrel, event.dx());
 }
 
 TEST(JoyBallEvent, Dy)
@@ -82,7 +82,7 @@ TEST(JoyBallEvent, Dy)
   sdl.yrel = 5933;
 
   const cen::joy_ball_event event{sdl};
-  EXPECT_EQ(sdl.yrel, event.dy());
+  ASSERT_EQ(sdl.yrel, event.dy());
 }
 
 TEST(JoyBallEvent, AsSDLEvent)
@@ -90,6 +90,6 @@ TEST(JoyBallEvent, AsSDLEvent)
   const cen::joy_ball_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.jball.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.jball.timestamp, event.time());
+  ASSERT_EQ(sdl.jball.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.jball.timestamp, event.time());
 }

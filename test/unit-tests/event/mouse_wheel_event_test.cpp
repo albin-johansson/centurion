@@ -5,8 +5,8 @@
 TEST(MouseWheelEvent, Defaults)
 {
   cen::mouse_wheel_event event;
-  EXPECT_GT(event.time(), 0u);
-  EXPECT_EQ(cen::event_type::mouse_wheel, event.type());
+  ASSERT_GT(event.time(), 0u);
+  ASSERT_EQ(cen::event_type::mouse_wheel, event.type());
 }
 
 TEST(MouseWheelEvent, SetWindowId)
@@ -16,7 +16,7 @@ TEST(MouseWheelEvent, SetWindowId)
   constexpr auto id = 32;
   event.set_window_id(id);
 
-  EXPECT_EQ(id, event.window_id());
+  ASSERT_EQ(id, event.window_id());
 }
 
 TEST(MouseWheelEvent, SetWhich)
@@ -26,7 +26,7 @@ TEST(MouseWheelEvent, SetWhich)
   constexpr auto which = 32;
   event.set_which(which);
 
-  EXPECT_EQ(which, event.which());
+  ASSERT_EQ(which, event.which());
 }
 
 TEST(MouseWheelEvent, SetXScroll)
@@ -36,7 +36,7 @@ TEST(MouseWheelEvent, SetXScroll)
   constexpr auto xScroll = -545;
   event.set_x_scroll(xScroll);
 
-  EXPECT_EQ(xScroll, event.x_scroll());
+  ASSERT_EQ(xScroll, event.x_scroll());
 }
 
 TEST(MouseWheelEvent, SetYScroll)
@@ -46,7 +46,7 @@ TEST(MouseWheelEvent, SetYScroll)
   constexpr auto yScroll = 725;
   event.set_y_scroll(yScroll);
 
-  EXPECT_EQ(yScroll, event.y_scroll());
+  ASSERT_EQ(yScroll, event.y_scroll());
 }
 
 TEST(MouseWheelEvent, SetDirection)
@@ -56,7 +56,7 @@ TEST(MouseWheelEvent, SetDirection)
   constexpr auto direction = cen::mouse_wheel_direction::flipped;
   event.set_direction(direction);
 
-  EXPECT_EQ(direction, event.direction());
+  ASSERT_EQ(direction, event.direction());
 }
 
 TEST(MouseWheelEvent, WindowId)
@@ -65,7 +65,7 @@ TEST(MouseWheelEvent, WindowId)
   sdl.windowID = 12;
 
   const cen::mouse_wheel_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(MouseWheelEvent, Which)
@@ -74,7 +74,7 @@ TEST(MouseWheelEvent, Which)
   sdl.windowID = 12;
 
   const cen::mouse_wheel_event event{sdl};
-  EXPECT_EQ(sdl.windowID, event.window_id());
+  ASSERT_EQ(sdl.windowID, event.window_id());
 }
 
 TEST(MouseWheelEvent, XScroll)
@@ -83,7 +83,7 @@ TEST(MouseWheelEvent, XScroll)
   sdl.x = 455;
 
   const cen::mouse_wheel_event event{sdl};
-  EXPECT_EQ(sdl.x, event.x_scroll());
+  ASSERT_EQ(sdl.x, event.x_scroll());
 }
 
 TEST(MouseWheelEvent, YScroll)
@@ -92,7 +92,7 @@ TEST(MouseWheelEvent, YScroll)
   sdl.y = -123;
 
   const cen::mouse_wheel_event event{sdl};
-  EXPECT_EQ(sdl.y, event.y_scroll());
+  ASSERT_EQ(sdl.y, event.y_scroll());
 }
 
 TEST(MouseWheelEvent, Direction)
@@ -101,7 +101,7 @@ TEST(MouseWheelEvent, Direction)
   sdl.direction = SDL_MOUSEWHEEL_NORMAL;
 
   const cen::mouse_wheel_event event{sdl};
-  EXPECT_EQ(cen::mouse_wheel_direction::normal, event.direction());
+  ASSERT_EQ(cen::mouse_wheel_direction::normal, event.direction());
 }
 
 TEST(MouseWheelEvent, AsSDLEvent)
@@ -109,6 +109,6 @@ TEST(MouseWheelEvent, AsSDLEvent)
   const cen::mouse_wheel_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  EXPECT_EQ(sdl.wheel.type, static_cast<cen::u32>(event.type()));
-  EXPECT_EQ(sdl.wheel.timestamp, event.time());
+  ASSERT_EQ(sdl.wheel.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.wheel.timestamp, event.time());
 }

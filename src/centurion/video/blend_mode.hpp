@@ -16,8 +16,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_BlendMode`
- *
- * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {

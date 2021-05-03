@@ -13,12 +13,10 @@ namespace cen {
 /**
  * \class try_lock
  *
- * \brief Represents an RAII-style non-blocking lock that automatically unlocks
- * the associated mutex upon destruction.
+ * \brief Represents an RAII-style non-blocking lock that automatically unlocks the
+ * associated mutex upon destruction.
  *
  * \since 5.0.0
- *
- * \headerfile try_lock.hpp
  */
 class try_lock final
 {
@@ -75,8 +73,7 @@ class try_lock final
   }
 
   /**
-   * \brief Indicates whether or not the lock timed out whilst trying to lock
-   * the mutex.
+   * \brief Indicates whether or not the lock timed out whilst trying to lock the mutex.
    *
    * \return `true` if the locking timed out; `false` otherwise.
    *
@@ -88,11 +85,9 @@ class try_lock final
   }
 
   /**
-   * \brief Indicates whether or not there was an error whilst locking the
-   * mutex.
+   * \brief Indicates whether or not there was an error whilst locking the mutex.
    *
-   * \return `true` if something went wrong whilst locking the mutex; `false`
-   * otherwise.
+   * \return `true` if something went wrong whilst locking the mutex; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -101,9 +96,7 @@ class try_lock final
     return get_status() == lock_status::error;
   }
 
-  /**
-   * \copydoc success()
-   */
+  /// \copydoc success()
   [[nodiscard]] explicit operator bool() const noexcept
   {
     return success();

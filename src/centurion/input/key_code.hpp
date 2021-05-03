@@ -21,28 +21,25 @@ namespace cen {
  *
  * \brief Represents a key code (or virtual key).
  *
- * \details Key codes are mapped to the current layout of the keyboard and
- * correlate to a `scan_code`. Whilst scan codes identify the *location* of
- * a key press, the corresponding key codes give the key press *meaning* in
- * the context of the current keyboard layout.
+ * \details Key codes are mapped to the current layout of the keyboard and correlate to a
+ * `scan_code`. Whilst scan codes identify the *location* of a key press, the
+ * corresponding key codes give the key press *meaning* in the context of the current
+ * keyboard layout.
  *
- * Keycodes are meant to be layout-dependent. Think of this as "the user pressed
- * the key that is labelled 'Q' on a specific keyboard."
+ * Keycodes are meant to be layout-dependent. Think of this as "the user pressed the key
+ * that is labelled 'Q' on a specific keyboard."
  *
- * For example, if you pressed the key that's two keys to the right of CAPS
- * LOCK on a US QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a
- * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
- * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
+ * For example, if you pressed the key that's two keys to the right of CAPS LOCK on a US
+ * QWERTY keyboard, it'll report a scancode of SDL_SCANCODE_S and a keycode of SDLK_S. The
+ * same key on a Dvorak keyboard, will report a scancode of SDL_SCANCODE_S and a keycode
+ * of SDLK_O.
  *
- * \note Key codes are sometimes referred to as "keysyms" in the SDL
- * documentation.
+ * \note Key codes are sometimes referred to as "keysyms" in the SDL documentation.
  *
  * \since 5.0.0
  *
  * \see `scan_code`
  * \see `cen::keycodes`
- *
- * \headerfile key_code.hpp
  */
 class key_code final
 {
@@ -177,11 +174,10 @@ class key_code final
   }
 
   /**
-   * \brief Sets the key code used to be the one associated with the
-   * specified name.
+   * \brief Sets the key code used to be the one associated with the specified name.
    *
-   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
-   * the key code.
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as the key
+   * code.
    *
    * \param name the name of the key.
    *
@@ -202,8 +198,7 @@ class key_code final
   /**
    * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
    *
-   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
-   * otherwise.
+   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false` otherwise.
    *
    * \since 5.0.0
    */
@@ -286,7 +281,7 @@ class key_code final
    *
    * \return the scan code associated with the internal key code.
    *
-   * \see `SDL_GetScancodeFromKey`
+   * \see `to_scan_code()`
    *
    * \since 5.0.0
    */
@@ -300,9 +295,8 @@ class key_code final
   /**
    * \brief Serializes the key code.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -391,8 +385,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
  *
  * \brief Provides a collection of `key_code` constants.
  *
- * \details Far from all key codes are provided. Instead, some of the most
- * commonly used key codes are available.
+ * \details Far from all key codes are provided. Instead, some of the most commonly used
+ * key codes are available.
  *
  * \since 5.0.0
  */
@@ -402,8 +396,6 @@ namespace keycodes {
  * \brief Represents an unknown key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code unknown;
 
@@ -411,8 +403,6 @@ inline constexpr key_code unknown;
  * \brief Represents the key with the label "A".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code a{SDLK_a};
 
@@ -420,8 +410,6 @@ inline constexpr key_code a{SDLK_a};
  * \brief Represents the key with the label "B".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code b{SDLK_b};
 
@@ -429,8 +417,6 @@ inline constexpr key_code b{SDLK_b};
  * \brief Represents the key with the label "C".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code c{SDLK_c};
 
@@ -438,8 +424,6 @@ inline constexpr key_code c{SDLK_c};
  * \brief Represents the key with the label "D".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code d{SDLK_d};
 
@@ -447,8 +431,6 @@ inline constexpr key_code d{SDLK_d};
  * \brief Represents the key with the label "E".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code e{SDLK_e};
 
@@ -456,8 +438,6 @@ inline constexpr key_code e{SDLK_e};
  * \brief Represents the key with the label "F".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f{SDLK_f};
 
@@ -465,8 +445,6 @@ inline constexpr key_code f{SDLK_f};
  * \brief Represents the key with the label "G".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code g{SDLK_g};
 
@@ -474,8 +452,6 @@ inline constexpr key_code g{SDLK_g};
  * \brief Represents the key with the label "H".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code h{SDLK_h};
 
@@ -483,8 +459,6 @@ inline constexpr key_code h{SDLK_h};
  * \brief Represents the key with the label "I".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code i{SDLK_i};
 
@@ -492,8 +466,6 @@ inline constexpr key_code i{SDLK_i};
  * \brief Represents the key with the label "J".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code j{SDLK_j};
 
@@ -501,8 +473,6 @@ inline constexpr key_code j{SDLK_j};
  * \brief Represents the key with the label "K".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code k{SDLK_k};
 
@@ -510,8 +480,6 @@ inline constexpr key_code k{SDLK_k};
  * \brief Represents the key with the label "L".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code l{SDLK_l};
 
@@ -519,8 +487,6 @@ inline constexpr key_code l{SDLK_l};
  * \brief Represents the key with the label "M".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code m{SDLK_m};
 
@@ -528,8 +494,6 @@ inline constexpr key_code m{SDLK_m};
  * \brief Represents the key with the label "N".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code n{SDLK_n};
 
@@ -537,8 +501,6 @@ inline constexpr key_code n{SDLK_n};
  * \brief Represents the key with the label "O".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code o{SDLK_o};
 
@@ -546,8 +508,6 @@ inline constexpr key_code o{SDLK_o};
  * \brief Represents the key with the label "P".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code p{SDLK_p};
 
@@ -555,8 +515,6 @@ inline constexpr key_code p{SDLK_p};
  * \brief Represents the key with the label "Q".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code q{SDLK_q};
 
@@ -564,8 +522,6 @@ inline constexpr key_code q{SDLK_q};
  * \brief Represents the key with the label "R".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code r{SDLK_r};
 
@@ -573,8 +529,6 @@ inline constexpr key_code r{SDLK_r};
  * \brief Represents the key with the label "S".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code s{SDLK_s};
 
@@ -582,8 +536,6 @@ inline constexpr key_code s{SDLK_s};
  * \brief Represents the key with the label "T".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code t{SDLK_t};
 
@@ -591,8 +543,6 @@ inline constexpr key_code t{SDLK_t};
  * \brief Represents the key with the label "U".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code u{SDLK_u};
 
@@ -600,8 +550,6 @@ inline constexpr key_code u{SDLK_u};
  * \brief Represents the key with the label "V".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code v{SDLK_v};
 
@@ -609,8 +557,6 @@ inline constexpr key_code v{SDLK_v};
  * \brief Represents the key with the label "W".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code w{SDLK_w};
 
@@ -618,8 +564,6 @@ inline constexpr key_code w{SDLK_w};
  * \brief Represents the key with the label "X".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code x{SDLK_x};
 
@@ -627,8 +571,6 @@ inline constexpr key_code x{SDLK_x};
  * \brief Represents the key with the label "Y".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code y{SDLK_y};
 
@@ -636,8 +578,6 @@ inline constexpr key_code y{SDLK_y};
  * \brief Represents the key with the label "Z".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code z{SDLK_z};
 
@@ -647,8 +587,6 @@ inline constexpr key_code z{SDLK_z};
  * \note This is not for a potential "1" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code one{SDLK_1};
 
@@ -658,8 +596,6 @@ inline constexpr key_code one{SDLK_1};
  * \note This is not for a potential "2" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code two{SDLK_2};
 
@@ -669,8 +605,6 @@ inline constexpr key_code two{SDLK_2};
  * \note This is not for a potential "3" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code three{SDLK_3};
 
@@ -680,8 +614,6 @@ inline constexpr key_code three{SDLK_3};
  * \note This is not for a potential "4" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code four{SDLK_4};
 
@@ -691,8 +623,6 @@ inline constexpr key_code four{SDLK_4};
  * \note This is not for a potential "5" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code five{SDLK_5};
 
@@ -702,8 +632,6 @@ inline constexpr key_code five{SDLK_5};
  * \note This is not for a potential "6" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code six{SDLK_6};
 
@@ -713,8 +641,6 @@ inline constexpr key_code six{SDLK_6};
  * \note This is not for a potential "7" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code seven{SDLK_7};
 
@@ -724,8 +650,6 @@ inline constexpr key_code seven{SDLK_7};
  * \note This is not for a potential "8" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code eight{SDLK_8};
 
@@ -735,8 +659,6 @@ inline constexpr key_code eight{SDLK_8};
  * \note This is not for a potential "9" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code nine{SDLK_9};
 
@@ -746,8 +668,6 @@ inline constexpr key_code nine{SDLK_9};
  * \note This is not for a potential "0" key on the key pad.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code zero{SDLK_0};
 
@@ -755,8 +675,6 @@ inline constexpr key_code zero{SDLK_0};
  * \brief Represents the function key "F1".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f1{SDLK_F1};
 
@@ -764,8 +682,6 @@ inline constexpr key_code f1{SDLK_F1};
  * \brief Represents the function key "F2".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f2{SDLK_F2};
 
@@ -773,8 +689,6 @@ inline constexpr key_code f2{SDLK_F2};
  * \brief Represents the function key "F3".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f3{SDLK_F3};
 
@@ -782,8 +696,6 @@ inline constexpr key_code f3{SDLK_F3};
  * \brief Represents the function key "F4".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f4{SDLK_F4};
 
@@ -791,8 +703,6 @@ inline constexpr key_code f4{SDLK_F4};
  * \brief Represents the function key "F5".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f5{SDLK_F5};
 
@@ -800,8 +710,6 @@ inline constexpr key_code f5{SDLK_F5};
  * \brief Represents the function key "F6".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f6{SDLK_F6};
 
@@ -809,8 +717,6 @@ inline constexpr key_code f6{SDLK_F6};
  * \brief Represents the function key "F7".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f7{SDLK_F7};
 
@@ -818,8 +724,6 @@ inline constexpr key_code f7{SDLK_F7};
  * \brief Represents the function key "F8".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f8{SDLK_F8};
 
@@ -827,8 +731,6 @@ inline constexpr key_code f8{SDLK_F8};
  * \brief Represents the function key "F9".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f9{SDLK_F9};
 
@@ -836,8 +738,6 @@ inline constexpr key_code f9{SDLK_F9};
  * \brief Represents the function key "F10".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f10{SDLK_F10};
 
@@ -845,8 +745,6 @@ inline constexpr key_code f10{SDLK_F10};
  * \brief Represents the function key "F11".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f11{SDLK_F11};
 
@@ -854,8 +752,6 @@ inline constexpr key_code f11{SDLK_F11};
  * \brief Represents the function key "F12".
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code f12{SDLK_F12};
 
@@ -863,8 +759,6 @@ inline constexpr key_code f12{SDLK_F12};
  * \brief Represents the left arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left{SDLK_LEFT};
 
@@ -872,8 +766,6 @@ inline constexpr key_code left{SDLK_LEFT};
  * \brief Represents the right arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right{SDLK_RIGHT};
 
@@ -881,8 +773,6 @@ inline constexpr key_code right{SDLK_RIGHT};
  * \brief Represents the up arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code up{SDLK_UP};
 
@@ -890,8 +780,6 @@ inline constexpr key_code up{SDLK_UP};
  * \brief Represents the down arrow key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code down{SDLK_DOWN};
 
@@ -899,8 +787,6 @@ inline constexpr key_code down{SDLK_DOWN};
  * \brief Represents the "Space" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code space{SDLK_SPACE};
 
@@ -910,8 +796,6 @@ inline constexpr key_code space{SDLK_SPACE};
  * \note This key is also referred to as the "Return" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code enter{SDLK_RETURN};
 
@@ -919,8 +803,6 @@ inline constexpr key_code enter{SDLK_RETURN};
  * \brief Represents the "Escape" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code escape{SDLK_ESCAPE};
 
@@ -928,8 +810,6 @@ inline constexpr key_code escape{SDLK_ESCAPE};
  * \brief Represents the "Backspace" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code backspace{SDLK_BACKSPACE};
 
@@ -937,8 +817,6 @@ inline constexpr key_code backspace{SDLK_BACKSPACE};
  * \brief Represents the "Tab" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code tab{SDLK_TAB};
 
@@ -946,8 +824,6 @@ inline constexpr key_code tab{SDLK_TAB};
  * \brief Represents the "Caps Lock" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
 
@@ -955,8 +831,6 @@ inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
  * \brief Represents the left "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_shift{SDLK_LSHIFT};
 
@@ -964,8 +838,6 @@ inline constexpr key_code left_shift{SDLK_LSHIFT};
  * \brief Represents the right "Shift" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_shift{SDLK_RSHIFT};
 
@@ -973,8 +845,6 @@ inline constexpr key_code right_shift{SDLK_RSHIFT};
  * \brief Represents the left "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_ctrl{SDLK_LCTRL};
 
@@ -982,8 +852,6 @@ inline constexpr key_code left_ctrl{SDLK_LCTRL};
  * \brief Represents the right "CTRL" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_ctrl{SDLK_RCTRL};
 
@@ -991,8 +859,6 @@ inline constexpr key_code right_ctrl{SDLK_RCTRL};
  * \brief Represents the left "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_alt{SDLK_LALT};
 
@@ -1000,32 +866,24 @@ inline constexpr key_code left_alt{SDLK_LALT};
  * \brief Represents the right "Alt" key.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_alt{SDLK_RALT};
 
 /**
  * \brief Represents the left "GUI" key.
  *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code left_gui{SDLK_LGUI};
 
 /**
  * \brief Represents the right "GUI" key.
  *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
- * etc.
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
  *
  * \since 5.0.0
- *
- * \headerfile key.hpp
  */
 inline constexpr key_code right_gui{SDLK_RGUI};
 

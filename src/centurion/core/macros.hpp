@@ -27,8 +27,8 @@
 /**
  * \def CENTURION_SDL_VERSION_IS
  *
- * \brief This macro is meant to be used when conditionally including code for a
- * specific version of SDL. It is useful for applying workarounds.
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
  *
  * \since 5.3.0
  */

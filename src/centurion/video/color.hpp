@@ -26,8 +26,6 @@ namespace cen {
  * provided in the `cen::colors` namespace,
  *
  * \since 3.0.0
- *
- * \see `cen::colors`
  */
 class color final
 {
@@ -48,8 +46,7 @@ class color final
    * \param red the red component value, in the range [0, 255].
    * \param green the green component value, in the range [0, 255].
    * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
-   * 255.
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
    *
    * \since 3.0.0
    */
@@ -73,8 +70,8 @@ class color final
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * \details Message box colors don't have an alpha component so the created
-   * color will feature an alpha value of 255.
+   * \details Message box colors don't have an alpha component so the created color will
+   * feature an alpha value of 255.
    *
    * \param color the message box color that will be copied.
    *
@@ -452,9 +449,8 @@ class color final
   /**
    * \brief Serializes the color.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -473,8 +469,7 @@ class color final
    *
    * \param alpha the alpha component value that will be used by the new color.
    *
-   * \return a color that is identical to the color except for the alpha
-   * component.
+   * \return a color that is identical to the color except for the alpha component.
    *
    * \since 5.0.0
    */
@@ -488,17 +483,15 @@ class color final
    *
    * \pre `bias` should be in the range [0, 1].
    *
-   * \details This function applies a linear interpolation for each color
-   * component to obtain the blended color. The bias parameter is the "alpha"
-   * for the interpolation, which determines how the input colors are blended.
-   * For example, a bias of 0 or 1 will simply result in the first or second
-   * color being returned, respectively. Subsequently, a bias of 0.5 will blend
-   * the two colors evenly.
+   * \details This function applies a linear interpolation for each color component to
+   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+   * simply result in the first or second color being returned, respectively.
+   * Subsequently, a bias of 0.5 will blend the two colors evenly.
    *
    * \param a the first color.
    * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the
-   * range [0, 1].
+   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
    *
    * \return a color obtained by blending the two supplied colors.
    *

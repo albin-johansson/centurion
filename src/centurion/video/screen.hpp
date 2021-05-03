@@ -20,8 +20,6 @@ namespace cen {
  *
  * \brief Provides diagonal, horizontal and vertical DPI values.
  *
- * \headerfile screen.hpp
- *
  * \since 5.0.0
  */
 struct dpi_info final
@@ -39,8 +37,6 @@ struct dpi_info final
  * \since 5.0.0
  *
  * \see SDL_DisplayOrientation
- *
- * \headerfile screen.hpp
  */
 enum class screen_orientation : int
 {
@@ -99,8 +95,6 @@ inline void set_screen_saver_enabled(const bool enabled) noexcept
  * \brief Contains functions that provide information about screen(s).
  *
  * \since 5.0.0
- *
- * \headerfile screen.hpp
  */
 namespace cen::screen {
 
@@ -180,8 +174,7 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the refresh rate of the screen; `std::nullopt` if something goes
- * wrong.
+ * \return the refresh rate of the screen; `std::nullopt` if something goes wrong.
  *
  * \since 3.0.0
  */
@@ -200,15 +193,14 @@ namespace cen::screen {
 /**
  * \brief Returns the pixel format of the desktop display mode.
  *
- * \note This function returns the pixel format used by the desktop display
- * mode, i.e. the fullscreen display mode, so it might not be accurate for
- * non-fullscreen windows.
+ * \note This function returns the pixel format used by the desktop display mode, i.e. the
+ * fullscreen display mode, so it might not be accurate for non-fullscreen windows.
  *
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the pixel format of the desktop display mode; `std::nullopt` if
- * something goes wrong.
+ * \return the pixel format of the desktop display mode; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 3.0.0
  */
@@ -297,8 +289,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return DPI information about the specified display; `std::nullopt` if
- * something went wrong.
+ * \return DPI information about the specified display; `std::nullopt` if something went
+ * wrong.
  *
  * \see SDL_GetDisplayDPI
  *
@@ -307,9 +299,7 @@ namespace cen::screen {
 [[nodiscard]] inline auto dpi(const int index = 0) noexcept -> std::optional<dpi_info>
 {
   dpi_info info;
-  const auto res =
-      SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical);
-  if (res == 0)
+  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0)
   {
     return info;
   }
@@ -325,8 +315,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the vertical DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the vertical DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -349,8 +339,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the diagonal DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the diagonal DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -373,8 +363,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the horizontal DPI information about the specified display;
- * `std::nullopt` if something went wrong.
+ * \return the horizontal DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
  *
  * \since 5.0.0
  */
@@ -397,8 +387,7 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the bounds of the specified display; `std::nullopt` if something went
- * wrong.
+ * \return the bounds of the specified display; `std::nullopt` if something went wrong.
  *
  * \see SDL_GetDisplayBounds
  *
@@ -423,8 +412,8 @@ namespace cen::screen {
  * \param index the index of the queried display, in the range [0,
  * `cen::screen::count()`].
  *
- * \return the usable bounds of the specified display; `std::nullopt` if
- * something went wrong.
+ * \return the usable bounds of the specified display; `std::nullopt` if something went
+ * wrong.
  *
  * \see SDL_GetDisplayUsableBounds
  *

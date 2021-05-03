@@ -28,8 +28,6 @@ namespace cen::touch {
  * \brief Represents the state of a finger.
  *
  * \since 5.2.0
- *
- * \headerfile touch.hpp
  */
 struct finger_state final
 {
@@ -44,30 +42,18 @@ struct finger_state final
  *
  * \brief Provides values that represent different touch device types.
  *
- * \var device_type::invalid
- * Indicates an invalid touch device type.
- *
- * \var device_type::direct
- * Indicates a touch screen with window-relative coordinates.
- *
- * \var device_type::indirect_absolute
- * Indicates a trackpad with absolute device coordinates.
- *
- * \var device_type::indirect_relative
- * Indicates a trackpad with screen cursor-relative coordinates.
- *
  * \see `SDL_TouchDeviceType`
  *
  * \since 4.3.0
- *
- * \headerfile touch.hpp
  */
 enum class device_type
 {
-  invalid = SDL_TOUCH_DEVICE_INVALID,
-  direct = SDL_TOUCH_DEVICE_DIRECT,
-  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
-  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
+  // clang-format off
+  invalid = SDL_TOUCH_DEVICE_INVALID,                     ///< Invalid touch device.
+  direct = SDL_TOUCH_DEVICE_DIRECT,                       ///< Touch screen with window-relative coordinates.
+  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE, ///< Trackpad with absolute device coordinates.
+  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE  ///< Trackpad with screen cursor-relative coordinates.
+  // clang-format on
 };
 
 /**
@@ -87,7 +73,8 @@ enum class device_type
  *
  * \param index the index of the desired touch device.
  *
- * \return a `SDL_TouchID` value; or `std::nullopt` if there is no such value.
+ * \return the touch device ID associated with the index; `std::nullopt` if there is no
+ * such value.
  *
  * \since 4.3.0
  */
@@ -139,8 +126,7 @@ enum class device_type
  * \param id the touch ID of the finger.
  * \param index the index of the finger object.
  *
- * \return an `SDL_Finger` instance; or `std::nullopt` if no such instance could
- * be obtained.
+ * \return the associated finger; `std::nullopt` if no such instance could be obtained.
  *
  * \since 4.3.0
  */
@@ -158,8 +144,7 @@ enum class device_type
 }
 
 /**
- * \brief Returns the device ID used for mouse events simulated with touch
- * input.
+ * \brief Returns the device ID used for mouse events simulated with touch input.
  *
  * \return a device ID.
  *
@@ -171,10 +156,9 @@ enum class device_type
 }
 
 /**
- * \brief Returns the `SDL_TouchID` used by touch events simulated with mouse
- * input.
+ * \brief Returns the touch ID used by touch events simulated with mouse input.
  *
- * \return a `SDL_TouchID` value.
+ * \return the touch ID used by touch events simulated with mouse input.
  *
  * \since 4.3.0
  */

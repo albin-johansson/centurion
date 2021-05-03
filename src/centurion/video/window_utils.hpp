@@ -18,8 +18,8 @@ namespace cen {
 /**
  * \brief Returns a handle to the currently grabbed window.
  *
- * \return a handle to the currently grabbed window, might not refer to a
- * valid window if there is no grabbed window.
+ * \return a handle to the currently grabbed window, might not refer to a valid window if
+ * there is no grabbed window.
  *
  * \since 5.0.0
  */
@@ -57,8 +57,8 @@ namespace cen {
  *
  * \param id the ID associated with the desired window.
  *
- * \return a handle to the window associated with the ID, might not refer to a
- * valid window if there no matching window.
+ * \return a handle to the window associated with the ID, might not refer to a valid
+ * window if there no matching window.
  *
  * \since 5.0.0
  */
@@ -70,18 +70,18 @@ namespace cen {
 /**
  * \brief Returns a handle to the renderer associated with a window.
  *
- * \details The returned handle will be null if the supplied window doesn't
- * have an associated renderer.
+ * \details The returned handle will be null if the supplied window doesn't have an
+ * associated renderer.
  *
- * \note You should always check whether or not the returned handle contains
- * a valid renderer pointer before using it!
+ * \note You should always check whether or not the returned handle contains a valid
+ * renderer pointer before using it!
  *
  * \tparam T the type of the derived window.
  *
  * \param window the window associated with the desired renderer.
  *
- * \return a handle to the associated renderer, might not contain a valid
- * renderer pointer.
+ * \return a handle to the associated renderer, might not contain a valid renderer
+ * pointer.
  *
  * \since 5.0.0
  */

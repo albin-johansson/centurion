@@ -14,8 +14,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *

@@ -25,8 +25,8 @@ namespace cen {
  *
  * \brief Provides rectangle traits used by `basic_rect`.
  *
- * \note Whilst it is possible to supply a type that isn't `int` or `float`,
- * rectangles will always use one of them as the representation type.
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`, rectangles
+ * will always use one of them as the representation type.
  *
  * \tparam T the representation type, must be convertible to `int` or `float`.
  *
@@ -35,8 +35,6 @@ namespace cen {
  * \see `frect`
  *
  * \since 5.0.0
- *
- * \headerfile rect.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
@@ -252,8 +250,8 @@ class basic_rect final
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_x()` with
-   * the sum of `x()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_x()` with the sum of
+   * `x()` and `offset`.
    *
    * \param offset the offset to the x-coordinate of the rectangle.
    *
@@ -267,8 +265,8 @@ class basic_rect final
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_y()` with
-   * the sum of `y()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_y()` with the sum of
+   * `y()` and `offset`.
    *
    * \param offset the offset to the y-coordinate of the rectangle.
    *
@@ -282,8 +280,8 @@ class basic_rect final
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_width()`
-   * with the sum of `width()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_width()` with the
+   * sum of `width()` and `offset`.
    *
    * \param offset the offset to the width of the rectangle.
    *
@@ -297,8 +295,8 @@ class basic_rect final
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
    *
-   * \details This function is effectively equivalent to calling `set_height()`
-   * with the sum of `height()` and `offset`.
+   * \details This function is effectively equivalent to calling `set_height()` with the
+   * sum of `height()` and `offset`.
    *
    * \param offset the offset to the height of the rectangle.
    *
@@ -312,9 +310,8 @@ class basic_rect final
   /**
    * \brief Sets the position of the rectangle.
    *
-   * \note Some frameworks have this kind of function change the size of the
-   * rectangle. However, this function does *not* change the size of the
-   * rectangle.
+   * \note Some frameworks have this kind of function change the size of the rectangle.
+   * However, this function does *not* change the size of the rectangle.
    *
    * \param pos the new position of the rectangle.
    *
@@ -623,9 +620,8 @@ class basic_rect final
   /**
    * \brief Serializes the rectangle.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -649,10 +645,9 @@ class basic_rect final
 /**
  * \brief Creates a rectangle with automatically deduced precision.
  *
- * \note The only supported precisions for rectangles are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for rectangles are `int` and `float`, so this
+ * function will cast the supplied values to the corresponding type. For example, if you
+ * supply doubles to this function, the returned point will use float as the precision.
  *
  * \tparam T the deduced precision type.
  *
@@ -682,9 +677,8 @@ template <typename T, enable_if_number_t<T> = 0>
 /**
  * \brief Indicates whether or not the two rectangles intersect.
  *
- * \details This function does *not* consider rectangles with overlapping
- * borders as intersecting. If you want such behaviour, see the
- * `collides` function.
+ * \details This function does *not* consider rectangles with overlapping borders as
+ * intersecting. If you want such behaviour, see the `collides` function.
  *
  * \tparam T the representation type used by the rectangles.
  *
@@ -708,8 +702,7 @@ template <typename T>
 /**
  * \brief Indicates whether or not two rectangles are colliding.
  *
- * \details This function considers rectangles with overlapping borders as
- * colliding.
+ * \details This function considers rectangles with overlapping borders as colliding.
  *
  * \tparam T the representation type used by the rectangles.
  *

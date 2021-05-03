@@ -17,20 +17,20 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */

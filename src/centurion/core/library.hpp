@@ -60,8 +60,7 @@ namespace cen {
  *
  * \brief Used to specify how the library is initialized.
  *
- * \details All fields are initialized to the default values used by the
- * library.
+ * \details All fields are initialized to the default values used by the library.
  *
  * \since 4.0.0
  *
@@ -81,29 +80,22 @@ namespace cen {
  * Flags passed on to `SDL_Init()`, if \ref config.initCore is `true`.
  *
  * \var config::imageFlags
- * Flags passed on to `IMG_Init()`, if \ref config.initImage is
- * `true`.
+ * Flags passed on to `IMG_Init()`, if \ref config.initImage is `true`.
  *
  * \var config::mixerFlags
- * Flags passed on to `Mix_Init()`, if \ref config.initMixer is
- * `true`.
+ * Flags passed on to `Mix_Init()`, if \ref config.initMixer is `true`.
  *
  * \var config::mixerFreq
- * The frequency used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
+ * The frequency used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerFormat
  * The format used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerChannels
- * The amount of channels used by SDL2_mixer, if \ref config.initMixer
- * is `true`.
+ * The amount of channels used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
  * \var config::mixerChunkSize
- * The chunk size used by SDL2_mixer, if \ref config.initMixer is
- * `true`.
- *
- * \headerfile library.hpp
+ * The chunk size used by SDL2_mixer, if \ref config.initMixer is `true`.
  */
 struct config final
 {
@@ -148,8 +140,6 @@ struct config final
  * using the Centurion library!
  *
  * \since 3.0.0
- *
- * \headerfile library.hpp
  */
 class library final
 {
@@ -157,12 +147,12 @@ class library final
   /**
    * \brief Initializes the library.
    *
-   * \note Make sure to have the `library` instance as a local variable that
-   * will outlive the duration of your main program. It's not sufficient to just
-   * call the constructor but not store the result as a variable.
+   * \note Make sure to have the `library` instance as a local variable that will outlive
+   * the duration of your main program. It's not sufficient to just call the constructor
+   * but not store the result as a variable.
    *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
+   * \pre there mustn't exist any other instances of this class at the time of invocation
+   * of this constructor.
    *
    * \throws sdl_error if the core SDL2 library can't be initialized.
    * \throws img_error if the SDL2_image library can't be initialized.
@@ -179,8 +169,8 @@ class library final
   /**
    * \brief Initializes the library according to the supplied configuration.
    *
-   * \pre there mustn't exist any other instances of this class at the time of
-   * invocation of this constructor.
+   * \pre there mustn't exist any other instances of this class at the time of invocation
+   * of this constructor.
    *
    * \param cfg the configuration spec, determines what gets initialized.
    *

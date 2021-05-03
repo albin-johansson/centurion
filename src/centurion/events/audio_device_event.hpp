@@ -14,14 +14,12 @@ namespace cen {
 /**
  * \class audio_device_event
  *
- * \brief Represents an event that is associated with some sort of audio
- * device, either capture of output.
+ * \brief Represents an event that is associated with some sort of audio device, either
+ * capture of output.
  *
  * \see `SDL_AudioDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile audio_device_event.hpp
  */
 class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 {

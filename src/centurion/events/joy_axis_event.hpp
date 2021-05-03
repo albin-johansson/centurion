@@ -20,8 +20,6 @@ namespace cen {
  * \see `SDL_JoyAxisEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_axis_event.hpp
  */
 class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 {

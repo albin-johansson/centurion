@@ -22,8 +22,6 @@ namespace cen {
  * \see `SDL_TextInputEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_input_event.hpp
  */
 class text_input_event final : public common_event<SDL_TextInputEvent>
 {

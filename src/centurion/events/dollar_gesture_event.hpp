@@ -19,8 +19,6 @@ namespace cen {
  * \see `SDL_DollarGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile dollar_gesture_event.hpp
  */
 class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
 {

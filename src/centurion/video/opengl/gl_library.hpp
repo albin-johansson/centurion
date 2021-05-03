@@ -23,8 +23,6 @@ namespace cen {
  * \brief Manages the initialization and de-initialization of an OpenGL library.
  *
  * \since 6.0.0
- *
- * \headerfile gl_library.hpp
  */
 class gl_library final
 {

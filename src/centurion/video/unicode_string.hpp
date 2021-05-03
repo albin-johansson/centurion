@@ -30,8 +30,6 @@ using unicode = u16;
  *
  * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
  * similar interface to that of `std::string`.
- *
- * \headerfile unicode_string.hpp
  */
 class unicode_string final
 {

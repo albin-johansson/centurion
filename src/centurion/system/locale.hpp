@@ -25,8 +25,6 @@ namespace cen {
  * \brief Represents a set of locale entries.
  *
  * \since 5.2.0
- *
- * \headerfile locale.hpp
  */
 class locale final
 {

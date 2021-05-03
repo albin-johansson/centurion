@@ -34,8 +34,6 @@ namespace cen {
  *
  * \see `key_code`
  * \see `cen::scancodes`
- *
- * \headerfile scan_code.hpp
  */
 class scan_code final
 {

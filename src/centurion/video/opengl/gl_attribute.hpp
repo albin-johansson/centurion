@@ -17,8 +17,6 @@ namespace cen {
  * \brief Provides identifiers for different OpenGL attributes.
  *
  * \since 6.0.0
- *
- * \headerfile gl_attribute.hpp
  */
 enum class gl_attribute
 {

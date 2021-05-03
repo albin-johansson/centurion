@@ -52,8 +52,6 @@ namespace cen {
  * \since 4.1.0
  *
  * \see `SDL_HintPriority`
- *
- * \headerfile hints.hpp
  */
 enum class hint_priority
 {
@@ -126,8 +124,6 @@ template <typename Hint>
  * \tparam UserData the type of the user data, defaults to `void`.
  *
  * \since 4.1.0
- *
- * \headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
 class hint_callback final

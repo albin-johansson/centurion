@@ -26,8 +26,6 @@ namespace cen {
  * \see `SDL_TextEditingEvent`
  *
  * \since 4.0.0
- *
- * \headerfile text_editing_event.hpp
  */
 class text_editing_event final : public common_event<SDL_TextEditingEvent>
 {

@@ -25,8 +25,6 @@ namespace cen {
  * \see `SDL_KeyboardEvent`
  *
  * \since 4.0.0
- *
- * \headerfile keyboard_event.hpp
  */
 class keyboard_event final : public common_event<SDL_KeyboardEvent>
 {

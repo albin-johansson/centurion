@@ -20,8 +20,6 @@ namespace cen {
  * \see `SDL_JoyBallEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_ball_event.hpp
  */
 class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 {

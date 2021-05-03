@@ -26,8 +26,6 @@ namespace cen {
  *
  * \tparam E the event type, e.g. `window_event`.
  *
- * \headerfile event_dispatcher.hpp
- *
  * \see `event_dispatcher`
  *
  * \since 5.1.0
@@ -164,8 +162,6 @@ class event_sink final
  * \since 5.1.0
  *
  * \see `cen::event`
- *
- * \headerfile event_dispatcher.hpp
  */
 template <typename... E>
 class event_dispatcher final

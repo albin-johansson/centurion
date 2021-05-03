@@ -180,7 +180,8 @@ class thread final
   /**
    * \brief Waits for the thread to finish its execution.
    *
-   * \note This function just returns `0` if the thread has already been joined or detached.
+   * \note This function just returns `0` if the thread has already been joined or
+   * detached.
    *
    * \return the status code.
    *

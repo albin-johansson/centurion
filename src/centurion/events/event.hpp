@@ -46,8 +46,6 @@ namespace cen {
  * \see `SDL_Event`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class event final
 {

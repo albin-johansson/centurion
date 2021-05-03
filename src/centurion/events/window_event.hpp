@@ -113,8 +113,6 @@ namespace cen {
  * </table>
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class window_event_id
 {
@@ -146,8 +144,6 @@ enum class window_event_id
  * \see `SDL_WindowEvent`
  *
  * \since 4.0.0
- *
- * \headerfile window_event.hpp
  */
 class window_event final : public common_event<SDL_WindowEvent>
 {

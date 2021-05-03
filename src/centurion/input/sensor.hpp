@@ -78,8 +78,6 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  * \see `sensor_handle`
  *
  * \since 5.2.0
- *
- * \headerfile sensor.hpp
  */
 template <typename T>
 class basic_sensor final

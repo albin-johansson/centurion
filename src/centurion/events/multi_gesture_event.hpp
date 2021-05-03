@@ -20,8 +20,6 @@ namespace cen {
  * \see `SDL_MultiGestureEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 {

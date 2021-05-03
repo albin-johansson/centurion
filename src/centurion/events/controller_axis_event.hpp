@@ -18,8 +18,6 @@ namespace cen {
  * \brief Represents an event triggered by game controller axis motion.
  *
  * \since 4.0.0
- *
- * \headerfile controller_axis_event.hpp
  */
 class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 {

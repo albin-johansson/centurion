@@ -14,8 +14,6 @@
  * \brief Provides timing utilities.
  *
  * \since 5.0.0
- *
- * \headerfile counter.hpp
  */
 namespace cen::counter {
 

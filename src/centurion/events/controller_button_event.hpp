@@ -22,8 +22,6 @@ namespace cen {
  * \see `SDL_ControllerButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_button_event.hpp
  */
 class controller_button_event final : public common_event<SDL_ControllerButtonEvent>
 {

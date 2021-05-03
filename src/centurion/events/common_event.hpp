@@ -25,8 +25,6 @@ namespace cen {
  * \tparam T an SDL event type.
  *
  * \since 4.0.0
- *
- * \headerfile common_event.hpp
  */
 template <typename T>
 class common_event

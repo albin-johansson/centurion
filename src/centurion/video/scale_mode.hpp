@@ -22,8 +22,6 @@ namespace cen {
  * \since 4.0.0
  *
  * \see `SDL_ScaleMode`
- *
- * \headerfile scale_mode.hpp
  */
 enum class scale_mode
 {

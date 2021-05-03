@@ -19,8 +19,6 @@ namespace cen {
  * \tparam T the representation type, e.g. `float` or `double`.
  *
  * \since 5.2.0
- *
- * \headerfile vector3.hpp
  */
 template <typename T>
 struct vector3 final

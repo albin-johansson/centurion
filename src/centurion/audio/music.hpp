@@ -33,8 +33,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `Mix_Fading`
- *
- * \headerfile music.hpp
  */
 enum class fade_status
 {
@@ -51,8 +49,6 @@ enum class fade_status
  * \since 3.0.0
  *
  * \see `Mix_MusicType`
- *
- * \headerfile music.hpp
  */
 enum class music_type
 {

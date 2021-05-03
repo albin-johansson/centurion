@@ -26,14 +26,12 @@ namespace cen::detail {
  * \tparam size the amount of key-value pairs.
  *
  * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
  */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
 class static_bimap final
 {
   using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
+  using storage_type = std::array<pair_type, Size>;
 
  public:
   storage_type data;

@@ -20,8 +20,6 @@ namespace cen {
  * \see `SDL_ControllerDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile controller_device_event.hpp
  */
 class controller_device_event final : public common_event<SDL_ControllerDeviceEvent>
 {

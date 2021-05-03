@@ -20,8 +20,6 @@ namespace cen {
  *
  * \brief The base of all exceptions explicitly thrown by the library.
  *
- * \headerfile exception.hpp
- *
  * \since 3.0.0
  */
 class cen_error : public std::exception
@@ -52,15 +50,12 @@ class cen_error : public std::exception
  * \brief Represents an error related to the core SDL2 library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class sdl_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `sdl_error` with the error message obtained from
-   * `SDL_GetError()`.
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
    *
    * \since 5.0.0
    */
@@ -84,8 +79,6 @@ class sdl_error final : public cen_error
  * \brief Represents an error related to the SDL2_image library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class img_error final : public cen_error
 {
@@ -115,8 +108,6 @@ class img_error final : public cen_error
  * \brief Represents an error related to the SDL2_ttf library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class ttf_error final : public cen_error
 {
@@ -146,8 +137,6 @@ class ttf_error final : public cen_error
  * \brief Represents an error related to the SDL2_mixer library.
  *
  * \since 5.0.0
- *
- * \headerfile exception.hpp
  */
 class mix_error final : public cen_error
 {

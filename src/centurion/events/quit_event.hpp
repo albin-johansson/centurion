@@ -19,8 +19,6 @@ namespace cen {
  * \see `SDL_QuitEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class quit_event final : public common_event<SDL_QuitEvent>
 {

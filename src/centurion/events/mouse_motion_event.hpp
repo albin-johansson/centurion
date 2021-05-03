@@ -21,8 +21,6 @@ namespace cen {
  * \see `SDL_MouseMotionEvent`
  *
  * \since 4.0.0
- *
- * \headerfile mouse_motion_event.hpp
  */
 class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 {

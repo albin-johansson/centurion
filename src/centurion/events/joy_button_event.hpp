@@ -22,8 +22,6 @@ namespace cen {
  * \see `SDL_JoyButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_button_event.hpp
  */
 class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 {

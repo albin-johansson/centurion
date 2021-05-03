@@ -42,8 +42,6 @@ namespace cen {
  * \see `SDL_GameControllerType`
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_type
 {
@@ -74,8 +72,6 @@ enum class controller_type
  * \see `SDL_GameControllerAxis`
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_axis
 {
@@ -95,8 +91,6 @@ enum class controller_axis
  * \brief Mirrors the values of the `SDL_GameControllerButton` enum.
  *
  * \since 4.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_button
 {
@@ -140,8 +134,6 @@ enum class controller_button
  * \brief Mirrors the values of the `SDL_GameControllerBindType` enum.
  *
  * \since 5.0.0
- *
- * \headerfile controller.hpp
  */
 enum class controller_bind_type
 {
@@ -188,10 +180,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  *
  * \since 5.0.0
  *
- * \see controller
- * \see controller_handle
- *
- * \headerfile controller.hpp
+ * \see `controller`
+ * \see `controller_handle`
  */
 template <typename T>
 class basic_controller final

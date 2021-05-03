@@ -20,8 +20,6 @@ namespace cen {
  * \see `SDL_TouchFingerEvent`
  *
  * \since 4.0.0
- *
- * \headerfile touch_finger_event.hpp
  */
 class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 {

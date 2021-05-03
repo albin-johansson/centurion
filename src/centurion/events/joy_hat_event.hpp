@@ -41,8 +41,6 @@ enum class joy_hat_position : u8
  * \see `SDL_JoyHatEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_hat_event.hpp
  */
 class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 {

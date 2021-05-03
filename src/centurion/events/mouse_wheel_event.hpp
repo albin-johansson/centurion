@@ -19,8 +19,6 @@ namespace cen {
  * \see `SDL_MouseWheelDirection`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 enum class mouse_wheel_direction
 {
@@ -36,8 +34,6 @@ enum class mouse_wheel_direction
  * \see `SDL_MouseWheelEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 {

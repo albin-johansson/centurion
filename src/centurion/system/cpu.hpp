@@ -17,8 +17,6 @@ namespace cen {
  * \brief Represents a block of memory, allocated in SIMD-friendly way.
  *
  * \since 5.2.0
- *
- * \headerfile cpu.hpp
  */
 class simd_block final
 {

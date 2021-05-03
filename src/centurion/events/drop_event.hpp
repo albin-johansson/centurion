@@ -19,8 +19,6 @@ namespace cen {
  * \see `SDL_DropEvent`
  *
  * \since 4.0.0
- *
- * \headerfile drop_event.hpp
  */
 class drop_event final : public common_event<SDL_DropEvent>
 {

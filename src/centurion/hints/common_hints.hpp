@@ -18,8 +18,6 @@ namespace cen::hint {
  * \class render_driver
  *
  * \brief Used to specify the render driver that will be used.
- *
- * \headerfile hints.hpp
  */
 struct render_driver final : enum_hint<render_driver>
 {

@@ -19,8 +19,6 @@ namespace cen {
  * \see `SDL_JoyDeviceEvent`
  *
  * \since 4.0.0
- *
- * \headerfile joy_device_event.hpp
  */
 class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 {

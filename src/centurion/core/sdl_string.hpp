@@ -22,14 +22,12 @@ namespace cen {
  * using `SDL_free`.
  *
  * \since 5.0.0
- *
- * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * \brief
+   * \brief Creates a string.
    *
    * \param str the string that will be claimed, can be null.
    *
@@ -53,7 +51,8 @@ class sdl_string final
   /**
    * \brief Returns a copy of the internal string.
    *
-   * \details This function returns the empty string if the internal string is a null pointer.
+   * \details This function returns the empty string if the internal string is a null
+   * pointer.
    *
    * \return a copy of the internal string.
    *

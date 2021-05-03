@@ -22,8 +22,6 @@ namespace cen {
  * \see `SDL_MouseButtonEvent`
  *
  * \since 4.0.0
- *
- * \headerfile event.hpp
  */
 class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 {

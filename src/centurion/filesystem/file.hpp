@@ -722,7 +722,8 @@ class file final
    * \param offset the offset to seek to.
    * \param mode the seek mode that will be used.
    *
-   * \return the resulting offset in the data stream; `std::nullopt` if something went wrong.
+   * \return the resulting offset in the data stream; `std::nullopt` if something went
+   * wrong.
    *
    * \since 5.3.0
    */

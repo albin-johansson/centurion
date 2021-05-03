@@ -18,8 +18,6 @@ namespace cen {
  * \see `SDL_EventType`
  *
  * \since 3.1.0
- *
- * \headerfile event_type.hpp
  */
 enum class event_type : u32
 {

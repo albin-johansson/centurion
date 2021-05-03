@@ -32,7 +32,8 @@ class mouse final
   mouse() noexcept = default;
 
   /**
-   * \brief Updates the mouse state. The window width and height will be adjusted to be at least 1.
+   * \brief Updates the mouse state. The window width and height will be adjusted to be at
+   * least 1.
    *
    * \param windowWidth the current window width, set to 1 by default.
    * \param windowHeight the current window height, set to 1 by default.
@@ -94,7 +95,8 @@ class mouse final
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalWidth the logical width that will be used to determine the mouse position.
+   * \param logicalWidth the logical width that will be used to determine the mouse
+   * position.
    *
    * \since 3.0.0
    */
@@ -108,7 +110,8 @@ class mouse final
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalHeight the logical height that will be used to determine the mouse position.
+   * \param logicalHeight the logical height that will be used to determine the mouse
+   * position.
    *
    * \since 3.0.0
    */

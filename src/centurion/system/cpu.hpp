@@ -26,8 +26,7 @@ class simd_block final
   /**
    * \brief Allocates a block of SIMD-friendly memory.
    *
-   * \note The allocation might fail, in which case the internal pointer is
-   * null.
+   * \note The allocation might fail, in which case the internal pointer is null.
    *
    * \param size the size of the memory block.
    *
@@ -47,9 +46,8 @@ class simd_block final
    */
   void reallocate(const std::size_t size) noexcept
   {
-    // We temporarily release the ownership of the pointer in order to avoid a
-    // double delete, since the reallocation will free the previously allocated
-    // memory.
+    /* We temporarily release the ownership of the pointer in order to avoid a double
+       delete, since the reallocation will free the previously allocated memory. */
     auto* ptr = m_data.release();
     m_data.reset(SDL_SIMDRealloc(ptr, size));
   }
@@ -68,9 +66,7 @@ class simd_block final
     return m_data.get();
   }
 
-  /**
-   * \copydoc data()
-   */
+  /// \copydoc data()
   [[nodiscard]] auto data() const noexcept -> const void*
   {
     return m_data.get();
@@ -79,8 +75,8 @@ class simd_block final
   /**
    * \brief Returns a reinterpreted pointer to the associated memory block.
    *
-   * \warning It's your responsibility to make sure to avoid any potential
-   * undefined behaviour using this function, since it uses `reinterpret_cast`.
+   * \warning It's your responsibility to make sure to avoid any potential undefined
+   * behaviour using this function, since it uses `reinterpret_cast`.
    *
    * \tparam T the type used when reinterpreting the internal pointer.
    *
@@ -94,9 +90,7 @@ class simd_block final
     return reinterpret_cast<T*>(data());
   }
 
-  /**
-   * \copydoc cast_data()
-   */
+  /// \copydoc cast_data()
   template <typename T>
   [[nodiscard]] auto cast_data() const noexcept -> const T*
   {
@@ -134,8 +128,6 @@ class simd_block final
  * \brief Provides methods for obtaining information about the processor.
  *
  * \since 5.0.0
- *
- * \headerfile cpu.hpp
  */
 namespace cen::cpu {
 
@@ -336,11 +328,11 @@ namespace cen::cpu {
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
- * \brief Returns the minimum number of bytes to which a pointer must be
- * aligned to be compatible with SIMD instructions on the current CPU.
+ * \brief Returns the minimum number of bytes to which a pointer must be aligned to be
+ * compatible with SIMD instructions on the current CPU.
  *
- * \return the minimum number of bytes to which a pointer must be
- * aligned to be compatible with SIMD instructions.
+ * \return the minimum number of bytes to which a pointer must be aligned to be compatible
+ * with SIMD instructions.
  *
  * \since 4.0.0
  */
@@ -364,8 +356,7 @@ namespace cen::cpu {
 /**
  * \brief Indicates whether or not the CPU uses little-endian byte ordering.
  *
- * \return `true` if the CPU uses little-endian byte ordering; `false`
- * otherwise.
+ * \return `true` if the CPU uses little-endian byte ordering; `false` otherwise.
  *
  * \since 3.1.0
  */

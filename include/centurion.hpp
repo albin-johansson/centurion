@@ -8516,8 +8516,6 @@ class common_event
    *
    * \return the event type value associated with the event.
    *
-   * \see EventType
-   *
    * \since 4.0.0
    */
   [[nodiscard]] auto type() const noexcept -> event_type
@@ -8781,8 +8779,6 @@ class common_event
    * \brief Returns the event type value associated with the event.
    *
    * \return the event type value associated with the event.
-   *
-   * \see EventType
    *
    * \since 4.0.0
    */
@@ -20907,8 +20903,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on an SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -21180,8 +21175,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -21426,8 +21420,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   {}
 
   /**
-   * \brief Creates a `MultiGestureEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -21880,8 +21873,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 
   /**
-   * \brief Creates a `TextEditingEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -22044,7 +22036,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
   {}
 
   /**
-   * \brief Creates a `TextInputEvent` that is based on the supplied SDL event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -22572,8 +22564,8 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the event ID of this window event.
    *
-   * \details There are many different kinds of window events, use this
-   * method to check what kind of action that triggered this event.
+   * \details There are many different kinds of window events, use this method to check
+   * what kind of action that triggered this event.
    *
    * \return the event ID of this window event.
    *
@@ -22587,13 +22579,13 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the value of the first data value.
    *
-   * \details The meaning of this value is dependent on the window event ID
-   * of this window event.
+   * \details The meaning of this value is dependent on the window event ID of this window
+   * event.
    *
-   * For instance, if the event ID is `SizeChanged`, then data1 and data2
-   * represent the new width and height of the window respectively. See the
-   * `WindowEventID` documentation for more details about whether the value
-   * returned from this method is meaningful in regard to the window event ID.
+   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
+   * data2 represent the new width and height of the window respectively. See the
+   * `window_event_id` documentation for more details about whether the value returned
+   * from this method is meaningful in regard to the window event ID.
    *
    * \return the value of the first data value.
    *
@@ -22607,13 +22599,13 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the value of the second data value.
    *
-   * \details The meaning of this value is dependent on the window event ID
-   * of this window event.
+   * \details The meaning of this value is dependent on the window event ID of this window
+   * event.
    *
-   * For instance, if the event ID is `SizeChanged`, then data1 and data2
-   * represent the new width and height of the window respectively. See the
-   * `WindowEventID` documentation for more details about whether the value
-   * returned from this method is meaningful in regard to the window event ID.
+   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
+   * data2 represent the new width and height of the window respectively. See the
+   * `window_event_id` documentation for more details about whether the value returned
+   * from this method is meaningful in regard to the window event ID.
    *
    * \return the value of the second data value.
    *
@@ -25749,8 +25741,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on an SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -26022,8 +26013,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -26268,8 +26258,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   {}
 
   /**
-   * \brief Creates a `MultiGestureEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -26561,8 +26550,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 
   /**
-   * \brief Creates a `TextEditingEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -26725,7 +26713,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
   {}
 
   /**
-   * \brief Creates a `TextInputEvent` that is based on the supplied SDL event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -27253,8 +27241,8 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the event ID of this window event.
    *
-   * \details There are many different kinds of window events, use this
-   * method to check what kind of action that triggered this event.
+   * \details There are many different kinds of window events, use this method to check
+   * what kind of action that triggered this event.
    *
    * \return the event ID of this window event.
    *
@@ -27268,13 +27256,13 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the value of the first data value.
    *
-   * \details The meaning of this value is dependent on the window event ID
-   * of this window event.
+   * \details The meaning of this value is dependent on the window event ID of this window
+   * event.
    *
-   * For instance, if the event ID is `SizeChanged`, then data1 and data2
-   * represent the new width and height of the window respectively. See the
-   * `WindowEventID` documentation for more details about whether the value
-   * returned from this method is meaningful in regard to the window event ID.
+   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
+   * data2 represent the new width and height of the window respectively. See the
+   * `window_event_id` documentation for more details about whether the value returned
+   * from this method is meaningful in regard to the window event ID.
    *
    * \return the value of the first data value.
    *
@@ -27288,13 +27276,13 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the value of the second data value.
    *
-   * \details The meaning of this value is dependent on the window event ID
-   * of this window event.
+   * \details The meaning of this value is dependent on the window event ID of this window
+   * event.
    *
-   * For instance, if the event ID is `SizeChanged`, then data1 and data2
-   * represent the new width and height of the window respectively. See the
-   * `WindowEventID` documentation for more details about whether the value
-   * returned from this method is meaningful in regard to the window event ID.
+   * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
+   * data2 represent the new width and height of the window respectively. See the
+   * `window_event_id` documentation for more details about whether the value returned
+   * from this method is meaningful in regard to the window event ID.
    *
    * \return the value of the second data value.
    *

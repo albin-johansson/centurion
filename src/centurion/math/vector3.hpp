@@ -53,9 +53,8 @@ struct vector3 final
 /**
  * \brief Serializes a 3D-vector.
  *
- * \details This function expects that the archive provides an overloaded
- * `operator()`, used for serializing data. This API is based on the Cereal
- * serialization library.
+ * \details This function expects that the archive provides an overloaded `operator()`,
+ * used for serializing data. This API is based on the Cereal serialization library.
  *
  * \tparam Archive the type of the archive.
  * \tparam T the type of the vector components.

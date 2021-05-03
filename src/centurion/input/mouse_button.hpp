@@ -16,8 +16,6 @@ namespace cen {
  * \brief Provides values that represent various mouse buttons.
  *
  * \since 3.1.0
- *
- * \headerfile mouse_button.hpp
  */
 enum class mouse_button : u8
 {

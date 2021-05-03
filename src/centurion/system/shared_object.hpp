@@ -19,12 +19,10 @@ namespace cen {
 /**
  * \class shared_object
  *
- * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and
- * `.dll` files).
+ * \brief Represents a shared object, such as dynamic libraries (e.g. `.so` and `.dll`
+ * files).
  *
  * \since 5.3.0
- *
- * \headerfile shared_object.hpp
  */
 class shared_object final
 {
@@ -68,8 +66,7 @@ class shared_object final
    *
    * \param name the name of the function in the shared object.
    *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
+   * \return the loaded function; a null pointer is returned if something goes wrong.
    *
    * \since 5.3.0
    */
@@ -89,8 +86,7 @@ class shared_object final
    *
    * \param name the name of the function in the shared object.
    *
-   * \return the loaded function; a null pointer is returned if something goes
-   * wrong.
+   * \return the loaded function; a null pointer is returned if something goes wrong.
    *
    * \since 5.3.0
    */

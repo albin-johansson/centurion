@@ -8,16 +8,14 @@
 namespace cen::detail {
 
 /**
- * \brief Returns a string that represents the memory address of the supplied
- * pointer.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
  * \details The empty string is returned if the supplied pointer is null.
  *
  * \tparam T the type of the pointer.
  * \param ptr the pointer that will be converted.
  *
- * \return a string that represents the memory address of the supplied
- * pointer.
+ * \return a string that represents the memory address of the supplied pointer.
  *
  * \since 3.0.0
  */

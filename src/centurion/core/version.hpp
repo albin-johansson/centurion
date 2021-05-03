@@ -49,11 +49,11 @@
 /**
  * \def CENTURION_MAKE_VERSION_NUMBER
  *
- * \brief Helper macro for creating version numbers from a set of
- * major/minor/patch numbers.
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
  *
- * \details For example, if the version is 8.4.2, the resulting version number
- * would be 8402.
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
  *
  * \since 6.0.0
  */
@@ -74,11 +74,11 @@
 /**
  * \def CENTURION_VERSION_AT_LEAST
  *
- * \brief This macro is intended to be used for conditional compilation, based
- * on the Centurion version.
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
  *
- * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`,
- * where you use it as the condition with `#if` statements.
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
  *
  * \since 6.0.0
  */
@@ -110,15 +110,15 @@ struct version final
 };
 
 /**
- * \brief Indicates whether or not the current Centurion version is at least
- * equal to the specified version.
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
  *
  * \param major the major version value.
  * \param minor the minor version value.
  * \param patch the patch version value.
  *
- * \return `true` if the version of Centurion is at least the specified version;
- * `false` otherwise.
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
  *
  * \see `CENTURION_VERSION_AT_LEAST`
  *
@@ -139,8 +139,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2 that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of SDL
- * that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2.
  *
@@ -168,8 +168,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_image that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_image.
  *
@@ -197,8 +197,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_mixer that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
  *
  * \return the linked version of SDL2_mixer.
  *
@@ -226,8 +226,8 @@ struct version final
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
- * \note The linked version isn't necessarily the same as the version of
- * SDL2_ttf that the program was compiled against.
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
  *
  * \return the linked version of SDL2_ttf.
  *

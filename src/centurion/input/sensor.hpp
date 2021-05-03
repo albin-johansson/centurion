@@ -74,8 +74,8 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \brief Represents a sensor device.
  *
- * \see sensor
- * \see sensor_handle
+ * \see `sensor`
+ * \see `sensor_handle`
  *
  * \since 5.2.0
  *
@@ -91,13 +91,12 @@ class basic_sensor final
   /**
    * \brief Creates a sensor instance based on an existing pointer.
    *
-   * \note The created instance will claim ownership of the supplied pointer if
-   * the class has owning semantics.
+   * \note The created instance will claim ownership of the supplied pointer if the class
+   * has owning semantics.
    *
    * \param sensor a pointer to the SDL sensor data.
    *
-   * \throws cen_error if the supplied pointer is null and the class has owning
-   * semantics.
+   * \throws cen_error if the supplied pointer is null and the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -115,8 +114,6 @@ class basic_sensor final
 
   /**
    * \brief Creates an owning sensor instance based on a device index.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \param index the device index of the sensor.
    *
@@ -136,8 +133,6 @@ class basic_sensor final
   /**
    * \brief Creates a sensor handle based on an owning sensor.
    *
-   * \tparam TT dummy parameter for SFINAE.
-   *
    * \param owner the associated owning sensor.
    *
    * \since 5.2.0
@@ -151,8 +146,7 @@ class basic_sensor final
   /**
    * \brief Updates the state of all open sensors.
    *
-   * \note This is done automatically by the event loop if sensor events are
-   * enabled.
+   * \note This is done automatically by the event loop if sensor events are enabled.
    *
    * \since 5.2.0
    */
@@ -223,8 +217,8 @@ class basic_sensor final
   /**
    * \brief Returns the name associated with the sensor device.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available.
    *
    * \since 5.2.0
    */
@@ -262,8 +256,7 @@ class basic_sensor final
    *
    * \tparam size the number of data elements, varies from sensor to sensor.
    *
-   * \return the data associated with the sensor; `std::nullopt` if something
-   * goes wrong.
+   * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
@@ -305,8 +298,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the unique instance ID associated with a sensor; `std::nullopt` if
-   * the index is invalid.
+   * \return the unique instance ID associated with a sensor; `std::nullopt` if the index
+   * is invalid.
    *
    * \since 5.2.0
    */
@@ -328,8 +321,8 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return the name of the sensor device; a null pointer is returned if the
-   * name isn't available or if the index was invalid.
+   * \return the name of the sensor device; a null pointer is returned if the name isn't
+   * available or if the index was invalid.
    *
    * \since 5.2.0
    */
@@ -357,8 +350,7 @@ class basic_sensor final
    *
    * \param index the index of the sensor device that will be queried.
    *
-   * \return a non-portable sensor type value; `std::nullopt` if the index is
-   * invalid.
+   * \return a non-portable sensor type value; `std::nullopt` if the index is invalid.
    *
    * \since 5.2.0
    */
@@ -383,8 +375,6 @@ class basic_sensor final
 
   /**
    * \brief Indicates whether or not the handle holds a non-null pointer.
-   *
-   * \tparam TT dummy parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
@@ -412,8 +402,6 @@ class basic_sensor final
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
- * \tparam T the ownership semantics type of the sensor class.
- *
  * \param sensor the sensor that will be converted.
  *
  * \return a string that represents a sensor instance.
@@ -430,8 +418,6 @@ template <typename T>
 
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
- *
- * \tparam T the ownership semantics type of the sensor class.
  *
  * \param stream the stream that will be used.
  * \param sensor the sensor that will be printed.

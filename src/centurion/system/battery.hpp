@@ -22,8 +22,6 @@ namespace cen {
  * \since 3.0.0
  *
  * \see `SDL_PowerState`
- *
- * \headerfile battery.hpp
  */
 enum class power_state
 {
@@ -46,8 +44,8 @@ namespace battery {
 /**
  * \brief Returns the seconds of battery life that is remaining.
  *
- * \return seconds of remaining battery life; `std::nullopt` if the value cannot
- * be computed.
+ * \return seconds of remaining battery life; `std::nullopt` if the value cannot be
+ * computed.
  *
  * \since 3.0.0
  */
@@ -68,8 +66,8 @@ namespace battery {
 /**
  * \brief Returns the amount of minutes of battery life that is remaining.
  *
- * \return minutes of remaining battery life; `std::nullopt` if the value cannot
- * be computed.
+ * \return minutes of remaining battery life; `std::nullopt` if the value cannot be
+ * computed.
  *
  * \since 3.0.0
  */
@@ -88,8 +86,8 @@ namespace battery {
 /**
  * \brief Returns the percentage of battery life that is currently left.
  *
- * \return percentage of remaining battery life, in the range [0, 100];
- * `std::nullopt` if the battery percentage isn't available.
+ * \return percentage of remaining battery life, in the range [0, 100]; `std::nullopt` if
+ * the battery percentage isn't available.
  *
  * \since 3.0.0
  */
@@ -140,8 +138,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not the battery is being charged.
  *
- * \details This convenience function is equivalent to checking if
- * `battery::state()` is equal to `power_state::charging`.
+ * \details This convenience function is equivalent to checking if `battery::state()` is
+ * equal to `power_state::charging`.
  *
  * \return `true` if the battery is charging; `false` otherwise.
  *
@@ -155,8 +153,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not the battery is charged.
  *
- * \details This convenience function is equivalent to checking if
- * `battery::state()` is equal to `power_state::charged`.
+ * \details This convenience function is equivalent to checking if `battery::state()` is
+ * equal to `power_state::charged`.
  *
  * \return `true` if the battery is charged; `false` otherwise.
  *
@@ -170,8 +168,8 @@ namespace battery {
 /**
  * \brief Indicate whether or not a battery is available.
  *
- * \details This convenience function considers a battery available if the state
- * returned from `battery::state()` is neither `no_battery` nor `unknown`.
+ * \details This convenience function considers a battery available if the state returned
+ * from `battery::state()` is neither `no_battery` nor `unknown`.
  *
  * \return `true` if a battery is available; `false` otherwise.
  *

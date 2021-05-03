@@ -17,8 +17,6 @@ namespace cen {
  * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
  * \since 3.1.0
- *
- * \headerfile button_state.hpp
  */
 enum class button_state : u8
 {

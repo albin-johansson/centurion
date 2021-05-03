@@ -63,7 +63,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
  *
- * \details The owning version of this class, `renderer`, features an extended API
+ * \details Rendering primitives such as points, rectangles, lines and circles are
+ * supported. The owning version of this class, `renderer`, features an extended API
  * compared to its non-owning counterpart, with support for font handling and translated
  * rendering.
  *

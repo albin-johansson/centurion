@@ -11,9 +11,9 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "debug" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
  * \return `true` if a debug build mode is currently active; `false` otherwise.
  *
@@ -31,12 +31,11 @@ namespace cen {
 /**
  * \brief Indicates whether or not a "release" build mode is active.
  *
- * \note This is intended to be use with `if constexpr`-statements instead of
- * raw `#ifdef` conditional compilation, since the use of `if constexpr`
- * prevents any branch to be ill-formed, which avoids code rot.
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
  *
- * \return `true` if a release build mode is currently active; `false`
- * otherwise.
+ * \return `true` if a release build mode is currently active; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -48,8 +47,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is MSVC.
  *
- * \return `true` if MSVC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -65,8 +63,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is GCC.
  *
- * \return `true` if GCC is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -82,8 +79,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Clang.
  *
- * \return `true` if Clang is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -99,8 +95,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Emscripten.
  *
- * \return `true` if Emscripten is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */
@@ -116,8 +111,7 @@ namespace cen {
 /**
  * \brief Indicates whether or not the compiler is Intel C++.
  *
- * \return `true` if Intel C++ is detected as the current compiler; `false`
- * otherwise.
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
  *
  * \since 5.3.0
  */

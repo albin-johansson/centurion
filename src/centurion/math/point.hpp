@@ -27,8 +27,6 @@ namespace cen {
  * \see `basic_point`
  * \see `ipoint`
  * \see `fpoint`
- *
- * \headerfile point.hpp
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
@@ -116,8 +114,6 @@ using fpoint = basic_point<float>;
  * \see `fpoint`
  * \see `point()`
  * \see `distance()`
- *
- * \headerfile point.hpp
  */
 template <typename T>
 class basic_point final
@@ -291,9 +287,8 @@ class basic_point final
   /**
    * \brief Serializes the point.
    *
-   * \details This function expects that the archive provides an overloaded
-   * `operator()`, used for serializing data. This API is based on the Cereal
-   * serialization library.
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
    *
    * \tparam Archive the type of the archive.
    *
@@ -317,13 +312,11 @@ class basic_point final
 /**
  * \brief Creates a point instance with automatically deduced precision.
  *
- * \note The only supported precisions for points are `int` and `float`, so
- * this function will cast the supplied values to the corresponding type. For
- * example, if you supply two doubles to this function, the returned point will
- * use float as the precision.
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
  *
- * \tparam T the deduced precision type, must be a numerical type other than
- * `bool`.
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
  *
  * \param x the x-coordinate of the point.
  * \param y the y-coordinate of the point.
@@ -395,8 +388,8 @@ auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostre
 /**
  * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `ipoint` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -415,8 +408,8 @@ template <>
 /**
  * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `fpoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
  *
  * \param from the point that will be converted.
  *
@@ -435,13 +428,12 @@ template <>
 /**
  * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `int`, and uses the obtained values to create an `SDL_Point` instance.
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_Point` instance that corresponds to the supplied
- * `SDL_FPoint`.
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
  *
  * \since 5.0.0
  */
@@ -456,13 +448,12 @@ template <>
 /**
  * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * \details This function casts the coordinates of the supplied point to
- * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
  *
  * \param from the point that will be converted.
  *
- * \return an `SDL_FPoint` instance that corresponds to the supplied
- * `SDL_Point`.
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
  *
  * \since 5.0.0
  */

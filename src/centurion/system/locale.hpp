@@ -34,8 +34,7 @@ class locale final
   /**
    * \brief Returns the current preferred locales on the system.
    *
-   * \note The preferred locales might change during the execution of the
-   * program.
+   * \note The preferred locales might change during the execution of the program.
    *
    * \return the preferred locales on the system.
    *
@@ -47,15 +46,14 @@ class locale final
   }
 
   /**
-   * \brief Indicates whether or not a language (and optionally a country) is
-   * part of the locale.
+   * \brief Indicates whether or not a language (and optionally a country) is part of the
+   * locale.
    *
    * \param language the language that will be checked, e.g. "en" for english.
-   * \param country optional country code that will be checked, e.g. "US" or
-   * "GB".
+   * \param country optional country code that will be checked, e.g. "US" or "GB".
    *
-   * \return `true` if the specified language and country is a part of the
-   * locale; `false` otherwise.
+   * \return `true` if the specified language and country is a part of the locale; `false`
+   * otherwise.
    *
    * \since 5.2.0
    */
@@ -116,12 +114,11 @@ class locale final
   /**
    * \brief Indicates whether or not the locale contains a non-null pointer.
    *
-   * \note It's safe to call all member functions of this class, no matter if
-   * there is a non-null internal pointer. This is intended as a quick and easy
-   * check to determine whether or not there are any entries at all.
+   * \note It's safe to call all member functions of this class, no matter if there is a
+   * non-null internal pointer. This is intended as a quick and easy check to determine
+   * whether or not there are any entries at all.
    *
-   * \return `true` if the locale contains a non-null pointer; `false`
-   * otherwise.
+   * \return `true` if the locale contains a non-null pointer; `false` otherwise.
    *
    * \since 5.2.0
    */

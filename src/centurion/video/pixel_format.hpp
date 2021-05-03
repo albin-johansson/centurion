@@ -25,8 +25,6 @@ namespace cen {
  * \see `SDL_PixelFormatEnum`
  *
  * \since 3.1.0
- *
- * \headerfile pixel_format.hpp
  */
 enum class pixel_format : u32
 {
@@ -135,8 +133,8 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning
- * and non-owning versions of this class.
+ * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
+ * non-owning versions of this class.
  *
  * \note This class is part of the centurion owner/handle framework.
  *
@@ -147,8 +145,6 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \see SDL_PixelFormatEnum
  *
  * \since 5.2.0
- *
- * \headerfile pixel_format.hpp
  */
 template <typename B>
 class basic_pixel_format_info final
@@ -167,8 +163,7 @@ class basic_pixel_format_info final
    *
    * \param format a pointer to the associated pixel format.
    *
-   * \throws cen_error if the supplied pointer is null *and* the class has
-   * owning semantics.
+   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
    *
    * \since 5.2.0
    */
@@ -209,8 +204,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \tparam BB dummy parameter for SFINAE.
    *
    * \param info the associated pixel format info instance.
    *
@@ -346,8 +339,6 @@ class basic_pixel_format_info final
 
   /**
    * \brief Indicates whether or not a handle holds a non-null pointer.
-   *
-   * \tparam BB dummy template parameter for SFINAE.
    *
    * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *

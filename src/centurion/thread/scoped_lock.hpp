@@ -14,14 +14,12 @@ namespace cen {
 /**
  * \class scoped_lock
  *
- * \brief Represents an RAII-style blocking lock that automatically unlocks the
- * associated mutex upon destruction.
+ * \brief Represents an RAII-style blocking lock that automatically unlocks the associated
+ * mutex upon destruction.
  *
  * \remarks This class is purposefully similar to `std::scoped_lock`.
  *
  * \since 5.0.0
- *
- * \headerfile scoped_lock.hpp
  */
 class scoped_lock final
 {

@@ -27,12 +27,10 @@ namespace cen {
 /**
  * \enum message_box_type
  *
- * \brief Serves as a hint of the purpose of a message box. Message boxes
- * can indicate errors, warnings and general information.
+ * \brief Serves as a hint of the purpose of a message box. Message boxes can indicate
+ * errors, warnings and general information.
  *
  * \since 5.0.0
- *
- * \headerfile message_box.hpp
  */
 enum class message_box_type : u32
 {
@@ -44,15 +42,12 @@ enum class message_box_type : u32
 /**
  * \enum button_order
  *
- * \brief Provides hints for how the buttons in a message box should be
- * aligned, either left-to-right or right-to-left.
+ * \brief Provides hints for how the buttons in a message box should be aligned, either
+ * left-to-right or right-to-left.
  *
- * \note This enum has no effect and shouldn't be used if you're using
- * SDL 2.0.10.
+ * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10.
  *
  * \since 4.0.0
- *
- * \headerfile message_box.hpp
  */
 enum class button_order : u32
 {
@@ -68,8 +63,8 @@ enum class button_order : u32
 /**
  * \class message_box
  *
- * \brief Represents a modal message box that can be used display
- * information, warnings and errors.
+ * \brief Represents a modal message box that can be used display information, warnings
+ * and errors.
  *
  * \note The appearance of message boxes varies depending on the platform, and certain
  * styling options are not available on all platforms.
@@ -94,8 +89,6 @@ class message_box final
    * \brief Mirrors the `SDL_MessageBoxButtonFlags` enum.
    *
    * \since 3.0.0
-   *
-   * \headerfile message_box.hpp
    */
   enum class default_button : u32
   {
@@ -109,8 +102,6 @@ class message_box final
    * \brief Mirrors the `SDL_MessageBoxColorType` enum.
    *
    * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
    */
   enum class color_id : int
   {
@@ -127,8 +118,6 @@ class message_box final
    * \brief A simple wrapper around a `SDL_MessageBoxColorScheme` instance.
    *
    * \since 5.0.0
-   *
-   * \headerfile message_box.hpp
    */
   class color_scheme final
   {
@@ -199,14 +188,11 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \tparam T the traits used by the window.
-   *
    * \param parent the parent window.
    * \param title the title of the message box.
    * \param message the message that will be displayed.
    * \param type the type of the message box, defaults to `information`.
-   * \param buttonOrder the button order that will be used, defaults to
-   * `left_to_right`.
+   * \param buttonOrder the button order that will be used, defaults to `left_to_right`.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -228,8 +214,7 @@ class message_box final
    * \param title the title of the message box.
    * \param message the message that will be displayed.
    * \param type the type of the message box, defaults to `information`.
-   * \param buttonOrder the button order that will be used, defaults to
-   * `left_to_right`.
+   * \param buttonOrder the button order that will be used, defaults to `left_to_right`.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -246,12 +231,9 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \tparam T the traits used by the window.
-   *
    * \param parent the parent window.
    *
-   * \return the ID of the pressed button; `std::nullopt` if no button was
-   * pressed.
+   * \return the ID of the pressed button; `std::nullopt` if no button was pressed.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -266,11 +248,10 @@ class message_box final
   /**
    * \brief Displays a message box.
    *
-   * \details If no buttons have been added by the time this function is
-   * called, then an "OK" button is automatically added.
+   * \details If no buttons have been added by the time this function is called, then an
+   * "OK" button is automatically added.
    *
-   * \return the ID of the pressed button; `std::nullopt` if no button was
-   * pressed.
+   * \return the ID of the pressed button; `std::nullopt` if no button was pressed.
    *
    * \throws sdl_error if something goes wrong when showing the message box.
    *
@@ -330,8 +311,8 @@ class message_box final
   /**
    * \brief Sets the color scheme that will be used by the message box.
    *
-   * \note This is not supported on all platforms, so this property is simply
-   * not set by default.
+   * \note This is not supported on all platforms, so this property is simply not set by
+   * default.
    *
    * \param scheme the color scheme that will be used.
    *
@@ -367,13 +348,13 @@ class message_box final
   }
 
   /**
-   * \brief Indicates whether or not the message box has a button associated
-   * with the specified ID.
+   * \brief Indicates whether or not the message box has a button associated with the
+   * specified ID.
    *
    * \param id the ID that will be checked.
    *
-   * \return `true` if there is a button associated with the supplied ID;
-   * `false` otherwise.
+   * \return `true` if there is a button associated with the supplied ID; `false`
+   * otherwise.
    *
    * \since 5.0.0
    */
@@ -443,9 +424,6 @@ class message_box final
   }
 
  private:
-  /**
-   *
-   */
   class button final
   {
    public:
@@ -468,12 +446,11 @@ class message_box final
     }
 
     /**
-     * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds
-     * to the button.
-     *
-     * \note The returned instance holds a pointer to the string text
-     * associated with the button, so it mustn't outlive the lifetime of the
+     * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds to the
      * button.
+     *
+     * \note The returned instance holds a pointer to the string text associated with the
+     * button, so it mustn't outlive the lifetime of the button.
      *
      * \return an `SDL_MessageBoxButtonData` instance.
      *

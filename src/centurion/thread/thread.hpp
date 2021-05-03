@@ -26,12 +26,9 @@ namespace cen {
  *
  * \brief Represents different thread priorities.
  *
- * \note You might need higher privileges to use `high` or `critical`
- * priorities.
+ * \note You might need higher privileges to use `high` or `critical` priorities.
  *
  * \since 5.0.0
- *
- * \headerfile thread.hpp
  */
 enum class thread_priority
 {
@@ -47,20 +44,17 @@ enum class thread_priority
  *
  * \brief Represents a single thread of execution.
  *
- * \remarks This class purposefully features an API similar to that of
- * `std::thread`. However, unlike `std::thread`, this class will
- * automatically join itself upon destruction if it wasn't already detached
- * or joined.
+ * \remarks This class purposefully features an API similar to that of `std::thread`.
+ * However, unlike `std::thread`, this class will automatically join itself upon
+ * destruction if it wasn't already detached or joined.
  *
- * \note Beware that the C++ standard provides `std::thread` and
- * `std::jthread`, along with several other threading utilities. If possible,
- * you should prefer using the standard library API.
+ * \note Beware that the C++ standard provides `std::thread` and `std::jthread`, along
+ * with several other threading utilities. If possible, you should prefer using the
+ * standard library API.
  *
  * \since 5.0.0
  *
  * \todo C++20: Support templated user data instead of just `void*`.
- *
- * \headerfile thread.hpp
  */
 class thread final
 {
@@ -91,8 +85,8 @@ class thread final
    *
    * \param task the task that will be performed.
    * \param name the name of the thread, cannot be null.
-   * \param data a pointer to optional user data that will be supplied to the
-   * task function object.
+   * \param data a pointer to optional user data that will be supplied to the task
+   * function object.
    *
    * \throws sdl_error if the thread cannot be created.
    *
@@ -129,12 +123,10 @@ class thread final
   /// \} End of construction/destruction
 
   /**
-   * \brief Forces the current thread to halt for at least the specified
-   * duration.
+   * \brief Forces the current thread to halt for at least the specified duration.
    *
-   * \note The actual time spent sleeping may differ, depending on the
-   * scheduling of the operating system. You shouldn't use this function for
-   * precise timing.
+   * \note The actual time spent sleeping may differ, depending on the scheduling of the
+   * operating system. You shouldn't use this function for precise timing.
    *
    * \param ms the minimum amount of time to sleep for, in milliseconds.
    *
@@ -148,8 +140,7 @@ class thread final
   /**
    * \brief Sets the priority of the current thread.
    *
-   * \note You might need elevated privileges to use `high` or `critical`
-   * priorities.
+   * \note You might need elevated privileges to use `high` or `critical` priorities.
    *
    * \param priority the priority that will be used.
    *
@@ -169,8 +160,7 @@ class thread final
   /**
    * \brief Lets the thread terminate without having another thread join it.
    *
-   * \note This function has no effect if the thread has already been joined
-   * or detached.
+   * \note This function has no effect if the thread has already been joined or detached.
    *
    * \since 5.0.0
    */
@@ -190,8 +180,7 @@ class thread final
   /**
    * \brief Waits for the thread to finish its execution.
    *
-   * \note This function just returns `0` if the thread has already been
-   * joined or detached.
+   * \note This function just returns `0` if the thread has already been joined or detached.
    *
    * \return the status code.
    *
@@ -221,8 +210,7 @@ class thread final
   /**
    * \brief Indicates whether or not the thread can be joined.
    *
-   * \details A thread is joinable if it hasn't been previously detached or
-   * joined.
+   * \details A thread is joinable if it hasn't been previously detached or joined.
    *
    * \note A joinable thread is also detachable.
    *
@@ -309,9 +297,7 @@ class thread final
     return m_thread;
   }
 
-  /**
-   * \copydoc get
-   */
+  /// \copydoc get
   [[nodiscard]] auto get() const noexcept -> const SDL_Thread*
   {
     return m_thread;

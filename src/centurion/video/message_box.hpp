@@ -86,7 +86,9 @@ class message_box final
   /**
    * \enum default_button
    *
-   * \brief Mirrors the `SDL_MessageBoxButtonFlags` enum.
+   * \brief Provides identifiers that represent default buttons of message boxes.
+   *
+   * \see `SDL_MessageBoxButtonFlags`
    *
    * \since 3.0.0
    */
@@ -99,7 +101,9 @@ class message_box final
   /**
    * \enum color_id
    *
-   * \brief Mirrors the `SDL_MessageBoxColorType` enum.
+   * \brief Represents different message box aspects that can be colored.
+   *
+   * \see `SDL_MessageBoxColorType`
    *
    * \since 5.0.0
    */

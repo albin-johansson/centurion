@@ -37,7 +37,7 @@ namespace cen {
 /**
  * \enum controller_type
  *
- * \brief Mirrors the `SDL_GameControllerType` enum.
+ * \brief Represents different game controller types.
  *
  * \see `SDL_GameControllerType`
  *
@@ -67,7 +67,7 @@ enum class controller_type
 /**
  * \enum controller_axis
  *
- * \brief Mirrors the values of the `SDL_GameControllerAxis` enum.
+ * \brief Represents different game controller axes.
  *
  * \see `SDL_GameControllerAxis`
  *
@@ -88,7 +88,9 @@ enum class controller_axis
 /**
  * \enum controller_button
  *
- * \brief Mirrors the values of the `SDL_GameControllerButton` enum.
+ * \brief Represents different game controller buttons.
+ *
+ * \see `SDL_GameControllerButton`
  *
  * \since 4.0.0
  */
@@ -131,7 +133,9 @@ enum class controller_button
 /**
  * \enum controller_bind_type
  *
- * \brief Mirrors the values of the `SDL_GameControllerBindType` enum.
+ * \brief Represents different game controller bind types.
+ *
+ * \see `SDL_GameControllerBindType`
  *
  * \since 5.0.0
  */

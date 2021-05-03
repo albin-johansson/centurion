@@ -14,7 +14,7 @@ namespace cen {
 /**
  * \enum mouse_wheel_direction
  *
- * \brief Mirrors the the `SDL_MouseWheelDirection` enum.
+ * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
  *

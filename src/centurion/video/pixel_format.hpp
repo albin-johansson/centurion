@@ -20,7 +20,7 @@ namespace cen {
 /**
  * \enum pixel_format
  *
- * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Represents different pixel formats.
  *
  * \see `SDL_PixelFormatEnum`
  *

@@ -13,7 +13,7 @@ namespace cen {
 /**
  * \enum event_type
  *
- * \brief Mirrors the `SDL_EventType` enum.
+ * \brief Represents the different event types.
  *
  * \see `SDL_EventType`
  *

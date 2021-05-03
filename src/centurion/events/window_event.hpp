@@ -13,11 +13,10 @@ namespace cen {
 /**
  * \enum window_event_id
  *
- * \brief Mirrors the `SDL_WindowEventID` enum.
+ * \brief Represents different flavours of window events.
  *
  * \details Depending on the event ID of a `window_event` instance, the
- * `window_event::data_1()` and `window_event::data_2()` methods have special
- * meanings.
+ * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
  * <table style="width:100%">
  *   <tr>

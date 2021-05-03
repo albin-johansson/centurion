@@ -11,7 +11,7 @@ namespace cen {
 /**
  * \enum texture_access
  *
- * \brief Mirrors the `SDL_TextureAccess` enum.
+ * \brief Represents different texture access modes.
  *
  * \note The `no_lock` enumerator is also referred to as "static" texture access.
  *

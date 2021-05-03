@@ -17,7 +17,7 @@ namespace cen {
 /**
  * \enum scale_mode
  *
- * \brief Mirrors the `SDL_ScaleMode` enum.
+ * \brief Represents different texture scale modes.
  *
  * \since 4.0.0
  *

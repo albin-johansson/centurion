@@ -18,8 +18,6 @@ namespace cen {
  * \see `SDL_Keymod`
  *
  * \since 3.1.0
- *
- * \headerfile key_modifier.hpp
  */
 enum class key_modifier : u16
 {

@@ -14,12 +14,12 @@ namespace cen {
 /**
  * \class mouse
  *
- * \brief Provides information about the mouse state, which is an
- * alternative to dealing with mouse events.
+ * \brief Provides information about the mouse state, which is an alternative to dealing
+ * with mouse events.
  *
  * \since 3.0.0
  *
- * \headerfile mouse.hpp
+ * \see `keyboard`
  */
 class mouse final
 {
@@ -32,8 +32,7 @@ class mouse final
   mouse() noexcept = default;
 
   /**
-   * \brief Updates the mouse state. The window width and height will be
-   * adjusted to be at least 1.
+   * \brief Updates the mouse state. The window width and height will be adjusted to be at least 1.
    *
    * \param windowWidth the current window width, set to 1 by default.
    * \param windowHeight the current window height, set to 1 by default.
@@ -80,8 +79,7 @@ class mouse final
   }
 
   /**
-   * \brief Resets the screen and logical dimensions of the mouse state
-   * instance.
+   * \brief Resets the screen and logical dimensions of the mouse state instance.
    *
    * \since 3.0.0
    */
@@ -92,13 +90,11 @@ class mouse final
   }
 
   /**
-   * \brief Sets the logical width that will be used to determine the mouse
-   * position.
+   * \brief Sets the logical width that will be used to determine the mouse position.
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalWidth the logical width that will be used to determine the
-   * mouse position.
+   * \param logicalWidth the logical width that will be used to determine the mouse position.
    *
    * \since 3.0.0
    */
@@ -108,13 +104,11 @@ class mouse final
   }
 
   /**
-   * \brief Sets the logical height that will be used to determine the mouse
-   * position.
+   * \brief Sets the logical height that will be used to determine the mouse position.
    *
    * \details The supplied value will be adjusted to be at least 1.
    *
-   * \param logicalHeight the logical height that will be used to determine the
-   * mouse position.
+   * \param logicalHeight the logical height that will be used to determine the mouse position.
    *
    * \since 3.0.0
    */
@@ -126,8 +120,7 @@ class mouse final
   /**
    * \brief Sets the current logical window size.
    *
-   * \param size the logical size that will be used to determine the mouse
-   * position.
+   * \param size the logical size that will be used to determine the mouse position.
    *
    * \since 5.3.0
    */
@@ -212,8 +205,7 @@ class mouse final
   /**
    * \brief Returns the logical width used by the mouse state instance.
    *
-   * \return the logical width used by the mouse state instance, 1 is used by
-   * default.
+   * \return the logical width used by the mouse state instance, 1 is used by default.
    *
    * \since 3.0.0
    */
@@ -225,8 +217,7 @@ class mouse final
   /**
    * \brief Returns the logical height used by the mouse state instance.
    *
-   * \return the logical height used by the mouse state instance, 1 is used by
-   * default.
+   * \return the logical height used by the mouse state instance, 1 is used by default.
    *
    * \since 3.0.0
    */
@@ -260,8 +251,7 @@ class mouse final
   }
 
   /**
-   * \brief Indicates whether or not the right mouse button is currently
-   * pressed.
+   * \brief Indicates whether or not the right mouse button is currently pressed.
    *
    * \return `true` if the right mouse button is pressed; `false` otherwise.
    *

@@ -35,7 +35,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
   {}
 
   /**
-   * \brief Creates a `TextInputEvent` that is based on the supplied SDL event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *

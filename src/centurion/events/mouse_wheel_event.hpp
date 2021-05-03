@@ -47,8 +47,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *

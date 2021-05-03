@@ -34,8 +34,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   {}
 
   /**
-   * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event based on an SDL event.
    *
    * \param event the SDL event that will be copied.
    *

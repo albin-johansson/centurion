@@ -41,8 +41,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 
   /**
-   * \brief Creates a `TextEditingEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *

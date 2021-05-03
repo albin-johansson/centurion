@@ -33,8 +33,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   {}
 
   /**
-   * \brief Creates a `MultiGestureEvent` that is based on the supplied SDL
-   * event.
+   * \brief Creates an event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *

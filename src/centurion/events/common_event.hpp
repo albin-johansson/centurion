@@ -107,8 +107,6 @@ class common_event
    *
    * \return the event type value associated with the event.
    *
-   * \see EventType
-   *
    * \since 4.0.0
    */
   [[nodiscard]] auto type() const noexcept -> event_type

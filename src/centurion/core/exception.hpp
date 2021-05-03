@@ -91,8 +91,7 @@ class img_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates an `img_error` with the error message obtained from
-   * `IMG_GetError()`.
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
    *
    * \since 5.0.0
    */
@@ -123,8 +122,7 @@ class ttf_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `ttf_error` with the error message obtained from
-   * `TTF_GetError()`.
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
    *
    * \since 5.0.0
    */
@@ -155,8 +153,7 @@ class mix_error final : public cen_error
 {
  public:
   /**
-   * \brief Creates a `mix_error` with the error message obtained from
-   * `Mix_GetError()`.
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
    *
    * \since 5.0.0
    */

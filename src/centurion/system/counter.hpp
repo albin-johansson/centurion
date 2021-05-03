@@ -62,8 +62,7 @@ template <typename T>
 }
 
 /**
- * \brief Returns the amount of milliseconds since the library was
- * initialized.
+ * \brief Returns the amount of milliseconds since the library was initialized.
  *
  * \return the amount of milliseconds since the library was initialized.
  *

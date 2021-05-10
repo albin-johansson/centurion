@@ -21,6 +21,10 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
+      - name: Update packages
+        shell: bash
+        run: sudo apt-get update
+
       - name: Install graphics drivers
         shell: bash
         run: |

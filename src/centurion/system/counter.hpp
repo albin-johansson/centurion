@@ -24,7 +24,7 @@ namespace cen::counter {
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto high_res_freq() noexcept -> u64
+[[nodiscard]] inline auto frequency() noexcept -> u64
 {
   return SDL_GetPerformanceFrequency();
 }
@@ -56,7 +56,7 @@ template <typename T>
 [[nodiscard]] auto now_in_seconds() noexcept(noexcept(seconds<T>{})) -> seconds<T>
 {
   return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) /
-                    static_cast<T>(high_res_freq())};
+                    static_cast<T>(frequency())};
 }
 
 /**

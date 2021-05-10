@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
-TEST(Counter, HighResFreq)
+TEST(Counter, Frequency)
 {
-  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::counter::high_res_freq());
+  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::counter::frequency());
 }
 
 TEST(Counter, Now)

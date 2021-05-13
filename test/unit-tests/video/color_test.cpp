@@ -222,16 +222,12 @@ TEST(Color, WithAlpha)
 
 TEST(Color, Blend)
 {
-  ASSERT_EQ(cen::colors::gray, cen::color::blend(cen::colors::white, cen::colors::black));
-  ASSERT_EQ(cen::colors::white,
-            cen::color::blend(cen::colors::white, cen::colors::black, 0));
-  ASSERT_EQ(cen::colors::black,
-            cen::color::blend(cen::colors::white, cen::colors::black, 1));
+  ASSERT_EQ(cen::colors::gray, cen::blend(cen::colors::white, cen::colors::black));
+  ASSERT_EQ(cen::colors::white, cen::blend(cen::colors::white, cen::colors::black, 0));
+  ASSERT_EQ(cen::colors::black, cen::blend(cen::colors::white, cen::colors::black, 1));
 
-  const auto a = cen::colors::light_pink;  // #FFB6C1
-  const auto b = cen::colors::crimson;     // #DC143C
-  const auto c = cen::color::blend(a, b, 0.4);
-
+  // light pink: #FFB6C1, crimson:  #DC143C
+  const auto c = cen::blend(cen::colors::light_pink, cen::colors::crimson, 0.4);
   ASSERT_EQ(0xF1, c.red());
   ASSERT_EQ(0x75, c.green());
   ASSERT_EQ(0x8C, c.blue());

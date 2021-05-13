@@ -479,44 +479,6 @@ class color final
   }
 
   /**
-   * \brief Blends two colors according to the specified bias.
-   *
-   * \pre `bias` should be in the range [0, 1].
-   *
-   * \details This function applies a linear interpolation for each color component to
-   * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
-   * which determines how the input colors are blended. For example, a bias of 0 or 1 will
-   * simply result in the first or second color being returned, respectively.
-   * Subsequently, a bias of 0.5 will blend the two colors evenly.
-   *
-   * \param a the first color.
-   * \param b the second color.
-   * \param bias the bias that determines how the colors are blended, in the range [0, 1].
-   *
-   * \return a color obtained by blending the two supplied colors.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] static auto blend(const color& a, const color& b, const double bias = 0.5)
-      -> color
-  {
-    assert(bias >= 0);
-    assert(bias <= 1.0);
-
-    const auto invBias = 1.0 - bias;
-
-    const auto red = (a.red() * invBias) + (b.red() * bias);
-    const auto green = (a.green() * invBias) + (b.green() * bias);
-    const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-    const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
-
-    return color{static_cast<u8>(std::round(red)),
-                 static_cast<u8>(std::round(green)),
-                 static_cast<u8>(std::round(blue)),
-                 static_cast<u8>(std::round(alpha))};
-  }
-
-  /**
    * \brief Returns the maximum possible value of a color component.
    *
    * \return the maximum possible value of a color component.
@@ -562,6 +524,44 @@ class color final
 inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
 {
   return stream << to_string(color);
+}
+
+/**
+ * \brief Blends two colors according to the specified bias.
+ *
+ * \pre `bias` should be in the range [0, 1].
+ *
+ * \details This function applies a linear interpolation for each color component to
+ * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
+ * which determines how the input colors are blended. For example, a bias of 0 or 1 will
+ * simply result in the first or second color being returned, respectively.
+ * Subsequently, a bias of 0.5 will blend the two colors evenly.
+ *
+ * \param a the first color.
+ * \param b the second color.
+ * \param bias the bias that determines how the colors are blended, in the range [0, 1].
+ *
+ * \return a color obtained by blending the two supplied colors.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
+    -> color
+{
+  assert(bias >= 0);
+  assert(bias <= 1.0);
+
+  const auto invBias = 1.0 - bias;
+
+  const auto red = (a.red() * invBias) + (b.red() * bias);
+  const auto green = (a.green() * invBias) + (b.green() * bias);
+  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
+  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+
+  return color{static_cast<u8>(std::round(red)),
+               static_cast<u8>(std::round(green)),
+               static_cast<u8>(std::round(blue)),
+               static_cast<u8>(std::round(alpha))};
 }
 
 /// \name Color comparison operators

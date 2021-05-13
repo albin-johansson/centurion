@@ -3,12 +3,7 @@
 
 #include <cstring>  // strcmp
 
-#include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
+#include "../core/czstring.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -23,8 +18,8 @@ namespace cen::detail {
  *
  * \since 4.1.0
  */
-[[nodiscard]] inline auto czstring_eq(const czstring lhs,
-                                      const czstring rhs) noexcept -> bool
+[[nodiscard]] inline auto czstring_eq(const czstring lhs, const czstring rhs) noexcept
+    -> bool
 {
   if (lhs && rhs)
   {

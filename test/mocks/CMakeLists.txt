@@ -3,11 +3,16 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-mocks LANGUAGES CXX)
 
 set(SOURCE_FILES
-    test_main.cpp
     core_mocks.hpp
     core_mocks.cpp
+    mixer_mocks.cpp
+    mixer_mocks.hpp
+    test_main.cpp
     thread_mocks.hpp
     thread_mocks.cpp
+
+    audio/channels_test.cpp
+    audio/sound_fonts_test.cpp
 
     config/hints_test.cpp
 
@@ -15,16 +20,12 @@ set(SOURCE_FILES
 
     event/event_test.cpp
 
-    graphics/message_box_test.cpp
-    graphics/renderer_test.cpp
-    graphics/surface_test.cpp
-    graphics/window_test.cpp
-    graphics/window_utils_test.cpp
+    filesystem/file_test.cpp
 
     input/controller_test.cpp
     input/haptic_test.cpp
     input/joystick_test.cpp
-    input/key_state_test.cpp
+    input/keyboard_test.cpp
     input/sensor_test.cpp
     input/touch_test.cpp
 
@@ -37,7 +38,21 @@ set(SOURCE_FILES
     thread/condition_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
-    thread/semaphore_test.cpp)
+    thread/semaphore_test.cpp
+
+    video/gl/gl_context_test.cpp
+    video/gl/gl_core_test.cpp
+    video/gl/gl_library_test.cpp
+
+    video/vulkan/vk_core_test.cpp
+    video/vulkan/vk_library_test.cpp
+
+    video/message_box_test.cpp
+    video/renderer_info_test.cpp
+    video/renderer_test.cpp
+    video/surface_test.cpp
+    video/window_test.cpp
+    video/window_utils_test.cpp)
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(SOURCE_FILES

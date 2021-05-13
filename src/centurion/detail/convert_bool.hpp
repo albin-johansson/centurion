@@ -3,18 +3,11 @@
 
 #include <SDL.h>
 
-#include "../centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /// \cond FALSE
 namespace cen::detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
  *
  * \param b the boolean value that will be converted.
  *

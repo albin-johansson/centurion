@@ -1,4 +1,4 @@
-#include "mutex.hpp"
+#include "thread/mutex.hpp"
 
 #include <gtest/gtest.h>
 
@@ -17,6 +17,6 @@ class MutexTest : public testing::Test
 
 TEST_F(MutexTest, Constructor)
 {
-  EXPECT_THROW(cen::mutex{}, cen::sdl_error);
-  EXPECT_EQ(1, SDL_CreateMutex_fake.call_count);
+  ASSERT_THROW(cen::mutex{}, cen::sdl_error);
+  ASSERT_EQ(1, SDL_CreateMutex_fake.call_count);
 }

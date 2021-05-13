@@ -1,4 +1,4 @@
-#include "base_path.hpp"
+#include "filesystem/base_path.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -21,6 +21,6 @@ class BasePathTest : public testing::Test
 
 TEST_F(BasePathTest, FunctionCall)
 {
-  const auto path [[maybe_unused]] = cen::get_base_path();
-  EXPECT_EQ(1, SDL_GetBasePath_fake.call_count);
+  const auto path [[maybe_unused]] = cen::base_path();
+  ASSERT_EQ(1, SDL_GetBasePath_fake.call_count);
 }

@@ -6,14 +6,10 @@
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
 
-#include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "../core/czstring.hpp"
+#include "../core/integers.hpp"
 #include "czstring_compare.hpp"
 #include "static_bimap.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {
@@ -126,17 +122,16 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
 {
  public:
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, unsigned int>;
+    return std::is_same_v<T, uint>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept
-      -> std::optional<unsigned int>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<uint>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)
@@ -145,7 +140,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
     }
     else
     {
-      return static_cast<unsigned int>(std::stoul(value));
+      return static_cast<uint>(std::stoul(value));
     }
   }
 };

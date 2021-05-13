@@ -1,25 +1,14 @@
 #ifndef CENTURION_DETAIL_MIN_HEADER
 #define CENTURION_DETAIL_MIN_HEADER
 
-#include "../centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /// \cond FALSE
 namespace cen::detail {
 
-// clang-format off
-
 template <typename T>
-[[nodiscard]] constexpr auto min(const T& left, const T& right)
-    noexcept(noexcept(left < right)) -> T
+[[nodiscard]] constexpr auto min(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
 {
-  return (left < right) ? left : right;
+  return (a < b) ? a : b;
 }
-
-// clang-format on
 
 }  // namespace cen::detail
 /// \endcond

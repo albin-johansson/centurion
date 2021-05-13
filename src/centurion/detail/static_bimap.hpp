@@ -5,12 +5,7 @@
 #include <array>      // array
 #include <utility>    // pair
 
-#include "../centurion_cfg.hpp"
-#include "../exception.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
+#include "../core/exception.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -18,13 +13,12 @@ namespace cen::detail {
 /**
  * \class static_bimap
  *
- * \brief A bidirectional associative container for when keys and values are
- * known at compile-time.
+ * \brief A bidirectional associative container for when keys and values are known at
+ * compile-time.
  *
  * \note This class is only meant to be used in constexpr contexts.
  *
- * \remarks This class was inspired by Jason Turners C++ Weekly video on
- * constexpr maps!
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
  *
  * \tparam Key the type of the keys, must provide an overloaded `operator==`.
  * \tparam Value the type of the values.
@@ -32,24 +26,21 @@ namespace cen::detail {
  * \tparam size the amount of key-value pairs.
  *
  * \since 5.0.0
- *
- * \headerfile static_bimap.hpp
  */
-template <typename Key, typename Value, typename ValueCmp, std::size_t size>
+template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
 class static_bimap final
 {
   using pair_type = std::pair<Key, Value>;
-  using storage_type = std::array<pair_type, size>;
+  using storage_type = std::array<pair_type, Size>;
 
  public:
   storage_type data;
 
   constexpr auto find(const Key& key) const -> const Value&
   {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          return pair.first == key;
-        });
+    const auto it = std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+      return pair.first == key;
+    });
 
     if (it != data.end())
     {
@@ -57,17 +48,16 @@ class static_bimap final
     }
     else
     {
-      throw exception{"Failed to find element in static map!"};
+      throw cen_error{"Failed to find element in static map!"};
     }
   }
 
   constexpr auto key_from(const Value& value) const -> const Key&
   {
-    const auto it =
-        std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
-          ValueCmp predicate;
-          return predicate(pair.second, value);
-        });
+    const auto it = std::find_if(data.begin(), data.end(), [&](const pair_type& pair) {
+      ValueCmp predicate;
+      return predicate(pair.second, value);
+    });
 
     if (it != data.end())
     {
@@ -75,7 +65,7 @@ class static_bimap final
     }
     else
     {
-      throw exception{"Failed to find key in static map!"};
+      throw cen_error{"Failed to find key in static map!"};
     }
   }
 };

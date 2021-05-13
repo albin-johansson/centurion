@@ -1,9 +1,14 @@
-#include "sound_effect.hpp"
+#include "audio/sound_effect.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>  // array
+
 #include "core_mocks.hpp"
+#include "mixer_mocks.hpp"
+
+using ms = cen::milliseconds<int>;
 
 // clang-format off
 extern "C" {
@@ -23,6 +28,7 @@ class SoundEffectTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
+    mocks::reset_mixer();
 
     RESET_FAKE(Mix_FreeChunk);
     RESET_FAKE(Mix_Pause);
@@ -32,122 +38,136 @@ class SoundEffectTest : public testing::Test
     RESET_FAKE(Mix_Playing);
     RESET_FAKE(Mix_VolumeChunk);
   }
+
+  cen::sound_effect_handle m_sound{nullptr};
 };
 
 TEST_F(SoundEffectTest, Play)
 {
-  cen::sound_effect sound;
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(Mix_PlayChannelTimed, values.data(), cen::isize(values));
 
-  sound.play();
-  EXPECT_EQ(1, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_FALSE(m_sound.play());
+  ASSERT_EQ(1, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(0, Mix_PlayChannelTimed_fake.arg2_val);
 
-  sound.play(-2);
-  EXPECT_EQ(2, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_TRUE(m_sound.play(-2));
+  ASSERT_EQ(2, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(-1, Mix_PlayChannelTimed_fake.arg2_val);
 
-  sound.play(7);
-  EXPECT_EQ(3, Mix_PlayChannelTimed_fake.call_count);
-  EXPECT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
+  ASSERT_TRUE(m_sound.play(7));
+  ASSERT_EQ(3, Mix_PlayChannelTimed_fake.call_count);
+  ASSERT_EQ(7, Mix_PlayChannelTimed_fake.arg2_val);
 }
 
 TEST_F(SoundEffectTest, Pause)
 {
-  cen::sound_effect sound;
-
   std::array values{0, 1};
   SET_RETURN_SEQ(Mix_Playing, values.data(), cen::isize(values));
 
-  sound.stop();  // Does not invoke Mix_Playing
-  EXPECT_EQ(0, Mix_Pause_fake.call_count);
+  m_sound.stop();  // Does not invoke Mix_Playing
+  ASSERT_EQ(0, Mix_Pause_fake.call_count);
 
-  sound.set_channel(23);
+  m_sound.set_channel(23);
 
-  sound.stop();
-  EXPECT_EQ(0, Mix_Pause_fake.call_count);
+  m_sound.stop();
+  ASSERT_EQ(0, Mix_Pause_fake.call_count);
 
-  sound.stop();
-  EXPECT_EQ(1, Mix_Pause_fake.call_count);
+  m_sound.stop();
+  ASSERT_EQ(1, Mix_Pause_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, FadeIn)
 {
-  cen::sound_effect sound;
-
   // Not playing
-  sound.fade_in(cen::milliseconds<int>{5});
-  EXPECT_EQ(1, Mix_FadeInChannelTimed_fake.call_count);
+  m_sound.fade_in(ms{5});
+  ASSERT_EQ(1, Mix_FadeInChannelTimed_fake.call_count);
 
   // Not playing but with an associated channel
-  sound.set_channel(1);
-  sound.fade_in(cen::milliseconds<int>{5});
-  EXPECT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
+  m_sound.set_channel(1);
+  m_sound.fade_in(ms{5});
+  ASSERT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
 
   // Already playing
   Mix_Playing_fake.return_val = 1;
-  sound.fade_in(cen::milliseconds<int>{5});
-  EXPECT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
+  m_sound.fade_in(ms{5});
+  ASSERT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, FadeOut)
 {
-  cen::sound_effect sound;
-
   // Not playing
-  sound.fade_out(cen::milliseconds<int>{5});
-  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+  m_sound.fade_out(ms{5});
+  ASSERT_EQ(0, Mix_FadeOutChannel_fake.call_count);
 
   // Not playing but with an associated channel
-  sound.set_channel(7);
-  sound.fade_out(cen::milliseconds<int>{5});
-  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+  m_sound.set_channel(7);
+  m_sound.fade_out(ms{5});
+  ASSERT_EQ(0, Mix_FadeOutChannel_fake.call_count);
 
   // Playing
   Mix_Playing_fake.return_val = 1;
-  sound.fade_out(cen::milliseconds<int>{5});
-  EXPECT_EQ(1, Mix_FadeOutChannel_fake.call_count);
+  m_sound.fade_out(ms{5});
+  ASSERT_EQ(1, Mix_FadeOutChannel_fake.call_count);
 }
 
 TEST_F(SoundEffectTest, SetVolume)
 {
-  cen::sound_effect sound;
+  m_sound.set_volume(-1);
+  ASSERT_EQ(0, Mix_VolumeChunk_fake.arg1_val);
 
-  sound.set_volume(-1);
-  EXPECT_EQ(0, Mix_VolumeChunk_fake.arg1_val);
+  m_sound.set_volume(cen::sound_effect::max_volume() + 1);
+  ASSERT_EQ(cen::sound_effect::max_volume(), Mix_VolumeChunk_fake.arg1_val);
 
-  sound.set_volume(cen::sound_effect::max_volume() + 1);
-  EXPECT_EQ(cen::sound_effect::max_volume(), Mix_VolumeChunk_fake.arg1_val);
-
-  sound.set_volume(27);
-  EXPECT_EQ(27, Mix_VolumeChunk_fake.arg1_val);
+  m_sound.set_volume(27);
+  ASSERT_EQ(27, Mix_VolumeChunk_fake.arg1_val);
 }
 
 TEST_F(SoundEffectTest, IsAnyPlaying)
 {
   const auto playing [[maybe_unused]] = cen::sound_effect::is_any_playing();
-  EXPECT_EQ(1, Mix_Playing_fake.call_count);
-  EXPECT_EQ(-1, Mix_Playing_fake.arg0_val);
+  ASSERT_EQ(1, Mix_Playing_fake.call_count);
+  ASSERT_EQ(-1, Mix_Playing_fake.arg0_val);
 }
 
 TEST_F(SoundEffectTest, Channel)
 {
-  cen::sound_effect sound;
-  EXPECT_FALSE(sound.channel().has_value());
+  ASSERT_FALSE(m_sound.channel().has_value());
 
-  sound.set_channel(7);
-  EXPECT_EQ(7, sound.channel());
+  m_sound.set_channel(7);
+  ASSERT_EQ(7, m_sound.channel());
+}
+
+TEST_F(SoundEffectTest, GetDecoder)
+{
+  const auto* name [[maybe_unused]] = cen::sound_effect::get_decoder(0);
+  ASSERT_EQ(1, Mix_GetChunkDecoder_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, HasDecoder)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(Mix_HasChunkDecoder, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::sound_effect::has_decoder("foo"));
+  ASSERT_TRUE(cen::sound_effect::has_decoder("foo"));
+  ASSERT_EQ(2, Mix_HasChunkDecoder_fake.call_count);
+}
+
+TEST_F(SoundEffectTest, DecoderCount)
+{
+  const auto count [[maybe_unused]] = cen::sound_effect::decoder_count();
+  ASSERT_EQ(1, Mix_GetNumChunkDecoders_fake.call_count);
 }
 
 using SoundEffectDeathTest = SoundEffectTest;
 
 TEST_F(SoundEffectDeathTest, FadeIn)
 {
-  cen::sound_effect sound;
-  EXPECT_DEBUG_DEATH(sound.fade_in(cen::milliseconds<int>::zero()), "");
+  ASSERT_DEBUG_DEATH(m_sound.fade_in(ms::zero()), "");
 }
 
 TEST_F(SoundEffectDeathTest, FadeOut)
 {
-  cen::sound_effect sound;
-  EXPECT_DEBUG_DEATH(sound.fade_out(cen::milliseconds<int>::zero()), "");
+  ASSERT_DEBUG_DEATH(m_sound.fade_out(ms::zero()), "");
 }

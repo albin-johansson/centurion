@@ -2,7 +2,7 @@
 
 #include <array>  // array
 
-#include "integers.hpp"
+#include "core/integers.hpp"
 
 // clang-format off
 extern "C" {
@@ -24,6 +24,8 @@ DEFINE_FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
 
 DEFINE_FAKE_VALUE_FUNC(const char*, SDL_GetError);
 DEFINE_FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
+
+DEFINE_FAKE_VALUE_FUNC(Uint32, SDL_GetWindowFlags, SDL_Window*)
 }
 // clang-format on
 
@@ -48,6 +50,8 @@ void reset_core()
 
   RESET_FAKE(SDL_GetError);
   RESET_FAKE(SDL_RWFromFile);
+
+  RESET_FAKE(SDL_GetWindowFlags)
 
   std::array values{"dummy"};
   SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values));

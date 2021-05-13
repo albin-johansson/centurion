@@ -3,13 +3,13 @@
 
 #include <array>         // array
 #include <charconv>      // to_chars
+#include <cstddef>       // size_t
 #include <optional>      // optional, nullopt
-#include <string>        // string
+#include <string>        // string, to_string
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
-#include "../centurion_cfg.hpp"
-#include "compiler.hpp"
+#include "../compiler/compiler.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -17,24 +17,24 @@ namespace cen::detail {
 /**
  * \brief Returns a string representation of an arithmetic value.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats.
- * You might have to increase the buffer size for larger types.
+ * \note This function is guaranteed to work for 32-bit integers and floats. You might
+ * have to increase the buffer size for larger types.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the
- * `std::to_chars` implementation seems to be lacking at the time of writing.
+ * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
+ * implementation seems to be lacking at the time of writing.
  *
- * \tparam bufferSize the size of the stack buffer used, must be big enough
- * to store the characters of the string representation of the value.
- * \tparam T the type of the value that will be converted, must be arithmetic.
+ * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
+ * characters of the string representation of the value. \tparam T the type of the value
+ * that will be converted, must be arithmetic.
  *
  * \param value the value that will be converted.
  *
- * \return a string representation of the supplied value; `std::nullopt` if
- * something goes wrong.
+ * \return a string representation of the supplied value; `std::nullopt` if something goes
+ * wrong.
  *
  * \since 5.0.0
  */
-template <std::size_t bufferSize = 16, typename T>
+template <std::size_t BufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
   if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
@@ -43,11 +43,10 @@ template <std::size_t bufferSize = 16, typename T>
   }
   else
   {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-
-    if (err == std::errc{})
+    std::array<char, BufferSize> buffer{};
+    if (const auto [ptr, error] =
+            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+        error == std::errc{})
     {
       return std::string{buffer.data(), ptr};
     }

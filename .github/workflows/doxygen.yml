@@ -1,0 +1,26 @@
+name: "Doxygen"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  doxygen:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Doxygen
+        shell: bash
+        run: sudo apt install doxygen
+
+      - name: Generate Doxygen output
+        shell: bash
+        run: doxygen
+
+      - name: Deploy to GH Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: doxygen-out/html

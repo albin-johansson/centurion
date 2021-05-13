@@ -5,26 +5,24 @@
 #include <memory>       // unique_ptr
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
-#include "../centurion_cfg.hpp"
-#include "../exception.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
+#include "../core/exception.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
+using owning_type = std::true_type;
+using handle_type = std::false_type;
 
 template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
+using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
+
+template <typename T>
+using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
 
 template <typename T>
 [[nodiscard]] constexpr auto is_owning() noexcept -> bool
 {
-  return std::is_same_v<T, std::true_type>;
+  return std::is_same_v<T, owning_type>;
 }
 
 template <typename B, typename Type, typename Deleter>
@@ -40,7 +38,7 @@ class pointer_manager final
   explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
   {}
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
   {
     m_ptr.reset(ptr);
@@ -78,7 +76,7 @@ class pointer_manager final
     return get();
   }
 
-  template <typename BB = B, is_owner<BB> = true>
+  template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
   {
     return m_ptr.release();

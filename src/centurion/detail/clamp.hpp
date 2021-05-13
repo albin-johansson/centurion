@@ -3,12 +3,6 @@
 
 #include <cassert>  // assert
 
-#include "../centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /// \cond FALSE
 namespace cen::detail {
 
@@ -20,8 +14,8 @@ namespace cen::detail {
  * \pre `min` must be less than or equal to `max`.
  *
  * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason
- * this function exists.
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
  *
  * \tparam T the type of the values.
  *
@@ -40,11 +34,16 @@ template <typename T>
     noexcept(noexcept(value < min) && noexcept(value > max)) -> T
 {
   assert(min <= max);
-  if (value < min) {
+  if (value < min)
+  {
     return min;
-  } else if (value > max) {
+  }
+  else if (value > max)
+  {
     return max;
-  } else {
+  }
+  else
+  {
     return value;
   }
 }

@@ -1,13 +1,13 @@
-#include "joystick.hpp"
+#include "input/joystick.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
-#include "colors.hpp"
+#include "core/integers.hpp"
 #include "core_mocks.hpp"
-#include "integers.hpp"
+#include "video/colors.hpp"
 
 using namespace cen::literals;
 
@@ -131,49 +131,330 @@ class JoystickTest : public testing::Test
 
 TEST_F(JoystickTest, FromInstanceId)
 {
-  const auto handle [[maybe_unused]] =
-      cen::joystick_handle::from_instance_id(0);
+  const auto handle [[maybe_unused]] = cen::joystick_handle::from_instance_id(0);
 
-  EXPECT_EQ(1, SDL_JoystickFromInstanceID_fake.call_count);
-}
-
-TEST_F(JoystickTest, FromPlayerIndex)
-{
-  const auto handle [[maybe_unused]] =
-      cen::joystick_handle::from_player_index(0);
-
-  EXPECT_EQ(1, SDL_JoystickFromPlayerIndex_fake.call_count);
+  ASSERT_EQ(1, SDL_JoystickFromInstanceID_fake.call_count);
 }
 
 TEST_F(JoystickTest, Rumble)
 {
   m_joystick.rumble(10, 20, 5_ms);
-  EXPECT_EQ(1, SDL_JoystickRumble_fake.call_count);
-  EXPECT_EQ(10, SDL_JoystickRumble_fake.arg1_val);
-  EXPECT_EQ(20, SDL_JoystickRumble_fake.arg2_val);
-  EXPECT_EQ(5, SDL_JoystickRumble_fake.arg3_val);
+  ASSERT_EQ(1, SDL_JoystickRumble_fake.call_count);
+  ASSERT_EQ(10, SDL_JoystickRumble_fake.arg1_val);
+  ASSERT_EQ(20, SDL_JoystickRumble_fake.arg2_val);
+  ASSERT_EQ(5, SDL_JoystickRumble_fake.arg3_val);
 }
+
+TEST_F(JoystickTest, PlayerIndex)
+{
+  std::array values{-1, 7};
+  SET_RETURN_SEQ(SDL_JoystickGetPlayerIndex, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.player_index().has_value());
+  ASSERT_EQ(7, m_joystick.player_index());
+
+  ASSERT_EQ(2, SDL_JoystickGetPlayerIndex_fake.call_count);
+}
+
+TEST_F(JoystickTest, PlayerIndexStatic)
+{
+  std::array values{-1, 42};
+  SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::player_index(0).has_value());
+  ASSERT_EQ(42, cen::joystick::player_index(0));
+
+  ASSERT_EQ(2, SDL_JoystickGetDevicePlayerIndex_fake.call_count);
+}
+
+TEST_F(JoystickTest, Type)
+{
+  const auto type [[maybe_unused]] = m_joystick.type();
+  ASSERT_EQ(1, SDL_JoystickGetType_fake.call_count);
+}
+
+TEST_F(JoystickTest, TypeStatic)
+{
+  const auto type [[maybe_unused]] = cen::joystick::type(0);
+  ASSERT_EQ(1, SDL_JoystickGetDeviceType_fake.call_count);
+}
+
+TEST_F(JoystickTest, Vendor)
+{
+  std::array values{0_u16, 4_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetVendor, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.vendor().has_value());
+  ASSERT_EQ(4, m_joystick.vendor());
+
+  ASSERT_EQ(2, SDL_JoystickGetVendor_fake.call_count);
+}
+
+TEST_F(JoystickTest, VendorStatic)
+{
+  std::array values{0_u16, 4_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::vendor(0).has_value());
+  ASSERT_EQ(4, cen::joystick::vendor(0));
+
+  ASSERT_EQ(2, SDL_JoystickGetDeviceVendor_fake.call_count);
+}
+
+TEST_F(JoystickTest, Product)
+{
+  std::array values{0_u16, 6_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetProduct, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.product().has_value());
+  ASSERT_EQ(6, m_joystick.product());
+
+  ASSERT_EQ(2, SDL_JoystickGetProduct_fake.call_count);
+}
+
+TEST_F(JoystickTest, ProductStatic)
+{
+  std::array values{0_u16, 8_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::product(0).has_value());
+  ASSERT_EQ(8, cen::joystick::product(0));
+
+  ASSERT_EQ(2, SDL_JoystickGetDeviceProduct_fake.call_count);
+}
+
+TEST_F(JoystickTest, ProductVersion)
+{
+  std::array values{0_u16, 54_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetProductVersion, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.product_version().has_value());
+  ASSERT_EQ(54, m_joystick.product_version());
+
+  ASSERT_EQ(2, SDL_JoystickGetProductVersion_fake.call_count);
+}
+
+TEST_F(JoystickTest, ProductVersionStatic)
+{
+  std::array values{0_u16, 12_u16};
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::product_version(0).has_value());
+  ASSERT_EQ(12, cen::joystick::product_version(0));
+
+  ASSERT_EQ(2, SDL_JoystickGetDeviceProductVersion_fake.call_count);
+}
+
+TEST_F(JoystickTest, GetBallAxisChange)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_JoystickGetBall, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.get_ball_axis_change(0).has_value());
+  ASSERT_TRUE(m_joystick.get_ball_axis_change(0).has_value());
+
+  ASSERT_EQ(2, SDL_JoystickGetBall_fake.call_count);
+}
+
+TEST_F(JoystickTest, AxisPos)
+{
+  std::array values{0_i16, 123_i16};
+  SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
+
+  ASSERT_EQ(0, m_joystick.axis_pos(0));
+  ASSERT_EQ(123, m_joystick.axis_pos(0));
+  ASSERT_EQ(2, SDL_JoystickGetAxis_fake.call_count);
+}
+
+TEST_F(JoystickTest, AxisInitialState)
+{
+  std::array values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.axis_initial_state(0).has_value());
+  ASSERT_TRUE(m_joystick.axis_initial_state(0).has_value());
+
+  ASSERT_EQ(2, SDL_JoystickGetAxisInitialState_fake.call_count);
+}
+
+TEST_F(JoystickTest, IsAttached)
+{
+  const auto attached [[maybe_unused]] = m_joystick.is_attached();
+  ASSERT_EQ(1, SDL_JoystickGetAttached_fake.call_count);
+}
+
+TEST_F(JoystickTest, HatCount)
+{
+  const auto count [[maybe_unused]] = m_joystick.hat_count();
+  ASSERT_EQ(1, SDL_JoystickNumHats_fake.call_count);
+}
+
+TEST_F(JoystickTest, AxisCount)
+{
+  const auto count [[maybe_unused]] = m_joystick.axis_count();
+  ASSERT_EQ(1, SDL_JoystickNumAxes_fake.call_count);
+}
+
+TEST_F(JoystickTest, TrackballCount)
+{
+  const auto count [[maybe_unused]] = m_joystick.trackball_count();
+  ASSERT_EQ(1, SDL_JoystickNumBalls_fake.call_count);
+}
+
+TEST_F(JoystickTest, ButtonCount)
+{
+  const auto count [[maybe_unused]] = m_joystick.button_count();
+  ASSERT_EQ(1, SDL_JoystickNumButtons_fake.call_count);
+}
+
+TEST_F(JoystickTest, InstanceId)
+{
+  const auto id [[maybe_unused]] = m_joystick.instance_id();
+  ASSERT_EQ(1, SDL_JoystickInstanceID_fake.call_count);
+}
+
+TEST_F(JoystickTest, InstanceIdStatic)
+{
+  std::array values{-1, 3};
+  SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::instance_id(0).has_value());
+  ASSERT_EQ(3, cen::joystick::instance_id(0));
+
+  ASSERT_EQ(2, SDL_JoystickGetDeviceInstanceID_fake.call_count);
+}
+
+TEST_F(JoystickTest, Guid)
+{
+  const auto id [[maybe_unused]] = m_joystick.guid();
+  ASSERT_EQ(1, SDL_JoystickGetGUID_fake.call_count);
+}
+
+TEST_F(JoystickTest, GuidStatic)
+{
+  const auto name [[maybe_unused]] = cen::joystick::guid(0);
+  ASSERT_EQ(1, SDL_JoystickGetDeviceGUID_fake.call_count);
+}
+
+TEST_F(JoystickTest, Name)
+{
+  const auto name [[maybe_unused]] = m_joystick.name();
+  ASSERT_EQ(1, SDL_JoystickName_fake.call_count);
+}
+
+TEST_F(JoystickTest, GetPower)
+{
+  const auto power [[maybe_unused]] = m_joystick.get_power();
+  ASSERT_EQ(1, SDL_JoystickCurrentPowerLevel_fake.call_count);
+}
+
+TEST_F(JoystickTest, GetButtonState)
+{
+  const auto state [[maybe_unused]] = m_joystick.get_button_state(0);
+  ASSERT_EQ(1, SDL_JoystickGetButton_fake.call_count);
+}
+
+TEST_F(JoystickTest, GetHatState)
+{
+  const auto state [[maybe_unused]] = m_joystick.get_hat_state(0);
+  ASSERT_EQ(1, SDL_JoystickGetHat_fake.call_count);
+}
+
+TEST_F(JoystickTest, Update)
+{
+  cen::joystick::update();
+  ASSERT_EQ(1, SDL_JoystickUpdate_fake.call_count);
+}
+
+TEST_F(JoystickTest, Lock)
+{
+  cen::joystick::lock();
+  ASSERT_EQ(1, SDL_LockJoysticks_fake.call_count);
+}
+
+TEST_F(JoystickTest, Unlock)
+{
+  cen::joystick::unlock();
+  ASSERT_EQ(1, SDL_UnlockJoysticks_fake.call_count);
+}
+
+TEST_F(JoystickTest, SetPolling)
+{
+  cen::joystick::set_polling(true);
+  ASSERT_EQ(SDL_ENABLE, SDL_JoystickEventState_fake.arg0_val);
+
+  cen::joystick::set_polling(false);
+  ASSERT_EQ(SDL_DISABLE, SDL_JoystickEventState_fake.arg0_val);
+
+  ASSERT_EQ(2, SDL_JoystickEventState_fake.call_count);
+}
+
+TEST_F(JoystickTest, IsPolling)
+{
+  const auto isPolling [[maybe_unused]] = cen::joystick::is_polling();
+
+  ASSERT_EQ(SDL_QUERY, SDL_JoystickEventState_fake.arg0_val);
+  ASSERT_EQ(1, SDL_JoystickEventState_fake.call_count);
+}
+
+TEST_F(JoystickTest, Count)
+{
+  std::array values{-1, 7};
+  SET_RETURN_SEQ(SDL_NumJoysticks, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(cen::joystick::count().has_value());
+  ASSERT_EQ(7, cen::joystick::count());
+
+  ASSERT_EQ(2, SDL_NumJoysticks_fake.call_count);
+}
+
+TEST_F(JoystickTest, GuidFromString)
+{
+  {
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
+    ASSERT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
+
+  {
+    using namespace std::string_literals;
+    const auto id [[maybe_unused]] = cen::joystick::guid_from_string(""s);
+    ASSERT_EQ(2, SDL_JoystickGetGUIDFromString_fake.call_count);
+  }
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST_F(JoystickTest, FromPlayerIndex)
+{
+  const auto handle [[maybe_unused]] = cen::joystick_handle::from_player_index(0);
+
+  ASSERT_EQ(1, SDL_JoystickFromPlayerIndex_fake.call_count);
+}
+
+TEST_F(JoystickTest, SetPlayerIndex)
+{
+  m_joystick.set_player_index(7);
+  ASSERT_EQ(1, SDL_JoystickSetPlayerIndex_fake.call_count);
+  ASSERT_EQ(7, SDL_JoystickSetPlayerIndex_fake.arg1_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST_F(JoystickTest, RumbleTriggers)
 {
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_JoystickRumbleTriggers, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_joystick.rumble_triggers(12, 34, 56_ms));
-  EXPECT_TRUE(m_joystick.rumble_triggers(12, 34, 56_ms));
+  ASSERT_FALSE(m_joystick.rumble_triggers(12, 34, 56_ms));
+  ASSERT_TRUE(m_joystick.rumble_triggers(12, 34, 56_ms));
 
-  EXPECT_EQ(12, SDL_JoystickRumbleTriggers_fake.arg1_val);
-  EXPECT_EQ(34, SDL_JoystickRumbleTriggers_fake.arg2_val);
-  EXPECT_EQ(56, SDL_JoystickRumbleTriggers_fake.arg3_val);
+  ASSERT_EQ(12, SDL_JoystickRumbleTriggers_fake.arg1_val);
+  ASSERT_EQ(34, SDL_JoystickRumbleTriggers_fake.arg2_val);
+  ASSERT_EQ(56, SDL_JoystickRumbleTriggers_fake.arg3_val);
 
-  EXPECT_EQ(2, SDL_JoystickRumbleTriggers_fake.call_count);
-}
-
-TEST_F(JoystickTest, SetPlayerIndex)
-{
-  m_joystick.set_player_index(7);
-  EXPECT_EQ(1, SDL_JoystickSetPlayerIndex_fake.call_count);
-  EXPECT_EQ(7, SDL_JoystickSetPlayerIndex_fake.arg1_val);
+  ASSERT_EQ(2, SDL_JoystickRumbleTriggers_fake.call_count);
 }
 
 TEST_F(JoystickTest, SetLED)
@@ -182,221 +463,9 @@ TEST_F(JoystickTest, SetLED)
   SET_RETURN_SEQ(SDL_JoystickSetLED, values.data(), cen::isize(values));
 
   const auto color = cen::colors::magenta;
-  EXPECT_FALSE(m_joystick.set_led(color));
-  EXPECT_TRUE(m_joystick.set_led(color));
-  EXPECT_EQ(2, SDL_JoystickSetLED_fake.call_count);
-}
-
-TEST_F(JoystickTest, PlayerIndex)
-{
-  std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_JoystickGetPlayerIndex, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.player_index().has_value());
-  EXPECT_EQ(7, m_joystick.player_index());
-
-  EXPECT_EQ(2, SDL_JoystickGetPlayerIndex_fake.call_count);
-}
-
-TEST_F(JoystickTest, PlayerIndexStatic)
-{
-  std::array values{-1, 42};
-  SET_RETURN_SEQ(SDL_JoystickGetDevicePlayerIndex,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::player_index(0).has_value());
-  EXPECT_EQ(42, cen::joystick::player_index(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetDevicePlayerIndex_fake.call_count);
-}
-
-TEST_F(JoystickTest, GetType)
-{
-  const auto type [[maybe_unused]] = m_joystick.get_type();
-  EXPECT_EQ(1, SDL_JoystickGetType_fake.call_count);
-}
-
-TEST_F(JoystickTest, GetTypeStatic)
-{
-  const auto type [[maybe_unused]] = cen::joystick::get_type(0);
-  EXPECT_EQ(1, SDL_JoystickGetDeviceType_fake.call_count);
-}
-
-TEST_F(JoystickTest, Vendor)
-{
-  std::array values{0_u16, 4_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetVendor, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.vendor().has_value());
-  EXPECT_EQ(4, m_joystick.vendor());
-
-  EXPECT_EQ(2, SDL_JoystickGetVendor_fake.call_count);
-}
-
-TEST_F(JoystickTest, VendorStatic)
-{
-  std::array values{0_u16, 4_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceVendor,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::vendor(0).has_value());
-  EXPECT_EQ(4, cen::joystick::vendor(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetDeviceVendor_fake.call_count);
-}
-
-TEST_F(JoystickTest, Product)
-{
-  std::array values{0_u16, 6_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetProduct, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.product().has_value());
-  EXPECT_EQ(6, m_joystick.product());
-
-  EXPECT_EQ(2, SDL_JoystickGetProduct_fake.call_count);
-}
-
-TEST_F(JoystickTest, ProductStatic)
-{
-  std::array values{0_u16, 8_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceProduct,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::product(0).has_value());
-  EXPECT_EQ(8, cen::joystick::product(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetDeviceProduct_fake.call_count);
-}
-
-TEST_F(JoystickTest, ProductVersion)
-{
-  std::array values{0_u16, 54_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetProductVersion,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.product_version().has_value());
-  EXPECT_EQ(54, m_joystick.product_version());
-
-  EXPECT_EQ(2, SDL_JoystickGetProductVersion_fake.call_count);
-}
-
-TEST_F(JoystickTest, ProductVersionStatic)
-{
-  std::array values{0_u16, 12_u16};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceProductVersion,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::product_version(0).has_value());
-  EXPECT_EQ(12, cen::joystick::product_version(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetDeviceProductVersion_fake.call_count);
-}
-
-TEST_F(JoystickTest, GetBallAxisChange)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_JoystickGetBall, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.get_ball_axis_change(0).has_value());
-  EXPECT_TRUE(m_joystick.get_ball_axis_change(0).has_value());
-
-  EXPECT_EQ(2, SDL_JoystickGetBall_fake.call_count);
-}
-
-TEST_F(JoystickTest, AxisPos)
-{
-  std::array values{0_i16, 123_i16};
-  SET_RETURN_SEQ(SDL_JoystickGetAxis, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.axis_pos(0).has_value());
-  EXPECT_EQ(123, m_joystick.axis_pos(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetAxis_fake.call_count);
-}
-
-TEST_F(JoystickTest, AxisInitialState)
-{
-  std::array values{SDL_FALSE, SDL_TRUE};
-  SET_RETURN_SEQ(SDL_JoystickGetAxisInitialState,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(m_joystick.axis_initial_state(0).has_value());
-  EXPECT_TRUE(m_joystick.axis_initial_state(0).has_value());
-
-  EXPECT_EQ(2, SDL_JoystickGetAxisInitialState_fake.call_count);
-}
-
-TEST_F(JoystickTest, IsAttached)
-{
-  const auto attached [[maybe_unused]] = m_joystick.is_attached();
-  EXPECT_EQ(1, SDL_JoystickGetAttached_fake.call_count);
-}
-
-TEST_F(JoystickTest, NumHats)
-{
-  const auto count [[maybe_unused]] = m_joystick.num_hats();
-  EXPECT_EQ(1, SDL_JoystickNumHats_fake.call_count);
-}
-
-TEST_F(JoystickTest, NumAxes)
-{
-  const auto count [[maybe_unused]] = m_joystick.num_axes();
-  EXPECT_EQ(1, SDL_JoystickNumAxes_fake.call_count);
-}
-
-TEST_F(JoystickTest, NumTrackballs)
-{
-  const auto count [[maybe_unused]] = m_joystick.num_trackballs();
-  EXPECT_EQ(1, SDL_JoystickNumBalls_fake.call_count);
-}
-
-TEST_F(JoystickTest, NumButtons)
-{
-  const auto count [[maybe_unused]] = m_joystick.num_buttons();
-  EXPECT_EQ(1, SDL_JoystickNumButtons_fake.call_count);
-}
-
-TEST_F(JoystickTest, InstanceId)
-{
-  const auto id [[maybe_unused]] = m_joystick.instance_id();
-  EXPECT_EQ(1, SDL_JoystickInstanceID_fake.call_count);
-}
-
-TEST_F(JoystickTest, InstanceIdStatic)
-{
-  std::array values{-1, 3};
-  SET_RETURN_SEQ(SDL_JoystickGetDeviceInstanceID,
-                 values.data(),
-                 cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::instance_id(0).has_value());
-  EXPECT_EQ(3, cen::joystick::instance_id(0));
-
-  EXPECT_EQ(2, SDL_JoystickGetDeviceInstanceID_fake.call_count);
-}
-
-TEST_F(JoystickTest, Guid)
-{
-  const auto id [[maybe_unused]] = m_joystick.guid();
-  EXPECT_EQ(1, SDL_JoystickGetGUID_fake.call_count);
-}
-
-TEST_F(JoystickTest, GuidStatic)
-{
-  const auto name [[maybe_unused]] = cen::joystick::guid(0);
-  EXPECT_EQ(1, SDL_JoystickGetDeviceGUID_fake.call_count);
-}
-
-TEST_F(JoystickTest, Serial)
-{
-  const auto name [[maybe_unused]] = m_joystick.serial();
-  EXPECT_EQ(1, SDL_JoystickGetSerial_fake.call_count);
+  ASSERT_FALSE(m_joystick.set_led(color));
+  ASSERT_TRUE(m_joystick.set_led(color));
+  ASSERT_EQ(2, SDL_JoystickSetLED_fake.call_count);
 }
 
 TEST_F(JoystickTest, HasLED)
@@ -404,93 +473,15 @@ TEST_F(JoystickTest, HasLED)
   std::array values{SDL_FALSE, SDL_TRUE};
   SET_RETURN_SEQ(SDL_JoystickHasLED, values.data(), cen::isize(values));
 
-  EXPECT_FALSE(m_joystick.has_led());
-  EXPECT_TRUE(m_joystick.has_led());
-  EXPECT_EQ(2, SDL_JoystickHasLED_fake.call_count);
+  ASSERT_FALSE(m_joystick.has_led());
+  ASSERT_TRUE(m_joystick.has_led());
+  ASSERT_EQ(2, SDL_JoystickHasLED_fake.call_count);
 }
 
-TEST_F(JoystickTest, Name)
+TEST_F(JoystickTest, Serial)
 {
-  const auto name [[maybe_unused]] = m_joystick.name();
-  EXPECT_EQ(1, SDL_JoystickName_fake.call_count);
+  const auto name [[maybe_unused]] = m_joystick.serial();
+  ASSERT_EQ(1, SDL_JoystickGetSerial_fake.call_count);
 }
 
-TEST_F(JoystickTest, GetPower)
-{
-  const auto power [[maybe_unused]] = m_joystick.get_power();
-  EXPECT_EQ(1, SDL_JoystickCurrentPowerLevel_fake.call_count);
-}
-
-TEST_F(JoystickTest, GetButtonState)
-{
-  const auto state [[maybe_unused]] = m_joystick.get_button_state(0);
-  EXPECT_EQ(1, SDL_JoystickGetButton_fake.call_count);
-}
-
-TEST_F(JoystickTest, GetHatState)
-{
-  const auto state [[maybe_unused]] = m_joystick.get_hat_state(0);
-  EXPECT_EQ(1, SDL_JoystickGetHat_fake.call_count);
-}
-
-TEST_F(JoystickTest, Update)
-{
-  cen::joystick::update();
-  EXPECT_EQ(1, SDL_JoystickUpdate_fake.call_count);
-}
-
-TEST_F(JoystickTest, Lock)
-{
-  cen::joystick::lock();
-  EXPECT_EQ(1, SDL_LockJoysticks_fake.call_count);
-}
-
-TEST_F(JoystickTest, Unlock)
-{
-  cen::joystick::unlock();
-  EXPECT_EQ(1, SDL_UnlockJoysticks_fake.call_count);
-}
-
-TEST_F(JoystickTest, SetPolling)
-{
-  cen::joystick::set_polling(true);
-  EXPECT_EQ(SDL_ENABLE, SDL_JoystickEventState_fake.arg0_val);
-
-  cen::joystick::set_polling(false);
-  EXPECT_EQ(SDL_DISABLE, SDL_JoystickEventState_fake.arg0_val);
-
-  EXPECT_EQ(2, SDL_JoystickEventState_fake.call_count);
-}
-
-TEST_F(JoystickTest, IsPolling)
-{
-  const auto isPolling [[maybe_unused]] = cen::joystick::is_polling();
-
-  EXPECT_EQ(SDL_QUERY, SDL_JoystickEventState_fake.arg0_val);
-  EXPECT_EQ(1, SDL_JoystickEventState_fake.call_count);
-}
-
-TEST_F(JoystickTest, Count)
-{
-  std::array values{-1, 7};
-  SET_RETURN_SEQ(SDL_NumJoysticks, values.data(), cen::isize(values));
-
-  EXPECT_FALSE(cen::joystick::count().has_value());
-  EXPECT_EQ(7, cen::joystick::count());
-
-  EXPECT_EQ(2, SDL_NumJoysticks_fake.call_count);
-}
-
-TEST_F(JoystickTest, GuidFromString)
-{
-  {
-    const auto id [[maybe_unused]] = cen::joystick::guid_from_string("");
-    EXPECT_EQ(1, SDL_JoystickGetGUIDFromString_fake.call_count);
-  }
-
-  {
-    using namespace std::string_literals;
-    const auto id [[maybe_unused]] = cen::joystick::guid_from_string(""s);
-    EXPECT_EQ(2, SDL_JoystickGetGUIDFromString_fake.call_count);
-  }
-}
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

@@ -1,4 +1,4 @@
-#include "platform.hpp"
+#include "system/platform.hpp"
 
 #include <fff.h>
 #include <gtest/gtest.h>
@@ -27,6 +27,86 @@ class PlatformTest : public testing::Test
   }
 };
 
+TEST_F(PlatformTest, CurrentPlatform)
+{
+  SDL_GetPlatform_fake.return_val = "Windows";
+  ASSERT_EQ(cen::platform_id::windows, cen::current_platform());
+
+  SDL_GetPlatform_fake.return_val = "Mac OS X";
+  ASSERT_EQ(cen::platform_id::mac_osx, cen::current_platform());
+
+  SDL_GetPlatform_fake.return_val = "Linux";
+  ASSERT_EQ(cen::platform_id::linux_os, cen::current_platform());
+
+  SDL_GetPlatform_fake.return_val = "iOS";
+  ASSERT_EQ(cen::platform_id::ios, cen::current_platform());
+
+  SDL_GetPlatform_fake.return_val = "Android";
+  ASSERT_EQ(cen::platform_id::android, cen::current_platform());
+
+  SDL_GetPlatform_fake.return_val = "foobar";
+  ASSERT_EQ(cen::platform_id::unknown, cen::current_platform());
+}
+
+TEST_F(PlatformTest, IsWindows)
+{
+  SDL_GetPlatform_fake.return_val = "Windows";
+  ASSERT_TRUE(cen::is_windows());
+}
+
+TEST_F(PlatformTest, IsMacOSX)
+{
+  SDL_GetPlatform_fake.return_val = "Mac OS X";
+  ASSERT_TRUE(cen::is_mac_osx());
+}
+
+TEST_F(PlatformTest, IsLinux)
+{
+  SDL_GetPlatform_fake.return_val = "Linux";
+  ASSERT_TRUE(cen::is_linux());
+}
+
+TEST_F(PlatformTest, IsIOS)
+{
+  SDL_GetPlatform_fake.return_val = "iOS";
+  ASSERT_TRUE(cen::is_ios());
+}
+
+TEST_F(PlatformTest, IsAndroid)
+{
+  SDL_GetPlatform_fake.return_val = "Android";
+  ASSERT_TRUE(cen::is_android());
+}
+
+TEST_F(PlatformTest, PlatformName)
+{
+  SDL_GetPlatform_fake.return_val = "Windows";
+  ASSERT_EQ("Windows", cen::platform_name().value());
+
+  SDL_GetPlatform_fake.return_val = "Mac OS X";
+  ASSERT_EQ("Mac OS X", cen::platform_name().value());
+
+  SDL_GetPlatform_fake.return_val = "Linux";
+  ASSERT_EQ("Linux", cen::platform_name().value());
+
+  SDL_GetPlatform_fake.return_val = "iOS";
+  ASSERT_EQ("iOS", cen::platform_name().value());
+
+  SDL_GetPlatform_fake.return_val = "Android";
+  ASSERT_EQ("Android", cen::platform_name().value());
+
+  SDL_GetPlatform_fake.return_val = "Unknown";
+  ASSERT_FALSE(cen::platform_name().has_value());
+}
+
+TEST_F(PlatformTest, IsTablet)
+{
+  const auto isTablet [[maybe_unused]] = cen::is_tablet();
+  ASSERT_EQ(1, SDL_IsTablet_fake.call_count);
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST_F(PlatformTest, OpenURL)
 {
   std::array values{-1, 0};
@@ -35,86 +115,10 @@ TEST_F(PlatformTest, OpenURL)
   using namespace std::string_literals;
   const auto url = "https://www.google.com"s;
 
-  EXPECT_FALSE(cen::platform::open_url(url));
-  EXPECT_TRUE(cen::platform::open_url(url));
+  ASSERT_FALSE(cen::open_url(url));
+  ASSERT_TRUE(cen::open_url(url));
 
-  EXPECT_EQ(2, SDL_OpenURL_fake.call_count);
+  ASSERT_EQ(2, SDL_OpenURL_fake.call_count);
 }
 
-TEST_F(PlatformTest, ID)
-{
-  SDL_GetPlatform_fake.return_val = "Windows";
-  EXPECT_EQ(cen::platform::platform_id::windows, cen::platform::id());
-
-  SDL_GetPlatform_fake.return_val = "Mac OS X";
-  EXPECT_EQ(cen::platform::platform_id::mac_osx, cen::platform::id());
-
-  SDL_GetPlatform_fake.return_val = "Linux";
-  EXPECT_EQ(cen::platform::platform_id::linuxx, cen::platform::id());
-
-  SDL_GetPlatform_fake.return_val = "iOS";
-  EXPECT_EQ(cen::platform::platform_id::ios, cen::platform::id());
-
-  SDL_GetPlatform_fake.return_val = "Android";
-  EXPECT_EQ(cen::platform::platform_id::android, cen::platform::id());
-
-  SDL_GetPlatform_fake.return_val = "foobar";
-  EXPECT_EQ(cen::platform::platform_id::unknown, cen::platform::id());
-}
-
-TEST_F(PlatformTest, IsWindows)
-{
-  SDL_GetPlatform_fake.return_val = "Windows";
-  EXPECT_TRUE(cen::platform::is_windows());
-}
-
-TEST_F(PlatformTest, IsMacOSX)
-{
-  SDL_GetPlatform_fake.return_val = "Mac OS X";
-  EXPECT_TRUE(cen::platform::is_mac_osx());
-}
-
-TEST_F(PlatformTest, IsLinux)
-{
-  SDL_GetPlatform_fake.return_val = "Linux";
-  EXPECT_TRUE(cen::platform::is_linux());
-}
-
-TEST_F(PlatformTest, IsIOS)
-{
-  SDL_GetPlatform_fake.return_val = "iOS";
-  EXPECT_TRUE(cen::platform::is_ios());
-}
-
-TEST_F(PlatformTest, IsAndroid)
-{
-  SDL_GetPlatform_fake.return_val = "Android";
-  EXPECT_TRUE(cen::platform::is_android());
-}
-
-TEST_F(PlatformTest, Name)
-{
-  SDL_GetPlatform_fake.return_val = "Windows";
-  EXPECT_EQ("Windows", cen::platform::name().value());
-
-  SDL_GetPlatform_fake.return_val = "Mac OS X";
-  EXPECT_EQ("Mac OS X", cen::platform::name().value());
-
-  SDL_GetPlatform_fake.return_val = "Linux";
-  EXPECT_EQ("Linux", cen::platform::name().value());
-
-  SDL_GetPlatform_fake.return_val = "iOS";
-  EXPECT_EQ("iOS", cen::platform::name().value());
-
-  SDL_GetPlatform_fake.return_val = "Android";
-  EXPECT_EQ("Android", cen::platform::name().value());
-
-  SDL_GetPlatform_fake.return_val = "Unknown";
-  EXPECT_FALSE(cen::platform::name().has_value());
-}
-
-TEST_F(PlatformTest, IsTablet)
-{
-  const auto isTablet [[maybe_unused]] = cen::platform::is_tablet();
-  EXPECT_EQ(1, SDL_IsTablet_fake.call_count);
-}
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

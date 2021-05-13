@@ -15,16 +15,32 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        SDL_VERSION: [ 2.0.14 ] # TODO add 2.0.10, 2.0.12
+        SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
+      - name: Update packages
+        shell: bash
+        run: sudo apt-get update
+
       - name: Install graphics drivers
         shell: bash
         run: |
           sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
+
+      - name: Install code coverage tools
+        if: ${{matrix.SDL_VERSION == env.SDL_LATEST}}
+        shell: bash
+        run: |
+          sudo apt-get install -y libjson-perl
+
+          # Manually builds latest LCOV
+          git clone https://github.com/linux-test-project/lcov.git lcov
+          cd lcov
+          sudo make install
+          cd ..
 
       - name: Emulate video device
         shell: bash
@@ -70,7 +86,6 @@ jobs:
           sudo make install
 
       - name: Create build directory
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         shell: bash
         run: mkdir -p build
 
@@ -78,24 +93,36 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -GNinja
+          if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" ]];
+          then
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
+          else
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_INTERACTIVE=OFF -GNinja
+          fi
 
       - name: Build
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build
         shell: bash
         run: |
           ninja CenturionTests
           ninja CenturionMocks
 
-      - name: Run unit tests
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
-        working-directory: ./build/test/unittests
-        shell: bash
-        run: ./CenturionTests
-
       - name: Run mocked test suite
-        if: ${{matrix.SDL_VERSION}} == ${{env.SDL_LATEST}}
         working-directory: ./build/test/mocks
         shell: bash
         run: ./CenturionMocks
+
+      - name: Run unit tests
+        working-directory: ./build/test/unit-tests
+        shell: bash
+        run: ./CenturionTests
+
+      - name: Capture code coverage
+        if: ${{matrix.SDL_VERSION == env.SDL_LATEST}}
+        working-directory: ./build
+        shell: bash
+        run: |
+          lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-9
+          lcov --remove coverage.info '*/test/*' '*/lib/*' '/usr/*' --output-file coverage.info
+          lcov --list coverage.info
+          bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

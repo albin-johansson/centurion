@@ -17,6 +17,10 @@ jobs:
         shell: bash
         run: brew install mpg123
 
+      - name: Install OpenGL
+        shell: bash
+        run: brew install glfw
+
       - name: Install SDL2
         shell: bash
         run: brew install SDL2
@@ -47,11 +51,11 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_INTERACTIVE=OFF -GNinja
           ninja
 
       - name: Run unit tests
-        working-directory: ./build/test/unittests
+        working-directory: ./build/test/unit-tests
         shell: bash
         run: ./CenturionTests
 

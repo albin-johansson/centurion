@@ -1,13 +1,8 @@
 #ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 #define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
 
-#include "../centurion_cfg.hpp"
-#include "../czstring.hpp"
+#include "../core/czstring.hpp"
 #include "czstring_eq.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
 
 /// \cond FALSE
 namespace cen::detail {

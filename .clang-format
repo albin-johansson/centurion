@@ -4,6 +4,7 @@ IndentWidth: 2
 ---
 Language: Cpp
 Standard: c++17
+ColumnLimit: 90
 DerivePointerAlignment: false
 PointerAlignment: Left
 AllowAllParametersOfDeclarationOnNextLine: false

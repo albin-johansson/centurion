@@ -5,7 +5,6 @@
     "src/everything.hpp"
   ],
   "include_paths": [
-    "src",
-    "src/centurion"
+    "src"
   ]
 }

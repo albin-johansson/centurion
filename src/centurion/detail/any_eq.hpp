@@ -1,20 +1,13 @@
 #ifndef CENTURION_DETAIL_ANY_EQ_HEADER
 #define CENTURION_DETAIL_ANY_EQ_HEADER
 
-#include "../centurion_cfg.hpp"
-
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /// \cond FALSE
 namespace cen::detail {
 
 // clang-format off
 
 /**
- * \brief Indicates whether or not any of the supplied values are equal to a
- * specific value.
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
  *
  * \tparam T the type of the value to look for.
  *
@@ -23,8 +16,7 @@ namespace cen::detail {
  * \param value the value to look for.
  * \param args the arguments that will be compared with the value.
  *
- * \return `true` if any of the supplied values are equal to `value`; `false`
- * otherwise.
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
  *
  * \since 5.1.0
  */

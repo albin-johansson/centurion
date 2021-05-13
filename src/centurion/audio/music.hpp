@@ -462,10 +462,10 @@ class music final
 
   /**
    * \brief Registers a custom music player or mixer function.
-   * 
+   *
    * \param callback the custom callback, can be null to use the default music player.
    * \param data optional data that will be supplied to the callback.
-   * 
+   *
    * \since 6.0.0
    */
   template <typename T = void>
@@ -476,7 +476,7 @@ class music final
 
   /**
    * \brief Resets the music player to the default one.
-   * 
+   *
    * \since 6.0.0
    */
   static void reset_hook() noexcept
@@ -486,9 +486,9 @@ class music final
 
   /**
    * \brief Returns a pointer to the user data associated with the music player.
-   * 
+   *
    * \return a pointer to the music player data, might be null.
-   * 
+   *
    * \since 6.0.0
    */
   [[nodiscard]] static auto get_hook_data() noexcept -> void*

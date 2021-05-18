@@ -78,7 +78,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
  *   - Shaded: The same as blended, but with a colored rectangle behind it.
  *
- * \note Each window can feature at most associated renderer.
+ * \note Each window can feature at most one associated renderer.
  *
  * \since 5.0.0
  *

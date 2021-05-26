@@ -75,55 +75,55 @@ class JoystickTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_JoystickUpdate);
-    RESET_FAKE(SDL_LockJoysticks);
-    RESET_FAKE(SDL_UnlockJoysticks);
-    RESET_FAKE(SDL_JoystickRumble);
-    RESET_FAKE(SDL_JoystickRumbleTriggers);
-    RESET_FAKE(SDL_JoystickSetPlayerIndex);
+    RESET_FAKE(SDL_JoystickUpdate)
+    RESET_FAKE(SDL_LockJoysticks)
+    RESET_FAKE(SDL_UnlockJoysticks)
+    RESET_FAKE(SDL_JoystickRumble)
+    RESET_FAKE(SDL_JoystickRumbleTriggers)
+    RESET_FAKE(SDL_JoystickSetPlayerIndex)
 
-    RESET_FAKE(SDL_JoystickFromInstanceID);
-    RESET_FAKE(SDL_JoystickFromPlayerIndex);
+    RESET_FAKE(SDL_JoystickFromInstanceID)
+    RESET_FAKE(SDL_JoystickFromPlayerIndex)
 
-    RESET_FAKE(SDL_JoystickGetPlayerIndex);
-    RESET_FAKE(SDL_JoystickGetDevicePlayerIndex);
+    RESET_FAKE(SDL_JoystickGetPlayerIndex)
+    RESET_FAKE(SDL_JoystickGetDevicePlayerIndex)
 
-    RESET_FAKE(SDL_JoystickGetType);
-    RESET_FAKE(SDL_JoystickGetDeviceType);
+    RESET_FAKE(SDL_JoystickGetType)
+    RESET_FAKE(SDL_JoystickGetDeviceType)
 
-    RESET_FAKE(SDL_JoystickGetVendor);
-    RESET_FAKE(SDL_JoystickGetDeviceVendor);
+    RESET_FAKE(SDL_JoystickGetVendor)
+    RESET_FAKE(SDL_JoystickGetDeviceVendor)
 
-    RESET_FAKE(SDL_JoystickGetProduct);
-    RESET_FAKE(SDL_JoystickGetDeviceProduct);
+    RESET_FAKE(SDL_JoystickGetProduct)
+    RESET_FAKE(SDL_JoystickGetDeviceProduct)
 
-    RESET_FAKE(SDL_JoystickGetProductVersion);
-    RESET_FAKE(SDL_JoystickGetDeviceProductVersion);
+    RESET_FAKE(SDL_JoystickGetProductVersion)
+    RESET_FAKE(SDL_JoystickGetDeviceProductVersion)
 
-    RESET_FAKE(SDL_JoystickInstanceID);
-    RESET_FAKE(SDL_JoystickGetDeviceInstanceID);
+    RESET_FAKE(SDL_JoystickInstanceID)
+    RESET_FAKE(SDL_JoystickGetDeviceInstanceID)
 
-    RESET_FAKE(SDL_JoystickGetGUID);
-    RESET_FAKE(SDL_JoystickGetDeviceGUID);
+    RESET_FAKE(SDL_JoystickGetGUID)
+    RESET_FAKE(SDL_JoystickGetDeviceGUID)
 
-    RESET_FAKE(SDL_NumJoysticks);
-    RESET_FAKE(SDL_JoystickGetBall);
-    RESET_FAKE(SDL_JoystickSetLED);
-    RESET_FAKE(SDL_JoystickGetAxis);
-    RESET_FAKE(SDL_JoystickGetHat);
-    RESET_FAKE(SDL_JoystickGetButton);
-    RESET_FAKE(SDL_JoystickGetAxisInitialState);
-    RESET_FAKE(SDL_JoystickGetAttached);
-    RESET_FAKE(SDL_JoystickHasLED);
-    RESET_FAKE(SDL_JoystickCurrentPowerLevel);
-    RESET_FAKE(SDL_JoystickNumHats);
-    RESET_FAKE(SDL_JoystickNumAxes);
-    RESET_FAKE(SDL_JoystickNumBalls);
-    RESET_FAKE(SDL_JoystickNumButtons);
-    RESET_FAKE(SDL_JoystickName);
-    RESET_FAKE(SDL_JoystickGetSerial);
-    RESET_FAKE(SDL_JoystickEventState);
-    RESET_FAKE(SDL_JoystickGetGUIDFromString);
+    RESET_FAKE(SDL_NumJoysticks)
+    RESET_FAKE(SDL_JoystickGetBall)
+    RESET_FAKE(SDL_JoystickSetLED)
+    RESET_FAKE(SDL_JoystickGetAxis)
+    RESET_FAKE(SDL_JoystickGetHat)
+    RESET_FAKE(SDL_JoystickGetButton)
+    RESET_FAKE(SDL_JoystickGetAxisInitialState)
+    RESET_FAKE(SDL_JoystickGetAttached)
+    RESET_FAKE(SDL_JoystickHasLED)
+    RESET_FAKE(SDL_JoystickCurrentPowerLevel)
+    RESET_FAKE(SDL_JoystickNumHats)
+    RESET_FAKE(SDL_JoystickNumAxes)
+    RESET_FAKE(SDL_JoystickNumBalls)
+    RESET_FAKE(SDL_JoystickNumButtons)
+    RESET_FAKE(SDL_JoystickName)
+    RESET_FAKE(SDL_JoystickGetSerial)
+    RESET_FAKE(SDL_JoystickEventState)
+    RESET_FAKE(SDL_JoystickGetGUIDFromString)
   }
 
   cen::joystick_handle m_joystick{nullptr};

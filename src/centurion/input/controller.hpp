@@ -1074,7 +1074,7 @@ class basic_controller final
   /**
    * \brief Returns the state of the specified sensor.
    *
-   * \tparam size the amount of data elements.
+   * \tparam Size the amount of data elements.
    *
    * \param type the type of the sensor that will be queried.
    *
@@ -1082,15 +1082,15 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
+  template <std::size_t Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
-      -> std::optional<std::array<float, size>>
+      -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
-    const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller, value, array.data(), isize(array));
-    if (res != -1)
+    std::array<float, Size> array{};
+    if (SDL_GameControllerGetSensorData(m_controller,
+                                        static_cast<SDL_SensorType>(type),
+                                        array.data(),
+                                        isize(array)) != -1)
     {
       return array;
     }

@@ -14,7 +14,7 @@ class PrefPathTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
-    RESET_FAKE(SDL_GetPrefPath);
+    RESET_FAKE(SDL_GetPrefPath)
   }
 };
 

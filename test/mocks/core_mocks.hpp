@@ -19,12 +19,12 @@ DECLARE_FAKE_VOID_FUNC(TTF_Quit)
 DECLARE_FAKE_VOID_FUNC(IMG_Quit)
 DECLARE_FAKE_VOID_FUNC(Mix_Quit)
 DECLARE_FAKE_VOID_FUNC(Mix_CloseAudio)
-DECLARE_FAKE_VOID_FUNC(SDL_free, void*);
+DECLARE_FAKE_VOID_FUNC(SDL_free, void*)
 DECLARE_FAKE_VOID_FUNC(SDL_DestroyWindow, SDL_Window*)
 DECLARE_FAKE_VOID_FUNC(SDL_FreeSurface, SDL_Surface*)
 
 // Misc
-DECLARE_FAKE_VALUE_FUNC(const char*, SDL_GetError);
+DECLARE_FAKE_VALUE_FUNC(const char*, SDL_GetError)
 DECLARE_FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
 
 // Window

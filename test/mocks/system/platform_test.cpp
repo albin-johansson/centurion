@@ -21,9 +21,9 @@ class PlatformTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_GetPlatform);
-    RESET_FAKE(SDL_IsTablet);
-    RESET_FAKE(SDL_OpenURL);
+    RESET_FAKE(SDL_GetPlatform)
+    RESET_FAKE(SDL_IsTablet)
+    RESET_FAKE(SDL_OpenURL)
   }
 };
 

@@ -16,9 +16,9 @@ class SharedObjectTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
-    RESET_FAKE(SDL_UnloadObject);
-    RESET_FAKE(SDL_LoadObject);
-    RESET_FAKE(SDL_LoadFunction);
+    RESET_FAKE(SDL_UnloadObject)
+    RESET_FAKE(SDL_LoadObject)
+    RESET_FAKE(SDL_LoadFunction)
   }
 
   cen::shared_object m_object;

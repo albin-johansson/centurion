@@ -15,7 +15,7 @@ class BasePathTest : public testing::Test
   void SetUp() override
   {
     mocks::reset_core();
-    RESET_FAKE(SDL_GetBasePath);
+    RESET_FAKE(SDL_GetBasePath)
   }
 };
 

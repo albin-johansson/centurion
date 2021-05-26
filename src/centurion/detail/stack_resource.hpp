@@ -12,7 +12,7 @@
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t bufferSize>
+template <std::size_t BufferSize>
 class stack_resource final
 {
  public:
@@ -22,8 +22,8 @@ class stack_resource final
   }
 
  private:
-  std::array<std::byte, bufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
+  std::array<std::byte, BufferSize> m_buffer{};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
 };
 
 }  // namespace cen::detail

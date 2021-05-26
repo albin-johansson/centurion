@@ -5929,7 +5929,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 #ifdef CENTURION___DOXYGEN
 
@@ -5991,7 +5991,7 @@ namespace cen {
  * \details The members of this struct are by default initialized to the current Centurion
  * version values.
  *
- * \version 6.0.0
+ * \since 6.0.0
  */
 struct version final
 {
@@ -7419,7 +7419,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 #ifdef CENTURION___DOXYGEN
 
@@ -7481,7 +7481,7 @@ namespace cen {
  * \details The members of this struct are by default initialized to the current Centurion
  * version values.
  *
- * \version 6.0.0
+ * \since 6.0.0
  */
 struct version final
 {
@@ -7722,7 +7722,7 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t bufferSize>
+template <std::size_t BufferSize>
 class stack_resource final
 {
  public:
@@ -7732,8 +7732,8 @@ class stack_resource final
   }
 
  private:
-  std::array<std::byte, bufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
+  std::array<std::byte, BufferSize> m_buffer{};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
 };
 
 }  // namespace cen::detail
@@ -8036,10 +8036,10 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... index>
-  constexpr static auto find(std::index_sequence<index...>) -> int
+  template <std::size_t... Index>
+  constexpr static auto find(std::index_sequence<Index...>) -> int
   {
-    return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
+    return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
   }
 
  public:
@@ -10506,7 +10506,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 #ifdef CENTURION___DOXYGEN
 
@@ -10568,7 +10568,7 @@ namespace cen {
  * \details The members of this struct are by default initialized to the current Centurion
  * version values.
  *
- * \version 6.0.0
+ * \since 6.0.0
  */
 struct version final
 {
@@ -13675,16 +13675,16 @@ class basic_sensor final
   /**
    * \brief Returns the sensor-dependent data.
    *
-   * \tparam size the number of data elements, varies from sensor to sensor.
+   * \tparam Size the number of data elements, varies from sensor to sensor.
    *
    * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
-  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
+  template <std::size_t Size>
+  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
+    std::array<float, Size> array{};
     if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
@@ -15198,7 +15198,7 @@ class basic_controller final
   /**
    * \brief Returns the state of the specified sensor.
    *
-   * \tparam size the amount of data elements.
+   * \tparam Size the amount of data elements.
    *
    * \param type the type of the sensor that will be queried.
    *
@@ -15206,15 +15206,15 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
+  template <std::size_t Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
-      -> std::optional<std::array<float, size>>
+      -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
-    const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller, value, array.data(), isize(array));
-    if (res != -1)
+    std::array<float, Size> array{};
+    if (SDL_GameControllerGetSensorData(m_controller,
+                                        static_cast<SDL_SensorType>(type),
+                                        array.data(),
+                                        isize(array)) != -1)
     {
       return array;
     }
@@ -23386,10 +23386,10 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... index>
-  constexpr static auto find(std::index_sequence<index...>) -> int
+  template <std::size_t... Index>
+  constexpr static auto find(std::index_sequence<Index...>) -> int
   {
-    return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
+    return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
   }
 
  public:
@@ -34770,7 +34770,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 #ifdef CENTURION___DOXYGEN
 
@@ -34832,7 +34832,7 @@ namespace cen {
  * \details The members of this struct are by default initialized to the current Centurion
  * version values.
  *
- * \version 6.0.0
+ * \since 6.0.0
  */
 struct version final
 {
@@ -37939,16 +37939,16 @@ class basic_sensor final
   /**
    * \brief Returns the sensor-dependent data.
    *
-   * \tparam size the number of data elements, varies from sensor to sensor.
+   * \tparam Size the number of data elements, varies from sensor to sensor.
    *
    * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
-  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
+  template <std::size_t Size>
+  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
+    std::array<float, Size> array{};
     if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
@@ -39462,7 +39462,7 @@ class basic_controller final
   /**
    * \brief Returns the state of the specified sensor.
    *
-   * \tparam size the amount of data elements.
+   * \tparam Size the amount of data elements.
    *
    * \param type the type of the sensor that will be queried.
    *
@@ -39470,15 +39470,15 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
+  template <std::size_t Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
-      -> std::optional<std::array<float, size>>
+      -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
-    const auto value = static_cast<SDL_SensorType>(type);
-    const auto res =
-        SDL_GameControllerGetSensorData(m_controller, value, array.data(), isize(array));
-    if (res != -1)
+    std::array<float, Size> array{};
+    if (SDL_GameControllerGetSensorData(m_controller,
+                                        static_cast<SDL_SensorType>(type),
+                                        array.data(),
+                                        isize(array)) != -1)
     {
       return array;
     }
@@ -49657,16 +49657,16 @@ class basic_sensor final
   /**
    * \brief Returns the sensor-dependent data.
    *
-   * \tparam size the number of data elements, varies from sensor to sensor.
+   * \tparam Size the number of data elements, varies from sensor to sensor.
    *
    * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
-  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
+  template <std::size_t Size>
+  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
+    std::array<float, Size> array{};
     if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;
@@ -73005,7 +73005,7 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t bufferSize>
+template <std::size_t BufferSize>
 class stack_resource final
 {
  public:
@@ -73015,8 +73015,8 @@ class stack_resource final
   }
 
  private:
-  std::array<std::byte, bufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
+  std::array<std::byte, BufferSize> m_buffer{};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
 };
 
 }  // namespace cen::detail
@@ -87164,7 +87164,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
  *   - Shaded: The same as blended, but with a colored rectangle behind it.
  *
- * \note Each window can feature at most associated renderer.
+ * \note Each window can feature at most one associated renderer.
  *
  * \since 5.0.0
  *
@@ -89434,7 +89434,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *   - Solid: The fastest option. Doesn't use anti-aliasing so it will look a bit harsh.
  *   - Shaded: The same as blended, but with a colored rectangle behind it.
  *
- * \note Each window can feature at most associated renderer.
+ * \note Each window can feature at most one associated renderer.
  *
  * \since 5.0.0
  *
@@ -102180,9 +102180,7 @@ inline auto required_extensions() -> std::optional<std::vector<czstring>>
     return std::nullopt;
   }
 
-  std::vector<czstring> names;
-  names.reserve(count);
-
+  std::vector<czstring> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
   {
     return std::nullopt;

@@ -22,11 +22,11 @@ class TouchTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_GetNumTouchDevices);
-    RESET_FAKE(SDL_GetTouchDevice);
-    RESET_FAKE(SDL_GetTouchDeviceType);
-    RESET_FAKE(SDL_GetNumTouchFingers);
-    RESET_FAKE(SDL_GetTouchFinger);
+    RESET_FAKE(SDL_GetNumTouchDevices)
+    RESET_FAKE(SDL_GetTouchDevice)
+    RESET_FAKE(SDL_GetTouchDeviceType)
+    RESET_FAKE(SDL_GetNumTouchFingers)
+    RESET_FAKE(SDL_GetTouchFinger)
   }
 };
 

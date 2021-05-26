@@ -19,10 +19,10 @@ class MessageBoxTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_DestroyWindow);
-    RESET_FAKE(SDL_CreateWindow);
-    RESET_FAKE(SDL_ShowSimpleMessageBox);
-    RESET_FAKE(SDL_ShowMessageBox);
+    RESET_FAKE(SDL_DestroyWindow)
+    RESET_FAKE(SDL_CreateWindow)
+    RESET_FAKE(SDL_ShowSimpleMessageBox)
+    RESET_FAKE(SDL_ShowMessageBox)
   }
 };
 

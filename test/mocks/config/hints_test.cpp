@@ -23,10 +23,10 @@ class HintsTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_ClearHints);
-    RESET_FAKE(SDL_SetHintWithPriority);
-    RESET_FAKE(SDL_GetHint);
-    RESET_FAKE(SDL_GetHintBoolean);
+    RESET_FAKE(SDL_ClearHints)
+    RESET_FAKE(SDL_SetHintWithPriority)
+    RESET_FAKE(SDL_GetHint)
+    RESET_FAKE(SDL_GetHintBoolean)
   }
 };
 

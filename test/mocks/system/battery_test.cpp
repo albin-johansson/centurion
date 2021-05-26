@@ -42,7 +42,7 @@ class BatteryTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_GetPowerInfo);
+    RESET_FAKE(SDL_GetPowerInfo)
   }
 };
 

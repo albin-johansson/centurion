@@ -25,12 +25,12 @@ class SurfaceTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_ConvertSurfaceFormat);
-    RESET_FAKE(SDL_GetSurfaceBlendMode);
-    RESET_FAKE(SDL_SetSurfaceBlendMode);
-    RESET_FAKE(SDL_SetSurfaceRLE);
-    RESET_FAKE(SDL_HasSurfaceRLE);
-    RESET_FAKE(SDL_DuplicateSurface);
+    RESET_FAKE(SDL_ConvertSurfaceFormat)
+    RESET_FAKE(SDL_GetSurfaceBlendMode)
+    RESET_FAKE(SDL_SetSurfaceBlendMode)
+    RESET_FAKE(SDL_SetSurfaceRLE)
+    RESET_FAKE(SDL_HasSurfaceRLE)
+    RESET_FAKE(SDL_DuplicateSurface)
   }
 
   cen::surface m_surface;

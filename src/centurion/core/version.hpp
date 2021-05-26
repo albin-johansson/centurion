@@ -36,7 +36,7 @@
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 0
+#define CENTURION_VERSION_PATCH 1
 
 #ifdef CENTURION___DOXYGEN
 
@@ -98,7 +98,7 @@ namespace cen {
  * \details The members of this struct are by default initialized to the current Centurion
  * version values.
  *
- * \version 6.0.0
+ * \since 6.0.0
  */
 struct version final
 {

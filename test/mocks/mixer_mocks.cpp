@@ -11,9 +11,9 @@ namespace mocks {
 
 void reset_mixer()
 {
-  RESET_FAKE(Mix_GetChunkDecoder);
-  RESET_FAKE(Mix_HasChunkDecoder);
-  RESET_FAKE(Mix_GetNumChunkDecoders);
+  RESET_FAKE(Mix_GetChunkDecoder)
+  RESET_FAKE(Mix_HasChunkDecoder)
+  RESET_FAKE(Mix_GetNumChunkDecoders)
 }
 
 }  // namespace mocks

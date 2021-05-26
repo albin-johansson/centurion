@@ -79,9 +79,7 @@ inline auto required_extensions() -> std::optional<std::vector<czstring>>
     return std::nullopt;
   }
 
-  std::vector<czstring> names;
-  names.reserve(count);
-
+  std::vector<czstring> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
   {
     return std::nullopt;

@@ -33,28 +33,28 @@ namespace mocks {
 
 void reset_core()
 {
-  RESET_FAKE(SDL_Init);
-  RESET_FAKE(TTF_Init);
-  RESET_FAKE(IMG_Init);
-  RESET_FAKE(Mix_OpenAudio);
-  RESET_FAKE(SDL_CreateWindow);
+  RESET_FAKE(SDL_Init)
+  RESET_FAKE(TTF_Init)
+  RESET_FAKE(IMG_Init)
+  RESET_FAKE(Mix_OpenAudio)
+  RESET_FAKE(SDL_CreateWindow)
 
-  RESET_FAKE(SDL_Quit);
-  RESET_FAKE(TTF_Quit);
-  RESET_FAKE(IMG_Quit);
-  RESET_FAKE(Mix_Quit);
-  RESET_FAKE(Mix_CloseAudio);
-  RESET_FAKE(SDL_free);
-  RESET_FAKE(SDL_DestroyWindow);
-  RESET_FAKE(SDL_FreeSurface);
+  RESET_FAKE(SDL_Quit)
+  RESET_FAKE(TTF_Quit)
+  RESET_FAKE(IMG_Quit)
+  RESET_FAKE(Mix_Quit)
+  RESET_FAKE(Mix_CloseAudio)
+  RESET_FAKE(SDL_free)
+  RESET_FAKE(SDL_DestroyWindow)
+  RESET_FAKE(SDL_FreeSurface)
 
-  RESET_FAKE(SDL_GetError);
-  RESET_FAKE(SDL_RWFromFile);
+  RESET_FAKE(SDL_GetError)
+  RESET_FAKE(SDL_RWFromFile)
 
   RESET_FAKE(SDL_GetWindowFlags)
 
   std::array values{"dummy"};
-  SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values));
+  SET_RETURN_SEQ(SDL_GetError, values.data(), cen::isize(values))
 }
 
 }  // namespace mocks

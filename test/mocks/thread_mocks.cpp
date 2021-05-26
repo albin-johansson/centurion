@@ -20,16 +20,16 @@ namespace mocks {
 
 void reset_thread()
 {
-  RESET_FAKE(SDL_DestroyMutex);
-  RESET_FAKE(SDL_CreateMutex);
-  RESET_FAKE(SDL_LockMutex);
-  RESET_FAKE(SDL_UnlockMutex);
+  RESET_FAKE(SDL_DestroyMutex)
+  RESET_FAKE(SDL_CreateMutex)
+  RESET_FAKE(SDL_LockMutex)
+  RESET_FAKE(SDL_UnlockMutex)
 
-  RESET_FAKE(SDL_DestroySemaphore);
-  RESET_FAKE(SDL_CreateSemaphore);
+  RESET_FAKE(SDL_DestroySemaphore)
+  RESET_FAKE(SDL_CreateSemaphore)
 
-  RESET_FAKE(SDL_DestroyCond);
-  RESET_FAKE(SDL_CreateCond);
+  RESET_FAKE(SDL_DestroyCond)
+  RESET_FAKE(SDL_CreateCond)
 }
 
 }  // namespace mocks

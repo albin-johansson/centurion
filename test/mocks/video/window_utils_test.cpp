@@ -20,11 +20,11 @@ class WindowUtilsTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_GetGrabbedWindow);
-    RESET_FAKE(SDL_GetMouseFocus);
-    RESET_FAKE(SDL_GetKeyboardFocus);
-    RESET_FAKE(SDL_GetWindowFromID);
-    RESET_FAKE(SDL_GetRenderer);
+    RESET_FAKE(SDL_GetGrabbedWindow)
+    RESET_FAKE(SDL_GetMouseFocus)
+    RESET_FAKE(SDL_GetKeyboardFocus)
+    RESET_FAKE(SDL_GetWindowFromID)
+    RESET_FAKE(SDL_GetRenderer)
   }
 };
 

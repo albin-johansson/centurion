@@ -80,49 +80,49 @@ class ControllerTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_GameControllerUpdate);
-    RESET_FAKE(SDL_GameControllerSetPlayerIndex);
-    RESET_FAKE(SDL_GameControllerGetProduct);
-    RESET_FAKE(SDL_GameControllerGetVendor);
-    RESET_FAKE(SDL_GameControllerGetProductVersion);
-    RESET_FAKE(SDL_GameControllerGetSerial);
-    RESET_FAKE(SDL_GameControllerGetPlayerIndex);
-    RESET_FAKE(SDL_GameControllerRumble);
-    RESET_FAKE(SDL_GameControllerRumbleTriggers);
-    RESET_FAKE(SDL_GameControllerGetAttached);
-    RESET_FAKE(SDL_IsGameController);
-    RESET_FAKE(SDL_GameControllerGetButton);
-    RESET_FAKE(SDL_GameControllerName);
-    RESET_FAKE(SDL_GameControllerGetAxis);
-    RESET_FAKE(SDL_GameControllerHasAxis);
-    RESET_FAKE(SDL_GameControllerHasButton);
-    RESET_FAKE(SDL_GameControllerGetAxisFromString);
-    RESET_FAKE(SDL_GameControllerGetButtonFromString);
-    RESET_FAKE(SDL_GameControllerGetStringForAxis);
-    RESET_FAKE(SDL_GameControllerGetStringForButton);
-    RESET_FAKE(SDL_GameControllerGetBindForAxis);
-    RESET_FAKE(SDL_GameControllerGetBindForButton);
-    RESET_FAKE(SDL_GameControllerGetJoystick);
-    RESET_FAKE(SDL_GameControllerGetNumTouchpads);
-    RESET_FAKE(SDL_GameControllerGetNumTouchpadFingers);
-    RESET_FAKE(SDL_GameControllerGetTouchpadFinger);
-    RESET_FAKE(SDL_GameControllerAddMapping);
-    RESET_FAKE(SDL_GameControllerAddMappingsFromRW);
-    RESET_FAKE(SDL_GameControllerMapping);
-    RESET_FAKE(SDL_GameControllerMappingForDeviceIndex);
-    RESET_FAKE(SDL_GameControllerMappingForGUID);
-    RESET_FAKE(SDL_GameControllerMappingForIndex);
-    RESET_FAKE(SDL_GameControllerEventState);
-    RESET_FAKE(SDL_GameControllerSetSensorEnabled);
-    RESET_FAKE(SDL_GameControllerHasSensor);
-    RESET_FAKE(SDL_GameControllerIsSensorEnabled);
-    RESET_FAKE(SDL_GameControllerGetSensorData);
-    RESET_FAKE(SDL_GameControllerSetLED);
-    RESET_FAKE(SDL_GameControllerHasLED);
+    RESET_FAKE(SDL_GameControllerUpdate)
+    RESET_FAKE(SDL_GameControllerSetPlayerIndex)
+    RESET_FAKE(SDL_GameControllerGetProduct)
+    RESET_FAKE(SDL_GameControllerGetVendor)
+    RESET_FAKE(SDL_GameControllerGetProductVersion)
+    RESET_FAKE(SDL_GameControllerGetSerial)
+    RESET_FAKE(SDL_GameControllerGetPlayerIndex)
+    RESET_FAKE(SDL_GameControllerRumble)
+    RESET_FAKE(SDL_GameControllerRumbleTriggers)
+    RESET_FAKE(SDL_GameControllerGetAttached)
+    RESET_FAKE(SDL_IsGameController)
+    RESET_FAKE(SDL_GameControllerGetButton)
+    RESET_FAKE(SDL_GameControllerName)
+    RESET_FAKE(SDL_GameControllerGetAxis)
+    RESET_FAKE(SDL_GameControllerHasAxis)
+    RESET_FAKE(SDL_GameControllerHasButton)
+    RESET_FAKE(SDL_GameControllerGetAxisFromString)
+    RESET_FAKE(SDL_GameControllerGetButtonFromString)
+    RESET_FAKE(SDL_GameControllerGetStringForAxis)
+    RESET_FAKE(SDL_GameControllerGetStringForButton)
+    RESET_FAKE(SDL_GameControllerGetBindForAxis)
+    RESET_FAKE(SDL_GameControllerGetBindForButton)
+    RESET_FAKE(SDL_GameControllerGetJoystick)
+    RESET_FAKE(SDL_GameControllerGetNumTouchpads)
+    RESET_FAKE(SDL_GameControllerGetNumTouchpadFingers)
+    RESET_FAKE(SDL_GameControllerGetTouchpadFinger)
+    RESET_FAKE(SDL_GameControllerAddMapping)
+    RESET_FAKE(SDL_GameControllerAddMappingsFromRW)
+    RESET_FAKE(SDL_GameControllerMapping)
+    RESET_FAKE(SDL_GameControllerMappingForDeviceIndex)
+    RESET_FAKE(SDL_GameControllerMappingForGUID)
+    RESET_FAKE(SDL_GameControllerMappingForIndex)
+    RESET_FAKE(SDL_GameControllerEventState)
+    RESET_FAKE(SDL_GameControllerSetSensorEnabled)
+    RESET_FAKE(SDL_GameControllerHasSensor)
+    RESET_FAKE(SDL_GameControllerIsSensorEnabled)
+    RESET_FAKE(SDL_GameControllerGetSensorData)
+    RESET_FAKE(SDL_GameControllerSetLED)
+    RESET_FAKE(SDL_GameControllerHasLED)
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-    RESET_FAKE(SDL_GameControllerGetType);
-    RESET_FAKE(SDL_GameControllerTypeForIndex);
+    RESET_FAKE(SDL_GameControllerGetType)
+    RESET_FAKE(SDL_GameControllerTypeForIndex)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
   }
 

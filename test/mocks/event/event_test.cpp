@@ -22,11 +22,11 @@ class EventTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_PumpEvents);
-    RESET_FAKE(SDL_FlushEvents);
-    RESET_FAKE(SDL_PushEvent);
-    RESET_FAKE(SDL_PollEvent);
-    RESET_FAKE(SDL_PeepEvents);
+    RESET_FAKE(SDL_PumpEvents)
+    RESET_FAKE(SDL_FlushEvents)
+    RESET_FAKE(SDL_PushEvent)
+    RESET_FAKE(SDL_PollEvent)
+    RESET_FAKE(SDL_PeepEvents)
   }
 };
 

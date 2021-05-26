@@ -30,13 +30,13 @@ class SoundEffectTest : public testing::Test
     mocks::reset_core();
     mocks::reset_mixer();
 
-    RESET_FAKE(Mix_FreeChunk);
-    RESET_FAKE(Mix_Pause);
-    RESET_FAKE(Mix_PlayChannelTimed);
-    RESET_FAKE(Mix_FadeInChannelTimed);
-    RESET_FAKE(Mix_FadeOutChannel);
-    RESET_FAKE(Mix_Playing);
-    RESET_FAKE(Mix_VolumeChunk);
+    RESET_FAKE(Mix_FreeChunk)
+    RESET_FAKE(Mix_Pause)
+    RESET_FAKE(Mix_PlayChannelTimed)
+    RESET_FAKE(Mix_FadeInChannelTimed)
+    RESET_FAKE(Mix_FadeOutChannel)
+    RESET_FAKE(Mix_Playing)
+    RESET_FAKE(Mix_VolumeChunk)
   }
 
   cen::sound_effect_handle m_sound{nullptr};

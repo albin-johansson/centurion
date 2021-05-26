@@ -50,36 +50,36 @@ class HapticTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_HapticClose);
-    RESET_FAKE(SDL_HapticDestroyEffect);
-    RESET_FAKE(SDL_HapticOpen);
-    RESET_FAKE(SDL_HapticOpenFromMouse);
-    RESET_FAKE(SDL_HapticOpenFromJoystick);
-    RESET_FAKE(SDL_HapticRumbleInit);
-    RESET_FAKE(SDL_HapticRumblePlay);
-    RESET_FAKE(SDL_HapticRumbleStop);
-    RESET_FAKE(SDL_HapticRumbleSupported);
-    RESET_FAKE(SDL_HapticQuery);
-    RESET_FAKE(SDL_NumHaptics);
-    RESET_FAKE(SDL_HapticIndex);
-    RESET_FAKE(SDL_MouseIsHaptic);
-    RESET_FAKE(SDL_HapticName);
-    RESET_FAKE(SDL_HapticOpened);
-    RESET_FAKE(SDL_JoystickIsHaptic);
-    RESET_FAKE(SDL_HapticNumEffects);
-    RESET_FAKE(SDL_HapticNumEffectsPlaying);
-    RESET_FAKE(SDL_HapticNumAxes);
-    RESET_FAKE(SDL_HapticPause);
-    RESET_FAKE(SDL_HapticUnpause);
-    RESET_FAKE(SDL_HapticNewEffect);
-    RESET_FAKE(SDL_HapticRunEffect);
-    RESET_FAKE(SDL_HapticStopEffect);
-    RESET_FAKE(SDL_HapticGetEffectStatus);
-    RESET_FAKE(SDL_HapticSetGain);
-    RESET_FAKE(SDL_HapticSetAutocenter);
-    RESET_FAKE(SDL_HapticStopAll);
-    RESET_FAKE(SDL_HapticEffectSupported);
-    RESET_FAKE(SDL_HapticUpdateEffect);
+    RESET_FAKE(SDL_HapticClose)
+    RESET_FAKE(SDL_HapticDestroyEffect)
+    RESET_FAKE(SDL_HapticOpen)
+    RESET_FAKE(SDL_HapticOpenFromMouse)
+    RESET_FAKE(SDL_HapticOpenFromJoystick)
+    RESET_FAKE(SDL_HapticRumbleInit)
+    RESET_FAKE(SDL_HapticRumblePlay)
+    RESET_FAKE(SDL_HapticRumbleStop)
+    RESET_FAKE(SDL_HapticRumbleSupported)
+    RESET_FAKE(SDL_HapticQuery)
+    RESET_FAKE(SDL_NumHaptics)
+    RESET_FAKE(SDL_HapticIndex)
+    RESET_FAKE(SDL_MouseIsHaptic)
+    RESET_FAKE(SDL_HapticName)
+    RESET_FAKE(SDL_HapticOpened)
+    RESET_FAKE(SDL_JoystickIsHaptic)
+    RESET_FAKE(SDL_HapticNumEffects)
+    RESET_FAKE(SDL_HapticNumEffectsPlaying)
+    RESET_FAKE(SDL_HapticNumAxes)
+    RESET_FAKE(SDL_HapticPause)
+    RESET_FAKE(SDL_HapticUnpause)
+    RESET_FAKE(SDL_HapticNewEffect)
+    RESET_FAKE(SDL_HapticRunEffect)
+    RESET_FAKE(SDL_HapticStopEffect)
+    RESET_FAKE(SDL_HapticGetEffectStatus)
+    RESET_FAKE(SDL_HapticSetGain)
+    RESET_FAKE(SDL_HapticSetAutocenter)
+    RESET_FAKE(SDL_HapticStopAll)
+    RESET_FAKE(SDL_HapticEffectSupported)
+    RESET_FAKE(SDL_HapticUpdateEffect)
   }
 
   cen::haptic_handle m_haptic{nullptr};

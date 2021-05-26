@@ -36,19 +36,19 @@ class SensorTest : public testing::Test
   {
     mocks::reset_core();
 
-    RESET_FAKE(SDL_SensorUpdate);
-    RESET_FAKE(SDL_LockSensors);
-    RESET_FAKE(SDL_UnlockSensors);
-    RESET_FAKE(SDL_NumSensors);
-    RESET_FAKE(SDL_SensorGetData);
-    RESET_FAKE(SDL_SensorGetInstanceID);
-    RESET_FAKE(SDL_SensorGetDeviceInstanceID);
-    RESET_FAKE(SDL_SensorGetType);
-    RESET_FAKE(SDL_SensorGetDeviceType);
-    RESET_FAKE(SDL_SensorGetNonPortableType);
-    RESET_FAKE(SDL_SensorGetDeviceNonPortableType);
-    RESET_FAKE(SDL_SensorGetName);
-    RESET_FAKE(SDL_SensorGetDeviceName);
+    RESET_FAKE(SDL_SensorUpdate)
+    RESET_FAKE(SDL_LockSensors)
+    RESET_FAKE(SDL_UnlockSensors)
+    RESET_FAKE(SDL_NumSensors)
+    RESET_FAKE(SDL_SensorGetData)
+    RESET_FAKE(SDL_SensorGetInstanceID)
+    RESET_FAKE(SDL_SensorGetDeviceInstanceID)
+    RESET_FAKE(SDL_SensorGetType)
+    RESET_FAKE(SDL_SensorGetDeviceType)
+    RESET_FAKE(SDL_SensorGetNonPortableType)
+    RESET_FAKE(SDL_SensorGetDeviceNonPortableType)
+    RESET_FAKE(SDL_SensorGetName)
+    RESET_FAKE(SDL_SensorGetDeviceName)
   }
 
   cen::sensor_handle m_sensor{nullptr};

@@ -15,10 +15,10 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... index>
-  constexpr static auto find(std::index_sequence<index...>) -> int
+  template <std::size_t... Index>
+  constexpr static auto find(std::index_sequence<Index...>) -> int
   {
-    return -1 + ((std::is_same_v<Target, T> ? index + 1 : 0) + ...);
+    return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
   }
 
  public:

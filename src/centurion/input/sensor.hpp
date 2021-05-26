@@ -252,16 +252,16 @@ class basic_sensor final
   /**
    * \brief Returns the sensor-dependent data.
    *
-   * \tparam size the number of data elements, varies from sensor to sensor.
+   * \tparam Size the number of data elements, varies from sensor to sensor.
    *
    * \return the data associated with the sensor; `std::nullopt` if something goes wrong.
    *
    * \since 5.2.0
    */
-  template <std::size_t size>
-  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, size>>
+  template <std::size_t Size>
+  [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
-    std::array<float, size> array{};
+    std::array<float, Size> array{};
     if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
     {
       return array;

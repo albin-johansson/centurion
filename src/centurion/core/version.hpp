@@ -27,7 +27,7 @@
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -36,7 +36,7 @@
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 

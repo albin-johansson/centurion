@@ -143,6 +143,11 @@ class basic_context final
 
 }  // namespace cen::gl
 
+namespace cen {
+/// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
+using gl_context = gl::context;
+}  // namespace cen
+
 /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL

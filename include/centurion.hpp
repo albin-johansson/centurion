@@ -84,6 +84,8 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifndef CENTURION_CHANNELS_HEADER
 #define CENTURION_CHANNELS_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -766,11 +768,14 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_CHANNELS_HEADER
 
 // #include "centurion/audio/music.hpp"
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL_mixer.h>
 
@@ -892,9 +897,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -1010,6 +1024,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -1038,6 +1054,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -1068,6 +1088,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -1096,6 +1120,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -2187,10 +2213,13 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_MUSIC_HEADER
 // #include "centurion/audio/sound_effect.hpp"
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL_mixer.h>
 
@@ -2270,9 +2299,18 @@ using maybe_owner = T;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -2447,6 +2485,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -2475,6 +2515,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -2505,6 +2549,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -2533,6 +2581,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -3144,11 +3194,14 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_EFFECT_HEADER
 
 // #include "centurion/audio/sound_fonts.hpp"
 #ifndef CENTURION_SOUND_FONTS_HEADER
 #define CENTURION_SOUND_FONTS_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -3220,6 +3273,7 @@ auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noex
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_FONTS_HEADER
 
 // #include "centurion/compiler/compiler.hpp"
@@ -3502,9 +3556,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -3620,6 +3683,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -3648,6 +3713,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -3678,6 +3747,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -3706,6 +3779,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -3941,9 +4016,18 @@ namespace literals {
 #define CENTURION_LIBRARY_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>   // assert
 #include <optional>  // optional
@@ -3953,9 +4037,18 @@ namespace literals {
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -4025,6 +4118,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -4053,6 +4148,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -4083,6 +4182,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -4111,6 +4214,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -4370,15 +4475,18 @@ struct config final
 
   u32 coreFlags{SDL_INIT_EVERYTHING};
 
+#ifndef CENTURION_NO_SDL_IMAGE
   int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_MIXER
   int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
                  MIX_INIT_MOD | MIX_INIT_OPUS};
-
   int mixerFreq{MIX_DEFAULT_FREQUENCY};
   u16 mixerFormat{MIX_DEFAULT_FORMAT};
   int mixerChannels{MIX_DEFAULT_CHANNELS};
   int mixerChunkSize{4096};
+#endif  // CENTURION_NO_SDL_MIXER
 };
 
 /**
@@ -4475,6 +4583,8 @@ class library final
     }
   };
 
+#ifndef CENTURION_NO_SDL_TTF
+
   struct sdl_ttf final
   {
     explicit sdl_ttf()
@@ -4490,6 +4600,10 @@ class library final
       TTF_Quit();
     }
   };
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
 
   struct sdl_mixer final
   {
@@ -4517,6 +4631,10 @@ class library final
     }
   };
 
+#endif  // #ifndef CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
   struct sdl_image final
   {
     explicit sdl_image(const int flags)
@@ -4533,11 +4651,22 @@ class library final
     }
   };
 
+#endif  // CENTURION_NO_SDL_IMAGE
+
   config m_cfg;
   std::optional<sdl> m_sdl;
+
+#ifndef CENTURION_NO_SDL_IMAGE
   std::optional<sdl_image> m_img;
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
   std::optional<sdl_ttf> m_ttf;
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
   std::optional<sdl_mixer> m_mixer;
+#endif  // CENTURION_NO_SDL_MIXER
 
   void init()
   {
@@ -4546,16 +4675,21 @@ class library final
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
+#ifndef CENTURION_NO_SDL_IMAGE
     if (m_cfg.initImage)
     {
       m_img.emplace(m_cfg.imageFlags);
     }
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_TTF
     if (m_cfg.initTTF)
     {
       m_ttf.emplace();
     }
+#endif  // CENTURION_NO_SDL_TTF
 
+#ifndef CENTURION_NO_SDL_MIXER
     if (m_cfg.initMixer)
     {
       m_mixer.emplace(m_cfg.mixerFlags,
@@ -4564,6 +4698,7 @@ class library final
                       m_cfg.mixerChannels,
                       m_cfg.mixerChunkSize);
     }
+#endif  // CENTURION_NO_SDL_MIXER
   }
 };
 
@@ -5895,9 +6030,18 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -5920,7 +6064,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -5929,7 +6073,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -6056,6 +6200,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -6084,6 +6230,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -6114,6 +6264,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -6142,6 +6296,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -6763,9 +6919,18 @@ struct czstring_compare final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -6881,6 +7046,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -6909,6 +7076,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -6939,6 +7110,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -6967,6 +7142,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -7385,9 +7562,18 @@ struct sdl_deleter final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -7410,7 +7596,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -7419,7 +7605,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -7546,6 +7732,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -7574,6 +7762,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -7604,6 +7796,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -7632,6 +7828,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -8963,9 +9161,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -9081,6 +9288,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -9109,6 +9318,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -9139,6 +9352,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -9167,6 +9384,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -10094,9 +10313,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -10271,6 +10499,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -10299,6 +10529,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -10329,6 +10563,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -10357,6 +10595,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -10472,9 +10712,18 @@ class pointer_manager final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -10497,7 +10746,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -10506,7 +10755,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -10633,6 +10882,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -10661,6 +10912,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -10691,6 +10946,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -10719,6 +10978,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -23017,6 +23278,18 @@ class event final
   }
 
   /**
+   * \brief Returns a pointer to the internal event representation.
+   *
+   * \return a pointer to the internal event instance.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
+  {
+    return &m_event;
+  }
+
+  /**
    * \brief Indicates whether or not there is an internal event stored in the
    * instance.
    *
@@ -23782,6 +24055,18 @@ class event final
   [[nodiscard]] auto try_get() const noexcept -> const T*
   {
     return std::get_if<T>(&m_data);
+  }
+
+  /**
+   * \brief Returns a pointer to the internal event representation.
+   *
+   * \return a pointer to the internal event instance.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
+  {
+    return &m_event;
   }
 
   /**
@@ -27678,7 +27963,10 @@ namespace cen {
 #define CENTURION_FILE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>   // assert
 #include <cstddef>   // size_t
@@ -28634,6 +28922,8 @@ class file final
   /// \name File type queries
   /// \{
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Indicates whether or not the file represents a PNG image.
    *
@@ -28813,6 +29103,8 @@ class file final
   {
     return IMG_isXV(m_context.get()) == 1;
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of file type queries
 
@@ -29550,9 +29842,18 @@ struct czstring_compare final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -29668,6 +29969,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -29696,6 +29999,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -29726,6 +30033,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -29754,6 +30065,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -31146,9 +31459,18 @@ class enum_hint
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -31264,6 +31586,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -31292,6 +31616,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -31322,6 +31650,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -31350,6 +31682,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -33415,9 +33749,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -33533,6 +33876,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -33561,6 +33906,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -33591,6 +33940,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -33619,6 +33972,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -34358,9 +34713,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -34535,6 +34899,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -34563,6 +34929,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -34593,6 +34963,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -34621,6 +34995,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -34736,9 +35112,18 @@ class pointer_manager final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -34761,7 +35146,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -34770,7 +35155,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -34897,6 +35282,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -34925,6 +35312,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -34955,6 +35346,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -34983,6 +35378,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -55401,9 +55798,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -55519,6 +55925,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -55547,6 +55955,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -55577,6 +55989,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -55605,6 +56021,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -55917,9 +56335,18 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -56094,6 +56521,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -56122,6 +56551,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -56152,6 +56585,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -56180,6 +56617,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -57916,9 +58355,18 @@ namespace cen::ram {
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -57988,6 +58436,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -58016,6 +58466,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -58046,6 +58500,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -58074,6 +58532,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -58204,9 +58664,18 @@ class shared_object final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -58381,6 +58850,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -58409,6 +58880,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -58439,6 +58914,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -58467,6 +58946,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -63523,9 +64004,18 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -63700,6 +64190,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -63728,6 +64220,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -63758,6 +64254,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -63786,6 +64286,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -64685,7 +65187,10 @@ template <typename T>
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
@@ -64803,9 +65308,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -64921,6 +65435,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -64949,6 +65465,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -64979,6 +65499,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -65007,6 +65531,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -67885,6 +68411,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -67920,6 +68448,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -68107,6 +68637,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -68160,6 +68692,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -69050,6 +69584,8 @@ class basic_cursor final
 // #include "centurion/video/font.hpp"
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
+
+#ifndef CENTURION_NO_SDL_TTF
 
 #include <SDL_ttf.h>
 
@@ -70381,10 +70917,13 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER
 // #include "centurion/video/font_cache.hpp"
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
+
+#ifndef CENTURION_NO_SDL_TTF
 
 #include <SDL_ttf.h>
 
@@ -70400,6 +70939,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 // #include "font.hpp"
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
+
+#ifndef CENTURION_NO_SDL_TTF
 
 #include <SDL_ttf.h>
 
@@ -71193,6 +71734,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER
 // #include "surface.hpp"
 
@@ -71201,7 +71743,10 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <cstddef>  // size_t
@@ -71472,6 +72017,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -71510,6 +72057,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -72850,6 +73399,7 @@ class font_cache final
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_CACHE_HEADER
 // #include "centurion/video/graphics_drivers.hpp"
 #ifndef CENTURION_GRAPHICS_DRIVERS_HEADER
@@ -76276,9 +76826,18 @@ enum class gl_attribute
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -76453,6 +77012,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -76481,6 +77042,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -76511,6 +77076,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -76539,6 +77108,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -76763,9 +77334,18 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -76940,6 +77520,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -76968,6 +77550,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -76998,6 +77584,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -77026,6 +77616,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -77253,9 +77845,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -77371,6 +77972,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -77399,6 +78002,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -77429,6 +78036,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -77457,6 +78068,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -78044,9 +78657,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -78221,6 +78843,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -78249,6 +78873,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -78279,6 +78907,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -78307,6 +78939,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -81981,7 +82615,10 @@ class basic_pixel_format_info final
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
@@ -82187,6 +82824,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -82222,6 +82861,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -82409,6 +83050,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -82462,6 +83105,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -84432,6 +85077,11 @@ class basic_context final
 
 }  // namespace cen::gl
 
+namespace cen {
+/// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
+using gl_context = gl::context;
+}  // namespace cen
+
 /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL
@@ -85044,6 +85694,1399 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 }  // namespace cen
 
 #endif  // CENTURION_AREA_HEADER
+// #include "../texture.hpp"
+#ifndef CENTURION_TEXTURE_HEADER
+#define CENTURION_TEXTURE_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#include <cassert>  // assert
+#include <cstddef>  // size_t
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "../detail/to_string.hpp"
+
+// #include "../math/area.hpp"
+
+// #include "../math/point.hpp"
+#ifndef CENTURION_POINT_HEADER
+#define CENTURION_POINT_HEADER
+
+#include <SDL.h>
+
+#include <cmath>        // sqrt, abs, round
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../core/cast.hpp"
+
+// #include "../core/sfinae.hpp"
+
+// #include "../detail/to_string.hpp"
+
+
+namespace cen {
+
+/// \addtogroup math
+/// \{
+
+/**
+ * \brief Provides traits used by the `basic_point` class.
+ *
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
+ *
+ * \since 5.0.0
+ *
+ * \see `basic_point`
+ * \see `ipoint`
+ * \see `fpoint`
+ */
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
+class point_traits final
+{
+ public:
+  /**
+   * \var isIntegral
+   *
+   * \brief Indicates whether or not the point is based on an integral type.
+   *
+   * \since 5.0.0
+   */
+  inline constexpr static bool isIntegral = std::is_integral_v<T>;
+
+  /**
+   * \var isFloating
+   *
+   * \brief Indicates whether or not the point is based on a floating-point
+   * type.
+   *
+   * \since 5.0.0
+   */
+  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
+
+  /**
+   * \typedef value_type
+   *
+   * \brief The actual representation type, i.e. `int` or `float`.
+   *
+   * \since 5.0.0
+   */
+  using value_type = std::conditional_t<isIntegral, int, float>;
+
+  /**
+   * \typedef point_type
+   *
+   * \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
+   *
+   * \since 5.0.0
+   */
+  using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
+};
+
+template <typename T>
+class basic_point;
+
+/**
+ * \typedef ipoint
+ *
+ * \brief Alias for an `int`-based point.
+ *
+ * \details This type corresponds to `SDL_Point`.
+ *
+ * \since 5.0.0
+ */
+using ipoint = basic_point<int>;
+
+/**
+ * \typedef fpoint
+ *
+ * \brief Alias for a `float`-based point.
+ *
+ * \details This type corresponds to `SDL_FPoint`.
+ *
+ * \since 5.0.0
+ */
+using fpoint = basic_point<float>;
+
+/**
+ * \class basic_point
+ *
+ * \brief Represents a two-dimensional point.
+ *
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
+ *
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
+ *
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
+ *
+ * \since 5.0.0
+ *
+ * \see `ipoint`
+ * \see `fpoint`
+ * \see `point()`
+ * \see `distance()`
+ */
+template <typename T>
+class basic_point final
+{
+ public:
+  /// \copydoc point_traits::isIntegral
+  inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
+
+  /// \copydoc point_traits::isFloating
+  inline constexpr static bool isFloating = point_traits<T>::isFloating;
+
+  /// \copydoc point_traits::value_type
+  using value_type = typename point_traits<T>::value_type;
+
+  /// \copydoc point_traits::point_type
+  using point_type = typename point_traits<T>::point_type;
+
+  /// \name Construction
+  /// \{
+
+  /**
+   * \brief Creates a zero-initialized point.
+   *
+   * \since 5.0.0
+   */
+  constexpr basic_point() noexcept = default;
+
+  /**
+   * \brief Creates a point with the specified coordinates.
+   *
+   * \param x the x-coordinate that will be used.
+   * \param y the y-coordinate that will be used.
+   *
+   * \since 5.0.0
+   */
+  constexpr basic_point(const value_type x, const value_type y) noexcept
+  {
+    m_point.x = x;
+    m_point.y = y;
+  };
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the x-coordinate of the point.
+   *
+   * \param x the new x-coordinate.
+   *
+   * \since 5.0.0
+   */
+  constexpr void set_x(const value_type x) noexcept
+  {
+    m_point.x = x;
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the point.
+   *
+   * \param y the new y-coordinate.
+   *
+   * \since 5.0.0
+   */
+  constexpr void set_y(const value_type y) noexcept
+  {
+    m_point.y = y;
+  }
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
+
+  /**
+   * \brief Returns the x-coordinate of the point.
+   *
+   * \return the x-coordinate.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type
+  {
+    return m_point.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the point.
+   *
+   * \return the y-coordinate.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type
+  {
+    return m_point.y;
+  }
+
+  /**
+   * \brief Returns the internal point representation.
+   *
+   * \return a reference to the internal representation.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto get() noexcept -> point_type&
+  {
+    return m_point;
+  }
+
+  /// \copydoc get
+  [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
+  {
+    return m_point;
+  }
+
+  /**
+   * \brief Returns a pointer to the internal point representation.
+   *
+   * \note Don't cache the returned pointer.
+   *
+   * \return a pointer to the point representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> point_type*
+  {
+    return &m_point;
+  }
+
+  /// \copydoc data
+  [[nodiscard]] auto data() const noexcept -> const point_type*
+  {
+    return &m_point;
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Converts to the internal representation.
+   *
+   * \return a copy of the internal point.
+   *
+   * \see `cen::cast`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr explicit operator point_type() const noexcept
+  {
+    return m_point;
+  }
+
+  /// \copydoc data()
+  [[nodiscard]] explicit operator point_type*() noexcept
+  {
+    return data();
+  }
+
+  /// \copydoc data()
+  [[nodiscard]] explicit operator const point_type*() const noexcept
+  {
+    return data();
+  }
+
+  /// \} End of conversions
+
+  /**
+   * \brief Serializes the point.
+   *
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the point.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_point.x, m_point.y);
+  }
+
+ private:
+  point_type m_point{0, 0};
+};
+
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x), static_cast<value_type>(y)};
+}
+
+/**
+ * \brief Returns the distance between two points.
+ *
+ * \tparam T the representation type used by the points.
+ *
+ * \param from the first point.
+ * \param to the second point.
+ *
+ * \return the distance between the two points.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
+    -> typename point_traits<T>::value_type
+{
+  if constexpr (basic_point<T>::isIntegral)
+  {
+    const auto xDiff = std::abs(from.x() - to.x());
+    const auto yDiff = std::abs(from.y() - to.y());
+    const auto dist = std::sqrt(xDiff + yDiff);
+    return static_cast<int>(std::round(dist));
+  }
+  else
+  {
+    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+  }
+}
+
+/// \} End of point-related functions
+
+[[nodiscard]] inline auto to_string(const ipoint point) -> std::string
+{
+  return "ipoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
+}
+
+[[nodiscard]] inline auto to_string(const fpoint point) -> std::string
+{
+  return "fpoint{x: " + detail::to_string(point.x()).value() +
+         ", y: " + detail::to_string(point.y()).value() + "}";
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
+{
+  return stream << to_string(point);
+}
+
+/// \name Point cast specializations
+/// \{
+
+/**
+ * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `ipoint` instance that corresponds to the supplied `fpoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const fpoint& from) noexcept -> ipoint
+{
+  const auto x = static_cast<int>(from.x());
+  const auto y = static_cast<int>(from.y());
+  return ipoint{x, y};
+}
+
+/**
+ * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const ipoint& from) noexcept -> fpoint
+{
+  const auto x = static_cast<float>(from.x());
+  const auto y = static_cast<float>(from.y());
+  return fpoint{x, y};
+}
+
+/**
+ * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
+ *
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const SDL_FPoint& from) noexcept -> SDL_Point
+{
+  const auto x = static_cast<int>(from.x);
+  const auto y = static_cast<int>(from.y);
+  return SDL_Point{x, y};
+}
+
+/**
+ * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const SDL_Point& from) noexcept -> SDL_FPoint
+{
+  const auto x = static_cast<float>(from.x);
+  const auto y = static_cast<float>(from.y);
+  return SDL_FPoint{x, y};
+}
+
+/// \} End of point cast specializations
+
+/// \name Point addition and subtraction operators
+/// \{
+
+template <typename T>
+[[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
+{
+  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+}
+
+template <typename T>
+[[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
+{
+  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
+}
+
+/// \} End of point addition and subtraction operators
+
+/// \name Point comparison operators
+/// \{
+
+[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of point comparison operators
+
+/// \} End of group math
+
+}  // namespace cen
+
+#endif  // CENTURION_POINT_HEADER
+// #include "blend_mode.hpp"
+
+// #include "color.hpp"
+
+// #include "pixel_format.hpp"
+
+// #include "scale_mode.hpp"
+#ifndef CENTURION_SCALE_MODE_HEADER
+#define CENTURION_SCALE_MODE_HEADER
+
+#include <SDL.h>
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
+ * \enum scale_mode
+ *
+ * \brief Represents different texture scale modes.
+ *
+ * \since 4.0.0
+ *
+ * \see `SDL_ScaleMode`
+ */
+enum class scale_mode
+{
+  nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.
+  linear = SDL_ScaleModeLinear,    ///< Represents linear filtering.
+  best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.
+};
+
+/**
+ * \brief Indicates whether or not the two scale mode values are the same.
+ *
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
+ *
+ * \return `true` if the scale mode values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
+{
+  return static_cast<SDL_ScaleMode>(lhs) == rhs;
+}
+
+/// \copydoc operator==(scale_mode, SDL_ScaleMode)
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two scale mode values aren't the same.
+ *
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
+ *
+ * \return `true` if the scale mode values aren't the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(scale_mode, SDL_ScaleMode)
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_SCALE_MODE_HEADER
+
+// #include "surface.hpp"
+
+// #include "texture_access.hpp"
+#ifndef CENTURION_TEXTURE_ACCESS_HEADER
+#define CENTURION_TEXTURE_ACCESS_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum texture_access
+ *
+ * \brief Represents different texture access modes.
+ *
+ * \note The `no_lock` enumerator is also referred to as "static" texture access.
+ *
+ * \since 3.0.0
+ *
+ * \see `SDL_TextureAccess`
+ */
+enum class texture_access : int
+{
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely, and isn't lockable.
+  streaming =
+      SDL_TEXTUREACCESS_STREAMING,   ///< Texture changes frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Texture can be used as a render target.
+};
+
+/**
+ * \brief Indicates whether or not the two texture access values are the same.
+ *
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
+ *
+ * \return `true` if the texture access values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept -> bool
+{
+  return static_cast<SDL_TextureAccess>(lhs) == rhs;
+}
+
+/// \copydoc operator==(texture_access, SDL_TextureAccess)
+[[nodiscard]] constexpr auto operator==(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two texture access values aren't the same.
+ *
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
+ *
+ * \return `true` if the texture access values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(texture_access, SDL_TextureAccess)
+[[nodiscard]] constexpr auto operator!=(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXTURE_ACCESS_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+template <typename T>
+class basic_texture;
+
+using texture = basic_texture<detail::owning_type>;
+using texture_handle = basic_texture<detail::handle_type>;
+
+/**
+ * \class basic_texture
+ *
+ * \brief Represents an hardware-accelerated image, intended to be rendered using the
+ * `basic_renderer` class.
+ *
+ * \since 3.0.0
+ *
+ * \see `texture`
+ * \see `texture_handle`
+ */
+template <typename T>
+class basic_texture final
+{
+ public:
+  /// \name Construction
+  /// \{
+
+  // clang-format off
+
+  /**
+   * \brief Creates an texture from a pre-existing SDL texture.
+   *
+   * \param source a pointer to the associated SDL texture.
+   *
+   * \throws cen_error if the supplied pointer is null *and* the texture is owning.
+   *
+   * \since 3.0.0
+   */
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
+      : m_texture{source}
+  {
+    if constexpr (detail::is_owning<T>())
+    {
+      if (!m_texture)
+      {
+        throw cen_error{"Cannot create texture from null pointer!"};
+      }
+    }
+  }
+
+  // clang-format on
+
+  /**
+   * \brief Creates a handle to texture instance.
+   *
+   * \param owner the associated owning texture.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
+  {}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture, can't be null.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const not_null<czstring> path)
+      : m_texture{IMG_LoadTexture(renderer.get(), path)}
+  {
+    if (!m_texture)
+    {
+      throw img_error{};
+    }
+  }
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
+  {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+  /**
+   * \brief Creates an texture that is a copy of the supplied surface.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param surface the surface that the texture will be based on.
+   *
+   * \throws sdl_error if the texture cannot be loaded.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const surface& surface)
+      : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+  {
+    if (!m_texture)
+    {
+      throw sdl_error{};
+    }
+  }
+
+  /**
+   * \brief Creates an texture with the specified characteristics.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the associated renderer instance.
+   * \param format the pixel format of the created texture.
+   * \param access the access of the created texture.
+   * \param size the size of the texture.
+   *
+   * \throws sdl_error if the texture cannot be created.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer,
+                const pixel_format format,
+                const texture_access access,
+                const iarea size)
+      : m_texture{SDL_CreateTexture(renderer.get(),
+                                    to_underlying(format),
+                                    to_underlying(access),
+                                    size.width,
+                                    size.height)}
+  {
+    if (!m_texture)
+    {
+      throw sdl_error{};
+    }
+  }
+
+  /**
+   * \brief Creates and returns a texture with streaming access.
+   *
+   * \details The created texture is based on the image at the specified path with the
+   * `streaming` texture access.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the path of the image file to base the texture on, can't be null.
+   * \param format the pixel format that will be used by the texture.
+   *
+   * \throws cen_error if something goes wrong.
+   *
+   * \return a texture with `streaming` texture access.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const not_null<czstring> path,
+                                      const pixel_format format) -> basic_texture
+  {
+    assert(path);
+
+    constexpr auto blendMode = blend_mode::blend;
+    const auto surface = cen::surface::with_format(path, blendMode, format);
+
+    basic_texture texture{renderer, format, texture_access::streaming, surface.size()};
+    texture.set_blend_mode(blendMode);
+
+    u32* pixels{};
+    if (!texture.lock(&pixels))
+    {
+      throw sdl_error{};
+    }
+
+    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
+                          static_cast<std::size_t>(surface.height());
+    SDL_memcpy(pixels, surface.pixels(), maxCount);
+
+    texture.unlock();
+
+    return texture;
+  }
+
+  /**
+   * \see streaming()
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      const pixel_format format) -> basic_texture
+  {
+    return streaming(renderer, path.c_str(), format);
+  }
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the color of the pixel at the specified coordinate.
+   *
+   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * coordinate is out-of-bounds.
+   *
+   * \param pixel the pixel that will be changed.
+   * \param color the new color of the pixel.
+   *
+   * \since 4.0.0
+   */
+  void set_pixel(const ipoint pixel, const color& color)
+  {
+    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
+        (pixel.x() >= width()) || (pixel.y() >= height()))
+    {
+      return;
+    }
+
+    u32* pixels{};
+    int pitch{};
+    if (!lock(&pixels, &pitch))
+    {
+      return;
+    }
+
+    const int nPixels = (pitch / 4) * height();
+    const int index = (pixel.y() * width()) + pixel.x();
+
+    if ((index >= 0) && (index < nPixels))
+    {
+      const pixel_format_info info{format()};
+      pixels[index] = info.rgba_to_pixel(color);
+    }
+
+    unlock();
+  }
+
+  /**
+   * \brief Sets the alpha value of the texture.
+   *
+   * \param alpha the alpha value, in the range [0, 255].
+   *
+   * \since 3.0.0
+   */
+  void set_alpha(const u8 alpha) noexcept
+  {
+    SDL_SetTextureAlphaMod(m_texture, alpha);
+  }
+
+  /**
+   * \brief Sets the blend mode that will be used by the texture.
+   *
+   * \param mode the blend mode that will be used.
+   *
+   * \since 3.0.0
+   */
+  void set_blend_mode(const blend_mode mode) noexcept
+  {
+    SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
+  }
+
+  /**
+   * \brief Sets the color modulation of the texture.
+   *
+   * \note The alpha component in the color struct is ignored by this method.
+   *
+   * \param color the color that will be used to modulate the color of the texture.
+   *
+   * \since 3.0.0
+   */
+  void set_color_mod(const color& color) noexcept
+  {
+    SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Sets the scale mode that will be used by the texture.
+   *
+   * \param mode the scale mode that will be used.
+   *
+   * \since 4.0.0
+   */
+  void set_scale_mode(const scale_mode mode) noexcept
+  {
+    SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
+
+  /**
+   * \brief Returns the pixel format that is used by the texture.
+   *
+   * \return the pixel format that is used by the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto format() const noexcept -> pixel_format
+  {
+    u32 format{};
+    SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
+    return static_cast<pixel_format>(format);
+  }
+
+  /**
+   * \brief Returns the texture access of the texture.
+   *
+   * \return the texture access of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto access() const noexcept -> texture_access
+  {
+    int access{};
+    SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
+    return static_cast<texture_access>(access);
+  }
+
+  /**
+   * \brief Returns the width of the texture.
+   *
+   * \return the width of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return width;
+  }
+
+  /**
+   * \brief Returns the height of the texture.
+   *
+   * \return the height of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return height;
+  }
+
+  /**
+   * \brief Returns the size of the texture.
+   *
+   * \return the size of the texture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+    return {width, height};
+  }
+
+  /**
+   * \brief Indicates whether or not the texture is a possible render target.
+   *
+   * \return `true` if the texture is a possible render target; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_target() const noexcept -> bool
+  {
+    return access() == texture_access::target;
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has static texture access.
+   *
+   * \return `true` if the texture has static texture access; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_no_lock() const noexcept -> bool
+  {
+    return access() == texture_access::no_lock;
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has streaming texture access.
+   *
+   * \return `true` if the texture has streaming texture access; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_streaming() const noexcept -> bool
+  {
+    return access() == texture_access::streaming;
+  }
+
+  /**
+   * \brief Returns the alpha value of the texture.
+   *
+   * \return the alpha value of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto alpha() const noexcept -> u8
+  {
+    u8 alpha{};
+    SDL_GetTextureAlphaMod(m_texture, &alpha);
+    return alpha;
+  }
+
+  /**
+   * \brief Returns the blend mode of the texture.
+   *
+   * \return the blend mode of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetTextureBlendMode(m_texture, &mode);
+    return static_cast<blend_mode>(mode);
+  }
+
+  /**
+   * \brief Returns the color modulation of the texture.
+   *
+   * \return the modulation of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto color_mod() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    SDL_GetTextureColorMod(m_texture, &red, &green, &blue);
+    return {red, green, blue, 0xFF};
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Returns the scale mode that is used by the texture.
+   *
+   * \return the scale mode that is used by the texture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
+  {
+    SDL_ScaleMode mode{};
+    SDL_GetTextureScaleMode(m_texture, &mode);
+    return static_cast<scale_mode>(mode);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Releases ownership of the associated SDL texture and returns a pointer to it.
+   *
+   * \warning Usage of this function should be considered dangerous, since you might run
+   * into memory leak issues. You **must** call `SDL_DestroyTexture` on the returned
+   * pointer to free the associated memory.
+   *
+   * \return a pointer to the associated SDL texture.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
+  {
+    return m_texture.release();
+  }
+
+  /**
+   * \brief Returns a pointer to the associated `SDL_Texture`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture*
+  {
+    return m_texture.get();
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not a texture handle holds a non-null pointer.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return m_texture != nullptr;
+  }
+
+  /**
+   * \brief Converts to `SDL_Texture*`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept
+  {
+    return m_texture;
+  }
+
+  /**
+   * \brief Converts to `const SDL_Texture*`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
+  {
+    return m_texture;
+  }
+
+  /// \} End of conversions
+
+ private:
+  struct deleter final
+  {
+    void operator()(SDL_Texture* texture) noexcept
+    {
+      SDL_DestroyTexture(texture);
+    }
+  };
+  detail::pointer_manager<T, SDL_Texture, deleter> m_texture;
+
+  /**
+   * \brief Locks the texture for write-only pixel access.
+   *
+   * \remarks This method is only applicable if the texture access of the texture is
+   * `Streaming`.
+   *
+   * \param pixels this will be filled with a pointer to the locked pixels.
+   * \param pitch This is filled in with the pitch of the locked pixels, can safely be
+   * null if it isn't needed.
+   *
+   * \return `success` if nothing went wrong; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
+  {
+    if (pitch)
+    {
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             pitch) == 0;
+    }
+    else
+    {
+      int dummyPitch;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
+    }
+  }
+
+  /**
+   * \brief Unlocks the texture.
+   *
+   * \since 4.0.0
+   */
+  void unlock() noexcept
+  {
+    SDL_UnlockTexture(m_texture);
+  }
+};
+
+/**
+ * \brief Returns a textual representation of a texture.
+ *
+ * \param texture the texture that will be converted.
+ *
+ * \return a string that represents the texture.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
+{
+  return "texture{data: " + detail::address_of(texture.get()) +
+         ", width: " + detail::to_string(texture.width()).value() +
+         ", height: " + detail::to_string(texture.height()).value() + "}";
+}
+
+/**
+ * \brief Prints a textual representation of a texture.
+ *
+ * \param stream the stream that will be used.
+ * \param texture the texture that will be printed
+ *
+ * \return the used stream.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
+{
+  return stream << to_string(texture);
+}
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXTURE_HEADER
 // #include "../window.hpp"
 
 // #include "gl_attribute.hpp"
@@ -85260,6 +87303,11 @@ class basic_context final
 
 }  // namespace cen::gl
 
+namespace cen {
+/// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
+using gl_context = gl::context;
+}  // namespace cen
+
 /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL
@@ -85466,6 +87514,50 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
     -> bool
 {
   return is_extension_supported(extension.c_str());
+}
+
+/**
+ * \brief Binds a texture to the current OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to bind.
+ *
+ * \return the size of the texture if it was successfully bound; `std::nullopt` if
+ * something goes wrong.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
+{
+  float width{};
+  float height{};
+  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0)
+  {
+    return farea{width, height};
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Unbinds a texture from the OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to unbind.
+ *
+ * \return `success` if the texture was unbound; `failure` otherwise.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto unbind(basic_texture<T>& texture) noexcept -> result
+{
+  return SDL_GL_UnbindTexture(texture.get()) == 0;
 }
 
 /// \} End of group video
@@ -86299,6 +88391,8 @@ class basic_pixel_format_info final
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
@@ -87110,6 +89204,7 @@ class font_cache final
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_CACHE_HEADER
 // #include "surface.hpp"
 
@@ -87690,6 +89785,8 @@ class basic_renderer final
   /// \name Text rendering
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
    *
@@ -88227,6 +90324,8 @@ class basic_renderer final
     }
   }
 
+#endif  // CENTURION_NO_SDL_TTF
+
   /// \} End of text rendering
 
   /// \name Texture rendering
@@ -88676,6 +90775,8 @@ class basic_renderer final
   /// \name Font handling
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Adds a font to the renderer.
    *
@@ -88777,6 +90878,8 @@ class basic_renderer final
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
+
+#endif  // CENTURION_NO_SDL_TTF
 
   /// \} // end of font handling
 
@@ -89264,7 +91367,10 @@ class basic_renderer final
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
     frect translation{};
+
+#ifndef CENTURION_NO_SDL_TTF
     std::unordered_map<std::size_t, font> fonts{};
+#endif  // CENTURION_NO_SDL_TTF
   };
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
@@ -89960,6 +92066,8 @@ class basic_renderer final
   /// \name Text rendering
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
    *
@@ -90497,6 +92605,8 @@ class basic_renderer final
     }
   }
 
+#endif  // CENTURION_NO_SDL_TTF
+
   /// \} End of text rendering
 
   /// \name Texture rendering
@@ -90946,6 +93056,8 @@ class basic_renderer final
   /// \name Font handling
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Adds a font to the renderer.
    *
@@ -91047,6 +93159,8 @@ class basic_renderer final
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
+
+#endif  // CENTURION_NO_SDL_TTF
 
   /// \} // end of font handling
 
@@ -91534,7 +93648,10 @@ class basic_renderer final
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
     frect translation{};
+
+#ifndef CENTURION_NO_SDL_TTF
     std::unordered_map<std::size_t, font> fonts{};
+#endif  // CENTURION_NO_SDL_TTF
   };
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
@@ -92361,7 +94478,10 @@ namespace cen::screen {
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
@@ -92476,6 +94596,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -92511,6 +94633,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -92698,6 +94822,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -92751,6 +94877,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -93288,7 +95416,10 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <cstddef>  // size_t
@@ -93393,6 +95524,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -93431,6 +95564,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -95066,9 +97201,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -95184,6 +97328,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -95212,6 +97358,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -95242,6 +97392,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -95270,6 +97424,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -95857,9 +98013,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -96034,6 +98199,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -96062,6 +98229,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -96092,6 +98263,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -96120,6 +98295,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -99794,7 +101971,10 @@ class basic_pixel_format_info final
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
@@ -100000,6 +102180,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -100035,6 +102217,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -100222,6 +102406,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -100275,6 +102461,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -102238,9 +104426,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -102356,6 +104553,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -102384,6 +104583,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -102414,6 +104617,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -102442,6 +104649,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 

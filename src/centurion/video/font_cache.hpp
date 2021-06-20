@@ -1,6 +1,8 @@
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>        // assert
@@ -806,4 +808,5 @@ class font_cache final
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_CACHE_HEADER

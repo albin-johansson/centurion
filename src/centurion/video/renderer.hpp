@@ -604,6 +604,8 @@ class basic_renderer final
   /// \name Text rendering
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
    *
@@ -1141,6 +1143,8 @@ class basic_renderer final
     }
   }
 
+#endif  // CENTURION_NO_SDL_TTF
+
   /// \} End of text rendering
 
   /// \name Texture rendering
@@ -1590,6 +1594,8 @@ class basic_renderer final
   /// \name Font handling
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Adds a font to the renderer.
    *
@@ -1691,6 +1697,8 @@ class basic_renderer final
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
+
+#endif  // CENTURION_NO_SDL_TTF
 
   /// \} // end of font handling
 
@@ -2178,7 +2186,10 @@ class basic_renderer final
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
     frect translation{};
+
+#ifndef CENTURION_NO_SDL_TTF
     std::unordered_map<std::size_t, font> fonts{};
+#endif  // CENTURION_NO_SDL_TTF
   };
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;

@@ -2,7 +2,10 @@
 #define CENTURION_FILE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>   // assert
 #include <cstddef>   // size_t
@@ -534,6 +537,8 @@ class file final
   /// \name File type queries
   /// \{
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Indicates whether or not the file represents a PNG image.
    *
@@ -713,6 +718,8 @@ class file final
   {
     return IMG_isXV(m_context.get()) == 1;
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of file type queries
 

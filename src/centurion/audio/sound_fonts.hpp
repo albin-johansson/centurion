@@ -1,6 +1,8 @@
 #ifndef CENTURION_SOUND_FONTS_HEADER
 #define CENTURION_SOUND_FONTS_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -69,4 +71,5 @@ auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noex
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_FONTS_HEADER

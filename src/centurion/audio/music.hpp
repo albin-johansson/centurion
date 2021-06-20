@@ -1,6 +1,8 @@
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -720,4 +722,5 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_MUSIC_HEADER

@@ -1,6 +1,8 @@
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
@@ -785,4 +787,5 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER

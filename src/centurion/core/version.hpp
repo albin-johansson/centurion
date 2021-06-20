@@ -2,9 +2,18 @@
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -163,6 +172,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -191,6 +202,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -221,6 +236,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -249,6 +268,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 

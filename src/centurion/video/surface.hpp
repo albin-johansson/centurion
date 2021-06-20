@@ -2,7 +2,10 @@
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
@@ -102,6 +105,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -137,6 +142,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -324,6 +331,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -377,6 +386,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 

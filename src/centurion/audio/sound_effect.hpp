@@ -1,6 +1,8 @@
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -525,4 +527,5 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_EFFECT_HEADER

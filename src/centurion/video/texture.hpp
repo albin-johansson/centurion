@@ -2,7 +2,10 @@
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <cstddef>  // size_t
@@ -91,6 +94,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -129,6 +134,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.

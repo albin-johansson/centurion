@@ -1,6 +1,8 @@
 #ifndef CENTURION_CHANNELS_HEADER
 #define CENTURION_CHANNELS_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -236,4 +238,5 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_CHANNELS_HEADER

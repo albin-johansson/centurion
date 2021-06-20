@@ -353,6 +353,18 @@ class event final
   }
 
   /**
+   * \brief Returns a pointer to the internal event representation.
+   *
+   * \return a pointer to the internal event instance.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
+  {
+    return &m_event;
+  }
+
+  /**
    * \brief Indicates whether or not there is an internal event stored in the
    * instance.
    *

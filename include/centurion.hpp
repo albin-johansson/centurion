@@ -20821,11 +20821,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the scan code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto scan() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
   {
-    return m_event.keysym.scancode;
+    return scan();
   }
 
   /**
@@ -20833,11 +20842,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the key code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto key() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_key_code() const noexcept -> key_code
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return key();
   }
 
   /**
@@ -25731,11 +25749,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the scan code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto scan() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
   {
-    return m_event.keysym.scancode;
+    return scan();
   }
 
   /**
@@ -25743,11 +25770,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the key code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto key() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_key_code() const noexcept -> key_code
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return key();
   }
 
   /**

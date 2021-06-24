@@ -146,6 +146,7 @@ class basic_context final
 namespace cen {
 /// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
 using gl_context = gl::context;
+using gl_context_handle = gl::context_handle;
 }  // namespace cen
 
 /// \} End of group video

@@ -30,9 +30,15 @@ enum class key_modifier : u16
   right_alt = KMOD_RALT,
   left_gui = KMOD_LGUI,
   right_gui = KMOD_RGUI,
+  shift = KMOD_SHIFT,
+  ctrl = KMOD_CTRL,
+  alt = KMOD_ALT,
+  gui = KMOD_GUI,
   num = KMOD_NUM,
   caps = KMOD_CAPS,
-  mode = KMOD_MODE
+  mode = KMOD_MODE,
+
+  reserved = KMOD_RESERVED
 };
 
 /// \} End of group input

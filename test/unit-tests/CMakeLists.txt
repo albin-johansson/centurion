@@ -64,6 +64,7 @@ set(SOURCE_FILES
     input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_code_tests.cpp
+    input/key_modifier_test.cpp
     input/keyboard_test.cpp
     input/mouse_button_test.cpp
     input/mouse_test.cpp

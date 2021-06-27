@@ -146,11 +146,25 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \return the amount of fingers used to draw the stroke.
    *
-   * \since 4.0.0
+   * \since 6.1.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> u32
+  [[nodiscard]] auto finger_count() const noexcept -> u32
   {
     return m_event.numFingers;
+  }
+
+  /**
+   * \brief Returns the amount of fingers used to draw the stroke.
+   *
+   * \return the amount of fingers used to draw the stroke.
+   *
+   * \deprecated Since 6.1.0, use `finger_count()` instead.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> u32
+  {
+    return finger_count();
   }
 
   /**

@@ -11,12 +11,12 @@ Centurion is a multimedia-library built on top of SDL2, written in modern C++, w
 
 The following table shows the supported versions of SDL2 and its extension libraries.
 
-| Dependency | Supported versions     |
-| ---------- | ---------------------- |
-| SDL2       | 2.0.10, 2.0.12, 2.0.14 |
-| SDL2_image | 2.0.5                  |
-| SDL2_mixer | 2.0.4                  |
-| SDL2_ttf   | 2.0.4                  |
+| Dependency            | Supported versions     |
+| --------------------- | ---------------------- |
+| SDL2                  | 2.0.10, 2.0.12, 2.0.14 |
+| SDL2_image (Optional) | 2.0.5                  |
+| SDL2_mixer (Optional) | 2.0.4                  |
+| SDL2_ttf   (Optional) | 2.0.4                  |
 
 ## Why Centurion?
 

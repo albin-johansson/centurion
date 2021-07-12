@@ -18,11 +18,14 @@ namespace cen {
  *
  * \note This is a flag enum, and provides overloads for the common bitwise operators.
  *
- * \see `keymod`
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
- * \see `operator~(key_modifier)`
- * \see `operator|(key_modifier, key_modifier)`
- * \see `operator&(key_modifier, key_modifier)`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -48,24 +51,26 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
-using keymod = key_modifier;
+using key_mod = key_modifier;
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
 {
-  return static_cast<keymod>(~to_underlying(mod));
+  return static_cast<key_mod>(~to_underlying(mod));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
 
 /// \} End of group input

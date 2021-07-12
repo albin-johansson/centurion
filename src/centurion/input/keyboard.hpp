@@ -217,7 +217,7 @@ class keyboard final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const keymod modifiers) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
     return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
   }

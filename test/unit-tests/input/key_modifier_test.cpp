@@ -6,44 +6,44 @@
 
 TEST(KeyModifier, Values)
 {
-  ASSERT_EQ(cen::to_underlying(cen::keymod::none), KMOD_NONE);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::none), KMOD_NONE);
 
-  ASSERT_EQ(cen::to_underlying(cen::keymod::left_shift), KMOD_LSHIFT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::right_shift), KMOD_RSHIFT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::left_ctrl), KMOD_LCTRL);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::right_ctrl), KMOD_RCTRL);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::left_alt), KMOD_LALT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::right_alt), KMOD_RALT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::left_gui), KMOD_LGUI);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::right_gui), KMOD_RGUI);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::left_shift), KMOD_LSHIFT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::right_shift), KMOD_RSHIFT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::left_ctrl), KMOD_LCTRL);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::right_ctrl), KMOD_RCTRL);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::left_alt), KMOD_LALT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::right_alt), KMOD_RALT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::left_gui), KMOD_LGUI);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::right_gui), KMOD_RGUI);
 
-  ASSERT_EQ(cen::to_underlying(cen::keymod::shift), KMOD_SHIFT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::ctrl), KMOD_CTRL);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::alt), KMOD_ALT);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::gui), KMOD_GUI);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::num), KMOD_NUM);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::caps), KMOD_CAPS);
-  ASSERT_EQ(cen::to_underlying(cen::keymod::mode), KMOD_MODE);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::shift), KMOD_SHIFT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::ctrl), KMOD_CTRL);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::alt), KMOD_ALT);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::gui), KMOD_GUI);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::num), KMOD_NUM);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::caps), KMOD_CAPS);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::mode), KMOD_MODE);
 
-  ASSERT_EQ(cen::to_underlying(cen::keymod::reserved), KMOD_RESERVED);
+  ASSERT_EQ(cen::to_underlying(cen::key_mod::reserved), KMOD_RESERVED);
 }
 
 TEST(KeyModifier, BitwiseNot)
 {
-  ASSERT_EQ(cen::u16(~cen::u16{KMOD_SHIFT}), cen::to_underlying(~cen::keymod::shift));
+  ASSERT_EQ(cen::u16(~cen::u16{KMOD_SHIFT}), cen::to_underlying(~cen::key_mod::shift));
 }
 
 TEST(KeyModifier, BitwiseOR)
 {
-  ASSERT_EQ(cen::keymod::shift, cen::keymod::shift | cen::keymod::shift);
-  ASSERT_EQ(cen::keymod::shift, cen::keymod::left_shift | cen::keymod::right_shift);
+  ASSERT_EQ(cen::key_mod::shift, cen::key_mod::shift | cen::key_mod::shift);
+  ASSERT_EQ(cen::key_mod::shift, cen::key_mod::left_shift | cen::key_mod::right_shift);
   ASSERT_EQ(KMOD_LCTRL | KMOD_RALT,
-            cen::to_underlying(cen::keymod::left_ctrl | cen::keymod::right_alt));
+            cen::to_underlying(cen::key_mod::left_ctrl | cen::key_mod::right_alt));
 }
 
 TEST(KeyModifier, BitwiseAND)
 {
-  ASSERT_EQ(cen::keymod::shift, cen::keymod::shift & cen::keymod::shift);
+  ASSERT_EQ(cen::key_mod::shift, cen::key_mod::shift & cen::key_mod::shift);
   ASSERT_EQ(KMOD_LSHIFT & KMOD_RGUI,
-            cen::to_underlying(cen::keymod::left_shift & cen::keymod::right_gui));
+            cen::to_underlying(cen::key_mod::left_shift & cen::key_mod::right_gui));
 }

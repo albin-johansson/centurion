@@ -19593,6 +19593,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -19602,9 +19604,15 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \see `keymod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_modifier)`
+ * \see `operator|(key_modifier, key_modifier)`
+ * \see `operator&(key_modifier, key_modifier)`
  *
  * \since 3.1.0
  */
@@ -19629,6 +19637,26 @@ enum class key_modifier : u16
 
   reserved = KMOD_RESERVED
 };
+
+using keymod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+{
+  return static_cast<keymod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -20690,11 +20718,45 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the specified key modifier is active; `false` otherwise.
    *
+   * \see `is_only_active(key_modifier)`
+   *
    * \since 6.1.0
    */
   [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
   {
     return m_event.keysym.mod & to_underlying(modifier);
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_modifier)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
+   *
+   * \param modifier the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_modifier)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  {
+    const auto modifierMask = to_underlying(modifier);
+    const auto hits = m_event.keysym.mod & modifierMask;
+
+    if (hits != modifierMask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
   }
 
   /**
@@ -20721,9 +20783,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_shift) || is_active(key_modifier::right_shift);
   }
@@ -20733,9 +20797,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_ctrl) || is_active(key_modifier::right_ctrl);
   }
@@ -20745,9 +20811,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_alt) || is_active(key_modifier::right_alt);
   }
@@ -20757,9 +20825,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_gui) || is_active(key_modifier::right_gui);
   }
@@ -20769,9 +20839,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
     return is_active(key_modifier::caps);
   }
@@ -20781,9 +20853,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
     return is_active(key_modifier::num);
   }
@@ -25648,11 +25722,45 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the specified key modifier is active; `false` otherwise.
    *
+   * \see `is_only_active(key_modifier)`
+   *
    * \since 6.1.0
    */
   [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
   {
     return m_event.keysym.mod & to_underlying(modifier);
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_modifier)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
+   *
+   * \param modifier the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_modifier)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  {
+    const auto modifierMask = to_underlying(modifier);
+    const auto hits = m_event.keysym.mod & modifierMask;
+
+    if (hits != modifierMask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
   }
 
   /**
@@ -25679,9 +25787,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_shift) || is_active(key_modifier::right_shift);
   }
@@ -25691,9 +25801,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_ctrl) || is_active(key_modifier::right_ctrl);
   }
@@ -25703,9 +25815,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_alt) || is_active(key_modifier::right_alt);
   }
@@ -25715,9 +25829,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_gui) || is_active(key_modifier::right_gui);
   }
@@ -25727,9 +25843,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
     return is_active(key_modifier::caps);
   }
@@ -25739,9 +25857,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
     return is_active(key_modifier::num);
   }
@@ -45625,6 +45745,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -45634,9 +45756,15 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \see `keymod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_modifier)`
+ * \see `operator|(key_modifier, key_modifier)`
+ * \see `operator&(key_modifier, key_modifier)`
  *
  * \since 3.1.0
  */
@@ -45661,6 +45789,26 @@ enum class key_modifier : u16
 
   reserved = KMOD_RESERVED
 };
+
+using keymod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+{
+  return static_cast<keymod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -46719,6 +46867,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -46728,9 +46878,15 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \see `keymod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_modifier)`
+ * \see `operator|(key_modifier, key_modifier)`
+ * \see `operator&(key_modifier, key_modifier)`
  *
  * \since 3.1.0
  */
@@ -46755,6 +46911,26 @@ enum class key_modifier : u16
 
   reserved = KMOD_RESERVED
 };
+
+using keymod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+{
+  return static_cast<keymod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -47850,19 +48026,19 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not any of the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param mod the modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the modifiers are active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const key_modifier modifier) noexcept -> bool
+  [[nodiscard]] static auto is_active(const keymod mod) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
+    return static_cast<SDL_Keymod>(mod) & SDL_GetModState();
   }
 
   /**

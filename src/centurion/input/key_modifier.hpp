@@ -41,6 +41,8 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
+using keymod = key_modifier;
+
 /// \} End of group input
 
 }  // namespace cen

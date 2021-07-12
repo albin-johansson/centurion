@@ -5,8 +5,11 @@
 
 #include <cassert>      // assert
 #include <cmath>        // round, fabs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
 #include <optional>     // optional
 #include <ostream>      // ostream
+#include <sstream>      // stringstream
 #include <string>       // string
 #include <string_view>  // string_view
 
@@ -520,6 +523,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{

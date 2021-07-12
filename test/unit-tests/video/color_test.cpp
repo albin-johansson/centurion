@@ -291,6 +291,24 @@ TEST(Color, Data)
   ASSERT_TRUE(black.data());
 }
 
+TEST(Color, AsRGB)
+{
+  const cen::color color{0x5B, 0xE1, 0x84};
+  ASSERT_EQ("#5BE184", color.as_rgb());
+}
+
+TEST(Color, AsRGBA)
+{
+  const cen::color color{0x36, 0xCA, 0x9F, 0xDA};
+  ASSERT_EQ("#36CA9FDA", color.as_rgba());
+}
+
+TEST(Color, AsARGB)
+{
+  const cen::color color{0xF1, 0x85, 0xB3, 0xCE};
+  ASSERT_EQ("#CEF185B3", color.as_argb());
+}
+
 TEST(Color, ConversionToSDLColor)
 {
   constexpr auto color = cen::colors::dark_orchid;

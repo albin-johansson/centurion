@@ -6680,6 +6680,209 @@ namespace cen::detail {
 
 #endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
 
+// #include "centurion/detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
 // #include "centurion/detail/hints_impl.hpp"
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
@@ -8032,137 +8235,6 @@ class static_bimap final
 #include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
 
 
 /// \cond FALSE
@@ -11011,10 +11083,308 @@ namespace cen::detail {
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -11206,15 +11576,14 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -11350,6 +11719,79 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_COMPILER_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/to_string.hpp"
+#ifndef CENTURION_DETAIL_TO_STRING_HEADER
+#define CENTURION_DETAIL_TO_STRING_HEADER
+
+#include <array>         // array
+#include <charconv>      // to_chars
+#include <cstddef>       // size_t
+#include <optional>      // optional, nullopt
+#include <string>        // string, to_string
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
 
 
 /// \cond FALSE
@@ -11638,6 +12080,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -35691,10 +36263,308 @@ namespace cen::detail {
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -35886,15 +36756,14 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -36030,6 +36899,79 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_COMPILER_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/to_string.hpp"
+#ifndef CENTURION_DETAIL_TO_STRING_HEADER
+#define CENTURION_DETAIL_TO_STRING_HEADER
+
+#include <array>         // array
+#include <charconv>      // to_chars
+#include <cstddef>       // size_t
+#include <optional>      // optional, nullopt
+#include <string>        // string, to_string
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
 
 
 /// \cond FALSE
@@ -36318,6 +37260,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -57077,22 +58149,25 @@ class pointer_manager final
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -57228,6 +58303,79 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_COMPILER_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/to_string.hpp"
+#ifndef CENTURION_DETAIL_TO_STRING_HEADER
+#define CENTURION_DETAIL_TO_STRING_HEADER
+
+#include <array>         // array
+#include <charconv>      // to_chars
+#include <cstddef>       // size_t
+#include <optional>      // optional, nullopt
+#include <string>        // string, to_string
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
 
 
 /// \cond FALSE
@@ -57516,6 +58664,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -61506,10 +62784,308 @@ enum class blend_mode
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -61701,15 +63277,14 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -61845,6 +63420,79 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_COMPILER_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/to_string.hpp"
+#ifndef CENTURION_DETAIL_TO_STRING_HEADER
+#define CENTURION_DETAIL_TO_STRING_HEADER
+
+#include <array>         // array
+#include <charconv>      // to_chars
+#include <cstddef>       // size_t
+#include <optional>      // optional, nullopt
+#include <string>        // string, to_string
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
 
 
 /// \cond FALSE
@@ -62133,6 +63781,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -62585,12 +64363,18 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/from_string.hpp"
 
 // #include "../detail/to_string.hpp"
 
@@ -62829,6 +64613,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -65549,65 +67463,6 @@ template <typename T>
 #define CENTURION_CZSTRING_HEADER
 
 // #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-/// Enables a template if the type is either integral of floating-point, but not a boolean.
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-/// Enables a template if the type is a pointer.
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-/// Enables a template if T is convertible to any of the specified types.
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
 
 
 namespace cen {
@@ -65652,241 +67507,6 @@ using zstring = char*;
 #endif  // CENTURION_CZSTRING_HEADER
 
 // #include "../core/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_MIXER
-#include <SDL_mixer.h>
-#endif  // CENTURION_NO_SDL_MIXER
-
-#ifndef CENTURION_NO_SDL_TTF
-#include <SDL_ttf.h>
-#endif  // CENTURION_NO_SDL_TTF
-
-#include <exception>  // exception
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \note This is mainly used in `to_string()` overloads.
- *
- * \param str the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
-{
-  return str ? str : "n/a";
-}
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception, can safely be null.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"n/a"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#ifndef CENTURION_NO_SDL_IMAGE
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_TTF
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_TTF
-
-#ifndef CENTURION_NO_SDL_MIXER
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_MIXER
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 
@@ -81864,12 +83484,88 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 // #include "../detail/to_string.hpp"
 
@@ -82108,6 +83804,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction
@@ -101222,12 +103048,88 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+    else
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 // #include "../detail/to_string.hpp"
 
@@ -101466,6 +103368,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction

@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 
 namespace cen {
 
@@ -13,9 +14,15 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \see `keymod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_modifier)`
+ * \see `operator|(key_modifier, key_modifier)`
+ * \see `operator&(key_modifier, key_modifier)`
  *
  * \since 3.1.0
  */
@@ -42,6 +49,24 @@ enum class key_modifier : u16
 };
 
 using keymod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+{
+  return static_cast<keymod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+{
+  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 

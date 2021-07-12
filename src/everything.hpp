@@ -55,6 +55,7 @@
 #include "centurion/detail/convert_bool.hpp"
 #include "centurion/detail/czstring_compare.hpp"
 #include "centurion/detail/czstring_eq.hpp"
+#include "centurion/detail/from_string.hpp"
 #include "centurion/detail/hints_impl.hpp"
 #include "centurion/detail/max.hpp"
 #include "centurion/detail/min.hpp"

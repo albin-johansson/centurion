@@ -24,6 +24,7 @@ set(SOURCE_FILES
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp
     detail/czstring_eq_test.cpp
+    detail/from_string_test.cpp
     detail/max_test.cpp
     detail/min_test.cpp
     detail/owner_handle_api_test.cpp

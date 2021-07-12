@@ -30,12 +30,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -44,6 +38,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else

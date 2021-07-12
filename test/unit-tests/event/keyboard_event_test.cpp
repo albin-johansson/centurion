@@ -342,19 +342,11 @@ TEST(KeyboardEvent, NumActive)
 
 TEST(KeyboardEvent, Repeated)
 {
-  const auto createEvent = [](const int repeats) noexcept {
-    SDL_KeyboardEvent sdl{};
-    sdl.repeat = static_cast<cen::u8>(repeats);
-    return cen::keyboard_event{sdl};
-  };
+  cen::keyboard_event event;
+  ASSERT_FALSE(event.repeated());
 
-  const auto noRepeat = createEvent(0);
-  const auto oneRepeat = createEvent(1);
-  const auto twoRepeats = createEvent(2);
-
-  ASSERT_FALSE(noRepeat.repeated());
-  ASSERT_TRUE(oneRepeat.repeated());
-  ASSERT_TRUE(twoRepeats.repeated());
+  event.set_repeated(true);
+  ASSERT_TRUE(event.repeated());
 }
 
 TEST(KeyboardEvent, State)

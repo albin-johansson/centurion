@@ -170,11 +170,45 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the specified key modifier is active; `false` otherwise.
    *
+   * \see `is_only_active(key_modifier)`
+   *
    * \since 6.1.0
    */
   [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
   {
     return m_event.keysym.mod & to_underlying(modifier);
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_modifier)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
+   *
+   * \param modifier the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_modifier)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  {
+    const auto modifierMask = to_underlying(modifier);
+    const auto hits = m_event.keysym.mod & modifierMask;
+
+    if (hits != modifierMask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
   }
 
   /**

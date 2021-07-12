@@ -80,6 +80,34 @@ TEST(KeyboardEvent, IsActive)
   ASSERT_FALSE(event.is_active(cen::scancodes::o));
 }
 
+TEST(KeyboardEvent, IsOnlyActive)
+{
+  cen::keyboard_event event;
+  ASSERT_FALSE(event.is_active(cen::key_modifier::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::shift));
+
+  event.set_modifier(cen::key_modifier::shift, true);
+  ASSERT_TRUE(event.is_active(cen::key_modifier::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_modifier::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::left_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::right_shift));
+
+  event.set_modifier(cen::key_modifier::alt, true);
+  ASSERT_TRUE(event.is_active(cen::key_modifier::shift));
+  ASSERT_TRUE(event.is_active(cen::key_modifier::alt));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::alt));
+
+  event.set_modifier(cen::key_modifier::alt, false);
+  event.set_modifier(cen::key_modifier::right_shift, false);
+  ASSERT_TRUE(event.is_active(cen::key_modifier::shift));
+  ASSERT_TRUE(event.is_active(cen::key_modifier::left_shift));
+  ASSERT_FALSE(event.is_active(cen::key_modifier::right_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_modifier::left_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_modifier::right_shift));
+}
+
 TEST(KeyboardEvent, ModifierActive)
 {
   SDL_KeyboardEvent sdl{};

@@ -212,6 +212,35 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_modifier::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_modifier)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const keymod modifiers) const noexcept -> bool
+  {
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
    * \brief Indicates whether or not the specified key modifier is active.
    *
    * \note Multiple key modifiers can be active at the same time.

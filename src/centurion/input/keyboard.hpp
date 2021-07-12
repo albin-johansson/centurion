@@ -211,15 +211,15 @@ class keyboard final
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param mod the modifiers that will be checked.
+   * \param modifiers the modifiers that will be checked.
    *
    * \return `true` if any of the modifiers are active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const keymod mod) noexcept -> bool
+  [[nodiscard]] static auto is_active(const keymod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(mod) & SDL_GetModState();
+    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
   }
 
   /**

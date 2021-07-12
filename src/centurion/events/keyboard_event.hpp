@@ -84,22 +84,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifier the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const keymod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -162,21 +162,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
    * \see `is_only_active(key_modifier)`
+   * \see `is_only_any_of_active(key_modifier)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_active(const keymod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return m_event.keysym.mod & to_underlying(modifiers);
   }
 
   /**
@@ -187,7 +188,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    * if the `shift` and `alt` modifiers are being pressed, then
    * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
    *
-   * \param modifier the modifiers to check for.
+   * \param modifiers the modifiers to check for.
    *
    * \return `true` if *only* the specified modifiers are active; false otherwise.
    *
@@ -195,12 +196,12 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_only_active(const keymod modifiers) const noexcept -> bool
   {
-    const auto modifierMask = to_underlying(modifier);
-    const auto hits = m_event.keysym.mod & modifierMask;
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
 
-    if (hits != modifierMask)
+    if (hits != mask)
     {
       return false;  // The specified modifiers were a combo that wasn't fully active
     }
@@ -241,13 +242,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifier are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifier the key modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
    * \deprecated Since 6.1.0. Use `is_active(key_modifier)` instead.
    *

@@ -235,9 +235,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_shift) || is_active(key_modifier::right_shift);
   }
@@ -247,9 +249,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_ctrl) || is_active(key_modifier::right_ctrl);
   }
@@ -259,9 +263,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_alt) || is_active(key_modifier::right_alt);
   }
@@ -271,9 +277,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
     return is_active(key_modifier::left_gui) || is_active(key_modifier::right_gui);
   }
@@ -283,9 +291,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
     return is_active(key_modifier::caps);
   }
@@ -295,9 +305,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
     return is_active(key_modifier::num);
   }

@@ -131,6 +131,54 @@ TEST(Color, FromHSL)
   ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
 }
 
+TEST(Color, FromRGB)
+{
+  ASSERT_FALSE(cen::color::from_rgb("112233"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_rgb("#1122333"));
+  ASSERT_FALSE(cen::color::from_rgb("#11223"));
+
+  const auto color = cen::color::from_rgb("#2AEB9C");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0x2A, color->red());
+  ASSERT_EQ(0xEB, color->green());
+  ASSERT_EQ(0x9C, color->blue());
+  ASSERT_EQ(0xFF, color->alpha());
+}
+
+TEST(Color, FromRGBA)
+{
+  ASSERT_FALSE(cen::color::from_rgba("11223344"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_rgba("#112233444"));
+  ASSERT_FALSE(cen::color::from_rgba("#112233"));
+
+  const auto color = cen::color::from_rgba("#7BCF39EA");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0x7B, color->red());
+  ASSERT_EQ(0xCF, color->green());
+  ASSERT_EQ(0x39, color->blue());
+  ASSERT_EQ(0xEA, color->alpha());
+}
+
+TEST(Color, FromARGB)
+{
+  ASSERT_FALSE(cen::color::from_argb("11223344"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_argb("#112233444"));
+  ASSERT_FALSE(cen::color::from_argb("#112233"));
+
+  const auto color = cen::color::from_argb("#B281CDA7");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0xB2, color->alpha());
+  ASSERT_EQ(0x81, color->red());
+  ASSERT_EQ(0xCD, color->green());
+  ASSERT_EQ(0xA7, color->blue());
+}
+
 TEST(Color, EqualityOperatorReflexivity)
 {
   const cen::color color{10, 20, 30, 40};

@@ -3,12 +3,16 @@
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, fabs, fmod
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../detail/from_string.hpp"
 #include "../detail/to_string.hpp"
 
 namespace cen {
@@ -245,6 +249,136 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
   }
 
   /// \} End of construction

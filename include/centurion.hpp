@@ -6845,12 +6845,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -6859,6 +6853,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -11741,12 +11741,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -11755,6 +11749,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -20180,11 +20180,14 @@ namespace cen {
  *
  * \note This is a flag enum, and provides overloads for the common bitwise operators.
  *
- * \see `keymod`
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
- * \see `operator~(key_modifier)`
- * \see `operator|(key_modifier, key_modifier)`
- * \see `operator&(key_modifier, key_modifier)`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -20210,24 +20213,26 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
-using keymod = key_modifier;
+using key_mod = key_modifier;
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
 {
-  return static_cast<keymod>(~to_underlying(mod));
+  return static_cast<key_mod>(~to_underlying(mod));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
 
 /// \} End of group input
@@ -21204,22 +21209,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifier the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -21282,45 +21287,46 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
-   * \see `is_only_active(key_modifier)`
+   * \see `is_only_active(key_mod)`
+   * \see `is_only_any_of_active(key_mod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return m_event.keysym.mod & to_underlying(modifiers);
   }
 
   /**
    * \brief Indicates whether or not the specified modifiers are solely active.
    *
-   * \details This function differs from `is_active(key_modifier)` in that this function
+   * \details This function differs from `is_active(key_mod)` in that this function
    * will return `false` if modifiers other than those specified are active. For example,
    * if the `shift` and `alt` modifiers are being pressed, then
-   * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
    *
-   * \param modifier the modifiers to check for.
+   * \param modifiers the modifiers to check for.
    *
    * \return `true` if *only* the specified modifiers are active; false otherwise.
    *
-   * \see `is_active(key_modifier)`
+   * \see `is_active(key_mod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    const auto modifierMask = to_underlying(modifier);
-    const auto hits = m_event.keysym.mod & modifierMask;
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
 
-    if (hits != modifierMask)
+    if (hits != mask)
     {
       return false;  // The specified modifiers were a combo that wasn't fully active
     }
@@ -21332,20 +21338,49 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  {
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifier are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifier the key modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0. Use `is_active(key_modifier)` instead.
+   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
    *
    * \since 4.0.0
    */
-  [[deprecated, nodiscard]] auto modifier_active(
-      const key_modifier modifier) const noexcept -> bool
+  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
+      -> bool
   {
     return is_active(modifier);
   }
@@ -21361,7 +21396,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_shift) || is_active(key_modifier::right_shift);
+    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
   }
 
   /**
@@ -21375,7 +21410,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_ctrl) || is_active(key_modifier::right_ctrl);
+    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
   }
 
   /**
@@ -21389,7 +21424,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_alt) || is_active(key_modifier::right_alt);
+    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
   }
 
   /**
@@ -21403,7 +21438,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_gui) || is_active(key_modifier::right_gui);
+    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
   }
 
   /**
@@ -21417,7 +21452,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
-    return is_active(key_modifier::caps);
+    return is_active(key_mod::caps);
   }
 
   /**
@@ -21431,7 +21466,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
-    return is_active(key_modifier::num);
+    return is_active(key_mod::num);
   }
 
   /**
@@ -26208,22 +26243,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifier the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -26286,45 +26321,46 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
-   * \see `is_only_active(key_modifier)`
+   * \see `is_only_active(key_mod)`
+   * \see `is_only_any_of_active(key_mod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return m_event.keysym.mod & to_underlying(modifiers);
   }
 
   /**
    * \brief Indicates whether or not the specified modifiers are solely active.
    *
-   * \details This function differs from `is_active(key_modifier)` in that this function
+   * \details This function differs from `is_active(key_mod)` in that this function
    * will return `false` if modifiers other than those specified are active. For example,
    * if the `shift` and `alt` modifiers are being pressed, then
-   * `is_only_active(cen::key_modifier::shift)` would evaluate to `false`.
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
    *
-   * \param modifier the modifiers to check for.
+   * \param modifiers the modifiers to check for.
    *
    * \return `true` if *only* the specified modifiers are active; false otherwise.
    *
-   * \see `is_active(key_modifier)`
+   * \see `is_active(key_mod)`
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto is_only_active(const key_modifier modifier) const noexcept -> bool
+  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    const auto modifierMask = to_underlying(modifier);
-    const auto hits = m_event.keysym.mod & modifierMask;
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
 
-    if (hits != modifierMask)
+    if (hits != mask)
     {
       return false;  // The specified modifiers were a combo that wasn't fully active
     }
@@ -26336,20 +26372,49 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  {
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifier are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifier the key modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0. Use `is_active(key_modifier)` instead.
+   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
    *
    * \since 4.0.0
    */
-  [[deprecated, nodiscard]] auto modifier_active(
-      const key_modifier modifier) const noexcept -> bool
+  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
+      -> bool
   {
     return is_active(modifier);
   }
@@ -26365,7 +26430,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_shift) || is_active(key_modifier::right_shift);
+    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
   }
 
   /**
@@ -26379,7 +26444,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_ctrl) || is_active(key_modifier::right_ctrl);
+    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
   }
 
   /**
@@ -26393,7 +26458,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_alt) || is_active(key_modifier::right_alt);
+    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
   }
 
   /**
@@ -26407,7 +26472,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
-    return is_active(key_modifier::left_gui) || is_active(key_modifier::right_gui);
+    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
   }
 
   /**
@@ -26421,7 +26486,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
-    return is_active(key_modifier::caps);
+    return is_active(key_mod::caps);
   }
 
   /**
@@ -26435,7 +26500,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
-    return is_active(key_modifier::num);
+    return is_active(key_mod::num);
   }
 
   /**
@@ -36921,12 +36986,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -36935,6 +36994,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -46832,11 +46897,14 @@ namespace cen {
  *
  * \note This is a flag enum, and provides overloads for the common bitwise operators.
  *
- * \see `keymod`
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
- * \see `operator~(key_modifier)`
- * \see `operator|(key_modifier, key_modifier)`
- * \see `operator&(key_modifier, key_modifier)`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -46862,24 +46930,26 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
-using keymod = key_modifier;
+using key_mod = key_modifier;
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
 {
-  return static_cast<keymod>(~to_underlying(mod));
+  return static_cast<key_mod>(~to_underlying(mod));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
 
 /// \} End of group input
@@ -47954,11 +48024,14 @@ namespace cen {
  *
  * \note This is a flag enum, and provides overloads for the common bitwise operators.
  *
- * \see `keymod`
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
- * \see `operator~(key_modifier)`
- * \see `operator|(key_modifier, key_modifier)`
- * \see `operator&(key_modifier, key_modifier)`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -47984,24 +48057,26 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
-using keymod = key_modifier;
+using key_mod = key_modifier;
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator~(const keymod mod) noexcept -> keymod
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
 {
-  return static_cast<keymod>(~to_underlying(mod));
+  return static_cast<key_mod>(~to_underlying(mod));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator|(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) | to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
 
 /// \since 6.1.0
-[[nodiscard]] constexpr auto operator&(const keymod a, const keymod b) noexcept -> keymod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
 {
-  return static_cast<keymod>(to_underlying(a) & to_underlying(b));
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
 
 /// \} End of group input
@@ -49102,15 +49177,15 @@ class keyboard final
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param mod the modifiers that will be checked.
+   * \param modifiers the modifiers that will be checked.
    *
    * \return `true` if any of the modifiers are active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const keymod mod) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(mod) & SDL_GetModState();
+    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
   }
 
   /**
@@ -58325,12 +58400,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -58339,6 +58408,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -63442,12 +63517,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -63456,6 +63525,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -83529,12 +83604,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -83543,6 +83612,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else
@@ -103093,12 +103168,6 @@ template <typename T>
   {
     if constexpr (on_gcc() || on_clang())
     {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-    else
-    {
       try
       {
         value = std::stof(std::string{str});
@@ -103107,6 +103176,12 @@ template <typename T>
       {
         return std::nullopt;
       }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
   }
   else

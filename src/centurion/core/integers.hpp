@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -10,6 +12,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;

@@ -8,12 +8,12 @@
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
+#include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
@@ -226,8 +226,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();

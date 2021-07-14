@@ -2,13 +2,13 @@
 #define CENTURION_EVENT_DISPATCHER_HEADER
 
 #include <array>        // array
-#include <cstddef>      // size_t
 #include <functional>   // function, bind
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
+#include "../core/integers.hpp"
 #include "../detail/tuple_type_index.hpp"
 #include "event.hpp"
 
@@ -239,7 +239,7 @@ class event_dispatcher final
   }
 
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   /**
    * \brief Polls all events, checking for subscribed events.

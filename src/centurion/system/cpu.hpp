@@ -3,8 +3,9 @@
 
 #include <SDL.h>
 
-#include <cstddef>  // size_t
-#include <memory>   // unique_ptr
+#include <memory>  // unique_ptr
+
+#include "../core/integers.hpp"
 
 /// \addtogroup system
 /// \{
@@ -30,7 +31,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit simd_block(const std::size_t size) noexcept : m_data{SDL_SIMDAlloc(size)}
+  explicit simd_block(const usize size) noexcept : m_data{SDL_SIMDAlloc(size)}
   {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -42,7 +43,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  void reallocate(const std::size_t size) noexcept
+  void reallocate(const usize size) noexcept
   {
     /* We temporarily release the ownership of the pointer in order to avoid a double
        delete, since the reallocation will free the previously allocated memory. */
@@ -334,7 +335,7 @@ namespace cen::cpu {
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline auto simd_alignment() noexcept -> std::size_t
+[[nodiscard]] inline auto simd_alignment() noexcept -> usize
 {
   return SDL_SIMDGetAlignment();
 }

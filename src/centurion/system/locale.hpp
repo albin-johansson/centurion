@@ -4,10 +4,10 @@
 #include <SDL.h>
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
 #include "../core/czstring.hpp"
+#include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
@@ -94,9 +94,9 @@ class locale final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto count() const noexcept -> std::size_t
+  [[nodiscard]] auto count() const noexcept -> usize
   {
-    std::size_t result{0};
+    usize result{0};
 
     if (const auto* array = m_locales.get())
     {

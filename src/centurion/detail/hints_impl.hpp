@@ -1,7 +1,6 @@
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
@@ -14,8 +13,8 @@
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+template <typename Key, usize Size>
+using string_map = static_bimap<Key, czstring, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint

@@ -23,10 +23,15 @@ static_assert(std::is_nothrow_move_assignable_v<cen::color>);
 TEST(Color, DefaultConstruction)
 {
   const cen::color color;
-  ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.green(), 0);
-  ASSERT_EQ(color.blue(), 0);
-  ASSERT_EQ(color.alpha(), cen::color::max());
+  ASSERT_EQ(0, color.red());
+  ASSERT_EQ(0, color.green());
+  ASSERT_EQ(0, color.blue());
+  ASSERT_EQ(cen::color::max(), color.alpha());
+
+  ASSERT_EQ(0, color.red_norm());
+  ASSERT_EQ(0, color.green_norm());
+  ASSERT_EQ(0, color.blue_norm());
+  ASSERT_EQ(1, color.alpha_norm());
 }
 
 TEST(Color, ValueConstruction)
@@ -255,6 +260,21 @@ TEST(Color, SetAlpha)
   color.set_alpha(alpha);
 
   ASSERT_EQ(color.alpha(), alpha);
+}
+
+TEST(Color, NormalizedColorGetters)
+{
+  const auto red = 154;
+  const auto green = 82;
+  const auto blue = 232;
+  const auto alpha = 34;
+
+  const cen::color color{red, green, blue, alpha};
+
+  ASSERT_EQ(red / 255.0, color.red_norm());
+  ASSERT_EQ(green / 255.0, color.green_norm());
+  ASSERT_EQ(blue / 255.0, color.blue_norm());
+  ASSERT_EQ(alpha / 255.0, color.alpha_norm());
 }
 
 TEST(Color, WithAlpha)

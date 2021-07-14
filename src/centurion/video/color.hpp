@@ -491,6 +491,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> double
+  {
+    return static_cast<double>(m_color.r) / 255.0;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> double
+  {
+    return static_cast<double>(m_color.g) / 255.0;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> double
+  {
+    return static_cast<double>(m_color.b) / 255.0;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> double
+  {
+    return static_cast<double>(m_color.a) / 255.0;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!

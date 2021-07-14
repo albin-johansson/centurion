@@ -291,7 +291,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -335,7 +335,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *

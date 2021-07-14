@@ -840,6 +840,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
+ * \todo Centurion 7: Make the bias parameter a `float`.
+ *
  * \since 6.0.0
  */
 [[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)

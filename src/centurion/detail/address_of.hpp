@@ -1,8 +1,6 @@
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <iomanip>  // setfill
-#include <ios>      // uppercase, hex
 #include <sstream>  // stringstream
 #include <string>   // string
 
@@ -23,20 +21,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
     std::stringstream stream;
-    stream << std::setfill('0') << std::hex << std::uppercase;
 
     if constexpr (on_msvc())
     {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
-    stream << static_cast<const void*>(ptr);
+    stream << ptr;
     return stream.str();
   }
   else

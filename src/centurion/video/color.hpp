@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -103,21 +103,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(double hue, double saturation, double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    hue = detail::clamp(hue, 0.0, 360.0);
-    saturation = detail::clamp(saturation, 0.0, 100.0);
-    value = detail::clamp(value, 0.0, 100.0);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -129,7 +129,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -158,11 +158,24 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
   }
 
   /**
@@ -178,24 +191,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(double hue, double saturation, double lightness)
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
       -> color
   {
-    hue = detail::clamp(hue, 0.0, 360.0);
-    saturation = detail::clamp(saturation, 0.0, 100.0);
-    lightness = detail::clamp(lightness, 0.0, 100.0);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -234,13 +247,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**

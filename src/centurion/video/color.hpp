@@ -93,9 +93,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -105,16 +103,11 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(double hue, double saturation, double value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0, 360.0);
+    saturation = detail::clamp(saturation, 0.0, 100.0);
+    value = detail::clamp(value, 0.0, 100.0);
 
     const auto v = (value / 100.0);
     const auto chroma = v * (saturation / 100.0);
@@ -175,9 +168,7 @@ class color final
   /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -187,16 +178,12 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(double hue, double saturation, double lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0, 360.0);
+    saturation = detail::clamp(saturation, 0.0, 100.0);
+    lightness = detail::clamp(lightness, 0.0, 100.0);
 
     const auto s = saturation / 100.0;
     const auto l = lightness / 100.0;

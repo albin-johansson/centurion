@@ -22,10 +22,10 @@ static_assert(std::is_nothrow_move_assignable_v<cen::color>);
 
 TEST(Color, DefaultConstruction)
 {
-  constexpr cen::color color;
+  const cen::color color;
   ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.red(), 0);
+  ASSERT_EQ(color.green(), 0);
+  ASSERT_EQ(color.blue(), 0);
   ASSERT_EQ(color.alpha(), cen::color::max());
 }
 

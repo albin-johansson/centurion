@@ -9,7 +9,7 @@
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -20,7 +20,6 @@
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -604,7 +603,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
   return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "}";
+         ", volume: " + std::to_string(music::volume()) + "}";
 }
 
 /**

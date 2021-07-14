@@ -5,11 +5,10 @@
 #include <cstddef>      // size_t
 #include <functional>   // function, bind
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-#include "../detail/to_string.hpp"
 #include "../detail/tuple_type_index.hpp"
 #include "event.hpp"
 
@@ -327,8 +326,8 @@ template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
 {
-  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value() +
-         ", #active: " + detail::to_string(dispatcher.active_count()).value() + "}";
+  return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
+         ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
 template <typename... E>

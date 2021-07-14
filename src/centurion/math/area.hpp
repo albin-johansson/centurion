@@ -2,11 +2,10 @@
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 #include "../core/cast.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -223,8 +222,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**

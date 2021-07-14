@@ -6,7 +6,7 @@
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -19,7 +19,6 @@
 #include "../detail/convert_bool.hpp"
 #include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
 #include "pixel_format.hpp"
@@ -1307,8 +1306,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**

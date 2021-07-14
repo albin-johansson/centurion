@@ -10,7 +10,7 @@
 #include <cassert>  // assert
 #include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -19,7 +19,6 @@
 #include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"
 #include "blend_mode.hpp"
@@ -657,8 +656,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**

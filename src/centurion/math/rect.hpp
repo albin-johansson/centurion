@@ -4,14 +4,13 @@
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "../core/cast.hpp"
 #include "../core/sfinae.hpp"
 #include "../detail/max.hpp"
 #include "../detail/min.hpp"
-#include "../detail/to_string.hpp"
 #include "area.hpp"
 #include "point.hpp"
 
@@ -848,10 +847,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**

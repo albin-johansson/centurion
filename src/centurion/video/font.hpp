@@ -9,14 +9,13 @@
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "unicode_string.hpp"
 
@@ -765,7 +764,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**

@@ -9,7 +9,7 @@
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -21,7 +21,6 @@
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -505,7 +504,7 @@ class basic_sound_effect final
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
   return "sound_effect{data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "}";
+         ", volume: " + std::to_string(sound.volume()) + "}";
 }
 
 /**

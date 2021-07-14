@@ -9,7 +9,7 @@
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -20,7 +20,6 @@
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
 #include "blend_mode.hpp"
@@ -893,8 +892,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**

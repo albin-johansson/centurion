@@ -10,7 +10,7 @@
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 #include "../compiler/compiler.hpp"
@@ -18,7 +18,6 @@
 #include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/from_string.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -802,10 +801,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**

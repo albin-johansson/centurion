@@ -7,7 +7,7 @@
 #include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -15,7 +15,6 @@
 #include "../core/owner.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -410,8 +409,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**

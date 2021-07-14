@@ -6,7 +6,7 @@
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -19,7 +19,6 @@
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
-#include "../detail/to_string.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
 
@@ -1154,7 +1153,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 

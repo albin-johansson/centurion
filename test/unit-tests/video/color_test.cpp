@@ -271,10 +271,10 @@ TEST(Color, NormalizedColorGetters)
 
   const cen::color color{red, green, blue, alpha};
 
-  ASSERT_EQ(red / 255.0, color.red_norm());
-  ASSERT_EQ(green / 255.0, color.green_norm());
-  ASSERT_EQ(blue / 255.0, color.blue_norm());
-  ASSERT_EQ(alpha / 255.0, color.alpha_norm());
+  ASSERT_EQ(red / 255.0f, color.red_norm());
+  ASSERT_EQ(green / 255.0f, color.green_norm());
+  ASSERT_EQ(blue / 255.0f, color.blue_norm());
+  ASSERT_EQ(alpha / 255.0f, color.alpha_norm());
 }
 
 TEST(Color, WithAlpha)

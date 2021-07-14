@@ -497,9 +497,9 @@ class color final
    *
    * \since 6.1.0
    */
-  [[nodiscard]] constexpr auto red_norm() const noexcept -> double
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
   {
-    return static_cast<double>(m_color.r) / 255.0;
+    return static_cast<float>(m_color.r) / 255.0f;
   }
 
   /**
@@ -509,9 +509,9 @@ class color final
    *
    * \since 6.1.0
    */
-  [[nodiscard]] constexpr auto green_norm() const noexcept -> double
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
   {
-    return static_cast<double>(m_color.g) / 255.0;
+    return static_cast<float>(m_color.g) / 255.0f;
   }
 
   /**
@@ -521,9 +521,9 @@ class color final
    *
    * \since 6.1.0
    */
-  [[nodiscard]] constexpr auto blue_norm() const noexcept -> double
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
   {
-    return static_cast<double>(m_color.b) / 255.0;
+    return static_cast<float>(m_color.b) / 255.0f;
   }
 
   /**
@@ -533,9 +533,9 @@ class color final
    *
    * \since 6.1.0
    */
-  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> double
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
   {
-    return static_cast<double>(m_color.a) / 255.0;
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**

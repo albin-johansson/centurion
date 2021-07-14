@@ -11084,7 +11084,7 @@ namespace cen::detail {
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -11092,6 +11092,139 @@ namespace cen::detail {
 #include <sstream>      // stringstream
 #include <string>       // string
 #include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -11579,6 +11712,64 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
 #define CENTURION_DETAIL_FROM_STRING_HEADER
@@ -11922,9 +12113,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -11934,26 +12123,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -11965,7 +12149,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -11994,19 +12178,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -12016,28 +12211,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -12076,13 +12267,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -12133,7 +12337,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -12177,7 +12381,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -12213,6 +12417,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -12319,6 +12555,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -12575,6 +12859,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -21279,7 +21565,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   /**
    * \brief Sets the status of key modifiers.
    *
-   * \param modifier the modifiers that will be affected.
+   * \param modifiers the modifiers that will be affected.
    * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
@@ -21370,7 +21656,14 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifiers);
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
   }
 
   /**
@@ -21391,6 +21684,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
     const auto hits = m_event.keysym.mod & mask;
 
@@ -21426,6 +21724,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
 
     const auto hits = m_event.keysym.mod & mask;
@@ -26313,7 +26616,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   /**
    * \brief Sets the status of key modifiers.
    *
-   * \param modifier the modifiers that will be affected.
+   * \param modifiers the modifiers that will be affected.
    * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
@@ -26404,7 +26707,14 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifiers);
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
   }
 
   /**
@@ -26425,6 +26735,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
     const auto hits = m_event.keysym.mod & mask;
 
@@ -26460,6 +26775,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
 
     const auto hits = m_event.keysym.mod & mask;
@@ -36397,7 +36717,7 @@ namespace cen::detail {
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -36405,6 +36725,139 @@ namespace cen::detail {
 #include <sstream>      // stringstream
 #include <string>       // string
 #include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -36892,6 +37345,64 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
 #define CENTURION_DETAIL_FROM_STRING_HEADER
@@ -37235,9 +37746,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -37247,26 +37756,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -37278,7 +37782,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -37307,19 +37811,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -37329,28 +37844,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -37389,13 +37900,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -37446,7 +37970,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -37490,7 +38014,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -37526,6 +38050,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -37632,6 +38188,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -37888,6 +38492,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -58361,7 +58967,7 @@ class pointer_manager final
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -58370,9 +58976,200 @@ class pointer_manager final
 #include <string>       // string
 #include <string_view>  // string_view
 
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
 
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
@@ -58717,9 +59514,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -58729,26 +59524,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -58760,7 +59550,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -58789,19 +59579,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -58811,28 +59612,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -58871,13 +59668,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -58928,7 +59738,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -58972,7 +59782,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -59008,6 +59818,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -59114,6 +59956,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -59370,6 +60260,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -63064,7 +63956,7 @@ enum class blend_mode
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -63072,6 +63964,139 @@ enum class blend_mode
 #include <sstream>      // stringstream
 #include <string>       // string
 #include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -63559,6 +64584,64 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
 #define CENTURION_DETAIL_FROM_STRING_HEADER
@@ -63902,9 +64985,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -63914,26 +64995,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -63945,7 +65021,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -63974,19 +65050,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -63996,28 +65083,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -64056,13 +65139,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -64113,7 +65209,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -64157,7 +65253,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -64193,6 +65289,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -64299,6 +65427,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -64555,6 +65731,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -64711,7 +65889,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -64720,9 +65898,13 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <string>       // string
 #include <string_view>  // string_view
 
+// #include "../compiler/compiler.hpp"
+
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
 
 // #include "../detail/from_string.hpp"
 
@@ -64802,9 +65984,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -64814,26 +65994,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -64845,7 +66020,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -64874,19 +66049,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -64896,28 +66082,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -64956,13 +66138,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -65013,7 +66208,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -65057,7 +66252,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -65093,6 +66288,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -65199,6 +66426,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -65455,6 +66730,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -72002,137 +73279,6 @@ class basic_cursor final
 #include <vector>            // vector
 
 // #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
 
 // #include "../core/integers.hpp"
 
@@ -77054,62 +78200,6 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
 
 // #include "../detail/convert_bool.hpp"
 #ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
@@ -83900,7 +84990,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -83909,9 +84999,144 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <string>       // string
 #include <string_view>  // string_view
 
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
 
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
@@ -84061,9 +85286,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -84073,26 +85296,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -84104,7 +85322,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -84133,19 +85351,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -84155,28 +85384,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -84215,13 +85440,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -84272,7 +85510,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -84316,7 +85554,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -84352,6 +85590,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -84458,6 +85728,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -84714,6 +86032,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -103532,7 +104852,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, fabs, fmod
+#include <cmath>        // round, abs, fmod
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -103541,9 +104861,144 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <string>       // string
 #include <string_view>  // string_view
 
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
 
 // #include "../detail/from_string.hpp"
 #ifndef CENTURION_DETAIL_FROM_STRING_HEADER
@@ -103693,9 +105148,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -103705,26 +105158,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -103736,7 +105184,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -103765,19 +105213,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -103787,28 +105246,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -103847,13 +105302,26 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**
@@ -103904,7 +105372,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -103948,7 +105416,7 @@ class color final
    * \details The supplied string must feature a leading '#' character, and be 9
    * characters long.
    *
-   * \param rgb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
    *
    * \return a corresponding color; `std::nullopt` if something goes wrong.
    *
@@ -103984,6 +105452,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -104090,6 +105590,54 @@ class color final
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
     return m_color.a;
+  }
+
+  /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
   }
 
   /**
@@ -104346,6 +105894,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */

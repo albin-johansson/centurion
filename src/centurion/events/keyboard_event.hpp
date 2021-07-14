@@ -177,7 +177,14 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifiers);
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
   }
 
   /**
@@ -198,6 +205,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
     const auto hits = m_event.keysym.mod & mask;
 
@@ -233,6 +245,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
     const auto mask = to_underlying(modifiers);
 
     const auto hits = m_event.keysym.mod & mask;

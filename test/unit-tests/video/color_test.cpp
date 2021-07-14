@@ -184,6 +184,38 @@ TEST(Color, FromARGB)
   ASSERT_EQ(0xA7, color->blue());
 }
 
+TEST(Color, FromNorm)
+{
+  {
+    const auto negative = cen::color::from_norm(-0.3f, -5, -0.4f, -234);
+    ASSERT_EQ(0, negative.red_norm());
+    ASSERT_EQ(0, negative.green_norm());
+    ASSERT_EQ(0, negative.blue_norm());
+    ASSERT_EQ(0, negative.alpha_norm());
+  }
+
+  {
+    const auto overflow = cen::color::from_norm(1.1f, 6.5, 53, 394);
+    ASSERT_EQ(1, overflow.red_norm());
+    ASSERT_EQ(1, overflow.green_norm());
+    ASSERT_EQ(1, overflow.blue_norm());
+    ASSERT_EQ(1, overflow.alpha_norm());
+  }
+
+  {
+    const auto red = 0.2f;
+    const auto green = 0.6f;
+    const auto blue = 1.0f;
+    const auto alpha = 0.8f;
+
+    const auto color = cen::color::from_norm(red, green, blue, alpha);
+    ASSERT_FLOAT_EQ(red, color.red_norm());
+    ASSERT_FLOAT_EQ(green, color.green_norm());
+    ASSERT_FLOAT_EQ(blue, color.blue_norm());
+    ASSERT_FLOAT_EQ(alpha, color.alpha_norm());
+  }
+}
+
 TEST(Color, EqualityOperatorReflexivity)
 {
   const cen::color color{10, 20, 30, 40};

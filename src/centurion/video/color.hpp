@@ -13,8 +13,10 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
+#include "../compiler/compiler.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../detail/clamp.hpp"
 #include "../detail/from_string.hpp"
 #include "../detail/to_string.hpp"
 
@@ -382,6 +384,38 @@ class color final
     {
       return std::nullopt;
     }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction

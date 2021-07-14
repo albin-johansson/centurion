@@ -86,7 +86,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   /**
    * \brief Sets the status of key modifiers.
    *
-   * \param modifier the modifiers that will be affected.
+   * \param modifiers the modifiers that will be affected.
    * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0

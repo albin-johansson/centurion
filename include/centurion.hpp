@@ -267,6 +267,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -274,6 +276,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -783,7 +787,7 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -1164,168 +1168,8 @@ using not_null = T;
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string that represents the memory address of the supplied pointer.
- *
- * \details The empty string is returned if the supplied pointer is null.
- *
- * \tparam T the type of the pointer.
- * \param ptr the pointer that will be converted.
- *
- * \return a string that represents the memory address of the supplied pointer.
- *
- * \since 3.0.0
- */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
-{
-  if (ptr)
-  {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
-    return stream.str();
-  }
-  else
-  {
-    return std::string{};
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
-
-// #include "../detail/any_eq.hpp"
-#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
-#define CENTURION_DETAIL_ANY_EQ_HEADER
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Indicates whether or not any of the supplied values are equal to a specific value.
- *
- * \tparam T the type of the value to look for.
- *
- * \tparam Args the type of the arguments that will be checked.
- *
- * \param value the value to look for.
- * \param args the arguments that will be compared with the value.
- *
- * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
- *
- * \since 5.1.0
- */
-template <typename T, typename... Args>
-[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
-    noexcept(noexcept( ((value == args) || ...) )) -> bool
-{
-  return ((value == args) || ...);
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ANY_EQ_HEADER
-
-// #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
-
-// #include "../detail/max.hpp"
-#ifndef CENTURION_DETAIL_MAX_HEADER
-#define CENTURION_DETAIL_MAX_HEADER
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename T>
-[[nodiscard]] constexpr auto max(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
-{
-  return (a < b) ? b : a;
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_MAX_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -1465,52 +1309,154 @@ namespace cen {
 namespace cen::detail {
 
 /**
- * \brief Returns a string representation of an arithmetic value.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
+ * \return a string that represents the memory address of the supplied pointer.
  *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
+ * \since 3.0.0
  */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  if (ptr)
   {
-    return std::to_string(value);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
+    return stream.str();
   }
   else
   {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
+    return std::string{};
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
+
+// #include "../detail/any_eq.hpp"
+#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
+#define CENTURION_DETAIL_ANY_EQ_HEADER
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
+ *
+ * \tparam T the type of the value to look for.
+ *
+ * \tparam Args the type of the arguments that will be checked.
+ *
+ * \param value the value to look for.
+ * \param args the arguments that will be compared with the value.
+ *
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
+ *
+ * \since 5.1.0
+ */
+template <typename T, typename... Args>
+[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
+    noexcept(noexcept( ((value == args) || ...) )) -> bool
+{
+  return ((value == args) || ...);
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_ANY_EQ_HEADER
+
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/max.hpp"
+#ifndef CENTURION_DETAIL_MAX_HEADER
+#define CENTURION_DETAIL_MAX_HEADER
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] constexpr auto max(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+{
+  return (a < b) ? b : a;
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_MAX_HEADER
 
 
 namespace cen {
@@ -2095,7 +2041,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
   return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "}";
+         ", volume: " + std::to_string(music::volume()) + "}";
 }
 
 /**
@@ -2227,7 +2173,7 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -2686,8 +2632,6 @@ class pointer_manager final
 /// \endcond
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -3172,7 +3116,7 @@ class basic_sound_effect final
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
   return "sound_effect{data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "}";
+         ", volume: " + std::to_string(sound.volume()) + "}";
 }
 
 /**
@@ -3794,6 +3738,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -3801,6 +3747,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -4229,6 +4177,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -4236,6 +4186,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -6311,8 +6263,142 @@ struct version final
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -6329,13 +6415,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -6692,137 +6783,6 @@ namespace cen::detail {
 #include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
 
 
 /// \cond FALSE
@@ -6887,7 +6847,6 @@ template <typename T>
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
@@ -6900,6 +6859,8 @@ template <typename T>
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -6907,6 +6868,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -7427,8 +7390,8 @@ class static_bimap final
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+template <typename Key, usize Size>
+using string_map = static_bimap<Key, czstring, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint
@@ -8062,6 +8025,8 @@ namespace cen::detail {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// #include "../core/integers.hpp"
+
 // #include "../core/macros.hpp"
 #ifndef CENTURION_MACROS_HEADER
 #define CENTURION_MACROS_HEADER
@@ -8117,13 +8082,13 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array
-#include <cstddef>          // byte, size_t
+#include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t BufferSize>
+template <usize BufferSize>
 class stack_resource final
 {
  public:
@@ -8222,80 +8187,16 @@ class static_bimap final
 
 #endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER
 
-// #include "centurion/detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "centurion/detail/tuple_type_index.hpp"
 #ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 #define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
-#include <cstddef>      // size_t
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
+
+// #include "../core/integers.hpp"
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -8306,7 +8207,7 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... Index>
+  template <usize... Index>
   constexpr static auto find(std::index_sequence<Index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
@@ -8336,6 +8237,8 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -8343,6 +8246,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -9116,7 +9021,6 @@ template <typename T>
 
 #include <array>     // array
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
@@ -9471,6 +9375,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -9478,6 +9384,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -10057,6 +9965,8 @@ class sdl_string final
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -10064,6 +9974,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -10334,8 +10246,142 @@ namespace literals {
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -10352,13 +10398,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -11090,7 +11141,7 @@ namespace cen::detail {
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -11528,6 +11579,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -11535,6 +11588,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -11972,72 +12027,6 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -12822,10 +12811,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -13046,7 +13035,7 @@ enum class button_state : u8
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -13101,203 +13090,6 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 // #include "../video/color.hpp"
 
@@ -14435,7 +14227,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -14607,10 +14399,9 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -14623,8 +14414,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -14868,7 +14657,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -15020,8 +14809,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -16393,7 +16182,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {
@@ -24586,218 +24375,216 @@ class event final
 #define CENTURION_EVENT_DISPATCHER_HEADER
 
 #include <array>        // array
-#include <cstddef>      // size_t
 #include <functional>   // function, bind
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../core/integers.hpp"
 
 // #include "../detail/tuple_type_index.hpp"
 #ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 #define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
-#include <cstddef>      // size_t
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
+
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -24808,7 +24595,7 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... Index>
+  template <usize... Index>
   constexpr static auto find(std::index_sequence<Index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
@@ -25589,7 +25376,7 @@ class event_dispatcher final
   }
 
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   /**
    * \brief Polls all events, checking for subscribed events.
@@ -25676,8 +25463,8 @@ template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
 {
-  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value() +
-         ", #active: " + detail::to_string(dispatcher.active_count()).value() + "}";
+  return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
+         ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
 template <typename... E>
@@ -29333,6 +29120,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -29340,6 +29129,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -30769,7 +30560,6 @@ using zstring = char*;
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
@@ -30887,6 +30677,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -30894,6 +30686,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -31452,8 +31246,8 @@ class static_bimap final
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+template <typename Key, usize Size>
+using string_map = static_bimap<Key, czstring, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint
@@ -34722,6 +34516,8 @@ struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mappi
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -34729,6 +34525,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -34937,7 +34735,6 @@ enum class button_state : u8
 
 #include <array>     // array
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
@@ -35690,6 +35487,8 @@ class sdl_string final
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -35697,6 +35496,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -35967,8 +35768,142 @@ namespace literals {
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -35985,13 +35920,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -36723,7 +36663,7 @@ namespace cen::detail {
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -37161,6 +37101,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -37168,6 +37110,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -37605,72 +37549,6 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -38455,10 +38333,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -38679,7 +38557,7 @@ enum class button_state : u8
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -38734,203 +38612,6 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 // #include "../video/color.hpp"
 
@@ -40068,7 +39749,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -40240,10 +39921,9 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -40256,8 +39936,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -40501,7 +40179,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -40653,8 +40331,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -42026,7 +41704,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {
@@ -42649,205 +42327,7 @@ template <typename T>
 #define CENTURION_VECTOR3_HEADER
 
 #include <ostream>  // ostream
-#include <string>   // string
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
+#include <string>   // string, to_string
 
 namespace cen {
 
@@ -42968,9 +42448,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 }
 
 /**
@@ -45340,7 +44819,7 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -45363,8 +44842,6 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../video/color.hpp"
 
@@ -46502,7 +45979,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -50004,7 +49481,7 @@ using key_state [[deprecated]] = keyboard;
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -50041,8 +49518,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -50260,8 +49735,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -50295,7 +49770,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -50335,8 +49810,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -50693,14 +50166,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -52036,10 +51509,9 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -52052,8 +51524,6 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -52297,7 +51767,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -52449,8 +51919,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -52771,7 +52241,7 @@ enum class device_type
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -52808,203 +52278,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -53222,8 +52495,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -53257,7 +52530,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -53297,8 +52570,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -53655,14 +52926,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -53818,7 +53089,7 @@ template <typename T>
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -53861,19 +53132,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -54091,8 +53358,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -54126,14 +53393,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -54490,14 +53755,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -55480,10 +54745,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -55515,10 +54779,7 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 #define CENTURION_VECTOR3_HEADER
 
 #include <ostream>  // ostream
-#include <string>   // string
-
-// #include "../detail/to_string.hpp"
-
+#include <string>   // string, to_string
 
 namespace cen {
 
@@ -55639,9 +54900,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 }
 
 /**
@@ -55690,6 +54950,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -55697,6 +54959,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -56242,6 +55506,8 @@ namespace battery {
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -56249,6 +55515,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -57223,8 +56491,10 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <cstddef>  // size_t
-#include <memory>   // unique_ptr
+#include <memory>  // unique_ptr
+
+// #include "../core/integers.hpp"
+
 
 /// \addtogroup system
 /// \{
@@ -57250,7 +56520,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit simd_block(const std::size_t size) noexcept : m_data{SDL_SIMDAlloc(size)}
+  explicit simd_block(const usize size) noexcept : m_data{SDL_SIMDAlloc(size)}
   {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -57262,7 +56532,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  void reallocate(const std::size_t size) noexcept
+  void reallocate(const usize size) noexcept
   {
     /* We temporarily release the ownership of the pointer in order to avoid a double
        delete, since the reallocation will free the previously allocated memory. */
@@ -57554,7 +56824,7 @@ namespace cen::cpu {
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline auto simd_alignment() noexcept -> std::size_t
+[[nodiscard]] inline auto simd_alignment() noexcept -> usize
 {
   return SDL_SIMDGetAlignment();
 }
@@ -57595,10 +56865,11 @@ namespace cen::cpu {
 #include <SDL.h>
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
 // #include "../core/czstring.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -57853,9 +57124,9 @@ class locale final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto count() const noexcept -> std::size_t
+  [[nodiscard]] auto count() const noexcept -> usize
   {
-    std::size_t result{0};
+    usize result{0};
 
     if (const auto* array = m_locales.get())
     {
@@ -58273,6 +57544,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -58280,6 +57553,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -58973,7 +58248,7 @@ class pointer_manager final
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -59373,72 +58648,6 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -60223,10 +59432,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -61758,6 +60967,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -61765,6 +60976,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -62118,6 +61331,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -62125,6 +61340,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -63030,7 +62247,7 @@ class semaphore final
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -63119,55 +62336,8 @@ using not_null = T;
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string that represents the memory address of the supplied pointer.
- *
- * \details The empty string is returned if the supplied pointer is null.
- *
- * \tparam T the type of the pointer.
- * \param ptr the pointer that will be converted.
- *
- * \return a string that represents the memory address of the supplied pointer.
- *
- * \since 3.0.0
- */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
-{
-  if (ptr)
-  {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
-    return stream.str();
-  }
-  else
-  {
-    return std::string{};
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -63307,52 +62477,41 @@ namespace cen {
 namespace cen::detail {
 
 /**
- * \brief Returns a string representation of an arithmetic value.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
+ * \return a string that represents the memory address of the supplied pointer.
  *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
+ * \since 3.0.0
  */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  if (ptr)
   {
-    return std::to_string(value);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
+    return stream.str();
   }
   else
   {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
+    return std::string{};
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
 
 
 namespace cen {
@@ -63663,7 +62822,7 @@ class thread final
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
-         ", id: " + detail::to_string(thread.get_id()).value() + "}";
+         ", id: " + std::to_string(thread.get_id()) + "}";
 }
 
 /**
@@ -63962,7 +63121,7 @@ enum class blend_mode
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -64400,6 +63559,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -64407,6 +63568,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -64845,72 +64008,6 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 
 namespace cen {
 
@@ -65694,10 +64791,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -65895,7 +64992,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -65907,8 +65004,6 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 // #include "../detail/clamp.hpp"
 
 // #include "../detail/from_string.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -66693,10 +65788,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -68354,7 +67449,7 @@ class pointer_manager final
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -68427,203 +67522,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -68980,14 +67878,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -69148,7 +68046,7 @@ template <typename T>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -69471,8 +68369,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -69489,13 +68390,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -69511,19 +68417,15 @@ template <typename T>
 
 // #include "../detail/owner_handle_api.hpp"
 
-// #include "../detail/to_string.hpp"
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -69741,8 +68643,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -69775,7 +68677,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -69818,19 +68720,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -70048,8 +68946,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -70083,14 +68981,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -70447,14 +69343,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -71437,10 +70333,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -72859,8 +71754,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -73253,7 +72148,7 @@ class basic_cursor final
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -73264,8 +72159,6 @@ class basic_cursor final
 // #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -74424,7 +73317,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**
@@ -74477,7 +73370,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -74488,8 +73381,6 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 // #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -75241,7 +74132,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**
@@ -75278,13 +74169,14 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -75295,8 +74187,6 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -75679,8 +74569,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -76109,8 +74999,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**
@@ -77023,6 +75913,200 @@ namespace cen {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 // #include "../core/macros.hpp"
 #ifndef CENTURION_MACROS_HEADER
 #define CENTURION_MACROS_HEADER
@@ -77078,13 +76162,13 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array
-#include <cstddef>          // byte, size_t
+#include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t BufferSize>
+template <usize BufferSize>
 class stack_resource final
 {
  public:
@@ -78183,7 +77267,7 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -78248,8 +77332,6 @@ template <typename T>
 #endif  // CENTURION_DETAIL_MAX_HEADER
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -79542,8 +78624,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -81204,7 +80286,7 @@ class pointer_manager final
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -81556,6 +80638,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -81563,6 +80647,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -81975,8 +81061,142 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -81993,13 +81213,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -82518,209 +81743,12 @@ class pointer_manager final
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -82757,203 +81785,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -83171,8 +82002,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -83205,7 +82036,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -83282,19 +82113,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -83512,8 +82339,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -83547,14 +82374,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -83911,14 +82736,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -84901,10 +83726,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -84996,7 +83820,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -85209,8 +84033,6 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -85995,10 +84817,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -86599,7 +85421,7 @@ class basic_pixel_format_info final
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -86618,8 +85440,6 @@ class basic_pixel_format_info final
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -87589,8 +86409,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -88899,8 +87719,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -89194,7 +88014,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -89231,203 +88051,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -89645,8 +88268,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -89683,13 +88306,14 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -89701,8 +88325,6 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 // #include "../detail/owner_handle_api.hpp"
 
-// #include "../detail/to_string.hpp"
-
 // #include "../math/area.hpp"
 
 // #include "../math/point.hpp"
@@ -89713,14 +88335,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -90077,14 +88697,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -90610,8 +89230,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -91040,8 +89660,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**
@@ -91653,7 +90273,7 @@ class gl_library final
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/exception.hpp"
 
@@ -91662,8 +90282,6 @@ class gl_library final
 // #include "../core/result.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "color.hpp"
 
@@ -91869,7 +90487,7 @@ class palette final
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
   return "palette{data: " + detail::address_of(palette.get()) +
-         ", size: " + detail::to_string(palette.size()).value() + "}";
+         ", size: " + std::to_string(palette.size()) + "}";
 }
 
 /**
@@ -92331,7 +90949,6 @@ class basic_pixel_format_info final
 
 #include <cassert>        // assert
 #include <cmath>          // floor, sqrt
-#include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -94768,7 +93385,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
+  void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -94792,7 +93409,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const std::size_t id, Args&&... args)
+  void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -94813,7 +93430,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const std::size_t id)
+  void remove_font(const usize id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -94830,14 +93447,14 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  [[nodiscard]] auto get_font(const usize id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  [[nodiscard]] auto get_font(const usize id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -94853,7 +93470,7 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
+  [[nodiscard]] auto has_font(const usize id) const -> bool
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
@@ -95348,7 +93965,7 @@ class basic_renderer final
     frect translation{};
 
 #ifndef CENTURION_NO_SDL_TTF
-    std::unordered_map<std::size_t, font> fonts{};
+    std::unordered_map<usize, font> fonts{};
 #endif  // CENTURION_NO_SDL_TTF
   };
 
@@ -95406,7 +94023,6 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #include <SDL.h>
 
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
@@ -95429,7 +94045,6 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 
 #include <cassert>        // assert
 #include <cmath>          // floor, sqrt
-#include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -97049,7 +95664,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
+  void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -97073,7 +95688,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const std::size_t id, Args&&... args)
+  void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -97094,7 +95709,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const std::size_t id)
+  void remove_font(const usize id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -97111,14 +95726,14 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  [[nodiscard]] auto get_font(const usize id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  [[nodiscard]] auto get_font(const usize id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -97134,7 +95749,7 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
+  [[nodiscard]] auto has_font(const usize id) const -> bool
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
@@ -97629,7 +96244,7 @@ class basic_renderer final
     frect translation{};
 
 #ifndef CENTURION_NO_SDL_TTF
-    std::unordered_map<std::size_t, font> fonts{};
+    std::unordered_map<usize, font> fonts{};
 #endif  // CENTURION_NO_SDL_TTF
   };
 
@@ -97799,7 +96414,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto format(const std::size_t index) const noexcept -> pixel_format
+  [[nodiscard]] auto format(const usize index) const noexcept -> pixel_format
   {
     assert(index < format_count());
     return static_cast<pixel_format>(m_info.texture_formats[index]);
@@ -98464,7 +97079,7 @@ namespace cen::screen {
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -98483,8 +97098,6 @@ namespace cen::screen {
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -99363,8 +97976,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -99401,13 +98014,14 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -99418,8 +98032,6 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -99636,8 +98248,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -100066,8 +98678,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**
@@ -100710,6 +99322,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -100717,6 +99331,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -101066,7 +99682,7 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -101418,6 +100034,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -101425,6 +100043,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -101837,8 +100457,142 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -101855,13 +100609,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -102380,209 +101139,12 @@ class pointer_manager final
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -102619,203 +101181,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -103033,8 +101398,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -103067,7 +101432,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -103144,19 +101509,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -103374,8 +101735,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -103409,14 +101770,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -103773,14 +102132,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -104763,10 +103122,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -104858,7 +103216,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <sstream>      // stringstream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <string_view>  // string_view
 
 // #include "../compiler/compiler.hpp"
@@ -105071,8 +103429,6 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -105857,10 +104213,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -106461,7 +104817,7 @@ class basic_pixel_format_info final
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -106480,8 +104836,6 @@ class basic_pixel_format_info final
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -107451,8 +105805,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -108761,8 +107115,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -109199,7 +107553,7 @@ class vk_library final
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -109222,8 +107576,6 @@ class vk_library final
 // #include "../detail/max.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -110516,8 +108868,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**

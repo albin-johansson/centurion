@@ -1,8 +1,12 @@
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <iomanip>  // setfill
+#include <ios>      // uppercase, hex
+#include <sstream>  // stringstream
 #include <string>   // string
+
+#include "../compiler/compiler.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -24,7 +28,14 @@ template <typename T>
 {
   if (ptr)
   {
-    std::ostringstream stream;
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
     stream << static_cast<const void*>(ptr);
     return stream.str();
   }

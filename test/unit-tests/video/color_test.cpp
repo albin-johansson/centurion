@@ -22,11 +22,16 @@ static_assert(std::is_nothrow_move_assignable_v<cen::color>);
 
 TEST(Color, DefaultConstruction)
 {
-  constexpr cen::color color;
-  ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.red(), 0);
-  ASSERT_EQ(color.alpha(), cen::color::max());
+  const cen::color color;
+  ASSERT_EQ(0, color.red());
+  ASSERT_EQ(0, color.green());
+  ASSERT_EQ(0, color.blue());
+  ASSERT_EQ(cen::color::max(), color.alpha());
+
+  ASSERT_EQ(0, color.red_norm());
+  ASSERT_EQ(0, color.green_norm());
+  ASSERT_EQ(0, color.blue_norm());
+  ASSERT_EQ(1, color.alpha_norm());
 }
 
 TEST(Color, ValueConstruction)
@@ -84,24 +89,24 @@ TEST(Color, FromSDLMessageBoxColor)
 
 TEST(Color, FromHSV)
 {
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 0, 0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(359, 0, 0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 100, 0));
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsv(0, 0, 100));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0.0, 0.0, 0.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(359.0, 0.0, 0.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0.0, 100.0, 0.0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsv(0.0, 0.0, 100.0));
 
-  ASSERT_EQ(cen::colors::red, cen::color::from_hsv(0, 100, 100));
-  ASSERT_EQ(cen::colors::lime, cen::color::from_hsv(120, 100, 100));
-  ASSERT_EQ(cen::colors::blue, cen::color::from_hsv(240, 100, 100));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsv(0.0, 100.0, 100.0));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsv(120.0, 100.0, 100.0));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsv(240.0, 100.0, 100.0));
 
   // Random colors
-  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280, 75.5, 80));
-  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsv(174, 71.4, 87.8));
-  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsv(348, 90.9, 86.3));
-  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsv(351, 28.6, 100));
-  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsv(300, 11.6, 84.7));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280.0, 75.5, 80));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsv(174.0, 71.4, 87.8));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsv(348.0, 90.9, 86.3));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsv(351.0, 28.6, 100.0));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsv(300.0, 11.6, 84.7));
 
   {  // Maxed out
-    const auto color = cen::color::from_hsv(359, 100, 100);
+    const auto color = cen::color::from_hsv(359.0, 100.0, 100.0);
     ASSERT_EQ(255, color.red());
     ASSERT_EQ(0, color.green());
     ASSERT_EQ(4, color.blue());
@@ -111,24 +116,104 @@ TEST(Color, FromHSV)
 
 TEST(Color, FromHSL)
 {
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0.0, 0.0, 0.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(359.0, 0.0, 0.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0.0, 100.0, 0.0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(0.0, 0.0, 100.0));
 
-  ASSERT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
-  ASSERT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
-  ASSERT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsl(0.0, 100.0, 50.0));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsl(120.0, 100.0, 50.0));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsl(240.0, 100.0, 50.0));
 
   // Random colors
-  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6, 49.8));
-  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1, 56.5));
-  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3, 47.1));
-  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7));
-  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3, 79.8));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280.0, 60.6, 49.8));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsl(174.0, 72.1, 56.5));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsl(348.0, 83.3, 47.1));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsl(351.0, 100.0, 85.7));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsl(300.0, 24.3, 79.8));
 
   // Maxed out
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359.0, 100.0, 100.0));
+}
+
+TEST(Color, FromRGB)
+{
+  ASSERT_FALSE(cen::color::from_rgb("112233"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_rgb("#1122333"));
+  ASSERT_FALSE(cen::color::from_rgb("#11223"));
+
+  const auto color = cen::color::from_rgb("#2AEB9C");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0x2A, color->red());
+  ASSERT_EQ(0xEB, color->green());
+  ASSERT_EQ(0x9C, color->blue());
+  ASSERT_EQ(0xFF, color->alpha());
+}
+
+TEST(Color, FromRGBA)
+{
+  ASSERT_FALSE(cen::color::from_rgba("11223344"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_rgba("#112233444"));
+  ASSERT_FALSE(cen::color::from_rgba("#112233"));
+
+  const auto color = cen::color::from_rgba("#7BCF39EA");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0x7B, color->red());
+  ASSERT_EQ(0xCF, color->green());
+  ASSERT_EQ(0x39, color->blue());
+  ASSERT_EQ(0xEA, color->alpha());
+}
+
+TEST(Color, FromARGB)
+{
+  ASSERT_FALSE(cen::color::from_argb("11223344"));  // Missing leading '#'
+
+  // Invalid length
+  ASSERT_FALSE(cen::color::from_argb("#112233444"));
+  ASSERT_FALSE(cen::color::from_argb("#112233"));
+
+  const auto color = cen::color::from_argb("#B281CDA7");
+  ASSERT_TRUE(color);
+  ASSERT_EQ(0xB2, color->alpha());
+  ASSERT_EQ(0x81, color->red());
+  ASSERT_EQ(0xCD, color->green());
+  ASSERT_EQ(0xA7, color->blue());
+}
+
+TEST(Color, FromNorm)
+{
+  {
+    const auto negative = cen::color::from_norm(-0.3f, -5, -0.4f, -234);
+    ASSERT_EQ(0, negative.red_norm());
+    ASSERT_EQ(0, negative.green_norm());
+    ASSERT_EQ(0, negative.blue_norm());
+    ASSERT_EQ(0, negative.alpha_norm());
+  }
+
+  {
+    const auto overflow = cen::color::from_norm(1.1f, 6.5, 53, 394);
+    ASSERT_EQ(1, overflow.red_norm());
+    ASSERT_EQ(1, overflow.green_norm());
+    ASSERT_EQ(1, overflow.blue_norm());
+    ASSERT_EQ(1, overflow.alpha_norm());
+  }
+
+  {
+    const auto red = 0.2f;
+    const auto green = 0.6f;
+    const auto blue = 1.0f;
+    const auto alpha = 0.8f;
+
+    const auto color = cen::color::from_norm(red, green, blue, alpha);
+    ASSERT_FLOAT_EQ(red, color.red_norm());
+    ASSERT_FLOAT_EQ(green, color.green_norm());
+    ASSERT_FLOAT_EQ(blue, color.blue_norm());
+    ASSERT_FLOAT_EQ(alpha, color.alpha_norm());
+  }
 }
 
 TEST(Color, EqualityOperatorReflexivity)
@@ -209,6 +294,21 @@ TEST(Color, SetAlpha)
   ASSERT_EQ(color.alpha(), alpha);
 }
 
+TEST(Color, NormalizedColorGetters)
+{
+  const auto red = 154;
+  const auto green = 82;
+  const auto blue = 232;
+  const auto alpha = 34;
+
+  const cen::color color{red, green, blue, alpha};
+
+  ASSERT_EQ(red / 255.0f, color.red_norm());
+  ASSERT_EQ(green / 255.0f, color.green_norm());
+  ASSERT_EQ(blue / 255.0f, color.blue_norm());
+  ASSERT_EQ(alpha / 255.0f, color.alpha_norm());
+}
+
 TEST(Color, WithAlpha)
 {
   constexpr auto other = cen::colors::maroon;
@@ -241,6 +341,24 @@ TEST(Color, Data)
 
   ASSERT_TRUE(white.data());
   ASSERT_TRUE(black.data());
+}
+
+TEST(Color, AsRGB)
+{
+  const cen::color color{0x5B, 0xE1, 0x84};
+  ASSERT_EQ("#5BE184", color.as_rgb());
+}
+
+TEST(Color, AsRGBA)
+{
+  const cen::color color{0x36, 0xCA, 0x9F, 0xDA};
+  ASSERT_EQ("#36CA9FDA", color.as_rgba());
+}
+
+TEST(Color, AsARGB)
+{
+  const cen::color color{0xF1, 0x85, 0xB3, 0xCE};
+  ASSERT_EQ("#CEF185B3", color.as_argb());
 }
 
 TEST(Color, ConversionToSDLColor)

@@ -24,10 +24,10 @@ set(SOURCE_FILES
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp
     detail/czstring_eq_test.cpp
+    detail/from_string_test.cpp
     detail/max_test.cpp
     detail/min_test.cpp
     detail/owner_handle_api_test.cpp
-    detail/to_string_test.cpp
 
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
@@ -64,6 +64,7 @@ set(SOURCE_FILES
     input/haptic_test.cpp
     input/joystick_test.cpp
     input/key_code_tests.cpp
+    input/key_modifier_test.cpp
     input/keyboard_test.cpp
     input/mouse_button_test.cpp
     input/mouse_test.cpp

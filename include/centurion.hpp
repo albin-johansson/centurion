@@ -84,6 +84,8 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifndef CENTURION_CHANNELS_HEADER
 #define CENTURION_CHANNELS_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -265,6 +267,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -272,6 +276,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -766,11 +772,14 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_CHANNELS_HEADER
 
 // #include "centurion/audio/music.hpp"
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL_mixer.h>
 
@@ -778,7 +787,7 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -892,9 +901,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -1010,6 +1028,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -1038,6 +1058,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -1068,6 +1092,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -1096,6 +1124,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -1138,168 +1168,8 @@ using not_null = T;
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string that represents the memory address of the supplied pointer.
- *
- * \details The empty string is returned if the supplied pointer is null.
- *
- * \tparam T the type of the pointer.
- * \param ptr the pointer that will be converted.
- *
- * \return a string that represents the memory address of the supplied pointer.
- *
- * \since 3.0.0
- */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
-{
-  if (ptr)
-  {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
-    return stream.str();
-  }
-  else
-  {
-    return std::string{};
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
-
-// #include "../detail/any_eq.hpp"
-#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
-#define CENTURION_DETAIL_ANY_EQ_HEADER
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Indicates whether or not any of the supplied values are equal to a specific value.
- *
- * \tparam T the type of the value to look for.
- *
- * \tparam Args the type of the arguments that will be checked.
- *
- * \param value the value to look for.
- * \param args the arguments that will be compared with the value.
- *
- * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
- *
- * \since 5.1.0
- */
-template <typename T, typename... Args>
-[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
-    noexcept(noexcept( ((value == args) || ...) )) -> bool
-{
-  return ((value == args) || ...);
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ANY_EQ_HEADER
-
-// #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
-
-// #include "../detail/max.hpp"
-#ifndef CENTURION_DETAIL_MAX_HEADER
-#define CENTURION_DETAIL_MAX_HEADER
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename T>
-[[nodiscard]] constexpr auto max(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
-{
-  return (a < b) ? b : a;
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_MAX_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -1439,52 +1309,154 @@ namespace cen {
 namespace cen::detail {
 
 /**
- * \brief Returns a string representation of an arithmetic value.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
+ * \return a string that represents the memory address of the supplied pointer.
  *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
+ * \since 3.0.0
  */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  if (ptr)
   {
-    return std::to_string(value);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
+    return stream.str();
   }
   else
   {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
+    return std::string{};
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
+
+// #include "../detail/any_eq.hpp"
+#ifndef CENTURION_DETAIL_ANY_EQ_HEADER
+#define CENTURION_DETAIL_ANY_EQ_HEADER
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Indicates whether or not any of the supplied values are equal to a specific value.
+ *
+ * \tparam T the type of the value to look for.
+ *
+ * \tparam Args the type of the arguments that will be checked.
+ *
+ * \param value the value to look for.
+ * \param args the arguments that will be compared with the value.
+ *
+ * \return `true` if any of the supplied values are equal to `value`; `false` otherwise.
+ *
+ * \since 5.1.0
+ */
+template <typename T, typename... Args>
+[[nodiscard]] constexpr auto any_eq(const T& value, Args&&... args)
+    noexcept(noexcept( ((value == args) || ...) )) -> bool
+{
+  return ((value == args) || ...);
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_ANY_EQ_HEADER
+
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/max.hpp"
+#ifndef CENTURION_DETAIL_MAX_HEADER
+#define CENTURION_DETAIL_MAX_HEADER
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] constexpr auto max(const T& a, const T& b) noexcept(noexcept(a < b)) -> T
+{
+  return (a < b) ? b : a;
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_MAX_HEADER
 
 
 namespace cen {
@@ -2069,7 +2041,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
   return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "}";
+         ", volume: " + std::to_string(music::volume()) + "}";
 }
 
 /**
@@ -2187,10 +2159,13 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_MUSIC_HEADER
 // #include "centurion/audio/sound_effect.hpp"
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL_mixer.h>
 
@@ -2198,7 +2173,7 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -2270,9 +2245,18 @@ using maybe_owner = T;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -2447,6 +2431,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -2475,6 +2461,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -2505,6 +2495,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -2533,6 +2527,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -2636,8 +2632,6 @@ class pointer_manager final
 /// \endcond
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -3122,7 +3116,7 @@ class basic_sound_effect final
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
   return "sound_effect{data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "}";
+         ", volume: " + std::to_string(sound.volume()) + "}";
 }
 
 /**
@@ -3144,11 +3138,14 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_EFFECT_HEADER
 
 // #include "centurion/audio/sound_fonts.hpp"
 #ifndef CENTURION_SOUND_FONTS_HEADER
 #define CENTURION_SOUND_FONTS_HEADER
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -3220,6 +3217,7 @@ auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noex
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_FONTS_HEADER
 
 // #include "centurion/compiler/compiler.hpp"
@@ -3502,9 +3500,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -3620,6 +3627,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -3648,6 +3657,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -3678,6 +3691,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -3707,6 +3724,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -3719,6 +3738,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -3726,6 +3747,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -3941,9 +3964,18 @@ namespace literals {
 #define CENTURION_LIBRARY_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>   // assert
 #include <optional>  // optional
@@ -3953,9 +3985,18 @@ namespace literals {
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -4025,6 +4066,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -4053,6 +4096,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -4083,6 +4130,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -4112,6 +4163,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -4124,6 +4177,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -4131,6 +4186,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -4370,15 +4427,18 @@ struct config final
 
   u32 coreFlags{SDL_INIT_EVERYTHING};
 
+#ifndef CENTURION_NO_SDL_IMAGE
   int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_MIXER
   int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
                  MIX_INIT_MOD | MIX_INIT_OPUS};
-
   int mixerFreq{MIX_DEFAULT_FREQUENCY};
   u16 mixerFormat{MIX_DEFAULT_FORMAT};
   int mixerChannels{MIX_DEFAULT_CHANNELS};
   int mixerChunkSize{4096};
+#endif  // CENTURION_NO_SDL_MIXER
 };
 
 /**
@@ -4475,6 +4535,8 @@ class library final
     }
   };
 
+#ifndef CENTURION_NO_SDL_TTF
+
   struct sdl_ttf final
   {
     explicit sdl_ttf()
@@ -4490,6 +4552,10 @@ class library final
       TTF_Quit();
     }
   };
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
 
   struct sdl_mixer final
   {
@@ -4517,6 +4583,10 @@ class library final
     }
   };
 
+#endif  // #ifndef CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
   struct sdl_image final
   {
     explicit sdl_image(const int flags)
@@ -4533,11 +4603,22 @@ class library final
     }
   };
 
+#endif  // CENTURION_NO_SDL_IMAGE
+
   config m_cfg;
   std::optional<sdl> m_sdl;
+
+#ifndef CENTURION_NO_SDL_IMAGE
   std::optional<sdl_image> m_img;
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
   std::optional<sdl_ttf> m_ttf;
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
   std::optional<sdl_mixer> m_mixer;
+#endif  // CENTURION_NO_SDL_MIXER
 
   void init()
   {
@@ -4546,16 +4627,21 @@ class library final
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
+#ifndef CENTURION_NO_SDL_IMAGE
     if (m_cfg.initImage)
     {
       m_img.emplace(m_cfg.imageFlags);
     }
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_TTF
     if (m_cfg.initTTF)
     {
       m_ttf.emplace();
     }
+#endif  // CENTURION_NO_SDL_TTF
 
+#ifndef CENTURION_NO_SDL_MIXER
     if (m_cfg.initMixer)
     {
       m_mixer.emplace(m_cfg.mixerFlags,
@@ -4564,6 +4650,7 @@ class library final
                       m_cfg.mixerChannels,
                       m_cfg.mixerChunkSize);
     }
+#endif  // CENTURION_NO_SDL_MIXER
   }
 };
 
@@ -5895,9 +5982,18 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -5920,7 +6016,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -5929,7 +6025,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -6056,6 +6152,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -6084,6 +6182,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -6114,6 +6216,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -6143,6 +6249,8 @@ struct version final
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_TTF
+
 /// \} End of SDL version queries
 
 }  // namespace cen
@@ -6155,8 +6263,142 @@ struct version final
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -6173,13 +6415,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -6524,11 +6771,82 @@ namespace cen::detail {
 
 #endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
 
+// #include "centurion/detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
 // #include "centurion/detail/hints_impl.hpp"
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
@@ -6541,6 +6859,8 @@ namespace cen::detail {
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -6548,6 +6868,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -6763,9 +7085,18 @@ struct czstring_compare final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -6881,6 +7212,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -6909,6 +7242,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -6939,6 +7276,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -6967,6 +7308,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -7047,8 +7390,8 @@ class static_bimap final
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+template <typename Key, usize Size>
+using string_map = static_bimap<Key, czstring, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint
@@ -7385,9 +7728,18 @@ struct sdl_deleter final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -7410,7 +7762,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -7419,7 +7771,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -7546,6 +7898,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -7574,6 +7928,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -7604,6 +7962,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -7633,6 +7995,8 @@ struct version final
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_TTF
+
 /// \} End of SDL version queries
 
 }  // namespace cen
@@ -7660,6 +8024,8 @@ namespace cen::detail {
 // #include "centurion/detail/stack_resource.hpp"
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
+
+// #include "../core/integers.hpp"
 
 // #include "../core/macros.hpp"
 #ifndef CENTURION_MACROS_HEADER
@@ -7716,13 +8082,13 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array
-#include <cstddef>          // byte, size_t
+#include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t BufferSize>
+template <usize BufferSize>
 class stack_resource final
 {
  public:
@@ -7821,211 +8187,16 @@ class static_bimap final
 
 #endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER
 
-// #include "centurion/detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "centurion/detail/tuple_type_index.hpp"
 #ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 #define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
-#include <cstddef>      // size_t
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
+
+// #include "../core/integers.hpp"
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -8036,7 +8207,7 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... Index>
+  template <usize... Index>
   constexpr static auto find(std::index_sequence<Index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
@@ -8066,6 +8237,8 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -8073,6 +8246,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -8846,7 +9021,6 @@ template <typename T>
 
 #include <array>     // array
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
@@ -8963,9 +9137,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -9081,6 +9264,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -9109,6 +9294,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -9139,6 +9328,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -9168,6 +9361,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -9180,6 +9375,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -9187,6 +9384,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -9766,6 +9965,8 @@ class sdl_string final
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -9773,6 +9974,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -10043,8 +10246,142 @@ namespace literals {
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -10061,13 +10398,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -10094,9 +10436,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -10271,6 +10622,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -10299,6 +10652,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -10329,6 +10686,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -10357,6 +10718,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -10472,9 +10835,18 @@ class pointer_manager final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -10497,7 +10869,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -10506,7 +10878,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -10633,6 +11005,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -10661,6 +11035,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -10691,6 +11069,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -10719,6 +11101,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -10750,16 +11134,452 @@ namespace cen::detail {
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
 #define CENTURION_INTEGERS_HEADER
 
 #include <SDL.h>
+
+#include <cstddef>  // size_t
 
 namespace cen {
 
@@ -10768,6 +11588,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -10945,15 +11767,72 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -11094,53 +11973,60 @@ namespace cen {
 /// \cond FALSE
 namespace cen::detail {
 
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
   {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
+    if constexpr (on_gcc() || on_clang())
     {
-      return std::string{buffer.data(), ptr};
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
     }
     else
     {
-      return std::nullopt;
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -11216,9 +12102,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -11228,26 +12112,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -11259,7 +12138,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -11288,19 +12167,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -11310,28 +12200,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -11370,13 +12256,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -11486,6 +12547,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -11518,6 +12627,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -11637,10 +12811,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -11674,6 +12848,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -11859,7 +13035,7 @@ enum class button_state : u8
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -11914,203 +13090,6 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 // #include "../video/color.hpp"
 
@@ -13248,7 +14227,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -13420,10 +14399,9 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -13436,8 +14414,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -13681,7 +14657,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -13833,8 +14809,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -15206,7 +16182,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {
@@ -16262,11 +17238,25 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \return the amount of fingers used to draw the stroke.
    *
-   * \since 4.0.0
+   * \since 6.1.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> u32
+  [[nodiscard]] auto finger_count() const noexcept -> u32
   {
     return m_event.numFingers;
+  }
+
+  /**
+   * \brief Returns the amount of fingers used to draw the stroke.
+   *
+   * \return the amount of fingers used to draw the stroke.
+   *
+   * \deprecated Since 6.1.0, use `finger_count()` instead.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> u32
+  {
+    return finger_count();
   }
 
   /**
@@ -17369,11 +18359,25 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \return the amount of fingers used to draw the stroke.
    *
-   * \since 4.0.0
+   * \since 6.1.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> u32
+  [[nodiscard]] auto finger_count() const noexcept -> u32
   {
     return m_event.numFingers;
+  }
+
+  /**
+   * \brief Returns the amount of fingers used to draw the stroke.
+   *
+   * \return the amount of fingers used to draw the stroke.
+   *
+   * \deprecated Since 6.1.0, use `finger_count()` instead.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> u32
+  {
+    return finger_count();
   }
 
   /**
@@ -19304,6 +20308,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -19313,9 +20319,18 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -19330,10 +20345,38 @@ enum class key_modifier : u16
   right_alt = KMOD_RALT,
   left_gui = KMOD_LGUI,
   right_gui = KMOD_RGUI,
+  shift = KMOD_SHIFT,
+  ctrl = KMOD_CTRL,
+  alt = KMOD_ALT,
+  gui = KMOD_GUI,
   num = KMOD_NUM,
   caps = KMOD_CAPS,
-  mode = KMOD_MODE
+  mode = KMOD_MODE,
+
+  reserved = KMOD_RESERVED
 };
+
+using key_mod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
+{
+  return static_cast<key_mod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -20309,22 +21352,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifiers the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -20387,19 +21430,119 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   * \see `is_only_any_of_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_mod)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
+
+    if (hits != mask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifier are active.
+   *
+   * \note Multiple key modifiers can be active at the same time.
+   *
+   * \param modifier the key modifiers that will be checked.
+   *
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
+  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
+      -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return is_active(modifier);
   }
 
   /**
@@ -20407,12 +21550,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_shift) ||
-           modifier_active(key_modifier::right_shift);
+    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
   }
 
   /**
@@ -20420,12 +21564,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_ctrl) ||
-           modifier_active(key_modifier::right_ctrl);
+    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
   }
 
   /**
@@ -20433,12 +21578,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_alt) ||
-           modifier_active(key_modifier::right_alt);
+    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
   }
 
   /**
@@ -20446,12 +21592,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_gui) ||
-           modifier_active(key_modifier::right_gui);
+    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
   }
 
   /**
@@ -20459,11 +21606,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::caps);
+    return is_active(key_mod::caps);
   }
 
   /**
@@ -20471,11 +21620,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::num);
+    return is_active(key_mod::num);
   }
 
   /**
@@ -20539,11 +21690,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the scan code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto scan() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
   {
-    return m_event.keysym.scancode;
+    return scan();
   }
 
   /**
@@ -20551,11 +21711,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the key code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto key() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_key_code() const noexcept -> key_code
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return key();
   }
 
   /**
@@ -21518,13 +22687,28 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    * \brief Sets the number of fingers that was used in the gesture associated
    * with the event.
    *
+   * \param count the number of fingers that were use.
+   *
+   * \since 6.1.0
+   */
+  void set_finger_count(const u16 count) noexcept
+  {
+    m_event.numFingers = count;
+  }
+
+  /**
+   * \brief Sets the number of fingers that was used in the gesture associated
+   * with the event.
+   *
    * \param nFingers the number of fingers that was used in the gesture.
+   *
+   * \deprecated Since 6.1.0, use `set_finger_count()` instead.
    *
    * \since 4.0.0
    */
-  void set_fingers(const u16 nFingers) noexcept
+  [[deprecated]] void set_fingers(const u16 nFingers) noexcept
   {
-    m_event.numFingers = nFingers;
+    set_finger_count(nFingers);
   }
 
   /**
@@ -21594,17 +22778,32 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 
   /**
+   * \brief Returns the amount of fingers used in the gesture associated with the event.
+   *
+   * \return the amount of fingers used in the gesture.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto finger_count() const noexcept -> u16
+  {
+    return m_event.numFingers;
+  }
+
+  /**
    * \brief Returns the amount of fingers used in the gesture associated with
    * the event.
    *
    * \return the amount of fingers used in the gesture associated with the
    * event.
    *
+   * \deprecated Since 6.1.0, use `finger_count()` instead. Note, this function
+   * incorrectly returns a `float`, and will be removed shortly.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> float
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> float
   {
-    return m_event.numFingers;
+    return finger_count();
   }
 };
 
@@ -23017,6 +24216,18 @@ class event final
   }
 
   /**
+   * \brief Returns a pointer to the internal event representation.
+   *
+   * \return a pointer to the internal event instance.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
+  {
+    return &m_event;
+  }
+
+  /**
    * \brief Indicates whether or not there is an internal event stored in the
    * instance.
    *
@@ -23164,218 +24375,216 @@ class event final
 #define CENTURION_EVENT_DISPATCHER_HEADER
 
 #include <array>        // array
-#include <cstddef>      // size_t
 #include <functional>   // function, bind
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v, is_invocable_v, is_reference_v, ...
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../core/integers.hpp"
 
 // #include "../detail/tuple_type_index.hpp"
 #ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 #define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
-#include <cstddef>      // size_t
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
+
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -23386,7 +24595,7 @@ class tuple_type_index;
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>>
 {
-  template <std::size_t... Index>
+  template <usize... Index>
   constexpr static auto find(std::index_sequence<Index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);
@@ -23785,6 +24994,18 @@ class event final
   }
 
   /**
+   * \brief Returns a pointer to the internal event representation.
+   *
+   * \return a pointer to the internal event instance.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
+  {
+    return &m_event;
+  }
+
+  /**
    * \brief Indicates whether or not there is an internal event stored in the
    * instance.
    *
@@ -24155,7 +25376,7 @@ class event_dispatcher final
   }
 
  public:
-  using size_type = std::size_t;
+  using size_type = usize;
 
   /**
    * \brief Polls all events, checking for subscribed events.
@@ -24242,8 +25463,8 @@ template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
 {
-  return "event_dispatcher{size: " + detail::to_string(dispatcher.size()).value() +
-         ", #active: " + detail::to_string(dispatcher.active_count()).value() + "}";
+  return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
+         ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
 template <typename... E>
@@ -25180,22 +26401,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifiers the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -25258,19 +26479,119 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   * \see `is_only_any_of_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_mod)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
+
+    if (hits != mask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifier are active.
+   *
+   * \note Multiple key modifiers can be active at the same time.
+   *
+   * \param modifier the key modifiers that will be checked.
+   *
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
+  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
+      -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return is_active(modifier);
   }
 
   /**
@@ -25278,12 +26599,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_shift) ||
-           modifier_active(key_modifier::right_shift);
+    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
   }
 
   /**
@@ -25291,12 +26613,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_ctrl) ||
-           modifier_active(key_modifier::right_ctrl);
+    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
   }
 
   /**
@@ -25304,12 +26627,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_alt) ||
-           modifier_active(key_modifier::right_alt);
+    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
   }
 
   /**
@@ -25317,12 +26641,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_gui) ||
-           modifier_active(key_modifier::right_gui);
+    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
   }
 
   /**
@@ -25330,11 +26655,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::caps);
+    return is_active(key_mod::caps);
   }
 
   /**
@@ -25342,11 +26669,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::num);
+    return is_active(key_mod::num);
   }
 
   /**
@@ -25410,11 +26739,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the scan code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto scan() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
   {
-    return m_event.keysym.scancode;
+    return scan();
   }
 
   /**
@@ -25422,11 +26760,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the key code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto key() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_key_code() const noexcept -> key_code
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return key();
   }
 
   /**
@@ -26356,13 +27703,28 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    * \brief Sets the number of fingers that was used in the gesture associated
    * with the event.
    *
+   * \param count the number of fingers that were use.
+   *
+   * \since 6.1.0
+   */
+  void set_finger_count(const u16 count) noexcept
+  {
+    m_event.numFingers = count;
+  }
+
+  /**
+   * \brief Sets the number of fingers that was used in the gesture associated
+   * with the event.
+   *
    * \param nFingers the number of fingers that was used in the gesture.
+   *
+   * \deprecated Since 6.1.0, use `set_finger_count()` instead.
    *
    * \since 4.0.0
    */
-  void set_fingers(const u16 nFingers) noexcept
+  [[deprecated]] void set_fingers(const u16 nFingers) noexcept
   {
-    m_event.numFingers = nFingers;
+    set_finger_count(nFingers);
   }
 
   /**
@@ -26432,17 +27794,32 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 
   /**
+   * \brief Returns the amount of fingers used in the gesture associated with the event.
+   *
+   * \return the amount of fingers used in the gesture.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto finger_count() const noexcept -> u16
+  {
+    return m_event.numFingers;
+  }
+
+  /**
    * \brief Returns the amount of fingers used in the gesture associated with
    * the event.
    *
    * \return the amount of fingers used in the gesture associated with the
    * event.
    *
+   * \deprecated Since 6.1.0, use `finger_count()` instead. Note, this function
+   * incorrectly returns a `float`, and will be removed shortly.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> float
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> float
   {
-    return m_event.numFingers;
+    return finger_count();
   }
 };
 
@@ -27678,7 +29055,10 @@ namespace cen {
 #define CENTURION_FILE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>   // assert
 #include <cstddef>   // size_t
@@ -27740,6 +29120,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -27747,6 +29129,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -28634,6 +30018,8 @@ class file final
   /// \name File type queries
   /// \{
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Indicates whether or not the file represents a PNG image.
    *
@@ -28813,6 +30199,8 @@ class file final
   {
     return IMG_isXV(m_context.get()) == 1;
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of file type queries
 
@@ -29172,7 +30560,6 @@ using zstring = char*;
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
-#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // is_same_v, is_convertible_v
@@ -29290,6 +30677,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -29297,6 +30686,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -29550,9 +30941,18 @@ struct czstring_compare final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -29668,6 +31068,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -29696,6 +31098,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -29726,6 +31132,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -29754,6 +31164,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -29834,8 +31246,8 @@ class static_bimap final
 /// \cond FALSE
 namespace cen::detail {
 
-template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, czstring, czstring_compare, size>;
+template <typename Key, usize Size>
+using string_map = static_bimap<Key, czstring, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint
@@ -31146,9 +32558,18 @@ class enum_hint
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -31264,6 +32685,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -31292,6 +32715,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -31322,6 +32749,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -31350,6 +32781,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -33083,6 +34516,8 @@ struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mappi
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -33090,6 +34525,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -33298,7 +34735,6 @@ enum class button_state : u8
 
 #include <array>     // array
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
@@ -33415,9 +34851,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -33533,6 +34978,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -33561,6 +35008,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -33591,6 +35042,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -33619,6 +35074,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -34030,6 +35487,8 @@ class sdl_string final
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -34037,6 +35496,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -34307,8 +35768,142 @@ namespace literals {
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -34325,13 +35920,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -34358,9 +35958,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -34535,6 +36144,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -34563,6 +36174,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -34593,6 +36208,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -34621,6 +36240,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -34736,9 +36357,18 @@ class pointer_manager final
 #define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>  // assert
 
@@ -34761,7 +36391,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 0
+#define CENTURION_VERSION_MINOR 1
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -34770,7 +36400,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_PATCH 1
+#define CENTURION_VERSION_PATCH 0
 
 #ifdef CENTURION___DOXYGEN
 
@@ -34897,6 +36527,8 @@ struct version final
   return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
 }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \brief Returns the version of SDL2_image that is linked against the program.
  *
@@ -34925,6 +36557,10 @@ struct version final
 {
   return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 
 /**
  * \brief Returns the version of SDL2_mixer that is linked against the program.
@@ -34955,6 +36591,10 @@ struct version final
   return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
 }
 
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
 /**
  * \brief Returns the version of SDL2_ttf that is linked against the program.
  *
@@ -34983,6 +36623,8 @@ struct version final
 {
   return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
+
+#endif  // CENTURION_NO_SDL_TTF
 
 /// \} End of SDL version queries
 
@@ -35014,16 +36656,452 @@ namespace cen::detail {
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
 #define CENTURION_INTEGERS_HEADER
 
 #include <SDL.h>
+
+#include <cstddef>  // size_t
 
 namespace cen {
 
@@ -35032,6 +37110,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -35209,15 +37289,72 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -35358,53 +37495,60 @@ namespace cen {
 /// \cond FALSE
 namespace cen::detail {
 
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
   {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
+    if constexpr (on_gcc() || on_clang())
     {
-      return std::string{buffer.data(), ptr};
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
     }
     else
     {
-      return std::nullopt;
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -35480,9 +37624,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -35492,26 +37634,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -35523,7 +37660,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -35552,19 +37689,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -35574,28 +37722,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -35634,13 +37778,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -35750,6 +38069,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -35782,6 +38149,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -35901,10 +38333,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -35938,6 +38370,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -36123,7 +38557,7 @@ enum class button_state : u8
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -36178,203 +38612,6 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 // #include "../video/color.hpp"
 
@@ -37512,7 +39749,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -37684,10 +39921,9 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -37700,8 +39936,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -37945,7 +40179,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -38097,8 +40331,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -39470,7 +41704,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {
@@ -40093,205 +42327,7 @@ template <typename T>
 #define CENTURION_VECTOR3_HEADER
 
 #include <ostream>  // ostream
-#include <string>   // string
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
+#include <string>   // string, to_string
 
 namespace cen {
 
@@ -40412,9 +42448,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 }
 
 /**
@@ -42784,7 +44819,7 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -42807,8 +44842,6 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "../detail/sdl_version_at_least.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../video/color.hpp"
 
@@ -43946,7 +45979,7 @@ template <typename T>
   }
 
   return "joystick{data: " + detail::address_of(joystick.get()) +
-         ", id: " + detail::to_string(joystick.instance_id()).value() +
+         ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 }
 
@@ -45068,6 +47101,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -45077,9 +47112,18 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -45094,10 +47138,38 @@ enum class key_modifier : u16
   right_alt = KMOD_RALT,
   left_gui = KMOD_LGUI,
   right_gui = KMOD_RGUI,
+  shift = KMOD_SHIFT,
+  ctrl = KMOD_CTRL,
+  alt = KMOD_ALT,
+  gui = KMOD_GUI,
   num = KMOD_NUM,
   caps = KMOD_CAPS,
-  mode = KMOD_MODE
+  mode = KMOD_MODE,
+
+  reserved = KMOD_RESERVED
 };
+
+using key_mod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
+{
+  return static_cast<key_mod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -46156,6 +48228,8 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 
 namespace cen {
 
@@ -46165,9 +48239,18 @@ namespace cen {
 /**
  * \enum key_modifier
  *
- * \brief Provides values that represent different key modifiers.
+ * \brief Represents different key modifiers.
  *
+ * \note This is a flag enum, and provides overloads for the common bitwise operators.
+ *
+ * \todo Centurion 7: Rename this enum to `key_mod`.
+ * \todo Centurion 7: Replace left_{}/right_{} prefixes with l{}/r{}.
+ *
+ * \see `key_mod`
  * \see `SDL_Keymod`
+ * \see `operator~(key_mod)`
+ * \see `operator|(key_mod, key_mod)`
+ * \see `operator&(key_mod, key_mod)`
  *
  * \since 3.1.0
  */
@@ -46182,10 +48265,38 @@ enum class key_modifier : u16
   right_alt = KMOD_RALT,
   left_gui = KMOD_LGUI,
   right_gui = KMOD_RGUI,
+  shift = KMOD_SHIFT,
+  ctrl = KMOD_CTRL,
+  alt = KMOD_ALT,
+  gui = KMOD_GUI,
   num = KMOD_NUM,
   caps = KMOD_CAPS,
-  mode = KMOD_MODE
+  mode = KMOD_MODE,
+
+  reserved = KMOD_RESERVED
 };
+
+using key_mod = key_modifier;
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
+{
+  return static_cast<key_mod>(~to_underlying(mod));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
+}
+
+/// \since 6.1.0
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
+    -> key_mod
+{
+  return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
+}
 
 /// \} End of group input
 
@@ -47281,19 +49392,19 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not any of the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the modifiers are active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const key_modifier modifier) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
+    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
   }
 
   /**
@@ -47370,7 +49481,7 @@ using key_state [[deprecated]] = keyboard;
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -47407,8 +49518,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -47626,8 +49735,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -47661,7 +49770,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -47701,8 +49810,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -48059,14 +50166,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -49402,10 +51509,9 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 #include <SDL.h>
 
 #include <array>     // array
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -49418,8 +51524,6 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -49663,7 +51767,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  template <std::size_t Size>
+  template <usize Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
@@ -49815,8 +51919,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + detail::to_string(sensor.id()).value() +
-         ", name: " + str_or_na(sensor.name()) + "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
+         "}";
 }
 
 /**
@@ -50137,7 +52241,7 @@ enum class device_type
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -50174,203 +52278,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -50588,8 +52495,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -50623,7 +52530,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -50663,8 +52570,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -51021,14 +52926,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -51184,7 +53089,7 @@ template <typename T>
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -51227,19 +53132,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -51457,8 +53358,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -51492,14 +53393,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -51856,14 +53755,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -52846,10 +54745,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -52881,10 +54779,7 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 #define CENTURION_VECTOR3_HEADER
 
 #include <ostream>  // ostream
-#include <string>   // string
-
-// #include "../detail/to_string.hpp"
-
+#include <string>   // string, to_string
 
 namespace cen {
 
@@ -53005,9 +54900,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 }
 
 /**
@@ -53056,6 +54950,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -53063,6 +54959,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -53608,6 +55506,8 @@ namespace battery {
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -53615,6 +55515,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -54589,8 +56491,10 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <cstddef>  // size_t
-#include <memory>   // unique_ptr
+#include <memory>  // unique_ptr
+
+// #include "../core/integers.hpp"
+
 
 /// \addtogroup system
 /// \{
@@ -54616,7 +56520,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit simd_block(const std::size_t size) noexcept : m_data{SDL_SIMDAlloc(size)}
+  explicit simd_block(const usize size) noexcept : m_data{SDL_SIMDAlloc(size)}
   {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -54628,7 +56532,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  void reallocate(const std::size_t size) noexcept
+  void reallocate(const usize size) noexcept
   {
     /* We temporarily release the ownership of the pointer in order to avoid a double
        delete, since the reallocation will free the previously allocated memory. */
@@ -54920,7 +56824,7 @@ namespace cen::cpu {
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline auto simd_alignment() noexcept -> std::size_t
+[[nodiscard]] inline auto simd_alignment() noexcept -> usize
 {
   return SDL_SIMDGetAlignment();
 }
@@ -54961,10 +56865,11 @@ namespace cen::cpu {
 #include <SDL.h>
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
 // #include "../core/czstring.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -55219,9 +57124,9 @@ class locale final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto count() const noexcept -> std::size_t
+  [[nodiscard]] auto count() const noexcept -> usize
   {
-    std::size_t result{0};
+    usize result{0};
 
     if (const auto* array = m_locales.get())
     {
@@ -55401,9 +57306,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -55519,6 +57433,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -55547,6 +57463,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -55577,6 +57497,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -55606,6 +57530,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -55618,6 +57544,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -55625,6 +57553,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -55917,9 +57847,18 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -56094,6 +58033,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -56122,6 +58063,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -56152,6 +58097,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -56180,6 +58129,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -56290,22 +58241,219 @@ class pointer_manager final
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -56446,53 +58594,60 @@ namespace cen {
 /// \cond FALSE
 namespace cen::detail {
 
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
   {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
+    if constexpr (on_gcc() || on_clang())
     {
-      return std::string{buffer.data(), ptr};
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
     }
     else
     {
-      return std::nullopt;
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -56568,9 +58723,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -56580,26 +58733,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -56611,7 +58759,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -56640,19 +58788,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -56662,28 +58821,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -56722,13 +58877,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -56838,6 +59168,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -56870,6 +59248,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -56989,10 +59432,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -57026,6 +59469,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -57916,9 +60361,18 @@ namespace cen::ram {
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -57988,6 +60442,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -58016,6 +60472,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -58046,6 +60506,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -58074,6 +60538,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -58204,9 +60670,18 @@ class shared_object final
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -58381,6 +60856,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -58409,6 +60886,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -58439,6 +60920,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -58468,6 +60953,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -58480,6 +60967,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -58487,6 +60976,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -58840,6 +61331,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -58847,6 +61340,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -59752,7 +62247,7 @@ class semaphore final
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -59841,55 +62336,8 @@ using not_null = T;
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string that represents the memory address of the supplied pointer.
- *
- * \details The empty string is returned if the supplied pointer is null.
- *
- * \tparam T the type of the pointer.
- * \param ptr the pointer that will be converted.
- *
- * \return a string that represents the memory address of the supplied pointer.
- *
- * \since 3.0.0
- */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
-{
-  if (ptr)
-  {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
-    return stream.str();
-  }
-  else
-  {
-    return std::string{};
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -60029,52 +62477,41 @@ namespace cen {
 namespace cen::detail {
 
 /**
- * \brief Returns a string representation of an arithmetic value.
+ * \brief Returns a string that represents the memory address of the supplied pointer.
  *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
  *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
+ * \return a string that represents the memory address of the supplied pointer.
  *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
+ * \since 3.0.0
  */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  if (ptr)
   {
-    return std::to_string(value);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
+    return stream.str();
   }
   else
   {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
+    return std::string{};
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
 
 
 namespace cen {
@@ -60385,7 +62822,7 @@ class thread final
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
-         ", id: " + detail::to_string(thread.get_id()).value() + "}";
+         ", id: " + std::to_string(thread.get_id()) + "}";
 }
 
 /**
@@ -60677,16 +63114,452 @@ enum class blend_mode
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+#ifndef CENTURION_CZSTRING_HEADER
+#define CENTURION_CZSTRING_HEADER
+
+// #include "not_null.hpp"
+#ifndef CENTURION_NOT_NULL_HEADER
+#define CENTURION_NOT_NULL_HEADER
+
+// #include "sfinae.hpp"
+#ifndef CENTURION_SFINAE_HEADER
+#define CENTURION_SFINAE_HEADER
+
+#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+// clang-format off
+
+/// Enables a template if the type is either integral of floating-point, but not a boolean.
+template <typename T>
+using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            (std::is_integral_v<T> ||
+                                             std::is_floating_point_v<T>), int>;
+
+// clang-format on
+
+/// Enables a template if the type is a pointer.
+template <typename T>
+using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
+
+/// Enables a template if T is convertible to any of the specified types.
+template <typename T, typename... Args>
+using enable_if_convertible_t =
+    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_SFINAE_HEADER
+
+
+namespace cen {
+
+/**
+ * \typedef not_null
+ *
+ * \ingroup core
+ *
+ * \brief Tag used to indicate that a pointer cannot be null.
+ *
+ * \note This alias is equivalent to `T`, it is a no-op.
+ *
+ * \since 5.0.0
+ */
+template <typename T, enable_if_pointer_v<T> = 0>
+using not_null = T;
+
+}  // namespace cen
+
+#endif  // CENTURION_NOT_NULL_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ */
+using czstring = const char*;
+
+/**
+ * \typedef zstring
+ *
+ * \brief Alias for a C-style null-terminated string.
+ */
+using zstring = char*;
+
+/**
+ * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
+ *
+ * \note This is mainly used in `to_string()` overloads.
+ *
+ * \param str the string that will be checked.
+ *
+ * \return the supplied string if it isn't null; "n/a" otherwise.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
+{
+  return str ? str : "n/a";
+}
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_CZSTRING_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
+
+/**
+ * \class sdl_error
+ *
+ * \brief Represents an error related to the core SDL2 library.
+ *
+ * \since 5.0.0
+ */
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
 #define CENTURION_INTEGERS_HEADER
 
 #include <SDL.h>
+
+#include <cstddef>  // size_t
 
 namespace cen {
 
@@ -60695,6 +63568,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -60872,15 +63747,72 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
 #include <system_error>  // errc
 #include <type_traits>   // is_floating_point_v
 
@@ -61021,53 +63953,60 @@ namespace cen {
 /// \cond FALSE
 namespace cen::detail {
 
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
 {
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
   {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
+    if constexpr (on_gcc() || on_clang())
     {
-      return std::string{buffer.data(), ptr};
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
     }
     else
     {
-      return std::nullopt;
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
     }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
   }
 }
 
 }  // namespace cen::detail
 /// \endcond
 
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -61143,9 +64082,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -61155,26 +64092,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -61186,7 +64118,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -61215,19 +64147,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -61237,28 +64180,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -61297,13 +64236,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -61413,6 +64527,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -61445,6 +64607,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -61564,10 +64791,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -61601,6 +64828,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -61756,14 +64985,25 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
 
-// #include "../detail/to_string.hpp"
+// #include "../detail/clamp.hpp"
+
+// #include "../detail/from_string.hpp"
 
 
 namespace cen {
@@ -61839,9 +65079,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -61851,26 +65089,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -61882,7 +65115,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -61911,19 +65144,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -61933,28 +65177,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -61993,13 +65233,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -62109,6 +65524,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -62141,6 +65604,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -62260,10 +65788,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -62297,6 +65825,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -63523,9 +67053,18 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -63700,6 +67239,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -63728,6 +67269,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -63758,6 +67303,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -63786,6 +67335,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -63898,7 +67449,7 @@ class pointer_manager final
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -63971,203 +67522,6 @@ using enable_if_convertible_t =
 }  // namespace cen
 
 #endif  // CENTURION_SFINAE_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -64524,14 +67878,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -64685,76 +68039,20 @@ template <typename T>
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
 #define CENTURION_CZSTRING_HEADER
 
 // #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-/// Enables a template if the type is either integral of floating-point, but not a boolean.
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-/// Enables a template if the type is a pointer.
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-/// Enables a template if T is convertible to any of the specified types.
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
 
 
 namespace cen {
@@ -64799,220 +68097,6 @@ using zstring = char*;
 #endif  // CENTURION_CZSTRING_HEADER
 
 // #include "../core/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
-#include <exception>  // exception
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \note This is mainly used in `to_string()` overloads.
- *
- * \param str the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
-{
-  return str ? str : "n/a";
-}
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception, can safely be null.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"n/a"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
 
@@ -65285,8 +68369,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -65303,13 +68390,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -65325,19 +68417,15 @@ template <typename T>
 
 // #include "../detail/owner_handle_api.hpp"
 
-// #include "../detail/to_string.hpp"
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -65555,8 +68643,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -65589,7 +68677,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -65632,19 +68720,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -65862,8 +68946,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -65897,14 +68981,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -66261,14 +69343,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -67251,10 +70333,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -67885,6 +70966,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -67920,6 +71003,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -68107,6 +71192,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -68160,6 +71247,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -68665,8 +71754,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -69051,13 +72140,15 @@ class basic_cursor final
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -69068,8 +72159,6 @@ class basic_cursor final
 // #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -69083,137 +72172,6 @@ class basic_cursor final
 #include <vector>            // vector
 
 // #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
 
 // #include "../core/integers.hpp"
 
@@ -70359,7 +73317,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**
@@ -70381,10 +73339,13 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER
 // #include "centurion/video/font_cache.hpp"
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
+
+#ifndef CENTURION_NO_SDL_TTF
 
 #include <SDL_ttf.h>
 
@@ -70401,13 +73362,15 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -70418,8 +73381,6 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 // #include "../core/to_underlying.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -71171,7 +74132,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**
@@ -71193,6 +74154,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER
 // #include "surface.hpp"
 
@@ -71201,16 +74163,20 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -71221,8 +74187,6 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -71472,6 +74436,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -71510,6 +74476,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -71601,8 +74569,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -72031,8 +74999,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**
@@ -72850,6 +75818,7 @@ class font_cache final
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_CACHE_HEADER
 // #include "centurion/video/graphics_drivers.hpp"
 #ifndef CENTURION_GRAPHICS_DRIVERS_HEADER
@@ -72944,6 +75913,200 @@ namespace cen {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
 // #include "../core/macros.hpp"
 #ifndef CENTURION_MACROS_HEADER
 #define CENTURION_MACROS_HEADER
@@ -72999,13 +76162,13 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array
-#include <cstddef>          // byte, size_t
+#include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t BufferSize>
+template <usize BufferSize>
 class stack_resource final
 {
  public:
@@ -74104,7 +77267,7 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -74121,62 +77284,6 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
 
 // #include "../detail/convert_bool.hpp"
 #ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
@@ -74225,8 +77332,6 @@ template <typename T>
 #endif  // CENTURION_DETAIL_MAX_HEADER
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -75519,8 +78624,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -76276,9 +79381,18 @@ enum class gl_attribute
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -76453,6 +79567,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -76481,6 +79597,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -76511,6 +79631,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -76539,6 +79663,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -76763,9 +79889,18 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -76940,6 +80075,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -76968,6 +80105,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -76998,6 +80139,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -77026,6 +80171,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -77139,7 +80286,7 @@ class pointer_manager final
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -77253,9 +80400,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -77371,6 +80527,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -77399,6 +80557,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -77429,6 +80591,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -77458,6 +80624,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -77470,6 +80638,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -77477,6 +80647,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -77889,8 +81061,142 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -77907,13 +81213,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -78044,9 +81355,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -78221,6 +81541,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -78249,6 +81571,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -78279,6 +81605,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -78307,6 +81637,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -78411,209 +81743,12 @@ class pointer_manager final
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -78650,203 +81785,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -79064,8 +82002,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -79098,7 +82036,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -79175,19 +82113,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -79405,8 +82339,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -79440,14 +82374,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -79804,14 +82736,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -80794,10 +83726,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -80882,14 +83813,226 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
 
-// #include "../detail/to_string.hpp"
+// #include "../detail/clamp.hpp"
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -80965,9 +84108,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -80977,26 +84118,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -81008,7 +84144,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -81037,19 +84173,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -81059,28 +84206,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -81119,13 +84262,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -81235,6 +84553,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -81267,6 +84633,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -81386,10 +84817,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -81423,6 +84854,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -81981,11 +85414,14 @@ class basic_pixel_format_info final
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -82004,8 +85440,6 @@ class basic_pixel_format_info final
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -82187,6 +85621,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -82222,6 +85658,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -82409,6 +85847,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -82462,6 +85902,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -82967,8 +86409,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -84277,8 +87719,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -84432,6 +87874,12 @@ class basic_context final
 
 }  // namespace cen::gl
 
+namespace cen {
+/// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
+using gl_context = gl::context;
+using gl_context_handle = gl::context_handle;
+}  // namespace cen
+
 /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL
@@ -84566,7 +88014,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -84603,203 +88051,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -85017,8 +88268,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -85044,6 +88295,1396 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 }  // namespace cen
 
 #endif  // CENTURION_AREA_HEADER
+// #include "../texture.hpp"
+#ifndef CENTURION_TEXTURE_HEADER
+#define CENTURION_TEXTURE_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "../math/area.hpp"
+
+// #include "../math/point.hpp"
+#ifndef CENTURION_POINT_HEADER
+#define CENTURION_POINT_HEADER
+
+#include <SDL.h>
+
+#include <cmath>        // sqrt, abs, round
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../core/cast.hpp"
+
+// #include "../core/sfinae.hpp"
+
+
+namespace cen {
+
+/// \addtogroup math
+/// \{
+
+/**
+ * \brief Provides traits used by the `basic_point` class.
+ *
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
+ *
+ * \since 5.0.0
+ *
+ * \see `basic_point`
+ * \see `ipoint`
+ * \see `fpoint`
+ */
+template <typename T, enable_if_convertible_t<T, int, float> = 0>
+class point_traits final
+{
+ public:
+  /**
+   * \var isIntegral
+   *
+   * \brief Indicates whether or not the point is based on an integral type.
+   *
+   * \since 5.0.0
+   */
+  inline constexpr static bool isIntegral = std::is_integral_v<T>;
+
+  /**
+   * \var isFloating
+   *
+   * \brief Indicates whether or not the point is based on a floating-point
+   * type.
+   *
+   * \since 5.0.0
+   */
+  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
+
+  /**
+   * \typedef value_type
+   *
+   * \brief The actual representation type, i.e. `int` or `float`.
+   *
+   * \since 5.0.0
+   */
+  using value_type = std::conditional_t<isIntegral, int, float>;
+
+  /**
+   * \typedef point_type
+   *
+   * \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
+   *
+   * \since 5.0.0
+   */
+  using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
+};
+
+template <typename T>
+class basic_point;
+
+/**
+ * \typedef ipoint
+ *
+ * \brief Alias for an `int`-based point.
+ *
+ * \details This type corresponds to `SDL_Point`.
+ *
+ * \since 5.0.0
+ */
+using ipoint = basic_point<int>;
+
+/**
+ * \typedef fpoint
+ *
+ * \brief Alias for a `float`-based point.
+ *
+ * \details This type corresponds to `SDL_FPoint`.
+ *
+ * \since 5.0.0
+ */
+using fpoint = basic_point<float>;
+
+/**
+ * \class basic_point
+ *
+ * \brief Represents a two-dimensional point.
+ *
+ * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
+ * representation is specified by the type parameter.
+ *
+ * \note This point class will only use `int` or `float` as the actual internal
+ * representation.
+ *
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
+ *
+ * \since 5.0.0
+ *
+ * \see `ipoint`
+ * \see `fpoint`
+ * \see `point()`
+ * \see `distance()`
+ */
+template <typename T>
+class basic_point final
+{
+ public:
+  /// \copydoc point_traits::isIntegral
+  inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
+
+  /// \copydoc point_traits::isFloating
+  inline constexpr static bool isFloating = point_traits<T>::isFloating;
+
+  /// \copydoc point_traits::value_type
+  using value_type = typename point_traits<T>::value_type;
+
+  /// \copydoc point_traits::point_type
+  using point_type = typename point_traits<T>::point_type;
+
+  /// \name Construction
+  /// \{
+
+  /**
+   * \brief Creates a zero-initialized point.
+   *
+   * \since 5.0.0
+   */
+  constexpr basic_point() noexcept = default;
+
+  /**
+   * \brief Creates a point with the specified coordinates.
+   *
+   * \param x the x-coordinate that will be used.
+   * \param y the y-coordinate that will be used.
+   *
+   * \since 5.0.0
+   */
+  constexpr basic_point(const value_type x, const value_type y) noexcept
+  {
+    m_point.x = x;
+    m_point.y = y;
+  };
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the x-coordinate of the point.
+   *
+   * \param x the new x-coordinate.
+   *
+   * \since 5.0.0
+   */
+  constexpr void set_x(const value_type x) noexcept
+  {
+    m_point.x = x;
+  }
+
+  /**
+   * \brief Sets the y-coordinate of the point.
+   *
+   * \param y the new y-coordinate.
+   *
+   * \since 5.0.0
+   */
+  constexpr void set_y(const value_type y) noexcept
+  {
+    m_point.y = y;
+  }
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
+
+  /**
+   * \brief Returns the x-coordinate of the point.
+   *
+   * \return the x-coordinate.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type
+  {
+    return m_point.x;
+  }
+
+  /**
+   * \brief Returns the y-coordinate of the point.
+   *
+   * \return the y-coordinate.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type
+  {
+    return m_point.y;
+  }
+
+  /**
+   * \brief Returns the internal point representation.
+   *
+   * \return a reference to the internal representation.
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr auto get() noexcept -> point_type&
+  {
+    return m_point;
+  }
+
+  /// \copydoc get
+  [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
+  {
+    return m_point;
+  }
+
+  /**
+   * \brief Returns a pointer to the internal point representation.
+   *
+   * \note Don't cache the returned pointer.
+   *
+   * \return a pointer to the point representation.
+   *
+   * \since 5.2.0
+   */
+  [[nodiscard]] auto data() noexcept -> point_type*
+  {
+    return &m_point;
+  }
+
+  /// \copydoc data
+  [[nodiscard]] auto data() const noexcept -> const point_type*
+  {
+    return &m_point;
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Converts to the internal representation.
+   *
+   * \return a copy of the internal point.
+   *
+   * \see `cen::cast`
+   *
+   * \since 5.0.0
+   */
+  [[nodiscard]] constexpr explicit operator point_type() const noexcept
+  {
+    return m_point;
+  }
+
+  /// \copydoc data()
+  [[nodiscard]] explicit operator point_type*() noexcept
+  {
+    return data();
+  }
+
+  /// \copydoc data()
+  [[nodiscard]] explicit operator const point_type*() const noexcept
+  {
+    return data();
+  }
+
+  /// \} End of conversions
+
+  /**
+   * \brief Serializes the point.
+   *
+   * \details This function expects that the archive provides an overloaded `operator()`,
+   * used for serializing data. This API is based on the Cereal serialization library.
+   *
+   * \tparam Archive the type of the archive.
+   *
+   * \param archive the archive used to serialize the point.
+   *
+   * \since 5.3.0
+   */
+  template <typename Archive>
+  void serialize(Archive& archive)
+  {
+    archive(m_point.x, m_point.y);
+  }
+
+ private:
+  point_type m_point{0, 0};
+};
+
+/// \name Point-related functions
+/// \{
+
+/**
+ * \brief Creates a point instance with automatically deduced precision.
+ *
+ * \note The only supported precisions for points are `int` and `float`, so this function
+ * will cast the supplied values to the corresponding type. For example, if you supply two
+ * doubles to this function, the returned point will use float as the precision.
+ *
+ * \tparam T the deduced precision type, must be a numerical type other than `bool`.
+ *
+ * \param x the x-coordinate of the point.
+ * \param y the y-coordinate of the point.
+ *
+ * \return the created point.
+ *
+ * \since 6.0.0
+ */
+template <typename T, enable_if_number_t<T> = 0>
+[[nodiscard]] constexpr auto point(const T x, const T y) noexcept
+    -> basic_point<typename point_traits<T>::value_type>
+{
+  using value_type = typename point_traits<T>::value_type;
+  return basic_point<value_type>{static_cast<value_type>(x), static_cast<value_type>(y)};
+}
+
+/**
+ * \brief Returns the distance between two points.
+ *
+ * \tparam T the representation type used by the points.
+ *
+ * \param from the first point.
+ * \param to the second point.
+ *
+ * \return the distance between the two points.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
+    -> typename point_traits<T>::value_type
+{
+  if constexpr (basic_point<T>::isIntegral)
+  {
+    const auto xDiff = std::abs(from.x() - to.x());
+    const auto yDiff = std::abs(from.y() - to.y());
+    const auto dist = std::sqrt(xDiff + yDiff);
+    return static_cast<int>(std::round(dist));
+  }
+  else
+  {
+    return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+  }
+}
+
+/// \} End of point-related functions
+
+[[nodiscard]] inline auto to_string(const ipoint point) -> std::string
+{
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
+}
+
+[[nodiscard]] inline auto to_string(const fpoint point) -> std::string
+{
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
+{
+  return stream << to_string(point);
+}
+
+/// \name Point cast specializations
+/// \{
+
+/**
+ * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `ipoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `ipoint` instance that corresponds to the supplied `fpoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const fpoint& from) noexcept -> ipoint
+{
+  const auto x = static_cast<int>(from.x());
+  const auto y = static_cast<int>(from.y());
+  return ipoint{x, y};
+}
+
+/**
+ * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `fpoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const ipoint& from) noexcept -> fpoint
+{
+  const auto x = static_cast<float>(from.x());
+  const auto y = static_cast<float>(from.y());
+  return fpoint{x, y};
+}
+
+/**
+ * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
+ *
+ * \details This function casts the coordinates of the supplied point to `int`, and uses
+ * the obtained values to create an `SDL_Point` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `SDL_Point` instance that corresponds to the supplied `SDL_FPoint`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const SDL_FPoint& from) noexcept -> SDL_Point
+{
+  const auto x = static_cast<int>(from.x);
+  const auto y = static_cast<int>(from.y);
+  return SDL_Point{x, y};
+}
+
+/**
+ * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
+ *
+ * \details This function casts the coordinates of the supplied point to `float`, and uses
+ * the obtained values to create an `SDL_FPoint` instance.
+ *
+ * \param from the point that will be converted.
+ *
+ * \return an `SDL_FPoint` instance that corresponds to the supplied `SDL_Point`.
+ *
+ * \since 5.0.0
+ */
+template <>
+[[nodiscard]] constexpr auto cast(const SDL_Point& from) noexcept -> SDL_FPoint
+{
+  const auto x = static_cast<float>(from.x);
+  const auto y = static_cast<float>(from.y);
+  return SDL_FPoint{x, y};
+}
+
+/// \} End of point cast specializations
+
+/// \name Point addition and subtraction operators
+/// \{
+
+template <typename T>
+[[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
+{
+  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+}
+
+template <typename T>
+[[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
+                                       const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
+{
+  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
+}
+
+/// \} End of point addition and subtraction operators
+
+/// \name Point comparison operators
+/// \{
+
+[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of point comparison operators
+
+/// \} End of group math
+
+}  // namespace cen
+
+#endif  // CENTURION_POINT_HEADER
+// #include "blend_mode.hpp"
+
+// #include "color.hpp"
+
+// #include "pixel_format.hpp"
+
+// #include "scale_mode.hpp"
+#ifndef CENTURION_SCALE_MODE_HEADER
+#define CENTURION_SCALE_MODE_HEADER
+
+#include <SDL.h>
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+
+#endif
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
+ * \enum scale_mode
+ *
+ * \brief Represents different texture scale modes.
+ *
+ * \since 4.0.0
+ *
+ * \see `SDL_ScaleMode`
+ */
+enum class scale_mode
+{
+  nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.
+  linear = SDL_ScaleModeLinear,    ///< Represents linear filtering.
+  best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.
+};
+
+/**
+ * \brief Indicates whether or not the two scale mode values are the same.
+ *
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
+ *
+ * \return `true` if the scale mode values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
+{
+  return static_cast<SDL_ScaleMode>(lhs) == rhs;
+}
+
+/// \copydoc operator==(scale_mode, SDL_ScaleMode)
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two scale mode values aren't the same.
+ *
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
+ *
+ * \return `true` if the scale mode values aren't the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
+                                        const SDL_ScaleMode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(scale_mode, SDL_ScaleMode)
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
+                                        const scale_mode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_SCALE_MODE_HEADER
+
+// #include "surface.hpp"
+
+// #include "texture_access.hpp"
+#ifndef CENTURION_TEXTURE_ACCESS_HEADER
+#define CENTURION_TEXTURE_ACCESS_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum texture_access
+ *
+ * \brief Represents different texture access modes.
+ *
+ * \note The `no_lock` enumerator is also referred to as "static" texture access.
+ *
+ * \since 3.0.0
+ *
+ * \see `SDL_TextureAccess`
+ */
+enum class texture_access : int
+{
+  no_lock = SDL_TEXTUREACCESS_STATIC,  ///< Texture changes rarely, and isn't lockable.
+  streaming =
+      SDL_TEXTUREACCESS_STREAMING,   ///< Texture changes frequently, and is lockable.
+  target = SDL_TEXTUREACCESS_TARGET  ///< Texture can be used as a render target.
+};
+
+/**
+ * \brief Indicates whether or not the two texture access values are the same.
+ *
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
+ *
+ * \return `true` if the texture access values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept -> bool
+{
+  return static_cast<SDL_TextureAccess>(lhs) == rhs;
+}
+
+/// \copydoc operator==(texture_access, SDL_TextureAccess)
+[[nodiscard]] constexpr auto operator==(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two texture access values aren't the same.
+ *
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
+ *
+ * \return `true` if the texture access values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const texture_access lhs,
+                                        const SDL_TextureAccess rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(texture_access, SDL_TextureAccess)
+[[nodiscard]] constexpr auto operator!=(const SDL_TextureAccess lhs,
+                                        const texture_access rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXTURE_ACCESS_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+template <typename T>
+class basic_texture;
+
+using texture = basic_texture<detail::owning_type>;
+using texture_handle = basic_texture<detail::handle_type>;
+
+/**
+ * \class basic_texture
+ *
+ * \brief Represents an hardware-accelerated image, intended to be rendered using the
+ * `basic_renderer` class.
+ *
+ * \since 3.0.0
+ *
+ * \see `texture`
+ * \see `texture_handle`
+ */
+template <typename T>
+class basic_texture final
+{
+ public:
+  /// \name Construction
+  /// \{
+
+  // clang-format off
+
+  /**
+   * \brief Creates an texture from a pre-existing SDL texture.
+   *
+   * \param source a pointer to the associated SDL texture.
+   *
+   * \throws cen_error if the supplied pointer is null *and* the texture is owning.
+   *
+   * \since 3.0.0
+   */
+  explicit basic_texture(maybe_owner<SDL_Texture*> source) noexcept(!detail::is_owning<T>())
+      : m_texture{source}
+  {
+    if constexpr (detail::is_owning<T>())
+    {
+      if (!m_texture)
+      {
+        throw cen_error{"Cannot create texture from null pointer!"};
+      }
+    }
+  }
+
+  // clang-format on
+
+  /**
+   * \brief Creates a handle to texture instance.
+   *
+   * \param owner the associated owning texture.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
+  {}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture, can't be null.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const not_null<czstring> path)
+      : m_texture{IMG_LoadTexture(renderer.get(), path)}
+  {
+    if (!m_texture)
+    {
+      throw img_error{};
+    }
+  }
+
+  /**
+   * \brief Creates a texture based the image at the specified path.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture.
+   *
+   * \throws img_error if the texture cannot be loaded.
+   *
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const std::string& path)
+      : basic_texture{renderer, path.c_str()}
+  {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+  /**
+   * \brief Creates an texture that is a copy of the supplied surface.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param surface the surface that the texture will be based on.
+   *
+   * \throws sdl_error if the texture cannot be loaded.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer, const surface& surface)
+      : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+  {
+    if (!m_texture)
+    {
+      throw sdl_error{};
+    }
+  }
+
+  /**
+   * \brief Creates an texture with the specified characteristics.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the associated renderer instance.
+   * \param format the pixel format of the created texture.
+   * \param access the access of the created texture.
+   * \param size the size of the texture.
+   *
+   * \throws sdl_error if the texture cannot be created.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  basic_texture(const Renderer& renderer,
+                const pixel_format format,
+                const texture_access access,
+                const iarea size)
+      : m_texture{SDL_CreateTexture(renderer.get(),
+                                    to_underlying(format),
+                                    to_underlying(access),
+                                    size.width,
+                                    size.height)}
+  {
+    if (!m_texture)
+    {
+      throw sdl_error{};
+    }
+  }
+
+  /**
+   * \brief Creates and returns a texture with streaming access.
+   *
+   * \details The created texture is based on the image at the specified path with the
+   * `streaming` texture access.
+   *
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or `renderer_handle`.
+   *
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the path of the image file to base the texture on, can't be null.
+   * \param format the pixel format that will be used by the texture.
+   *
+   * \throws cen_error if something goes wrong.
+   *
+   * \return a texture with `streaming` texture access.
+   *
+   * \since 4.0.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const not_null<czstring> path,
+                                      const pixel_format format) -> basic_texture
+  {
+    assert(path);
+
+    constexpr auto blendMode = blend_mode::blend;
+    const auto surface = cen::surface::with_format(path, blendMode, format);
+
+    basic_texture texture{renderer, format, texture_access::streaming, surface.size()};
+    texture.set_blend_mode(blendMode);
+
+    u32* pixels{};
+    if (!texture.lock(&pixels))
+    {
+      throw sdl_error{};
+    }
+
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
+    SDL_memcpy(pixels, surface.pixels(), maxCount);
+
+    texture.unlock();
+
+    return texture;
+  }
+
+  /**
+   * \see streaming()
+   * \since 5.3.0
+   */
+  template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      const pixel_format format) -> basic_texture
+  {
+    return streaming(renderer, path.c_str(), format);
+  }
+
+  /// \} End of construction
+
+  /// \name Setters
+  /// \{
+
+  /**
+   * \brief Sets the color of the pixel at the specified coordinate.
+   *
+   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * coordinate is out-of-bounds.
+   *
+   * \param pixel the pixel that will be changed.
+   * \param color the new color of the pixel.
+   *
+   * \since 4.0.0
+   */
+  void set_pixel(const ipoint pixel, const color& color)
+  {
+    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
+        (pixel.x() >= width()) || (pixel.y() >= height()))
+    {
+      return;
+    }
+
+    u32* pixels{};
+    int pitch{};
+    if (!lock(&pixels, &pitch))
+    {
+      return;
+    }
+
+    const int nPixels = (pitch / 4) * height();
+    const int index = (pixel.y() * width()) + pixel.x();
+
+    if ((index >= 0) && (index < nPixels))
+    {
+      const pixel_format_info info{format()};
+      pixels[index] = info.rgba_to_pixel(color);
+    }
+
+    unlock();
+  }
+
+  /**
+   * \brief Sets the alpha value of the texture.
+   *
+   * \param alpha the alpha value, in the range [0, 255].
+   *
+   * \since 3.0.0
+   */
+  void set_alpha(const u8 alpha) noexcept
+  {
+    SDL_SetTextureAlphaMod(m_texture, alpha);
+  }
+
+  /**
+   * \brief Sets the blend mode that will be used by the texture.
+   *
+   * \param mode the blend mode that will be used.
+   *
+   * \since 3.0.0
+   */
+  void set_blend_mode(const blend_mode mode) noexcept
+  {
+    SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
+  }
+
+  /**
+   * \brief Sets the color modulation of the texture.
+   *
+   * \note The alpha component in the color struct is ignored by this method.
+   *
+   * \param color the color that will be used to modulate the color of the texture.
+   *
+   * \since 3.0.0
+   */
+  void set_color_mod(const color& color) noexcept
+  {
+    SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Sets the scale mode that will be used by the texture.
+   *
+   * \param mode the scale mode that will be used.
+   *
+   * \since 4.0.0
+   */
+  void set_scale_mode(const scale_mode mode) noexcept
+  {
+    SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /// \} End of setters
+
+  /// \name Getters
+  /// \{
+
+  /**
+   * \brief Returns the pixel format that is used by the texture.
+   *
+   * \return the pixel format that is used by the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto format() const noexcept -> pixel_format
+  {
+    u32 format{};
+    SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
+    return static_cast<pixel_format>(format);
+  }
+
+  /**
+   * \brief Returns the texture access of the texture.
+   *
+   * \return the texture access of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto access() const noexcept -> texture_access
+  {
+    int access{};
+    SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
+    return static_cast<texture_access>(access);
+  }
+
+  /**
+   * \brief Returns the width of the texture.
+   *
+   * \return the width of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return width;
+  }
+
+  /**
+   * \brief Returns the height of the texture.
+   *
+   * \return the height of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return height;
+  }
+
+  /**
+   * \brief Returns the size of the texture.
+   *
+   * \return the size of the texture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+    return {width, height};
+  }
+
+  /**
+   * \brief Indicates whether or not the texture is a possible render target.
+   *
+   * \return `true` if the texture is a possible render target; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_target() const noexcept -> bool
+  {
+    return access() == texture_access::target;
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has static texture access.
+   *
+   * \return `true` if the texture has static texture access; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_no_lock() const noexcept -> bool
+  {
+    return access() == texture_access::no_lock;
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has streaming texture access.
+   *
+   * \return `true` if the texture has streaming texture access; `false` otherwise.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto is_streaming() const noexcept -> bool
+  {
+    return access() == texture_access::streaming;
+  }
+
+  /**
+   * \brief Returns the alpha value of the texture.
+   *
+   * \return the alpha value of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto alpha() const noexcept -> u8
+  {
+    u8 alpha{};
+    SDL_GetTextureAlphaMod(m_texture, &alpha);
+    return alpha;
+  }
+
+  /**
+   * \brief Returns the blend mode of the texture.
+   *
+   * \return the blend mode of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetTextureBlendMode(m_texture, &mode);
+    return static_cast<blend_mode>(mode);
+  }
+
+  /**
+   * \brief Returns the color modulation of the texture.
+   *
+   * \return the modulation of the texture.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] auto color_mod() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    SDL_GetTextureColorMod(m_texture, &red, &green, &blue);
+    return {red, green, blue, 0xFF};
+  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Returns the scale mode that is used by the texture.
+   *
+   * \return the scale mode that is used by the texture.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
+  {
+    SDL_ScaleMode mode{};
+    SDL_GetTextureScaleMode(m_texture, &mode);
+    return static_cast<scale_mode>(mode);
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  /**
+   * \brief Releases ownership of the associated SDL texture and returns a pointer to it.
+   *
+   * \warning Usage of this function should be considered dangerous, since you might run
+   * into memory leak issues. You **must** call `SDL_DestroyTexture` on the returned
+   * pointer to free the associated memory.
+   *
+   * \return a pointer to the associated SDL texture.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_owner<TT> = 0>
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
+  {
+    return m_texture.release();
+  }
+
+  /**
+   * \brief Returns a pointer to the associated `SDL_Texture`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture*
+  {
+    return m_texture.get();
+  }
+
+  /// \} End of getters
+
+  /// \name Conversions
+  /// \{
+
+  /**
+   * \brief Indicates whether or not a texture handle holds a non-null pointer.
+   *
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
+   *
+   * \since 5.0.0
+   */
+  template <typename TT = T, detail::is_handle<TT> = 0>
+  explicit operator bool() const noexcept
+  {
+    return m_texture != nullptr;
+  }
+
+  /**
+   * \brief Converts to `SDL_Texture*`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept
+  {
+    return m_texture;
+  }
+
+  /**
+   * \brief Converts to `const SDL_Texture*`.
+   *
+   * \return a pointer to the associated `SDL_Texture`.
+   *
+   * \since 3.0.0
+   */
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
+  {
+    return m_texture;
+  }
+
+  /// \} End of conversions
+
+ private:
+  struct deleter final
+  {
+    void operator()(SDL_Texture* texture) noexcept
+    {
+      SDL_DestroyTexture(texture);
+    }
+  };
+  detail::pointer_manager<T, SDL_Texture, deleter> m_texture;
+
+  /**
+   * \brief Locks the texture for write-only pixel access.
+   *
+   * \remarks This method is only applicable if the texture access of the texture is
+   * `Streaming`.
+   *
+   * \param pixels this will be filled with a pointer to the locked pixels.
+   * \param pitch This is filled in with the pitch of the locked pixels, can safely be
+   * null if it isn't needed.
+   *
+   * \return `success` if nothing went wrong; `failure` otherwise.
+   *
+   * \since 4.0.0
+   */
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
+  {
+    if (pitch)
+    {
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             pitch) == 0;
+    }
+    else
+    {
+      int dummyPitch;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
+    }
+  }
+
+  /**
+   * \brief Unlocks the texture.
+   *
+   * \since 4.0.0
+   */
+  void unlock() noexcept
+  {
+    SDL_UnlockTexture(m_texture);
+  }
+};
+
+/**
+ * \brief Returns a textual representation of a texture.
+ *
+ * \param texture the texture that will be converted.
+ *
+ * \return a string that represents the texture.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
+{
+  return "texture{data: " + detail::address_of(texture.get()) +
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
+}
+
+/**
+ * \brief Prints a textual representation of a texture.
+ *
+ * \param stream the stream that will be used.
+ * \param texture the texture that will be printed
+ *
+ * \return the used stream.
+ *
+ * \since 5.0.0
+ */
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::ostream&
+{
+  return stream << to_string(texture);
+}
+
+/// \}
+
+}  // namespace cen
+
+#endif  // CENTURION_TEXTURE_HEADER
 // #include "../window.hpp"
 
 // #include "gl_attribute.hpp"
@@ -85260,6 +89901,12 @@ class basic_context final
 
 }  // namespace cen::gl
 
+namespace cen {
+/// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
+using gl_context = gl::context;
+using gl_context_handle = gl::context_handle;
+}  // namespace cen
+
 /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL
@@ -85468,6 +90115,50 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
   return is_extension_supported(extension.c_str());
 }
 
+/**
+ * \brief Binds a texture to the current OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to bind.
+ *
+ * \return the size of the texture if it was successfully bound; `std::nullopt` if
+ * something goes wrong.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
+{
+  float width{};
+  float height{};
+  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0)
+  {
+    return farea{width, height};
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Unbinds a texture from the OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to unbind.
+ *
+ * \return `success` if the texture was unbound; `failure` otherwise.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto unbind(basic_texture<T>& texture) noexcept -> result
+{
+  return SDL_GL_UnbindTexture(texture.get()) == 0;
+}
+
 /// \} End of group video
 
 }  // namespace cen::gl
@@ -85582,7 +90273,7 @@ class gl_library final
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/exception.hpp"
 
@@ -85591,8 +90282,6 @@ class gl_library final
 // #include "../core/result.hpp"
 
 // #include "../detail/address_of.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "color.hpp"
 
@@ -85798,7 +90487,7 @@ class palette final
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
   return "palette{data: " + detail::address_of(palette.get()) +
-         ", size: " + detail::to_string(palette.size()).value() + "}";
+         ", size: " + std::to_string(palette.size()) + "}";
 }
 
 /**
@@ -86260,7 +90949,6 @@ class basic_pixel_format_info final
 
 #include <cassert>        // assert
 #include <cmath>          // floor, sqrt
-#include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -86298,6 +90986,8 @@ class basic_pixel_format_info final
 // #include "font_cache.hpp"
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
+
+#ifndef CENTURION_NO_SDL_TTF
 
 #include <SDL_ttf.h>
 
@@ -87110,6 +91800,7 @@ class font_cache final
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_CACHE_HEADER
 // #include "surface.hpp"
 
@@ -87690,6 +92381,8 @@ class basic_renderer final
   /// \name Text rendering
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
    *
@@ -88227,6 +92920,8 @@ class basic_renderer final
     }
   }
 
+#endif  // CENTURION_NO_SDL_TTF
+
   /// \} End of text rendering
 
   /// \name Texture rendering
@@ -88676,6 +93371,8 @@ class basic_renderer final
   /// \name Font handling
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Adds a font to the renderer.
    *
@@ -88688,7 +93385,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
+  void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -88712,7 +93409,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const std::size_t id, Args&&... args)
+  void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -88733,7 +93430,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const std::size_t id)
+  void remove_font(const usize id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -88750,14 +93447,14 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  [[nodiscard]] auto get_font(const usize id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  [[nodiscard]] auto get_font(const usize id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -88773,10 +93470,12 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
+  [[nodiscard]] auto has_font(const usize id) const -> bool
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
+
+#endif  // CENTURION_NO_SDL_TTF
 
   /// \} // end of font handling
 
@@ -89264,7 +93963,10 @@ class basic_renderer final
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
     frect translation{};
-    std::unordered_map<std::size_t, font> fonts{};
+
+#ifndef CENTURION_NO_SDL_TTF
+    std::unordered_map<usize, font> fonts{};
+#endif  // CENTURION_NO_SDL_TTF
   };
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
@@ -89321,7 +94023,6 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #include <SDL.h>
 
 #include <cassert>   // assert
-#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
@@ -89344,7 +94045,6 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 
 #include <cassert>        // assert
 #include <cmath>          // floor, sqrt
-#include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -89960,6 +94660,8 @@ class basic_renderer final
   /// \name Text rendering
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Creates and returns a texture of blended UTF-8 text.
    *
@@ -90497,6 +95199,8 @@ class basic_renderer final
     }
   }
 
+#endif  // CENTURION_NO_SDL_TTF
+
   /// \} End of text rendering
 
   /// \name Texture rendering
@@ -90946,6 +95650,8 @@ class basic_renderer final
   /// \name Font handling
   /// \{
 
+#ifndef CENTURION_NO_SDL_TTF
+
   /**
    * \brief Adds a font to the renderer.
    *
@@ -90958,7 +95664,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const std::size_t id, font&& font)
+  void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -90982,7 +95688,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const std::size_t id, Args&&... args)
+  void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end())
@@ -91003,7 +95709,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const std::size_t id)
+  void remove_font(const usize id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -91020,14 +95726,14 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) -> font&
+  [[nodiscard]] auto get_font(const usize id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
+  [[nodiscard]] auto get_font(const usize id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -91043,10 +95749,12 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
+  [[nodiscard]] auto has_font(const usize id) const -> bool
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
+
+#endif  // CENTURION_NO_SDL_TTF
 
   /// \} // end of font handling
 
@@ -91534,7 +96242,10 @@ class basic_renderer final
 
     std::unique_ptr<SDL_Renderer, deleter> ptr;
     frect translation{};
-    std::unordered_map<std::size_t, font> fonts{};
+
+#ifndef CENTURION_NO_SDL_TTF
+    std::unordered_map<usize, font> fonts{};
+#endif  // CENTURION_NO_SDL_TTF
   };
 
   std::conditional_t<T::value, owning_data, SDL_Renderer*> m_renderer;
@@ -91703,7 +96414,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto format(const std::size_t index) const noexcept -> pixel_format
+  [[nodiscard]] auto format(const usize index) const noexcept -> pixel_format
   {
     assert(index < format_count());
     return static_cast<pixel_format>(m_info.texture_formats[index]);
@@ -92361,11 +97072,14 @@ namespace cen::screen {
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -92384,8 +97098,6 @@ namespace cen::screen {
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -92476,6 +97188,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -92511,6 +97225,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -92698,6 +97414,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -92751,6 +97469,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -93256,8 +97976,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -93288,16 +98008,20 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 // #include "../core/not_null.hpp"
 
@@ -93308,8 +98032,6 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -93393,6 +98115,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -93431,6 +98155,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -93522,8 +98248,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -93952,8 +98678,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**
@@ -94596,6 +99322,8 @@ using zstring = char*;
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -94603,6 +99331,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -94952,7 +99682,7 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -95066,9 +99796,18 @@ using zstring = char*;
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -95184,6 +99923,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -95212,6 +99953,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -95242,6 +99987,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -95271,6 +100020,8 @@ class mix_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_MIXER
+
 /// \} End of group core
 
 }  // namespace cen
@@ -95283,6 +100034,8 @@ class mix_error final : public cen_error
 
 #include <SDL.h>
 
+#include <cstddef>  // size_t
+
 namespace cen {
 
 /// \addtogroup core
@@ -95290,6 +100043,8 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
+
+using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;
@@ -95702,8 +100457,142 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
 
 /// \cond FALSE
 namespace cen::detail {
@@ -95720,13 +100609,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else
@@ -95857,9 +100751,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -96034,6 +100937,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -96062,6 +100967,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -96092,6 +101001,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -96120,6 +101033,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -96224,209 +101139,12 @@ class pointer_manager final
 
 #endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
-
 // #include "../math/area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
@@ -96463,203 +101181,6 @@ template <typename To, typename From>
 }  // namespace cen
 
 #endif  // CENTURION_CAST_HEADER
-
-// #include "../detail/to_string.hpp"
-#ifndef CENTURION_DETAIL_TO_STRING_HEADER
-#define CENTURION_DETAIL_TO_STRING_HEADER
-
-#include <array>         // array
-#include <charconv>      // to_chars
-#include <cstddef>       // size_t
-#include <optional>      // optional, nullopt
-#include <string>        // string, to_string
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns a string representation of an arithmetic value.
- *
- * \note This function is guaranteed to work for 32-bit integers and floats. You might
- * have to increase the buffer size for larger types.
- *
- * \remark On GCC, this function simply calls `std::to_string`, since the `std::to_chars`
- * implementation seems to be lacking at the time of writing.
- *
- * \tparam BufferSize the size of the stack buffer used, must be big enough to store the
- * characters of the string representation of the value. \tparam T the type of the value
- * that will be converted, must be arithmetic.
- *
- * \param value the value that will be converted.
- *
- * \return a string representation of the supplied value; `std::nullopt` if something goes
- * wrong.
- *
- * \since 5.0.0
- */
-template <std::size_t BufferSize = 16, typename T>
-[[nodiscard]] auto to_string(T value) -> std::optional<std::string>
-{
-  if constexpr (on_gcc() || (on_clang() && std::is_floating_point_v<T>))
-  {
-    return std::to_string(value);
-  }
-  else
-  {
-    std::array<char, BufferSize> buffer{};
-    if (const auto [ptr, error] =
-            std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-        error == std::errc{})
-    {
-      return std::string{buffer.data(), ptr};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_TO_STRING_HEADER
 
 
 namespace cen {
@@ -96877,8 +101398,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -96911,7 +101432,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <SDL.h>
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
@@ -96988,19 +101509,15 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_MIN_HEADER
 
-// #include "../detail/to_string.hpp"
-
 // #include "area.hpp"
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 // #include "../core/cast.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -97218,8 +101735,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  return "area{width: " + detail::to_string(area.width).value() +
-         ", height: " + detail::to_string(area.height).value() + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 }
 
 /**
@@ -97253,14 +101770,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 // #include "../core/cast.hpp"
 
 // #include "../core/sfinae.hpp"
-
-// #include "../detail/to_string.hpp"
 
 
 namespace cen {
@@ -97617,14 +102132,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>
@@ -98607,10 +103122,9 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  return "rect{x: " + detail::to_string(rect.x()).value() +
-         ", y: " + detail::to_string(rect.y()).value() +
-         ", width: " + detail::to_string(rect.width()).value() +
-         ", height: " + detail::to_string(rect.height()).value() + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 }
 
 /**
@@ -98695,14 +103209,226 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
+// #include "../compiler/compiler.hpp"
+#ifndef CENTURION_COMPILER_HEADER
+#define CENTURION_COMPILER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup compiler
+/// \{
+
+/**
+ * \brief Indicates whether or not a "debug" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a debug build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
+{
+#ifndef NDEBUG
+  return true;
+#else
+  return false;
+#endif  // NDEBUG
+}
+
+/**
+ * \brief Indicates whether or not a "release" build mode is active.
+ *
+ * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
+ * conditional compilation, since the use of `if constexpr` prevents any branch to be
+ * ill-formed, which avoids code rot.
+ *
+ * \return `true` if a release build mode is currently active; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
+{
+  return !is_debug_build();
+}
+
+/**
+ * \brief Indicates whether or not the compiler is MSVC.
+ *
+ * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
+{
+#ifdef _MSC_VER
+  return true;
+#else
+  return false;
+#endif  // _MSC_VER
+}
+
+/**
+ * \brief Indicates whether or not the compiler is GCC.
+ *
+ * \return `true` if GCC is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
+{
+#ifdef __GNUC__
+  return true;
+#else
+  return false;
+#endif  // __GNUC__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Clang.
+ *
+ * \return `true` if Clang is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_clang() noexcept -> bool
+{
+#ifdef __clang__
+  return true;
+#else
+  return false;
+#endif  // __clang__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Emscripten.
+ *
+ * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
+{
+#ifdef __EMSCRIPTEN__
+  return true;
+#else
+  return false;
+#endif  // __EMSCRIPTEN__
+}
+
+/**
+ * \brief Indicates whether or not the compiler is Intel C++.
+ *
+ * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
+{
+#ifdef __INTEL_COMPILER
+  return true;
+#else
+  return false;
+#endif  // __INTEL_COMPILER
+}
+
+/// \} End of compiler group
+
+}  // namespace cen
+
+#endif  // CENTURION_COMPILER_HEADER
+
+// #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
 
-// #include "../detail/to_string.hpp"
+// #include "../detail/clamp.hpp"
+
+// #include "../detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc())
+    -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>)
+  {
+    if constexpr (on_gcc() || on_clang())
+    {
+      try
+      {
+        value = std::stof(std::string{str});
+      }
+      catch (...)
+      {
+        return std::nullopt;
+      }
+    }
+    else
+    {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+  }
+  else
+  {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{})
+  {
+    return value;
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
 
 namespace cen {
@@ -98778,9 +103504,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -98790,26 +103514,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -98821,7 +103540,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -98850,19 +103569,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -98872,28 +103602,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -98932,13 +103658,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -99048,6 +103949,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -99080,6 +104029,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -99199,10 +104213,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -99236,6 +104250,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */
@@ -99794,11 +104810,14 @@ class basic_pixel_format_info final
 #define CENTURION_SURFACE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -99817,8 +104836,6 @@ class basic_pixel_format_info final
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -100000,6 +105017,8 @@ class basic_surface final
 
   // clang-format on
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a surface based on the image at the specified path.
    *
@@ -100035,6 +105054,8 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const std::string& file) : basic_surface{file.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates a surface with the specified dimensions and pixel format.
@@ -100222,6 +105243,8 @@ class basic_surface final
     return save_as_bmp(file.c_str());
   }
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Saves the surface as a PNG image.
    *
@@ -100275,6 +105298,8 @@ class basic_surface final
   {
     return save_as_jpg(file.c_str(), quality);
   }
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /// \} End of save functions
 
@@ -100780,8 +105805,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
   return "surface{data: " + detail::address_of(surface.get()) +
-         ", width: " + detail::to_string(surface.width()).value() +
-         ", height: " + detail::to_string(surface.height()).value() + "}";
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 }
 
 /**
@@ -102090,8 +107115,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**
@@ -102238,9 +107263,18 @@ template <typename T>
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -102356,6 +107390,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -102384,6 +107420,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -102414,6 +107454,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -102442,6 +107486,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 
@@ -102507,7 +107553,7 @@ class vk_library final
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 // #include "../core/czstring.hpp"
 
@@ -102530,8 +107576,6 @@ class vk_library final
 // #include "../detail/max.hpp"
 
 // #include "../detail/owner_handle_api.hpp"
-
-// #include "../detail/to_string.hpp"
 
 // #include "../math/area.hpp"
 
@@ -103824,8 +108868,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
   return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + detail::to_string(window.width()).value() +
-         ", height: " + detail::to_string(window.height()).value() + "}";
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 }
 
 /**

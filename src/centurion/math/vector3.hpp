@@ -2,9 +2,7 @@
 #define CENTURION_VECTOR3_HEADER
 
 #include <ostream>  // ostream
-#include <string>   // string
-
-#include "../detail/to_string.hpp"
+#include <string>   // string, to_string
 
 namespace cen {
 
@@ -125,9 +123,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-  return "vector3{x: " + detail::to_string(vector.x).value() +
-         ", y: " + detail::to_string(vector.y).value() +
-         ", z: " + detail::to_string(vector.z).value() + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 }
 
 /**

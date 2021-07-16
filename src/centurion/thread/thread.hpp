@@ -5,7 +5,7 @@
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -14,7 +14,6 @@
 #include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -324,7 +323,7 @@ class thread final
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
-         ", id: " + detail::to_string(thread.get_id()).value() + "}";
+         ", id: " + std::to_string(thread.get_id()) + "}";
 }
 
 /**

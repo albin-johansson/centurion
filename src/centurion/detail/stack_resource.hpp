@@ -1,18 +1,19 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+#include "../core/integers.hpp"
 #include "../core/macros.hpp"
 
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #include <array>            // array
-#include <cstddef>          // byte, size_t
+#include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <std::size_t BufferSize>
+template <usize BufferSize>
 class stack_resource final
 {
  public:

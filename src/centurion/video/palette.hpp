@@ -6,13 +6,12 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/result.hpp"
 #include "../detail/address_of.hpp"
-#include "../detail/to_string.hpp"
 #include "color.hpp"
 
 namespace cen {
@@ -216,7 +215,7 @@ class palette final
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
   return "palette{data: " + detail::address_of(palette.get()) +
-         ", size: " + detail::to_string(palette.size()).value() + "}";
+         ", size: " + std::to_string(palette.size()) + "}";
 }
 
 /**

@@ -15,6 +15,7 @@
 #include "../../core/result.hpp"
 #include "../../core/to_underlying.hpp"
 #include "../../math/area.hpp"
+#include "../texture.hpp"
 #include "../window.hpp"
 #include "gl_attribute.hpp"
 #include "gl_context.hpp"
@@ -219,6 +220,50 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
     -> bool
 {
   return is_extension_supported(extension.c_str());
+}
+
+/**
+ * \brief Binds a texture to the current OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to bind.
+ *
+ * \return the size of the texture if it was successfully bound; `std::nullopt` if
+ * something goes wrong.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
+{
+  float width{};
+  float height{};
+  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0)
+  {
+    return farea{width, height};
+  }
+  else
+  {
+    return std::nullopt;
+  }
+}
+
+/**
+ * \brief Unbinds a texture from the OpenGL context.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param texture the texture to unbind.
+ *
+ * \return `success` if the texture was unbound; `failure` otherwise.
+ *
+ * \since 6.1.0
+ */
+template <typename T>
+auto unbind(basic_texture<T>& texture) noexcept -> result
+{
+  return SDL_GL_UnbindTexture(texture.get()) == 0;
 }
 
 /// \} End of group video

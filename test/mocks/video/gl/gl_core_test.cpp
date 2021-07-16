@@ -23,6 +23,8 @@ FAKE_VALUE_FUNC(int, SDL_GL_GetAttribute, SDL_GLattr, int*)
 FAKE_VALUE_FUNC(SDL_Window*, SDL_GL_GetCurrentWindow)
 FAKE_VALUE_FUNC(void*, SDL_GL_GetCurrentContext)
 FAKE_VALUE_FUNC(SDL_bool, SDL_GL_ExtensionSupported, const char*)
+FAKE_VALUE_FUNC(int, SDL_GL_BindTexture, SDL_Texture*, float*, float*)
+FAKE_VALUE_FUNC(int, SDL_GL_UnbindTexture, SDL_Texture*)
 }
 // clang-format on
 
@@ -44,6 +46,8 @@ class OpenGLTest : public testing::Test
     RESET_FAKE(SDL_GL_GetCurrentWindow)
     RESET_FAKE(SDL_GL_GetCurrentContext)
     RESET_FAKE(SDL_GL_ExtensionSupported)
+    RESET_FAKE(SDL_GL_BindTexture)
+    RESET_FAKE(SDL_GL_UnbindTexture)
   }
 
   cen::window_handle m_window{nullptr};
@@ -135,4 +139,26 @@ TEST_F(OpenGLTest, IsExtensionSupported)
   ASSERT_TRUE(cen::gl::is_extension_supported("foo"s));
 
   ASSERT_EQ(2, SDL_GL_ExtensionSupported_fake.call_count);
+}
+
+TEST_F(OpenGLTest, Bind)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GL_BindTexture, values.data(), cen::isize(values));
+
+  cen::texture_handle texture{nullptr};
+  ASSERT_FALSE(cen::gl::bind(texture));
+  ASSERT_TRUE(cen::gl::bind(texture));
+  ASSERT_EQ(2, SDL_GL_BindTexture_fake.call_count);
+}
+
+TEST_F(OpenGLTest, Unbind)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GL_UnbindTexture, values.data(), cen::isize(values));
+
+  cen::texture_handle texture{nullptr};
+  ASSERT_FALSE(cen::gl::unbind(texture));
+  ASSERT_TRUE(cen::gl::unbind(texture));
+  ASSERT_EQ(2, SDL_GL_UnbindTexture_fake.call_count);
 }

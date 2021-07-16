@@ -35,9 +35,18 @@
 #define CENTURION_LIBRARY_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <cassert>   // assert
 #include <optional>  // optional
@@ -106,15 +115,18 @@ struct config final
 
   u32 coreFlags{SDL_INIT_EVERYTHING};
 
+#ifndef CENTURION_NO_SDL_IMAGE
   int imageFlags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_MIXER
   int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
                  MIX_INIT_MOD | MIX_INIT_OPUS};
-
   int mixerFreq{MIX_DEFAULT_FREQUENCY};
   u16 mixerFormat{MIX_DEFAULT_FORMAT};
   int mixerChannels{MIX_DEFAULT_CHANNELS};
   int mixerChunkSize{4096};
+#endif  // CENTURION_NO_SDL_MIXER
 };
 
 /**
@@ -211,6 +223,8 @@ class library final
     }
   };
 
+#ifndef CENTURION_NO_SDL_TTF
+
   struct sdl_ttf final
   {
     explicit sdl_ttf()
@@ -226,6 +240,10 @@ class library final
       TTF_Quit();
     }
   };
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
 
   struct sdl_mixer final
   {
@@ -253,6 +271,10 @@ class library final
     }
   };
 
+#endif  // #ifndef CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
   struct sdl_image final
   {
     explicit sdl_image(const int flags)
@@ -269,11 +291,22 @@ class library final
     }
   };
 
+#endif  // CENTURION_NO_SDL_IMAGE
+
   config m_cfg;
   std::optional<sdl> m_sdl;
+
+#ifndef CENTURION_NO_SDL_IMAGE
   std::optional<sdl_image> m_img;
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
   std::optional<sdl_ttf> m_ttf;
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
   std::optional<sdl_mixer> m_mixer;
+#endif  // CENTURION_NO_SDL_MIXER
 
   void init()
   {
@@ -282,16 +315,21 @@ class library final
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
+#ifndef CENTURION_NO_SDL_IMAGE
     if (m_cfg.initImage)
     {
       m_img.emplace(m_cfg.imageFlags);
     }
+#endif  // CENTURION_NO_SDL_IMAGE
 
+#ifndef CENTURION_NO_SDL_TTF
     if (m_cfg.initTTF)
     {
       m_ttf.emplace();
     }
+#endif  // CENTURION_NO_SDL_TTF
 
+#ifndef CENTURION_NO_SDL_MIXER
     if (m_cfg.initMixer)
     {
       m_mixer.emplace(m_cfg.mixerFlags,
@@ -300,6 +338,7 @@ class library final
                       m_cfg.mixerChannels,
                       m_cfg.mixerChunkSize);
     }
+#endif  // CENTURION_NO_SDL_MIXER
   }
 };
 

@@ -5,12 +5,11 @@
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
-#include <string>       // string
+#include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #include "../core/cast.hpp"
 #include "../core/sfinae.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -366,14 +365,14 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-  return "ipoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-  return "fpoint{x: " + detail::to_string(point.x()).value() +
-         ", y: " + detail::to_string(point.y()).value() + "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
+         "}";
 }
 
 template <typename T>

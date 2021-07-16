@@ -84,22 +84,22 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Sets the status of a key modifier.
+   * \brief Sets the status of key modifiers.
    *
-   * \param modifier the key modifier that will be affected.
-   * \param active `true` if the key modifier is active; `false` otherwise.
+   * \param modifiers the modifiers that will be affected.
+   * \param active `true` if the modifiers should be active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
     if (active)
     {
-      m_event.keysym.mod |= to_underlying(modifier);
+      m_event.keysym.mod |= to_underlying(modifiers);
     }
     else
     {
-      m_event.keysym.mod &= ~to_underlying(modifier);
+      m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
 
@@ -162,19 +162,119 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers to check for.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   * \see `is_only_any_of_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+    else
+    {
+      return m_event.keysym.mod & to_underlying(modifiers);
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_mod)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+    const auto hits = m_event.keysym.mod & mask;
+
+    if (hits != mask)
+    {
+      return false;  // The specified modifiers were a combo that wasn't fully active
+    }
+    else
+    {
+      const auto others = m_event.keysym.mod & ~hits;
+      return hits && !others;
+    }
+  }
+
+  /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_only_active(key_mod)`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
+  {
+    if (modifiers == key_mod::none)
+    {
+      return !m_event.keysym.mod;
+    }
+
+    const auto mask = to_underlying(modifiers);
+
+    const auto hits = m_event.keysym.mod & mask;
+    const auto others = m_event.keysym.mod & ~hits;
+
+    return hits && !others;
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifier are active.
+   *
+   * \note Multiple key modifiers can be active at the same time.
+   *
+   * \param modifier the key modifiers that will be checked.
+   *
+   * \return `true` if any of the specified modifiers are active; `false` otherwise.
+   *
+   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept -> bool
+  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
+      -> bool
   {
-    return m_event.keysym.mod & to_underlying(modifier);
+    return is_active(modifier);
   }
 
   /**
@@ -182,12 +282,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto shift_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_shift) ||
-           modifier_active(key_modifier::right_shift);
+    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
   }
 
   /**
@@ -195,12 +296,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_ctrl) ||
-           modifier_active(key_modifier::right_ctrl);
+    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
   }
 
   /**
@@ -208,12 +310,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto alt_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_alt) ||
-           modifier_active(key_modifier::right_alt);
+    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
   }
 
   /**
@@ -221,12 +324,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gui_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::left_gui) ||
-           modifier_active(key_modifier::right_gui);
+    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
   }
 
   /**
@@ -234,11 +338,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto caps_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::caps);
+    return is_active(key_mod::caps);
   }
 
   /**
@@ -246,11 +352,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
+   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto num_active() const noexcept -> bool
+  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
   {
-    return modifier_active(key_modifier::num);
+    return is_active(key_mod::num);
   }
 
   /**
@@ -314,11 +422,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the scan code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto scan() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
+
+  /**
+   * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
   {
-    return m_event.keysym.scancode;
+    return scan();
   }
 
   /**
@@ -326,11 +443,20 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return the key code that is associated with the event.
    *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto key() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
+
+  /**
+   * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
   [[nodiscard]] auto get_key_code() const noexcept -> key_code
   {
-    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+    return key();
   }
 
   /**

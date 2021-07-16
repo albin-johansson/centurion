@@ -207,19 +207,19 @@ class keyboard final
   }
 
   /**
-   * \brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not any of the specified modifiers are active.
    *
    * \note Multiple key modifiers can be active at the same time.
    *
-   * \param modifier the key modifier that will be checked.
+   * \param modifiers the modifiers that will be checked.
    *
-   * \return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if any of the modifiers are active; `false` otherwise.
    *
    * \since 4.0.0
    */
-  [[nodiscard]] static auto is_active(const key_modifier modifier) noexcept -> bool
+  [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
+    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
   }
 
   /**

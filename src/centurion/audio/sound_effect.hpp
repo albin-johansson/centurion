@@ -1,13 +1,15 @@
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -19,7 +21,6 @@
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -503,7 +504,7 @@ class basic_sound_effect final
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
   return "sound_effect{data: " + detail::address_of(sound.get()) +
-         ", volume: " + detail::to_string(sound.volume()).value() + "}";
+         ", volume: " + std::to_string(sound.volume()) + "}";
 }
 
 /**
@@ -525,4 +526,5 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_SOUND_EFFECT_HEADER

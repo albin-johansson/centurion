@@ -113,13 +113,28 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    * \brief Sets the number of fingers that was used in the gesture associated
    * with the event.
    *
+   * \param count the number of fingers that were use.
+   *
+   * \since 6.1.0
+   */
+  void set_finger_count(const u16 count) noexcept
+  {
+    m_event.numFingers = count;
+  }
+
+  /**
+   * \brief Sets the number of fingers that was used in the gesture associated
+   * with the event.
+   *
    * \param nFingers the number of fingers that was used in the gesture.
+   *
+   * \deprecated Since 6.1.0, use `set_finger_count()` instead.
    *
    * \since 4.0.0
    */
-  void set_fingers(const u16 nFingers) noexcept
+  [[deprecated]] void set_fingers(const u16 nFingers) noexcept
   {
-    m_event.numFingers = nFingers;
+    set_finger_count(nFingers);
   }
 
   /**
@@ -189,17 +204,32 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 
   /**
+   * \brief Returns the amount of fingers used in the gesture associated with the event.
+   *
+   * \return the amount of fingers used in the gesture.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto finger_count() const noexcept -> u16
+  {
+    return m_event.numFingers;
+  }
+
+  /**
    * \brief Returns the amount of fingers used in the gesture associated with
    * the event.
    *
    * \return the amount of fingers used in the gesture associated with the
    * event.
    *
+   * \deprecated Since 6.1.0, use `finger_count()` instead. Note, this function
+   * incorrectly returns a `float`, and will be removed shortly.
+   *
    * \since 4.0.0
    */
-  [[nodiscard]] auto fingers() const noexcept -> float
+  [[nodiscard, deprecated]] auto fingers() const noexcept -> float
   {
-    return m_event.numFingers;
+    return finger_count();
   }
 };
 

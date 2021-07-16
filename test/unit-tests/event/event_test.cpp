@@ -403,3 +403,9 @@ TEST(Event, TryGet)
   ASSERT_TRUE(cEvent.try_get<cen::mouse_motion_event>());
   ASSERT_FALSE(cEvent.try_get<cen::window_event>());
 }
+
+TEST(Event, Data)
+{
+  cen::event event;
+  ASSERT_TRUE(event.data());
+}

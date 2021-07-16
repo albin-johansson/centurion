@@ -29,8 +29,8 @@ TEST(KeyboardEvent, SetModifier)
 {
   cen::keyboard_event event;
 
-  constexpr auto shift = cen::key_modifier::left_shift;
-  constexpr auto caps = cen::key_modifier::caps;
+  constexpr auto shift = cen::key_mod::left_shift;
+  constexpr auto caps = cen::key_mod::caps;
 
   event.set_modifier(shift, true);
   ASSERT_TRUE(event.modifier_active(shift));
@@ -80,6 +80,69 @@ TEST(KeyboardEvent, IsActive)
   ASSERT_FALSE(event.is_active(cen::scancodes::o));
 }
 
+TEST(KeyboardEvent, IsOnlyActive)
+{
+  cen::keyboard_event event;
+  ASSERT_TRUE(event.is_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+
+  event.set_modifier(cen::key_mod::shift, true);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::left_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::right_shift));
+
+  event.set_modifier(cen::key_mod::alt, true);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::alt));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::alt));
+
+  event.set_modifier(cen::key_mod::alt, false);
+  event.set_modifier(cen::key_mod::right_shift, false);
+  ASSERT_FALSE(event.is_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::left_shift));
+  ASSERT_FALSE(event.is_active(cen::key_mod::right_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::left_shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::right_shift));
+}
+
+TEST(KeyboardEvent, IsOnlyAnyOfActive)
+{
+  cen::keyboard_event event;
+  ASSERT_TRUE(event.is_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::none));
+  ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::none));
+  ASSERT_FALSE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_any_of_active(cen::key_mod::shift));
+
+  event.set_modifier(cen::key_mod::left_shift, true);
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::shift));
+  ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::left_shift));
+
+  event.set_modifier(cen::key_mod::right_gui, true);
+  ASSERT_TRUE(event.is_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_active(cen::key_mod::shift));
+  ASSERT_FALSE(event.is_only_any_of_active(cen::key_mod::shift));
+
+  ASSERT_TRUE(event.is_only_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
+  ASSERT_TRUE(
+      event.is_only_any_of_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
+  ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::shift | cen::key_mod::gui));
+}
+
 TEST(KeyboardEvent, ModifierActive)
 {
   SDL_KeyboardEvent sdl{};
@@ -92,8 +155,8 @@ TEST(KeyboardEvent, ModifierActive)
   const cen::keyboard_event event{sdl};
 
   // Check that multiple key modifiers can be active at the same time
-  ASSERT_TRUE(event.modifier_active(cen::key_modifier::left_alt));
-  ASSERT_TRUE(event.modifier_active(cen::key_modifier::caps));
+  ASSERT_TRUE(event.modifier_active(cen::key_mod::left_alt));
+  ASSERT_TRUE(event.modifier_active(cen::key_mod::caps));
 }
 
 TEST(KeyboardEvent, ShiftActive)
@@ -290,19 +353,11 @@ TEST(KeyboardEvent, NumActive)
 
 TEST(KeyboardEvent, Repeated)
 {
-  const auto createEvent = [](const int repeats) noexcept {
-    SDL_KeyboardEvent sdl{};
-    sdl.repeat = static_cast<cen::u8>(repeats);
-    return cen::keyboard_event{sdl};
-  };
+  cen::keyboard_event event;
+  ASSERT_FALSE(event.repeated());
 
-  const auto noRepeat = createEvent(0);
-  const auto oneRepeat = createEvent(1);
-  const auto twoRepeats = createEvent(2);
-
-  ASSERT_FALSE(noRepeat.repeated());
-  ASSERT_TRUE(oneRepeat.repeated());
-  ASSERT_TRUE(twoRepeats.repeated());
+  event.set_repeated(true);
+  ASSERT_TRUE(event.repeated());
 }
 
 TEST(KeyboardEvent, State)

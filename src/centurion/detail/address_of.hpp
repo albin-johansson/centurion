@@ -1,8 +1,10 @@
 #ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
 #define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#include <sstream>  // ostringstream
+#include <sstream>  // stringstream
 #include <string>   // string
+
+#include "../compiler/compiler.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -19,13 +21,18 @@ namespace cen::detail {
  *
  * \since 3.0.0
  */
-template <typename T>
-[[nodiscard]] auto address_of(const T* ptr) -> std::string
+[[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
   if (ptr)
   {
-    std::ostringstream stream;
-    stream << static_cast<const void*>(ptr);
+    std::stringstream stream;
+
+    if constexpr (on_msvc())
+    {
+      stream << "0x";  // Only MSVC seems to omit this, add it for consistency
+    }
+
+    stream << ptr;
     return stream.str();
   }
   else

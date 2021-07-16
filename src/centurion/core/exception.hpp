@@ -2,9 +2,18 @@
 #define CENTURION_EXCEPTION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
 
 #include <exception>  // exception
 
@@ -73,6 +82,8 @@ class sdl_error final : public cen_error
   {}
 };
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
 /**
  * \class img_error
  *
@@ -101,6 +112,10 @@ class img_error final : public cen_error
   explicit img_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
 
 /**
  * \class ttf_error
@@ -131,6 +146,10 @@ class ttf_error final : public cen_error
   {}
 };
 
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
 /**
  * \class mix_error
  *
@@ -159,6 +178,8 @@ class mix_error final : public cen_error
   explicit mix_error(const czstring what) noexcept : cen_error{what}
   {}
 };
+
+#endif  // CENTURION_NO_SDL_MIXER
 
 /// \} End of group core
 

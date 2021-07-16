@@ -3,13 +3,21 @@
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <cmath>    // round, fabs, fmod
-#include <ostream>  // ostream
-#include <string>   // string
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
+#include "../compiler/compiler.hpp"
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
-#include "../detail/to_string.hpp"
+#include "../detail/clamp.hpp"
+#include "../detail/from_string.hpp"
 
 namespace cen {
 
@@ -84,9 +92,7 @@ class color final
   /**
    * \brief Creates a color from HSV-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `value` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -96,26 +102,21 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsv(const double hue,
-                                     const double saturation,
-                                     const double value) -> color
+  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(value >= 0);
-    assert(value <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    value = detail::clamp(value, 0.0f, 100.0f);
 
-    const auto v = (value / 100.0);
-    const auto chroma = v * (saturation / 100.0);
-    const auto hp = hue / 60.0;
+    const auto v = (value / 100.0f);
+    const auto chroma = v * (saturation / 100.0f);
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1.0 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp <= 1)
     {
@@ -127,7 +128,7 @@ class color final
     {
       red = x;
       green = chroma;
-      blue = 0.0;
+      blue = 0;
     }
     else if (2 < hp && hp <= 3)
     {
@@ -156,19 +157,30 @@ class color final
 
     const auto m = v - chroma;
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
-   * \pre `hue` must be in the range [0, 360].
-   * \pre `saturation` must be in the range [0, 100].
-   * \pre `lightness` must be in the range [0, 100].
+   * \note The values will be clamped to be within their respective ranges.
    *
    * \param hue the hue of the color, in the range [0, 360].
    * \param saturation the saturation of the color, in the range [0, 100].
@@ -178,28 +190,24 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(const double hue,
-                                     const double saturation,
-                                     const double lightness) -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
+      -> color
   {
-    assert(hue >= 0);
-    assert(hue <= 360);
-    assert(saturation >= 0);
-    assert(saturation <= 100);
-    assert(lightness >= 0);
-    assert(lightness <= 100);
+    hue = detail::clamp(hue, 0.0f, 360.0f);
+    saturation = detail::clamp(saturation, 0.0f, 100.0f);
+    lightness = detail::clamp(lightness, 0.0f, 100.0f);
 
-    const auto s = saturation / 100.0;
-    const auto l = lightness / 100.0;
+    const auto s = saturation / 100.0f;
+    const auto l = lightness / 100.0f;
 
-    const auto chroma = (1.0 - std::fabs(2.0 * l - 1)) * s;
-    const auto hp = hue / 60.0;
+    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
+    const auto hp = hue / 60.0f;
 
-    const auto x = chroma * (1 - std::fabs(std::fmod(hp, 2.0) - 1.0));
+    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
 
-    double red{};
-    double green{};
-    double blue{};
+    float red{};
+    float green{};
+    float blue{};
 
     if (0 <= hp && hp < 1)
     {
@@ -238,13 +246,188 @@ class color final
       blue = x;
     }
 
-    const auto m = l - (chroma / 2.0);
+    const auto m = l - (chroma / 2.0f);
 
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0));
+    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
+    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
+    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 7
+   * characters long.
+   *
+   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgba()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
+  {
+    if (rgb.length() != 7 || rgb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgb.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (red && green && blue)
+    {
+      return cen::color{*red, *green, *blue};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal RGBA color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
+  {
+    if (rgba.length() != 9 || rgba.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = rgba.substr(1);
+
+    const auto rr = noHash.substr(0, 2);
+    const auto gg = noHash.substr(2, 2);
+    const auto bb = noHash.substr(4, 2);
+    const auto aa = noHash.substr(6, 2);
+
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::from_string<u8>(aa, 16);
+
+    if (red && green && blue && alpha)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from a hexadecimal ARGB color string.
+   *
+   * \details The supplied string must feature a leading '#' character, and be 9
+   * characters long.
+   *
+   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
+   *
+   * \return a corresponding color; `std::nullopt` if something goes wrong.
+   *
+   * \see `from_rgb()`
+   * \see `from_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
+  {
+    if (argb.length() != 9 || argb.at(0) != '#')
+    {
+      return std::nullopt;
+    }
+
+    const auto noHash = argb.substr(1);
+
+    const auto aa = noHash.substr(0, 2);
+    const auto rr = noHash.substr(2, 2);
+    const auto gg = noHash.substr(4, 2);
+    const auto bb = noHash.substr(6, 2);
+
+    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::from_string<u8>(rr, 16);
+    const auto green = detail::from_string<u8>(gg, 16);
+    const auto blue = detail::from_string<u8>(bb, 16);
+
+    if (alpha && red && green && blue)
+    {
+      return cen::color{*red, *green, *blue, *alpha};
+    }
+    else
+    {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * \brief Creates a color from normalized color component values.
+   *
+   * \note The color components will be clamped to the range [0, 1].
+   *
+   * \param red the red component value, in the range [0, 1].
+   * \param green the green component value, in the range [0, 1].
+   * \param blue the blue component value, in the range [0, 1].
+   * \param alpha the alpha component value, in the range [0, 1].
+   *
+   * \return a color with the supplied color components.
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] static auto from_norm(float red,
+                                      float green,
+                                      float blue,
+                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
+  {
+    red = detail::clamp(red, 0.0f, 1.0f);
+    green = detail::clamp(green, 0.0f, 1.0f);
+    blue = detail::clamp(blue, 0.0f, 1.0f);
+    alpha = detail::clamp(alpha, 0.0f, 1.0f);
+
+    const auto r = static_cast<u8>(std::round(red * 255.0f));
+    const auto g = static_cast<u8>(std::round(green * 255.0f));
+    const auto b = static_cast<u8>(std::round(blue * 255.0f));
+    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
+
+    return color{r, g, b, a};
   }
 
   /// \} End of construction
@@ -354,6 +537,54 @@ class color final
   }
 
   /**
+   * \brief Returns the normalized red component of the color.
+   *
+   * \return the red component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.r) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized green component of the color.
+   *
+   * \return the green component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.g) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized blue component of the color.
+   *
+   * \return the blue component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.b) / 255.0f;
+  }
+
+  /**
+   * \brief Returns the normalized alpha component of the color.
+   *
+   * \return the alpha component value, in the range [0, 1].
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
+  {
+    return static_cast<float>(m_color.a) / 255.0f;
+  }
+
+  /**
    * \brief Returns a pointer to the internal SDL color.
    *
    * \warning Do not cache the returned pointer!
@@ -386,6 +617,71 @@ class color final
   }
 
   /// \} End of getters
+
+  /// \name Color string conversions
+  /// \{
+
+  /**
+   * \brief Returns a hexadecimal RGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBB".
+   *
+   * \see `as_rgba()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal RGBA color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
+   *
+   * \see `as_rgb()`
+   * \see `as_argb()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_rgba() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+    return stream.str();
+  }
+
+  /**
+   * \brief Returns a hexadecimal ARGB color string that represents the color.
+   *
+   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
+   *
+   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
+   *
+   * \see `as_rgb()`
+   * \see `as_rgba()`
+   *
+   * \since 6.1.0
+   */
+  [[nodiscard]] auto as_argb() const -> std::string
+  {
+    std::stringstream stream;
+    stream << std::setfill('0') << std::hex << std::uppercase;
+    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+    return stream.str();
+  }
+
+  /// \} End of color string conversions
 
   /// \name Conversions
   /// \{
@@ -505,10 +801,10 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-  return "color{r: " + detail::to_string(color.red()).value() +
-         ", g: " + detail::to_string(color.green()).value() +
-         ", b: " + detail::to_string(color.blue()).value() +
-         ", a: " + detail::to_string(color.alpha()).value() + "}";
+  return "color{r: " + std::to_string(color.red()) +
+         ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) +
+         ", a: " + std::to_string(color.alpha()) + "}";
 }
 
 /**
@@ -542,6 +838,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  * \param bias the bias that determines how the colors are blended, in the range [0, 1].
  *
  * \return a color obtained by blending the two supplied colors.
+ *
+ * \todo Centurion 7: Make the bias parameter a `float`.
  *
  * \since 6.0.0
  */

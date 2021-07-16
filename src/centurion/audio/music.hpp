@@ -1,13 +1,15 @@
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
+#ifndef CENTURION_NO_SDL_MIXER
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -18,7 +20,6 @@
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
-#include "../detail/to_string.hpp"
 
 namespace cen {
 
@@ -602,7 +603,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
   return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + detail::to_string(music::volume()).value() + "}";
+         ", volume: " + std::to_string(music::volume()) + "}";
 }
 
 /**
@@ -720,4 +721,5 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_MIXER
 #endif  // CENTURION_MUSIC_HEADER

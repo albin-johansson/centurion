@@ -1,20 +1,21 @@
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
+#ifndef CENTURION_NO_SDL_TTF
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
 #include <memory>    // unique_ptr
 #include <optional>  // optional
 #include <ostream>   // ostream
-#include <string>    // string
+#include <string>    // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "unicode_string.hpp"
 
@@ -763,7 +764,7 @@ class font final
 {
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
-         ", size: " + detail::to_string(font.size()).value() + "}";
+         ", size: " + std::to_string(font.size()) + "}";
 }
 
 /**
@@ -785,4 +786,5 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 }  // namespace cen
 
+#endif  // CENTURION_NO_SDL_TTF
 #endif  // CENTURION_FONT_HEADER

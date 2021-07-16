@@ -2,21 +2,23 @@
 #define CENTURION_TEXTURE_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
-#include <cstddef>  // size_t
 #include <ostream>  // ostream
-#include <string>   // string
+#include <string>   // string, to_string
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
+#include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
-#include "../detail/to_string.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"
 #include "blend_mode.hpp"
@@ -91,6 +93,8 @@ class basic_texture final
   explicit basic_texture(texture& owner) noexcept : m_texture{owner.get()}
   {}
 
+#ifndef CENTURION_NO_SDL_IMAGE
+
   /**
    * \brief Creates a texture based the image at the specified path.
    *
@@ -129,6 +133,8 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const std::string& path)
       : basic_texture{renderer, path.c_str()}
   {}
+
+#endif  // CENTURION_NO_SDL_IMAGE
 
   /**
    * \brief Creates an texture that is a copy of the supplied surface.
@@ -220,8 +226,8 @@ class basic_texture final
       throw sdl_error{};
     }
 
-    const auto maxCount = static_cast<std::size_t>(surface.pitch()) *
-                          static_cast<std::size_t>(surface.height());
+    const auto maxCount =
+        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();
@@ -650,8 +656,8 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
   return "texture{data: " + detail::address_of(texture.get()) +
-         ", width: " + detail::to_string(texture.width()).value() +
-         ", height: " + detail::to_string(texture.height()).value() + "}";
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 }
 
 /**

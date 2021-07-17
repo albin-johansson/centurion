@@ -30,6 +30,10 @@
     #define CENTURION_HAS_FEATURE_LERP
   #endif  // __cpp_lib_interpolate
 
+  #ifdef __cpp_lib_three_way_comparison
+    #define CENTURION_HAS_FEATURE_SPACESHIP
+  #endif  // __cpp_lib_three_way_comparison
+
 #endif  // __has_include
 
 #endif  // CENTURION_FEATURES_HEADER

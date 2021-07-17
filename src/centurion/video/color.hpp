@@ -1,6 +1,10 @@
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -12,6 +16,12 @@
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+  #include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../compiler/compiler.hpp"
 #include "../core/exception.hpp"
@@ -801,10 +811,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

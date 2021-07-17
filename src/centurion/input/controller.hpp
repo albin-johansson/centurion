@@ -50,12 +50,12 @@ enum class controller_type
   ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
   ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
 
-  #if SDL_VERSION_ATLEAST(2, 0, 14)
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 
   ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
   virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
 
-  #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
                                                                  ///< Pro controller.
@@ -709,7 +709,7 @@ class basic_controller final
     return SDL_GameControllerRumbleTriggers(m_controller, lo, hi, duration.count()) == 0;
   }
 
-    // clang-format on
+  // clang-format on
 
 #endif  // SDL_VERSION(2, 0, 14)
 

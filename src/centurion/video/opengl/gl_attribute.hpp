@@ -3,8 +3,8 @@
 
 #ifndef CENTURION_NO_OPENGL
 
-  #include <SDL.h>
-  #include <SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 namespace cen {
 

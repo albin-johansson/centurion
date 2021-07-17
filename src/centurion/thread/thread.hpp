@@ -14,13 +14,13 @@
 
 #ifdef CENTURION_HAS_FEATURE_CONCEPTS
 
-  #include <concepts>  // convertible_to, default_initializable, invocable
+#include <concepts>  // convertible_to, default_initializable, invocable
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 #ifdef CENTURION_HAS_FEATURE_FORMAT
 
-  #include <format>  // format
+#include <format>  // format
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 

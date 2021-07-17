@@ -35,5 +35,5 @@ AllowAllConstructorInitializersOnNextLine: false
 
 BreakInheritanceList: BeforeColon
 
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: None
 IndentRequires: true

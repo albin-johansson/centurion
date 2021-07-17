@@ -3,22 +3,22 @@
 
 #ifndef CENTURION_NO_OPENGL
 
-  #include <SDL.h>
-  #include <SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 
-  #include <cassert>   // assert
-  #include <optional>  // optional
-  #include <string>    // string
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <string>    // string
 
-  #include "../../core/czstring.hpp"
-  #include "../../core/not_null.hpp"
-  #include "../../core/result.hpp"
-  #include "../../core/to_underlying.hpp"
-  #include "../../math/area.hpp"
-  #include "../texture.hpp"
-  #include "../window.hpp"
-  #include "gl_attribute.hpp"
-  #include "gl_context.hpp"
+#include "../../core/czstring.hpp"
+#include "../../core/not_null.hpp"
+#include "../../core/result.hpp"
+#include "../../core/to_underlying.hpp"
+#include "../../math/area.hpp"
+#include "../texture.hpp"
+#include "../window.hpp"
+#include "gl_attribute.hpp"
+#include "gl_context.hpp"
 
 namespace cen {
 

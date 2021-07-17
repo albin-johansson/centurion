@@ -13,7 +13,7 @@
 
 #ifdef CENTURION_HAS_FEATURE_FORMAT
 
-  #include <format>  // format
+#include <format>  // format
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 

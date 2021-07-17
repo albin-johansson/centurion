@@ -541,72 +541,72 @@ inline void set_priority(const log_category category,
 /// \{
 
 #ifndef CENTURION_NO_DEBUG_LOG_MACROS
-  #ifdef NDEBUG
+#ifdef NDEBUG
 
-    /**
-     * \def CENTURION_LOG_INFO
-     */
-    #define CENTURION_LOG_INFO(fmt, ...)
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...)
 
-    /**
-     * \def CENTURION_LOG_WARN
-     */
-    #define CENTURION_LOG_WARN(fmt, ...)
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...)
 
-    /**
-     * \def CENTURION_LOG_VERBOSE
-     */
-    #define CENTURION_LOG_VERBOSE(fmt, ...)
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...)
 
-    /**
-     * \def CENTURION_LOG_DEBUG
-     */
-    #define CENTURION_LOG_DEBUG(fmt, ...)
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...)
 
-    /**
-     * \def CENTURION_LOG_CRITICAL
-     */
-    #define CENTURION_LOG_CRITICAL(fmt, ...)
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...)
 
-    /**
-     * \def CENTURION_LOG_ERROR
-     */
-    #define CENTURION_LOG_ERROR(fmt, ...)
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...)
 
-  #else
+#else
 
-    /**
-     * \def CENTURION_LOG_INFO
-     */
-    #define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_INFO
+ */
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
 
-    /**
-     * \def CENTURION_LOG_WARN
-     */
-    #define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
 
-    /**
-     * \def CENTURION_LOG_VERBOSE
-     */
-    #define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
 
-    /**
-     * \def CENTURION_LOG_DEBUG
-     */
-    #define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
 
-    /**
-     * \def CENTURION_LOG_CRITICAL
-     */
-    #define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
 
-    /**
-     * \def CENTURION_LOG_ERROR
-     */
-    #define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+/**
+ * \def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
 
-  #endif  // NDEBUG
-#endif    // CENTURION_NO_DEBUG_LOG_MACROS
+#endif  // NDEBUG
+#endif  // CENTURION_NO_DEBUG_LOG_MACROS
 
 /**
  * \def CENTURION_LOG_INFO

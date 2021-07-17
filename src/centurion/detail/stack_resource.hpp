@@ -10,9 +10,9 @@
 
 #ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
-  #include <array>            // array
-  #include <cstddef>          // byte
-  #include <memory_resource>  // memory_resource, monotonic_buffer_resource
+#include <array>            // array
+#include <cstddef>          // byte
+#include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {

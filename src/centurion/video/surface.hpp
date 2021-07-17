@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
-  #include <SDL_image.h>
+#include <SDL_image.h>
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert

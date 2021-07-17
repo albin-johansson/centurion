@@ -858,23 +858,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto fbias = static_cast<float>(bias);
-  const auto red = detail::lerp(a.red_norm(), b.red_norm(), fbias);
-  const auto green = detail::lerp(a.green_norm(), b.green_norm(), fbias);
-  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), fbias);
-  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), fbias);
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
   return color::from_norm(red, green, blue, alpha);
+}
+
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators

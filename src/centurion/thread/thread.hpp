@@ -38,6 +38,8 @@ enum class thread_priority
   critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
 };
 
+using thread_id = SDL_threadID;
+
 /**
  * \class thread
  *
@@ -72,9 +74,11 @@ class thread final
    *
    * \brief The type used for thread identifiers.
    *
+   * \deprecated Since 6.2.0, use `thread_id` instead.
+   *
    * \since 5.0.0
    */
-  using id = SDL_threadID;
+  using id [[deprecated]] = SDL_threadID;
 
   /// \name Construction/Destruction
   /// \{
@@ -254,7 +258,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> id
+  [[nodiscard]] auto get_id() const noexcept -> thread_id
   {
     return SDL_GetThreadID(m_thread);
   }
@@ -266,7 +270,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> id
+  [[nodiscard]] static auto current_id() noexcept -> thread_id
   {
     return SDL_ThreadID();
   }

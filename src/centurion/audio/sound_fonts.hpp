@@ -3,11 +3,11 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-#include <SDL.h>
-#include <SDL_mixer.h>
+  #include <SDL.h>
+  #include <SDL_mixer.h>
 
-#include "../core/czstring.hpp"
-#include "../core/result.hpp"
+  #include "../core/czstring.hpp"
+  #include "../core/result.hpp"
 
 namespace cen {
 

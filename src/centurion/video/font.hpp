@@ -3,21 +3,21 @@
 
 #ifndef CENTURION_NO_SDL_TTF
 
-#include <SDL_ttf.h>
+  #include <SDL_ttf.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+  #include <cassert>   // assert
+  #include <memory>    // unique_ptr
+  #include <optional>  // optional
+  #include <ostream>   // ostream
+  #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
-#include "../core/exception.hpp"
-#include "../core/not_null.hpp"
-#include "../core/to_underlying.hpp"
-#include "../detail/address_of.hpp"
-#include "../math/area.hpp"
-#include "unicode_string.hpp"
+  #include "../core/czstring.hpp"
+  #include "../core/exception.hpp"
+  #include "../core/not_null.hpp"
+  #include "../core/to_underlying.hpp"
+  #include "../detail/address_of.hpp"
+  #include "../math/area.hpp"
+  #include "unicode_string.hpp"
 
 namespace cen {
 

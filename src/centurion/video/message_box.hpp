@@ -366,9 +366,7 @@ class message_box final
   {
     return std::any_of(m_buttons.begin(),
                        m_buttons.end(),
-                       [id](const button& button) noexcept {
-                         return button.id() == id;
-                       });
+                       [id](const button& button) noexcept { return button.id() == id; });
   }
 
   /**

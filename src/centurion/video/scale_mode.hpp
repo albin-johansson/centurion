@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
+  #pragma once
 #endif
 
 namespace cen {

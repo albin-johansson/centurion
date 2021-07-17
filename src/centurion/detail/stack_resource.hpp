@@ -6,9 +6,9 @@
 
 #ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
 
-#include <array>            // array
-#include <cstddef>          // byte
-#include <memory_resource>  // memory_resource, monotonic_buffer_resource
+  #include <array>            // array
+  #include <cstddef>          // byte
+  #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
@@ -28,7 +28,7 @@ class stack_resource final
 };
 
 }  // namespace cen::detail
-/// \endcond
+  /// \endcond
 
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER

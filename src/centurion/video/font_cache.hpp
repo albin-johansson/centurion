@@ -3,19 +3,19 @@
 
 #ifndef CENTURION_NO_SDL_TTF
 
-#include <SDL_ttf.h>
+  #include <SDL_ttf.h>
 
-#include <cassert>        // assert
-#include <string>         // string
-#include <unordered_map>  // unordered_map
-#include <utility>        // move, forward
+  #include <cassert>        // assert
+  #include <string>         // string
+  #include <unordered_map>  // unordered_map
+  #include <utility>        // move, forward
 
-#include "../core/czstring.hpp"
-#include "../core/not_null.hpp"
-#include "font.hpp"
-#include "surface.hpp"
-#include "texture.hpp"
-#include "unicode_string.hpp"
+  #include "../core/czstring.hpp"
+  #include "../core/not_null.hpp"
+  #include "font.hpp"
+  #include "surface.hpp"
+  #include "texture.hpp"
+  #include "unicode_string.hpp"
 
 namespace cen {
 

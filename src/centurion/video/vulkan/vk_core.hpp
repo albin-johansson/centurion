@@ -3,18 +3,18 @@
 
 #ifndef CENTURION_NO_VULKAN
 
-#include <SDL.h>
-#include <SDL_vulkan.h>
+  #include <SDL.h>
+  #include <SDL_vulkan.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <vector>    // vector
+  #include <cassert>   // assert
+  #include <memory>    // unique_ptr
+  #include <optional>  // optional
+  #include <vector>    // vector
 
-#include "../../core/czstring.hpp"
-#include "../../core/integers.hpp"
-#include "../../core/result.hpp"
-#include "../window.hpp"
+  #include "../../core/czstring.hpp"
+  #include "../../core/integers.hpp"
+  #include "../../core/result.hpp"
+  #include "../window.hpp"
 
 /// \addtogroup video
 /// \{
@@ -116,7 +116,7 @@ template <typename T>
 
 }  // namespace cen::vk
 
-/// \} End of group video
+  /// \} End of group video
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VULKAN_HEADER

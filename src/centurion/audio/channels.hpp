@@ -3,13 +3,13 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-#include <SDL.h>
-#include <SDL_mixer.h>
+  #include <SDL.h>
+  #include <SDL_mixer.h>
 
-#include <optional>  // optional
+  #include <optional>  // optional
 
-#include "../core/result.hpp"
-#include "../core/time.hpp"
+  #include "../core/result.hpp"
+  #include "../core/time.hpp"
 
 namespace cen {
 

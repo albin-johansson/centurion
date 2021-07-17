@@ -68,9 +68,8 @@ class keyboard final
    */
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc];
-    });
+    return check_state(code,
+                       [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
   }
 
   /**

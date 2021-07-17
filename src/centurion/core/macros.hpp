@@ -8,19 +8,19 @@
 
 #ifndef __clang__
 
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
+  /**
+   * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+   *
+   * \brief This macro is defined if the `memory_resource` header is available.
+   *
+   * \note This is a very rough check, that assumes that as long as we are not
+   * using Clang, we are fine.
+   *
+   * \todo C++20: Use the feature test macro for this instead.
+   *
+   * \since 5.3.0
+   */
+  #define CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #endif  // __clang__
 

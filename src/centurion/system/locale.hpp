@@ -132,7 +132,7 @@ class locale final
   {}
 };
 
-/// \} End of group system
+  /// \} End of group system
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

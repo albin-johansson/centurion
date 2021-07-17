@@ -3,11 +3,11 @@
 
 #ifndef CENTURION_NO_VULKAN
 
-#include <SDL.h>
-#include <SDL_vulkan.h>
+  #include <SDL.h>
+  #include <SDL_vulkan.h>
 
-#include "../../core/czstring.hpp"
-#include "../../core/exception.hpp"
+  #include "../../core/czstring.hpp"
+  #include "../../core/exception.hpp"
 
 /// \addtogroup video
 /// \{
@@ -52,7 +52,7 @@ class vk_library final
 
 }  // namespace cen
 
-/// \} End of group video
+  /// \} End of group video
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VK_LIBRARY_HEADER

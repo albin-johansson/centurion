@@ -3,14 +3,14 @@
 
 #ifndef CENTURION_NO_OPENGL
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+  #include <SDL.h>
+  #include <SDL_opengl.h>
 
-#include <cassert>  // assert
+  #include <cassert>  // assert
 
-#include "../../core/czstring.hpp"
-#include "../../core/exception.hpp"
-#include "../../core/not_null.hpp"
+  #include "../../core/czstring.hpp"
+  #include "../../core/exception.hpp"
+  #include "../../core/not_null.hpp"
 
 namespace cen {
 

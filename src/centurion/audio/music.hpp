@@ -3,23 +3,23 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-#include <SDL_mixer.h>
+  #include <SDL_mixer.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+  #include <cassert>   // assert
+  #include <memory>    // unique_ptr
+  #include <optional>  // optional
+  #include <ostream>   // ostream
+  #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
-#include "../core/exception.hpp"
-#include "../core/not_null.hpp"
-#include "../core/result.hpp"
-#include "../core/time.hpp"
-#include "../detail/address_of.hpp"
-#include "../detail/any_eq.hpp"
-#include "../detail/clamp.hpp"
-#include "../detail/max.hpp"
+  #include "../core/czstring.hpp"
+  #include "../core/exception.hpp"
+  #include "../core/not_null.hpp"
+  #include "../core/result.hpp"
+  #include "../core/time.hpp"
+  #include "../detail/address_of.hpp"
+  #include "../detail/any_eq.hpp"
+  #include "../detail/clamp.hpp"
+  #include "../detail/max.hpp"
 
 namespace cen {
 
@@ -562,10 +562,10 @@ class music final
 
   std::unique_ptr<Mix_Music, deleter> m_music;
 
-#ifdef CENTURION_MOCK_FRIENDLY_MODE
+  #ifdef CENTURION_MOCK_FRIENDLY_MODE
  public:
   music() = default;
-#endif
+  #endif
 };
 
 /// \name Callbacks

@@ -3,17 +3,17 @@
 
 #ifndef CENTURION_NO_OPENGL
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+  #include <SDL.h>
+  #include <SDL_opengl.h>
 
-#include <cassert>  // assert
-#include <memory>   // unique_ptr
+  #include <cassert>  // assert
+  #include <memory>   // unique_ptr
 
-#include "../../core/exception.hpp"
-#include "../../core/owner.hpp"
-#include "../../core/result.hpp"
-#include "../../detail/owner_handle_api.hpp"
-#include "../window.hpp"
+  #include "../../core/exception.hpp"
+  #include "../../core/owner.hpp"
+  #include "../../core/result.hpp"
+  #include "../../detail/owner_handle_api.hpp"
+  #include "../window.hpp"
 
 /// \addtogroup video
 /// \{
@@ -149,7 +149,7 @@ using gl_context = gl::context;
 using gl_context_handle = gl::context_handle;
 }  // namespace cen
 
-/// \} End of group video
+  /// \} End of group video
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_CONTEXT_HEADER

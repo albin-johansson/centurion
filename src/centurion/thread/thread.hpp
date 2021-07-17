@@ -170,7 +170,7 @@ class thread final
 
     constexpr bool isNoexcept = noexcept(Callable{}());
 
-    const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
+    const auto wrapper = [](void* /*data*/) noexcept(isNoexcept) -> int {
       Callable callable;
       if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
       {
@@ -183,7 +183,7 @@ class thread final
       }
     };
 
-    return thread{wrapper};
+    return thread{wrapper, name};
   }
 
   /**

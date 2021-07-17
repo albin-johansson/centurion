@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
+        CPP_VERSION: [ 17, 20 ]
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
@@ -95,9 +96,9 @@ jobs:
         run: |
           if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" ]];
           then
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
           else
-            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_INTERACTIVE=OFF -GNinja
+            cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=OFF -DCEN_INTERACTIVE=OFF -GNinja
           fi
 
       - name: Build

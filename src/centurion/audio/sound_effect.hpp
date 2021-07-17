@@ -3,6 +3,10 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -10,6 +14,12 @@
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -503,8 +513,14 @@ class basic_sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sound_effect{{data: {}, volume: {}}}",
+                     detail::address_of(sound.get()),
+                     sound.volume());
+#else
   return "sound_effect{data: " + detail::address_of(sound.get()) +
          ", volume: " + std::to_string(sound.volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

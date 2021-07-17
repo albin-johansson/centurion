@@ -94,7 +94,7 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" ]];
+          if [[ "${{matrix.SDL_VERSION}}" == "${{env.SDL_LATEST}}" && "${{matrix.CPP_VERSION}}" == "17" ]];
           then
             cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_AUDIO=OFF -DCEN_COVERAGE=ON -DCEN_INTERACTIVE=OFF -GNinja
           else

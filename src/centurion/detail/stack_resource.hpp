@@ -1,10 +1,14 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include "../core/integers.hpp"
 #include "../core/macros.hpp"
 
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
   #include <array>            // array
   #include <cstddef>          // byte
@@ -28,7 +32,7 @@ class stack_resource final
 };
 
 }  // namespace cen::detail
-  /// \endcond
+   /// \endcond
 
-#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
+#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER

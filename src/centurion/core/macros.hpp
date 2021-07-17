@@ -10,14 +10,7 @@
 
   /**
    * \def CENTURION_HAS_STD_MEMORY_RESOURCE
-   *
-   * \brief This macro is defined if the `memory_resource` header is available.
-   *
-   * \note This is a very rough check, that assumes that as long as we are not
-   * using Clang, we are fine.
-   *
-   * \todo C++20: Use the feature test macro for this instead.
-   *
+   * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
    * \since 5.3.0
    */
   #define CENTURION_HAS_STD_MEMORY_RESOURCE

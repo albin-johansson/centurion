@@ -1,6 +1,10 @@
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
@@ -95,9 +99,9 @@ class thread final
    *
    * \since 5.0.0
    */
-  explicit thread(task_type task,
-                  not_null<czstring> name = "thread",
-                  void* data = nullptr)
+  CENTURION_NODISCARD_CTOR explicit thread(task_type task,
+                                           const not_null<czstring> name = "thread",
+                                           void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
     if (!m_thread)

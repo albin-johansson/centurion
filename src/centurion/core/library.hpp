@@ -34,6 +34,10 @@
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -173,7 +177,7 @@ class library final
    *
    * \since 3.0.0
    */
-  library()
+  CENTURION_NODISCARD_CTOR library()
   {
     init();
   }
@@ -193,7 +197,7 @@ class library final
    *
    * \since 4.0.0
    */
-  explicit library(const config& cfg) : m_cfg{cfg}
+  CENTURION_NODISCARD_CTOR explicit library(const config& cfg) : m_cfg{cfg}
   {
     init();
   }

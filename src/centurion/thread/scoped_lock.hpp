@@ -1,6 +1,10 @@
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include "../core/exception.hpp"
@@ -33,7 +37,7 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
+  CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
     if (!mutex.lock())
     {

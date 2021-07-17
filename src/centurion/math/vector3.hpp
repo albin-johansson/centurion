@@ -1,8 +1,18 @@
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+  #include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 namespace cen {
 
@@ -26,6 +36,12 @@ struct vector3 final
   value_type x{};  ///< The x-coordinate of the vector.
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
+
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 
   /**
    * \brief Casts the vector to a vector with another representation type.
@@ -69,6 +85,8 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
  *
@@ -107,6 +125,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of vector3 comparison operators
 
 /**
@@ -123,8 +143,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
+#else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
          ", z: " + std::to_string(vector.z) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

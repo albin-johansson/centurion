@@ -1,9 +1,19 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+  #include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/cast.hpp"
 
@@ -59,13 +69,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -172,6 +189,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -206,6 +225,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -222,8 +243,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

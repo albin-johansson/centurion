@@ -358,7 +358,7 @@ inline void put(const std::string& str) noexcept
   log::info("%s", str.c_str());
 }
 
-/// \copydoc put(const std::string&)
+/// \copydoc put()
 inline void put(const not_null<czstring> str) noexcept
 {
   log::info("%s", str);

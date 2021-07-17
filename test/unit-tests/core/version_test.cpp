@@ -5,7 +5,7 @@
 TEST(Version, CurrentVersion)
 {
   ASSERT_EQ(6, CENTURION_VERSION_MAJOR);
-  ASSERT_EQ(1, CENTURION_VERSION_MINOR);
+  ASSERT_EQ(2, CENTURION_VERSION_MINOR);
   ASSERT_EQ(0, CENTURION_VERSION_PATCH);
 }
 
@@ -18,6 +18,7 @@ TEST(Version, VersionAtLeast)
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,
                                     CENTURION_VERSION_PATCH));
+  ASSERT_TRUE(cen::version_at_least(6, 1, 0));
   ASSERT_TRUE(cen::version_at_least(6, 0, 1));
   ASSERT_TRUE(cen::version_at_least(6, 0, 0));
   ASSERT_TRUE(cen::version_at_least(5, 3, 0));

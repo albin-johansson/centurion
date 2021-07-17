@@ -28,7 +28,7 @@ class stack_resource final
 
  private:
   std::array<std::byte, BufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail

@@ -26,6 +26,10 @@
     #define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
   #endif  // __cpp_lib_memory_resource
 
+  #ifdef __cpp_lib_interpolate
+    #define CENTURION_HAS_FEATURE_LERP
+  #endif  // __cpp_lib_interpolate
+
 #endif  // __has_include
 
 #endif  // CENTURION_FEATURES_HEADER

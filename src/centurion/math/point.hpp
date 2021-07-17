@@ -508,26 +508,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -7,9 +7,16 @@
 
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
+#include <cassert>      // assert
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // invoke_result_t
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+  #include <concepts>  // convertible_to, default_initializable, invocable
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -41,6 +48,14 @@ enum class thread_priority
   high = SDL_THREAD_PRIORITY_HIGH,              ///< For high-priority processing.
   critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
 };
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+template <typename T, typename... Args>
+concept is_stateless_callable =
+    std::default_initializable<T> && std::invocable<T, Args...>;
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 using thread_id = SDL_threadID;
 
@@ -126,6 +141,98 @@ class thread final
       join();
     }
   }
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <is_stateless_callable Callable>
+  [[nodiscard]] static auto init(Callable&& task,
+                                 const not_null<czstring> name = "thread") -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}());
+
+    const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
+      {
+        return callable();
+      }
+      else
+      {
+        callable();
+        return 0;
+      }
+    };
+
+    return thread{wrapper};
+  }
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param userData optional user data that will be supplied to the callable.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <typename T = void, is_stateless_callable<T*> Callable>
+  [[nodiscard]] static auto init(Callable&& task,
+                                 T* userData = nullptr,
+                                 const not_null<czstring> name = "thread") -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}(static_cast<T*>(nullptr)));
+
+    const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
+      auto* ptr = static_cast<T*>(erased);
+
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>)
+      {
+        return callable(ptr);
+      }
+      else
+      {
+        callable(ptr);
+        return 0;
+      }
+    };
+
+    return thread{wrapper, name, userData};
+  }
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
   /// \} End of construction/destruction
 

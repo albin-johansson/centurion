@@ -5,6 +5,7 @@
 #include <iostream>
 #include <type_traits>
 
+#include "compiler/features.hpp"
 #include "core/log.hpp"
 
 namespace {
@@ -15,7 +16,7 @@ auto dummy = [](void*) noexcept -> int {
   return 0;
 };
 
-}
+}  // namespace
 
 static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
 static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
@@ -157,3 +158,29 @@ TEST(Thread, ThreadPriorityValues)
   ASSERT_NE(cen::thread_priority::high, SDL_THREAD_PRIORITY_TIME_CRITICAL);
   ASSERT_NE(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::normal);
 }
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+TEST(Thread, Init)
+{
+  {  // No arguments
+    auto thread = cen::thread::init([] {});
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(0, thread.join());
+  }
+
+  {  // No arguments but returns integer
+    auto thread = cen::thread::init([] { return 42; });
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(42, thread.join());
+  }
+
+  {  // With user data
+    int i = 123;
+    auto thread = cen::thread::init([](int* data) { return *data; }, &i);
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(123, thread.join());
+  }
+}
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS

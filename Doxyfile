@@ -2221,6 +2221,9 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = CENTURION___DOXYGEN \
+                         CENTURION_HAS_FEATURE_CONCEPTS \
+                         CENTURION_HAS_FEATURE_FORMAT \
+                         CENTURION_HAS_FEATURE_MEMORY_RESOURCE \
                          SDL_VERSION_ATLEAST
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this

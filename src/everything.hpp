@@ -28,6 +28,7 @@
 
 // clang-format off
 #include "centurion/core/macros.hpp"
+#include "centurion/compiler/features.hpp"
 // clang-format on
 
 #include "centurion/audio/channels.hpp"

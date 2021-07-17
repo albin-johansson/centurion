@@ -9,6 +9,7 @@ set(SOURCE_FILES
     test_main.cpp
 
     compiler/compiler_test.cpp
+    compiler/features_test.cpp
 
     config/hints_test.cpp
 

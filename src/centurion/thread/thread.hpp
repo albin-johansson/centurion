@@ -18,6 +18,12 @@
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+  #include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -437,8 +443,15 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("thread{{data: {}, name: {}, id: {}}}",
+                     detail::address_of(thread.get()),
+                     thread.name(),
+                     thread.get_id());
+#else
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
          ", id: " + std::to_string(thread.get_id()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

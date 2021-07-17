@@ -1,6 +1,10 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
@@ -565,22 +569,26 @@ inline void set_priority(const log_category category,
 #else
 
 /// \def CENTURION_LOG_INFO
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 /// \def CENTURION_LOG_WARN
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 /// \def CENTURION_LOG_VERBOSE
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
+#define CENTURION_LOG_VERBOSE(fmt, ...) \
+  cen::log::verbose(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 /// \def CENTURION_LOG_DEBUG
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
+#define CENTURION_LOG_DEBUG(fmt, ...) \
+  cen::log::debug(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 /// \def CENTURION_LOG_CRITICAL
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
+#define CENTURION_LOG_CRITICAL(fmt, ...) \
+  cen::log::critical(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 /// \def CENTURION_LOG_ERROR
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+#define CENTURION_LOG_ERROR(fmt, ...) \
+  cen::log::error(CENTURION_VARIADIC(fmt, __VA_ARGS__))
 
 #endif  // NDEBUG
 #endif  // CENTURION_NO_DEBUG_LOG_MACROS

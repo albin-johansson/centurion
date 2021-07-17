@@ -53,7 +53,10 @@ function(cen_set_compiler_options target)
     target_compile_options(${target} PRIVATE
         /EHsc
         /MP
-        /W3)
+        /W3
+        /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
+        /Zc:preprocessor # Enable conforming preprocessor
+        )
 
   elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${target} PRIVATE

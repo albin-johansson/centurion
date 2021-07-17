@@ -36,4 +36,10 @@
 
 #endif  // __has_include
 
+#if __cplusplus >= 202002L
+#define CENTURION_VARIADIC(X, ...) X __VA_OPT__(,) __VA_ARGS__
+#else
+#define CENTURION_VARIADIC(X, ...) X __VA_ARGS__
+#endif  // __cplusplus >= 202002L
+
 #endif  // CENTURION_FEATURES_HEADER

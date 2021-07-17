@@ -6,7 +6,6 @@
 // clang-format on
 
 #include "../core/integers.hpp"
-#include "../core/macros.hpp"
 
 #ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 

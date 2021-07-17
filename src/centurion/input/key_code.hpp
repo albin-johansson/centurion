@@ -8,8 +8,8 @@
 #include <string>   // string
 
 #include "../core/czstring.hpp"
-#include "../core/macros.hpp"
 #include "../core/not_null.hpp"
+#include "../core/version.hpp"
 
 namespace cen {
 

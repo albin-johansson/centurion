@@ -11,6 +11,7 @@
 #include "macros.hpp"
 #include "not_null.hpp"
 #include "to_underlying.hpp"
+#include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 

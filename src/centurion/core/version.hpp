@@ -47,6 +47,17 @@
  */
 #define CENTURION_VERSION_PATCH 0
 
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
+
 #ifdef CENTURION___DOXYGEN
 
 #define CENTURION_MAKE_VERSION_NUMBER
@@ -274,6 +285,15 @@ struct version final
 /// \} End of SDL version queries
 
 }  // namespace cen
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 /// \} End of group core
 

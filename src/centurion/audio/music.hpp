@@ -3,23 +3,33 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-  #include <SDL_mixer.h>
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
 
-  #include <cassert>   // assert
-  #include <memory>    // unique_ptr
-  #include <optional>  // optional
-  #include <ostream>   // ostream
-  #include <string>    // string, to_string
+#include <SDL_mixer.h>
 
-  #include "../core/czstring.hpp"
-  #include "../core/exception.hpp"
-  #include "../core/not_null.hpp"
-  #include "../core/result.hpp"
-  #include "../core/time.hpp"
-  #include "../detail/address_of.hpp"
-  #include "../detail/any_eq.hpp"
-  #include "../detail/clamp.hpp"
-  #include "../detail/max.hpp"
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+#include "../core/czstring.hpp"
+#include "../core/exception.hpp"
+#include "../core/not_null.hpp"
+#include "../core/result.hpp"
+#include "../core/time.hpp"
+#include "../detail/address_of.hpp"
+#include "../detail/any_eq.hpp"
+#include "../detail/clamp.hpp"
+#include "../detail/max.hpp"
 
 namespace cen {
 
@@ -562,10 +572,10 @@ class music final
 
   std::unique_ptr<Mix_Music, deleter> m_music;
 
-  #ifdef CENTURION_MOCK_FRIENDLY_MODE
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
  public:
   music() = default;
-  #endif
+#endif
 };
 
 /// \name Callbacks
@@ -602,8 +612,14 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("music{{data: {}, volume: {}}}",
+                     detail::address_of(music.get()),
+                     music::volume());
+#else
   return "music{data: " + detail::address_of(music.get()) +
          ", volume: " + std::to_string(music::volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

@@ -18,7 +18,13 @@ set(CENTURION_VERSION ${CMAKE_PROJECT_VERSION})
 
 message("Centurion version: ${CENTURION_VERSION}")
 
-set(CMAKE_CXX_STANDARD 17)
+if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
+  message("No explicit C++ version specified, assuming C++17...")
+  set(CMAKE_CXX_STANDARD 17)
+else ()
+  message("Using C++${CMAKE_CXX_STANDARD}...")
+endif ()
+
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 

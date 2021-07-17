@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14 ]
+        CPP_VERSION: [ 17, 20 ]
     steps:
       - uses: actions/checkout@v2
       - uses: ilammy/msvc-dev-cmd@v1
@@ -86,7 +87,7 @@ jobs:
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_INTERACTIVE=OFF -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_INTERACTIVE=OFF -GNinja
           ninja
 
       - name: Run mocked test suite

@@ -58,6 +58,7 @@
 #include "centurion/detail/czstring_eq.hpp"
 #include "centurion/detail/from_string.hpp"
 #include "centurion/detail/hints_impl.hpp"
+#include "centurion/detail/lerp.hpp"
 #include "centurion/detail/max.hpp"
 #include "centurion/detail/min.hpp"
 #include "centurion/detail/owner_handle_api.hpp"

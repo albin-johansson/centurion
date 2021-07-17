@@ -28,6 +28,7 @@
 #include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/from_string.hpp"
+#include "../detail/lerp.hpp"
 
 namespace cen {
 
@@ -867,28 +868,13 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
   assert(bias >= 0);
   assert(bias <= 1.0);
 
-#ifdef CENTURION_HAS_FEATURE_LERP
   const auto fbias = static_cast<float>(bias);
-
-  const auto red = std::lerp(a.red_norm(), b.red_norm(), fbias);
-  const auto green = std::lerp(a.green_norm(), b.green_norm(), fbias);
-  const auto blue = std::lerp(a.blue_norm(), b.blue_norm(), fbias);
-  const auto alpha = std::lerp(a.alpha_norm(), b.alpha_norm(), fbias);
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), fbias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), fbias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), fbias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), fbias);
 
   return color::from_norm(red, green, blue, alpha);
-#else
-  const auto invBias = 1.0 - bias;
-
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
-
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
-#endif  // CENTURION_HAS_FEATURE_LERP
 }
 
 /// \name Color comparison operators

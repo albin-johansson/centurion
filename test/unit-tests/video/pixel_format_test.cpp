@@ -2,7 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <memory>  // unique_ptr
+#include <iostream>  // cout
+#include <memory>    // unique_ptr
 
 #include "system/cpu.hpp"
 #include "video/colors.hpp"
@@ -78,6 +79,11 @@ TEST_F(PixelFormatInfoTest, PixelToRGBA)
   const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) |
                          (color.blue() << 8u) | (color.alpha() << 0u);
   ASSERT_EQ(color, m_info->pixel_to_rgba(pixel));
+}
+
+TEST_F(PixelFormatInfoTest, ToString)
+{
+  std::cout << *m_info << '\n';
 }
 
 TEST(PixelFormat, Values)

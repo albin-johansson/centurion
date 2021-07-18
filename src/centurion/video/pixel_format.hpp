@@ -1,7 +1,20 @@
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -9,6 +22,7 @@
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/to_underlying.hpp"
+#include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "color.hpp"
 
@@ -362,6 +376,49 @@ class basic_pixel_format_info final
   };
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
+
+/**
+ * \brief Returns a textual representation of a pixel format info instance.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param info the pixel format info instance that will be converted.
+ *
+ * \return a string that represents the pixel format info.
+ *
+ * \since 6.2.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
+{
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("pixel_format_info{{data: {}, name: {}}}",
+                     detail::address_of(info.get()),
+                     info.name());
+#else
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/**
+ * \brief Prints a textual representation of a pixel format info instance.
+ *
+ * \tparam T the ownership semantics tag.
+ *
+ * \param stream the output stream that will be used.
+ * \param info the pixel format info that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
+    -> std::ostream&
+{
+  return stream << to_string(info);
+}
 
 /// \name Pixel format comparison operators
 /// \{

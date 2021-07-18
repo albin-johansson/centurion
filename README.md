@@ -62,32 +62,11 @@ of `CENTURION_NO_SDL_IMAGE`, `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF`,
 
 ## Installation
 
-The library is distributed as a *single* header file, located in the `include` folder. Download
+The library is simply distributed as a single header file, located in the `include` folder. Download
 the `centurion.hpp` header and include it in your project, and it's ready to be used! You will of
 course also need to install SDL2.
 
 ## Documentation
 
-The Doxygen documentation for the latest stable release is
-hosted [here](https://albin-johansson.github.io/centurion/). Furthermore, refer to
-the [Wiki](https://github.com/albin-johansson/centurion/wiki) for additional information about the
-library.
-
-## Minimal Centurion program
-
-The following is the smallest example of a Centurion program. All that is required to initialize the
-library is to create an instance of the `library` class, which must outlive the rest of your
-program, so it should be the first thing created in your `main` function.
-
-```C++
-#include <centurion.hpp>
-
-int main(int argc, char** argv)
-{
-  cen::library centurion;
-
-  // All SDL libraries are now initialized and ready to be used!
-
-  return 0;
-}
-```
+The Doxygen documentation for the latest stable release can be
+found [here](https://albin-johansson.github.io/centurion/).

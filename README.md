@@ -41,6 +41,9 @@ The following is a (non-exhaustive) list of the features of Centurion.
 * Multi-threading utilities
 * Message boxes
 
+Additionally, many Centurion components feature serialization support based on the Cereal API,
+string conversions, streaming support, etc.
+
 ## Dependencies
 
 The following table shows the supported versions of SDL2 and its extension libraries. Only the core

@@ -1,0 +1,10 @@
+:root
+{
+  --code-foreground: #f97583;
+  --fragment-keywordtype: #f97583;
+  --fragment-keywordflow: #f97583;
+  --fragment-keyword: #f97583;
+  --fragment-token: #ffb97b;
+  --fragment-link: #b392f0;
+  --fragment-comment: #959da5;
+}

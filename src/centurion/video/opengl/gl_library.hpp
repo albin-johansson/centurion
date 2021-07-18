@@ -4,7 +4,7 @@
 #ifndef CENTURION_NO_OPENGL
 
 // clang-format off
-  #include "../../compiler/features.hpp"
+#include "../../compiler/features.hpp"
 // clang-format on
 
 #include <SDL.h>

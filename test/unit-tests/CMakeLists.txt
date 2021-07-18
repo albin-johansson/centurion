@@ -120,6 +120,7 @@ set(SOURCE_FILES
     video/scale_mode_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp
+    video/system_cursor_test.cpp
     video/surface_handle_test.cpp
     video/texture_test.cpp
     video/unicode_string_test.cpp

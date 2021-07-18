@@ -3,6 +3,10 @@
 
 #ifndef CENTURION_NO_SDL_TTF
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
@@ -10,6 +14,12 @@
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -762,9 +772,16 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font{{data: {}, name: {}, size: {}}}",
+                     detail::address_of(font.get()),
+                     font.family_name(),
+                     font.size());
+#else
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
          ", size: " + std::to_string(font.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

@@ -22,21 +22,6 @@ TEST(Joystick, AxisMin)
   ASSERT_EQ(SDL_JOYSTICK_AXIS_MIN, cen::joystick::axis_min());
 }
 
-TEST(Joystick, HatStateEnum)
-{
-  using state = cen::hat_state;
-
-  ASSERT_EQ(static_cast<state>(SDL_HAT_CENTERED), state::centered);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_UP), state::up);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_RIGHT), state::right);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_DOWN), state::down);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_LEFT), state::left);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_RIGHTUP), state::right_up);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_RIGHTDOWN), state::right_down);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_LEFTUP), state::left_up);
-  ASSERT_EQ(static_cast<state>(SDL_HAT_LEFTDOWN), state::left_down);
-}
-
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST(Joystick, VirtualAPI)

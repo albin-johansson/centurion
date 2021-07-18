@@ -119,6 +119,7 @@
 #include "centurion/input/button_state.hpp"
 #include "centurion/input/controller.hpp"
 #include "centurion/input/haptic.hpp"
+#include "centurion/input/hat_state.hpp"
 #include "centurion/input/joystick.hpp"
 #include "centurion/input/joystick_power.hpp"
 #include "centurion/input/joystick_type.hpp"

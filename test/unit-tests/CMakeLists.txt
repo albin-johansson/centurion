@@ -63,6 +63,7 @@ set(SOURCE_FILES
     input/controller_button_test.cpp
     input/controller_test.cpp
     input/haptic_test.cpp
+    input/hat_state_test.cpp
     input/joystick_power_test.cpp
     input/joystick_test.cpp
     input/joystick_type_test.cpp

@@ -40,6 +40,7 @@ The following is a (non-exhaustive) list of the features of Centurion.
 * Cursor management
 * Multi-threading utilities
 * Message boxes
+* Compiler information
 
 Additionally, many Centurion components feature serialization support based on the Cereal API,
 string conversions, streaming support, etc. The library can be used with either C++17 or C++20, and

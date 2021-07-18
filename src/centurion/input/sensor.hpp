@@ -1,12 +1,22 @@
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -407,9 +417,16 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sensor{{data: {}, id: {}, name: {}}}",
+                     detail::address_of(sensor.get()),
+                     sensor.id(),
+                     str_or_na(sensor.name()));
+#else
   return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

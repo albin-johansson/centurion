@@ -116,6 +116,7 @@ set(SOURCE_FILES
     video/message_box_test.cpp
     video/message_box_type_test.cpp
     video/palette_test.cpp
+    video/pixel_format_info_test.cpp
     video/pixel_format_test.cpp
     video/renderer_test.cpp
     video/renderer_handle_test.cpp

@@ -23,7 +23,7 @@
 #include "../math/point.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
-#include "pixel_format.hpp"
+#include "pixel_format_info.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"

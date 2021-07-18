@@ -11,7 +11,6 @@
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "../detail/czstring_eq.hpp"
-#include "../video/pixel_format.hpp"
 
 namespace cen {
 

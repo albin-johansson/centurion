@@ -869,6 +869,7 @@ INPUT                  = src/centurion \
                          docs/primer.h \
                          docs/owners_and_handles.h \
                          docs/configuration.h \
+                         docs/faq.h \
                          docs/examples.h \
                          docs/examples
 

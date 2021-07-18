@@ -1,6 +1,10 @@
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
@@ -8,6 +12,12 @@
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -1364,8 +1374,15 @@ template <typename T>
     serial = controller.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("controller{{data: {}, name: {}, serial: {}}}",
+                     detail::address_of(controller.get()),
+                     str_or_na(name),
+                     str_or_na(serial));
+#else
   return "controller{data: " + detail::address_of(controller.get()) +
          ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

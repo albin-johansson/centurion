@@ -1,12 +1,22 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -1305,9 +1315,16 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

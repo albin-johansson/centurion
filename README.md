@@ -42,7 +42,9 @@ The following is a (non-exhaustive) list of the features of Centurion.
 * Message boxes
 
 Additionally, many Centurion components feature serialization support based on the Cereal API,
-string conversions, streaming support, etc.
+string conversions, streaming support, etc. The library can be used with either C++17 or C++20, and
+will use appropriate facilities depending on the language version used. For example, the library
+will make use of `std::format`, if it is available.
 
 ## Dependencies
 

@@ -5,6 +5,7 @@
 
 #include <array>  // array
 
+#include "core/integers.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {

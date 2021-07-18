@@ -1,6 +1,10 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -10,6 +14,12 @@
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -655,9 +665,16 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("texture{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(texture.get()),
+                     texture.width(),
+                     texture.height());
+#else
   return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

@@ -998,8 +998,8 @@ class basic_controller final
                                            const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
-    touch::finger_state result;
-    u8 state;
+    touch::finger_state result{};
+    u8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
                                                          touchpad,

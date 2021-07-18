@@ -868,7 +868,9 @@ INPUT                  = src/centurion \
                          README.md \
                          docs/primer.h \
                          docs/owners_and_handles.h \
-                         docs/configuration.h
+                         docs/configuration.h \
+                         docs/examples.h \
+                         docs/examples
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -900,6 +902,7 @@ INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.cpp \
                          *.hpp \
                          *.ipp \
+                         *.h \
                          *.m \
                          *.markdown \
                          *.md \

@@ -1,12 +1,22 @@
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -1152,9 +1162,17 @@ template <typename T>
     serial = joystick.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
+                     detail::address_of(joystick.get()),
+                     joystick.instance_id(),
+                     str_or_na(joystick.name()),
+                     str_or_na(joystick.serial()));
+#else
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

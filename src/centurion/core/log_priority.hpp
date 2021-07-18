@@ -27,6 +27,9 @@ enum class log_priority : int
   error = SDL_LOG_PRIORITY_ERROR,
 };
 
+/// \name Log priority comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not the two log priorities values are the same.
  *
@@ -72,6 +75,8 @@ enum class log_priority : int
 {
   return !(lhs == rhs);
 }
+
+/// \} End of log priority comparison operators
 
 /// \} End of group core
 

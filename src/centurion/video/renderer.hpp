@@ -1,6 +1,10 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -12,6 +16,12 @@
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/integers.hpp"
@@ -2223,7 +2233,11 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
+#else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>

@@ -1,6 +1,10 @@
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -10,6 +14,12 @@
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -891,9 +901,16 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -909,8 +926,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
 /// \}

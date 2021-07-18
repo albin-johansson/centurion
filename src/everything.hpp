@@ -143,6 +143,7 @@
 #include "centurion/system/cpu.hpp"
 #include "centurion/system/locale.hpp"
 #include "centurion/system/platform.hpp"
+#include "centurion/system/power_state.hpp"
 #include "centurion/system/ram.hpp"
 #include "centurion/system/shared_object.hpp"
 #include "centurion/thread/condition.hpp"

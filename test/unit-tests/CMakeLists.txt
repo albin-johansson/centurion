@@ -90,6 +90,7 @@ set(SOURCE_FILES
     system/file_test.cpp
     system/locale_test.cpp
     system/platform_test.cpp
+    system/power_state_test.cpp
     system/preferred_path_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp

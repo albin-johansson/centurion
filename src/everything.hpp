@@ -151,6 +151,7 @@
 #include "centurion/thread/scoped_lock.hpp"
 #include "centurion/thread/semaphore.hpp"
 #include "centurion/thread/thread.hpp"
+#include "centurion/thread/thread_priority.hpp"
 #include "centurion/thread/try_lock.hpp"
 #include "centurion/video/blend_mode.hpp"
 #include "centurion/video/color.hpp"

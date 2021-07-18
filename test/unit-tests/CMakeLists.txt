@@ -99,9 +99,10 @@ set(SOURCE_FILES
     thread/condition_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
-    thread/try_lock_test.cpp
     thread/semaphore_test.cpp
+    thread/thread_priority_test.cpp
     thread/thread_test.cpp
+    thread/try_lock_test.cpp
 
     video/gl/gl_core_test.cpp
 

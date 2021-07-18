@@ -40,43 +40,62 @@
 
 /**
  * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
+ * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
  * \since 5.3.0
  */
 #define CENTURION_HAS_STD_MEMORY_RESOURCE
 
 #endif  // __clang__
 
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief This macro is meant to be used when conditionally including code for a specific
- * version of SDL. It is useful for applying workarounds.
- *
- * \since 5.3.0
- */
-#define CENTURION_SDL_VERSION_IS(x, y, z) \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
-// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
-// this definition.
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
 /// \} End of group core
 
 #endif  // CENTURION_MACROS_HEADER
+
+// #include "centurion/compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
 
 // clang-format on
 
@@ -768,6 +787,8 @@ inline auto reset_group(const channel_index channel) noexcept -> result
   }
 }
 
+/// \} End of group audio
+
 }  // namespace channels
 
 }  // namespace cen
@@ -781,6 +802,55 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -788,6 +858,12 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -2040,8 +2116,14 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("music{{data: {}, volume: {}}}",
+                     detail::address_of(music.get()),
+                     music::volume());
+#else
   return "music{data: " + detail::address_of(music.get()) +
          ", volume: " + std::to_string(music::volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -2167,6 +2249,11 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -2174,6 +2261,12 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -2665,6 +2758,8 @@ using sound_effect_handle = basic_sound_effect<detail::handle_type>;
  *
  * \brief Represents a sound effect.
  *
+ * \ownerhandle `sound_effect`/`sound_effect_handle`
+ *
  * \details Unlike with the music API, multiple sound effects can be played at the same
  * time, which is the main difference between the `music` and `sound_effect` APIs.
  *
@@ -3115,8 +3210,14 @@ class basic_sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sound_effect{{data: {}, volume: {}}}",
+                     detail::address_of(sound.get()),
+                     sound.volume());
+#else
   return "sound_effect{data: " + detail::address_of(sound.get()) +
          ", volume: " + std::to_string(sound.volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -3963,6 +4064,55 @@ namespace literals {
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -4485,7 +4635,7 @@ class library final
    *
    * \since 3.0.0
    */
-  library()
+  CENTURION_NODISCARD_CTOR library()
   {
     init();
   }
@@ -4505,7 +4655,7 @@ class library final
    *
    * \since 4.0.0
    */
-  explicit library(const config& cfg) : m_cfg{cfg}
+  CENTURION_NODISCARD_CTOR explicit library(const config& cfg) : m_cfg{cfg}
   {
     init();
   }
@@ -4672,32 +4822,72 @@ class library final
 
 // #include "czstring.hpp"
 
-// #include "macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
+// #include "log_category.hpp"
+#ifndef CENTURION_LOG_CATEGORY_HEADER
+#define CENTURION_LOG_CATEGORY_HEADER
 
 #include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+
+// #include "sdl_log_category_workaround.hpp"
+#ifndef CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+#define CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+
+#include <SDL.h>
+
+// #include "version.hpp"
+#ifndef CENTURION_VERSION_HEADER
+#define CENTURION_VERSION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <cassert>  // assert
 
 /// \addtogroup core
 /// \{
 
-#ifndef __clang__
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_MAJOR 6
 
 /**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \def CENTURION_VERSION_MINOR
  *
- * \brief This macro is defined if the `memory_resource` header is available.
+ * \brief Expands into the current minor version of the library.
  *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
+ * \since 6.0.0
  */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
+#define CENTURION_VERSION_MINOR 2
 
-#endif  // __clang__
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_PATCH 0
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -4710,6 +4900,234 @@ class library final
 #define CENTURION_SDL_VERSION_IS(x, y, z) \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_NUMBER                         \
+  CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
+                                CENTURION_VERSION_MINOR, \
+                                CENTURION_VERSION_PATCH)
+
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_AT_LEAST(x, y, z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
+ *
+ * \since 6.0.0
+ */
+struct version final
+{
+  int major{CENTURION_VERSION_MAJOR};
+  int minor{CENTURION_VERSION_MINOR};
+  int patch{CENTURION_VERSION_PATCH};
+};
+
+/**
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] constexpr auto version_at_least(const int major,
+                                              const int minor,
+                                              const int patch) noexcept -> bool
+{
+  return CENTURION_VERSION_AT_LEAST(major, minor, patch);
+}
+
+/// \} End of centurion version queries
+
+/// \name SDL version queries
+/// \{
+
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version{};
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \brief Returns the version of SDL2_image that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_image.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_image_linked_version() noexcept -> SDL_version
+{
+  const auto* version = IMG_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \brief Returns the version of SDL2_mixer that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_mixer.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_mixer_linked_version() noexcept -> SDL_version
+{
+  const auto* version = Mix_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \brief Returns the version of SDL2_ttf that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_ttf.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_ttf_linked_version() noexcept -> SDL_version
+{
+  const auto* version = TTF_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_TTF
+
+/// \} End of SDL version queries
+
+}  // namespace cen
+
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 // Workaround for this enum being completely anonymous in SDL 2.0.10. We include
@@ -4721,7 +5139,322 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 /// \} End of group core
 
-#endif  // CENTURION_MACROS_HEADER
+#endif  // CENTURION_VERSION_HEADER
+
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10
+using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+#endif  // CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \brief Represents different logging categories.
+ *
+ * \see `SDL_LogCategory`
+ *
+ * \since 3.0.0
+ */
+enum class log_category : int
+{
+  app = SDL_LOG_CATEGORY_APPLICATION,
+  error = SDL_LOG_CATEGORY_ERROR,
+  assert = SDL_LOG_CATEGORY_ASSERT,
+  system = SDL_LOG_CATEGORY_SYSTEM,
+  audio = SDL_LOG_CATEGORY_AUDIO,
+  video = SDL_LOG_CATEGORY_VIDEO,
+  render = SDL_LOG_CATEGORY_RENDER,
+  input = SDL_LOG_CATEGORY_INPUT,
+  test = SDL_LOG_CATEGORY_TEST,
+  misc = SDL_LOG_CATEGORY_CUSTOM
+};
+
+/**
+ * \brief Returns a textual version of the supplied log category.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_category::app) == "app"`.
+ *
+ * \param category the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+{
+  switch (category)
+  {
+    case log_category::app:
+      return "app";
+
+    case log_category::error:
+      return "error";
+
+    case log_category::assert:
+      return "assert";
+
+    case log_category::system:
+      return "system";
+
+    case log_category::audio:
+      return "audio";
+
+    case log_category::video:
+      return "video";
+
+    case log_category::render:
+      return "render";
+
+    case log_category::input:
+      return "input";
+
+    case log_category::test:
+      return "test";
+
+    case log_category::misc:
+      return "misc";
+
+    default:
+      throw cen_error{"Did not recognize log category!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log category enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_category)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
+{
+  return stream << to_string(category);
+}
+
+/// \name Log category comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const log_category lhs,
+                                        const SDL_LogCategory rhs) noexcept -> bool
+{
+  return static_cast<SDL_LogCategory>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const log_category, const SDL_LogCategory)
+[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
+                                        const log_category rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const log_category lhs,
+                                        const SDL_LogCategory rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const log_category, const SDL_LogCategory)
+[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
+                                        const log_category rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of log category comparison operators
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_LOG_CATEGORY_HEADER
+
+// #include "log_priority.hpp"
+#ifndef CENTURION_LOG_PRIORITY_HEADER
+#define CENTURION_LOG_PRIORITY_HEADER
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \enum log_priority
+ *
+ * \brief Provides values that represent different logging priorities.
+ *
+ * \see `SDL_LogPriority`
+ *
+ * \since 3.0.0
+ */
+enum class log_priority : int
+{
+  verbose = SDL_LOG_PRIORITY_VERBOSE,
+  debug = SDL_LOG_PRIORITY_DEBUG,
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
+  error = SDL_LOG_PRIORITY_ERROR,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
+};
+
+/**
+ * \brief Returns a textual version of the supplied log priority.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_priority::debug) == "debug"`.
+ *
+ * \param priority the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+{
+  switch (priority)
+  {
+    case log_priority::verbose:
+      return "verbose";
+
+    case log_priority::debug:
+      return "debug";
+
+    case log_priority::info:
+      return "info";
+
+    case log_priority::warn:
+      return "warn";
+
+    case log_priority::error:
+      return "error";
+
+    case log_priority::critical:
+      return "critical";
+
+    default:
+      throw cen_error{"Did not recognize log priority!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log priority enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_priority)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
+{
+  return stream << to_string(priority);
+}
+
+/// \name Log priority comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two log priorities values are the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return static_cast<SDL_LogPriority>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values aren't the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of log priority comparison operators
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_LOG_PRIORITY_HEADER
 
 // #include "not_null.hpp"
 
@@ -4760,74 +5493,12 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
 
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
-/**
- * \enum log_priority
- *
- * \brief Provides values that represent different logging priorities.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- */
-enum class log_priority : int
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum log_category
- *
- * \brief Provides values that represent different logging categories.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- */
-enum class log_category : int
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/// \} End of group core
-
-/**
- * \namespace cen::log
- *
- * \ingroup core
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people that have
- * used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- */
+/// \namespace cen::log
+/// \brief Contains easy-to-use logging facilities.
+/// \ingroup core
+/// \since 3.0.0
 namespace log {
 
 /// \addtogroup core
@@ -4861,7 +5532,7 @@ void msg(const log_priority priority,
 }
 
 /**
- * \brief Logs a message with `priority::info` and the specified category.
+ * \brief Logs a message with `log_priority::info` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4882,7 +5553,7 @@ void info(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::info` and `category::app`.
+ * \brief Logs a message with `log_priority::info` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4900,7 +5571,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::warn` and the specified category.
+ * \brief Logs a message with `log_priority::warn` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4921,7 +5592,7 @@ void warn(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::warn` and `category::app`.
+ * \brief Logs a message with `log_priority::warn` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4939,7 +5610,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and the specified category.
+ * \brief Logs a message with `log_priority::verbose` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4960,7 +5631,7 @@ void verbose(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and `category::app`.
+ * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4978,7 +5649,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::debug` and the specified category.
+ * \brief Logs a message with `log_priority::debug` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -4999,7 +5670,7 @@ void debug(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::debug` and `category::app`.
+ * \brief Logs a message with `log_priority::debug` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -5017,7 +5688,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::critical` and the specified category.
+ * \brief Logs a message with `log_priority::critical` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -5038,7 +5709,7 @@ void critical(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::critical` and `category::app` .
+ * \brief Logs a message with `log_priority::critical` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -5056,7 +5727,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::error` and the specified category.
+ * \brief Logs a message with `log_priority::error` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -5075,7 +5746,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 }
 
 /**
- * \brief Logs a message with the `priority::error` and `category::app`.
+ * \brief Logs a message with the `log_priority::error` and `log_category::app`.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -5094,7 +5765,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
  * \brief Logs a string.
  *
  * \details This function is meant to be used for casual logging, where you just want to
- * log a string. The message will be logged with `priority::info` and `category::app`.
+ * log a string. The message will be logged with `log_priority::info` and
+ * `log_category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -5105,7 +5777,7 @@ inline void put(const std::string& str) noexcept
   log::info("%s", str.c_str());
 }
 
-/// \copydoc put(const std::string&)
+/// \copydoc put()
 inline void put(const not_null<czstring> str) noexcept
 {
   log::info("%s", str);
@@ -5185,55 +5857,122 @@ inline void set_priority(const log_category category,
 /// \} End of group core
 
 }  // namespace log
+}  // namespace cen
+
+#endif  // CENTURION_LOG_HEADER
+
+// #include "centurion/core/log_category.hpp"
+#ifndef CENTURION_LOG_CATEGORY_HEADER
+#define CENTURION_LOG_CATEGORY_HEADER
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+
+// #include "sdl_log_category_workaround.hpp"
+
+
+namespace cen {
 
 /// \addtogroup core
 /// \{
 
 /**
- * \brief Indicates whether or not the two log priorities values are the same.
+ * \brief Represents different logging categories.
  *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
+ * \see `SDL_LogCategory`
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
+enum class log_category : int
 {
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
+  app = SDL_LOG_CATEGORY_APPLICATION,
+  error = SDL_LOG_CATEGORY_ERROR,
+  assert = SDL_LOG_CATEGORY_ASSERT,
+  system = SDL_LOG_CATEGORY_SYSTEM,
+  audio = SDL_LOG_CATEGORY_AUDIO,
+  video = SDL_LOG_CATEGORY_VIDEO,
+  render = SDL_LOG_CATEGORY_RENDER,
+  input = SDL_LOG_CATEGORY_INPUT,
+  test = SDL_LOG_CATEGORY_TEST,
+  misc = SDL_LOG_CATEGORY_CUSTOM
+};
 
-/// \copydoc operator==(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
+/**
+ * \brief Returns a textual version of the supplied log category.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_category::app) == "app"`.
+ *
+ * \param category the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string
 {
-  return rhs == lhs;
+  switch (category)
+  {
+    case log_category::app:
+      return "app";
+
+    case log_category::error:
+      return "error";
+
+    case log_category::assert:
+      return "assert";
+
+    case log_category::system:
+      return "system";
+
+    case log_category::audio:
+      return "audio";
+
+    case log_category::video:
+      return "video";
+
+    case log_category::render:
+      return "render";
+
+    case log_category::input:
+      return "input";
+
+    case log_category::test:
+      return "test";
+
+    case log_category::misc:
+      return "misc";
+
+    default:
+      throw cen_error{"Did not recognize log category!"};
+  }
 }
 
 /**
- * \brief Indicates whether or not the two log priorities values aren't the same.
+ * \brief Prints a textual representation of a log category enumerator.
  *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
  *
- * \return `true` if the priorities aren't the same; `false` otherwise.
+ * \see `to_string(log_category)`
  *
- * \since 3.0.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
+inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
 {
-  return !(lhs == rhs);
+  return stream << to_string(category);
 }
 
-/// \copydoc operator!=(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
+/// \name Log category comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not the two log category values are the same.
@@ -5251,7 +5990,7 @@ inline void set_priority(const log_category category,
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
 
-/// \copydoc operator==(log_category, SDL_LogCategory)
+/// \copydoc operator==(const log_category, const SDL_LogCategory)
 [[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
                                         const log_category rhs) noexcept -> bool
 {
@@ -5274,151 +6013,613 @@ inline void set_priority(const log_category category,
   return !(lhs == rhs);
 }
 
-/// \copydoc operator!=(log_category, SDL_LogCategory)
+/// \copydoc operator!=(const log_category, const SDL_LogCategory)
 [[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
                                         const log_category rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
+/// \} End of log category comparison operators
+
 /// \} End of group core
 
 }  // namespace cen
 
+#endif  // CENTURION_LOG_CATEGORY_HEADER
+
+// #include "centurion/core/log_macros.hpp"
+#ifndef CENTURION_LOG_MACROS_HEADER
+#define CENTURION_LOG_MACROS_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+// #include "log.hpp"
+#ifndef CENTURION_LOG_HEADER
+#define CENTURION_LOG_HEADER
+
+#include <SDL.h>
+
+#include <cassert>  // assert
+#include <string>   // string
+#include <utility>  // forward
+
+// #include "czstring.hpp"
+
+// #include "log_category.hpp"
+
+// #include "log_priority.hpp"
+
+// #include "not_null.hpp"
+
+// #include "to_underlying.hpp"
+
+
+namespace cen {
+
+/// \namespace cen::log
+/// \brief Contains easy-to-use logging facilities.
+/// \ingroup core
+/// \since 3.0.0
+namespace log {
+
 /// \addtogroup core
 /// \{
+
+/**
+ * \brief Logs a message with the specified priority and category.
+ *
+ * \details This method has no effect if the supplied string is null. Usage of this method
+ * is quite bulky, so refer to the other logging methods for casual logging.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param priority the priority that will be used.
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void msg(const log_priority priority,
+         const log_category category,
+         const not_null<czstring> fmt,
+         Args&&... args) noexcept
+{
+  assert(fmt);
+  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
+  const auto prio = static_cast<SDL_LogPriority>(priority);
+  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::info` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(log_priority::info, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::info` and `log_category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void info(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::info(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::warn` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const log_category category,
+          const not_null<czstring> fmt,
+          Args&&... args) noexcept
+{
+  log::msg(log_priority::warn, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::warn` and `log_category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void warn(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::warn(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::verbose` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const log_category category,
+             const not_null<czstring> fmt,
+             Args&&... args) noexcept
+{
+  log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::verbose(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::debug` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const log_category category,
+           const not_null<czstring> fmt,
+           Args&&... args) noexcept
+{
+  log::msg(log_priority::debug, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::debug` and `log_category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void debug(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::debug(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::critical` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const log_category category,
+              const not_null<czstring> fmt,
+              Args&&... args) noexcept
+{
+  log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::critical` and `log_category::app`.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void critical(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::critical(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with `log_priority::error` and the specified category.
+ *
+ * \details This method has no effect if the supplied string is null.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param category the category that will be used.
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const log_category category, const czstring fmt, Args&&... args) noexcept
+{
+  log::msg(log_priority::error, category, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a message with the `log_priority::error` and `log_category::app`.
+ *
+ * \tparam Args the types of the arguments that will be used in the formatted string.
+ *
+ * \param fmt the formatted string that will be logged, cannot be null.
+ * \param args the arguments that will be used by the formatted string.
+ *
+ * \since 4.0.0
+ */
+template <typename... Args>
+void error(const not_null<czstring> fmt, Args&&... args) noexcept
+{
+  log::error(log_category::app, fmt, std::forward<Args>(args)...);
+}
+
+/**
+ * \brief Logs a string.
+ *
+ * \details This function is meant to be used for casual logging, where you just want to
+ * log a string. The message will be logged with `log_priority::info` and
+ * `log_category::app`.
+ *
+ * \param str the string that will be logged.
+ *
+ * \since 5.0.0
+ */
+inline void put(const std::string& str) noexcept
+{
+  log::info("%s", str.c_str());
+}
+
+/// \copydoc put()
+inline void put(const not_null<czstring> str) noexcept
+{
+  log::info("%s", str);
+}
+
+/**
+ * \brief Resets all of the logging priorities.
+ *
+ * \since 3.0.0
+ */
+inline void reset_priorities() noexcept
+{
+  SDL_LogResetPriorities();
+}
+
+/**
+ * \brief Sets the priority of all categories.
+ *
+ * \param priority the priority that will be used.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const log_priority priority) noexcept
+{
+  const auto p = static_cast<SDL_LogPriority>(priority);
+  SDL_LogSetAllPriority(p);
+
+  // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
+}
+
+/**
+ * \brief Sets the priority of the specified category.
+ *
+ * \param category the category that will have its priority changed.
+ * \param priority the new priority value.
+ *
+ * \since 3.0.0
+ */
+inline void set_priority(const log_category category,
+                         const log_priority priority) noexcept
+{
+  SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
+}
+
+/**
+ * \brief Returns the priority of the specified category.
+ *
+ * \param category the category to return the priority of.
+ * \return the priority of the specified category.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept
+    -> log_priority
+{
+  return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
+}
+
+/**
+ * \brief Returns the maximum size, i.e the maximum amount of characters that a string can
+ * contain and successfully be logged without being truncated.
+ *
+ * \note Strings longer that this value will be truncated.
+ *
+ * \return the maximum amount of characters that a loggable string can contain.
+ *
+ * \see `SDL_MAX_LOG_MESSAGE`
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto max_message_size() noexcept -> int
+{
+  return SDL_MAX_LOG_MESSAGE;
+}
+
+/// \} End of group core
+
+}  // namespace log
+}  // namespace cen
+
+#endif  // CENTURION_LOG_HEADER
+
 
 #ifndef CENTURION_NO_DEBUG_LOG_MACROS
 #ifdef NDEBUG
 
-/**
- * \def CENTURION_LOG_INFO
- */
 #define CENTURION_LOG_INFO(fmt, ...)
-
-/**
- * \def CENTURION_LOG_WARN
- */
 #define CENTURION_LOG_WARN(fmt, ...)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
 #define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
 #define CENTURION_LOG_DEBUG(fmt, ...)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
 #define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
 #define CENTURION_LOG_ERROR(fmt, ...)
 
 #else
 
-/**
- * \def CENTURION_LOG_INFO
- */
+#ifdef CENTURION_HAS_FEATURE_VA_OPT
+
+// clang-format off
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt __VA_OPT__(,) __VA_ARGS__)
+// clang-format on
+
+#else
+
+// clang-format off
 #define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_WARN
- */
 #define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
 #define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
 #define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
 #define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
 #define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+// clang-format on
+
+#endif  // CENTURION_HAS_FEATURE_VA_OPT
 
 #endif  // NDEBUG
 #endif  // CENTURION_NO_DEBUG_LOG_MACROS
 
-/**
- * \def CENTURION_LOG_INFO
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
+#endif  // CENTURION_LOG_MACROS_HEADER
+
+// #include "centurion/core/log_priority.hpp"
+#ifndef CENTURION_LOG_PRIORITY_HEADER
+#define CENTURION_LOG_PRIORITY_HEADER
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
 
 /**
- * \def CENTURION_LOG_WARN
+ * \enum log_priority
  *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ * \brief Provides values that represent different logging priorities.
  *
- * \brief A debug-only macro that expands to `cen::log::warn`.
+ * \see `SDL_LogPriority`
  *
- * \since 5.0.0
+ * \since 3.0.0
  */
+enum class log_priority : int
+{
+  verbose = SDL_LOG_PRIORITY_VERBOSE,
+  debug = SDL_LOG_PRIORITY_DEBUG,
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
+  error = SDL_LOG_PRIORITY_ERROR,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
+};
 
 /**
- * \def CENTURION_LOG_VERBOSE
+ * \brief Returns a textual version of the supplied log priority.
  *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_priority::debug) == "debug"`.
  *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
+ * \param priority the enumerator that will be converted.
  *
- * \since 5.0.0
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
  */
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+{
+  switch (priority)
+  {
+    case log_priority::verbose:
+      return "verbose";
+
+    case log_priority::debug:
+      return "debug";
+
+    case log_priority::info:
+      return "info";
+
+    case log_priority::warn:
+      return "warn";
+
+    case log_priority::error:
+      return "error";
+
+    case log_priority::critical:
+      return "critical";
+
+    default:
+      throw cen_error{"Did not recognize log priority!"};
+  }
+}
 
 /**
- * \def CENTURION_LOG_DEBUG
+ * \brief Prints a textual representation of a log priority enumerator.
  *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
  *
- * \brief A debug-only macro that expands to `cen::log::debug`.
+ * \see `to_string(log_priority)`
  *
- * \since 5.0.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
+inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
+{
+  return stream << to_string(priority);
+}
+
+/// \name Log priority comparison operators
+/// \{
 
 /**
- * \def CENTURION_LOG_CRITICAL
+ * \brief Indicates whether or not the two log priorities values are the same.
  *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
  *
- * \brief A debug-only macro that expands to `cen::log::critical`.
+ * \return `true` if the priorities are the same; `false` otherwise.
  *
- * \since 5.0.0
+ * \since 3.0.0
  */
+[[nodiscard]] constexpr auto operator==(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return static_cast<SDL_LogPriority>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * \def CENTURION_LOG_ERROR
+ * \brief Indicates whether or not the two log priorities values aren't the same.
  *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
  *
- * \brief A debug-only macro that expands to `cen::log::error`.
+ * \return `true` if the priorities aren't the same; `false` otherwise.
  *
- * \since 5.0.0
+ * \since 3.0.0
  */
+[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of log priority comparison operators
 
 /// \} End of group core
 
-#endif  // CENTURION_LOG_HEADER
+}  // namespace cen
+
+#endif  // CENTURION_LOG_PRIORITY_HEADER
 
 // #include "centurion/core/not_null.hpp"
 #ifndef CENTURION_NOT_NULL_HEADER
@@ -5650,6 +6851,24 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 }  // namespace cen
 
 #endif  // CENTURION_RESULT_HEADER
+
+// #include "centurion/core/sdl_log_category_workaround.hpp"
+#ifndef CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+#define CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+
+#include <SDL.h>
+
+// #include "version.hpp"
+
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10
+using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+#endif  // CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
 
 // #include "centurion/core/sdl_string.hpp"
 #ifndef CENTURION_SDL_STRING_HEADER
@@ -6016,7 +7235,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 1
+#define CENTURION_VERSION_MINOR 2
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -6026,6 +7245,17 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  * \since 6.0.0
  */
 #define CENTURION_VERSION_PATCH 0
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
 #ifdef CENTURION___DOXYGEN
 
@@ -6254,6 +7484,15 @@ struct version final
 /// \} End of SDL version queries
 
 }  // namespace cen
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 /// \} End of group core
 
@@ -7551,6 +8790,81 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 
 #endif  // CENTURION_DETAIL_HINTS_IMPL_HEADER
 
+// #include "centurion/detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
+
 // #include "centurion/detail/max.hpp"
 #ifndef CENTURION_DETAIL_MAX_HEADER
 #define CENTURION_DETAIL_MAX_HEADER
@@ -7762,7 +9076,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 1
+#define CENTURION_VERSION_MINOR 2
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -7772,6 +9086,17 @@ struct sdl_deleter final
  * \since 6.0.0
  */
 #define CENTURION_VERSION_PATCH 0
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
 #ifdef CENTURION___DOXYGEN
 
@@ -8001,6 +9326,15 @@ struct version final
 
 }  // namespace cen
 
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
 /// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
@@ -8025,61 +9359,15 @@ namespace cen::detail {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 // #include "../core/integers.hpp"
 
-// #include "../core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
 
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-#ifndef __clang__
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // __clang__
-
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief This macro is meant to be used when conditionally including code for a specific
- * version of SDL. It is useful for applying workarounds.
- *
- * \since 5.3.0
- */
-#define CENTURION_SDL_VERSION_IS(x, y, z) \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
-// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
-// this definition.
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-/// \} End of group core
-
-#endif  // CENTURION_MACROS_HEADER
-
-
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte
@@ -8099,13 +9387,13 @@ class stack_resource final
 
  private:
   std::array<std::byte, BufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail
-/// \endcond
+   /// \endcond
 
-#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
+#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
 // #include "centurion/detail/static_bimap.hpp"
@@ -9017,6 +10305,55 @@ template <typename T>
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
@@ -9024,6 +10361,12 @@ template <typename T>
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -10869,7 +12212,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 1
+#define CENTURION_VERSION_MINOR 2
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -10879,6 +12222,17 @@ class pointer_manager final
  * \since 6.0.0
  */
 #define CENTURION_VERSION_PATCH 0
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
 #ifdef CENTURION___DOXYGEN
 
@@ -11108,6 +12462,15 @@ struct version final
 
 }  // namespace cen
 
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
 /// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
@@ -11132,10 +12495,59 @@ namespace cen::detail {
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -11143,6 +12555,12 @@ namespace cen::detail {
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -12028,6 +13446,81 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
+// #include "../detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
+
 
 namespace cen {
 
@@ -12811,10 +14304,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -12849,27 +14350,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -13030,12 +14534,23 @@ enum class button_state : u8
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -13095,6 +14610,14 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "button_state.hpp"
 
+// #include "hat_state.hpp"
+#ifndef CENTURION_HAT_STATE_HEADER
+#define CENTURION_HAT_STATE_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -13102,27 +14625,9 @@ namespace cen {
 /// \{
 
 /**
- * \enum joystick_power
- *
- * \brief Provides values that represent different power states of a joystick.
- *
- * \since 4.2.0
- */
-enum class joystick_power
-{
-  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-};
-
-/**
  * \enum hat_state
  *
- * \brief Represents the various states of a joystick hat.
+ * \brief Represents the various states of a joystick "hat".
  *
  * \since 4.2.0
  */
@@ -13138,6 +14643,127 @@ enum class hat_state : u8
   left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
   left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
 };
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_HAT_STATE_HEADER
+
+// #include "joystick_power.hpp"
+#ifndef CENTURION_JOYSTICK_POWER_HEADER
+#define CENTURION_JOYSTICK_POWER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum joystick_power
+ *
+ * \brief Represents different power states of a joystick.
+ *
+ * \since 4.2.0
+ */
+enum class joystick_power
+{
+  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
+  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+};
+
+/// \name Joystick power comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two joystick power values are the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
+                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values are the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
+                                        const joystick_power rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
+                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
+                                        const joystick_power rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of joystick power comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_POWER_HEADER
+
+// #include "joystick_type.hpp"
+#ifndef CENTURION_JOYSTICK_TYPE_HEADER
+#define CENTURION_JOYSTICK_TYPE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
 
 /**
  * \enum joystick_type
@@ -13159,6 +14785,87 @@ enum class joystick_type
   arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
   throttle = SDL_JOYSTICK_TYPE_THROTTLE
 };
+
+/// \name Joystick type comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two joystick type values are the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
+                                        const SDL_JoystickType rhs) noexcept -> bool
+{
+  return static_cast<SDL_JoystickType>(lhs) == rhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values are the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
+                                        const joystick_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
+                                        const SDL_JoystickType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
+                                        const joystick_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of joystick type comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_TYPE_HEADER
+
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
 
 /**
  * \struct ball_axis_change
@@ -13198,6 +14905,8 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  * \class basic_joystick
  *
  * \brief Represents a joystick device.
+ *
+ * \ownerhandle `joystick`/`joystick_handle`
  *
  * \details The game controller API is built on top of the joystick API, which means that
  * the game controller is higher-level and easier to use.
@@ -14226,9 +15935,17 @@ template <typename T>
     serial = joystick.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
+                     detail::address_of(joystick.get()),
+                     joystick.instance_id(),
+                     str_or_na(joystick.name()),
+                     str_or_na(joystick.serial()));
+#else
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -14249,144 +15966,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
   return stream << to_string(joystick);
 }
 
-/// \name Joystick power comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick power comparison operators
-
-/// \name Joystick type comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickType>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick type comparison operators
-
 /// \} End of group input
 
 }  // namespace cen
@@ -14396,12 +15975,23 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -14472,6 +16062,8 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  * \class basic_sensor
  *
  * \brief Represents a sensor device.
+ *
+ * \ownerhandle `sensor`/`sensor_handle`
  *
  * \see `sensor`
  * \see `sensor_handle`
@@ -14808,9 +16400,16 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sensor{{data: {}, id: {}, name: {}}}",
+                     detail::address_of(sensor.get()),
+                     sensor.id(),
+                     str_or_na(sensor.name()));
+#else
   return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -15272,6 +16871,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  * \class basic_controller
  *
  * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
+ *
+ * \ownerhandle `controller`/`controller_handle`
  *
  * \details You may need to load appropriate game controller mappings before you can begin
  * using the game controller API with certain controllers. This can be accomplished using
@@ -16089,8 +17690,8 @@ class basic_controller final
                                            const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
-    touch::finger_state result;
-    u8 state;
+    touch::finger_state result{};
+    u8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
                                                          touchpad,
@@ -16465,8 +18066,15 @@ template <typename T>
     serial = controller.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("controller{{data: {}, name: {}, serial: {}}}",
+                     detail::address_of(controller.get()),
+                     str_or_na(name),
+                     str_or_na(serial));
+#else
   return "controller{data: " + detail::address_of(controller.get()) +
          ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -19355,40 +20963,76 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
+// #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
+#ifndef CENTURION_VERSION_HEADER
+#define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <cassert>  // assert
 
 /// \addtogroup core
 /// \{
 
-#ifndef __clang__
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_MAJOR 6
 
 /**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \def CENTURION_VERSION_MINOR
  *
- * \brief This macro is defined if the `memory_resource` header is available.
+ * \brief Expands into the current minor version of the library.
  *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
+ * \since 6.0.0
  */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
+#define CENTURION_VERSION_MINOR 2
 
-#endif  // __clang__
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_PATCH 0
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -19401,6 +21045,234 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #define CENTURION_SDL_VERSION_IS(x, y, z) \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_NUMBER                         \
+  CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
+                                CENTURION_VERSION_MINOR, \
+                                CENTURION_VERSION_PATCH)
+
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_AT_LEAST(x, y, z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
+ *
+ * \since 6.0.0
+ */
+struct version final
+{
+  int major{CENTURION_VERSION_MAJOR};
+  int minor{CENTURION_VERSION_MINOR};
+  int patch{CENTURION_VERSION_PATCH};
+};
+
+/**
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] constexpr auto version_at_least(const int major,
+                                              const int minor,
+                                              const int patch) noexcept -> bool
+{
+  return CENTURION_VERSION_AT_LEAST(major, minor, patch);
+}
+
+/// \} End of centurion version queries
+
+/// \name SDL version queries
+/// \{
+
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version{};
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \brief Returns the version of SDL2_image that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_image.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_image_linked_version() noexcept -> SDL_version
+{
+  const auto* version = IMG_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \brief Returns the version of SDL2_mixer that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_mixer.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_mixer_linked_version() noexcept -> SDL_version
+{
+  const auto* version = Mix_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \brief Returns the version of SDL2_ttf that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_ttf.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_ttf_linked_version() noexcept -> SDL_version
+{
+  const auto* version = TTF_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_TTF
+
+/// \} End of SDL version queries
+
+}  // namespace cen
+
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 // Workaround for this enum being completely anonymous in SDL 2.0.10. We include
@@ -19412,9 +21284,7 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 /// \} End of group core
 
-#endif  // CENTURION_MACROS_HEADER
-
-// #include "../core/not_null.hpp"
+#endif  // CENTURION_VERSION_HEADER
 
 
 namespace cen {
@@ -19731,7 +21601,11 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("key_code{{key: {}}}", keyCode.name());
+#else
   return "key_code{key: " + keyCode.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -19785,515 +21659,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
 }
 
 /// \} End of key code comparison operators
-
-/**
- * \namespace cen::keycodes
- *
- * \brief Provides a collection of `key_code` constants.
- *
- * \details Far from all key codes are provided. Instead, some of the most commonly used
- * key codes are available.
- *
- * \since 5.0.0
- */
-namespace keycodes {
-
-/**
- * \brief Represents an unknown key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code unknown;
-
-/**
- * \brief Represents the key with the label "A".
- *
- * \since 5.0.0
- */
-inline constexpr key_code a{SDLK_a};
-
-/**
- * \brief Represents the key with the label "B".
- *
- * \since 5.0.0
- */
-inline constexpr key_code b{SDLK_b};
-
-/**
- * \brief Represents the key with the label "C".
- *
- * \since 5.0.0
- */
-inline constexpr key_code c{SDLK_c};
-
-/**
- * \brief Represents the key with the label "D".
- *
- * \since 5.0.0
- */
-inline constexpr key_code d{SDLK_d};
-
-/**
- * \brief Represents the key with the label "E".
- *
- * \since 5.0.0
- */
-inline constexpr key_code e{SDLK_e};
-
-/**
- * \brief Represents the key with the label "F".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f{SDLK_f};
-
-/**
- * \brief Represents the key with the label "G".
- *
- * \since 5.0.0
- */
-inline constexpr key_code g{SDLK_g};
-
-/**
- * \brief Represents the key with the label "H".
- *
- * \since 5.0.0
- */
-inline constexpr key_code h{SDLK_h};
-
-/**
- * \brief Represents the key with the label "I".
- *
- * \since 5.0.0
- */
-inline constexpr key_code i{SDLK_i};
-
-/**
- * \brief Represents the key with the label "J".
- *
- * \since 5.0.0
- */
-inline constexpr key_code j{SDLK_j};
-
-/**
- * \brief Represents the key with the label "K".
- *
- * \since 5.0.0
- */
-inline constexpr key_code k{SDLK_k};
-
-/**
- * \brief Represents the key with the label "L".
- *
- * \since 5.0.0
- */
-inline constexpr key_code l{SDLK_l};
-
-/**
- * \brief Represents the key with the label "M".
- *
- * \since 5.0.0
- */
-inline constexpr key_code m{SDLK_m};
-
-/**
- * \brief Represents the key with the label "N".
- *
- * \since 5.0.0
- */
-inline constexpr key_code n{SDLK_n};
-
-/**
- * \brief Represents the key with the label "O".
- *
- * \since 5.0.0
- */
-inline constexpr key_code o{SDLK_o};
-
-/**
- * \brief Represents the key with the label "P".
- *
- * \since 5.0.0
- */
-inline constexpr key_code p{SDLK_p};
-
-/**
- * \brief Represents the key with the label "Q".
- *
- * \since 5.0.0
- */
-inline constexpr key_code q{SDLK_q};
-
-/**
- * \brief Represents the key with the label "R".
- *
- * \since 5.0.0
- */
-inline constexpr key_code r{SDLK_r};
-
-/**
- * \brief Represents the key with the label "S".
- *
- * \since 5.0.0
- */
-inline constexpr key_code s{SDLK_s};
-
-/**
- * \brief Represents the key with the label "T".
- *
- * \since 5.0.0
- */
-inline constexpr key_code t{SDLK_t};
-
-/**
- * \brief Represents the key with the label "U".
- *
- * \since 5.0.0
- */
-inline constexpr key_code u{SDLK_u};
-
-/**
- * \brief Represents the key with the label "V".
- *
- * \since 5.0.0
- */
-inline constexpr key_code v{SDLK_v};
-
-/**
- * \brief Represents the key with the label "W".
- *
- * \since 5.0.0
- */
-inline constexpr key_code w{SDLK_w};
-
-/**
- * \brief Represents the key with the label "X".
- *
- * \since 5.0.0
- */
-inline constexpr key_code x{SDLK_x};
-
-/**
- * \brief Represents the key with the label "Y".
- *
- * \since 5.0.0
- */
-inline constexpr key_code y{SDLK_y};
-
-/**
- * \brief Represents the key with the label "Z".
- *
- * \since 5.0.0
- */
-inline constexpr key_code z{SDLK_z};
-
-/**
- * \brief Represents the key with the label "1".
- *
- * \note This is not for a potential "1" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code one{SDLK_1};
-
-/**
- * \brief Represents the key with the label "2".
- *
- * \note This is not for a potential "2" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code two{SDLK_2};
-
-/**
- * \brief Represents the key with the label "3".
- *
- * \note This is not for a potential "3" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code three{SDLK_3};
-
-/**
- * \brief Represents the key with the label "4".
- *
- * \note This is not for a potential "4" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code four{SDLK_4};
-
-/**
- * \brief Represents the key with the label "5".
- *
- * \note This is not for a potential "5" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code five{SDLK_5};
-
-/**
- * \brief Represents the key with the label "6".
- *
- * \note This is not for a potential "6" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code six{SDLK_6};
-
-/**
- * \brief Represents the key with the label "7".
- *
- * \note This is not for a potential "7" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code seven{SDLK_7};
-
-/**
- * \brief Represents the key with the label "8".
- *
- * \note This is not for a potential "8" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code eight{SDLK_8};
-
-/**
- * \brief Represents the key with the label "9".
- *
- * \note This is not for a potential "9" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code nine{SDLK_9};
-
-/**
- * \brief Represents the key with the label "0".
- *
- * \note This is not for a potential "0" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code zero{SDLK_0};
-
-/**
- * \brief Represents the function key "F1".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f1{SDLK_F1};
-
-/**
- * \brief Represents the function key "F2".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f2{SDLK_F2};
-
-/**
- * \brief Represents the function key "F3".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f3{SDLK_F3};
-
-/**
- * \brief Represents the function key "F4".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f4{SDLK_F4};
-
-/**
- * \brief Represents the function key "F5".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f5{SDLK_F5};
-
-/**
- * \brief Represents the function key "F6".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f6{SDLK_F6};
-
-/**
- * \brief Represents the function key "F7".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f7{SDLK_F7};
-
-/**
- * \brief Represents the function key "F8".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f8{SDLK_F8};
-
-/**
- * \brief Represents the function key "F9".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f9{SDLK_F9};
-
-/**
- * \brief Represents the function key "F10".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f10{SDLK_F10};
-
-/**
- * \brief Represents the function key "F11".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f11{SDLK_F11};
-
-/**
- * \brief Represents the function key "F12".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f12{SDLK_F12};
-
-/**
- * \brief Represents the left arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left{SDLK_LEFT};
-
-/**
- * \brief Represents the right arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right{SDLK_RIGHT};
-
-/**
- * \brief Represents the up arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code up{SDLK_UP};
-
-/**
- * \brief Represents the down arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code down{SDLK_DOWN};
-
-/**
- * \brief Represents the "Space" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code space{SDLK_SPACE};
-
-/**
- * \brief Represents the "Enter" key.
- *
- * \note This key is also referred to as the "Return" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code enter{SDLK_RETURN};
-
-/**
- * \brief Represents the "Escape" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code escape{SDLK_ESCAPE};
-
-/**
- * \brief Represents the "Backspace" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code backspace{SDLK_BACKSPACE};
-
-/**
- * \brief Represents the "Tab" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code tab{SDLK_TAB};
-
-/**
- * \brief Represents the "Caps Lock" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
-
-/**
- * \brief Represents the left "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_shift{SDLK_LSHIFT};
-
-/**
- * \brief Represents the right "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_shift{SDLK_RSHIFT};
-
-/**
- * \brief Represents the left "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_ctrl{SDLK_LCTRL};
-
-/**
- * \brief Represents the right "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_ctrl{SDLK_RCTRL};
-
-/**
- * \brief Represents the left "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_alt{SDLK_LALT};
-
-/**
- * \brief Represents the right "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_alt{SDLK_RALT};
-
-/**
- * \brief Represents the left "GUI" key.
- *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_gui{SDLK_LGUI};
-
-/**
- * \brief Represents the right "GUI" key.
- *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_gui{SDLK_RGUI};
-
-}  // namespace keycodes
 
 /// \} End of group input
 
@@ -20387,17 +21752,28 @@ using key_mod = key_modifier;
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-
 // #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
 
 
 namespace cen {
@@ -20701,15 +22077,19 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \param scanCode the scan code that will be converted.
+ * \param code the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+[[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-  return "scan_code{key: " + scanCode.name() + "}";
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("scan_code{{key: {}}}", code.name());
+#else
+  return "scan_code{key: " + code.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -20763,513 +22143,6 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
 }
 
 /// \} End of scan code comparison operators
-
-/**
- * \namespace cen::scancodes
- *
- * \brief Provides a collection of `scan_code` constants.
- *
- * \details Far from all scan codes are provided. Instead, the most commonly used scan
- * codes are available.
- */
-namespace scancodes {
-
-/**
- * \brief Represents an unknown key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code unknown;
-
-/**
- * \brief Represents the key "A".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code a{SDL_SCANCODE_A};
-
-/**
- * \brief Represents the key "B".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code b{SDL_SCANCODE_B};
-
-/**
- * \brief Represents the key "C".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code c{SDL_SCANCODE_C};
-
-/**
- * \brief Represents the key "D".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code d{SDL_SCANCODE_D};
-
-/**
- * \brief Represents the key "E".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code e{SDL_SCANCODE_E};
-
-/**
- * \brief Represents the key "F".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f{SDL_SCANCODE_F};
-
-/**
- * \brief Represents the key "G".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code g{SDL_SCANCODE_G};
-
-/**
- * \brief Represents the key "H".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code h{SDL_SCANCODE_H};
-
-/**
- * \brief Represents the key "I".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code i{SDL_SCANCODE_I};
-
-/**
- * \brief Represents the key "J".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code j{SDL_SCANCODE_J};
-
-/**
- * \brief Represents the key "K".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code k{SDL_SCANCODE_K};
-
-/**
- * \brief Represents the key "L".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code l{SDL_SCANCODE_L};
-
-/**
- * \brief Represents the key "M".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code m{SDL_SCANCODE_M};
-
-/**
- * \brief Represents the key "N".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code n{SDL_SCANCODE_N};
-
-/**
- * \brief Represents the key "O".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code o{SDL_SCANCODE_O};
-
-/**
- * \brief Represents the key "P".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code p{SDL_SCANCODE_P};
-
-/**
- * \brief Represents the key "Q".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code q{SDL_SCANCODE_Q};
-
-/**
- * \brief Represents the key "R".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code r{SDL_SCANCODE_R};
-
-/**
- * \brief Represents the key "S".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code s{SDL_SCANCODE_S};
-
-/**
- * \brief Represents the key "T".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code t{SDL_SCANCODE_T};
-
-/**
- * \brief Represents the key "U".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code u{SDL_SCANCODE_U};
-
-/**
- * \brief Represents the key "V".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code v{SDL_SCANCODE_V};
-
-/**
- * \brief Represents the key "W".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code w{SDL_SCANCODE_W};
-
-/**
- * \brief Represents the key "X".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code x{SDL_SCANCODE_X};
-
-/**
- * \brief Represents the key "Y".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code y{SDL_SCANCODE_Y};
-
-/**
- * \brief Represents the key "Z".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code z{SDL_SCANCODE_Z};
-
-/**
- * \brief Represents the key "1".
- *
- * \note This is not for a potential "1" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code one{SDL_SCANCODE_1};
-
-/**
- * \brief Represents the key "2".
- *
- * \note This is not for a potential "2" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code two{SDL_SCANCODE_2};
-
-/**
- * \brief Represents the key "3".
- *
- * \note This is not for a potential "3" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code three{SDL_SCANCODE_3};
-
-/**
- * \brief Represents the key "4".
- *
- * \note This is not for a potential "4" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code four{SDL_SCANCODE_4};
-
-/**
- * \brief Represents the key "5".
- *
- * \note This is not for a potential "5" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code five{SDL_SCANCODE_5};
-
-/**
- * \brief Represents the key "6".
- *
- * \note This is not for a potential "6" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code six{SDL_SCANCODE_6};
-
-/**
- * \brief Represents the key "7".
- *
- * \note This is not for a potential "7" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code seven{SDL_SCANCODE_7};
-
-/**
- * \brief Represents the key "8".
- *
- * \note This is not for a potential "8" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code eight{SDL_SCANCODE_8};
-
-/**
- * \brief Represents the key "9".
- *
- * \note This is not for a potential "9" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code nine{SDL_SCANCODE_9};
-
-/**
- * \brief Represents the key "0".
- *
- * \note This is not for a potential "0" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code zero{SDL_SCANCODE_0};
-
-/**
- * \brief Represents the function key "F1".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f1{SDL_SCANCODE_F1};
-
-/**
- * \brief Represents the function key "F2".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f2{SDL_SCANCODE_F2};
-
-/**
- * \brief Represents the function key "F3".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f3{SDL_SCANCODE_F3};
-
-/**
- * \brief Represents the function key "F4".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f4{SDL_SCANCODE_F4};
-
-/**
- * \brief Represents the function key "F5".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f5{SDL_SCANCODE_F5};
-
-/**
- * \brief Represents the function key "F6".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f6{SDL_SCANCODE_F6};
-
-/**
- * \brief Represents the function key "F7".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f7{SDL_SCANCODE_F7};
-
-/**
- * \brief Represents the function key "F8".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f8{SDL_SCANCODE_F8};
-
-/**
- * \brief Represents the function key "F9".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f9{SDL_SCANCODE_F9};
-
-/**
- * \brief Represents the function key "F10".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f10{SDL_SCANCODE_F10};
-
-/**
- * \brief Represents the function key "F11".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f11{SDL_SCANCODE_F11};
-
-/**
- * \brief Represents the function key "F12".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f12{SDL_SCANCODE_F12};
-
-/**
- * \brief Represents the left arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left{SDL_SCANCODE_LEFT};
-
-/**
- * \brief Represents the right arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
-
-/**
- * \brief Represents the up arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code up{SDL_SCANCODE_UP};
-
-/**
- * \brief Represents the down arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code down{SDL_SCANCODE_DOWN};
-
-/**
- * \brief Represents the "Space" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code space{SDL_SCANCODE_SPACE};
-
-/**
- * \brief Represents the "Enter" key.
- *
- * \note This key is also referred to as the "Return" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
-
-/**
- * \brief Represents the "Escape" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
-
-/**
- * \brief Represents the "Backspace" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
-
-/**
- * \brief Represents the "Tab" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code tab{SDL_SCANCODE_TAB};
-
-/**
- * \brief Represents the "Caps Lock" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
-
-/**
- * \brief Represents the left "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
-
-/**
- * \brief Represents the right "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
-
-/**
- * \brief Represents the left "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
-
-/**
- * \brief Represents the right "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
-
-/**
- * \brief Represents the left "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
-
-/**
- * \brief Represents the right "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
-
-/**
- * \brief Represents the left "GUI" key.
- *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
-
-/**
- * \brief Represents the right "GUI" key.
- *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
-
-}  // namespace scancodes
 
 /// \} End of group input
 
@@ -32802,32 +33675,261 @@ class mix_error final : public cen_error
 
 // #include "czstring.hpp"
 
-// #include "macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
+// #include "log_category.hpp"
+#ifndef CENTURION_LOG_CATEGORY_HEADER
+#define CENTURION_LOG_CATEGORY_HEADER
 
 #include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <exception>  // exception
+
+// #include "czstring.hpp"
+
+
+namespace cen {
 
 /// \addtogroup core
 /// \{
 
-#ifndef __clang__
+/**
+ * \class cen_error
+ *
+ * \brief The base of all exceptions explicitly thrown by the library.
+ *
+ * \since 3.0.0
+ */
+class cen_error : public std::exception
+{
+ public:
+  cen_error() noexcept = default;
+
+  /**
+   * \param what the message of the exception, can safely be null.
+   *
+   * \since 3.0.0
+   */
+  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
+  {}
+
+  [[nodiscard]] auto what() const noexcept -> czstring override
+  {
+    return m_what;
+  }
+
+ private:
+  czstring m_what{"n/a"};
+};
 
 /**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \class sdl_error
  *
- * \brief This macro is defined if the `memory_resource` header is available.
+ * \brief Represents an error related to the core SDL2 library.
  *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
+ * \since 5.0.0
  */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
+class sdl_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  sdl_error() noexcept : cen_error{SDL_GetError()}
+  {}
 
-#endif  // __clang__
+  /**
+   * \brief Creates an `sdl_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit sdl_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \class img_error
+ *
+ * \brief Represents an error related to the SDL2_image library.
+ *
+ * \since 5.0.0
+ */
+class img_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  img_error() noexcept : cen_error{IMG_GetError()}
+  {}
+
+  /**
+   * \brief Creates an `img_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit img_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \class ttf_error
+ *
+ * \brief Represents an error related to the SDL2_ttf library.
+ *
+ * \since 5.0.0
+ */
+class ttf_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  ttf_error() noexcept : cen_error{TTF_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `ttf_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit ttf_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_TTF
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \class mix_error
+ *
+ * \brief Represents an error related to the SDL2_mixer library.
+ *
+ * \since 5.0.0
+ */
+class mix_error final : public cen_error
+{
+ public:
+  /**
+   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
+   *
+   * \since 5.0.0
+   */
+  mix_error() noexcept : cen_error{Mix_GetError()}
+  {}
+
+  /**
+   * \brief Creates a `mix_error` with the specified error message.
+   *
+   * \param what the error message that will be used.
+   *
+   * \since 5.0.0
+   */
+  explicit mix_error(const czstring what) noexcept : cen_error{what}
+  {}
+};
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_EXCEPTION_HEADER
+
+// #include "sdl_log_category_workaround.hpp"
+#ifndef CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+#define CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+
+#include <SDL.h>
+
+// #include "version.hpp"
+#ifndef CENTURION_VERSION_HEADER
+#define CENTURION_VERSION_HEADER
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <cassert>  // assert
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_MAJOR 6
+
+/**
+ * \def CENTURION_VERSION_MINOR
+ *
+ * \brief Expands into the current minor version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_MINOR 2
+
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_PATCH 0
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -32840,6 +33942,234 @@ class mix_error final : public cen_error
 #define CENTURION_SDL_VERSION_IS(x, y, z) \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_NUMBER                         \
+  CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
+                                CENTURION_VERSION_MINOR, \
+                                CENTURION_VERSION_PATCH)
+
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_AT_LEAST(x, y, z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
+ *
+ * \since 6.0.0
+ */
+struct version final
+{
+  int major{CENTURION_VERSION_MAJOR};
+  int minor{CENTURION_VERSION_MINOR};
+  int patch{CENTURION_VERSION_PATCH};
+};
+
+/**
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] constexpr auto version_at_least(const int major,
+                                              const int minor,
+                                              const int patch) noexcept -> bool
+{
+  return CENTURION_VERSION_AT_LEAST(major, minor, patch);
+}
+
+/// \} End of centurion version queries
+
+/// \name SDL version queries
+/// \{
+
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version{};
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \brief Returns the version of SDL2_image that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_image.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_image_linked_version() noexcept -> SDL_version
+{
+  const auto* version = IMG_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \brief Returns the version of SDL2_mixer that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_mixer.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_mixer_linked_version() noexcept -> SDL_version
+{
+  const auto* version = Mix_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \brief Returns the version of SDL2_ttf that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_ttf.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_ttf_linked_version() noexcept -> SDL_version
+{
+  const auto* version = TTF_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_TTF
+
+/// \} End of SDL version queries
+
+}  // namespace cen
+
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 // Workaround for this enum being completely anonymous in SDL 2.0.10. We include
@@ -32851,7 +34181,322 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 /// \} End of group core
 
-#endif  // CENTURION_MACROS_HEADER
+#endif  // CENTURION_VERSION_HEADER
+
+
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10
+using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+#endif  // CENTURION_SDL_LOG_CATEGORY_WORKAROUND_HEADER
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \brief Represents different logging categories.
+ *
+ * \see `SDL_LogCategory`
+ *
+ * \since 3.0.0
+ */
+enum class log_category : int
+{
+  app = SDL_LOG_CATEGORY_APPLICATION,
+  error = SDL_LOG_CATEGORY_ERROR,
+  assert = SDL_LOG_CATEGORY_ASSERT,
+  system = SDL_LOG_CATEGORY_SYSTEM,
+  audio = SDL_LOG_CATEGORY_AUDIO,
+  video = SDL_LOG_CATEGORY_VIDEO,
+  render = SDL_LOG_CATEGORY_RENDER,
+  input = SDL_LOG_CATEGORY_INPUT,
+  test = SDL_LOG_CATEGORY_TEST,
+  misc = SDL_LOG_CATEGORY_CUSTOM
+};
+
+/**
+ * \brief Returns a textual version of the supplied log category.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_category::app) == "app"`.
+ *
+ * \param category the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+{
+  switch (category)
+  {
+    case log_category::app:
+      return "app";
+
+    case log_category::error:
+      return "error";
+
+    case log_category::assert:
+      return "assert";
+
+    case log_category::system:
+      return "system";
+
+    case log_category::audio:
+      return "audio";
+
+    case log_category::video:
+      return "video";
+
+    case log_category::render:
+      return "render";
+
+    case log_category::input:
+      return "input";
+
+    case log_category::test:
+      return "test";
+
+    case log_category::misc:
+      return "misc";
+
+    default:
+      throw cen_error{"Did not recognize log category!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log category enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_category)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
+{
+  return stream << to_string(category);
+}
+
+/// \name Log category comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const log_category lhs,
+                                        const SDL_LogCategory rhs) noexcept -> bool
+{
+  return static_cast<SDL_LogCategory>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const log_category, const SDL_LogCategory)
+[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
+                                        const log_category rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log category values are the same.
+ *
+ * \param lhs the left-hand side log category value.
+ * \param rhs the right-hand side log category value.
+ *
+ * \return `true` if the categories are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const log_category lhs,
+                                        const SDL_LogCategory rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const log_category, const SDL_LogCategory)
+[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
+                                        const log_category rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of log category comparison operators
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_LOG_CATEGORY_HEADER
+
+// #include "log_priority.hpp"
+#ifndef CENTURION_LOG_PRIORITY_HEADER
+#define CENTURION_LOG_PRIORITY_HEADER
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string
+
+// #include "exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \enum log_priority
+ *
+ * \brief Provides values that represent different logging priorities.
+ *
+ * \see `SDL_LogPriority`
+ *
+ * \since 3.0.0
+ */
+enum class log_priority : int
+{
+  verbose = SDL_LOG_PRIORITY_VERBOSE,
+  debug = SDL_LOG_PRIORITY_DEBUG,
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
+  error = SDL_LOG_PRIORITY_ERROR,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
+};
+
+/**
+ * \brief Returns a textual version of the supplied log priority.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_priority::debug) == "debug"`.
+ *
+ * \param priority the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+{
+  switch (priority)
+  {
+    case log_priority::verbose:
+      return "verbose";
+
+    case log_priority::debug:
+      return "debug";
+
+    case log_priority::info:
+      return "info";
+
+    case log_priority::warn:
+      return "warn";
+
+    case log_priority::error:
+      return "error";
+
+    case log_priority::critical:
+      return "critical";
+
+    default:
+      throw cen_error{"Did not recognize log priority!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log priority enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_priority)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
+{
+  return stream << to_string(priority);
+}
+
+/// \name Log priority comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two log priorities values are the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return static_cast<SDL_LogPriority>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two log priorities values aren't the same.
+ *
+ * \param lhs the left-hand side log priority value.
+ * \param rhs the right-hand side log priority value.
+ *
+ * \return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
+                                        const SDL_LogPriority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const log_priority, const SDL_LogPriority)
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const log_priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of log priority comparison operators
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_LOG_PRIORITY_HEADER
 
 // #include "not_null.hpp"
 
@@ -32890,74 +34535,12 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
 
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
-/**
- * \enum log_priority
- *
- * \brief Provides values that represent different logging priorities.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- */
-enum class log_priority : int
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum log_category
- *
- * \brief Provides values that represent different logging categories.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- */
-enum class log_category : int
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/// \} End of group core
-
-/**
- * \namespace cen::log
- *
- * \ingroup core
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people that have
- * used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- */
+/// \namespace cen::log
+/// \brief Contains easy-to-use logging facilities.
+/// \ingroup core
+/// \since 3.0.0
 namespace log {
 
 /// \addtogroup core
@@ -32991,7 +34574,7 @@ void msg(const log_priority priority,
 }
 
 /**
- * \brief Logs a message with `priority::info` and the specified category.
+ * \brief Logs a message with `log_priority::info` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33012,7 +34595,7 @@ void info(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::info` and `category::app`.
+ * \brief Logs a message with `log_priority::info` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33030,7 +34613,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::warn` and the specified category.
+ * \brief Logs a message with `log_priority::warn` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33051,7 +34634,7 @@ void warn(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::warn` and `category::app`.
+ * \brief Logs a message with `log_priority::warn` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33069,7 +34652,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and the specified category.
+ * \brief Logs a message with `log_priority::verbose` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33090,7 +34673,7 @@ void verbose(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and `category::app`.
+ * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33108,7 +34691,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::debug` and the specified category.
+ * \brief Logs a message with `log_priority::debug` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33129,7 +34712,7 @@ void debug(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::debug` and `category::app`.
+ * \brief Logs a message with `log_priority::debug` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33147,7 +34730,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::critical` and the specified category.
+ * \brief Logs a message with `log_priority::critical` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33168,7 +34751,7 @@ void critical(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::critical` and `category::app` .
+ * \brief Logs a message with `log_priority::critical` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33186,7 +34769,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::error` and the specified category.
+ * \brief Logs a message with `log_priority::error` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -33205,7 +34788,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 }
 
 /**
- * \brief Logs a message with the `priority::error` and `category::app`.
+ * \brief Logs a message with the `log_priority::error` and `log_category::app`.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -33224,7 +34807,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
  * \brief Logs a string.
  *
  * \details This function is meant to be used for casual logging, where you just want to
- * log a string. The message will be logged with `priority::info` and `category::app`.
+ * log a string. The message will be logged with `log_priority::info` and
+ * `log_category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -33235,7 +34819,7 @@ inline void put(const std::string& str) noexcept
   log::info("%s", str.c_str());
 }
 
-/// \copydoc put(const std::string&)
+/// \copydoc put()
 inline void put(const not_null<czstring> str) noexcept
 {
   log::info("%s", str);
@@ -33315,238 +34899,7 @@ inline void set_priority(const log_category category,
 /// \} End of group core
 
 }  // namespace log
-
-/// \addtogroup core
-/// \{
-
-/**
- * \brief Indicates whether or not the two log priorities values are the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
-{
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
-
-/// \copydoc operator==(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values aren't the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
-{
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
-}
-
-/// \copydoc operator==(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of group core
-
 }  // namespace cen
-
-/// \addtogroup core
-/// \{
-
-#ifndef CENTURION_NO_DEBUG_LOG_MACROS
-#ifdef NDEBUG
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...)
-
-#else
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
-
-#endif  // NDEBUG
-#endif  // CENTURION_NO_DEBUG_LOG_MACROS
-
-/**
- * \def CENTURION_LOG_INFO
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_WARN
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::warn`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_VERBOSE
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_DEBUG
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::debug`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_CRITICAL
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::critical`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_ERROR
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::error`.
- *
- * \since 5.0.0
- */
-
-/// \} End of group core
 
 #endif  // CENTURION_LOG_HEADER
 
@@ -34731,6 +36084,55 @@ enum class button_state : u8
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
@@ -34738,6 +36140,12 @@ enum class button_state : u8
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -36391,7 +37799,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 1
+#define CENTURION_VERSION_MINOR 2
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -36401,6 +37809,17 @@ class pointer_manager final
  * \since 6.0.0
  */
 #define CENTURION_VERSION_PATCH 0
+
+/**
+ * \def CENTURION_SDL_VERSION_IS
+ *
+ * \brief This macro is meant to be used when conditionally including code for a specific
+ * version of SDL. It is useful for applying workarounds.
+ *
+ * \since 5.3.0
+ */
+#define CENTURION_SDL_VERSION_IS(x, y, z) \
+  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
 #ifdef CENTURION___DOXYGEN
 
@@ -36630,6 +38049,15 @@ struct version final
 
 }  // namespace cen
 
+#if CENTURION_SDL_VERSION_IS(2, 0, 10)
+
+// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
+// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
+// this definition.
+using SDL_KeyCode = decltype(SDLK_UNKNOWN);
+
+#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
+
 /// \} End of group core
 
 #endif  // CENTURION_VERSION_HEADER
@@ -36654,10 +38082,59 @@ namespace cen::detail {
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -36665,6 +38142,12 @@ namespace cen::detail {
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -37550,6 +39033,81 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
+// #include "../detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
+
 
 namespace cen {
 
@@ -38333,10 +39891,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -38371,27 +39937,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -38552,12 +40121,23 @@ enum class button_state : u8
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -38617,6 +40197,14 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "button_state.hpp"
 
+// #include "hat_state.hpp"
+#ifndef CENTURION_HAT_STATE_HEADER
+#define CENTURION_HAT_STATE_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -38624,27 +40212,9 @@ namespace cen {
 /// \{
 
 /**
- * \enum joystick_power
- *
- * \brief Provides values that represent different power states of a joystick.
- *
- * \since 4.2.0
- */
-enum class joystick_power
-{
-  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-};
-
-/**
  * \enum hat_state
  *
- * \brief Represents the various states of a joystick hat.
+ * \brief Represents the various states of a joystick "hat".
  *
  * \since 4.2.0
  */
@@ -38660,6 +40230,127 @@ enum class hat_state : u8
   left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
   left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
 };
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_HAT_STATE_HEADER
+
+// #include "joystick_power.hpp"
+#ifndef CENTURION_JOYSTICK_POWER_HEADER
+#define CENTURION_JOYSTICK_POWER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum joystick_power
+ *
+ * \brief Represents different power states of a joystick.
+ *
+ * \since 4.2.0
+ */
+enum class joystick_power
+{
+  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
+  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+};
+
+/// \name Joystick power comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two joystick power values are the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
+                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values are the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
+                                        const joystick_power rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
+                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
+                                        const joystick_power rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of joystick power comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_POWER_HEADER
+
+// #include "joystick_type.hpp"
+#ifndef CENTURION_JOYSTICK_TYPE_HEADER
+#define CENTURION_JOYSTICK_TYPE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
 
 /**
  * \enum joystick_type
@@ -38681,6 +40372,87 @@ enum class joystick_type
   arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
   throttle = SDL_JOYSTICK_TYPE_THROTTLE
 };
+
+/// \name Joystick type comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two joystick type values are the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
+                                        const SDL_JoystickType rhs) noexcept -> bool
+{
+  return static_cast<SDL_JoystickType>(lhs) == rhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values are the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
+                                        const joystick_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
+                                        const SDL_JoystickType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 4.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
+                                        const joystick_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of joystick type comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_TYPE_HEADER
+
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
 
 /**
  * \struct ball_axis_change
@@ -38720,6 +40492,8 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  * \class basic_joystick
  *
  * \brief Represents a joystick device.
+ *
+ * \ownerhandle `joystick`/`joystick_handle`
  *
  * \details The game controller API is built on top of the joystick API, which means that
  * the game controller is higher-level and easier to use.
@@ -39748,9 +41522,17 @@ template <typename T>
     serial = joystick.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
+                     detail::address_of(joystick.get()),
+                     joystick.instance_id(),
+                     str_or_na(joystick.name()),
+                     str_or_na(joystick.serial()));
+#else
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -39771,144 +41553,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
   return stream << to_string(joystick);
 }
 
-/// \name Joystick power comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick power comparison operators
-
-/// \name Joystick type comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickType>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick type comparison operators
-
 /// \} End of group input
 
 }  // namespace cen
@@ -39918,12 +41562,23 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -39994,6 +41649,8 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  * \class basic_sensor
  *
  * \brief Represents a sensor device.
+ *
+ * \ownerhandle `sensor`/`sensor_handle`
  *
  * \see `sensor`
  * \see `sensor_handle`
@@ -40330,9 +41987,16 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sensor{{data: {}, id: {}, name: {}}}",
+                     detail::address_of(sensor.get()),
+                     sensor.id(),
+                     str_or_na(sensor.name()));
+#else
   return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -40794,6 +42458,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  * \class basic_controller
  *
  * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
+ *
+ * \ownerhandle `controller`/`controller_handle`
  *
  * \details You may need to load appropriate game controller mappings before you can begin
  * using the game controller API with certain controllers. This can be accomplished using
@@ -41611,8 +43277,8 @@ class basic_controller final
                                            const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
-    touch::finger_state result;
-    u8 state;
+    touch::finger_state result{};
+    u8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
                                                          touchpad,
@@ -41987,8 +43653,15 @@ template <typename T>
     serial = controller.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("controller{{data: {}, name: {}, serial: {}}}",
+                     detail::address_of(controller.get()),
+                     str_or_na(name),
+                     str_or_na(serial));
+#else
   return "controller{data: " + detail::address_of(controller.get()) +
          ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -42222,6 +43895,11 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 #ifndef CENTURION_HAPTIC_HEADER
 #define CENTURION_HAPTIC_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -42229,6 +43907,12 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // enable_if_t
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -42326,8 +44010,63 @@ template <typename T>
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 namespace cen {
 
@@ -42351,6 +44090,12 @@ struct vector3 final
   value_type x{};  ///< The x-coordinate of the vector.
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
+
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 
   /**
    * \brief Casts the vector to a vector with another representation type.
@@ -42394,6 +44139,8 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
  *
@@ -42432,6 +44179,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of vector3 comparison operators
 
 /**
@@ -42448,8 +44197,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
+#else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
          ", z: " + std::to_string(vector.z) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -43892,6 +45645,8 @@ using haptic_handle = basic_haptic<detail::handle_type>;
  *
  * \brief Represents a haptic (force feedback) device.
  *
+ * \ownerhandle `haptic`/`haptic_handle`
+ *
  * \see `haptic`
  * \see `haptic_handle`
  *
@@ -44784,8 +46539,14 @@ class basic_haptic final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("haptic{{data: {}, name: {}}}",
+                     detail::address_of(haptic.get()),
+                     str_or_na(haptic.name()));
+#else
   return "haptic{data: " + detail::address_of(haptic.get()) +
          ", name: " + str_or_na(haptic.name()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -44810,9 +46571,54 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 #endif  // CENTURION_HAPTIC_HEADER
 
+// #include "centurion/input/hat_state.hpp"
+#ifndef CENTURION_HAT_STATE_HEADER
+#define CENTURION_HAT_STATE_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum hat_state
+ *
+ * \brief Represents the various states of a joystick "hat".
+ *
+ * \since 4.2.0
+ */
+enum class hat_state : u8
+{
+  centered = SDL_HAT_CENTERED,     ///< The hat is centered.
+  up = SDL_HAT_UP,                 ///< The hat is directed "north".
+  right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
+  down = SDL_HAT_DOWN,             ///< The hat is directed "south".
+  left = SDL_HAT_LEFT,             ///< The hat is directed "west".
+  right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
+  right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
+  left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
+  left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
+};
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_HAT_STATE_HEADER
+
 // #include "centurion/input/joystick.hpp"
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -44820,6 +46626,12 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -44847,70 +46659,17 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 // #include "button_state.hpp"
 
+// #include "hat_state.hpp"
+
+// #include "joystick_power.hpp"
+
+// #include "joystick_type.hpp"
+
 
 namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum joystick_power
- *
- * \brief Provides values that represent different power states of a joystick.
- *
- * \since 4.2.0
- */
-enum class joystick_power
-{
-  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-};
-
-/**
- * \enum hat_state
- *
- * \brief Represents the various states of a joystick hat.
- *
- * \since 4.2.0
- */
-enum class hat_state : u8
-{
-  centered = SDL_HAT_CENTERED,     ///< The hat is centered.
-  up = SDL_HAT_UP,                 ///< The hat is directed "north".
-  right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
-  down = SDL_HAT_DOWN,             ///< The hat is directed "south".
-  left = SDL_HAT_LEFT,             ///< The hat is directed "west".
-  right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
-  right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
-  left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
-  left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
-};
-
-/**
- * \enum joystick_type
- *
- * \brief Provides values that represent different types of "joysticks".
- *
- * \since 4.2.0
- */
-enum class joystick_type
-{
-  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-  wheel = SDL_JOYSTICK_TYPE_WHEEL,
-  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-  guitar = SDL_JOYSTICK_TYPE_GUITAR,
-  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-  throttle = SDL_JOYSTICK_TYPE_THROTTLE
-};
 
 /**
  * \struct ball_axis_change
@@ -44950,6 +46709,8 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  * \class basic_joystick
  *
  * \brief Represents a joystick device.
+ *
+ * \ownerhandle `joystick`/`joystick_handle`
  *
  * \details The game controller API is built on top of the joystick API, which means that
  * the game controller is higher-level and easier to use.
@@ -45978,9 +47739,17 @@ template <typename T>
     serial = joystick.serial();
   }
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
+                     detail::address_of(joystick.get()),
+                     joystick.instance_id(),
+                     str_or_na(joystick.name()),
+                     str_or_na(joystick.serial()));
+#else
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -46000,6 +47769,40 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 {
   return stream << to_string(joystick);
 }
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_HEADER
+// #include "centurion/input/joystick_power.hpp"
+#ifndef CENTURION_JOYSTICK_POWER_HEADER
+#define CENTURION_JOYSTICK_POWER_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum joystick_power
+ *
+ * \brief Represents different power states of a joystick.
+ *
+ * \since 4.2.0
+ */
+enum class joystick_power
+{
+  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
+  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+};
 
 /// \name Joystick power comparison operators
 /// \{
@@ -46069,6 +47872,44 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 }
 
 /// \} End of joystick power comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_JOYSTICK_POWER_HEADER
+
+// #include "centurion/input/joystick_type.hpp"
+#ifndef CENTURION_JOYSTICK_TYPE_HEADER
+#define CENTURION_JOYSTICK_TYPE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum joystick_type
+ *
+ * \brief Provides values that represent different types of "joysticks".
+ *
+ * \since 4.2.0
+ */
+enum class joystick_type
+{
+  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
+  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+  wheel = SDL_JOYSTICK_TYPE_WHEEL,
+  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
+  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
+  guitar = SDL_JOYSTICK_TYPE_GUITAR,
+  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
+  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
+  throttle = SDL_JOYSTICK_TYPE_THROTTLE
+};
 
 /// \name Joystick type comparison operators
 /// \{
@@ -46143,10 +47984,16 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 }  // namespace cen
 
-#endif  // CENTURION_JOYSTICK_HEADER
+#endif  // CENTURION_JOYSTICK_TYPE_HEADER
+
 // #include "centurion/input/key_code.hpp"
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -46154,34 +48001,65 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
+// #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
+#ifndef CENTURION_VERSION_HEADER
+#define CENTURION_VERSION_HEADER
 
 #include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+#include <SDL_mixer.h>
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+#include <SDL_ttf.h>
+#endif  // CENTURION_NO_SDL_TTF
+
+#include <cassert>  // assert
 
 /// \addtogroup core
 /// \{
 
-#ifndef __clang__
+/**
+ * \def CENTURION_VERSION_MAJOR
+ *
+ * \brief Expands into the current major version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_MAJOR 6
 
 /**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \def CENTURION_VERSION_MINOR
  *
- * \brief This macro is defined if the `memory_resource` header is available.
+ * \brief Expands into the current minor version of the library.
  *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
+ * \since 6.0.0
  */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
+#define CENTURION_VERSION_MINOR 2
 
-#endif  // __clang__
+/**
+ * \def CENTURION_VERSION_PATCH
+ *
+ * \brief Expands into the current patch version of the library.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_PATCH 0
 
 /**
  * \def CENTURION_SDL_VERSION_IS
@@ -46194,6 +48072,234 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #define CENTURION_SDL_VERSION_IS(x, y, z) \
   ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
 
+#ifdef CENTURION___DOXYGEN
+
+#define CENTURION_MAKE_VERSION_NUMBER
+#define CENTURION_VERSION_NUMBER
+#define CENTURION_VERSION_AT_LEAST
+
+#endif  // CENTURION___DOXYGEN
+
+/**
+ * \def CENTURION_MAKE_VERSION_NUMBER
+ *
+ * \brief Helper macro for creating version numbers from a set of major/minor/patch
+ * numbers.
+ *
+ * \details For example, if the version is 8.4.2, the resulting version number would be
+ * 8402.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_MAKE_VERSION_NUMBER(x, y, z) (((x)*1'000) + ((y)*100) + (z))
+
+/**
+ * \def CENTURION_VERSION_NUMBER
+ *
+ * \brief Expands into a version number based on the current Centurion version.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_NUMBER                         \
+  CENTURION_MAKE_VERSION_NUMBER(CENTURION_VERSION_MAJOR, \
+                                CENTURION_VERSION_MINOR, \
+                                CENTURION_VERSION_PATCH)
+
+/**
+ * \def CENTURION_VERSION_AT_LEAST
+ *
+ * \brief This macro is intended to be used for conditional compilation, based on the
+ * Centurion version.
+ *
+ * \details This macro is used in the same way as the `SDL_VERSION_ATLEAST`, where you use
+ * it as the condition with `#if` statements.
+ *
+ * \since 6.0.0
+ */
+#define CENTURION_VERSION_AT_LEAST(x, y, z) \
+  CENTURION_VERSION_NUMBER >= CENTURION_MAKE_VERSION_NUMBER(x, y, z)
+
+namespace cen {
+
+/// \name Centurion version queries
+/// \{
+
+/**
+ * \struct version
+ *
+ * \brief Represents a set of major/minor/patch version numbers.
+ *
+ * \details The members of this struct are by default initialized to the current Centurion
+ * version values.
+ *
+ * \since 6.0.0
+ */
+struct version final
+{
+  int major{CENTURION_VERSION_MAJOR};
+  int minor{CENTURION_VERSION_MINOR};
+  int patch{CENTURION_VERSION_PATCH};
+};
+
+/**
+ * \brief Indicates whether or not the current Centurion version is at least equal to the
+ * specified version.
+ *
+ * \param major the major version value.
+ * \param minor the minor version value.
+ * \param patch the patch version value.
+ *
+ * \return `true` if the version of Centurion is at least the specified version; `false`
+ * otherwise.
+ *
+ * \see `CENTURION_VERSION_AT_LEAST`
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] constexpr auto version_at_least(const int major,
+                                              const int minor,
+                                              const int patch) noexcept -> bool
+{
+  return CENTURION_VERSION_AT_LEAST(major, minor, patch);
+}
+
+/// \} End of centurion version queries
+
+/// \name SDL version queries
+/// \{
+
+/**
+ * \brief Returns the version of SDL2 that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] inline auto sdl_linked_version() noexcept -> SDL_version
+{
+  SDL_version version{};
+  SDL_GetVersion(&version);
+  return version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+#ifndef CENTURION_NO_SDL_IMAGE
+
+/**
+ * \brief Returns the version of SDL2_image that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_image that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_image.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_image_linked_version() noexcept -> SDL_version
+{
+  const auto* version = IMG_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#ifndef CENTURION_NO_SDL_MIXER
+
+/**
+ * \brief Returns the version of SDL2_mixer that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_mixer that
+ * the program was compiled against.
+ *
+ * \return the linked version of SDL2_mixer.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_mixer_linked_version() noexcept -> SDL_version
+{
+  const auto* version = Mix_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_MIXER
+
+#ifndef CENTURION_NO_SDL_TTF
+
+/**
+ * \brief Returns the version of SDL2_ttf that is linked against the program.
+ *
+ * \note The linked version isn't necessarily the same as the version of SDL2_ttf that the
+ * program was compiled against.
+ *
+ * \return the linked version of SDL2_ttf.
+ *
+ * \since 6.0.0
+ */
+[[nodiscard]] inline auto sdl_ttf_linked_version() noexcept -> SDL_version
+{
+  const auto* version = TTF_Linked_Version();
+  assert(version);  // Sanity check
+  return *version;
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+#endif  // CENTURION_NO_SDL_TTF
+
+/// \} End of SDL version queries
+
+}  // namespace cen
+
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 // Workaround for this enum being completely anonymous in SDL 2.0.10. We include
@@ -46205,9 +48311,7 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 /// \} End of group core
 
-#endif  // CENTURION_MACROS_HEADER
-
-// #include "../core/not_null.hpp"
+#endif  // CENTURION_VERSION_HEADER
 
 
 namespace cen {
@@ -46524,7 +48628,11 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("key_code{{key: {}}}", keyCode.name());
+#else
   return "key_code{key: " + keyCode.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -46578,515 +48686,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
 }
 
 /// \} End of key code comparison operators
-
-/**
- * \namespace cen::keycodes
- *
- * \brief Provides a collection of `key_code` constants.
- *
- * \details Far from all key codes are provided. Instead, some of the most commonly used
- * key codes are available.
- *
- * \since 5.0.0
- */
-namespace keycodes {
-
-/**
- * \brief Represents an unknown key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code unknown;
-
-/**
- * \brief Represents the key with the label "A".
- *
- * \since 5.0.0
- */
-inline constexpr key_code a{SDLK_a};
-
-/**
- * \brief Represents the key with the label "B".
- *
- * \since 5.0.0
- */
-inline constexpr key_code b{SDLK_b};
-
-/**
- * \brief Represents the key with the label "C".
- *
- * \since 5.0.0
- */
-inline constexpr key_code c{SDLK_c};
-
-/**
- * \brief Represents the key with the label "D".
- *
- * \since 5.0.0
- */
-inline constexpr key_code d{SDLK_d};
-
-/**
- * \brief Represents the key with the label "E".
- *
- * \since 5.0.0
- */
-inline constexpr key_code e{SDLK_e};
-
-/**
- * \brief Represents the key with the label "F".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f{SDLK_f};
-
-/**
- * \brief Represents the key with the label "G".
- *
- * \since 5.0.0
- */
-inline constexpr key_code g{SDLK_g};
-
-/**
- * \brief Represents the key with the label "H".
- *
- * \since 5.0.0
- */
-inline constexpr key_code h{SDLK_h};
-
-/**
- * \brief Represents the key with the label "I".
- *
- * \since 5.0.0
- */
-inline constexpr key_code i{SDLK_i};
-
-/**
- * \brief Represents the key with the label "J".
- *
- * \since 5.0.0
- */
-inline constexpr key_code j{SDLK_j};
-
-/**
- * \brief Represents the key with the label "K".
- *
- * \since 5.0.0
- */
-inline constexpr key_code k{SDLK_k};
-
-/**
- * \brief Represents the key with the label "L".
- *
- * \since 5.0.0
- */
-inline constexpr key_code l{SDLK_l};
-
-/**
- * \brief Represents the key with the label "M".
- *
- * \since 5.0.0
- */
-inline constexpr key_code m{SDLK_m};
-
-/**
- * \brief Represents the key with the label "N".
- *
- * \since 5.0.0
- */
-inline constexpr key_code n{SDLK_n};
-
-/**
- * \brief Represents the key with the label "O".
- *
- * \since 5.0.0
- */
-inline constexpr key_code o{SDLK_o};
-
-/**
- * \brief Represents the key with the label "P".
- *
- * \since 5.0.0
- */
-inline constexpr key_code p{SDLK_p};
-
-/**
- * \brief Represents the key with the label "Q".
- *
- * \since 5.0.0
- */
-inline constexpr key_code q{SDLK_q};
-
-/**
- * \brief Represents the key with the label "R".
- *
- * \since 5.0.0
- */
-inline constexpr key_code r{SDLK_r};
-
-/**
- * \brief Represents the key with the label "S".
- *
- * \since 5.0.0
- */
-inline constexpr key_code s{SDLK_s};
-
-/**
- * \brief Represents the key with the label "T".
- *
- * \since 5.0.0
- */
-inline constexpr key_code t{SDLK_t};
-
-/**
- * \brief Represents the key with the label "U".
- *
- * \since 5.0.0
- */
-inline constexpr key_code u{SDLK_u};
-
-/**
- * \brief Represents the key with the label "V".
- *
- * \since 5.0.0
- */
-inline constexpr key_code v{SDLK_v};
-
-/**
- * \brief Represents the key with the label "W".
- *
- * \since 5.0.0
- */
-inline constexpr key_code w{SDLK_w};
-
-/**
- * \brief Represents the key with the label "X".
- *
- * \since 5.0.0
- */
-inline constexpr key_code x{SDLK_x};
-
-/**
- * \brief Represents the key with the label "Y".
- *
- * \since 5.0.0
- */
-inline constexpr key_code y{SDLK_y};
-
-/**
- * \brief Represents the key with the label "Z".
- *
- * \since 5.0.0
- */
-inline constexpr key_code z{SDLK_z};
-
-/**
- * \brief Represents the key with the label "1".
- *
- * \note This is not for a potential "1" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code one{SDLK_1};
-
-/**
- * \brief Represents the key with the label "2".
- *
- * \note This is not for a potential "2" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code two{SDLK_2};
-
-/**
- * \brief Represents the key with the label "3".
- *
- * \note This is not for a potential "3" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code three{SDLK_3};
-
-/**
- * \brief Represents the key with the label "4".
- *
- * \note This is not for a potential "4" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code four{SDLK_4};
-
-/**
- * \brief Represents the key with the label "5".
- *
- * \note This is not for a potential "5" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code five{SDLK_5};
-
-/**
- * \brief Represents the key with the label "6".
- *
- * \note This is not for a potential "6" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code six{SDLK_6};
-
-/**
- * \brief Represents the key with the label "7".
- *
- * \note This is not for a potential "7" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code seven{SDLK_7};
-
-/**
- * \brief Represents the key with the label "8".
- *
- * \note This is not for a potential "8" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code eight{SDLK_8};
-
-/**
- * \brief Represents the key with the label "9".
- *
- * \note This is not for a potential "9" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code nine{SDLK_9};
-
-/**
- * \brief Represents the key with the label "0".
- *
- * \note This is not for a potential "0" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code zero{SDLK_0};
-
-/**
- * \brief Represents the function key "F1".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f1{SDLK_F1};
-
-/**
- * \brief Represents the function key "F2".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f2{SDLK_F2};
-
-/**
- * \brief Represents the function key "F3".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f3{SDLK_F3};
-
-/**
- * \brief Represents the function key "F4".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f4{SDLK_F4};
-
-/**
- * \brief Represents the function key "F5".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f5{SDLK_F5};
-
-/**
- * \brief Represents the function key "F6".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f6{SDLK_F6};
-
-/**
- * \brief Represents the function key "F7".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f7{SDLK_F7};
-
-/**
- * \brief Represents the function key "F8".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f8{SDLK_F8};
-
-/**
- * \brief Represents the function key "F9".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f9{SDLK_F9};
-
-/**
- * \brief Represents the function key "F10".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f10{SDLK_F10};
-
-/**
- * \brief Represents the function key "F11".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f11{SDLK_F11};
-
-/**
- * \brief Represents the function key "F12".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f12{SDLK_F12};
-
-/**
- * \brief Represents the left arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left{SDLK_LEFT};
-
-/**
- * \brief Represents the right arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right{SDLK_RIGHT};
-
-/**
- * \brief Represents the up arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code up{SDLK_UP};
-
-/**
- * \brief Represents the down arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code down{SDLK_DOWN};
-
-/**
- * \brief Represents the "Space" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code space{SDLK_SPACE};
-
-/**
- * \brief Represents the "Enter" key.
- *
- * \note This key is also referred to as the "Return" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code enter{SDLK_RETURN};
-
-/**
- * \brief Represents the "Escape" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code escape{SDLK_ESCAPE};
-
-/**
- * \brief Represents the "Backspace" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code backspace{SDLK_BACKSPACE};
-
-/**
- * \brief Represents the "Tab" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code tab{SDLK_TAB};
-
-/**
- * \brief Represents the "Caps Lock" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
-
-/**
- * \brief Represents the left "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_shift{SDLK_LSHIFT};
-
-/**
- * \brief Represents the right "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_shift{SDLK_RSHIFT};
-
-/**
- * \brief Represents the left "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_ctrl{SDLK_LCTRL};
-
-/**
- * \brief Represents the right "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_ctrl{SDLK_RCTRL};
-
-/**
- * \brief Represents the left "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_alt{SDLK_LALT};
-
-/**
- * \brief Represents the right "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_alt{SDLK_RALT};
-
-/**
- * \brief Represents the left "GUI" key.
- *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_gui{SDLK_LGUI};
-
-/**
- * \brief Represents the right "GUI" key.
- *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_gui{SDLK_RGUI};
-
-}  // namespace keycodes
 
 /// \} End of group input
 
@@ -47180,10 +48779,23 @@ using key_mod = key_modifier;
 #ifndef CENTURION_KEYBOARD_HEADER
 #define CENTURION_KEYBOARD_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <algorithm>  // copy
 #include <array>      // array
+#include <ostream>    // ostream
+#include <string>     // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -47324,17 +48936,28 @@ namespace cen {
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-
 // #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
 
 
 namespace cen {
@@ -47651,7 +49274,11 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("key_code{{key: {}}}", keyCode.name());
+#else
   return "key_code{key: " + keyCode.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -47705,515 +49332,6 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
 }
 
 /// \} End of key code comparison operators
-
-/**
- * \namespace cen::keycodes
- *
- * \brief Provides a collection of `key_code` constants.
- *
- * \details Far from all key codes are provided. Instead, some of the most commonly used
- * key codes are available.
- *
- * \since 5.0.0
- */
-namespace keycodes {
-
-/**
- * \brief Represents an unknown key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code unknown;
-
-/**
- * \brief Represents the key with the label "A".
- *
- * \since 5.0.0
- */
-inline constexpr key_code a{SDLK_a};
-
-/**
- * \brief Represents the key with the label "B".
- *
- * \since 5.0.0
- */
-inline constexpr key_code b{SDLK_b};
-
-/**
- * \brief Represents the key with the label "C".
- *
- * \since 5.0.0
- */
-inline constexpr key_code c{SDLK_c};
-
-/**
- * \brief Represents the key with the label "D".
- *
- * \since 5.0.0
- */
-inline constexpr key_code d{SDLK_d};
-
-/**
- * \brief Represents the key with the label "E".
- *
- * \since 5.0.0
- */
-inline constexpr key_code e{SDLK_e};
-
-/**
- * \brief Represents the key with the label "F".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f{SDLK_f};
-
-/**
- * \brief Represents the key with the label "G".
- *
- * \since 5.0.0
- */
-inline constexpr key_code g{SDLK_g};
-
-/**
- * \brief Represents the key with the label "H".
- *
- * \since 5.0.0
- */
-inline constexpr key_code h{SDLK_h};
-
-/**
- * \brief Represents the key with the label "I".
- *
- * \since 5.0.0
- */
-inline constexpr key_code i{SDLK_i};
-
-/**
- * \brief Represents the key with the label "J".
- *
- * \since 5.0.0
- */
-inline constexpr key_code j{SDLK_j};
-
-/**
- * \brief Represents the key with the label "K".
- *
- * \since 5.0.0
- */
-inline constexpr key_code k{SDLK_k};
-
-/**
- * \brief Represents the key with the label "L".
- *
- * \since 5.0.0
- */
-inline constexpr key_code l{SDLK_l};
-
-/**
- * \brief Represents the key with the label "M".
- *
- * \since 5.0.0
- */
-inline constexpr key_code m{SDLK_m};
-
-/**
- * \brief Represents the key with the label "N".
- *
- * \since 5.0.0
- */
-inline constexpr key_code n{SDLK_n};
-
-/**
- * \brief Represents the key with the label "O".
- *
- * \since 5.0.0
- */
-inline constexpr key_code o{SDLK_o};
-
-/**
- * \brief Represents the key with the label "P".
- *
- * \since 5.0.0
- */
-inline constexpr key_code p{SDLK_p};
-
-/**
- * \brief Represents the key with the label "Q".
- *
- * \since 5.0.0
- */
-inline constexpr key_code q{SDLK_q};
-
-/**
- * \brief Represents the key with the label "R".
- *
- * \since 5.0.0
- */
-inline constexpr key_code r{SDLK_r};
-
-/**
- * \brief Represents the key with the label "S".
- *
- * \since 5.0.0
- */
-inline constexpr key_code s{SDLK_s};
-
-/**
- * \brief Represents the key with the label "T".
- *
- * \since 5.0.0
- */
-inline constexpr key_code t{SDLK_t};
-
-/**
- * \brief Represents the key with the label "U".
- *
- * \since 5.0.0
- */
-inline constexpr key_code u{SDLK_u};
-
-/**
- * \brief Represents the key with the label "V".
- *
- * \since 5.0.0
- */
-inline constexpr key_code v{SDLK_v};
-
-/**
- * \brief Represents the key with the label "W".
- *
- * \since 5.0.0
- */
-inline constexpr key_code w{SDLK_w};
-
-/**
- * \brief Represents the key with the label "X".
- *
- * \since 5.0.0
- */
-inline constexpr key_code x{SDLK_x};
-
-/**
- * \brief Represents the key with the label "Y".
- *
- * \since 5.0.0
- */
-inline constexpr key_code y{SDLK_y};
-
-/**
- * \brief Represents the key with the label "Z".
- *
- * \since 5.0.0
- */
-inline constexpr key_code z{SDLK_z};
-
-/**
- * \brief Represents the key with the label "1".
- *
- * \note This is not for a potential "1" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code one{SDLK_1};
-
-/**
- * \brief Represents the key with the label "2".
- *
- * \note This is not for a potential "2" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code two{SDLK_2};
-
-/**
- * \brief Represents the key with the label "3".
- *
- * \note This is not for a potential "3" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code three{SDLK_3};
-
-/**
- * \brief Represents the key with the label "4".
- *
- * \note This is not for a potential "4" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code four{SDLK_4};
-
-/**
- * \brief Represents the key with the label "5".
- *
- * \note This is not for a potential "5" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code five{SDLK_5};
-
-/**
- * \brief Represents the key with the label "6".
- *
- * \note This is not for a potential "6" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code six{SDLK_6};
-
-/**
- * \brief Represents the key with the label "7".
- *
- * \note This is not for a potential "7" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code seven{SDLK_7};
-
-/**
- * \brief Represents the key with the label "8".
- *
- * \note This is not for a potential "8" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code eight{SDLK_8};
-
-/**
- * \brief Represents the key with the label "9".
- *
- * \note This is not for a potential "9" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code nine{SDLK_9};
-
-/**
- * \brief Represents the key with the label "0".
- *
- * \note This is not for a potential "0" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr key_code zero{SDLK_0};
-
-/**
- * \brief Represents the function key "F1".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f1{SDLK_F1};
-
-/**
- * \brief Represents the function key "F2".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f2{SDLK_F2};
-
-/**
- * \brief Represents the function key "F3".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f3{SDLK_F3};
-
-/**
- * \brief Represents the function key "F4".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f4{SDLK_F4};
-
-/**
- * \brief Represents the function key "F5".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f5{SDLK_F5};
-
-/**
- * \brief Represents the function key "F6".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f6{SDLK_F6};
-
-/**
- * \brief Represents the function key "F7".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f7{SDLK_F7};
-
-/**
- * \brief Represents the function key "F8".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f8{SDLK_F8};
-
-/**
- * \brief Represents the function key "F9".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f9{SDLK_F9};
-
-/**
- * \brief Represents the function key "F10".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f10{SDLK_F10};
-
-/**
- * \brief Represents the function key "F11".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f11{SDLK_F11};
-
-/**
- * \brief Represents the function key "F12".
- *
- * \since 5.0.0
- */
-inline constexpr key_code f12{SDLK_F12};
-
-/**
- * \brief Represents the left arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left{SDLK_LEFT};
-
-/**
- * \brief Represents the right arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right{SDLK_RIGHT};
-
-/**
- * \brief Represents the up arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code up{SDLK_UP};
-
-/**
- * \brief Represents the down arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code down{SDLK_DOWN};
-
-/**
- * \brief Represents the "Space" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code space{SDLK_SPACE};
-
-/**
- * \brief Represents the "Enter" key.
- *
- * \note This key is also referred to as the "Return" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code enter{SDLK_RETURN};
-
-/**
- * \brief Represents the "Escape" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code escape{SDLK_ESCAPE};
-
-/**
- * \brief Represents the "Backspace" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code backspace{SDLK_BACKSPACE};
-
-/**
- * \brief Represents the "Tab" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code tab{SDLK_TAB};
-
-/**
- * \brief Represents the "Caps Lock" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
-
-/**
- * \brief Represents the left "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_shift{SDLK_LSHIFT};
-
-/**
- * \brief Represents the right "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_shift{SDLK_RSHIFT};
-
-/**
- * \brief Represents the left "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_ctrl{SDLK_LCTRL};
-
-/**
- * \brief Represents the right "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_ctrl{SDLK_RCTRL};
-
-/**
- * \brief Represents the left "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_alt{SDLK_LALT};
-
-/**
- * \brief Represents the right "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_alt{SDLK_RALT};
-
-/**
- * \brief Represents the left "GUI" key.
- *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code left_gui{SDLK_LGUI};
-
-/**
- * \brief Represents the right "GUI" key.
- *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr key_code right_gui{SDLK_RGUI};
-
-}  // namespace keycodes
 
 /// \} End of group input
 
@@ -48307,17 +49425,28 @@ using key_mod = key_modifier;
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-
 // #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
 
 
 namespace cen {
@@ -48621,15 +49750,19 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \param scanCode the scan code that will be converted.
+ * \param code the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+[[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-  return "scan_code{key: " + scanCode.name() + "}";
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("scan_code{{key: {}}}", code.name());
+#else
+  return "scan_code{key: " + code.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -48683,513 +49816,6 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
 }
 
 /// \} End of scan code comparison operators
-
-/**
- * \namespace cen::scancodes
- *
- * \brief Provides a collection of `scan_code` constants.
- *
- * \details Far from all scan codes are provided. Instead, the most commonly used scan
- * codes are available.
- */
-namespace scancodes {
-
-/**
- * \brief Represents an unknown key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code unknown;
-
-/**
- * \brief Represents the key "A".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code a{SDL_SCANCODE_A};
-
-/**
- * \brief Represents the key "B".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code b{SDL_SCANCODE_B};
-
-/**
- * \brief Represents the key "C".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code c{SDL_SCANCODE_C};
-
-/**
- * \brief Represents the key "D".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code d{SDL_SCANCODE_D};
-
-/**
- * \brief Represents the key "E".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code e{SDL_SCANCODE_E};
-
-/**
- * \brief Represents the key "F".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f{SDL_SCANCODE_F};
-
-/**
- * \brief Represents the key "G".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code g{SDL_SCANCODE_G};
-
-/**
- * \brief Represents the key "H".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code h{SDL_SCANCODE_H};
-
-/**
- * \brief Represents the key "I".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code i{SDL_SCANCODE_I};
-
-/**
- * \brief Represents the key "J".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code j{SDL_SCANCODE_J};
-
-/**
- * \brief Represents the key "K".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code k{SDL_SCANCODE_K};
-
-/**
- * \brief Represents the key "L".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code l{SDL_SCANCODE_L};
-
-/**
- * \brief Represents the key "M".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code m{SDL_SCANCODE_M};
-
-/**
- * \brief Represents the key "N".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code n{SDL_SCANCODE_N};
-
-/**
- * \brief Represents the key "O".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code o{SDL_SCANCODE_O};
-
-/**
- * \brief Represents the key "P".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code p{SDL_SCANCODE_P};
-
-/**
- * \brief Represents the key "Q".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code q{SDL_SCANCODE_Q};
-
-/**
- * \brief Represents the key "R".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code r{SDL_SCANCODE_R};
-
-/**
- * \brief Represents the key "S".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code s{SDL_SCANCODE_S};
-
-/**
- * \brief Represents the key "T".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code t{SDL_SCANCODE_T};
-
-/**
- * \brief Represents the key "U".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code u{SDL_SCANCODE_U};
-
-/**
- * \brief Represents the key "V".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code v{SDL_SCANCODE_V};
-
-/**
- * \brief Represents the key "W".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code w{SDL_SCANCODE_W};
-
-/**
- * \brief Represents the key "X".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code x{SDL_SCANCODE_X};
-
-/**
- * \brief Represents the key "Y".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code y{SDL_SCANCODE_Y};
-
-/**
- * \brief Represents the key "Z".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code z{SDL_SCANCODE_Z};
-
-/**
- * \brief Represents the key "1".
- *
- * \note This is not for a potential "1" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code one{SDL_SCANCODE_1};
-
-/**
- * \brief Represents the key "2".
- *
- * \note This is not for a potential "2" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code two{SDL_SCANCODE_2};
-
-/**
- * \brief Represents the key "3".
- *
- * \note This is not for a potential "3" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code three{SDL_SCANCODE_3};
-
-/**
- * \brief Represents the key "4".
- *
- * \note This is not for a potential "4" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code four{SDL_SCANCODE_4};
-
-/**
- * \brief Represents the key "5".
- *
- * \note This is not for a potential "5" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code five{SDL_SCANCODE_5};
-
-/**
- * \brief Represents the key "6".
- *
- * \note This is not for a potential "6" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code six{SDL_SCANCODE_6};
-
-/**
- * \brief Represents the key "7".
- *
- * \note This is not for a potential "7" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code seven{SDL_SCANCODE_7};
-
-/**
- * \brief Represents the key "8".
- *
- * \note This is not for a potential "8" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code eight{SDL_SCANCODE_8};
-
-/**
- * \brief Represents the key "9".
- *
- * \note This is not for a potential "9" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code nine{SDL_SCANCODE_9};
-
-/**
- * \brief Represents the key "0".
- *
- * \note This is not for a potential "0" key on the key pad.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code zero{SDL_SCANCODE_0};
-
-/**
- * \brief Represents the function key "F1".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f1{SDL_SCANCODE_F1};
-
-/**
- * \brief Represents the function key "F2".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f2{SDL_SCANCODE_F2};
-
-/**
- * \brief Represents the function key "F3".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f3{SDL_SCANCODE_F3};
-
-/**
- * \brief Represents the function key "F4".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f4{SDL_SCANCODE_F4};
-
-/**
- * \brief Represents the function key "F5".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f5{SDL_SCANCODE_F5};
-
-/**
- * \brief Represents the function key "F6".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f6{SDL_SCANCODE_F6};
-
-/**
- * \brief Represents the function key "F7".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f7{SDL_SCANCODE_F7};
-
-/**
- * \brief Represents the function key "F8".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f8{SDL_SCANCODE_F8};
-
-/**
- * \brief Represents the function key "F9".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f9{SDL_SCANCODE_F9};
-
-/**
- * \brief Represents the function key "F10".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f10{SDL_SCANCODE_F10};
-
-/**
- * \brief Represents the function key "F11".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f11{SDL_SCANCODE_F11};
-
-/**
- * \brief Represents the function key "F12".
- *
- * \since 5.0.0
- */
-inline constexpr scan_code f12{SDL_SCANCODE_F12};
-
-/**
- * \brief Represents the left arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left{SDL_SCANCODE_LEFT};
-
-/**
- * \brief Represents the right arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
-
-/**
- * \brief Represents the up arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code up{SDL_SCANCODE_UP};
-
-/**
- * \brief Represents the down arrow key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code down{SDL_SCANCODE_DOWN};
-
-/**
- * \brief Represents the "Space" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code space{SDL_SCANCODE_SPACE};
-
-/**
- * \brief Represents the "Enter" key.
- *
- * \note This key is also referred to as the "Return" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
-
-/**
- * \brief Represents the "Escape" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
-
-/**
- * \brief Represents the "Backspace" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
-
-/**
- * \brief Represents the "Tab" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code tab{SDL_SCANCODE_TAB};
-
-/**
- * \brief Represents the "Caps Lock" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
-
-/**
- * \brief Represents the left "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
-
-/**
- * \brief Represents the right "Shift" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
-
-/**
- * \brief Represents the left "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
-
-/**
- * \brief Represents the right "CTRL" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
-
-/**
- * \brief Represents the left "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
-
-/**
- * \brief Represents the right "Alt" key.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
-
-/**
- * \brief Represents the left "GUI" key.
- *
- * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
-
-/**
- * \brief Represents the right "GUI" key.
- *
- * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
- *
- * \since 5.0.0
- */
-inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
-
-}  // namespace scancodes
 
 /// \} End of group input
 
@@ -49253,9 +49879,8 @@ class keyboard final
    */
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc];
-    });
+    return check_state(code,
+                       [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
   }
 
   /**
@@ -49441,6 +50066,39 @@ class keyboard final
 };
 
 /**
+ * \brief Returns a textual representation of a keyboard.
+ *
+ * \param keyboard the keyboard instance that will be converted.
+ *
+ * \return a string that represents the keyboard.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const keyboard& keyboard) -> std::string
+{
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("keyboard{{#keys: {}}}", keyboard.key_count());
+#else
+  return "keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/**
+ * \brief Prints a textual representation of a keyboard.
+ *
+ * \param stream the output stream that will be used.
+ * \param keyboard the keyboard that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::ostream&
+{
+  return stream << to_string(keyboard);
+}
+
+/**
  * \typedef key_state
  *
  * \brief This is provided for backwards compatibility with Centurion 5.
@@ -49468,9 +50126,557 @@ using key_state [[deprecated]] = keyboard;
 
 #endif  // CENTURION_KEYBOARD_HEADER
 
+// #include "centurion/input/keycodes.hpp"
+#ifndef CENTURION_KEYCODES_HEADER
+#define CENTURION_KEYCODES_HEADER
+
+#include <SDL.h>
+
+// #include "key_code.hpp"
+
+
+namespace cen {
+
+/**
+ * \namespace cen::keycodes
+ *
+ * \brief Provides a collection of `key_code` constants.
+ *
+ * \details Far from all key codes are provided. Instead, some of the most commonly used
+ * key codes are available.
+ *
+ * \since 5.0.0
+ */
+namespace keycodes {
+
+/// \addtogroup input
+/// \{
+
+/// \name Key code constants
+/// \{
+
+/**
+ * \brief Represents an unknown key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code unknown;
+
+/**
+ * \brief Represents the key with the label "A".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code a{SDLK_a};
+
+/**
+ * \brief Represents the key with the label "B".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code b{SDLK_b};
+
+/**
+ * \brief Represents the key with the label "C".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code c{SDLK_c};
+
+/**
+ * \brief Represents the key with the label "D".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code d{SDLK_d};
+
+/**
+ * \brief Represents the key with the label "E".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code e{SDLK_e};
+
+/**
+ * \brief Represents the key with the label "F".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f{SDLK_f};
+
+/**
+ * \brief Represents the key with the label "G".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code g{SDLK_g};
+
+/**
+ * \brief Represents the key with the label "H".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code h{SDLK_h};
+
+/**
+ * \brief Represents the key with the label "I".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code i{SDLK_i};
+
+/**
+ * \brief Represents the key with the label "J".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code j{SDLK_j};
+
+/**
+ * \brief Represents the key with the label "K".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code k{SDLK_k};
+
+/**
+ * \brief Represents the key with the label "L".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code l{SDLK_l};
+
+/**
+ * \brief Represents the key with the label "M".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code m{SDLK_m};
+
+/**
+ * \brief Represents the key with the label "N".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code n{SDLK_n};
+
+/**
+ * \brief Represents the key with the label "O".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code o{SDLK_o};
+
+/**
+ * \brief Represents the key with the label "P".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code p{SDLK_p};
+
+/**
+ * \brief Represents the key with the label "Q".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code q{SDLK_q};
+
+/**
+ * \brief Represents the key with the label "R".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code r{SDLK_r};
+
+/**
+ * \brief Represents the key with the label "S".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code s{SDLK_s};
+
+/**
+ * \brief Represents the key with the label "T".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code t{SDLK_t};
+
+/**
+ * \brief Represents the key with the label "U".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code u{SDLK_u};
+
+/**
+ * \brief Represents the key with the label "V".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code v{SDLK_v};
+
+/**
+ * \brief Represents the key with the label "W".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code w{SDLK_w};
+
+/**
+ * \brief Represents the key with the label "X".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code x{SDLK_x};
+
+/**
+ * \brief Represents the key with the label "Y".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code y{SDLK_y};
+
+/**
+ * \brief Represents the key with the label "Z".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code z{SDLK_z};
+
+/**
+ * \brief Represents the key with the label "1".
+ *
+ * \note This is not for a potential "1" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code one{SDLK_1};
+
+/**
+ * \brief Represents the key with the label "2".
+ *
+ * \note This is not for a potential "2" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code two{SDLK_2};
+
+/**
+ * \brief Represents the key with the label "3".
+ *
+ * \note This is not for a potential "3" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code three{SDLK_3};
+
+/**
+ * \brief Represents the key with the label "4".
+ *
+ * \note This is not for a potential "4" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code four{SDLK_4};
+
+/**
+ * \brief Represents the key with the label "5".
+ *
+ * \note This is not for a potential "5" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code five{SDLK_5};
+
+/**
+ * \brief Represents the key with the label "6".
+ *
+ * \note This is not for a potential "6" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code six{SDLK_6};
+
+/**
+ * \brief Represents the key with the label "7".
+ *
+ * \note This is not for a potential "7" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code seven{SDLK_7};
+
+/**
+ * \brief Represents the key with the label "8".
+ *
+ * \note This is not for a potential "8" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code eight{SDLK_8};
+
+/**
+ * \brief Represents the key with the label "9".
+ *
+ * \note This is not for a potential "9" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code nine{SDLK_9};
+
+/**
+ * \brief Represents the key with the label "0".
+ *
+ * \note This is not for a potential "0" key on the key pad.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code zero{SDLK_0};
+
+/**
+ * \brief Represents the function key "F1".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f1{SDLK_F1};
+
+/**
+ * \brief Represents the function key "F2".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f2{SDLK_F2};
+
+/**
+ * \brief Represents the function key "F3".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f3{SDLK_F3};
+
+/**
+ * \brief Represents the function key "F4".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f4{SDLK_F4};
+
+/**
+ * \brief Represents the function key "F5".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f5{SDLK_F5};
+
+/**
+ * \brief Represents the function key "F6".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f6{SDLK_F6};
+
+/**
+ * \brief Represents the function key "F7".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f7{SDLK_F7};
+
+/**
+ * \brief Represents the function key "F8".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f8{SDLK_F8};
+
+/**
+ * \brief Represents the function key "F9".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f9{SDLK_F9};
+
+/**
+ * \brief Represents the function key "F10".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f10{SDLK_F10};
+
+/**
+ * \brief Represents the function key "F11".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f11{SDLK_F11};
+
+/**
+ * \brief Represents the function key "F12".
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code f12{SDLK_F12};
+
+/**
+ * \brief Represents the left arrow key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code left{SDLK_LEFT};
+
+/**
+ * \brief Represents the right arrow key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code right{SDLK_RIGHT};
+
+/**
+ * \brief Represents the up arrow key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code up{SDLK_UP};
+
+/**
+ * \brief Represents the down arrow key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code down{SDLK_DOWN};
+
+/**
+ * \brief Represents the "Space" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code space{SDLK_SPACE};
+
+/**
+ * \brief Represents the "Enter" key.
+ *
+ * \note This key is also referred to as the "Return" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code enter{SDLK_RETURN};
+
+/**
+ * \brief Represents the "Escape" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code escape{SDLK_ESCAPE};
+
+/**
+ * \brief Represents the "Backspace" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code backspace{SDLK_BACKSPACE};
+
+/**
+ * \brief Represents the "Tab" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code tab{SDLK_TAB};
+
+/**
+ * \brief Represents the "Caps Lock" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
+
+/**
+ * \brief Represents the left "Shift" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code left_shift{SDLK_LSHIFT};
+
+/**
+ * \brief Represents the right "Shift" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code right_shift{SDLK_RSHIFT};
+
+/**
+ * \brief Represents the left "CTRL" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code left_ctrl{SDLK_LCTRL};
+
+/**
+ * \brief Represents the right "CTRL" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code right_ctrl{SDLK_RCTRL};
+
+/**
+ * \brief Represents the left "Alt" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code left_alt{SDLK_LALT};
+
+/**
+ * \brief Represents the right "Alt" key.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code right_alt{SDLK_RALT};
+
+/**
+ * \brief Represents the left "GUI" key.
+ *
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key, etc.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code left_gui{SDLK_LGUI};
+
+/**
+ * \brief Represents the right "GUI" key.
+ *
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key, etc.
+ *
+ * \since 5.0.0
+ */
+inline constexpr key_code right_gui{SDLK_RGUI};
+
+/// \} End of key code constants
+
+/// \} End of group input
+
+}  // namespace keycodes
+
+}  // namespace cen
+
+#endif  // CENTURION_KEYCODES_HEADER
+
 // #include "centurion/input/mouse.hpp"
 #ifndef CENTURION_MOUSE_HEADER
 #define CENTURION_MOUSE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/integers.hpp"
 
@@ -49480,9 +50686,20 @@ using key_state [[deprecated]] = keyboard;
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -49572,13 +50789,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -49685,6 +50909,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -49719,6 +50945,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -49735,8 +50963,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -49766,12 +50998,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -50166,14 +51409,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -50291,26 +51542,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -50596,6 +51837,40 @@ class mouse final
 };
 
 /**
+ * \brief Returns a textual representation of a mouse.
+ *
+ * \param mouse the mouse instance that will be converted.
+ *
+ * \return a string that represents the mouse.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
+{
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
+#else
+  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +
+         "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/**
+ * \brief Prints a textual representation of a mouse.
+ *
+ * \param stream the output stream that will be used.
+ * \param mouse the mouse that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream&
+{
+  return stream << to_string(mouse);
+}
+
+/**
  * \typedef mouse_state
  *
  * \brief This is provided for backwards compatibility with Centurion 5.
@@ -50613,17 +51888,28 @@ using mouse_state [[deprecated]] = mouse;
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
 
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
-// #include "../core/macros.hpp"
-
 // #include "../core/not_null.hpp"
+
+// #include "../core/version.hpp"
 
 
 namespace cen {
@@ -50927,15 +52213,19 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \param scanCode the scan code that will be converted.
+ * \param code the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+[[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-  return "scan_code{key: " + scanCode.name() + "}";
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("scan_code{{key: {}}}", code.name());
+#else
+  return "scan_code{key: " + code.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -50990,15 +52280,39 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
 
 /// \} End of scan code comparison operators
 
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_SCAN_CODE_HEADER
+// #include "centurion/input/scancodes.hpp"
+#ifndef CENTURION_SCANCODES_HEADER
+#define CENTURION_SCANCODES_HEADER
+
+#include <SDL.h>
+
+// #include "scan_code.hpp"
+
+
+namespace cen {
+
 /**
  * \namespace cen::scancodes
  *
  * \brief Provides a collection of `scan_code` constants.
  *
+ * \ingroup input
+ *
  * \details Far from all scan codes are provided. Instead, the most commonly used scan
  * codes are available.
  */
 namespace scancodes {
+
+/// \addtogroup input
+/// \{
+
+/// \name Scan code constants
+/// \{
 
 /**
  * \brief Represents an unknown key.
@@ -51495,16 +52809,24 @@ inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
  */
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
-}  // namespace scancodes
+/// \} End of scan code constants
 
 /// \} End of group input
 
+}  // namespace scancodes
+
 }  // namespace cen
 
-#endif  // CENTURION_SCAN_CODE_HEADER
+#endif  // CENTURION_SCANCODES_HEADER
+
 // #include "centurion/input/sensor.hpp"
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -51512,6 +52834,12 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -51582,6 +52910,8 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  * \class basic_sensor
  *
  * \brief Represents a sensor device.
+ *
+ * \ownerhandle `sensor`/`sensor_handle`
  *
  * \see `sensor`
  * \see `sensor_handle`
@@ -51918,9 +53248,16 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sensor{{data: {}, id: {}, name: {}}}",
+                     detail::address_of(sensor.get()),
+                     sensor.id(),
+                     str_or_na(sensor.name()));
+#else
   return "sensor{data: " + detail::address_of(sensor.get()) +
          ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -52240,9 +53577,64 @@ enum class device_type
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -52332,13 +53724,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -52445,6 +53844,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -52479,6 +53880,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -52495,8 +53898,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -52526,12 +53933,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -52926,14 +54344,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -53051,26 +54477,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -53086,11 +54502,22 @@ template <typename T>
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -53136,9 +54563,20 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -53195,13 +54633,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -53308,6 +54753,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -53342,6 +54789,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -53358,8 +54807,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -53389,12 +54842,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -53755,14 +55219,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -53880,26 +55352,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -54745,9 +56207,17 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
+                     rect.x(),
+                     rect.y(),
+                     rect.width(),
+                     rect.height());
+#else
   return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
          ", width: " + std::to_string(rect.width()) +
          ", height: " + std::to_string(rect.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -54765,8 +56235,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
-  stream << to_string(rect);
-  return stream;
+  return stream << to_string(rect);
 }
 
 /// \} End of group math
@@ -54778,8 +56247,19 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 namespace cen {
 
@@ -54803,6 +56283,12 @@ struct vector3 final
   value_type x{};  ///< The x-coordinate of the vector.
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
+
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 
   /**
    * \brief Casts the vector to a vector with another representation type.
@@ -54846,6 +56332,8 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
  *
@@ -54884,6 +56372,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of vector3 comparison operators
 
 /**
@@ -54900,8 +56390,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
+#else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
          ", z: " + std::to_string(vector.z) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -55264,6 +56758,11 @@ template <typename T, typename... Args>
 
 #endif  // CENTURION_DETAIL_ANY_EQ_HEADER
 
+// #include "power_state.hpp"
+#ifndef CENTURION_POWER_STATE_HEADER
+#define CENTURION_POWER_STATE_HEADER
+
+#include <SDL.h>
 
 namespace cen {
 
@@ -55273,7 +56772,7 @@ namespace cen {
 /**
  * \enum power_state
  *
- * \brief Provides values that represent different battery power states.
+ * \brief Represents different battery power states.
  *
  * \since 3.0.0
  *
@@ -55287,6 +56786,69 @@ enum class power_state
   charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
   charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
 };
+
+/// \name Power state comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two power states values are the same.
+ *
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
+ *
+ * \return `true` if the power states are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept -> bool
+{
+  return static_cast<SDL_PowerState>(lhs) == rhs;
+}
+
+/// \copydoc operator==(power_state, SDL_PowerState)
+[[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two power states values aren't the same.
+ *
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
+ *
+ * \return `true` if the power states aren't the same; `false` otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(power_state, SDL_PowerState)
+[[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
+{
+  return rhs != lhs;
+}
+
+/// \} End of power state comparison operators
+
+/// \} End of group system
+
+}  // namespace cen
+
+#endif  // CENTURION_POWER_STATE_HEADER
+
+
+namespace cen {
+
+/// \addtogroup system
+/// \{
 
 /**
  * \namespace cen::battery
@@ -55437,57 +56999,6 @@ namespace battery {
 }
 
 }  // namespace battery
-
-/// \name Power state comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two power states values are the same.
- *
- * \param lhs the left-hand side power state value.
- * \param rhs the right-hand side power state value.
- *
- * \return `true` if the power states are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept -> bool
-{
-  return static_cast<SDL_PowerState>(lhs) == rhs;
-}
-
-/// \copydoc operator==(power_state, SDL_PowerState)
-[[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
-                                        const power_state rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two power states values aren't the same.
- *
- * \param lhs the left-hand side power state value.
- * \param rhs the right-hand side power state value.
- *
- * \return `true` if the power states aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(power_state, SDL_PowerState)
-[[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
-                                        const power_state rhs) noexcept -> bool
-{
-  return rhs != lhs;
-}
-
-/// \} End of power state comparison operators
 
 /// \} End of group system
 
@@ -57188,2842 +58699,6 @@ class locale final
 
 // #include "../detail/czstring_eq.hpp"
 
-// #include "../video/pixel_format.hpp"
-#ifndef CENTURION_PIXEL_FORMAT_HEADER
-#define CENTURION_PIXEL_FORMAT_HEADER
-
-#include <SDL.h>
-
-// #include "../core/czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-/// Enables a template if the type is either integral of floating-point, but not a boolean.
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-/// Enables a template if the type is a pointer.
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-/// Enables a template if T is convertible to any of the specified types.
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \note This is mainly used in `to_string()` overloads.
- *
- * \param str the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
-{
-  return str ? str : "n/a";
-}
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-// #include "../core/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_MIXER
-#include <SDL_mixer.h>
-#endif  // CENTURION_NO_SDL_MIXER
-
-#ifndef CENTURION_NO_SDL_TTF
-#include <SDL_ttf.h>
-#endif  // CENTURION_NO_SDL_TTF
-
-#include <exception>  // exception
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \note This is mainly used in `to_string()` overloads.
- *
- * \param str the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
-{
-  return str ? str : "n/a";
-}
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception, can safely be null.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"n/a"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#ifndef CENTURION_NO_SDL_IMAGE
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_TTF
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_TTF
-
-#ifndef CENTURION_NO_SDL_MIXER
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_MIXER
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
-
-// #include "../core/integers.hpp"
-#ifndef CENTURION_INTEGERS_HEADER
-#define CENTURION_INTEGERS_HEADER
-
-#include <SDL.h>
-
-#include <cstddef>  // size_t
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/// \name Integer aliases
-/// \{
-
-using usize = std::size_t;
-
-/// Alias for an unsigned integer.
-using uint = unsigned int;
-
-/// Alias for the type used for integer literal operators.
-using ulonglong = unsigned long long;
-
-/// Alias for a 64-bit unsigned integer.
-using u64 = Uint64;
-
-/// Alias for a 32-bit unsigned integer.
-using u32 = Uint32;
-
-/// Alias for a 16-bit unsigned integer.
-using u16 = Uint16;
-
-/// Alias for an 8-bit unsigned integer.
-using u8 = Uint8;
-
-/// Alias for a 64-bit signed integer.
-using i64 = Sint64;
-
-/// Alias for a 32-bit signed integer.
-using i32 = Sint32;
-
-/// Alias for a 16-bit signed integer.
-using i16 = Sint16;
-
-/// Alias for an 8-bit signed integer.
-using i8 = Sint8;
-
-/// \} End of integer aliases
-
-// clang-format off
-
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
-
-// clang-format on
-
-namespace literals {
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
-{
-  return static_cast<u8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
-{
-  return static_cast<u16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
-{
-  return static_cast<u32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
-{
-  return static_cast<u64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
-{
-  return static_cast<i8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
-{
-  return static_cast<i16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
-{
-  return static_cast<i32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
-{
-  return static_cast<i64>(value);
-}
-
-}  // namespace literals
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_INTEGERS_HEADER
-
-// #include "../core/not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-// #include "../core/owner.hpp"
-#ifndef CENTURION_OWNER_HEADER
-#define CENTURION_OWNER_HEADER
-
-// #include "sfinae.hpp"
-
-
-namespace cen {
-
-/**
- * \typedef owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote ownership of raw pointers directly in code.
- *
- * \details If a function takes an `owner<T*>` as a parameter, then the function will
- * claim ownership of that pointer. Subsequently, if a function returns an `owner<T*>`,
- * then ownership is transferred to the caller.
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using owner = T;
-
-/**
- * \typedef maybe_owner
- *
- * \ingroup core
- *
- * \brief Tag used to denote conditional ownership of raw pointers directly in code.
- *
- * \details This is primarily used in constructors of owner/handle classes, where the
- * owner version will claim ownership of the pointer, whilst the handle does not.
- *
- * \since 6.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using maybe_owner = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_OWNER_HEADER
-// #include "../core/to_underlying.hpp"
-#ifndef CENTURION_TO_UNDERLYING_HEADER
-#define CENTURION_TO_UNDERLYING_HEADER
-
-#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
-
-namespace cen {
-
-/**
- * \brief Converts an enum value to an integral value using the underlying type.
- *
- * \ingroup core
- *
- * \note If you're using C++23, see `std::to_underlying()`.
- *
- * \tparam Enum the enum type.
- *
- * \param value the enum value that will be converted.
- *
- * \return the value of the enum, in the underlying type.
- *
- * \since 6.0.0
- */
-template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
-[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
-    -> std::underlying_type_t<Enum>
-{
-  return static_cast<std::underlying_type_t<Enum>>(value);
-}
-
-}  // namespace cen
-
-#endif  // CENTURION_TO_UNDERLYING_HEADER
-
-// #include "../detail/owner_handle_api.hpp"
-#ifndef CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
-#define CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
-
-#include <cassert>      // assert
-#include <memory>       // unique_ptr
-#include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
-
-// #include "../core/exception.hpp"
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
-
-#include <SDL.h>
-
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_MIXER
-#include <SDL_mixer.h>
-#endif  // CENTURION_NO_SDL_MIXER
-
-#ifndef CENTURION_NO_SDL_TTF
-#include <SDL_ttf.h>
-#endif  // CENTURION_NO_SDL_TTF
-
-#include <exception>  // exception
-
-// #include "czstring.hpp"
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
-
-// #include "not_null.hpp"
-#ifndef CENTURION_NOT_NULL_HEADER
-#define CENTURION_NOT_NULL_HEADER
-
-// #include "sfinae.hpp"
-#ifndef CENTURION_SFINAE_HEADER
-#define CENTURION_SFINAE_HEADER
-
-#include <type_traits>  // enable_if_t, is_same_v, is_integral_v, is_floating_point_v, ...
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-// clang-format off
-
-/// Enables a template if the type is either integral of floating-point, but not a boolean.
-template <typename T>
-using enable_if_number_t = std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            (std::is_integral_v<T> ||
-                                             std::is_floating_point_v<T>), int>;
-
-// clang-format on
-
-/// Enables a template if the type is a pointer.
-template <typename T>
-using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
-
-/// Enables a template if T is convertible to any of the specified types.
-template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_SFINAE_HEADER
-
-
-namespace cen {
-
-/**
- * \typedef not_null
- *
- * \ingroup core
- *
- * \brief Tag used to indicate that a pointer cannot be null.
- *
- * \note This alias is equivalent to `T`, it is a no-op.
- *
- * \since 5.0.0
- */
-template <typename T, enable_if_pointer_v<T> = 0>
-using not_null = T;
-
-}  // namespace cen
-
-#endif  // CENTURION_NOT_NULL_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
- * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
- */
-using zstring = char*;
-
-/**
- * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.
- *
- * \note This is mainly used in `to_string()` overloads.
- *
- * \param str the string that will be checked.
- *
- * \return the supplied string if it isn't null; "n/a" otherwise.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto str_or_na(const czstring str) noexcept -> not_null<czstring>
-{
-  return str ? str : "n/a";
-}
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_CZSTRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
-{
- public:
-  cen_error() noexcept = default;
-
-  /**
-   * \param what the message of the exception, can safely be null.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const czstring what) noexcept : m_what{what ? what : m_what}
-  {}
-
-  [[nodiscard]] auto what() const noexcept -> czstring override
-  {
-    return m_what;
-  }
-
- private:
-  czstring m_what{"n/a"};
-};
-
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- */
-class sdl_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#ifndef CENTURION_NO_SDL_IMAGE
-
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- */
-class img_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
-  {}
-
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#ifndef CENTURION_NO_SDL_TTF
-
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- */
-class ttf_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_TTF
-
-#ifndef CENTURION_NO_SDL_MIXER
-
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- */
-class mix_error final : public cen_error
-{
- public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
-  {}
-
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const czstring what) noexcept : cen_error{what}
-  {}
-};
-
-#endif  // CENTURION_NO_SDL_MIXER
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_EXCEPTION_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-using owning_type = std::true_type;
-using handle_type = std::false_type;
-
-template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, owning_type>, int>;
-
-template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, handle_type>, int>;
-
-template <typename T>
-[[nodiscard]] constexpr auto is_owning() noexcept -> bool
-{
-  return std::is_same_v<T, owning_type>;
-}
-
-template <typename B, typename Type, typename Deleter>
-class pointer_manager final
-{
-  using managed_ptr = std::unique_ptr<Type, Deleter>;
-  using raw_ptr = Type*;
-  using pointer_type = std::conditional_t<B::value, managed_ptr, raw_ptr>;
-
- public:
-  pointer_manager() noexcept = default;
-
-  explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
-  {}
-
-  template <typename BB = B, is_owner<BB> = 0>
-  void reset(Type* ptr) noexcept
-  {
-    m_ptr.reset(ptr);
-  }
-
-  auto operator->() noexcept -> Type*
-  {
-    return get();
-  }
-
-  auto operator->() const noexcept -> const Type*
-  {
-    return get();
-  }
-
-  auto operator*() noexcept -> Type&
-  {
-    assert(m_ptr);
-    return *m_ptr;
-  }
-
-  auto operator*() const noexcept -> const Type&
-  {
-    assert(m_ptr);
-    return *m_ptr;
-  }
-
-  explicit operator bool() const noexcept
-  {
-    return m_ptr != nullptr;
-  }
-
-  /*implicit*/ operator Type*() const noexcept
-  {
-    return get();
-  }
-
-  template <typename BB = B, is_owner<BB> = 0>
-  [[nodiscard]] auto release() noexcept -> Type*
-  {
-    return m_ptr.release();
-  }
-
-  [[nodiscard]] auto get() const noexcept -> Type*
-  {
-    if constexpr (B::value)
-    {
-      return m_ptr.get();
-    }
-    else
-    {
-      return m_ptr;
-    }
-  }
-
- private:
-  pointer_type m_ptr{};
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
-
-// #include "color.hpp"
-#ifndef CENTURION_COLOR_HEADER
-#define CENTURION_COLOR_HEADER
-
-#include <SDL.h>
-
-#include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
-#include <iomanip>      // setfill, setw
-#include <ios>          // uppercase, hex
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <sstream>      // stringstream
-#include <string>       // string, to_string
-#include <string_view>  // string_view
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-// #include "../core/exception.hpp"
-
-// #include "../core/integers.hpp"
-
-// #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
-
-// #include "../detail/from_string.hpp"
-#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
-#define CENTURION_DETAIL_FROM_STRING_HEADER
-
-#include <charconv>      // from_chars
-#include <optional>      // optional
-#include <string>        // string, stof
-#include <string_view>   // string_view
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup compiler
-/// \{
-
-/**
- * \brief Indicates whether or not a "debug" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a debug build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_debug_build() noexcept -> bool
-{
-#ifndef NDEBUG
-  return true;
-#else
-  return false;
-#endif  // NDEBUG
-}
-
-/**
- * \brief Indicates whether or not a "release" build mode is active.
- *
- * \note This is intended to be use with `if constexpr`-statements instead of raw `#ifdef`
- * conditional compilation, since the use of `if constexpr` prevents any branch to be
- * ill-formed, which avoids code rot.
- *
- * \return `true` if a release build mode is currently active; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto is_release_build() noexcept -> bool
-{
-  return !is_debug_build();
-}
-
-/**
- * \brief Indicates whether or not the compiler is MSVC.
- *
- * \return `true` if MSVC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_msvc() noexcept -> bool
-{
-#ifdef _MSC_VER
-  return true;
-#else
-  return false;
-#endif  // _MSC_VER
-}
-
-/**
- * \brief Indicates whether or not the compiler is GCC.
- *
- * \return `true` if GCC is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_gcc() noexcept -> bool
-{
-#ifdef __GNUC__
-  return true;
-#else
-  return false;
-#endif  // __GNUC__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Clang.
- *
- * \return `true` if Clang is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_clang() noexcept -> bool
-{
-#ifdef __clang__
-  return true;
-#else
-  return false;
-#endif  // __clang__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Emscripten.
- *
- * \return `true` if Emscripten is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_emscripten() noexcept -> bool
-{
-#ifdef __EMSCRIPTEN__
-  return true;
-#else
-  return false;
-#endif  // __EMSCRIPTEN__
-}
-
-/**
- * \brief Indicates whether or not the compiler is Intel C++.
- *
- * \return `true` if Intel C++ is detected as the current compiler; `false` otherwise.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto on_intel_cpp() noexcept -> bool
-{
-#ifdef __INTEL_COMPILER
-  return true;
-#else
-  return false;
-#endif  // __INTEL_COMPILER
-}
-
-/// \} End of compiler group
-
-}  // namespace cen
-
-#endif  // CENTURION_COMPILER_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename T>
-[[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
-{
-  T value{};
-
-  const auto begin = str.data();
-  const auto end = str.data() + str.size();
-
-  const char* mismatch = end;
-  std::errc error{};
-
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
-        value = std::stof(std::string{str});
-      }
-      catch (...)
-      {
-        return std::nullopt;
-      }
-    }
-    else
-    {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-  }
-  else
-  {
-    const auto [ptr, err] = std::from_chars(begin, end, value, base);
-    mismatch = ptr;
-    error = err;
-  }
-
-  if (mismatch == end && error == std::errc{})
-  {
-    return value;
-  }
-  else
-  {
-    return std::nullopt;
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-
-namespace cen {
-
-/// \addtogroup video
-/// \{
-
-/**
- * \class color
- *
- * \brief An 8-bit accuracy RGBA color.
- *
- * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
- * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
- * provided in the `cen::colors` namespace,
- *
- * \since 3.0.0
- */
-class color final
-{
- public:
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a color. The created color will be equal to #000000FF.
-   *
-   * \since 3.0.0
-   */
-  constexpr color() noexcept = default;
-
-  /**
-   * \brief Creates a color.
-   *
-   * \param red the red component value, in the range [0, 255].
-   * \param green the green component value, in the range [0, 255].
-   * \param blue the blue component value, in the range [0, 255].
-   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to 255.
-   *
-   * \since 3.0.0
-   */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
-      : m_color{red, green, blue, alpha}
-  {}
-
-  /**
-   * \brief Creates a color that is a copy of the supplied `SDL_Color`.
-   *
-   * \param color the `SDL_Color` that will be copied.
-   *
-   * \since 3.0.0
-   */
-  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color}
-  {}
-
-  /**
-   * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
-   *
-   * \details Message box colors don't have an alpha component so the created color will
-   * feature an alpha value of 255.
-   *
-   * \param color the message box color that will be copied.
-   *
-   * \since 3.0.0
-   */
-  constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
-      : m_color{color.r, color.g, color.b, max()}
-  {}
-
-  /**
-   * \brief Creates a color from HSV-encoded values.
-   *
-   * \note The values will be clamped to be within their respective ranges.
-   *
-   * \param hue the hue of the color, in the range [0, 360].
-   * \param saturation the saturation of the color, in the range [0, 100].
-   * \param value the value of the color, in the range [0, 100].
-   *
-   * \return an RGBA color converted from the HSV values.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] static auto from_hsv(float hue, float saturation, float value) -> color
-  {
-    hue = detail::clamp(hue, 0.0f, 360.0f);
-    saturation = detail::clamp(saturation, 0.0f, 100.0f);
-    value = detail::clamp(value, 0.0f, 100.0f);
-
-    const auto v = (value / 100.0f);
-    const auto chroma = v * (saturation / 100.0f);
-    const auto hp = hue / 60.0f;
-
-    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
-
-    float red{};
-    float green{};
-    float blue{};
-
-    if (0 <= hp && hp <= 1)
-    {
-      red = chroma;
-      green = x;
-      blue = 0;
-    }
-    else if (1 < hp && hp <= 2)
-    {
-      red = x;
-      green = chroma;
-      blue = 0;
-    }
-    else if (2 < hp && hp <= 3)
-    {
-      red = 0;
-      green = chroma;
-      blue = x;
-    }
-    else if (3 < hp && hp <= 4)
-    {
-      red = 0;
-      green = x;
-      blue = chroma;
-    }
-    else if (4 < hp && hp <= 5)
-    {
-      red = x;
-      green = 0;
-      blue = chroma;
-    }
-    else if (5 < hp && hp <= 6)
-    {
-      red = chroma;
-      green = 0;
-      blue = x;
-    }
-
-    const auto m = v - chroma;
-
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
-
-    return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
-   * \brief Creates a color from HSL-encoded values.
-   *
-   * \note The values will be clamped to be within their respective ranges.
-   *
-   * \param hue the hue of the color, in the range [0, 360].
-   * \param saturation the saturation of the color, in the range [0, 100].
-   * \param lightness the lightness of the color, in the range [0, 100].
-   *
-   * \return an RGBA color converted from the HSL values.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
-  {
-    hue = detail::clamp(hue, 0.0f, 360.0f);
-    saturation = detail::clamp(saturation, 0.0f, 100.0f);
-    lightness = detail::clamp(lightness, 0.0f, 100.0f);
-
-    const auto s = saturation / 100.0f;
-    const auto l = lightness / 100.0f;
-
-    const auto chroma = (1.0f - std::abs(2.0f * l - 1.0f)) * s;
-    const auto hp = hue / 60.0f;
-
-    const auto x = chroma * (1.0f - std::abs(std::fmod(hp, 2.0f) - 1.0f));
-
-    float red{};
-    float green{};
-    float blue{};
-
-    if (0 <= hp && hp < 1)
-    {
-      red = chroma;
-      green = x;
-      blue = 0;
-    }
-    else if (1 <= hp && hp < 2)
-    {
-      red = x;
-      green = chroma;
-      blue = 0;
-    }
-    else if (2 <= hp && hp < 3)
-    {
-      red = 0;
-      green = chroma;
-      blue = x;
-    }
-    else if (3 <= hp && hp < 4)
-    {
-      red = 0;
-      green = x;
-      blue = chroma;
-    }
-    else if (4 <= hp && hp < 5)
-    {
-      red = x;
-      green = 0;
-      blue = chroma;
-    }
-    else if (5 <= hp && hp < 6)
-    {
-      red = chroma;
-      green = 0;
-      blue = x;
-    }
-
-    const auto m = l - (chroma / 2.0f);
-
-    const auto r = static_cast<u8>(std::round((red + m) * 255.0f));
-    const auto g = static_cast<u8>(std::round((green + m) * 255.0f));
-    const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
-
-    return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
-  }
-
-  /**
-   * \brief Creates a color from a hexadecimal RGB color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 7
-   * characters long.
-   *
-   * \param rgb the hexadecimal RGB color string, using the format "#RRGGBB".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `from_rgba()`
-   * \see `from_argb()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
-  {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
-      return std::nullopt;
-    }
-
-    const auto noHash = rgb.substr(1);
-
-    const auto rr = noHash.substr(0, 2);
-    const auto gg = noHash.substr(2, 2);
-    const auto bb = noHash.substr(4, 2);
-
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
-
-    if (red && green && blue)
-    {
-      return cen::color{*red, *green, *blue};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
-   * \brief Creates a color from a hexadecimal RGBA color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 9
-   * characters long.
-   *
-   * \param rgba the hexadecimal RGBA color string, using the format "#RRGGBBAA".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `from_rgb()`
-   * \see `from_argb()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
-  {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
-      return std::nullopt;
-    }
-
-    const auto noHash = rgba.substr(1);
-
-    const auto rr = noHash.substr(0, 2);
-    const auto gg = noHash.substr(2, 2);
-    const auto bb = noHash.substr(4, 2);
-    const auto aa = noHash.substr(6, 2);
-
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
-    const auto alpha = detail::from_string<u8>(aa, 16);
-
-    if (red && green && blue && alpha)
-    {
-      return cen::color{*red, *green, *blue, *alpha};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
-   * \brief Creates a color from a hexadecimal ARGB color string.
-   *
-   * \details The supplied string must feature a leading '#' character, and be 9
-   * characters long.
-   *
-   * \param argb the hexadecimal ARGB color string, using the format "#AARRGGBB".
-   *
-   * \return a corresponding color; `std::nullopt` if something goes wrong.
-   *
-   * \see `from_rgb()`
-   * \see `from_rgba()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
-  {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
-      return std::nullopt;
-    }
-
-    const auto noHash = argb.substr(1);
-
-    const auto aa = noHash.substr(0, 2);
-    const auto rr = noHash.substr(2, 2);
-    const auto gg = noHash.substr(4, 2);
-    const auto bb = noHash.substr(6, 2);
-
-    const auto alpha = detail::from_string<u8>(aa, 16);
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
-
-    if (alpha && red && green && blue)
-    {
-      return cen::color{*red, *green, *blue, *alpha};
-    }
-    else
-    {
-      return std::nullopt;
-    }
-  }
-
-  /**
-   * \brief Creates a color from normalized color component values.
-   *
-   * \note The color components will be clamped to the range [0, 1].
-   *
-   * \param red the red component value, in the range [0, 1].
-   * \param green the green component value, in the range [0, 1].
-   * \param blue the blue component value, in the range [0, 1].
-   * \param alpha the alpha component value, in the range [0, 1].
-   *
-   * \return a color with the supplied color components.
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] static auto from_norm(float red,
-                                      float green,
-                                      float blue,
-                                      float alpha = 1.0f) noexcept(on_msvc()) -> color
-  {
-    red = detail::clamp(red, 0.0f, 1.0f);
-    green = detail::clamp(green, 0.0f, 1.0f);
-    blue = detail::clamp(blue, 0.0f, 1.0f);
-    alpha = detail::clamp(alpha, 0.0f, 1.0f);
-
-    const auto r = static_cast<u8>(std::round(red * 255.0f));
-    const auto g = static_cast<u8>(std::round(green * 255.0f));
-    const auto b = static_cast<u8>(std::round(blue * 255.0f));
-    const auto a = static_cast<u8>(std::round(alpha * 255.0f));
-
-    return color{r, g, b, a};
-  }
-
-  /// \} End of construction
-
-  /// \name Setters
-  /// \{
-
-  /**
-   * \brief Sets the value of the red component.
-   *
-   * \param red the new value of the red component.
-   *
-   * \since 3.0.0
-   */
-  constexpr void set_red(const u8 red) noexcept
-  {
-    m_color.r = red;
-  }
-
-  /**
-   * \brief Sets the value of the green component.
-   *
-   * \param green the new value of the green component.
-   *
-   * \since 3.0.0
-   */
-  constexpr void set_green(const u8 green) noexcept
-  {
-    m_color.g = green;
-  }
-
-  /**
-   * \brief Sets the value of the blue component.
-   *
-   * \param blue the new value of the blue component.
-   *
-   * \since 3.0.0
-   */
-  constexpr void set_blue(const u8 blue) noexcept
-  {
-    m_color.b = blue;
-  }
-
-  /**
-   * \brief Sets the value of the alpha component.
-   *
-   * \param alpha the new value of the alpha component.
-   *
-   * \since 3.0.0
-   */
-  constexpr void set_alpha(const u8 alpha) noexcept
-  {
-    m_color.a = alpha;
-  }
-
-  /// \} End of setters
-
-  /// \name Getters
-  /// \{
-
-  /**
-   * \brief Returns the value of the red component.
-   *
-   * \return the value of the red component, in the range [0, 255].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] constexpr auto red() const noexcept -> u8
-  {
-    return m_color.r;
-  }
-
-  /**
-   * \brief Returns the value of the green component.
-   *
-   * \return the value of the green component, in the range [0, 255].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] constexpr auto green() const noexcept -> u8
-  {
-    return m_color.g;
-  }
-
-  /**
-   * \brief Returns the value of the blue component.
-   *
-   * \return the value of the blue component, in the range [0, 255].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] constexpr auto blue() const noexcept -> u8
-  {
-    return m_color.b;
-  }
-
-  /**
-   * \brief Returns the value of the alpha component.
-   *
-   * \return the value of the alpha component, in the range [0, 255].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] constexpr auto alpha() const noexcept -> u8
-  {
-    return m_color.a;
-  }
-
-  /**
-   * \brief Returns the normalized red component of the color.
-   *
-   * \return the red component value, in the range [0, 1].
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] constexpr auto red_norm() const noexcept -> float
-  {
-    return static_cast<float>(m_color.r) / 255.0f;
-  }
-
-  /**
-   * \brief Returns the normalized green component of the color.
-   *
-   * \return the green component value, in the range [0, 1].
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] constexpr auto green_norm() const noexcept -> float
-  {
-    return static_cast<float>(m_color.g) / 255.0f;
-  }
-
-  /**
-   * \brief Returns the normalized blue component of the color.
-   *
-   * \return the blue component value, in the range [0, 1].
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] constexpr auto blue_norm() const noexcept -> float
-  {
-    return static_cast<float>(m_color.b) / 255.0f;
-  }
-
-  /**
-   * \brief Returns the normalized alpha component of the color.
-   *
-   * \return the alpha component value, in the range [0, 1].
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] constexpr auto alpha_norm() const noexcept -> float
-  {
-    return static_cast<float>(m_color.a) / 255.0f;
-  }
-
-  /**
-   * \brief Returns a pointer to the internal SDL color.
-   *
-   * \warning Do not cache the returned pointer!
-   *
-   * \return a pointer to the internal color instance.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto data() noexcept -> SDL_Color*
-  {
-    return &m_color;
-  }
-
-  /// \copydoc data()
-  [[nodiscard]] auto data() const noexcept -> const SDL_Color*
-  {
-    return &m_color;
-  }
-
-  /**
-   * \brief Returns the internal color instance.
-   *
-   * \return a reference to the internal color.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> const SDL_Color&
-  {
-    return m_color;
-  }
-
-  /// \} End of getters
-
-  /// \name Color string conversions
-  /// \{
-
-  /**
-   * \brief Returns a hexadecimal RGB color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#RRGGBB".
-   *
-   * \see `as_rgba()`
-   * \see `as_argb()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] auto as_rgb() const -> std::string
-  {
-    std::stringstream stream;
-    stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
-    return stream.str();
-  }
-
-  /**
-   * \brief Returns a hexadecimal RGBA color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#RRGGBBAA".
-   *
-   * \see `as_rgb()`
-   * \see `as_argb()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] auto as_rgba() const -> std::string
-  {
-    std::stringstream stream;
-    stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
-    return stream.str();
-  }
-
-  /**
-   * \brief Returns a hexadecimal ARGB color string that represents the color.
-   *
-   * \details The returned string is guaranteed to use uppercase hexadecimal digits (A-F).
-   *
-   * \return a hexadecimal color string representation, on the format "#AARRGGBB".
-   *
-   * \see `as_rgb()`
-   * \see `as_rgba()`
-   *
-   * \since 6.1.0
-   */
-  [[nodiscard]] auto as_argb() const -> std::string
-  {
-    std::stringstream stream;
-    stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
-    return stream.str();
-  }
-
-  /// \} End of color string conversions
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Converts the the color into an `SDL_Color`.
-   *
-   * \return an `SDL_Color` that is equivalent to this color.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] explicit constexpr operator SDL_Color() const noexcept
-  {
-    return {red(), green(), blue(), alpha()};
-  }
-
-  /**
-   * \brief Converts the the color into an `SDL_MessageBoxColor`.
-   *
-   * \note Message box colors don't feature an alpha value!
-   *
-   * \return an `SDL_MessageBoxColor` that is equivalent to this color.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] explicit constexpr operator SDL_MessageBoxColor() const noexcept
-  {
-    return {red(), green(), blue()};
-  }
-
-  /**
-   * \brief Converts the color to `SDL_Color*`.
-   *
-   * \warning The returned pointer is not to be freed or stored away!
-   *
-   * \return a pointer to the internal color instance.
-   *
-   * \since 4.0,0
-   */
-  [[nodiscard]] explicit operator SDL_Color*() noexcept
-  {
-    return &m_color;
-  }
-
-  /**
-   * \brief Converts the color to `const SDL_Color*`.
-   *
-   * \warning The returned pointer is not to be freed or stored away!
-   *
-   * \return a pointer to the internal color instance.
-   *
-   * \since 4.0,0
-   */
-  [[nodiscard]] explicit operator const SDL_Color*() const noexcept
-  {
-    return &m_color;
-  }
-
-  /// \} End of conversions
-
-  /**
-   * \brief Serializes the color.
-   *
-   * \details This function expects that the archive provides an overloaded `operator()`,
-   * used for serializing data. This API is based on the Cereal serialization library.
-   *
-   * \tparam Archive the type of the archive.
-   *
-   * \param archive the archive used to serialize the color.
-   *
-   * \since 5.3.0
-   */
-  template <typename Archive>
-  void serialize(Archive& archive)
-  {
-    archive(m_color.r, m_color.g, m_color.b, m_color.a);
-  }
-
-  /**
-   * \brief Returns a copy of the color with the specified alpha value.
-   *
-   * \param alpha the alpha component value that will be used by the new color.
-   *
-   * \return a color that is identical to the color except for the alpha component.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr auto with_alpha(const u8 alpha) const noexcept -> color
-  {
-    return {red(), green(), blue(), alpha};
-  }
-
-  /**
-   * \brief Returns the maximum possible value of a color component.
-   *
-   * \return the maximum possible value of a color component.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr static auto max() noexcept -> u8
-  {
-    return 0xFF;
-  }
-
- private:
-  SDL_Color m_color{0, 0, 0, max()};
-};
-
-/**
- * \brief Returns a textual representation of the color.
- *
- * \param color the color that will be converted.
- *
- * \return a textual representation of the color.
- *
- * \since 5.0.0
- */
-[[nodiscard]] inline auto to_string(const color& color) -> std::string
-{
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
-}
-
-/**
- * \brief Prints a textual representation of a color.
- *
- * \param stream the stream that will be used.
- * \param color the color that will be printed.
- *
- * \return the used stream.
- *
- * \since 5.0.0
- */
-inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
-{
-  return stream << to_string(color);
-}
-
-/**
- * \brief Blends two colors according to the specified bias.
- *
- * \pre `bias` should be in the range [0, 1].
- *
- * \details This function applies a linear interpolation for each color component to
- * obtain the blended color. The bias parameter is the "alpha" for the interpolation,
- * which determines how the input colors are blended. For example, a bias of 0 or 1 will
- * simply result in the first or second color being returned, respectively.
- * Subsequently, a bias of 0.5 will blend the two colors evenly.
- *
- * \param a the first color.
- * \param b the second color.
- * \param bias the bias that determines how the colors are blended, in the range [0, 1].
- *
- * \return a color obtained by blending the two supplied colors.
- *
- * \todo Centurion 7: Make the bias parameter a `float`.
- *
- * \since 6.0.0
- */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
-{
-  assert(bias >= 0);
-  assert(bias <= 1.0);
-
-  const auto invBias = 1.0 - bias;
-
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
-
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
-}
-
-/// \name Color comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not the two colors are equal.
- *
- * \param lhs the left-hand side color.
- * \param rhs the right-hand side color.
- *
- * \return `true` if the colors are equal; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
-{
-  return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
-         (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
-}
-
-/// \copydoc operator==(const color&, const color&)
-[[nodiscard]] constexpr auto operator==(const color& lhs, const SDL_Color& rhs) noexcept
-    -> bool
-{
-  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b) &&
-         (lhs.alpha() == rhs.a);
-}
-
-/// \copydoc operator==(const color&, const color&)
-[[nodiscard]] constexpr auto operator==(const SDL_Color& lhs, const color& rhs) noexcept
-    -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \copybrief operator==(const color&, const color&)
- *
- * \note The alpha components are not taken into account.
- *
- * \param lhs the left-hand side color.
- * \param rhs the right-hand side color.
- *
- * \return `true` if the colors are equal; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const color& lhs,
-                                        const SDL_MessageBoxColor& rhs) noexcept -> bool
-{
-  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b);
-}
-
-/// \copydoc operator==(const color&, const SDL_MessageBoxColor&)
-[[nodiscard]] constexpr auto operator==(const SDL_MessageBoxColor& lhs,
-                                        const color& rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two colors aren't equal.
- *
- * \param lhs the left-hand side color.
- * \param rhs the right-hand side color.
- *
- * \return `true` if the colors aren't equal; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(const color&, const color&)
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const SDL_Color& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(const color&, const color&)
-[[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs, const color& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copybrief operator!=(const color&, const color&)
- *
- * \note The alpha components are not taken into account.
- *
- * \param lhs the left-hand side color.
- * \param rhs the right-hand side color.
- *
- * \return `true` if the colors aren't equal; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const color& lhs,
-                                        const SDL_MessageBoxColor& rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(const color&, const SDL_MessageBoxColor&)
-[[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
-                                        const color& rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of color comparison operators
-
-/// \} End of group video
-
-}  // namespace cen
-
-#endif  // CENTURION_COLOR_HEADER
-
-
-namespace cen {
-
-/// \addtogroup video
-/// \{
-
-/**
- * \enum pixel_format
- *
- * \brief Represents different pixel formats.
- *
- * \see `SDL_PixelFormatEnum`
- *
- * \since 3.1.0
- */
-enum class pixel_format : u32
-{
-  unknown = SDL_PIXELFORMAT_UNKNOWN,
-
-  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
-  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
-  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
-  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
-  index8 = SDL_PIXELFORMAT_INDEX8,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
-  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
-
-  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
-  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
-
-  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
-  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  rgb332 = SDL_PIXELFORMAT_RGB332,
-  rgb444 = SDL_PIXELFORMAT_RGB444,
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  bgr444 = SDL_PIXELFORMAT_BGR444,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-  rgb555 = SDL_PIXELFORMAT_RGB555,
-  bgr555 = SDL_PIXELFORMAT_BGR555,
-
-  argb4444 = SDL_PIXELFORMAT_ARGB4444,
-  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
-  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
-  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
-
-  argb1555 = SDL_PIXELFORMAT_ARGB1555,
-  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
-  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
-  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
-
-  rgb565 = SDL_PIXELFORMAT_RGB565,
-  bgr565 = SDL_PIXELFORMAT_BGR565,
-
-  rgb24 = SDL_PIXELFORMAT_RGB24,
-  bgr24 = SDL_PIXELFORMAT_BGR24,
-
-  rgb888 = SDL_PIXELFORMAT_RGB888,
-  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
-  bgr888 = SDL_PIXELFORMAT_BGR888,
-  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
-
-  argb8888 = SDL_PIXELFORMAT_ARGB8888,
-  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
-  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
-  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
-
-  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  rgba32 = SDL_PIXELFORMAT_RGBA8888,
-  argb32 = SDL_PIXELFORMAT_ARGB8888,
-  bgra32 = SDL_PIXELFORMAT_BGRA8888,
-  abgr32 = SDL_PIXELFORMAT_ABGR8888,
-#else
-  rgba32 = SDL_PIXELFORMAT_ABGR8888,
-  argb32 = SDL_PIXELFORMAT_BGRA8888,
-  bgra32 = SDL_PIXELFORMAT_ARGB8888,
-  abgr32 = SDL_PIXELFORMAT_RGBA8888,
-#endif
-
-  yv12 = SDL_PIXELFORMAT_YV12,
-  iyuv = SDL_PIXELFORMAT_IYUV,
-  yuy2 = SDL_PIXELFORMAT_YUY2,
-  uyvy = SDL_PIXELFORMAT_UYVY,
-  yvyu = SDL_PIXELFORMAT_YVYU,
-  nv12 = SDL_PIXELFORMAT_NV12,
-  nv21 = SDL_PIXELFORMAT_NV21,
-  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
-};
-
-template <typename B>
-class basic_pixel_format_info;
-
-/**
- * \typedef pixel_format_info
- *
- * \brief Represents an owning pixel format info instance.
- *
- * \since 5.2.0
- */
-using pixel_format_info = basic_pixel_format_info<detail::owning_type>;
-
-/**
- * \typedef pixel_format_info_handle
- *
- * \brief Represents a non-owning pixel format info instance.
- *
- * \since 5.2.0
- */
-using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
-
-/**
- * \class basic_pixel_format_info
- *
- * \brief Provides information about a pixel format.
- *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
- *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
- *
- * \since 5.2.0
- */
-template <typename B>
-class basic_pixel_format_info final
-{
- public:
-  /// \name Construction
-  /// \{
-
-  // clang-format off
-
-  /**
-   * \brief Creates a pixel format info instance based on an existing pointer.
-   *
-   * \note Ownership of the supplied pointer might be claimed, depending on the
-   * ownership semantics of the class.
-   *
-   * \param format a pointer to the associated pixel format.
-   *
-   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
-   *
-   * \since 5.2.0
-   */
-  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
-      : m_format{format}
-  {
-    if constexpr (detail::is_owning<B>())
-    {
-      if (!m_format)
-      {
-        throw cen_error{"Null pixel format!"};
-      }
-    }
-  }
-
-  // clang-format on
-
-  /**
-   * \brief Creates an owning instance based on a pixel format.
-   *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
-   * \param format the associated pixel format.
-   *
-   * \throws sdl_error if the pixel format info could not be obtained.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(to_underlying(format))}
-  {
-    if (!m_format)
-    {
-      throw sdl_error{};
-    }
-  }
-
-  /**
-   * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \param info the associated pixel format info instance.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_handle<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
-      : m_format{info.get()}
-  {}
-
-  /// \} End of construction
-
-  /// \name Pixel/RGB/RGBA conversions
-  /// \{
-
-  /**
-   * \brief Returns a color that corresponds to a masked pixel value.
-   *
-   * \param pixel the masked pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto pixel_to_rgb(const u32 pixel) const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    SDL_GetRGB(pixel, m_format, &red, &green, &blue);
-    return color{red, green, blue};
-  }
-
-  /**
-   * \brief Returns a color that corresponds to a masked pixel value.
-   *
-   * \param pixel the masked pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto pixel_to_rgba(const u32 pixel) const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
-    SDL_GetRGBA(pixel, m_format, &red, &green, &blue, &alpha);
-    return color{red, green, blue, alpha};
-  }
-
-  /**
-   * \brief Returns a pixel color value based on the RGB values of a color.
-   *
-   * \note The alpha component is assumed to be `0xFF`, i.e. fully opaque.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> u32
-  {
-    return SDL_MapRGB(m_format, color.red(), color.green(), color.blue());
-  }
-
-  /**
-   * \brief Returns a pixel color value based on the RGBA values of a color.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> u32
-  {
-    return SDL_MapRGBA(m_format, color.red(), color.green(), color.blue(), color.alpha());
-  }
-
-  /// \} End of pixel/RGB/RGBA conversions
-
-  /// \name Queries
-  /// \{
-
-  /**
-   * \brief Returns the associated pixel format.
-   *
-   * \return the associated pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto format() const noexcept -> pixel_format
-  {
-    return static_cast<pixel_format>(m_format->format);
-  }
-
-  /**
-   * \brief Returns a human-readable name associated with the format.
-   *
-   * \details This function never returns a null-pointer, instead it returns
-   * "SDL_PIXELFORMAT_UNKNOWN" if the format is ill-formed.
-   *
-   * \return a human-readable name associated with the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto name() const noexcept -> not_null<czstring>
-  {
-    return SDL_GetPixelFormatName(m_format->format);
-  }
-
-  /**
-   * \brief Returns a pointer to the associated pixel format instance.
-   *
-   * \warning Do not claim ownership of the returned pointer.
-   *
-   * \return a pointer to the internal pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat*
-  {
-    return m_format.get();
-  }
-
-  /// \} End of queries
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Indicates whether or not a handle holds a non-null pointer.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_handle<BB> = 0>
-  [[nodiscard]] explicit operator bool() const noexcept
-  {
-    return m_format;
-  }
-
-  /// \} End of conversions
-
- private:
-  struct deleter final
-  {
-    void operator()(SDL_PixelFormat* format) noexcept
-    {
-      SDL_FreeFormat(format);
-    }
-  };
-  detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
-};
-
-/// \name Pixel format comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not the two pixel format values are the same.
- *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
- *
- * \return `true` if the pixel format values are the same; `false` otherwise.
- *
- * \since 3.1.0
- */
-[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
-{
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two pixel format values aren't the same.
- *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
- *
- * \return `true` if the pixel format values aren't the same; `false` otherwise.
- *
- * \since 3.1.0
- */
-[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of pixel format comparison operators
-
-/// \} End of group video
-
-}  // namespace cen
-
-#endif  // CENTURION_PIXEL_FORMAT_HEADER
 
 namespace cen {
 
@@ -60297,6 +58972,92 @@ inline auto open_url(const std::string& url) noexcept -> result
 }  // namespace cen
 
 #endif  // CENTURION_PLATFORM_HEADER
+// #include "centurion/system/power_state.hpp"
+#ifndef CENTURION_POWER_STATE_HEADER
+#define CENTURION_POWER_STATE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup system
+/// \{
+
+/**
+ * \enum power_state
+ *
+ * \brief Represents different battery power states.
+ *
+ * \since 3.0.0
+ *
+ * \see `SDL_PowerState`
+ */
+enum class power_state
+{
+  unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
+  on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
+  no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
+  charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
+  charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
+};
+
+/// \name Power state comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two power states values are the same.
+ *
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
+ *
+ * \return `true` if the power states are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept -> bool
+{
+  return static_cast<SDL_PowerState>(lhs) == rhs;
+}
+
+/// \copydoc operator==(power_state, SDL_PowerState)
+[[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two power states values aren't the same.
+ *
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
+ *
+ * \return `true` if the power states aren't the same; `false` otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const power_state lhs,
+                                        const SDL_PowerState rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(power_state, SDL_PowerState)
+[[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
+                                        const power_state rhs) noexcept -> bool
+{
+  return rhs != lhs;
+}
+
+/// \} End of power state comparison operators
+
+/// \} End of group system
+
+}  // namespace cen
+
+#endif  // CENTURION_POWER_STATE_HEADER
+
 // #include "centurion/system/ram.hpp"
 #ifndef CENTURION_RAM_HEADER
 #define CENTURION_RAM_HEADER
@@ -61738,6 +60499,55 @@ class mutex final
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 // #include "../core/exception.hpp"
@@ -61772,7 +60582,7 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
+  CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
     if (!mutex.lock())
     {
@@ -62039,6 +60849,11 @@ class mutex final
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 // #include "../core/exception.hpp"
@@ -62073,7 +60888,7 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
+  CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
     if (!mutex.lock())
     {
@@ -62243,11 +61058,29 @@ class semaphore final
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
+#include <cassert>      // assert
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // invoke_result_t
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // convertible_to, default_initializable, invocable
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -62513,6 +61346,11 @@ namespace cen::detail {
 
 #endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER
 
+// #include "thread_priority.hpp"
+#ifndef CENTURION_THREAD_PRIORITY_HEADER
+#define CENTURION_THREAD_PRIORITY_HEADER
+
+#include <SDL.h>
 
 namespace cen {
 
@@ -62530,12 +61368,86 @@ namespace cen {
  */
 enum class thread_priority
 {
-  low = SDL_THREAD_PRIORITY_LOW,                ///< Non-urgent, background processing.
-  normal = SDL_THREAD_PRIORITY_NORMAL,          ///< General purpose processing, this is
-                                                ///< the default.
+  // clang-format off
+  low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
+  normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is the default.
   high = SDL_THREAD_PRIORITY_HIGH,              ///< For high-priority processing.
   critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
+  // clang-format on
 };
+
+/// \name Thread priority comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two thread priorities are the same.
+ *
+ * \param lhs the left-hand side thread priority.
+ * \param rhs the right-hand side thread priority.
+ *
+ * \return `true` if the priorities are the same; `false` otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept -> bool
+{
+  return static_cast<SDL_ThreadPriority>(lhs) == rhs;
+}
+
+/// \copydoc operator==(thread_priority, SDL_ThreadPriority)
+[[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two thread priorities aren't the same.
+ *
+ * \param lhs the left-hand side thread priority.
+ * \param rhs the right-hand side thread priority.
+ *
+ * \return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(thread_priority, SDL_ThreadPriority)
+[[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of thread priority comparison operators
+
+/// \} End of group thread
+
+}  // namespace cen
+
+#endif  // CENTURION_THREAD_PRIORITY_HEADER
+
+
+namespace cen {
+
+/// \addtogroup thread
+/// \{
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+template <typename T, typename... Args>
+concept is_stateless_callable =
+    std::default_initializable<T> && std::invocable<T, Args...>;
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
+using thread_id = SDL_threadID;
 
 /**
  * \class thread
@@ -62571,9 +61483,11 @@ class thread final
    *
    * \brief The type used for thread identifiers.
    *
+   * \deprecated Since 6.2.0, use `thread_id` instead.
+   *
    * \since 5.0.0
    */
-  using id = SDL_threadID;
+  using id [[deprecated]] = SDL_threadID;
 
   /// \name Construction/Destruction
   /// \{
@@ -62590,9 +61504,9 @@ class thread final
    *
    * \since 5.0.0
    */
-  explicit thread(task_type task,
-                  not_null<czstring> name = "thread",
-                  void* data = nullptr)
+  CENTURION_NODISCARD_CTOR explicit thread(task_type task,
+                                           const not_null<czstring> name = "thread",
+                                           void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
     if (!m_thread)
@@ -62617,6 +61531,98 @@ class thread final
       join();
     }
   }
+
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <is_stateless_callable Callable>
+  [[nodiscard]] static auto init(Callable&& task,
+                                 const not_null<czstring> name = "thread") -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}());
+
+    const auto wrapper = [](void* /*data*/) noexcept(isNoexcept) -> int {
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
+      {
+        return callable();
+      }
+      else
+      {
+        callable();
+        return 0;
+      }
+    };
+
+    return thread{wrapper, name};
+  }
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param userData optional user data that will be supplied to the callable.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <typename T = void, is_stateless_callable<T*> Callable>
+  [[nodiscard]] static auto init(Callable&& task,
+                                 T* userData = nullptr,
+                                 const not_null<czstring> name = "thread") -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}(static_cast<T*>(nullptr)));
+
+    const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
+      auto* ptr = static_cast<T*>(erased);
+
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>)
+      {
+        return callable(ptr);
+      }
+      else
+      {
+        callable(ptr);
+        return 0;
+      }
+    };
+
+    return thread{wrapper, name, userData};
+  }
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
   /// \} End of construction/destruction
 
@@ -62753,7 +61759,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> id
+  [[nodiscard]] auto get_id() const noexcept -> thread_id
   {
     return SDL_GetThreadID(m_thread);
   }
@@ -62765,7 +61771,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> id
+  [[nodiscard]] static auto current_id() noexcept -> thread_id
   {
     return SDL_ThreadID();
   }
@@ -62821,8 +61827,15 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("thread{{data: {}, name: {}, id: {}}}",
+                     detail::address_of(thread.get()),
+                     thread.name(),
+                     thread.get_id());
+#else
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
          ", id: " + std::to_string(thread.get_id()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -62840,6 +61853,42 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
   stream << to_string(thread);
   return stream;
 }
+
+/// \} End of group thread
+
+}  // namespace cen
+
+#endif  // CENTURION_THREAD_HEADER
+
+// #include "centurion/thread/thread_priority.hpp"
+#ifndef CENTURION_THREAD_PRIORITY_HEADER
+#define CENTURION_THREAD_PRIORITY_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup thread
+/// \{
+
+/**
+ * \enum thread_priority
+ *
+ * \brief Represents different thread priorities.
+ *
+ * \note You might need higher privileges to use `high` or `critical` priorities.
+ *
+ * \since 5.0.0
+ */
+enum class thread_priority
+{
+  // clang-format off
+  low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
+  normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is the default.
+  high = SDL_THREAD_PRIORITY_HIGH,              ///< For high-priority processing.
+  critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
+  // clang-format on
+};
 
 /// \name Thread priority comparison operators
 /// \{
@@ -62890,17 +61939,22 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
   return !(lhs == rhs);
 }
 
-/// \} End of thread comparison operators
+/// \} End of thread priority comparison operators
 
 /// \} End of group thread
 
 }  // namespace cen
 
-#endif  // CENTURION_THREAD_HEADER
+#endif  // CENTURION_THREAD_PRIORITY_HEADER
 
 // #include "centurion/thread/try_lock.hpp"
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -62930,7 +61984,9 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  explicit try_lock(mutex& mutex) noexcept : m_mutex{&mutex}, m_status{mutex.try_lock()}
+  CENTURION_NODISCARD_CTOR explicit try_lock(mutex& mutex) noexcept
+      : m_mutex{&mutex}
+      , m_status{mutex.try_lock()}
   {}
 
   try_lock(const try_lock&) = delete;
@@ -63108,14 +62164,295 @@ enum class blend_mode
 
 #endif  // CENTURION_BLEND_MODE_HEADER
 
+// #include "centurion/video/button_order.hpp"
+#ifndef CENTURION_BUTTON_ORDER_HEADER
+#define CENTURION_BUTTON_ORDER_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum button_order
+ *
+ * \brief Provides hints for how the buttons in a message box should be aligned.
+ *
+ * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10!
+ *
+ * \since 4.0.0
+ */
+enum class button_order : u32
+{
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+#else
+  left_to_right,
+  right_to_left
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+};
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BUTTON_ORDER_HEADER
+
 // #include "centurion/video/color.hpp"
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -63123,6 +62460,12 @@ enum class blend_mode
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -63554,198 +62897,6 @@ class mix_error final : public cen_error
 #endif  // CENTURION_EXCEPTION_HEADER
 
 // #include "../core/integers.hpp"
-#ifndef CENTURION_INTEGERS_HEADER
-#define CENTURION_INTEGERS_HEADER
-
-#include <SDL.h>
-
-#include <cstddef>  // size_t
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/// \name Integer aliases
-/// \{
-
-using usize = std::size_t;
-
-/// Alias for an unsigned integer.
-using uint = unsigned int;
-
-/// Alias for the type used for integer literal operators.
-using ulonglong = unsigned long long;
-
-/// Alias for a 64-bit unsigned integer.
-using u64 = Uint64;
-
-/// Alias for a 32-bit unsigned integer.
-using u32 = Uint32;
-
-/// Alias for a 16-bit unsigned integer.
-using u16 = Uint16;
-
-/// Alias for an 8-bit unsigned integer.
-using u8 = Uint8;
-
-/// Alias for a 64-bit signed integer.
-using i64 = Sint64;
-
-/// Alias for a 32-bit signed integer.
-using i32 = Sint32;
-
-/// Alias for a 16-bit signed integer.
-using i16 = Sint16;
-
-/// Alias for an 8-bit signed integer.
-using i8 = Sint8;
-
-/// \} End of integer aliases
-
-// clang-format off
-
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
-
-// clang-format on
-
-namespace literals {
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
-{
-  return static_cast<u8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
-{
-  return static_cast<u16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
-{
-  return static_cast<u32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
-{
-  return static_cast<u64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
-{
-  return static_cast<i8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
-{
-  return static_cast<i16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
-{
-  return static_cast<i32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
-{
-  return static_cast<i64>(value);
-}
-
-}  // namespace literals
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_INTEGERS_HEADER
 
 // #include "../detail/clamp.hpp"
 #ifndef CENTURION_DETAIL_CLAMP_HEADER
@@ -64008,6 +63159,81 @@ template <typename T>
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
 
+// #include "../detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
+
 
 namespace cen {
 
@@ -64791,10 +64017,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -64829,27 +64063,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -64983,10 +64220,15 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -64994,6 +64236,12 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 
@@ -65004,6 +64252,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 // #include "../detail/clamp.hpp"
 
 // #include "../detail/from_string.hpp"
+
+// #include "../detail/lerp.hpp"
 
 
 namespace cen {
@@ -65788,10 +65038,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -65826,27 +65084,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -67445,12 +66706,67 @@ class pointer_manager final
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -67878,14 +67194,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -68003,26 +67327,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -68038,6 +67352,11 @@ template <typename T>
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -68047,6 +67366,12 @@ template <typename T>
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -68421,9 +67746,20 @@ namespace cen::detail {
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -68480,13 +67816,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -68593,6 +67936,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -68627,6 +67972,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -68643,8 +67990,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -68674,11 +68025,22 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -68724,9 +68086,20 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -68783,13 +68156,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -68896,6 +68276,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -68930,6 +68312,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -68946,8 +68330,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -68977,12 +68365,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -69343,14 +68742,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -69468,26 +68875,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -70333,9 +69730,17 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
+                     rect.x(),
+                     rect.y(),
+                     rect.width(),
+                     rect.height());
+#else
   return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
          ", width: " + std::to_string(rect.width()) +
          ", height: " + std::to_string(rect.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -70353,8 +69758,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
-  stream << to_string(rect);
-  return stream;
+  return stream << to_string(rect);
 }
 
 /// \} End of group math
@@ -70457,11 +69861,25 @@ enum class blend_mode
 
 // #include "color.hpp"
 
-// #include "pixel_format.hpp"
-#ifndef CENTURION_PIXEL_FORMAT_HEADER
-#define CENTURION_PIXEL_FORMAT_HEADER
+// #include "pixel_format_info.hpp"
+#ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
+#define CENTURION_PIXEL_FORMAT_INFO_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -70475,9 +69893,19 @@ enum class blend_mode
 
 // #include "../core/to_underlying.hpp"
 
+// #include "../detail/address_of.hpp"
+
 // #include "../detail/owner_handle_api.hpp"
 
 // #include "color.hpp"
+
+// #include "pixel_format.hpp"
+#ifndef CENTURION_PIXEL_FORMAT_HEADER
+#define CENTURION_PIXEL_FORMAT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
 
 
 namespace cen {
@@ -70575,6 +70003,69 @@ enum class pixel_format : u32
   external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
 };
 
+/// \name Pixel format comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two pixel format values are the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values are the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
+
+/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two pixel format values aren't the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of pixel format comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_PIXEL_FORMAT_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
 template <typename B>
 class basic_pixel_format_info;
 
@@ -70601,16 +70092,13 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
+ * \ownerhandle `pixel_format_info`/ `pixel_format_info_handle`
  *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ * \see `pixel_format_info_handle`
+ * \see `SDL_PixelFormat`
+ * \see `SDL_PixelFormatEnum`
  *
  * \since 5.2.0
  */
@@ -70831,62 +70319,55 @@ class basic_pixel_format_info final
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
 
-/// \name Pixel format comparison operators
-/// \{
-
 /**
- * \brief Indicates whether or not the two pixel format values are the same.
+ * \brief Returns a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values are the same; `false` otherwise.
+ * \param info the pixel format info instance that will be converted.
  *
- * \since 3.1.0
+ * \return a string that represents the pixel format info.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return rhs == lhs;
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("pixel_format_info{{data: {}, name: {}}}",
+                     detail::address_of(info.get()),
+                     info.name());
+#else
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
- * \brief Indicates whether or not the two pixel format values aren't the same.
+ * \brief Prints a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ * \param stream the output stream that will be used.
+ * \param info the pixel format info that will be printed.
  *
- * \since 3.1.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
+    -> std::ostream&
 {
-  return !(lhs == rhs);
+  return stream << to_string(info);
 }
-
-/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of pixel format comparison operators
 
 /// \} End of group video
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXEL_FORMAT_HEADER
+#endif  // CENTURION_PIXEL_FORMAT_INFO_HEADER
+
 
 namespace cen {
 
@@ -70919,14 +70400,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
@@ -71753,9 +71234,16 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -71771,8 +71259,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
 /// \}
@@ -71781,6 +71268,11 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 #endif  // CENTURION_SURFACE_HEADER
 
+// #include "system_cursor.hpp"
+#ifndef CENTURION_SYSTEM_CURSOR_HEADER
+#define CENTURION_SYSTEM_CURSOR_HEADER
+
+#include <SDL.h>
 
 namespace cen {
 
@@ -71812,6 +71304,70 @@ enum class system_cursor
   hand = SDL_SYSTEM_CURSOR_HAND
 };
 
+/// \name System cursor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two system cursor values are the same.
+ *
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
+ *
+ * \return `true` if the system cursor values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept -> bool
+{
+  return static_cast<SDL_SystemCursor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(system_cursor, SDL_SystemCursor)
+[[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two system cursor values aren't the same.
+ *
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
+ *
+ * \return `true` if the system cursor values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(system_cursor, SDL_SystemCursor)
+[[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of system cursor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_CURSOR_HEADER
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
 template <typename T>
 class basic_cursor;
 
@@ -71838,13 +71394,12 @@ using cursor_handle = basic_cursor<detail::handle_type>;
  *
  * \brief Represents a mouse cursor.
  *
- * \details Depending on the template type parameter, this class can represent either an
- * owning or non-owning cursor.
+ * \ownerhandle `cursor`/`cursor_handle`
  *
  * \since 5.0.0
  *
- * \see cursor
- * \see cursor_handle
+ * \see `cursor`
+ * \see `cursor_handle`
  */
 template <typename T>
 class basic_cursor final
@@ -72079,58 +71634,6 @@ class basic_cursor final
   detail::pointer_manager<T, SDL_Cursor, deleter> m_cursor;
 };
 
-/// \name Cursor comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two system cursor values are the same.
- *
- * \param lhs the left-hand side system cursor value.
- * \param rhs the right-hand side system cursor value.
- *
- * \return `true` if the system cursor values are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const system_cursor lhs,
-                                        const SDL_SystemCursor rhs) noexcept -> bool
-{
-  return static_cast<SDL_SystemCursor>(lhs) == rhs;
-}
-
-/// \copydoc operator==(system_cursor, SDL_SystemCursor)
-[[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
-                                        const system_cursor rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two system cursor values aren't the same.
- *
- * \param lhs the left-hand side system cursor value.
- * \param rhs the right-hand side system cursor value.
- *
- * \return `true` if the system cursor values aren't the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
-                                        const SDL_SystemCursor rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(system_cursor, SDL_SystemCursor)
-[[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
-                                        const system_cursor rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of cursor comparison operators
-
 /// \} End of group video
 
 }  // namespace cen
@@ -72142,6 +71645,11 @@ class basic_cursor final
 
 #ifndef CENTURION_NO_SDL_TTF
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
@@ -72149,6 +71657,12 @@ class basic_cursor final
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -73315,9 +72829,16 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font{{data: {}, name: {}, size: {}}}",
+                     detail::address_of(font.get()),
+                     font.family_name(),
+                     font.size());
+#else
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
          ", size: " + std::to_string(font.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -73364,6 +72885,11 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 #ifndef CENTURION_NO_SDL_TTF
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL_ttf.h>
 
 #include <cassert>   // assert
@@ -73371,6 +72897,12 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -74130,9 +73662,16 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font{{data: {}, name: {}, size: {}}}",
+                     detail::address_of(font.get()),
+                     font.family_name(),
+                     font.size());
+#else
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
          ", size: " + std::to_string(font.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -74162,6 +73701,11 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -74171,6 +73715,12 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -74196,7 +73746,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 // #include "color.hpp"
 
-// #include "pixel_format.hpp"
+// #include "pixel_format_info.hpp"
 
 // #include "scale_mode.hpp"
 #ifndef CENTURION_SCALE_MODE_HEADER
@@ -74387,6 +73937,8 @@ using texture_handle = basic_texture<detail::handle_type>;
  *
  * \brief Represents an hardware-accelerated image, intended to be rendered using the
  * `basic_renderer` class.
+ *
+ * \ownerhandle `texture`/`texture_handle`
  *
  * \since 3.0.0
  *
@@ -74998,9 +74550,16 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("texture{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(texture.get()),
+                     texture.width(),
+                     texture.height());
+#else
   return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -75893,6 +75452,11 @@ namespace cen {
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
@@ -75912,6 +75476,11 @@ namespace cen {
 // #include "../detail/stack_resource.hpp"
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -76107,59 +75676,8 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
-// #include "../core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
 
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-#ifndef __clang__
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- *
- * \brief This macro is defined if the `memory_resource` header is available.
- *
- * \note This is a very rough check, that assumes that as long as we are not
- * using Clang, we are fine.
- *
- * \todo C++20: Use the feature test macro for this instead.
- *
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // __clang__
-
-/**
- * \def CENTURION_SDL_VERSION_IS
- *
- * \brief This macro is meant to be used when conditionally including code for a specific
- * version of SDL. It is useful for applying workarounds.
- *
- * \since 5.3.0
- */
-#define CENTURION_SDL_VERSION_IS(x, y, z) \
-  ((SDL_MAJOR_VERSION == (x)) && (SDL_MINOR_VERSION == (y)) && (SDL_PATCHLEVEL == (z)))
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10. We include
-// this here because multiple files (key_code.hpp and scan_code.hpp) depend on
-// this definition.
-using SDL_KeyCode = decltype(SDLK_UNKNOWN);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-/// \} End of group core
-
-#endif  // CENTURION_MACROS_HEADER
-
-
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte
@@ -76179,14 +75697,54 @@ class stack_resource final
 
  private:
   std::array<std::byte, BufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail
-/// \endcond
+   /// \endcond
 
-#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
+#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER
+
+// #include "button_order.hpp"
+#ifndef CENTURION_BUTTON_ORDER_HEADER
+#define CENTURION_BUTTON_ORDER_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum button_order
+ *
+ * \brief Provides hints for how the buttons in a message box should be aligned.
+ *
+ * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10!
+ *
+ * \since 4.0.0
+ */
+enum class button_order : u32
+{
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+#else
+  left_to_right,
+  right_to_left
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+};
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BUTTON_ORDER_HEADER
 
 // #include "color.hpp"
 
@@ -77258,9 +76816,50 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 #endif  // CENTURION_COLORS_HEADER
 
+// #include "message_box_type.hpp"
+#ifndef CENTURION_MESSAGE_BOX_TYPE_HEADER
+#define CENTURION_MESSAGE_BOX_TYPE_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum message_box_type
+ *
+ * \brief Serves as a hint of the purpose of a message box.
+ *
+ * \details Message boxes can indicate errors, warnings and general information.
+ *
+ * \since 5.0.0
+ */
+enum class message_box_type : u32
+{
+  error = SDL_MESSAGEBOX_ERROR,
+  warning = SDL_MESSAGEBOX_WARNING,
+  information = SDL_MESSAGEBOX_INFORMATION
+};
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_MESSAGE_BOX_TYPE_HEADER
+
 // #include "window.hpp"
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -77268,6 +76867,12 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -77372,6 +76977,8 @@ using window_handle = basic_window<detail::handle_type>;
  * \class basic_window
  *
  * \brief Represents an operating system window.
+ *
+ * \ownerhandle `window`/`window_handle`
  *
  * \since 5.0.0
  *
@@ -78623,9 +78230,16 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -78655,42 +78269,6 @@ namespace cen {
 
 /// \addtogroup video
 /// \{
-
-/**
- * \enum message_box_type
- *
- * \brief Serves as a hint of the purpose of a message box. Message boxes can indicate
- * errors, warnings and general information.
- *
- * \since 5.0.0
- */
-enum class message_box_type : u32
-{
-  error = SDL_MESSAGEBOX_ERROR,
-  warning = SDL_MESSAGEBOX_WARNING,
-  information = SDL_MESSAGEBOX_INFORMATION
-};
-
-/**
- * \enum button_order
- *
- * \brief Provides hints for how the buttons in a message box should be aligned, either
- * left-to-right or right-to-left.
- *
- * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10.
- *
- * \since 4.0.0
- */
-enum class button_order : u32
-{
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
-#else
-  left_to_right,
-  right_to_left
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-};
 
 /**
  * \class message_box
@@ -78998,9 +78576,7 @@ class message_box final
   {
     return std::any_of(m_buttons.begin(),
                        m_buttons.end(),
-                       [id](const button& button) noexcept {
-                         return button.id() == id;
-                       });
+                       [id](const button& button) noexcept { return button.id() == id; });
   }
 
   /**
@@ -79158,7 +78734,7 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
@@ -79300,6 +78876,42 @@ class message_box final
 }  // namespace cen
 
 #endif  // CENTURION_MESSAGE_BOX_HEADER
+
+// #include "centurion/video/message_box_type.hpp"
+#ifndef CENTURION_MESSAGE_BOX_TYPE_HEADER
+#define CENTURION_MESSAGE_BOX_TYPE_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum message_box_type
+ *
+ * \brief Serves as a hint of the purpose of a message box.
+ *
+ * \details Message boxes can indicate errors, warnings and general information.
+ *
+ * \since 5.0.0
+ */
+enum class message_box_type : u32
+{
+  error = SDL_MESSAGEBOX_ERROR,
+  warning = SDL_MESSAGEBOX_WARNING,
+  information = SDL_MESSAGEBOX_INFORMATION
+};
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_MESSAGE_BOX_TYPE_HEADER
 
 // #include "centurion/video/opengl/gl_attribute.hpp"
 #ifndef CENTURION_GL_ATTRIBUTE_HEADER
@@ -80281,12 +79893,67 @@ class pointer_manager final
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -81747,9 +81414,64 @@ class pointer_manager final
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -81839,13 +81561,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -81952,6 +81681,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -81986,6 +81717,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -82002,8 +81735,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -82033,11 +81770,22 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -82117,9 +81865,20 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -82176,13 +81935,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -82289,6 +82055,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -82323,6 +82091,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -82339,8 +82109,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -82370,12 +82144,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -82736,14 +82521,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -82861,26 +82654,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -83726,9 +83509,17 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
+                     rect.x(),
+                     rect.y(),
+                     rect.width(),
+                     rect.height());
+#else
   return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
          ", width: " + std::to_string(rect.width()) +
          ", height: " + std::to_string(rect.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -83746,8 +83537,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
-  stream << to_string(rect);
-  return stream;
+  return stream << to_string(rect);
 }
 
 /// \} End of group math
@@ -83761,6 +83551,186 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum pixel_format
+ *
+ * \brief Represents different pixel formats.
+ *
+ * \see `SDL_PixelFormatEnum`
+ *
+ * \since 3.1.0
+ */
+enum class pixel_format : u32
+{
+  unknown = SDL_PIXELFORMAT_UNKNOWN,
+
+  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
+  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
+  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
+  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
+  index8 = SDL_PIXELFORMAT_INDEX8,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
+  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
+
+  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
+  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
+
+  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
+  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  rgb332 = SDL_PIXELFORMAT_RGB332,
+  rgb444 = SDL_PIXELFORMAT_RGB444,
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  bgr444 = SDL_PIXELFORMAT_BGR444,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  rgb555 = SDL_PIXELFORMAT_RGB555,
+  bgr555 = SDL_PIXELFORMAT_BGR555,
+
+  argb4444 = SDL_PIXELFORMAT_ARGB4444,
+  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
+  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
+  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
+
+  argb1555 = SDL_PIXELFORMAT_ARGB1555,
+  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
+  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
+  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
+
+  rgb565 = SDL_PIXELFORMAT_RGB565,
+  bgr565 = SDL_PIXELFORMAT_BGR565,
+
+  rgb24 = SDL_PIXELFORMAT_RGB24,
+  bgr24 = SDL_PIXELFORMAT_BGR24,
+
+  rgb888 = SDL_PIXELFORMAT_RGB888,
+  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
+  bgr888 = SDL_PIXELFORMAT_BGR888,
+  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
+
+  argb8888 = SDL_PIXELFORMAT_ARGB8888,
+  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
+  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
+  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
+
+  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  rgba32 = SDL_PIXELFORMAT_RGBA8888,
+  argb32 = SDL_PIXELFORMAT_ARGB8888,
+  bgra32 = SDL_PIXELFORMAT_BGRA8888,
+  abgr32 = SDL_PIXELFORMAT_ABGR8888,
+#else
+  rgba32 = SDL_PIXELFORMAT_ABGR8888,
+  argb32 = SDL_PIXELFORMAT_BGRA8888,
+  bgra32 = SDL_PIXELFORMAT_ARGB8888,
+  abgr32 = SDL_PIXELFORMAT_RGBA8888,
+#endif
+
+  yv12 = SDL_PIXELFORMAT_YV12,
+  iyuv = SDL_PIXELFORMAT_IYUV,
+  yuy2 = SDL_PIXELFORMAT_YUY2,
+  uyvy = SDL_PIXELFORMAT_UYVY,
+  yvyu = SDL_PIXELFORMAT_YVYU,
+  nv12 = SDL_PIXELFORMAT_NV12,
+  nv21 = SDL_PIXELFORMAT_NV21,
+  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
+};
+
+/// \name Pixel format comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two pixel format values are the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values are the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
+
+/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two pixel format values aren't the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of pixel format comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_PIXEL_FORMAT_HEADER
+
+// #include "surface.hpp"
+#ifndef CENTURION_SURFACE_HEADER
+#define CENTURION_SURFACE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -83770,6 +83740,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 // #include "../core/not_null.hpp"
 
 // #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
 
 // #include "../core/to_underlying.hpp"
 #ifndef CENTURION_TO_UNDERLYING_HEADER
@@ -83805,16 +83777,120 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
+// #include "../detail/address_of.hpp"
+
 // #include "../detail/owner_handle_api.hpp"
+
+// #include "../math/area.hpp"
+
+// #include "../math/rect.hpp"
+
+// #include "blend_mode.hpp"
+#ifndef CENTURION_BLEND_MODE_HEADER
+#define CENTURION_BLEND_MODE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_mode
+ *
+ * \brief Provides values that represent various rendering blend modes.
+ *
+ * \since 3.0.0
+ *
+ * \see `SDL_BlendMode`
+ */
+enum class blend_mode
+{
+  none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
+  blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
+  add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
+  mod = SDL_BLENDMODE_MOD,      ///< Represents color modulation.
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  mul = SDL_BLENDMODE_MUL,  ///< Represents color multiplication.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
+};
+
+/// \name Blend mode comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend mode values are the same;
+ *
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendMode>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_mode, SDL_BlendMode)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend mode values aren't the same;
+ *
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_mode, SDL_BlendMode)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend mode comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_MODE_HEADER
 
 // #include "color.hpp"
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -83822,6 +83898,12 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -84033,6 +84115,81 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
 
 
 namespace cen {
@@ -84817,10 +84974,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -84855,27 +85020,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -85001,101 +85169,51 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #endif  // CENTURION_COLOR_HEADER
 
+// #include "pixel_format_info.hpp"
+#ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
+#define CENTURION_PIXEL_FORMAT_INFO_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/to_underlying.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "color.hpp"
+
+// #include "pixel_format.hpp"
+
 
 namespace cen {
 
 /// \addtogroup video
 /// \{
-
-/**
- * \enum pixel_format
- *
- * \brief Represents different pixel formats.
- *
- * \see `SDL_PixelFormatEnum`
- *
- * \since 3.1.0
- */
-enum class pixel_format : u32
-{
-  unknown = SDL_PIXELFORMAT_UNKNOWN,
-
-  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
-  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
-  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
-  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
-  index8 = SDL_PIXELFORMAT_INDEX8,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
-  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
-
-  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
-  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
-
-  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
-  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  rgb332 = SDL_PIXELFORMAT_RGB332,
-  rgb444 = SDL_PIXELFORMAT_RGB444,
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  bgr444 = SDL_PIXELFORMAT_BGR444,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-  rgb555 = SDL_PIXELFORMAT_RGB555,
-  bgr555 = SDL_PIXELFORMAT_BGR555,
-
-  argb4444 = SDL_PIXELFORMAT_ARGB4444,
-  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
-  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
-  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
-
-  argb1555 = SDL_PIXELFORMAT_ARGB1555,
-  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
-  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
-  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
-
-  rgb565 = SDL_PIXELFORMAT_RGB565,
-  bgr565 = SDL_PIXELFORMAT_BGR565,
-
-  rgb24 = SDL_PIXELFORMAT_RGB24,
-  bgr24 = SDL_PIXELFORMAT_BGR24,
-
-  rgb888 = SDL_PIXELFORMAT_RGB888,
-  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
-  bgr888 = SDL_PIXELFORMAT_BGR888,
-  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
-
-  argb8888 = SDL_PIXELFORMAT_ARGB8888,
-  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
-  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
-  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
-
-  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  rgba32 = SDL_PIXELFORMAT_RGBA8888,
-  argb32 = SDL_PIXELFORMAT_ARGB8888,
-  bgra32 = SDL_PIXELFORMAT_BGRA8888,
-  abgr32 = SDL_PIXELFORMAT_ABGR8888,
-#else
-  rgba32 = SDL_PIXELFORMAT_ABGR8888,
-  argb32 = SDL_PIXELFORMAT_BGRA8888,
-  bgra32 = SDL_PIXELFORMAT_ARGB8888,
-  abgr32 = SDL_PIXELFORMAT_RGBA8888,
-#endif
-
-  yv12 = SDL_PIXELFORMAT_YV12,
-  iyuv = SDL_PIXELFORMAT_IYUV,
-  yuy2 = SDL_PIXELFORMAT_YUY2,
-  uyvy = SDL_PIXELFORMAT_UYVY,
-  yvyu = SDL_PIXELFORMAT_YVYU,
-  nv12 = SDL_PIXELFORMAT_NV12,
-  nv21 = SDL_PIXELFORMAT_NV21,
-  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
-};
 
 template <typename B>
 class basic_pixel_format_info;
@@ -85123,16 +85241,13 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
+ * \ownerhandle `pixel_format_info`/ `pixel_format_info_handle`
  *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ * \see `pixel_format_info_handle`
+ * \see `SDL_PixelFormat`
+ * \see `SDL_PixelFormatEnum`
  *
  * \since 5.2.0
  */
@@ -85353,194 +85468,54 @@ class basic_pixel_format_info final
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
 
-/// \name Pixel format comparison operators
-/// \{
-
 /**
- * \brief Indicates whether or not the two pixel format values are the same.
+ * \brief Returns a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values are the same; `false` otherwise.
+ * \param info the pixel format info instance that will be converted.
  *
- * \since 3.1.0
+ * \return a string that represents the pixel format info.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return rhs == lhs;
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("pixel_format_info{{data: {}, name: {}}}",
+                     detail::address_of(info.get()),
+                     info.name());
+#else
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
- * \brief Indicates whether or not the two pixel format values aren't the same.
+ * \brief Prints a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ * \param stream the output stream that will be used.
+ * \param info the pixel format info that will be printed.
  *
- * \since 3.1.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
+    -> std::ostream&
 {
-  return !(lhs == rhs);
+  return stream << to_string(info);
 }
-
-/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of pixel format comparison operators
 
 /// \} End of group video
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXEL_FORMAT_HEADER
-// #include "surface.hpp"
-#ifndef CENTURION_SURFACE_HEADER
-#define CENTURION_SURFACE_HEADER
-
-#include <SDL.h>
-
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
-
-// #include "../core/czstring.hpp"
-
-// #include "../core/exception.hpp"
-
-// #include "../core/integers.hpp"
-
-// #include "../core/not_null.hpp"
-
-// #include "../core/owner.hpp"
-
-// #include "../core/result.hpp"
-
-// #include "../core/to_underlying.hpp"
-
-// #include "../detail/address_of.hpp"
-
-// #include "../detail/owner_handle_api.hpp"
-
-// #include "../math/area.hpp"
-
-// #include "../math/rect.hpp"
-
-// #include "blend_mode.hpp"
-#ifndef CENTURION_BLEND_MODE_HEADER
-#define CENTURION_BLEND_MODE_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup video
-/// \{
-
-/**
- * \enum blend_mode
- *
- * \brief Provides values that represent various rendering blend modes.
- *
- * \since 3.0.0
- *
- * \see `SDL_BlendMode`
- */
-enum class blend_mode
-{
-  none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
-  blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
-  add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
-  mod = SDL_BLENDMODE_MOD,      ///< Represents color modulation.
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-  mul = SDL_BLENDMODE_MUL,  ///< Represents color multiplication.
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-  invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
-};
-
-/// \name Blend mode comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two blend mode values are the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
-{
-  return static_cast<SDL_BlendMode>(lhs) == rhs;
-}
-
-/// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two blend mode values aren't the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of blend mode comparison operators
-
-/// \} End of group video
-
-}  // namespace cen
-
-#endif  // CENTURION_BLEND_MODE_HEADER
-
-// #include "color.hpp"
-
-// #include "pixel_format.hpp"
+#endif  // CENTURION_PIXEL_FORMAT_INFO_HEADER
 
 
 namespace cen {
@@ -85574,14 +85549,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
@@ -86408,9 +86383,16 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -86426,8 +86408,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
 /// \}
@@ -86467,6 +86448,8 @@ using window_handle = basic_window<detail::handle_type>;
  * \class basic_window
  *
  * \brief Represents an operating system window.
+ *
+ * \ownerhandle `window`/`window_handle`
  *
  * \since 5.0.0
  *
@@ -87718,9 +87701,16 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -87765,7 +87755,7 @@ using context_handle = basic_context<detail::handle_type>;
  *
  * \brief Represents an OpenGL context.
  *
- * \tparam T `owning_type` for owning semantics; `handle_type` for non-owning semantics.
+ * \ownerhandle `context`/`context_handle`
  *
  * \since 6.0.0
  */
@@ -88013,9 +88003,64 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -88105,13 +88150,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -88218,6 +88270,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -88252,6 +88306,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -88268,8 +88324,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -88299,6 +88359,11 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -88308,6 +88373,12 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -88331,12 +88402,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -88697,14 +88779,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -88822,26 +88912,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -88857,7 +88937,7 @@ template <typename T>
 
 // #include "color.hpp"
 
-// #include "pixel_format.hpp"
+// #include "pixel_format_info.hpp"
 
 // #include "scale_mode.hpp"
 #ifndef CENTURION_SCALE_MODE_HEADER
@@ -89048,6 +89128,8 @@ using texture_handle = basic_texture<detail::handle_type>;
  *
  * \brief Represents an hardware-accelerated image, intended to be rendered using the
  * `basic_renderer` class.
+ *
+ * \ownerhandle `texture`/`texture_handle`
  *
  * \since 3.0.0
  *
@@ -89659,9 +89741,16 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("texture{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(texture.get()),
+                     texture.width(),
+                     texture.height());
+#else
   return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -89792,7 +89881,7 @@ using context_handle = basic_context<detail::handle_type>;
  *
  * \brief Represents an OpenGL context.
  *
- * \tparam T `owning_type` for owning semantics; `handle_type` for non-owning semantics.
+ * \ownerhandle `context`/`context_handle`
  *
  * \since 6.0.0
  */
@@ -90172,6 +90261,55 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 
 #ifndef CENTURION_NO_OPENGL
 
+// clang-format off
+// #include "../../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -90209,7 +90347,7 @@ class gl_library final
    *
    * \since 6.0.0
    */
-  explicit gl_library(const czstring path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit gl_library(const czstring path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1)
     {
@@ -90268,12 +90406,23 @@ class gl_library final
 #ifndef CENTURION_PALETTE_HEADER
 #define CENTURION_PALETTE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/exception.hpp"
 
@@ -90486,8 +90635,14 @@ class palette final
  */
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("palette{{data: {}, size: {}}}",
+                     detail::address_of(palette.get()),
+                     palette.size());
+#else
   return "palette{data: " + detail::address_of(palette.get()) +
          ", size: " + std::to_string(palette.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -90517,21 +90672,7 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 #include <SDL.h>
 
-// #include "../core/czstring.hpp"
-
-// #include "../core/exception.hpp"
-
 // #include "../core/integers.hpp"
-
-// #include "../core/not_null.hpp"
-
-// #include "../core/owner.hpp"
-
-// #include "../core/to_underlying.hpp"
-
-// #include "../detail/owner_handle_api.hpp"
-
-// #include "color.hpp"
 
 
 namespace cen {
@@ -90629,6 +90770,109 @@ enum class pixel_format : u32
   external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
 };
 
+/// \name Pixel format comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two pixel format values are the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values are the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
+
+/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two pixel format values aren't the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of pixel format comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_PIXEL_FORMAT_HEADER
+
+// #include "centurion/video/pixel_format_info.hpp"
+#ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
+#define CENTURION_PIXEL_FORMAT_INFO_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/to_underlying.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "color.hpp"
+
+// #include "pixel_format.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
 template <typename B>
 class basic_pixel_format_info;
 
@@ -90655,16 +90899,13 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
+ * \ownerhandle `pixel_format_info`/ `pixel_format_info_handle`
  *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ * \see `pixel_format_info_handle`
+ * \see `SDL_PixelFormat`
+ * \see `SDL_PixelFormatEnum`
  *
  * \since 5.2.0
  */
@@ -90885,65 +91126,63 @@ class basic_pixel_format_info final
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
 
-/// \name Pixel format comparison operators
-/// \{
-
 /**
- * \brief Indicates whether or not the two pixel format values are the same.
+ * \brief Returns a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values are the same; `false` otherwise.
+ * \param info the pixel format info instance that will be converted.
  *
- * \since 3.1.0
+ * \return a string that represents the pixel format info.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return rhs == lhs;
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("pixel_format_info{{data: {}, name: {}}}",
+                     detail::address_of(info.get()),
+                     info.name());
+#else
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
- * \brief Indicates whether or not the two pixel format values aren't the same.
+ * \brief Prints a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ * \param stream the output stream that will be used.
+ * \param info the pixel format info that will be printed.
  *
- * \since 3.1.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
+    -> std::ostream&
 {
-  return !(lhs == rhs);
+  return stream << to_string(info);
 }
-
-/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of pixel format comparison operators
 
 /// \} End of group video
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXEL_FORMAT_HEADER
+#endif  // CENTURION_PIXEL_FORMAT_INFO_HEADER
+
 // #include "centurion/video/renderer.hpp"
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -90956,6 +91195,12 @@ class basic_pixel_format_info final
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -91840,6 +92085,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
  *
+ * \ownerhandle `renderer`/`renderer_handle`
+ *
  * \details Rendering primitives such as points, rectangles, lines and circles are
  * supported. The owning version of this class, `renderer`, features an extended API
  * compared to its non-owning counterpart, with support for font handling and translated
@@ -94001,7 +94248,11 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
+#else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -94020,12 +94271,23 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #ifndef CENTURION_RENDERER_INFO_HEADER
 #define CENTURION_RENDERER_INFO_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -94041,6 +94303,11 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -94052,6 +94319,12 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -94119,6 +94392,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
  *
+ * \ownerhandle `renderer`/`renderer_handle`
+ *
  * \details Rendering primitives such as points, rectangles, lines and circles are
  * supported. The owning version of this class, `renderer`, features an extended API
  * compared to its non-owning counterpart, with support for font handling and translated
@@ -96280,7 +96555,11 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
+#else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -96481,8 +96760,12 @@ class renderer_info final
  */
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer_info{{name: {}}}", str_or_na(info.name()));
+#else
   using namespace std::string_literals;
   return "renderer_info{name: "s + str_or_na(info.name()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -97071,6 +97354,11 @@ namespace cen::screen {
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -97080,6 +97368,12 @@ namespace cen::screen {
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -97107,7 +97401,7 @@ namespace cen::screen {
 
 // #include "color.hpp"
 
-// #include "pixel_format.hpp"
+// #include "pixel_format_info.hpp"
 
 
 namespace cen {
@@ -97141,14 +97435,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
@@ -97975,9 +98269,16 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -97993,8 +98294,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
 /// \}
@@ -98003,9 +98303,108 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 #endif  // CENTURION_SURFACE_HEADER
 
+// #include "centurion/video/system_cursor.hpp"
+#ifndef CENTURION_SYSTEM_CURSOR_HEADER
+#define CENTURION_SYSTEM_CURSOR_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum system_cursor
+ *
+ * \brief Represents the various available system cursors.
+ *
+ * \since 4.0.0
+ *
+ * \see `SDL_SystemCursor`
+ */
+enum class system_cursor
+{
+  arrow = SDL_SYSTEM_CURSOR_ARROW,
+  ibeam = SDL_SYSTEM_CURSOR_IBEAM,
+  wait = SDL_SYSTEM_CURSOR_WAIT,
+  crosshair = SDL_SYSTEM_CURSOR_CROSSHAIR,
+  wait_arrow = SDL_SYSTEM_CURSOR_WAITARROW,
+  arrow_nw_se = SDL_SYSTEM_CURSOR_SIZENWSE,
+  arrow_ne_sw = SDL_SYSTEM_CURSOR_SIZENESW,
+  arrow_w_e = SDL_SYSTEM_CURSOR_SIZEWE,
+  arrow_n_s = SDL_SYSTEM_CURSOR_SIZENS,
+  arrow_all = SDL_SYSTEM_CURSOR_SIZEALL,
+  no = SDL_SYSTEM_CURSOR_NO,
+  hand = SDL_SYSTEM_CURSOR_HAND
+};
+
+/// \name System cursor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two system cursor values are the same.
+ *
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
+ *
+ * \return `true` if the system cursor values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept -> bool
+{
+  return static_cast<SDL_SystemCursor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(system_cursor, SDL_SystemCursor)
+[[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two system cursor values aren't the same.
+ *
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
+ *
+ * \return `true` if the system cursor values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(system_cursor, SDL_SystemCursor)
+[[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of system cursor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_SYSTEM_CURSOR_HEADER
+
 // #include "centurion/video/texture.hpp"
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
 
 #include <SDL.h>
 
@@ -98016,6 +98415,12 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -98041,7 +98446,7 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 // #include "color.hpp"
 
-// #include "pixel_format.hpp"
+// #include "pixel_format_info.hpp"
 
 // #include "scale_mode.hpp"
 
@@ -98066,6 +98471,8 @@ using texture_handle = basic_texture<detail::handle_type>;
  *
  * \brief Represents an hardware-accelerated image, intended to be rendered using the
  * `basic_renderer` class.
+ *
+ * \ownerhandle `texture`/`texture_handle`
  *
  * \since 3.0.0
  *
@@ -98677,9 +99084,16 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("texture{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(texture.get()),
+                     texture.width(),
+                     texture.height());
+#else
   return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -99677,12 +100091,67 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 #ifndef CENTURION_CZSTRING_HEADER
@@ -101143,9 +101612,64 @@ class pointer_manager final
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -101235,13 +101759,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -101348,6 +101879,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -101382,6 +101915,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -101398,8 +101933,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -101429,11 +101968,22 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -101513,9 +102063,20 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -101572,13 +102133,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -101685,6 +102253,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -101719,6 +102289,8 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
 
 /**
@@ -101735,8 +102307,12 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -101766,12 +102342,23 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/cast.hpp"
 
@@ -102132,14 +102719,22 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 template <typename T>
@@ -102257,26 +102852,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -103122,9 +103707,17 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
+                     rect.x(),
+                     rect.y(),
+                     rect.width(),
+                     rect.height());
+#else
   return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
          ", width: " + std::to_string(rect.width()) +
          ", height: " + std::to_string(rect.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -103142,8 +103735,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
-  stream << to_string(rect);
-  return stream;
+  return stream << to_string(rect);
 }
 
 /// \} End of group math
@@ -103157,6 +103749,186 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
+// #include "../core/integers.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum pixel_format
+ *
+ * \brief Represents different pixel formats.
+ *
+ * \see `SDL_PixelFormatEnum`
+ *
+ * \since 3.1.0
+ */
+enum class pixel_format : u32
+{
+  unknown = SDL_PIXELFORMAT_UNKNOWN,
+
+  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
+  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
+  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
+  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
+  index8 = SDL_PIXELFORMAT_INDEX8,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
+  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
+
+  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
+  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
+
+  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
+  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  rgb332 = SDL_PIXELFORMAT_RGB332,
+  rgb444 = SDL_PIXELFORMAT_RGB444,
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+  bgr444 = SDL_PIXELFORMAT_BGR444,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  rgb555 = SDL_PIXELFORMAT_RGB555,
+  bgr555 = SDL_PIXELFORMAT_BGR555,
+
+  argb4444 = SDL_PIXELFORMAT_ARGB4444,
+  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
+  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
+  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
+
+  argb1555 = SDL_PIXELFORMAT_ARGB1555,
+  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
+  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
+  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
+
+  rgb565 = SDL_PIXELFORMAT_RGB565,
+  bgr565 = SDL_PIXELFORMAT_BGR565,
+
+  rgb24 = SDL_PIXELFORMAT_RGB24,
+  bgr24 = SDL_PIXELFORMAT_BGR24,
+
+  rgb888 = SDL_PIXELFORMAT_RGB888,
+  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
+  bgr888 = SDL_PIXELFORMAT_BGR888,
+  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
+
+  argb8888 = SDL_PIXELFORMAT_ARGB8888,
+  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
+  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
+  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
+
+  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  rgba32 = SDL_PIXELFORMAT_RGBA8888,
+  argb32 = SDL_PIXELFORMAT_ARGB8888,
+  bgra32 = SDL_PIXELFORMAT_BGRA8888,
+  abgr32 = SDL_PIXELFORMAT_ABGR8888,
+#else
+  rgba32 = SDL_PIXELFORMAT_ABGR8888,
+  argb32 = SDL_PIXELFORMAT_BGRA8888,
+  bgra32 = SDL_PIXELFORMAT_ARGB8888,
+  abgr32 = SDL_PIXELFORMAT_RGBA8888,
+#endif
+
+  yv12 = SDL_PIXELFORMAT_YV12,
+  iyuv = SDL_PIXELFORMAT_IYUV,
+  yuy2 = SDL_PIXELFORMAT_YUY2,
+  uyvy = SDL_PIXELFORMAT_UYVY,
+  yvyu = SDL_PIXELFORMAT_YVYU,
+  nv12 = SDL_PIXELFORMAT_NV12,
+  nv21 = SDL_PIXELFORMAT_NV21,
+  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
+};
+
+/// \name Pixel format comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not the two pixel format values are the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values are the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
+
+/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the two pixel format values aren't the same.
+ *
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
+ *
+ * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ *
+ * \since 3.1.0
+ */
+[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
+                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
+[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
+                                        const pixel_format rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of pixel format comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_PIXEL_FORMAT_HEADER
+
+// #include "surface.hpp"
+#ifndef CENTURION_SURFACE_HEADER
+#define CENTURION_SURFACE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+#ifndef CENTURION_NO_SDL_IMAGE
+#include <SDL_image.h>
+#endif  // CENTURION_NO_SDL_IMAGE
+
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 // #include "../core/czstring.hpp"
 
 // #include "../core/exception.hpp"
@@ -103166,6 +103938,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 // #include "../core/not_null.hpp"
 
 // #include "../core/owner.hpp"
+
+// #include "../core/result.hpp"
 
 // #include "../core/to_underlying.hpp"
 #ifndef CENTURION_TO_UNDERLYING_HEADER
@@ -103201,16 +103975,120 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
+// #include "../detail/address_of.hpp"
+
 // #include "../detail/owner_handle_api.hpp"
+
+// #include "../math/area.hpp"
+
+// #include "../math/rect.hpp"
+
+// #include "blend_mode.hpp"
+#ifndef CENTURION_BLEND_MODE_HEADER
+#define CENTURION_BLEND_MODE_HEADER
+
+#include <SDL.h>
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_mode
+ *
+ * \brief Provides values that represent various rendering blend modes.
+ *
+ * \since 3.0.0
+ *
+ * \see `SDL_BlendMode`
+ */
+enum class blend_mode
+{
+  none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
+  blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
+  add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
+  mod = SDL_BLENDMODE_MOD,      ///< Represents color modulation.
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  mul = SDL_BLENDMODE_MUL,  ///< Represents color multiplication.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
+};
+
+/// \name Blend mode comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend mode values are the same;
+ *
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendMode>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_mode, SDL_BlendMode)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend mode values aren't the same;
+ *
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
+                                        const SDL_BlendMode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_mode, SDL_BlendMode)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
+                                        const blend_mode rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend mode comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_MODE_HEADER
 
 // #include "color.hpp"
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -103218,6 +104096,12 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../compiler/compiler.hpp"
 #ifndef CENTURION_COMPILER_HEADER
@@ -103429,6 +104313,81 @@ template <typename T>
 /// \endcond
 
 #endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "../detail/lerp.hpp"
+#ifndef CENTURION_DETAIL_LERP_HEADER
+#define CENTURION_DETAIL_LERP_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
+
+#include <cmath>  // lerp
+
+/// \cond FALSE
+
+namespace cen::detail {
+
+[[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
+    -> float
+{
+#ifdef CENTURION_HAS_FEATURE_LERP
+  return std::lerp(a, b, bias);
+#else
+  return (a * (1.0f - bias)) + (b * bias);
+#endif  // CENTURION_HAS_FEATURE_LERP
+}
+
+}  // namespace cen::detail
+
+/// \endcond
+
+#endif  // CENTURION_DETAIL_LERP_HEADER
 
 
 namespace cen {
@@ -104213,10 +105172,18 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -104251,27 +105218,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators
@@ -104397,101 +105367,51 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #endif  // CENTURION_COLOR_HEADER
 
+// #include "pixel_format_info.hpp"
+#ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
+#define CENTURION_PIXEL_FORMAT_INFO_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#include <SDL.h>
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "../core/czstring.hpp"
+
+// #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/owner.hpp"
+
+// #include "../core/to_underlying.hpp"
+
+// #include "../detail/address_of.hpp"
+
+// #include "../detail/owner_handle_api.hpp"
+
+// #include "color.hpp"
+
+// #include "pixel_format.hpp"
+
 
 namespace cen {
 
 /// \addtogroup video
 /// \{
-
-/**
- * \enum pixel_format
- *
- * \brief Represents different pixel formats.
- *
- * \see `SDL_PixelFormatEnum`
- *
- * \since 3.1.0
- */
-enum class pixel_format : u32
-{
-  unknown = SDL_PIXELFORMAT_UNKNOWN,
-
-  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
-  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
-  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
-  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
-  index8 = SDL_PIXELFORMAT_INDEX8,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-  xrgb4444 = SDL_PIXELFORMAT_XRGB4444,
-  xbgr4444 = SDL_PIXELFORMAT_XBGR4444,
-
-  xrgb1555 = SDL_PIXELFORMAT_XRGB1555,
-  xbgr1555 = SDL_PIXELFORMAT_XBGR1555,
-
-  xrgb8888 = SDL_PIXELFORMAT_XRGB8888,
-  xbgr8888 = SDL_PIXELFORMAT_XBGR8888,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  rgb332 = SDL_PIXELFORMAT_RGB332,
-  rgb444 = SDL_PIXELFORMAT_RGB444,
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  bgr444 = SDL_PIXELFORMAT_BGR444,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-  rgb555 = SDL_PIXELFORMAT_RGB555,
-  bgr555 = SDL_PIXELFORMAT_BGR555,
-
-  argb4444 = SDL_PIXELFORMAT_ARGB4444,
-  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
-  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
-  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
-
-  argb1555 = SDL_PIXELFORMAT_ARGB1555,
-  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
-  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
-  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
-
-  rgb565 = SDL_PIXELFORMAT_RGB565,
-  bgr565 = SDL_PIXELFORMAT_BGR565,
-
-  rgb24 = SDL_PIXELFORMAT_RGB24,
-  bgr24 = SDL_PIXELFORMAT_BGR24,
-
-  rgb888 = SDL_PIXELFORMAT_RGB888,
-  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
-  bgr888 = SDL_PIXELFORMAT_BGR888,
-  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
-
-  argb8888 = SDL_PIXELFORMAT_ARGB8888,
-  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
-  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
-  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
-
-  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  rgba32 = SDL_PIXELFORMAT_RGBA8888,
-  argb32 = SDL_PIXELFORMAT_ARGB8888,
-  bgra32 = SDL_PIXELFORMAT_BGRA8888,
-  abgr32 = SDL_PIXELFORMAT_ABGR8888,
-#else
-  rgba32 = SDL_PIXELFORMAT_ABGR8888,
-  argb32 = SDL_PIXELFORMAT_BGRA8888,
-  bgra32 = SDL_PIXELFORMAT_ARGB8888,
-  abgr32 = SDL_PIXELFORMAT_RGBA8888,
-#endif
-
-  yv12 = SDL_PIXELFORMAT_YV12,
-  iyuv = SDL_PIXELFORMAT_IYUV,
-  yuy2 = SDL_PIXELFORMAT_YUY2,
-  uyvy = SDL_PIXELFORMAT_UYVY,
-  yvyu = SDL_PIXELFORMAT_YVYU,
-  nv12 = SDL_PIXELFORMAT_NV12,
-  nv21 = SDL_PIXELFORMAT_NV21,
-  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
-};
 
 template <typename B>
 class basic_pixel_format_info;
@@ -104519,16 +105439,13 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
+ * \ownerhandle `pixel_format_info`/ `pixel_format_info_handle`
  *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ * \see `pixel_format_info_handle`
+ * \see `SDL_PixelFormat`
+ * \see `SDL_PixelFormatEnum`
  *
  * \since 5.2.0
  */
@@ -104749,194 +105666,54 @@ class basic_pixel_format_info final
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
 
-/// \name Pixel format comparison operators
-/// \{
-
 /**
- * \brief Indicates whether or not the two pixel format values are the same.
+ * \brief Returns a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values are the same; `false` otherwise.
+ * \param info the pixel format info instance that will be converted.
  *
- * \since 3.1.0
+ * \return a string that represents the pixel format info.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+[[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-/// \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator==(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return rhs == lhs;
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("pixel_format_info{{data: {}, name: {}}}",
+                     detail::address_of(info.get()),
+                     info.name());
+#else
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
- * \brief Indicates whether or not the two pixel format values aren't the same.
+ * \brief Prints a textual representation of a pixel format info instance.
  *
- * \param lhs the left-hand side pixel format value.
- * \param rhs the right-hand side pixel format value.
+ * \tparam T the ownership semantics tag.
  *
- * \return `true` if the pixel format values aren't the same; `false` otherwise.
+ * \param stream the output stream that will be used.
+ * \param info the pixel format info that will be printed.
  *
- * \since 3.1.0
+ * \return the used stream.
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const pixel_format lhs,
-                                        const SDL_PixelFormatEnum rhs) noexcept -> bool
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
+    -> std::ostream&
 {
-  return !(lhs == rhs);
+  return stream << to_string(info);
 }
-
-/// \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
-[[nodiscard]] constexpr auto operator!=(const SDL_PixelFormatEnum lhs,
-                                        const pixel_format rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of pixel format comparison operators
 
 /// \} End of group video
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXEL_FORMAT_HEADER
-// #include "surface.hpp"
-#ifndef CENTURION_SURFACE_HEADER
-#define CENTURION_SURFACE_HEADER
-
-#include <SDL.h>
-
-#ifndef CENTURION_NO_SDL_IMAGE
-#include <SDL_image.h>
-#endif  // CENTURION_NO_SDL_IMAGE
-
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
-
-// #include "../core/czstring.hpp"
-
-// #include "../core/exception.hpp"
-
-// #include "../core/integers.hpp"
-
-// #include "../core/not_null.hpp"
-
-// #include "../core/owner.hpp"
-
-// #include "../core/result.hpp"
-
-// #include "../core/to_underlying.hpp"
-
-// #include "../detail/address_of.hpp"
-
-// #include "../detail/owner_handle_api.hpp"
-
-// #include "../math/area.hpp"
-
-// #include "../math/rect.hpp"
-
-// #include "blend_mode.hpp"
-#ifndef CENTURION_BLEND_MODE_HEADER
-#define CENTURION_BLEND_MODE_HEADER
-
-#include <SDL.h>
-
-namespace cen {
-
-/// \addtogroup video
-/// \{
-
-/**
- * \enum blend_mode
- *
- * \brief Provides values that represent various rendering blend modes.
- *
- * \since 3.0.0
- *
- * \see `SDL_BlendMode`
- */
-enum class blend_mode
-{
-  none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
-  blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
-  add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
-  mod = SDL_BLENDMODE_MOD,      ///< Represents color modulation.
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-  mul = SDL_BLENDMODE_MUL,  ///< Represents color multiplication.
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-  invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
-};
-
-/// \name Blend mode comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two blend mode values are the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
-{
-  return static_cast<SDL_BlendMode>(lhs) == rhs;
-}
-
-/// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two blend mode values aren't the same;
- *
- * \param lhs the left-hand side blend mode value.
- * \param rhs the right-hand side blend mode value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of blend mode comparison operators
-
-/// \} End of group video
-
-}  // namespace cen
-
-#endif  // CENTURION_BLEND_MODE_HEADER
-
-// #include "color.hpp"
-
-// #include "pixel_format.hpp"
+#endif  // CENTURION_PIXEL_FORMAT_INFO_HEADER
 
 
 namespace cen {
@@ -104970,14 +105747,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
@@ -105804,9 +106581,16 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -105822,8 +106606,7 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
 /// \}
@@ -105863,6 +106646,8 @@ using window_handle = basic_window<detail::handle_type>;
  * \class basic_window
  *
  * \brief Represents an operating system window.
+ *
+ * \ownerhandle `window`/`window_handle`
  *
  * \since 5.0.0
  *
@@ -107114,9 +107899,16 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**
@@ -107252,6 +108044,55 @@ template <typename T>
 #define CENTURION_VK_LIBRARY_HEADER
 
 #ifndef CENTURION_NO_VULKAN
+
+// clang-format off
+// #include "../../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP
+#endif  // __cpp_lib_three_way_comparison
+
+#endif  // __has_include
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// clang-format on
 
 #include <SDL.h>
 #include <SDL_vulkan.h>
@@ -107517,7 +108358,7 @@ class vk_library final
    * \param path optional file path to a Vulkan library; a null path indicates that the
    * default library will be used.
    */
-  explicit vk_library(const czstring path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit vk_library(const czstring path = nullptr)
   {
     if (SDL_Vulkan_LoadLibrary(path) == -1)
     {
@@ -107548,12 +108389,23 @@ class vk_library final
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 // #include "../core/czstring.hpp"
 
@@ -107616,6 +108468,8 @@ using window_handle = basic_window<detail::handle_type>;
  * \class basic_window
  *
  * \brief Represents an operating system window.
+ *
+ * \ownerhandle `window`/`window_handle`
  *
  * \since 5.0.0
  *
@@ -108867,9 +109721,16 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

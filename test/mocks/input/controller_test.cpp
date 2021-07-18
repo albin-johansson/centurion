@@ -408,6 +408,11 @@ TEST_F(ControllerTest, IsPolling)
   ASSERT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
 }
 
+TEST_F(ControllerTest, ToString)
+{
+  std::cout << m_controller << '\n';
+}
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST_F(ControllerTest, SetPlayerIndex)

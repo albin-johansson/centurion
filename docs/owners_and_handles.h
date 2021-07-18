@@ -10,6 +10,8 @@
  * `window_handle` from a raw pointer to a `SDL_Window` which won't manage the lifetime of
  * the supplied pointer at all.
  *
+ * You can always create handles from owners, but you can't create owners from handles.
+ *
  * \section terminology Terminology
  *
  * * **Owner**: A version of a class with owning semantics, i.e. it manages the lifetime

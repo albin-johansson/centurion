@@ -1,10 +1,22 @@
 #ifndef CENTURION_KEYBOARD_HEADER
 #define CENTURION_KEYBOARD_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <algorithm>  // copy
 #include <array>      // array
+#include <ostream>    // ostream
+#include <string>     // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../compiler/compiler.hpp"
 #include "../core/integers.hpp"
@@ -253,6 +265,39 @@ class keyboard final
     }
   }
 };
+
+/**
+ * \brief Returns a textual representation of a keyboard.
+ *
+ * \param keyboard the keyboard instance that will be converted.
+ *
+ * \return a string that represents the keyboard.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const keyboard& keyboard) -> std::string
+{
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("keyboard{{#keys: {}}}", keyboard.key_count());
+#else
+  return "keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/**
+ * \brief Prints a textual representation of a keyboard.
+ *
+ * \param stream the output stream that will be used.
+ * \param keyboard the keyboard that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::ostream&
+{
+  return stream << to_string(keyboard);
+}
 
 /**
  * \typedef key_state

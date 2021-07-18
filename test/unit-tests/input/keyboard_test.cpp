@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>
 #include <type_traits>
 
 static_assert(std::is_final_v<cen::keyboard>);
@@ -81,6 +82,16 @@ TEST(Keyboard, IsActive)
 
 TEST(Keyboard, KeyCount)
 {
-  cen::keyboard state;
-  ASSERT_EQ(static_cast<int>(SDL_NUM_SCANCODES), state.key_count());
+  cen::keyboard keyboard;
+  ASSERT_EQ(static_cast<int>(SDL_NUM_SCANCODES), keyboard.key_count());
+}
+
+TEST(Keyboard, ToString)
+{
+  cen::keyboard keyboard;
+
+  ASSERT_EQ("keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}",
+            cen::to_string(keyboard));
+
+  std::cout << keyboard;
 }

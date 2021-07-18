@@ -19,50 +19,16 @@
 #include "../core/integers.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/stack_resource.hpp"
+#include "button_order.hpp"
 #include "color.hpp"
 #include "colors.hpp"
+#include "message_box_type.hpp"
 #include "window.hpp"
 
 namespace cen {
 
 /// \addtogroup video
 /// \{
-
-/**
- * \enum message_box_type
- *
- * \brief Serves as a hint of the purpose of a message box. Message boxes can indicate
- * errors, warnings and general information.
- *
- * \since 5.0.0
- */
-enum class message_box_type : u32
-{
-  error = SDL_MESSAGEBOX_ERROR,
-  warning = SDL_MESSAGEBOX_WARNING,
-  information = SDL_MESSAGEBOX_INFORMATION
-};
-
-/**
- * \enum button_order
- *
- * \brief Provides hints for how the buttons in a message box should be aligned, either
- * left-to-right or right-to-left.
- *
- * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10.
- *
- * \since 4.0.0
- */
-enum class button_order : u32
-{
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
-#else
-  left_to_right,
-  right_to_left
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-};
 
 /**
  * \class message_box

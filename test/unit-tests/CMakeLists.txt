@@ -107,12 +107,14 @@ set(SOURCE_FILES
     video/gl/gl_core_test.cpp
 
     video/blend_mode_test.cpp
+    video/button_order_test.cpp
     video/color_test.cpp
     video/cursor_test.cpp
     video/font_cache_test.cpp
     video/font_test.cpp
     video/graphics_drivers_test.cpp
     video/message_box_test.cpp
+    video/message_box_type_test.cpp
     video/palette_test.cpp
     video/pixel_format_test.cpp
     video/renderer_test.cpp

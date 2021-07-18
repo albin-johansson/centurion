@@ -4,6 +4,7 @@
 
 #include <type_traits>
 
+#include "core/to_underlying.hpp"
 #include "video/colors.hpp"
 
 static_assert(std::is_final_v<cen::message_box>);
@@ -109,26 +110,17 @@ TEST(MessageBox, GetButtonOrder)
   ASSERT_EQ(cen::button_order::left_to_right, mb.get_button_order());
 }
 
-TEST(MessageBox, TypeEnum)
-{
-  using type = cen::message_box_type;
-  ASSERT_EQ(SDL_MESSAGEBOX_INFORMATION, static_cast<int>(type::information));
-  ASSERT_EQ(SDL_MESSAGEBOX_WARNING, static_cast<int>(type::warning));
-  ASSERT_EQ(SDL_MESSAGEBOX_ERROR, static_cast<int>(type::error));
-}
-
 TEST(MessageBox, ColorSchemeClass)
 {
   {  // Defaults
     cen::message_box::color_scheme scheme;
     const auto* ptr = scheme.get();
 
-    using cen::colors::white;
-    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]);
-    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_TEXT]);
-    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]);
-    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]);
-    ASSERT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]);
+    ASSERT_EQ(cen::colors::white, ptr->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]);
+    ASSERT_EQ(cen::colors::white, ptr->colors[SDL_MESSAGEBOX_COLOR_TEXT]);
+    ASSERT_EQ(cen::colors::white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]);
+    ASSERT_EQ(cen::colors::white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]);
+    ASSERT_EQ(cen::colors::white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]);
   }
 
   {  // Custom scheme
@@ -136,7 +128,7 @@ TEST(MessageBox, ColorSchemeClass)
 
     const auto check = [&](cen::message_box::color_id id, const cen::color& color) {
       scheme.set_color(id, color);
-      ASSERT_EQ(color, scheme.get()->colors[static_cast<cen::u32>(id)]);
+      ASSERT_EQ(color, scheme.get()->colors[cen::to_underlying(id)]);
     };
 
     check(cen::message_box::color_id::background, cen::colors::pink);
@@ -177,15 +169,3 @@ TEST(MessageBox, ColorIdEnum)
   ASSERT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
   ASSERT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
 }
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-TEST(MessageBox, ButtonOrderEnum)
-{
-  ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-            static_cast<cen::u32>(cen::button_order::left_to_right));
-  ASSERT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
-            static_cast<cen::u32>(cen::button_order::right_to_left));
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

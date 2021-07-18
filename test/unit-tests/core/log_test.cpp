@@ -59,29 +59,6 @@ TEST(Log, Priority)
   cen::log::reset_priorities();
 }
 
-TEST(Log, PriorityEqualityOperator)
-{
-  ASSERT_EQ(cen::log_priority::info, SDL_LOG_PRIORITY_INFO);
-  ASSERT_EQ(cen::log_priority::warn, SDL_LOG_PRIORITY_WARN);
-  ASSERT_EQ(cen::log_priority::debug, SDL_LOG_PRIORITY_DEBUG);
-  ASSERT_EQ(cen::log_priority::verbose, SDL_LOG_PRIORITY_VERBOSE);
-  ASSERT_EQ(cen::log_priority::critical, SDL_LOG_PRIORITY_CRITICAL);
-  ASSERT_EQ(cen::log_priority::error, SDL_LOG_PRIORITY_ERROR);
-
-  ASSERT_EQ(SDL_LOG_PRIORITY_INFO, cen::log_priority::info);
-  ASSERT_EQ(SDL_LOG_PRIORITY_WARN, cen::log_priority::warn);
-  ASSERT_EQ(SDL_LOG_PRIORITY_DEBUG, cen::log_priority::debug);
-  ASSERT_EQ(SDL_LOG_PRIORITY_VERBOSE, cen::log_priority::verbose);
-  ASSERT_EQ(SDL_LOG_PRIORITY_CRITICAL, cen::log_priority::critical);
-  ASSERT_EQ(SDL_LOG_PRIORITY_ERROR, cen::log_priority::error);
-}
-
-TEST(Log, PriorityInequalityOperator)
-{
-  ASSERT_NE(cen::log_priority::info, SDL_LOG_PRIORITY_DEBUG);
-  ASSERT_NE(SDL_LOG_PRIORITY_VERBOSE, cen::log_priority::critical);
-}
-
 TEST(Log, CategoryEqualityOperator)
 {
   ASSERT_EQ(cen::log_category::app, SDL_LOG_CATEGORY_APPLICATION);

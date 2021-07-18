@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "exception.hpp"
+
 namespace cen {
 
 /// \addtogroup core
@@ -26,6 +31,64 @@ enum class log_priority : int
   error = SDL_LOG_PRIORITY_ERROR,
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
+
+/**
+ * \brief Returns a textual version of the supplied log priority.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_priority::debug) == "debug"`.
+ *
+ * \param priority the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+{
+  switch (priority)
+  {
+    case log_priority::verbose:
+      return "verbose";
+
+    case log_priority::debug:
+      return "debug";
+
+    case log_priority::info:
+      return "info";
+
+    case log_priority::warn:
+      return "warn";
+
+    case log_priority::error:
+      return "error";
+
+    case log_priority::critical:
+      return "critical";
+
+    default:
+      throw cen_error{"Did not recognize log priority!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log priority enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_priority)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_priority priority) -> std::ostream&
+{
+  return stream << to_string(priority);
+}
 
 /// \name Log priority comparison operators
 /// \{

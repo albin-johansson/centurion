@@ -1,12 +1,22 @@
 #ifndef CENTURION_RENDERER_INFO_HEADER
 #define CENTURION_RENDERER_INFO_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -200,8 +210,12 @@ class renderer_info final
  */
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer_info{{name: {}}}", str_or_na(info.name()));
+#else
   using namespace std::string_literals;
   return "renderer_info{name: "s + str_or_na(info.name()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

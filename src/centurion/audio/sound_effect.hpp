@@ -63,6 +63,8 @@ using sound_effect_handle = basic_sound_effect<detail::handle_type>;
  *
  * \brief Represents a sound effect.
  *
+ * \ownerhandle `sound_effect`/`sound_effect_handle`
+ *
  * \details Unlike with the music API, multiple sound effects can be played at the same
  * time, which is the main difference between the `music` and `sound_effect` APIs.
  *

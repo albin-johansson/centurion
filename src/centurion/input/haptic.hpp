@@ -1445,6 +1445,8 @@ using haptic_handle = basic_haptic<detail::handle_type>;
  *
  * \brief Represents a haptic (force feedback) device.
  *
+ * \ownerhandle `haptic`/`haptic_handle`
+ *
  * \see `haptic`
  * \see `haptic_handle`
  *

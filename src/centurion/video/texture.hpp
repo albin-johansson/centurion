@@ -55,6 +55,8 @@ using texture_handle = basic_texture<detail::handle_type>;
  * \brief Represents an hardware-accelerated image, intended to be rendered using the
  * `basic_renderer` class.
  *
+ * \ownerhandle `texture`/`texture_handle`
+ *
  * \since 3.0.0
  *
  * \see `texture`

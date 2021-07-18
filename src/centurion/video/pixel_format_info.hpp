@@ -58,16 +58,13 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  *
  * \brief Provides information about a pixel format.
  *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
+ * \ownerhandle `pixel_format_info`/ `pixel_format_info_handle`
  *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
+ * \see `pixel_format`
+ * \see `pixel_format_info`
+ * \see `pixel_format_info_handle`
+ * \see `SDL_PixelFormat`
+ * \see `SDL_PixelFormatEnum`
  *
  * \since 5.2.0
  */

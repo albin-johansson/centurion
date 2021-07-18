@@ -82,6 +82,8 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  *
  * \brief Represents a sensor device.
  *
+ * \ownerhandle `sensor`/`sensor_handle`
+ *
  * \see `sensor`
  * \see `sensor_handle`
  *

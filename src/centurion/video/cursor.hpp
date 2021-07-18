@@ -39,13 +39,12 @@ using cursor_handle = basic_cursor<detail::handle_type>;
  *
  * \brief Represents a mouse cursor.
  *
- * \details Depending on the template type parameter, this class can represent either an
- * owning or non-owning cursor.
+ * \ownerhandle `cursor`/`cursor_handle`
  *
  * \since 5.0.0
  *
- * \see cursor
- * \see cursor_handle
+ * \see `cursor`
+ * \see `cursor_handle`
  */
 template <typename T>
 class basic_cursor final

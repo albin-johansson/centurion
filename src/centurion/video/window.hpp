@@ -65,6 +65,8 @@ using window_handle = basic_window<detail::handle_type>;
  *
  * \brief Represents an operating system window.
  *
+ * \ownerhandle `window`/`window_handle`
+ *
  * \since 5.0.0
  *
  * \see `window`

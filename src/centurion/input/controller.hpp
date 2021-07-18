@@ -182,6 +182,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  *
  * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
  *
+ * \ownerhandle `controller`/`controller_handle`
+ *
  * \details You may need to load appropriate game controller mappings before you can begin
  * using the game controller API with certain controllers. This can be accomplished using
  * the `cen::hint::controller::config_file` hint, or the `load_mappings()` and

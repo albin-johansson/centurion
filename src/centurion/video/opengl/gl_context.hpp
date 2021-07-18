@@ -34,7 +34,7 @@ using context_handle = basic_context<detail::handle_type>;
  *
  * \brief Represents an OpenGL context.
  *
- * \tparam T `owning_type` for owning semantics; `handle_type` for non-owning semantics.
+ * \ownerhandle `context`/`context_handle`
  *
  * \since 6.0.0
  */

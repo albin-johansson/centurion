@@ -67,14 +67,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *

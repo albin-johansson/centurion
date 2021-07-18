@@ -79,6 +79,8 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  *
  * \brief Represents a joystick device.
  *
+ * \ownerhandle `joystick`/`joystick_handle`
+ *
  * \details The game controller API is built on top of the joystick API, which means that
  * the game controller is higher-level and easier to use.
  *

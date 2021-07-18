@@ -1,11 +1,21 @@
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
@@ -312,15 +322,19 @@ class scan_code final
 /**
  * \brief Returns a textual representation of a scan code.
  *
- * \param scanCode the scan code that will be converted.
+ * \param code the scan code that will be converted.
  *
  * \return a textual representation of the scan code.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+[[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-  return "scan_code{key: " + scanCode.name() + "}";
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("scan_code{{key: {}}}", code.name());
+#else
+  return "scan_code{key: " + code.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

@@ -4,6 +4,7 @@
 
 #include "core/log.hpp"
 #include "input/key_code.hpp"
+#include "input/keycodes.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)

@@ -19,12 +19,12 @@ namespace cen {
  */
 enum class log_priority : int
 {
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
   verbose = SDL_LOG_PRIORITY_VERBOSE,
   debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
+  info = SDL_LOG_PRIORITY_INFO,
+  warn = SDL_LOG_PRIORITY_WARN,
   error = SDL_LOG_PRIORITY_ERROR,
+  critical = SDL_LOG_PRIORITY_CRITICAL,
 };
 
 /// \name Log priority comparison operators

@@ -1,10 +1,6 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
@@ -12,79 +8,17 @@
 #include <utility>  // forward
 
 #include "czstring.hpp"
-#include "macros.hpp"
+#include "log_category.hpp"
+#include "log_priority.hpp"
 #include "not_null.hpp"
 #include "to_underlying.hpp"
-#include "version.hpp"
-
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
 
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
-/**
- * \enum log_priority
- *
- * \brief Provides values that represent different logging priorities.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- */
-enum class log_priority : int
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum log_category
- *
- * \brief Provides values that represent different logging categories.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- */
-enum class log_category : int
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/// \} End of group core
-
-/**
- * \namespace cen::log
- *
- * \ingroup core
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people that have
- * used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- */
+/// \namespace cen::log
+/// \brief Contains easy-to-use logging facilities.
+/// \ingroup core
+/// \since 3.0.0
 namespace log {
 
 /// \addtogroup core
@@ -118,7 +52,7 @@ void msg(const log_priority priority,
 }
 
 /**
- * \brief Logs a message with `priority::info` and the specified category.
+ * \brief Logs a message with `log_priority::info` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -139,7 +73,7 @@ void info(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::info` and `category::app`.
+ * \brief Logs a message with `log_priority::info` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -157,7 +91,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::warn` and the specified category.
+ * \brief Logs a message with `log_priority::warn` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -178,7 +112,7 @@ void warn(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::warn` and `category::app`.
+ * \brief Logs a message with `log_priority::warn` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -196,7 +130,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and the specified category.
+ * \brief Logs a message with `log_priority::verbose` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -217,7 +151,7 @@ void verbose(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and `category::app`.
+ * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -235,7 +169,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::debug` and the specified category.
+ * \brief Logs a message with `log_priority::debug` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -256,7 +190,7 @@ void debug(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::debug` and `category::app`.
+ * \brief Logs a message with `log_priority::debug` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -274,7 +208,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::critical` and the specified category.
+ * \brief Logs a message with `log_priority::critical` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -295,7 +229,7 @@ void critical(const log_category category,
 }
 
 /**
- * \brief Logs a message with `priority::critical` and `category::app` .
+ * \brief Logs a message with `log_priority::critical` and `log_category::app`.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -313,7 +247,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 }
 
 /**
- * \brief Logs a message with `priority::error` and the specified category.
+ * \brief Logs a message with `log_priority::error` and the specified category.
  *
  * \details This method has no effect if the supplied string is null.
  *
@@ -332,7 +266,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
 }
 
 /**
- * \brief Logs a message with the `priority::error` and `category::app`.
+ * \brief Logs a message with the `log_priority::error` and `log_category::app`.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -351,7 +285,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
  * \brief Logs a string.
  *
  * \details This function is meant to be used for casual logging, where you just want to
- * log a string. The message will be logged with `priority::info` and `category::app`.
+ * log a string. The message will be logged with `log_priority::info` and
+ * `log_category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -442,217 +377,6 @@ inline void set_priority(const log_category category,
 /// \} End of group core
 
 }  // namespace log
-
-/// \addtogroup core
-/// \{
-
-/**
- * \brief Indicates whether or not the two log priorities values are the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
-{
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
-
-/// \copydoc operator==(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values aren't the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
-{
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
-}
-
-/// \copydoc operator==(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log category values are the same.
- *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
- *
- * \return `true` if the categories are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of group core
-
 }  // namespace cen
-
-/// \addtogroup core
-/// \{
-
-#ifndef CENTURION_NO_DEBUG_LOG_MACROS
-#ifdef NDEBUG
-
-/// \def CENTURION_LOG_INFO
-#define CENTURION_LOG_INFO(fmt, ...)
-
-/// \def CENTURION_LOG_WARN
-#define CENTURION_LOG_WARN(fmt, ...)
-
-/// \def CENTURION_LOG_VERBOSE
-#define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/// \def CENTURION_LOG_DEBUG
-#define CENTURION_LOG_DEBUG(fmt, ...)
-
-/// \def CENTURION_LOG_CRITICAL
-#define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/// \def CENTURION_LOG_ERROR
-#define CENTURION_LOG_ERROR(fmt, ...)
-
-#else
-
-/// \def CENTURION_LOG_INFO
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-/// \def CENTURION_LOG_WARN
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-/// \def CENTURION_LOG_VERBOSE
-#define CENTURION_LOG_VERBOSE(fmt, ...) \
-  cen::log::verbose(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-/// \def CENTURION_LOG_DEBUG
-#define CENTURION_LOG_DEBUG(fmt, ...) \
-  cen::log::debug(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-/// \def CENTURION_LOG_CRITICAL
-#define CENTURION_LOG_CRITICAL(fmt, ...) \
-  cen::log::critical(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-/// \def CENTURION_LOG_ERROR
-#define CENTURION_LOG_ERROR(fmt, ...) \
-  cen::log::error(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-
-#endif  // NDEBUG
-#endif  // CENTURION_NO_DEBUG_LOG_MACROS
-
-/**
- * \def CENTURION_LOG_INFO
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_WARN
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::warn`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_VERBOSE
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_DEBUG
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::debug`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_CRITICAL
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::critical`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_ERROR
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::error`.
- *
- * \since 5.0.0
- */
-
-/// \} End of group core
 
 #endif  // CENTURION_LOG_HEADER

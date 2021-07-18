@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include "core/log_macros.hpp"
+
 TEST(Log, SetPriorityAllCategories)
 {
   const auto priority = cen::log_priority::critical;

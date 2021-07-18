@@ -1,5 +1,6 @@
 /**
  * \page configuration Configuration
+ *
  * The library can be configured in various ways at compile-time using the following
  * macros. For technical reasons, these macros are used to opt-out of certain features,
  * rather than opt-in. All Centurion macros feature the `CENTURION_` prefix.

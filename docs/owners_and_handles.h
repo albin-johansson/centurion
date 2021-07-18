@@ -1,6 +1,8 @@
 /**
  * \page owners-and-handles Owners and Handles
  *
+ * \tableofcontents
+ *
  * \section intro Introduction
  *
  * An important aspect of the Centurion library is the concept of owners and handles.

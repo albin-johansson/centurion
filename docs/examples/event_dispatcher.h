@@ -1,5 +1,6 @@
 /**
  * \page page-event-dispatcher Event Dispatcher
+ *
  * The `event_dispatcher` class is designed to reduce the verbosity and clumsiness of
  * having to check for a bunch of different events in the game loop using a long chain of
  * `if`-statements. The basic idea is to specify the events that we want to "subscribe"

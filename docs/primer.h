@@ -2,6 +2,7 @@
  * \page primer Primer
  *
  * \tableofcontents
+ *
  * This page goes through important core concepts related to the Centurion APIs.
  *
  * \section impl-details Implementation Details

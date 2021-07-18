@@ -14,6 +14,7 @@ set(SOURCE_FILES
     config/hints_test.cpp
 
     core/exception_test.cpp
+    core/log_category_test.cpp
     core/log_priority_test.cpp
     core/log_test.cpp
     core/result_test.cpp

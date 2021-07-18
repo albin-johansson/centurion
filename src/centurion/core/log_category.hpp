@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "exception.hpp"
 #include "sdl_log_category_workaround.hpp"
 
 namespace cen {
@@ -30,6 +34,79 @@ enum class log_category : int
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/**
+ * \brief Returns a textual version of the supplied log category.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(log_category::app) == "app"`.
+ *
+ * \param category the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+{
+  switch (category)
+  {
+    case log_category::app:
+      return "app";
+
+    case log_category::error:
+      return "error";
+
+    case log_category::assert:
+      return "assert";
+
+    case log_category::system:
+      return "system";
+
+    case log_category::audio:
+      return "audio";
+
+    case log_category::video:
+      return "video";
+
+    case log_category::render:
+      return "render";
+
+    case log_category::input:
+      return "input";
+
+    case log_category::test:
+      return "test";
+
+    case log_category::misc:
+      return "misc";
+
+    default:
+      throw cen_error{"Did not recognize log category!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a log category enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(log_category)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const log_category category) -> std::ostream&
+{
+  return stream << to_string(category);
+}
+
+/// \name Log category comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not the two log category values are the same.
@@ -76,6 +153,8 @@ enum class log_category : int
 {
   return !(lhs == rhs);
 }
+
+/// \} End of log category comparison operators
 
 /// \} End of group core
 

@@ -31,29 +31,13 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
+#include "joystick_power.hpp"
+#include "joystick_type.hpp"
 
 namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum joystick_power
- *
- * \brief Provides values that represent different power states of a joystick.
- *
- * \since 4.2.0
- */
-enum class joystick_power
-{
-  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-};
 
 /**
  * \enum hat_state
@@ -73,27 +57,6 @@ enum class hat_state : u8
   right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
   left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
   left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
-};
-
-/**
- * \enum joystick_type
- *
- * \brief Provides values that represent different types of "joysticks".
- *
- * \since 4.2.0
- */
-enum class joystick_type
-{
-  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-  wheel = SDL_JOYSTICK_TYPE_WHEEL,
-  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-  guitar = SDL_JOYSTICK_TYPE_GUITAR,
-  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-  throttle = SDL_JOYSTICK_TYPE_THROTTLE
 };
 
 /**
@@ -1192,144 +1155,6 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 {
   return stream << to_string(joystick);
 }
-
-/// \name Joystick power comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick power comparison operators
-
-/// \name Joystick type comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickType>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick type comparison operators
 
 /// \} End of group input
 

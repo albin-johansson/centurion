@@ -120,6 +120,8 @@
 #include "centurion/input/controller.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/joystick.hpp"
+#include "centurion/input/joystick_power.hpp"
+#include "centurion/input/joystick_type.hpp"
 #include "centurion/input/key_code.hpp"
 #include "centurion/input/key_modifier.hpp"
 #include "centurion/input/keyboard.hpp"

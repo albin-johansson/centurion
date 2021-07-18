@@ -8,6 +8,11 @@
 #define CENTURION_NODISCARD_CTOR
 #endif  // nodiscard >= 201907L
 
+// C++20 __VA_OPT__
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_VA_OPT
+#endif  // __cplusplus >= 202002L
+
 #ifdef __has_include
 
 #if __has_include(<version>)
@@ -35,12 +40,5 @@
 #endif  // __cpp_lib_three_way_comparison
 
 #endif  // __has_include
-
-#if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_VA_OPT
-#define CENTURION_VARIADIC(X, ...) X __VA_OPT__(,) __VA_ARGS__
-#else
-#define CENTURION_VARIADIC(X, ...) X __VA_ARGS__
-#endif  // __cplusplus >= 202002L
 
 #endif  // CENTURION_FEATURES_HEADER

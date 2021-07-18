@@ -1,6 +1,10 @@
 #ifndef CENTURION_HAPTIC_HEADER
 #define CENTURION_HAPTIC_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -8,6 +12,12 @@
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // enable_if_t
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
@@ -2327,8 +2337,14 @@ class basic_haptic final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("haptic{{data: {}, name: {}}}",
+                     detail::address_of(haptic.get()),
+                     str_or_na(haptic.name()));
+#else
   return "haptic{data: " + detail::address_of(haptic.get()) +
          ", name: " + str_or_na(haptic.name()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

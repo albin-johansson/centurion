@@ -1,11 +1,21 @@
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
@@ -325,7 +335,11 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("key_code{{key: {}}}", keyCode.name());
+#else
   return "key_code{key: " + keyCode.name() + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

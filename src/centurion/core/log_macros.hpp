@@ -21,14 +21,29 @@
 
 #else
 
+#ifdef CENTURION_HAS_FEATURE_VA_OPT
+
 // clang-format off
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(CENTURION_VARIADIC(fmt, __VA_ARGS__))
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(CENTURION_VARIADIC(fmt, __VA_ARGS__))
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt __VA_OPT__(,) __VA_ARGS__)
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt __VA_OPT__(,) __VA_ARGS__)
 // clang-format on
+
+#else
+
+// clang-format off
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
+// clang-format on
+
+#endif  // CENTURION_HAS_FEATURE_VA_OPT
 
 #endif  // NDEBUG
 #endif  // CENTURION_NO_DEBUG_LOG_MACROS

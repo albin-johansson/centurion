@@ -125,6 +125,7 @@
 #include "centurion/input/keyboard.hpp"
 #include "centurion/input/mouse.hpp"
 #include "centurion/input/scan_code.hpp"
+#include "centurion/input/scancodes.hpp"
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/touch.hpp"
 #include "centurion/math/area.hpp"

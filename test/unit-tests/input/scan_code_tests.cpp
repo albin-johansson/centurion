@@ -4,6 +4,7 @@
 
 #include "core/log.hpp"
 #include "input/scan_code.hpp"
+#include "input/scancodes.hpp"
 #include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)

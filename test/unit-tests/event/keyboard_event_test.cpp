@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "events/event.hpp"
+#include "input/scancodes.hpp"
 
 TEST(KeyboardEvent, Defaults)
 {

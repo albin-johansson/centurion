@@ -23,7 +23,7 @@
  */
 
 #ifndef CENTURION_NO_PRAGMA_ONCE
-  #pragma once
+#pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
 // clang-format off

@@ -1,6 +1,19 @@
 #ifndef CENTURION_MOUSE_HEADER
 #define CENTURION_MOUSE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/integers.hpp"
 #include "../detail/max.hpp"
 #include "../math/area.hpp"
@@ -277,6 +290,40 @@ class mouse final
   bool m_prevLeftPressed{};
   bool m_prevRightPressed{};
 };
+
+/**
+ * \brief Returns a textual representation of a mouse.
+ *
+ * \param mouse the mouse instance that will be converted.
+ *
+ * \return a string that represents the mouse.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
+{
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
+#else
+  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +
+         "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/**
+ * \brief Prints a textual representation of a mouse.
+ *
+ * \param stream the output stream that will be used.
+ * \param mouse the mouse that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream&
+{
+  return stream << to_string(mouse);
+}
 
 /**
  * \typedef mouse_state

@@ -234,6 +234,8 @@ inline auto reset_group(const channel_index channel) noexcept -> result
   }
 }
 
+/// \} End of group audio
+
 }  // namespace channels
 
 }  // namespace cen

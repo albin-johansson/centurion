@@ -1,12 +1,22 @@
 #ifndef CENTURION_PALETTE_HEADER
 #define CENTURION_PALETTE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -214,8 +224,14 @@ class palette final
  */
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
+#ifdef CENTURION_HAS_FEATURE_FORMAT
+  return std::format("palette{{data: {}, size: {}}}",
+                     detail::address_of(palette.get()),
+                     palette.size());
+#else
   return "palette{data: " + detail::address_of(palette.get()) +
          ", size: " + std::to_string(palette.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 /**

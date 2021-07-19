@@ -11,6 +11,7 @@ set(SOURCE_FILES
     compiler/compiler_test.cpp
     compiler/features_test.cpp
 
+    config/hint_priority_test.cpp
     config/hints_test.cpp
 
     core/exception_test.cpp

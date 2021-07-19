@@ -113,6 +113,7 @@
 #include "centurion/hints/d3d_hints.hpp"
 #include "centurion/hints/emscripten_hints.hpp"
 #include "centurion/hints/enum_hint.hpp"
+#include "centurion/hints/hint_priority.hpp"
 #include "centurion/hints/hints.hpp"
 #include "centurion/hints/joystick_hints.hpp"
 #include "centurion/hints/mac_hints.hpp"

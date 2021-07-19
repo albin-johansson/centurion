@@ -37,28 +37,12 @@
 #include "../core/exception.hpp"
 #include "../core/log.hpp"
 #include "../core/result.hpp"
+#include "hint_priority.hpp"
 
 namespace cen {
 
 /// \addtogroup configuration
 /// \{
-
-/**
- * \enum hint_priority
- *
- * \brief Provides three different priorities that can be specified when
- * setting the value of a hint.
- *
- * \since 4.1.0
- *
- * \see `SDL_HintPriority`
- */
-enum class hint_priority
-{
-  low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
-  normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
-  override = SDL_HINT_OVERRIDE  ///< The highest priority.
-};
 
 /**
  * \brief Sets the value of the specified hint.

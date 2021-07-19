@@ -177,6 +177,9 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_Event
 {
@@ -184,6 +187,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_
   e.wheel = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

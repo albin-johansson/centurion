@@ -98,6 +98,9 @@ class window_event final : public common_event<SDL_WindowEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Event
 {
@@ -105,6 +108,8 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Even
   e.window = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

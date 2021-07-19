@@ -338,7 +338,7 @@ inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispa
   return stream;
 }
 
-/// \}
+/// \} End of group event
 
 }  // namespace cen
 

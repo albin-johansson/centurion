@@ -130,8 +130,13 @@ class common_event
   T m_event{};
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <typename T>
 [[nodiscard]] auto as_sdl_event(const common_event<T>& event) -> SDL_Event;
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

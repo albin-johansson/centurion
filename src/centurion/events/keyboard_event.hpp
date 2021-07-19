@@ -472,6 +472,9 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Event
 {
@@ -479,6 +482,8 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
   e.key = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

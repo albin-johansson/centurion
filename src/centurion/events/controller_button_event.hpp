@@ -144,6 +144,9 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
     -> SDL_Event
@@ -152,6 +155,8 @@ inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
   e.cbutton = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

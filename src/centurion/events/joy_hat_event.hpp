@@ -112,6 +112,9 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Event
 {
@@ -119,6 +122,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
   e.jhat = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

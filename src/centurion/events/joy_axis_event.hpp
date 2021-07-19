@@ -115,6 +115,9 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event) -> SDL_Event
 {
@@ -122,6 +125,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyAxisEvent>& event) -> SDL_Eve
   e.jaxis = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

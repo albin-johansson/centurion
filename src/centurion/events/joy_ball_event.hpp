@@ -145,6 +145,9 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Event
 {
@@ -152,6 +155,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Eve
   e.jball = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

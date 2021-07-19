@@ -110,6 +110,9 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event) -> SDL_Event
 {
@@ -117,6 +120,8 @@ inline auto as_sdl_event(const common_event<SDL_AudioDeviceEvent>& event) -> SDL
   e.adevice = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

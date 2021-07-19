@@ -240,6 +240,9 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL_Event
 {
@@ -247,6 +250,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
   e.motion = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

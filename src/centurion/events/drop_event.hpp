@@ -168,6 +168,9 @@ class drop_event final : public common_event<SDL_DropEvent>
   bool m_willFreeFile{false};
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
 {
@@ -175,6 +178,8 @@ inline auto as_sdl_event(const common_event<SDL_DropEvent>& event) -> SDL_Event
   e.drop = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

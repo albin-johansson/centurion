@@ -118,6 +118,9 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> SDL_Event
 {
@@ -125,6 +128,8 @@ inline auto as_sdl_event(const common_event<SDL_ControllerAxisEvent>& event) -> 
   e.caxis = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

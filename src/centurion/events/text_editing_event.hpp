@@ -149,6 +149,9 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL_Event
 {
@@ -156,6 +159,8 @@ inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL
   e.edit = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

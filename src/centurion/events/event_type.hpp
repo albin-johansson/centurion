@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
 
 namespace cen {
@@ -87,6 +91,190 @@ enum class event_type : u32
 };
 
 /**
+ * \brief Returns a textual version of the supplied event type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(event_type::mouse_motion) == "mouse_motion"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const event_type type) -> std::string
+{
+  switch (type)
+  {
+    case event_type::quit:
+      return "quit";
+
+    case event_type::app_terminating:
+      return "app_terminating";
+
+    case event_type::app_low_memory:
+      return "app_low_memory";
+
+    case event_type::app_will_enter_background:
+      return "app_will_enter_background";
+
+    case event_type::app_did_enter_background:
+      return "app_did_enter_background";
+
+    case event_type::app_did_enter_foreground:
+      return "app_did_enter_foreground";
+
+    case event_type::display:
+      return "display";
+
+    case event_type::window:
+      return "window";
+
+    case event_type::system:
+      return "system";
+
+    case event_type::key_down:
+      return "key_down";
+
+    case event_type::key_up:
+      return "key_up";
+
+    case event_type::text_editing:
+      return "text_editing";
+
+    case event_type::text_input:
+      return "text_input";
+
+    case event_type::keymap_changed:
+      return "keymap_changed";
+
+    case event_type::mouse_motion:
+      return "mouse_motion";
+
+    case event_type::mouse_button_down:
+      return "mouse_button_down";
+
+    case event_type::mouse_button_up:
+      return "mouse_button_up";
+
+    case event_type::mouse_wheel:
+      return "mouse_wheel";
+
+    case event_type::joystick_axis_motion:
+      return "joystick_axis_motion";
+
+    case event_type::joystick_ball_motion:
+      return "joystick_ball_motion";
+
+    case event_type::joystick_hat_motion:
+      return "joystick_hat_motion";
+
+    case event_type::joystick_button_down:
+      return "joystick_button_down";
+
+    case event_type::joystick_button_up:
+      return "joystick_button_up";
+
+    case event_type::joystick_device_added:
+      return "joystick_device_added";
+
+    case event_type::joystick_device_removed:
+      return "joystick_device_removed";
+
+    case event_type::controller_axis_motion:
+      return "controller_axis_motion";
+
+    case event_type::controller_button_down:
+      return "controller_button_down";
+
+    case event_type::controller_button_up:
+      return "controller_button_up";
+
+    case event_type::controller_device_added:
+      return "controller_device_added";
+
+    case event_type::controller_device_removed:
+      return "controller_device_removed";
+
+    case event_type::controller_device_remapped:
+      return "controller_device_remapped";
+
+    case event_type::touch_down:
+      return "touch_down";
+
+    case event_type::touch_up:
+      return "touch_up";
+
+    case event_type::touch_motion:
+      return "touch_motion";
+
+    case event_type::dollar_gesture:
+      return "dollar_gesture";
+
+    case event_type::dollar_record:
+      return "dollar_record";
+
+    case event_type::multi_gesture:
+      return "multi_gesture";
+
+    case event_type::clipboard_update:
+      return "clipboard_update";
+
+    case event_type::drop_file:
+      return "drop_file";
+
+    case event_type::drop_text:
+      return "drop_text";
+
+    case event_type::drop_begin:
+      return "drop_begin";
+
+    case event_type::drop_complete:
+      return "drop_complete";
+
+    case event_type::audio_device_added:
+      return "audio_device_added";
+
+    case event_type::audio_device_removed:
+      return "audio_device_removed";
+
+    case event_type::sensor_update:
+      return "sensor_update";
+
+    case event_type::render_targets_reset:
+      return "render_targets_reset";
+
+    case event_type::render_device_reset:
+      return "render_device_reset";
+
+    case event_type::user:
+      return "user";
+
+    default:
+      throw cen_error{"Did not recognize event type!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of an event type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(event_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+/**
  * \brief Indicates whether or not two event type values are the same.
  *
  * \param lhs the left-hand side event type value
@@ -132,7 +320,7 @@ enum class event_type : u32
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of group event
 
 }  // namespace cen
 

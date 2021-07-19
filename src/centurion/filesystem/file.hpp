@@ -18,29 +18,13 @@
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "file_mode.hpp"
+#include "file_type.hpp"
 #include "seek_mode.hpp"
 
 namespace cen {
 
 /// \addtogroup system
 /// \{
-
-/**
- * \enum file_type
- *
- * \brief Provides values that represent different file types.
- *
- * \since 5.3.0
- */
-enum class file_type : uint
-{
-  unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
-  win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.
-  stdio = SDL_RWOPS_STDFILE,       ///< A STDIO file.
-  jni = SDL_RWOPS_JNIFILE,         ///< An Android asset file.
-  memory = SDL_RWOPS_MEMORY,       ///< A memory stream file.
-  memory_ro = SDL_RWOPS_MEMORY_RO  ///< A read-only memory stream file.
-};
 
 /**
  * \class file

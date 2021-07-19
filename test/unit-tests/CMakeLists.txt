@@ -62,6 +62,7 @@ set(SOURCE_FILES
     event/window_event_id_test.cpp
 
     filesystem/file_mode_test.cpp
+    filesystem/file_type_test.cpp
     filesystem/seek_mode_test.cpp
 
     input/controller_axis_test.cpp

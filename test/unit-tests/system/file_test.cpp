@@ -112,13 +112,3 @@ TEST_F(FileTest, IsPNG)
 
   ASSERT_TRUE(file.is_png());
 }
-
-TEST_F(FileTest, FileTypeEnum)
-{
-  ASSERT_EQ(SDL_RWOPS_UNKNOWN, static_cast<int>(cen::file_type::unknown));
-  ASSERT_EQ(SDL_RWOPS_WINFILE, static_cast<int>(cen::file_type::win32));
-  ASSERT_EQ(SDL_RWOPS_STDFILE, static_cast<int>(cen::file_type::stdio));
-  ASSERT_EQ(SDL_RWOPS_JNIFILE, static_cast<int>(cen::file_type::jni));
-  ASSERT_EQ(SDL_RWOPS_MEMORY, static_cast<int>(cen::file_type::memory));
-  ASSERT_EQ(SDL_RWOPS_MEMORY_RO, static_cast<int>(cen::file_type::memory_ro));
-}

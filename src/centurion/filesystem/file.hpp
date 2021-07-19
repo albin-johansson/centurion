@@ -18,25 +18,12 @@
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "file_mode.hpp"
+#include "seek_mode.hpp"
 
 namespace cen {
 
 /// \addtogroup system
 /// \{
-
-/**
- * \enum seek_mode
- *
- * \brief Provides values that represent various file seek modes.
- *
- * \since 5.3.0
- */
-enum class seek_mode
-{
-  from_beginning = RW_SEEK_SET,       ///< From the beginning.
-  relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
-  relative_to_end = RW_SEEK_END       ///< Relative to the end.
-};
 
 /**
  * \enum file_type

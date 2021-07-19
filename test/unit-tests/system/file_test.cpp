@@ -113,13 +113,6 @@ TEST_F(FileTest, IsPNG)
   ASSERT_TRUE(file.is_png());
 }
 
-TEST_F(FileTest, SeekModeEnum)
-{
-  ASSERT_EQ(RW_SEEK_SET, static_cast<int>(cen::seek_mode::from_beginning));
-  ASSERT_EQ(RW_SEEK_CUR, static_cast<int>(cen::seek_mode::relative_to_current));
-  ASSERT_EQ(RW_SEEK_END, static_cast<int>(cen::seek_mode::relative_to_end));
-}
-
 TEST_F(FileTest, FileTypeEnum)
 {
   ASSERT_EQ(SDL_RWOPS_UNKNOWN, static_cast<int>(cen::file_type::unknown));

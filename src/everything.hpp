@@ -104,6 +104,7 @@
 #include "centurion/filesystem/file.hpp"
 #include "centurion/filesystem/file_mode.hpp"
 #include "centurion/filesystem/preferred_path.hpp"
+#include "centurion/filesystem/seek_mode.hpp"
 #include "centurion/hints/android_hints.hpp"
 #include "centurion/hints/apple_tv_hints.hpp"
 #include "centurion/hints/common_hints.hpp"

@@ -261,26 +261,3 @@ TEST_F(MusicTest, SDLPointerConversion)
   const auto& cMusic = *m_music;
   ASSERT_TRUE(static_cast<const Mix_Music*>(cMusic));
 }
-
-TEST_F(MusicTest, MusicTypeEnum)
-{
-  ASSERT_EQ(cen::music_type::unknown, MUS_NONE);
-  ASSERT_EQ(cen::music_type::mp3, MUS_MP3);
-  ASSERT_EQ(cen::music_type::wav, MUS_WAV);
-  ASSERT_EQ(cen::music_type::cmd, MUS_CMD);
-  ASSERT_EQ(cen::music_type::mod, MUS_MOD);
-  ASSERT_EQ(cen::music_type::ogg, MUS_OGG);
-  ASSERT_EQ(cen::music_type::flac, MUS_FLAC);
-  ASSERT_EQ(cen::music_type::midi, MUS_MID);
-  ASSERT_EQ(cen::music_type::opus, MUS_OPUS);
-
-  ASSERT_EQ(MUS_NONE, cen::music_type::unknown);
-  ASSERT_EQ(MUS_MP3, cen::music_type::mp3);
-  ASSERT_EQ(MUS_WAV, cen::music_type::wav);
-  ASSERT_EQ(MUS_CMD, cen::music_type::cmd);
-  ASSERT_EQ(MUS_MOD, cen::music_type::mod);
-  ASSERT_EQ(MUS_OGG, cen::music_type::ogg);
-  ASSERT_EQ(MUS_FLAC, cen::music_type::flac);
-  ASSERT_EQ(MUS_MID, cen::music_type::midi);
-  ASSERT_EQ(MUS_OPUS, cen::music_type::opus);
-}

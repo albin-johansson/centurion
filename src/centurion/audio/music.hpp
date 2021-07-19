@@ -31,33 +31,12 @@
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
 #include "fade_status.hpp"
+#include "music_type.hpp"
 
 namespace cen {
 
 /// \addtogroup audio
 /// \{
-
-/**
- * \enum music_type
- *
- * \brief Provides values that represent different supported music types.
- *
- * \since 3.0.0
- *
- * \see `Mix_MusicType`
- */
-enum class music_type
-{
-  unknown = MUS_NONE,
-  mp3 = MUS_MP3,
-  wav = MUS_WAV,
-  ogg = MUS_OGG,
-  mod = MUS_MOD,
-  midi = MUS_MID,
-  cmd = MUS_CMD,
-  flac = MUS_FLAC,
-  opus = MUS_OPUS
-};
 
 /**
  * \class music
@@ -622,56 +601,6 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
   return stream << to_string(music);
 }
 
-/// \name Music-related comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not the music type values are the same.
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
-{
-  return static_cast<Mix_MusicType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the music type values aren't the same.
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of music-related comparison operators
 /// \} End of group audio
 
 }  // namespace cen

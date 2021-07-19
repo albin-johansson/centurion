@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
 
 namespace cen {
@@ -25,6 +29,61 @@ enum class mouse_button : u8
   x1 = SDL_BUTTON_X1,
   x2 = SDL_BUTTON_X2
 };
+
+/**
+ * \brief Returns a textual version of the supplied mouse button.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(mouse_button::middle) == "middle"`.
+ *
+ * \param button the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string
+{
+  switch (button)
+  {
+    case mouse_button::left:
+      return "left";
+
+    case mouse_button::middle:
+      return "middle";
+
+    case mouse_button::right:
+      return "right";
+
+    case mouse_button::x1:
+      return "x1";
+
+    case mouse_button::x2:
+      return "x2";
+
+    default:
+      throw cen_error{"Did not recognize mouse button!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a mouse button enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param button the enumerator that will be printed.
+ *
+ * \see `to_string(mouse_button)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::ostream&
+{
+  return stream << to_string(button);
+}
 
 /// \} End of group input
 

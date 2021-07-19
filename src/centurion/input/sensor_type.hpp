@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -24,6 +29,58 @@ enum class sensor_type
   accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer
   gyroscope = SDL_SENSOR_GYRO        ///< Gyroscope
 };
+
+/**
+ * \brief Returns a textual version of the supplied sensor type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(sensor_type::gyroscope) == "gyroscope"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string
+{
+  switch (type)
+  {
+    case sensor_type::invalid:
+      return "invalid";
+
+    case sensor_type::unknown:
+      return "unknown";
+
+    case sensor_type::accelerometer:
+      return "accelerometer";
+
+    case sensor_type::gyroscope:
+      return "gyroscope";
+
+    default:
+      throw cen_error{"Did not recognize sensor type!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a sensor type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(sensor_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
 
 /// \name Sensor type comparison operators
 /// \{

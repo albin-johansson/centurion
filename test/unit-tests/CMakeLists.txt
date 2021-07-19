@@ -84,6 +84,7 @@ set(SOURCE_FILES
     input/mouse_test.cpp
     input/scan_code_tests.cpp
     input/sensor_test.cpp
+    input/sensor_type_test.cpp
     input/touch_test.cpp
 
     math/area_test.cpp

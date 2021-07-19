@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
 
 namespace cen {
@@ -29,6 +33,73 @@ enum class hat_state : u8
   left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
   left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
 };
+
+/**
+ * \brief Returns a textual version of the supplied hat state.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(hat_state::down) == "down"`.
+ *
+ * \param state the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const hat_state state) -> std::string
+{
+  switch (state)
+  {
+    case hat_state::centered:
+      return "centered";
+
+    case hat_state::up:
+      return "up";
+
+    case hat_state::right:
+      return "right";
+
+    case hat_state::down:
+      return "down";
+
+    case hat_state::left:
+      return "left";
+
+    case hat_state::right_up:
+      return "right_up";
+
+    case hat_state::right_down:
+      return "right_down";
+
+    case hat_state::left_up:
+      return "left_up";
+
+    case hat_state::left_down:
+      return "left_down";
+
+    default:
+      throw cen_error{"Did not recognize hat state!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a hat state enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param state the enumerator that will be printed.
+ *
+ * \see `to_string(hat_state)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostream&
+{
+  return stream << to_string(state);
+}
 
 /// \} End of group input
 

@@ -17,42 +17,12 @@
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "file_mode.hpp"
 
 namespace cen {
 
 /// \addtogroup system
 /// \{
-
-/**
- * \enum file_mode
- *
- * \brief Provides values that represent different file modes.
- *
- * \details This enum provides values that directly correspond to each of the possible SDL
- * file mode strings, such as "r" or "rb".
- *
- * \since 5.3.0
- */
-enum class file_mode
-{
-  read_existing,         ///< "r"
-  read_existing_binary,  ///< "rb"
-
-  write,         ///< "w"
-  write_binary,  ///< "wb"
-
-  append_or_create,         ///< "a"
-  append_or_create_binary,  ///< "ab"
-
-  read_write_existing,         ///< "r+"
-  read_write_existing_binary,  ///< "rb+"
-
-  read_write_replace,         ///< "w+"
-  read_write_replace_binary,  ///< "wb+"
-
-  read_append,        ///< "a+"
-  read_append_binary  ///< "ab+"
-};
 
 /**
  * \enum seek_mode

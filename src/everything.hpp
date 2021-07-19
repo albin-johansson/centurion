@@ -102,6 +102,7 @@
 #include "centurion/events/window_event_id.hpp"
 #include "centurion/filesystem/base_path.hpp"
 #include "centurion/filesystem/file.hpp"
+#include "centurion/filesystem/file_mode.hpp"
 #include "centurion/filesystem/preferred_path.hpp"
 #include "centurion/hints/android_hints.hpp"
 #include "centurion/hints/apple_tv_hints.hpp"

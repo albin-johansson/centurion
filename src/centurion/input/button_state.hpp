@@ -28,8 +28,6 @@ enum class button_state : u8
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };
 
-auto operator<<(std::ostream& stream, const button_state state) -> std::ostream&;
-
 /**
  * \brief Returns a textual version of the supplied button state.
  *

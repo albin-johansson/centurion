@@ -55,7 +55,7 @@ enum class seek_mode
       return "relative_to_end";
 
     default:
-      throw cen_error{"Did not recognize file mode!"};
+      throw cen_error{"Did not recognize seek mode!"};
   }
 }
 

@@ -62,6 +62,7 @@ set(SOURCE_FILES
     event/window_event_id_test.cpp
 
     input/controller_axis_test.cpp
+    input/controller_bind_type_test.cpp
     input/controller_button_test.cpp
     input/controller_test.cpp
     input/controller_type_test.cpp

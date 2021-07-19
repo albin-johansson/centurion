@@ -33,6 +33,7 @@
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "controller_axis.hpp"
+#include "controller_bind_type.hpp"
 #include "controller_button.hpp"
 #include "controller_type.hpp"
 #include "joystick.hpp"
@@ -43,23 +44,6 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum controller_bind_type
- *
- * \brief Represents different game controller bind types.
- *
- * \see `SDL_GameControllerBindType`
- *
- * \since 5.0.0
- */
-enum class controller_bind_type
-{
-  none = SDL_CONTROLLER_BINDTYPE_NONE,
-  button = SDL_CONTROLLER_BINDTYPE_BUTTON,
-  axis = SDL_CONTROLLER_BINDTYPE_AXIS,
-  hat = SDL_CONTROLLER_BINDTYPE_HAT
-};
 
 template <typename T>
 class basic_controller;
@@ -1308,60 +1292,6 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 {
   return stream << to_string(controller);
 }
-
-/// \name Game controller comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two controller bind type values are the same.
- *
- * \param lhs the left-hand-side controller bind type value.
- * \param rhs the right-hand-side controller bind type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two controller bind type values aren't the
- * same.
- *
- * \param lhs the left-hand-side controller bind type value.
- * \param rhs the right-hand-side controller bind type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of game controller comparison operators
 
 /// \} End of group input
 

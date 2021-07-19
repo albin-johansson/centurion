@@ -43,24 +43,6 @@ TEST(Controller, Count)
   ASSERT_EQ(nControllers, cen::controller::count());
 }
 
-TEST(Controller, ControllerBindTypeEnum)
-{
-  using bind_type = cen::controller_bind_type;
-
-  ASSERT_EQ(bind_type::axis, SDL_CONTROLLER_BINDTYPE_AXIS);
-  ASSERT_EQ(bind_type::button, SDL_CONTROLLER_BINDTYPE_BUTTON);
-  ASSERT_EQ(bind_type::none, SDL_CONTROLLER_BINDTYPE_NONE);
-  ASSERT_EQ(bind_type::hat, SDL_CONTROLLER_BINDTYPE_HAT);
-
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, bind_type::axis);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::button);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, bind_type::none);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, bind_type::hat);
-
-  ASSERT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
-  ASSERT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
-}
-
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST(Controller, FromIndex)

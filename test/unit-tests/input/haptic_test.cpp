@@ -2,6 +2,12 @@
 
 #include <gtest/gtest.h>
 
+#include "input/haptic_condition.hpp"
+#include "input/haptic_constant.hpp"
+#include "input/haptic_custom.hpp"
+#include "input/haptic_left_right.hpp"
+#include "input/haptic_periodic.hpp"
+#include "input/haptic_ramp.hpp"
 #include "typed_test_macros.hpp"
 
 using namespace cen::literals;

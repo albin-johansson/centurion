@@ -66,6 +66,7 @@ set(SOURCE_FILES
     filesystem/file_type_test.cpp
     filesystem/seek_mode_test.cpp
 
+    input/button_state_test.cpp
     input/controller_axis_test.cpp
     input/controller_bind_type_test.cpp
     input/controller_button_test.cpp

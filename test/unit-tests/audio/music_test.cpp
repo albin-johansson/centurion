@@ -262,17 +262,6 @@ TEST_F(MusicTest, SDLPointerConversion)
   ASSERT_TRUE(static_cast<const Mix_Music*>(cMusic));
 }
 
-TEST_F(MusicTest, FadeStatusEnum)
-{
-  ASSERT_EQ(cen::fade_status::none, MIX_NO_FADING);
-  ASSERT_EQ(cen::fade_status::in, MIX_FADING_IN);
-  ASSERT_EQ(cen::fade_status::out, MIX_FADING_OUT);
-
-  ASSERT_EQ(MIX_NO_FADING, cen::fade_status::none);
-  ASSERT_EQ(MIX_FADING_IN, cen::fade_status::in);
-  ASSERT_EQ(MIX_FADING_OUT, cen::fade_status::out);
-}
-
 TEST_F(MusicTest, MusicTypeEnum)
 {
   ASSERT_EQ(cen::music_type::unknown, MUS_NONE);

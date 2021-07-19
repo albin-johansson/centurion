@@ -30,27 +30,12 @@
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
+#include "fade_status.hpp"
 
 namespace cen {
 
 /// \addtogroup audio
 /// \{
-
-/**
- * \enum fade_status
- *
- * \brief Provides values that represent different fade playback states.
- *
- * \since 3.0.0
- *
- * \see `Mix_Fading`
- */
-enum class fade_status
-{
-  none = MIX_NO_FADING,  ///< No currently fading music.
-  in = MIX_FADING_IN,    ///< Currently fading in music.
-  out = MIX_FADING_OUT   ///< Currently fading out music.
-};
 
 /**
  * \enum music_type
@@ -639,52 +624,6 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 /// \name Music-related comparison operators
 /// \{
-
-/**
- * \brief Indicates whether or not the fading status values represent are the same.
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return static_cast<Mix_Fading>(lhs) == rhs;
-}
-
-/// \copydoc operator==(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the fading status values represent aren't the same.
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return !(lhs == rhs);  // NOLINT
-}
 
 /**
  * \brief Indicates whether or not the music type values are the same.

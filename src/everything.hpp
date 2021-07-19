@@ -32,6 +32,7 @@
 // clang-format on
 
 #include "centurion/audio/channels.hpp"
+#include "centurion/audio/fade_status.hpp"
 #include "centurion/audio/music.hpp"
 #include "centurion/audio/sound_effect.hpp"
 #include "centurion/audio/sound_fonts.hpp"

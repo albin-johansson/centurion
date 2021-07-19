@@ -2,14 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <array>
-#include <utility>
-#include <vector>
-
-#include "events/event.hpp"
-#include "video/renderer.hpp"
-#include "video/window.hpp"
-
 TEST(Controller, PointerConstructor)
 {
   ASSERT_THROW(cen::controller{nullptr}, cen::cen_error);
@@ -77,68 +69,3 @@ TEST(Controller, FromIndex)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-namespace cen {
-
-class controller_handler  // TODO worth adding?
-{
- public:
-  void add_all()
-  {
-    const auto amount = cen::joystick::count().value_or(0);
-    for (int i = 0; i < amount; ++i)
-    {
-      if (cen::controller::is_supported(i))
-      {
-        emplace(i);
-      }
-    }
-  }
-
-  template <typename... Args>
-  void emplace(Args&&... args)
-  {
-    m_controllers.emplace_back(std::forward<Args>(args)...);
-  }
-
-  void remove(int index)
-  {
-    auto erase = [](auto& container, auto&& predicate) {
-      container.erase(std::remove_if(begin(container), end(container), predicate),
-                      end(container));
-    };
-
-    erase(m_controllers, [=](const cen::controller& c) {
-      const auto i = c.index();
-      return i && index == *i;
-    });
-  }
-
-  auto at(int index) -> controller&
-  {
-    const auto it = find(index);
-    if (it != end(m_controllers))
-    {
-      return *it;
-    }
-    else
-    {
-      throw cen_error{"Failed to find controller!"};
-    }
-  }
-
- private:
-  std::vector<controller> m_controllers;
-
-  [[nodiscard]] auto find(int index) -> std::vector<controller>::iterator
-  {
-    return std::find_if(begin(m_controllers),
-                        end(m_controllers),
-                        [=](const cen::controller& c) noexcept {
-                          const auto i = c.index();
-                          return i && index == *i;
-                        });
-  }
-};
-
-}  // namespace cen

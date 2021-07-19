@@ -91,6 +91,7 @@
 #include "centurion/events/keyboard_event.hpp"
 #include "centurion/events/mouse_button_event.hpp"
 #include "centurion/events/mouse_motion_event.hpp"
+#include "centurion/events/mouse_wheel_direction.hpp"
 #include "centurion/events/mouse_wheel_event.hpp"
 #include "centurion/events/multi_gesture_event.hpp"
 #include "centurion/events/quit_event.hpp"

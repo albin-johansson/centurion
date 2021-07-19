@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -25,6 +30,67 @@ enum class joystick_power
   wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
   max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
 };
+
+/**
+ * \brief Returns a textual version of the supplied joystick power.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(joystick_power::medium) == "medium"`.
+ *
+ * \param power the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string
+{
+  switch (power)
+  {
+    case joystick_power::unknown:
+      return "unknown";
+
+    case joystick_power::empty:
+      return "empty";
+
+    case joystick_power::low:
+      return "low";
+
+    case joystick_power::medium:
+      return "medium";
+
+    case joystick_power::full:
+      return "full";
+
+    case joystick_power::wired:
+      return "wired";
+
+    case joystick_power::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize joystick power!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a joystick power enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param power the enumerator that will be printed.
+ *
+ * \see `to_string(joystick_power)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const joystick_power power) -> std::ostream&
+{
+  return stream << to_string(power);
+}
 
 /// \name Joystick power comparison operators
 /// \{

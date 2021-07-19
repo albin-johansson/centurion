@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 TEST(JoystickPower, Values)
 {
   ASSERT_EQ(cen::joystick_power::unknown, SDL_JOYSTICK_POWER_UNKNOWN);
@@ -22,4 +24,15 @@ TEST(JoystickPower, Values)
 
   ASSERT_NE(cen::joystick_power::max, SDL_JOYSTICK_POWER_WIRED);
   ASSERT_NE(SDL_JOYSTICK_POWER_MEDIUM, cen::joystick_power::low);
+}
+
+TEST(JoystickPower, ToString)
+{
+  ASSERT_EQ("unknown", cen::to_string(cen::joystick_power::unknown));
+  ASSERT_EQ("empty", cen::to_string(cen::joystick_power::empty));
+  ASSERT_EQ("low", cen::to_string(cen::joystick_power::low));
+  ASSERT_EQ("medium", cen::to_string(cen::joystick_power::medium));
+  ASSERT_EQ("full", cen::to_string(cen::joystick_power::full));
+  ASSERT_EQ("wired", cen::to_string(cen::joystick_power::wired));
+  ASSERT_EQ("max", cen::to_string(cen::joystick_power::max));
 }

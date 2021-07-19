@@ -32,6 +32,7 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
+#include "controller_axis.hpp"
 #include "controller_type.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
@@ -41,27 +42,6 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum controller_axis
- *
- * \brief Represents different game controller axes.
- *
- * \see `SDL_GameControllerAxis`
- *
- * \since 4.0.0
- */
-enum class controller_axis
-{
-  invalid = SDL_CONTROLLER_AXIS_INVALID,
-  left_x = SDL_CONTROLLER_AXIS_LEFTX,
-  left_y = SDL_CONTROLLER_AXIS_LEFTY,
-  right_x = SDL_CONTROLLER_AXIS_RIGHTX,
-  right_y = SDL_CONTROLLER_AXIS_RIGHTY,
-  trigger_left = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-  trigger_right = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-  max = SDL_CONTROLLER_AXIS_MAX
-};
 
 /**
  * \enum controller_button
@@ -1375,53 +1355,6 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 
 /// \name Game controller comparison operators
 /// \{
-
-/**
- * \brief Indicates whether or not two game controller axis values are the same.
- *
- * \param lhs the left-hand-side game controller axis value.
- * \param rhs the right-hand-side game controller axis value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_axis lhs,
-                                        const SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_axis, SDL_GameControllerAxis)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two game controller axis values aren't the
- * same.
- *
- * \param lhs the left-hand-side game controller axis value.
- * \param rhs the right-hand-side game controller axis value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_axis lhs,
-                                        const SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_axis, SDL_GameControllerAxis)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
 
 /**
  * \brief Indicates whether or not two game controller button values are the

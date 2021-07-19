@@ -118,6 +118,7 @@
 #include "centurion/hints/xinput_hints.hpp"
 #include "centurion/input/button_state.hpp"
 #include "centurion/input/controller.hpp"
+#include "centurion/input/controller_axis.hpp"
 #include "centurion/input/controller_type.hpp"
 #include "centurion/input/haptic.hpp"
 #include "centurion/input/hat_state.hpp"

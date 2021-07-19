@@ -33,6 +33,7 @@
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "controller_axis.hpp"
+#include "controller_button.hpp"
 #include "controller_type.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
@@ -42,51 +43,6 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum controller_button
- *
- * \brief Represents different game controller buttons.
- *
- * \see `SDL_GameControllerButton`
- *
- * \since 4.0.0
- */
-enum class controller_button
-{
-  invalid = SDL_CONTROLLER_BUTTON_INVALID,
-  a = SDL_CONTROLLER_BUTTON_A,
-  b = SDL_CONTROLLER_BUTTON_B,
-  x = SDL_CONTROLLER_BUTTON_X,
-  y = SDL_CONTROLLER_BUTTON_Y,
-  back = SDL_CONTROLLER_BUTTON_BACK,
-  guide = SDL_CONTROLLER_BUTTON_GUIDE,
-  start = SDL_CONTROLLER_BUTTON_START,
-  left_stick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
-  right_stick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
-  left_shoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-  right_shoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
-  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
-  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro
-     capture button */
-  misc1 = SDL_CONTROLLER_BUTTON_MISC1,
-
-  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
-  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
-  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
-  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
-  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  max = SDL_CONTROLLER_BUTTON_MAX
-};
 
 /**
  * \enum controller_bind_type
@@ -1355,58 +1311,6 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 
 /// \name Game controller comparison operators
 /// \{
-
-/**
- * \brief Indicates whether or not two game controller button values are the
- * same.
- *
- * \param lhs the left-hand side game controller button value.
- * \param rhs the right-hand side game controller button value.
- *
- * \return `true` if the game controller button values are the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_GameControllerButton>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_button, SDL_GameControllerButton)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two game controller button values aren't the
- * same.
- *
- * \param lhs the left-hand side game controller button value.
- * \param rhs the right-hand side game controller button value.
- *
- * \return `true` if the game controller button values aren't the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_button, SDL_GameControllerButton)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
 
 /**
  * \brief Indicates whether or not two controller bind type values are the same.

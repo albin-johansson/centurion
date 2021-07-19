@@ -274,6 +274,9 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
   return stream << to_string(type);
 }
 
+/// \name Event type comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not two event type values are the same.
  *
@@ -319,6 +322,8 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
 {
   return !(lhs == rhs);
 }
+
+/// \} End of event type comparison operators
 
 /// \} End of group event
 

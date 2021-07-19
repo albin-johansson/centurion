@@ -4,135 +4,12 @@
 #include <SDL.h>
 
 #include "common_event.hpp"
+#include "window_event_id.hpp"
 
 namespace cen {
 
 /// \addtogroup event
 /// \{
-
-/**
- * \enum window_event_id
- *
- * \brief Represents different flavours of window events.
- *
- * \details Depending on the event ID of a `window_event` instance, the
- * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
- *
- * <table style="width:100%">
- *   <tr>
- *     <th>Value</th>
- *     <th>data_1</th>
- *     <th>data_2</th>
- *   </tr>
- *   <tr>
- *    <td><code>None</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Shown</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Hidden</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Exposed</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Moved</code></td>
- *    <td>X</td>
- *    <td>Y</td>
- *   </tr>
- *   <tr>
- *    <td><code>Resized</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>SizeChanged</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>Minimized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Maximized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Restored</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Enter</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Leave</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusGained</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusLost</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Close</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>TakeFocus</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>HitTest</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- * </table>
- *
- * \since 4.0.0
- */
-enum class window_event_id
-{
-  none = SDL_WINDOWEVENT_NONE,
-  shown = SDL_WINDOWEVENT_SHOWN,
-  hidden = SDL_WINDOWEVENT_HIDDEN,
-  exposed = SDL_WINDOWEVENT_EXPOSED,
-  moved = SDL_WINDOWEVENT_MOVED,
-  resized = SDL_WINDOWEVENT_RESIZED,
-  size_changed = SDL_WINDOWEVENT_SIZE_CHANGED,
-  minimized = SDL_WINDOWEVENT_MINIMIZED,
-  maximized = SDL_WINDOWEVENT_MAXIMIZED,
-  restored = SDL_WINDOWEVENT_RESTORED,
-  enter = SDL_WINDOWEVENT_ENTER,
-  leave = SDL_WINDOWEVENT_LEAVE,
-  focus_gained = SDL_WINDOWEVENT_FOCUS_GAINED,
-  focus_lost = SDL_WINDOWEVENT_FOCUS_LOST,
-  close = SDL_WINDOWEVENT_CLOSE,
-  take_focus = SDL_WINDOWEVENT_TAKE_FOCUS,
-  hit_test = SDL_WINDOWEVENT_HIT_TEST
-};
 
 /**
  * \class window_event
@@ -227,53 +104,6 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Even
   SDL_Event e;
   e.window = event.get();
   return e;
-}
-
-/**
- * \brief Indicates whether or not two window event ID values are the same.
- *
- * \param lhs the left-hand side window event ID value.
- * \param rhs the right-hand side window event ID value.
- *
- * \return `true` if the window event ID values are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const window_event_id lhs,
-                                        const SDL_WindowEventID rhs) noexcept -> bool
-{
-  return static_cast<SDL_WindowEventID>(lhs) == rhs;
-}
-
-/// \copydoc operator==(window_event_id, SDL_WindowEventID)
-[[nodiscard]] constexpr auto operator==(const SDL_WindowEventID lhs,
-                                        const window_event_id rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two window event ID values aren't the same.
- *
- * \param lhs the left-hand side window event ID value.
- * \param rhs the right-hand side window event ID value.
- *
- * \return `true` if the window event ID values aren't the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const window_event_id lhs,
-                                        const SDL_WindowEventID rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(window_event_id, SDL_WindowEventID)
-[[nodiscard]] constexpr auto operator!=(const SDL_WindowEventID lhs,
-                                        const window_event_id rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
 }
 
 /// \} End of group event

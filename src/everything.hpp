@@ -99,6 +99,7 @@
 #include "centurion/events/text_input_event.hpp"
 #include "centurion/events/touch_finger_event.hpp"
 #include "centurion/events/window_event.hpp"
+#include "centurion/events/window_event_id.hpp"
 #include "centurion/filesystem/base_path.hpp"
 #include "centurion/filesystem/file.hpp"
 #include "centurion/filesystem/preferred_path.hpp"

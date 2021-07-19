@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 #include "events/event.hpp"
 
 using id = cen::window_event_id;
@@ -50,4 +52,27 @@ TEST(WindowEventID, InequalityOperator)
 
   ASSERT_NE(SDL_WINDOWEVENT_MINIMIZED, id::moved);
   ASSERT_FALSE(SDL_WINDOWEVENT_RESTORED != id::restored);
+}
+
+TEST(WindowEventID, ToString)
+{
+  ASSERT_EQ("none", cen::to_string(id::none));
+  ASSERT_EQ("shown", cen::to_string(id::shown));
+  ASSERT_EQ("hidden", cen::to_string(id::hidden));
+  ASSERT_EQ("exposed", cen::to_string(id::exposed));
+  ASSERT_EQ("moved", cen::to_string(id::moved));
+  ASSERT_EQ("resized", cen::to_string(id::resized));
+  ASSERT_EQ("size_changed", cen::to_string(id::size_changed));
+  ASSERT_EQ("minimized", cen::to_string(id::minimized));
+  ASSERT_EQ("maximized", cen::to_string(id::maximized));
+  ASSERT_EQ("restored", cen::to_string(id::restored));
+  ASSERT_EQ("enter", cen::to_string(id::enter));
+  ASSERT_EQ("leave", cen::to_string(id::leave));
+  ASSERT_EQ("focus_gained", cen::to_string(id::focus_gained));
+  ASSERT_EQ("focus_lost", cen::to_string(id::focus_lost));
+  ASSERT_EQ("close", cen::to_string(id::close));
+  ASSERT_EQ("take_focus", cen::to_string(id::take_focus));
+  ASSERT_EQ("hit_test", cen::to_string(id::hit_test));
+
+  std::cout << "Window event ID example: " << id::resized << '\n';
 }

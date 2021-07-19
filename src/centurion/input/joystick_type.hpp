@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -28,6 +33,76 @@ enum class joystick_type
   arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
   throttle = SDL_JOYSTICK_TYPE_THROTTLE
 };
+
+/**
+ * \brief Returns a textual version of the supplied joystick type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(joystick_type::guitar) == "guitar"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string
+{
+  switch (type)
+  {
+    case joystick_type::unknown:
+      return "unknown";
+
+    case joystick_type::game_controller:
+      return "game_controller";
+
+    case joystick_type::wheel:
+      return "wheel";
+
+    case joystick_type::arcade_stick:
+      return "arcade_stick";
+
+    case joystick_type::flight_stick:
+      return "flight_stick";
+
+    case joystick_type::dance_pad:
+      return "dance_pad";
+
+    case joystick_type::guitar:
+      return "guitar";
+
+    case joystick_type::drum_kit:
+      return "drum_kit";
+
+    case joystick_type::arcade_pad:
+      return "arcade_pad";
+
+    case joystick_type::throttle:
+      return "throttle";
+
+    default:
+      throw cen_error{"Did not recognize joystick type!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a joystick type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(joystick_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
 
 /// \name Joystick type comparison operators
 /// \{

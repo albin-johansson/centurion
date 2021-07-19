@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 TEST(JoystickType, Values)
 {
   ASSERT_EQ(cen::joystick_type::unknown, SDL_JOYSTICK_TYPE_UNKNOWN);
@@ -25,4 +27,20 @@ TEST(JoystickType, Values)
   ASSERT_EQ(SDL_JOYSTICK_TYPE_DRUM_KIT, cen::joystick_type::drum_kit);
   ASSERT_EQ(SDL_JOYSTICK_TYPE_ARCADE_PAD, cen::joystick_type::arcade_pad);
   ASSERT_EQ(SDL_JOYSTICK_TYPE_THROTTLE, cen::joystick_type::throttle);
+}
+
+TEST(JoystickType, ToString)
+{
+  ASSERT_EQ("unknown", cen::to_string(cen::joystick_type::unknown));
+  ASSERT_EQ("game_controller", cen::to_string(cen::joystick_type::game_controller));
+  ASSERT_EQ("wheel", cen::to_string(cen::joystick_type::wheel));
+  ASSERT_EQ("arcade_stick", cen::to_string(cen::joystick_type::arcade_stick));
+  ASSERT_EQ("flight_stick", cen::to_string(cen::joystick_type::flight_stick));
+  ASSERT_EQ("dance_pad", cen::to_string(cen::joystick_type::dance_pad));
+  ASSERT_EQ("guitar", cen::to_string(cen::joystick_type::guitar));
+  ASSERT_EQ("drum_kit", cen::to_string(cen::joystick_type::drum_kit));
+  ASSERT_EQ("arcade_pad", cen::to_string(cen::joystick_type::arcade_pad));
+  ASSERT_EQ("throttle", cen::to_string(cen::joystick_type::throttle));
+
+  std::cout << "Joystick type example: " << cen::joystick_type::guitar << '\n';
 }

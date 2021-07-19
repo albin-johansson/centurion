@@ -153,6 +153,7 @@
 #include "centurion/input/sensor.hpp"
 #include "centurion/input/sensor_type.hpp"
 #include "centurion/input/touch.hpp"
+#include "centurion/input/touch_device_type.hpp"
 #include "centurion/math/area.hpp"
 #include "centurion/math/point.hpp"
 #include "centurion/math/rect.hpp"

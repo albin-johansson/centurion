@@ -137,36 +137,6 @@ TEST(Controller, FromIndex)
   ASSERT_THROW(cen::controller::from_index(0), cen::sdl_error);
 }
 
-TEST(Controller, ControllerTypeEnum)
-{
-  using type = cen::controller_type;
-
-  ASSERT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
-  ASSERT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
-  ASSERT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
-  ASSERT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
-  ASSERT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
-  ASSERT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
-  ASSERT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
-
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  ASSERT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-  ASSERT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
-}
-
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 namespace cen {

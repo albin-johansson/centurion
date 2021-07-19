@@ -32,6 +32,7 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
+#include "controller_type.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"
@@ -40,38 +41,6 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \enum controller_type
- *
- * \brief Represents different game controller types.
- *
- * \see `SDL_GameControllerType`
- *
- * \since 5.0.0
- */
-enum class controller_type
-{
-  unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
-  xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
-  xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
-  ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
-  ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
-  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-                                                                 ///< Pro controller.
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \enum controller_axis
@@ -1406,57 +1375,6 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 
 /// \name Game controller comparison operators
 /// \{
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \brief Indicates whether or not to controller type values are the same.
- *
- * \param lhs the left-hand side controller type value.
- * \param rhs the right-hand side controller type value.
- *
- * \return `true` if the controller type values are the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_type lhs,
-                                        const SDL_GameControllerType rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_type, SDL_GameControllerType)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not to controller type values aren't the same.
- *
- * \param lhs the left-hand side controller type value.
- * \param rhs the right-hand side controller type value.
- *
- * \return `true` if the controller type values aren't the same; `false`
- * otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_type lhs,
-                                        const SDL_GameControllerType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_type, SDL_GameControllerType)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \brief Indicates whether or not two game controller axis values are the same.

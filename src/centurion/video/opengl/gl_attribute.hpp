@@ -6,6 +6,11 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup video
@@ -52,6 +57,127 @@ enum class gl_attribute
   context_reset_notification = SDL_GL_CONTEXT_RESET_NOTIFICATION,
   context_no_error = SDL_GL_CONTEXT_NO_ERROR
 };
+
+/**
+ * \brief Returns a textual version of the supplied OpenGL attribute.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(gl_attribute::flags) == "flags"`.
+ *
+ * \param attr the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string
+{
+  switch (attr)
+  {
+    case gl_attribute::red_size:
+      return "red_size";
+
+    case gl_attribute::green_size:
+      return "green_size";
+
+    case gl_attribute::blue_size:
+      return "blue_size";
+
+    case gl_attribute::alpha_size:
+      return "alpha_size";
+
+    case gl_attribute::buffer_size:
+      return "buffer_size";
+
+    case gl_attribute::depth_size:
+      return "depth_size";
+
+    case gl_attribute::stencil_size:
+      return "stencil_size";
+
+    case gl_attribute::accum_red_size:
+      return "accum_red_size";
+
+    case gl_attribute::accum_green_size:
+      return "accum_green_size";
+
+    case gl_attribute::accum_blue_size:
+      return "accum_blue_size";
+
+    case gl_attribute::accum_alpha_size:
+      return "accum_alpha_size";
+
+    case gl_attribute::stereo:
+      return "stereo";
+
+    case gl_attribute::egl:
+      return "egl";
+
+    case gl_attribute::flags:
+      return "flags";
+
+    case gl_attribute::double_buffer:
+      return "double_buffer";
+
+    case gl_attribute::accelerated_visual:
+      return "accelerated_visual";
+
+    case gl_attribute::retained_backing:
+      return "retained_backing";
+
+    case gl_attribute::share_with_current_context:
+      return "share_with_current_context";
+
+    case gl_attribute::framebuffer_srgb_capable:
+      return "framebuffer_srgb_capable";
+
+    case gl_attribute::multisample_buffers:
+      return "multisample_buffers";
+
+    case gl_attribute::multisample_samples:
+      return "multisample_samples";
+
+    case gl_attribute::context_major_version:
+      return "context_major_version";
+
+    case gl_attribute::context_minor_version:
+      return "context_minor_version";
+
+    case gl_attribute::context_profile_mask:
+      return "context_profile_mask";
+
+    case gl_attribute::context_release_behaviour:
+      return "context_release_behaviour";
+
+    case gl_attribute::context_reset_notification:
+      return "context_reset_notification";
+
+    case gl_attribute::context_no_error:
+      return "context_no_error";
+
+    default:
+      throw cen_error{"Did not recognize OpenGL attribute!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of an OpenGL attribute enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param attr the enumerator that will be printed.
+ *
+ * \see `to_string(gl_attribute)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::ostream&
+{
+  return stream << to_string(attr);
+}
 
 /// \} End of group video
 

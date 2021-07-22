@@ -137,6 +137,7 @@ set(SOURCE_FILES
     video/renderer_test.cpp
     video/renderer_handle_test.cpp
     video/scale_mode_test.cpp
+    video/screen_orientation_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp
     video/system_cursor_test.cpp

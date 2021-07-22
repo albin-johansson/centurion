@@ -4,8 +4,11 @@
 #include <SDL.h>
 
 #include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "../core/czstring.hpp"
+#include "../core/exception.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
 #include "pixel_format.hpp"
@@ -46,6 +49,62 @@ enum class screen_orientation : int
   portrait = SDL_ORIENTATION_PORTRAIT,
   portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
 };
+
+/**
+ * \brief Returns a textual version of the supplied screen orientation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(screen_orientation::landscape) == "landscape"`.
+ *
+ * \param orientation the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const screen_orientation orientation) -> std::string
+{
+  switch (orientation)
+  {
+    case screen_orientation::unknown:
+      return "unknown";
+
+    case screen_orientation::landscape:
+      return "landscape";
+
+    case screen_orientation::landscape_flipped:
+      return "landscape_flipped";
+
+    case screen_orientation::portrait:
+      return "portrait";
+
+    case screen_orientation::portrait_flipped:
+      return "portrait_flipped";
+
+    default:
+      throw cen_error{"Did not recognize screen orientation!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a screen orientation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param orientation the enumerator that will be printed.
+ *
+ * \see `to_string(screen_orientation)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const screen_orientation orientation)
+    -> std::ostream&
+{
+  return stream << to_string(orientation);
+}
 
 /**
  * \brief Sets whether or not screen savers are enabled.

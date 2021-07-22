@@ -165,23 +165,3 @@ TEST(Screen, GetPixelFormat)
   SDL_GetDesktopDisplayMode(0, &mode);
   ASSERT_EQ(static_cast<cen::pixel_format>(mode.format), cen::screen::get_pixel_format());
 }
-
-TEST(Screen, OrientationEnum)
-{
-  using sdl_orientation = SDL_DisplayOrientation;
-
-  ASSERT_EQ(SDL_ORIENTATION_UNKNOWN,
-            static_cast<sdl_orientation>(cen::screen_orientation::unknown));
-
-  ASSERT_EQ(SDL_ORIENTATION_LANDSCAPE,
-            static_cast<sdl_orientation>(cen::screen_orientation::landscape));
-
-  ASSERT_EQ(SDL_ORIENTATION_LANDSCAPE_FLIPPED,
-            static_cast<sdl_orientation>(cen::screen_orientation::landscape_flipped));
-
-  ASSERT_EQ(SDL_ORIENTATION_PORTRAIT,
-            static_cast<sdl_orientation>(cen::screen_orientation::portrait));
-
-  ASSERT_EQ(SDL_ORIENTATION_PORTRAIT_FLIPPED,
-            static_cast<sdl_orientation>(cen::screen_orientation::portrait_flipped));
-}

@@ -3,10 +3,6 @@
 
 #include <SDL.h>
 
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#pragma once
-#endif
-
 namespace cen {
 
 /// \addtogroup video

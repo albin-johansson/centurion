@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 #include "system/cpu.hpp"
 
 TEST(PixelFormat, Values)
@@ -164,4 +166,69 @@ TEST(PixelFormat, Values)
 
   ASSERT_NE(cen::pixel_format::yv12, SDL_PIXELFORMAT_BGR555);
   ASSERT_NE(SDL_PIXELFORMAT_INDEX4LSB, cen::pixel_format::abgr8888);
+}
+
+TEST(PixelFormat, ToString)
+{
+  ASSERT_EQ("unknown", cen::to_string(cen::pixel_format::unknown));
+  ASSERT_EQ("index1lsb", cen::to_string(cen::pixel_format::index1lsb));
+  ASSERT_EQ("index1msb", cen::to_string(cen::pixel_format::index1msb));
+  ASSERT_EQ("index4lsb", cen::to_string(cen::pixel_format::index4lsb));
+  ASSERT_EQ("index4msb", cen::to_string(cen::pixel_format::index4msb));
+  ASSERT_EQ("index8", cen::to_string(cen::pixel_format::index8));
+
+  ASSERT_EQ("rgb332", cen::to_string(cen::pixel_format::rgb332));
+
+  ASSERT_EQ("argb4444", cen::to_string(cen::pixel_format::argb4444));
+  ASSERT_EQ("rgba4444", cen::to_string(cen::pixel_format::rgba4444));
+  ASSERT_EQ("abgr4444", cen::to_string(cen::pixel_format::abgr4444));
+  ASSERT_EQ("bgra4444", cen::to_string(cen::pixel_format::bgra4444));
+
+  ASSERT_EQ("argb1555", cen::to_string(cen::pixel_format::argb1555));
+  ASSERT_EQ("rgba5551", cen::to_string(cen::pixel_format::rgba5551));
+  ASSERT_EQ("abgr1555", cen::to_string(cen::pixel_format::abgr1555));
+  ASSERT_EQ("bgra5551", cen::to_string(cen::pixel_format::bgra5551));
+
+  ASSERT_EQ("rgb565", cen::to_string(cen::pixel_format::rgb565));
+  ASSERT_EQ("bgr565", cen::to_string(cen::pixel_format::bgr565));
+
+  ASSERT_EQ("rgb24", cen::to_string(cen::pixel_format::rgb24));
+  ASSERT_EQ("bgr24", cen::to_string(cen::pixel_format::bgr24));
+
+  ASSERT_EQ("rgbx8888", cen::to_string(cen::pixel_format::rgbx8888));
+  ASSERT_EQ("bgrx8888", cen::to_string(cen::pixel_format::bgrx8888));
+  ASSERT_EQ("argb8888", cen::to_string(cen::pixel_format::argb8888));
+  ASSERT_EQ("rgba8888", cen::to_string(cen::pixel_format::rgba8888));
+  ASSERT_EQ("abgr8888", cen::to_string(cen::pixel_format::abgr8888));
+  ASSERT_EQ("bgra8888", cen::to_string(cen::pixel_format::bgra8888));
+
+  ASSERT_EQ("argb2101010", cen::to_string(cen::pixel_format::argb2101010));
+
+  ASSERT_EQ("yv12", cen::to_string(cen::pixel_format::yv12));
+  ASSERT_EQ("iyuv", cen::to_string(cen::pixel_format::iyuv));
+  ASSERT_EQ("yuy2", cen::to_string(cen::pixel_format::yuy2));
+  ASSERT_EQ("uyvy", cen::to_string(cen::pixel_format::uyvy));
+  ASSERT_EQ("yvyu", cen::to_string(cen::pixel_format::yvyu));
+
+  ASSERT_EQ("nv12", cen::to_string(cen::pixel_format::nv12));
+  ASSERT_EQ("nv21", cen::to_string(cen::pixel_format::nv21));
+
+  ASSERT_EQ("external_oes", cen::to_string(cen::pixel_format::external_oes));
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ASSERT_EQ("xrgb4444", cen::to_string(cen::pixel_format::xrgb4444));
+  ASSERT_EQ("xbgr4444", cen::to_string(cen::pixel_format::xbgr4444));
+  ASSERT_EQ("xrgb1555", cen::to_string(cen::pixel_format::xrgb1555));
+  ASSERT_EQ("xbgr1555", cen::to_string(cen::pixel_format::xbgr1555));
+  ASSERT_EQ("xrgb8888", cen::to_string(cen::pixel_format::xrgb8888));
+  ASSERT_EQ("xbgr8888", cen::to_string(cen::pixel_format::xbgr8888));
+
+#elif SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ASSERT_EQ("bgr444", cen::to_string(cen::pixel_format::bgr444));
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  std::cout << "Pixel format example: " << cen::pixel_format::rgba8888 << '\n';
 }

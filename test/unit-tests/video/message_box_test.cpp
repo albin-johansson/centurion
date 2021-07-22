@@ -139,33 +139,3 @@ TEST(MessageBox, ColorSchemeClass)
   }
 }
 
-TEST(MessageBox, DefaultButtonEnum)
-{
-  using button = cen::message_box::default_button;
-
-  ASSERT_EQ(button::return_key, SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  ASSERT_EQ(button::escape_key, SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
-
-  ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::return_key);
-  ASSERT_EQ(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, button::escape_key);
-
-  ASSERT_NE(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::escape_key);
-}
-
-TEST(MessageBox, ColorIdEnum)
-{
-  using id = cen::message_box::color_id;
-
-  ASSERT_EQ(id::button_selected, SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  ASSERT_EQ(id::button_background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  ASSERT_EQ(id::button_border, SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
-  ASSERT_EQ(id::background, SDL_MESSAGEBOX_COLOR_BACKGROUND);
-
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED, id::button_selected);
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND, id::button_background);
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_border);
-  ASSERT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND, id::background);
-
-  ASSERT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  ASSERT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
-}

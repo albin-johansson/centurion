@@ -127,6 +127,8 @@ set(SOURCE_FILES
     video/font_hint_test.cpp
     video/font_test.cpp
     video/graphics_drivers_test.cpp
+    video/message_box_color_id_test.cpp
+    video/message_box_default_button_test.cpp
     video/message_box_test.cpp
     video/message_box_type_test.cpp
     video/palette_test.cpp

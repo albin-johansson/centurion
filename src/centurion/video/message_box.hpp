@@ -10,6 +10,7 @@
 #include <algorithm>    // max, any_of
 #include <cstddef>      // nullptr_t
 #include <optional>     // optional
+#include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
 #include <utility>      // move
@@ -534,6 +535,113 @@ class message_box final
 };
 
 /**
+ * \brief Returns a textual version of the supplied default button.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(message_box::default_button::return_key) == "return_key"`.
+ *
+ * \param button the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const message_box::default_button button)
+    -> std::string
+{
+  switch (button)
+  {
+    case message_box::default_button::return_key:
+      return "return_key";
+
+    case message_box::default_button::escape_key:
+      return "escape_key";
+
+    default:
+      throw cen_error{"Did not recognize message box default button!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied color ID
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(message_box::color_id::text) == "text"`.
+ *
+ * \param id the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string
+{
+  switch (id)
+  {
+    case message_box::color_id::background:
+      return "background";
+
+    case message_box::color_id::text:
+      return "text";
+
+    case message_box::color_id::button_border:
+      return "button_border";
+
+    case message_box::color_id::button_background:
+      return "button_background";
+
+    case message_box::color_id::button_selected:
+      return "button_selected";
+
+    default:
+      throw cen_error{"Did not recognize message box color ID!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a default button enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param button the enumerator that will be printed.
+ *
+ * \see `to_string(message_box::default_button)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const message_box::default_button button)
+    -> std::ostream&
+{
+  return stream << to_string(button);
+}
+
+/**
+ * \brief Prints a textual representation of a color ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(message_box::color_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const message_box::color_id id)
+    -> std::ostream&
+{
+  return stream << to_string(id);
+}
+
+/// \name Message box default button comparison operators
+/// \{
+
+/**
  * \brief Indicates whether or not the flags represent the same value.
  *
  * \param lhs the left-hand side message box button flag.
@@ -583,6 +691,11 @@ class message_box final
   return !(lhs == rhs);
 }
 
+/// \} End of message box default button comparison operators
+
+/// \name Message box color ID comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not two message box are colors the same.
  *
@@ -631,7 +744,9 @@ class message_box final
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of message box color ID comparison operators
+
+/// \} End of group video
 
 }  // namespace cen
 

@@ -124,6 +124,7 @@ set(SOURCE_FILES
     video/color_test.cpp
     video/cursor_test.cpp
     video/font_cache_test.cpp
+    video/font_hint_test.cpp
     video/font_test.cpp
     video/graphics_drivers_test.cpp
     video/message_box_test.cpp

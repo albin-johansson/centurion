@@ -66,6 +66,58 @@ enum class font_hint : int
 };
 
 /**
+ * \brief Returns a textual version of the supplied font hint.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(font_hint::light) == "light"`.
+ *
+ * \param hint the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string
+{
+  switch (hint)
+  {
+    case font_hint::normal:
+      return "normal";
+
+    case font_hint::light:
+      return "light";
+
+    case font_hint::mono:
+      return "mono";
+
+    case font_hint::none:
+      return "none";
+
+    default:
+      throw cen_error{"Did not recognize font hint!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a font hint enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param hint the enumerator that will be printed.
+ *
+ * \see `to_string(font_hint)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostream&
+{
+  return stream << to_string(hint);
+}
+
+/**
  * \class font
  *
  * \brief Represents a TrueType font.

@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
 #include "../core/integers.hpp"
 
 namespace cen {
@@ -29,6 +33,52 @@ enum class button_order : u32
   right_to_left
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 };
+
+/**
+ * \brief Returns a textual version of the supplied button order.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(button_order::left_to_right) == "left_to_right"`.
+ *
+ * \param order the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const button_order order) -> std::string
+{
+  switch (order)
+  {
+    case button_order::left_to_right:
+      return "left_to_right";
+
+    case button_order::right_to_left:
+      return "right_to_left";
+
+    default:
+      throw cen_error{"Did not recognize button order!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a button order enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param order the enumerator that will be printed.
+ *
+ * \see `to_string(button_order)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const button_order order) -> std::ostream&
+{
+  return stream << to_string(order);
+}
 
 /// \} End of group video
 

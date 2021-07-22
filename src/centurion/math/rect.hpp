@@ -84,6 +84,8 @@ using frect = basic_rect<float>;
  *
  * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
  *
+ * \serializable
+ *
  * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
  * \see `irect`

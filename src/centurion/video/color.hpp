@@ -40,9 +40,11 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
+ * \serializable
+ *
  * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
  * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
- * provided in the `cen::colors` namespace,
+ * provided in the `colors` namespace,
  *
  * \since 3.0.0
  */

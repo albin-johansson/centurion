@@ -28,6 +28,8 @@ using unicode = u16;
  *
  * \brief Represents a null-terminated string encoded in unicode.
  *
+ * \serializable
+ *
  * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
  * similar interface to that of `std::string`.
  */

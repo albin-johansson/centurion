@@ -31,6 +31,8 @@ namespace cen {
  *
  * \brief Represents a key code (or virtual key).
  *
+ * \serializable
+ *
  * \details Key codes are mapped to the current layout of the keyboard and correlate to a
  * `scan_code`. Whilst scan codes identify the *location* of a key press, the
  * corresponding key codes give the key press *meaning* in the context of the current

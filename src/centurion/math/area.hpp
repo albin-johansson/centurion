@@ -57,6 +57,8 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
+ * \serializable
+ *
  * \tparam T the type of the components of the area. Must be either an integral or
  * floating-point type. Can't be `bool`.
  *

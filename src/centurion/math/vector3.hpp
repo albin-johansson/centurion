@@ -24,6 +24,8 @@ namespace cen {
  *
  * \brief A simple representation of a 3-dimensional vector.
  *
+ * \serializable
+ *
  * \tparam T the representation type, e.g. `float` or `double`.
  *
  * \since 5.2.0

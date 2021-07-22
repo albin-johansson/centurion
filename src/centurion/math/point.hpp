@@ -109,6 +109,8 @@ using fpoint = basic_point<float>;
  *
  * \brief Represents a two-dimensional point.
  *
+ * \serializable
+ *
  * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
  * representation is specified by the type parameter.
  *

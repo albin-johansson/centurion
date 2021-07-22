@@ -31,6 +31,8 @@ namespace cen {
  *
  * \brief Represents a scan code.
  *
+ * \serializable
+ *
  * \details Scan codes represent the physical location of a key on the
  * keyboard. Use the associated key code associated with the location to give
  * the key press meaning.

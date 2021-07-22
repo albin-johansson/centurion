@@ -117,6 +117,7 @@ set(SOURCE_FILES
     thread/try_lock_test.cpp
 
     video/gl/gl_attribute_test.cpp
+    video/gl/gl_swap_interval_test.cpp
 
     video/blend_mode_test.cpp
     video/button_order_test.cpp

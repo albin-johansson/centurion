@@ -8,9 +8,11 @@
 
 #include <cassert>   // assert
 #include <optional>  // optional
+#include <ostream>   // ostream
 #include <string>    // string
 
 #include "../../core/czstring.hpp"
+#include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
 #include "../../core/result.hpp"
 #include "../../core/to_underlying.hpp"
@@ -37,6 +39,56 @@ enum class gl_swap_interval : int
   synchronized = 1,    ///< Updates synchronized with vertical retrace (VSync).
   late_immediate = -1  ///< Allow immediate late swaps, instead of waiting for retrace.
 };
+
+/**
+ * \brief Returns a textual version of the supplied swap interval attribute.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(gl_swap_interval::synchronized) == "synchronized"`.
+ *
+ * \param interval the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string
+{
+  switch (interval)
+  {
+    case gl_swap_interval::immediate:
+      return "immediate";
+
+    case gl_swap_interval::synchronized:
+      return "synchronized";
+
+    case gl_swap_interval::late_immediate:
+      return "late_immediate";
+
+    default:
+      throw cen_error{"Did not recognize swap interval!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a swap interval enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param interval the enumerator that will be printed.
+ *
+ * \see `to_string(gl_swap_interval)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
+    -> std::ostream&
+{
+  return stream << to_string(interval);
+}
 
 }  // namespace cen
 

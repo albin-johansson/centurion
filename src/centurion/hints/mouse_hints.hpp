@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::mouse {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::mouse {
 
 struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
 {
@@ -71,8 +71,8 @@ struct relative_scaling final : detail::bool_hint<relative_scaling>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-}  // namespace cen::hint::mouse
-
 /// \} End of group hints
+
+}  // namespace cen::hint::mouse
 
 #endif  // CENTURION_MOUSE_HINTS_HEADER

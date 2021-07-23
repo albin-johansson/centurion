@@ -24,6 +24,9 @@
 
 namespace cen {
 
+/// \addtogroup video
+/// \{
+
 /**
  * \enum gl_swap_interval
  *
@@ -100,6 +103,8 @@ inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
 
 /// \} End of streaming
 
+/// \} End of group video
+
 }  // namespace cen
 
 /**
@@ -114,6 +119,9 @@ inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
 namespace cen::gl {
 
 /// \addtogroup video
+/// \{
+
+/// \name OpenGL functions
 /// \{
 
 /**
@@ -327,6 +335,8 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }
+
+/// \} End of OpenGL functions
 
 /// \} End of group video
 

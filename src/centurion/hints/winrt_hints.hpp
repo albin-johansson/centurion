@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::winrt {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::winrt {
 
 struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
 {
@@ -35,8 +35,8 @@ struct handle_back_button final : detail::bool_hint<handle_back_button>
   }
 };
 
-}  // namespace cen::hint::winrt
-
 /// \} End of group hints
+
+}  // namespace cen::hint::winrt
 
 #endif  // CENTURION_WINRT_HINTS_HEADER

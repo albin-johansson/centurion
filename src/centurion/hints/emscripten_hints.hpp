@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::emscripten {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::emscripten {
 
 struct keyboard_element final : detail::string_hint<keyboard_element>
 {
@@ -31,8 +31,8 @@ struct asyncify final : detail::bool_hint<asyncify>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-}  // namespace cen::hint::emscripten
-
 /// \} End of group hints
+
+}  // namespace cen::hint::emscripten
 
 #endif  // CENTURION_EMSCRIPTEN_HINTS_HEADER

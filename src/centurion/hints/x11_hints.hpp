@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::x11 {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::x11 {
 
 struct net_wm_ping final : detail::bool_hint<net_wm_ping>
 {
@@ -71,8 +71,8 @@ struct window_visual_id final : detail::string_hint<window_visual_id>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-}  // namespace cen::hint::x11
-
 /// \} End of group hints
+
+}  // namespace cen::hint::x11
 
 #endif  // CENTURION_X11_HINTS_HEADER

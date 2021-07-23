@@ -3,9 +3,6 @@
 
 #include "color.hpp"
 
-/// \addtogroup video
-/// \{
-
 /**
  * \namespace cen::colors
  *
@@ -14,6 +11,9 @@
  * \see cen::color
  */
 namespace cen::colors {
+
+/// \addtogroup video
+/// \{
 
 /**
  * \brief An invisible color. Hex: 000000.
@@ -1058,8 +1058,8 @@ inline constexpr color yellow{0xFF, 0xFF, 0};
  */
 inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
-}  // namespace cen::colors
-
 /// \} End of group video
+
+}  // namespace cen::colors
 
 #endif  // CENTURION_COLORS_HEADER

@@ -5,9 +5,6 @@
 
 #include "../core/time.hpp"
 
-/// \addtogroup system
-/// \{
-
 /**
  * \namespace cen::counter
  *
@@ -16,6 +13,12 @@
  * \since 5.0.0
  */
 namespace cen::counter {
+
+/// \addtogroup system
+/// \{
+
+/// \name Counter functions
+/// \{
 
 /**
  * \brief Returns the frequency of the system high-performance counter.
@@ -72,8 +75,10 @@ template <typename T>
   return milliseconds<u32>{SDL_GetTicks()};
 }
 
-}  // namespace cen::counter
+/// \} End of counter functions
 
 /// \} End of group system
+
+}  // namespace cen::counter
 
 #endif  // CENTURION_TIMER_HEADER

@@ -6,10 +6,10 @@
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 
+namespace cen::hint::windows {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::windows {
 
 struct d3d_compiler final : enum_hint<d3d_compiler>
 {
@@ -64,8 +64,8 @@ struct int_resource_icon_small final : detail::string_hint<int_resource_icon_sma
   }
 };
 
-}  // namespace cen::hint::windows
-
 /// \} End of group hints
+
+}  // namespace cen::hint::windows
 
 #endif  // CENTURION_WINDOWS_HINTS_HEADER

@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::mac {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::mac {
 
 struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
 {
@@ -36,8 +36,8 @@ struct ctrl_click_emulate_right_click final
   }
 };
 
-}  // namespace cen::hint::mac
-
 /// \} End of group hints
+
+}  // namespace cen::hint::mac
 
 #endif  // CENTURION_MAC_HINTS_HEADER

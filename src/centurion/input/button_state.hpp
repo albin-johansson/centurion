@@ -11,6 +11,9 @@
 
 namespace cen {
 
+/// \addtogroup input
+/// \{
+
 /**
  * \enum button_state
  *
@@ -83,6 +86,8 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 }
 
 /// \} End of streaming
+
+/// \} End of group input
 
 }  // namespace cen
 

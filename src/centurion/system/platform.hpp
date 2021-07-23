@@ -139,6 +139,9 @@ inline auto open_url(const std::string& url) noexcept -> result
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+/// \name Platform information functions
+/// \{
+
 /**
  * \brief Returns the value that represents the current platform.
  *
@@ -348,6 +351,8 @@ inline auto open_url(const std::string& url) noexcept -> result
   return false;
 #endif
 }
+
+/// \} End of platform information functions
 
 /// \} End of group system
 

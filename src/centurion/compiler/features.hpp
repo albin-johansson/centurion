@@ -1,6 +1,9 @@
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
 
+/// \addtogroup compiler
+/// \{
+
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
 #define CENTURION_HAS_FEATURE_CPP20
@@ -40,5 +43,7 @@
 #endif  // __cpp_lib_three_way_comparison
 
 #endif  // __has_include
+
+/// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER

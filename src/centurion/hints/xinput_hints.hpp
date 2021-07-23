@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::xinput {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::xinput {
 
 struct is_enabled final : detail::bool_hint<is_enabled>
 {
@@ -27,8 +27,8 @@ struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mappi
   }
 };
 
-}  // namespace cen::hint::xinput
-
 /// \} End of group hints
+
+}  // namespace cen::hint::xinput
 
 #endif  // CENTURION_XINPUT_HINTS_HEADER

@@ -11,17 +11,22 @@
 #include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 
-/// \addtogroup system
-/// \{
-
 /**
  * \namespace cen::clipboard
  *
  * \brief Provides functions related to managing the clipboard.
  *
+ * \ingroup system
+ *
  * \since 5.0.0
  */
 namespace cen::clipboard {
+
+/// \addtogroup system
+/// \{
+
+/// \name Clipboard functions
+/// \{
 
 /**
  * \brief Indicates whether or not there is a clipboard exists and that it contains
@@ -82,8 +87,10 @@ inline auto set_text(const std::string& text) noexcept -> result
   return set_text(text.c_str());
 }
 
-}  // namespace cen::clipboard
+/// \} End of clipboard functions
 
 /// \} End of group system
+
+}  // namespace cen::clipboard
 
 #endif  // CENTURION_CLIPBOARD_HEADER

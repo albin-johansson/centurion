@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::android {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::android {
 
 struct block_on_pause final : detail::bool_hint<block_on_pause>
 {
@@ -57,8 +57,8 @@ struct pause_background_audio final : detail::bool_hint<pause_background_audio>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-}  // namespace cen::hint::android
-
 /// \} End of group hints
+
+}  // namespace cen::hint::android
 
 #endif  // CENTURION_ANDROID_HINTS_HEADER

@@ -9,10 +9,10 @@
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 
+namespace cen::hint::qtwayland {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::qtwayland {
 
 struct content_orientation final : enum_hint<content_orientation>
 {
@@ -37,8 +37,8 @@ struct window_flags final : detail::string_hint<window_flags>
   }
 };
 
-}  // namespace cen::hint::qtwayland
-
 /// \} End of group hints
+
+}  // namespace cen::hint::qtwayland
 
 #endif  // CENTURION_QTWAYLAND_HINTS_HEADER

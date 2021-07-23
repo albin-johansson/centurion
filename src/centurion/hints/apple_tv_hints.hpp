@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::appletv {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::appletv {
 
 struct controller_ui_events final : detail::bool_hint<controller_ui_events>
 {
@@ -27,8 +27,8 @@ struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
   }
 };
 
-}  // namespace cen::hint::appletv
-
 /// \} End of group hints
+
+}  // namespace cen::hint::appletv
 
 #endif  // CENTURION_APPLE_TV_HINTS_HEADER

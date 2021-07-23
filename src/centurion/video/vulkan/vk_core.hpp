@@ -16,17 +16,22 @@
 #include "../../core/result.hpp"
 #include "../window.hpp"
 
-/// \addtogroup video
-/// \{
-
 /**
  * \namespace cen::vk
  *
  * \brief Contains Vulkan-related components.
  *
+ * \ingroup video
+ *
  * \since 6.0.0
  */
 namespace cen::vk {
+
+/// \addtogroup video
+/// \{
+
+/// \name Vulkan functions
+/// \{
 
 /**
  * \brief Returns the address of the `vkGetInstanceProcAddr` function.
@@ -114,9 +119,11 @@ template <typename T>
   return {width, height};
 }
 
-}  // namespace cen::vk
+/// \} End of Vulkan functions
 
 /// \} End of group video
+
+}  // namespace cen::vk
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VULKAN_HEADER

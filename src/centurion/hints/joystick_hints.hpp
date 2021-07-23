@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::joystick {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::joystick {
 
 struct allow_background_events final : detail::bool_hint<allow_background_events>
 {
@@ -115,8 +115,8 @@ struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-}  // namespace cen::hint::joystick
-
 /// \} End of group hints
+
+}  // namespace cen::hint::joystick
 
 #endif  // CENTURION_JOYSTICK_HINTS_HEADER

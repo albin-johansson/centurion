@@ -10,19 +10,22 @@
 #include "../detail/any_eq.hpp"
 #include "power_state.hpp"
 
-namespace cen {
-
-/// \addtogroup system
-/// \{
-
 /**
  * \namespace cen::battery
  *
  * \brief Contains utilities related to the battery of the system.
  *
+ * \ingroup system
+ *
  * \since 5.0.0
  */
-namespace battery {
+namespace cen::battery {
+
+/// \addtogroup system
+/// \{
+
+/// \name Battery functions
+/// \{
 
 /**
  * \brief Returns the seconds of battery life that is remaining.
@@ -163,10 +166,10 @@ namespace battery {
   return !detail::any_eq(state(), power_state::no_battery, power_state::unknown);
 }
 
-}  // namespace battery
+/// \} End of battery functions
 
 /// \} End of group system
 
-}  // namespace cen
+}  // namespace cen::battery
 
 #endif  // CENTURION_BATTERY_HEADER

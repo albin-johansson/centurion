@@ -18,6 +18,9 @@
 /// \brief Contains components related to window-management, rendering, fonts,
 /// etc.
 
+/// \defgroup filesystem Filesystem
+/// \brief Contains utilities related to files and directories.
+
 /// \defgroup system System
 /// \brief Contains various utilities related to system resources.
 

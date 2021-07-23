@@ -13,10 +13,10 @@
 #include "../../core/czstring.hpp"
 #include "../../core/exception.hpp"
 
+namespace cen {
+
 /// \addtogroup video
 /// \{
-
-namespace cen {
 
 /**
  * \class vk_library
@@ -54,9 +54,9 @@ class vk_library final
   }
 };
 
-}  // namespace cen
-
 /// \} End of group video
+
+}  // namespace cen
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VK_LIBRARY_HEADER

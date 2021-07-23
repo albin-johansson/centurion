@@ -6,10 +6,10 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
+namespace cen::hint::d3d {
+
 /// \addtogroup hints
 /// \{
-
-namespace cen::hint::d3d {
 
 struct v11_debug final : detail::bool_hint<v11_debug>
 {
@@ -27,8 +27,8 @@ struct thread_safe final : detail::bool_hint<thread_safe>
   }
 };
 
-}  // namespace cen::hint::d3d
-
 /// \} End of group hints
+
+}  // namespace cen::hint::d3d
 
 #endif  // CENTURION_D3D_HINTS_HEADER

@@ -15,10 +15,10 @@
 #include "../../detail/owner_handle_api.hpp"
 #include "../window.hpp"
 
+namespace cen::gl {
+
 /// \addtogroup video
 /// \{
-
-namespace cen::gl {
 
 template <typename T>
 class basic_context;
@@ -141,15 +141,22 @@ class basic_context final
   std::unique_ptr<void, deleter> m_context;
 };
 
+/// \} End of group video
+
 }  // namespace cen::gl
 
 namespace cen {
+
+/// \addtogroup video
+/// \{
+
 /// Workaround for slight inconsistency where other OpenGL components feature "gl_"-prefix
 using gl_context = gl::context;
 using gl_context_handle = gl::context_handle;
-}  // namespace cen
 
 /// \} End of group video
+
+}  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
 #endif  // CENTURION_GL_CONTEXT_HEADER

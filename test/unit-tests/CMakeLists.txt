@@ -103,6 +103,7 @@ set(SOURCE_FILES
     system/cpu_test.cpp
     system/file_test.cpp
     system/locale_test.cpp
+    system/platform_id_test.cpp
     system/platform_test.cpp
     system/power_state_test.cpp
     system/preferred_path_test.cpp

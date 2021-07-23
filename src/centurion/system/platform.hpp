@@ -5,9 +5,11 @@
 
 #include <cassert>   // assert
 #include <optional>  // optional
+#include <ostream>   // ostream
 #include <string>    // string
 
 #include "../core/czstring.hpp"
+#include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "../detail/czstring_eq.hpp"
@@ -33,6 +35,64 @@ enum class platform_id
   ios,       ///< Represents the Apple iOS platform.
   android    ///< Represents the Android platform.
 };
+
+/**
+ * \brief Returns a textual version of the supplied platform ID.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(platform_id::windows) == "windows"`.
+ *
+ * \param id the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const platform_id id) -> std::string
+{
+  switch (id)
+  {
+    case platform_id::unknown:
+      return "unknown";
+
+    case platform_id::windows:
+      return "windows";
+
+    case platform_id::mac_osx:
+      return "mac_osx";
+
+    case platform_id::linux_os:
+      return "linux_os";
+
+    case platform_id::ios:
+      return "ios";
+
+    case platform_id::android:
+      return "android";
+
+    default:
+      throw cen_error{"Did not recognize platform ID!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a platform ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(platform_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

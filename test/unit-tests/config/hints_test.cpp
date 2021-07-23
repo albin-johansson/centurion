@@ -156,9 +156,7 @@ void test_enum_value(const T& value)
 template <typename Hint, typename... T>
 void test_enum_hint(T&&... value)
 {
-  test_hint<Hint>([=] {
-    (test_enum_value<Hint>(value), ...);
-  });
+  test_hint<Hint>([=] { (test_enum_value<Hint>(value), ...); });
 }
 
 template <typename T>

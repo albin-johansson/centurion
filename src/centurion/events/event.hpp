@@ -502,7 +502,7 @@ class event final
   }
 };
 
-/// \} End of event group
+/// \} End of group event
 
 }  // namespace cen
 

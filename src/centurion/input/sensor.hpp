@@ -453,7 +453,7 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
   return SDL_STANDARD_GRAVITY;
 }
 
-/// \} End of input group
+/// \} End of group input
 
 }  // namespace cen
 

@@ -120,7 +120,8 @@ namespace cen {
 }
 
 /// \} End of swap from little endian to native format
-/// \} End of system group
+
+/// \} End of group system
 
 }  // namespace cen
 

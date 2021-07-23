@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "video/font.hpp"
-#include "core/to_underlying.hpp"
+#include <iostream>  // cout
 
-#include <iostream> // cout
+#include "core/to_underlying.hpp"
+#include "video/font.hpp"
 
 TEST(FontHint, Values)
 {

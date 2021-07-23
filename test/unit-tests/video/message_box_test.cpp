@@ -138,4 +138,3 @@ TEST(MessageBox, ColorSchemeClass)
     check(cen::message_box::color_id::button_selected, cen::colors::wheat);
   }
 }
-

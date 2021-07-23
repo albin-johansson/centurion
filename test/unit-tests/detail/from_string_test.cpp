@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "detail/from_string.hpp"
+
+#include <gtest/gtest.h>
 
 TEST(FromString, IntegerBase10)
 {

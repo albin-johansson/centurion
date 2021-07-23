@@ -6,15 +6,15 @@
 #include <cstddef>  // byte
 
 #ifdef CENTURION_HAS_FEATURE_CONCEPTS
-  #include <concepts>
+#include <concepts>
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 #ifdef CENTURION_HAS_FEATURE_FORMAT
-  #include <format>
+#include <format>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
-  #include <memory_resource>
+#include <memory_resource>
 #endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #ifdef CENTURION_HAS_FEATURE_CONCEPTS

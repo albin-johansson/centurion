@@ -48,9 +48,8 @@ TEST(EventDispatcher, Bind)
   // clang-format on
 
   bool visitedLambda{};
-  dispatcher.bind<cen::window_event>().to([&](const cen::window_event&) {
-    visitedLambda = true;
-  });
+  dispatcher.bind<cen::window_event>().to(
+      [&](const cen::window_event&) { visitedLambda = true; });
 
   cen::window_event windowEvent;
   ASSERT_TRUE(cen::event::push(windowEvent));
@@ -72,14 +71,11 @@ TEST(EventDispatcher, Reset)
   event_dispatcher dispatcher;
   ASSERT_EQ(0, dispatcher.active_count());
 
-  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
-  });
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
 
-  dispatcher.bind<cen::window_event>().to([](cen::window_event) {
-  });
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {});
 
-  dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {
-  });
+  dispatcher.bind<cen::controller_button_event>().to([](cen::controller_button_event) {});
 
   ASSERT_EQ(3, dispatcher.active_count());
 
@@ -94,17 +90,14 @@ TEST(EventDispatcher, ActiveCount)
   event_dispatcher dispatcher;
   ASSERT_EQ(0, dispatcher.active_count());
 
-  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
-  });
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
   ASSERT_EQ(1, dispatcher.active_count());
 
   // Bind same event to another lambda, should replace the previous handler
-  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {
-  });
+  dispatcher.bind<cen::quit_event>().to([](cen::quit_event) {});
   ASSERT_EQ(1, dispatcher.active_count());
 
-  dispatcher.bind<cen::window_event>().to([](cen::window_event) {
-  });
+  dispatcher.bind<cen::window_event>().to([](cen::window_event) {});
   ASSERT_EQ(2, dispatcher.active_count());
 }
 

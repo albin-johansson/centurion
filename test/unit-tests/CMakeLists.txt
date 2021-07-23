@@ -70,6 +70,7 @@ set(SOURCE_FILES
     input/controller_axis_test.cpp
     input/controller_bind_type_test.cpp
     input/controller_button_test.cpp
+    input/controller_mapping_result_test.cpp
     input/controller_test.cpp
     input/controller_type_test.cpp
     input/haptic_direction_type_test.cpp

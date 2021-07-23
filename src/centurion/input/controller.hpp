@@ -82,6 +82,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn’t work for some
  * reason, you should be able to find a copy in the Centurion test resources folder).
  *
+ * \todo Centurion 7: Move `mapping_result` out of `basic_controller`.
+ *
  * \since 5.0.0
  *
  * \see `controller`
@@ -1244,6 +1246,84 @@ class basic_controller final
   };
   detail::pointer_manager<T, SDL_GameController, deleter> m_controller;
 };
+
+/**
+ * \brief Returns a textual version of the supplied controller mapping result.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller::mapping_result::added) == "added"`.
+ *
+ * \param result the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const controller::mapping_result result)
+    -> std::string
+{
+  switch (result)
+  {
+    case controller::mapping_result::error:
+      return "error";
+
+    case controller::mapping_result::updated:
+      return "updated";
+
+    case controller::mapping_result::added:
+      return "added";
+
+    default:
+      throw cen_error{"Did not recognize controller mapping result!"};
+  }
+}
+
+/// \see to_string(controller::mapping_result)
+[[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
+    -> std::string
+{
+  switch (result)
+  {
+    case controller_handle::mapping_result::error:
+      return "error";
+
+    case controller_handle::mapping_result::updated:
+      return "updated";
+
+    case controller_handle::mapping_result::added:
+      return "added";
+
+    default:
+      throw cen_error{"Did not recognize controller mapping result!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a controller mapping result enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param result the enumerator that will be printed.
+ *
+ * \see `to_string(controller::mapping_result)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller::mapping_result result)
+    -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
+/// \see operator<<(std::ostream&, controller::mapping_result)
+inline auto operator<<(std::ostream& stream,
+                       const controller_handle::mapping_result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
 
 /**
  * \brief Returns a textual representation of a game controller.

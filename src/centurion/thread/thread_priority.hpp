@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup thread
@@ -26,6 +31,59 @@ enum class thread_priority
   critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
   // clang-format on
 };
+
+/**
+ * \brief Returns a textual version of the supplied thread priority.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(thread_priority::high) == "high"`.
+ *
+ * \param priority the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string
+{
+  switch (priority)
+  {
+    case thread_priority::low:
+      return "low";
+
+    case thread_priority::normal:
+      return "normal";
+
+    case thread_priority::high:
+      return "high";
+
+    case thread_priority::critical:
+      return "critical";
+
+    default:
+      throw cen_error{"Did not recognize thread priority!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a thread priority enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param priority the enumerator that will be printed.
+ *
+ * \see `to_string(thread_priority)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const thread_priority priority)
+    -> std::ostream&
+{
+  return stream << to_string(priority);
+}
 
 /// \name Thread priority comparison operators
 /// \{

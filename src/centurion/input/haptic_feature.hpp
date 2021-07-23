@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -34,6 +39,95 @@ enum class haptic_feature
   status = SDL_HAPTIC_STATUS,
   pause = SDL_HAPTIC_PAUSE
 };
+
+/**
+ * \brief Returns a textual version of the supplied haptic feature.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(haptic_feature::spring) == "spring"`.
+ *
+ * \param feature the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string
+{
+  switch (feature)
+  {
+    case haptic_feature::constant:
+      return "constant";
+
+    case haptic_feature::sine:
+      return "sine";
+
+    case haptic_feature::left_right:
+      return "left_right";
+
+    case haptic_feature::triangle:
+      return "triangle";
+
+    case haptic_feature::sawtooth_up:
+      return "sawtooth_up";
+
+    case haptic_feature::sawtooth_down:
+      return "sawtooth_down";
+
+    case haptic_feature::ramp:
+      return "ramp";
+
+    case haptic_feature::spring:
+      return "spring";
+
+    case haptic_feature::damper:
+      return "damper";
+
+    case haptic_feature::inertia:
+      return "inertia";
+
+    case haptic_feature::friction:
+      return "friction";
+
+    case haptic_feature::custom:
+      return "custom";
+
+    case haptic_feature::gain:
+      return "gain";
+
+    case haptic_feature::autocenter:
+      return "autocenter";
+
+    case haptic_feature::status:
+      return "status";
+
+    case haptic_feature::pause:
+      return "pause";
+
+    default:
+      throw cen_error{"Did not recognize haptic feature!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a haptic feature enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param feature the enumerator that will be printed.
+ *
+ * \see `to_string(haptic_feature)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const haptic_feature feature)
+    -> std::ostream&
+{
+  return stream << to_string(feature);
+}
 
 /// \} End of group input
 

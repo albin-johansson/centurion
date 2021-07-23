@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <sstream>  // stringstream
+#include <string>   // string
+
 #include "../core/integers.hpp"
 #include "../core/to_underlying.hpp"
 
@@ -112,6 +116,88 @@ using key_mod = key_modifier;
 }
 
 /// \} End of key modifier bitwise operators
+
+/**
+ * \brief Returns a textual version of the supplied key modifiers.
+ *
+ * \details This function returns a string of comma separated values (CSV) if the supplied
+ * enumerator is a composite of more than one key modifier. For example,
+ * `to_string(key_mod::left_shift | key_mod::right_ctrl) == "left_shift,right_ctrl"`. The
+ * order of the enumerators in the returned string mirrors the enumerator declaration
+ * order.
+ *
+ * \details The comma is omitted if you supply an enumerator that only represents a single
+ * key modifier.
+ *
+ * \details The empty string is returned if an invalid enumerator is provided.
+ *
+ * \details Composite enumerators, such as `key_mod::shift`, will be printed as separate
+ * enumerators, i.e. `"left_shift,right_shift"` in the case of `key_mod::shift`.
+ *
+ * \param mods the key modifiers that will be converted.
+ *
+ * \return a string of comma separated values of key modifier names.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const key_mod mods) -> std::string
+{
+  if (mods == key_mod::none)
+  {
+    return "none";
+  }
+
+  const auto mask = to_underlying(mods);
+  std::stringstream stream;
+
+  auto check = [&stream, mask, count = 0](const key_mod mod, const czstring str) mutable {
+    if (mask & to_underlying(mod))
+    {
+      if (count != 0)
+      {
+        stream << ',';
+      }
+
+      stream << str;
+      ++count;
+    }
+  };
+
+  check(key_mod::left_shift, "left_shift");
+  check(key_mod::right_shift, "right_shift");
+
+  check(key_mod::left_ctrl, "left_ctrl");
+  check(key_mod::right_ctrl, "right_ctrl");
+
+  check(key_mod::left_alt, "left_alt");
+  check(key_mod::right_alt, "right_alt");
+
+  check(key_mod::left_gui, "left_gui");
+  check(key_mod::right_gui, "right_gui");
+
+  check(key_mod::num, "num");
+  check(key_mod::caps, "caps");
+  check(key_mod::mode, "mode");
+
+  return stream.str();
+}
+
+/**
+ * \brief Prints a textual representation of the supplied key modifiers.
+ *
+ * \param stream the output stream that will be used.
+ * \param mods the key modifiers that will be printed.
+ *
+ * \see `to_string(key_mod)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream&
+{
+  return stream << to_string(mods);
+}
 
 /// \} End of group input
 

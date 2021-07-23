@@ -51,27 +51,67 @@ enum class key_modifier : u16
   reserved = KMOD_RESERVED
 };
 
+/**
+ * \typedef key_mod
+ *
+ * \brief Simple shorthand for `key_modifier`.
+ *
+ * \note In a future major release, `key_modifier` will likely be renamed to `key_mod`.
+ *
+ * \since 6.2.0
+ */
 using key_mod = key_modifier;
 
-/// \since 6.1.0
-[[nodiscard]] constexpr auto operator~(const key_mod mod) noexcept -> key_mod
+/// \name Key modifier bitwise operators
+/// \{
+
+/**
+ * \brief Returns the bitwise negation of the supplied modifiers.
+ *
+ * \param mods the modifiers that will be inverted.
+ *
+ * \return the bitwise negation of the supplied modifiers.
+ *
+ * \since 6.1.0
+ */
+[[nodiscard]] constexpr auto operator~(const key_mod mods) noexcept -> key_mod
 {
-  return static_cast<key_mod>(~to_underlying(mod));
+  return static_cast<key_mod>(~to_underlying(mods));
 }
 
-/// \since 6.1.0
+/**
+ * \brief Combines two groups of modifiers by applying bitwise OR.
+ *
+ * \param a the first group of modifiers.
+ * \param b the second group of modifiers.
+ *
+ * \return the bitwise combination of the two groups of modifiers.
+ *
+ * \since 6.1.0
+ */
 [[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
     -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
 
-/// \since 6.1.0
+/**
+ * \brief Combines two groups of modifiers by applying bitwise AND.
+ *
+ * \param a the first group of modifiers.
+ * \param b the second group of modifiers.
+ *
+ * \return the result of applying bitwise AND between the two modifier groups.
+ *
+ * \since 6.1.0
+ */
 [[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
     -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
+
+/// \} End of key modifier bitwise operators
 
 /// \} End of group input
 

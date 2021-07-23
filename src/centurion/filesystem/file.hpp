@@ -23,7 +23,7 @@
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
 
 /**
@@ -817,7 +817,7 @@ class file final
   }
 };
 
-/// \} End of system group
+/// \} End of group filesystem
 
 }  // namespace cen
 

@@ -11,7 +11,7 @@
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
 
 /**
@@ -99,7 +99,7 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
 
 /// \} End of streaming
 
-/// \} End of group system
+/// \} End of group filesystem
 
 }  // namespace cen
 

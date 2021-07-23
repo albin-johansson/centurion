@@ -12,7 +12,7 @@
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
 
 /**
@@ -69,7 +69,7 @@ namespace cen {
   return preferred_path(org.c_str(), app.c_str());
 }
 
-/// \}
+/// \} End of group filesystem
 
 }  // namespace cen
 

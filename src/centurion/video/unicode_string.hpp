@@ -321,6 +321,9 @@ class unicode_string final
   std::vector<unicode> m_data;
 };
 
+/// \name Unicode string comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not two Unicode strings are the same.
  *
@@ -367,6 +370,8 @@ class unicode_string final
 {
   return !(lhs == rhs);
 }
+
+/// \} End of unicode string comparison operators
 
 namespace literals {
 

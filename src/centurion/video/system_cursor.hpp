@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup video
@@ -32,6 +37,82 @@ enum class system_cursor
   no = SDL_SYSTEM_CURSOR_NO,
   hand = SDL_SYSTEM_CURSOR_HAND
 };
+
+/**
+ * \brief Returns a textual version of the supplied system cursor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(system_cursor::hand) == "hand"`.
+ *
+ * \param cursor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string
+{
+  switch (cursor)
+  {
+    case system_cursor::arrow:
+      return "arrow";
+
+    case system_cursor::ibeam:
+      return "ibeam";
+
+    case system_cursor::wait:
+      return "wait";
+
+    case system_cursor::crosshair:
+      return "crosshair";
+
+    case system_cursor::wait_arrow:
+      return "wait_arrow";
+
+    case system_cursor::arrow_nw_se:
+      return "arrow_nw_se";
+
+    case system_cursor::arrow_ne_sw:
+      return "arrow_ne_sw";
+
+    case system_cursor::arrow_w_e:
+      return "arrow_w_e";
+
+    case system_cursor::arrow_n_s:
+      return "arrow_n_s";
+
+    case system_cursor::arrow_all:
+      return "arrow_all";
+
+    case system_cursor::no:
+      return "no";
+
+    case system_cursor::hand:
+      return "hand";
+
+    default:
+      throw cen_error{"Did not recognize system cursor!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a system cursor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param cursor the enumerator that will be printed.
+ *
+ * \see `to_string(system_cursor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std::ostream&
+{
+  return stream << to_string(cursor);
+}
 
 /// \name System cursor comparison operators
 /// \{

@@ -62,8 +62,6 @@ using thread_id = SDL_threadID;
  * standard library API.
  *
  * \since 5.0.0
- *
- * \todo C++20: Support templated user data instead of just `void*`.
  */
 class thread final
 {

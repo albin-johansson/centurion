@@ -169,6 +169,7 @@
 #include "centurion/system/ram.hpp"
 #include "centurion/system/shared_object.hpp"
 #include "centurion/thread/condition.hpp"
+#include "centurion/thread/lock_status.hpp"
 #include "centurion/thread/mutex.hpp"
 #include "centurion/thread/scoped_lock.hpp"
 #include "centurion/thread/semaphore.hpp"

@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 
+#include "lock_status.hpp"
 #include "mutex.hpp"
 
 namespace cen {

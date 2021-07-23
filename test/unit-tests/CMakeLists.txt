@@ -112,6 +112,7 @@ set(SOURCE_FILES
     system/simd_block_test.cpp
 
     thread/condition_test.cpp
+    thread/lock_status_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
     thread/semaphore_test.cpp

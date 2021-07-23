@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup system
@@ -25,6 +30,61 @@ enum class power_state
   charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
   charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
 };
+
+/**
+ * \brief Returns a textual version of the supplied power state.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(power_state::on_battery) == "on_battery"`.
+ *
+ * \param state the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const power_state state) -> std::string
+{
+  switch (state)
+  {
+    case power_state::unknown:
+      return "unknown";
+
+    case power_state::on_battery:
+      return "on_battery";
+
+    case power_state::no_battery:
+      return "no_battery";
+
+    case power_state::charging:
+      return "charging";
+
+    case power_state::charged:
+      return "charged";
+
+    default:
+      throw cen_error{"Did not recognize power state!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a power state enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param state the enumerator that will be printed.
+ *
+ * \see `to_string(power_state)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const power_state state) -> std::ostream&
+{
+  return stream << to_string(state);
+}
 
 /// \name Power state comparison operators
 /// \{

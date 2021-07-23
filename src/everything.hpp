@@ -42,6 +42,7 @@
 #include "centurion/core/czstring.hpp"
 #include "centurion/core/exception.hpp"
 #include "centurion/core/integers.hpp"
+#include "centurion/core/is_stateless_callable.hpp"
 #include "centurion/core/library.hpp"
 #include "centurion/core/log.hpp"
 #include "centurion/core/log_category.hpp"

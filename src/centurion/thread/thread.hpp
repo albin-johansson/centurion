@@ -27,6 +27,7 @@
 #include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/is_stateless_callable.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
@@ -37,14 +38,6 @@ namespace cen {
 
 /// \addtogroup thread
 /// \{
-
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
-
-template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
-
-#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 using thread_id = SDL_threadID;
 

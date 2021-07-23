@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>  // ostream
+#include <string>   // string
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup input
@@ -21,6 +26,56 @@ enum class haptic_direction_type
   cartesian = SDL_HAPTIC_CARTESIAN,
   spherical = SDL_HAPTIC_SPHERICAL
 };
+
+/**
+ * \brief Returns a textual version of the supplied haptic direction type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(haptic_direction_type::polar) == "polar"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string
+{
+  switch (type)
+  {
+    case haptic_direction_type::polar:
+      return "polar";
+
+    case haptic_direction_type::cartesian:
+      return "cartesian";
+
+    case haptic_direction_type::spherical:
+      return "spherical";
+
+    default:
+      throw cen_error{"Did not recognize haptic direction type!"};
+  }
+}
+
+/**
+ * \brief Prints a textual representation of a haptic direction type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(haptic_direction_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const haptic_direction_type type)
+    -> std::ostream&
+{
+  return stream << to_string(type);
+}
 
 /// \} End of group input
 

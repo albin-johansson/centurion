@@ -1,17 +1,17 @@
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
 
+// Do we have general C++20 support?
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_CPP20
+#endif  // __cplusplus >= 202002L
+
 // C++20 nodiscard constructors
 #if nodiscard >= 201907L
 #define CENTURION_NODISCARD_CTOR [[nodiscard]]
 #else
 #define CENTURION_NODISCARD_CTOR
 #endif  // nodiscard >= 201907L
-
-// C++20 __VA_OPT__
-#if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_VA_OPT
-#endif  // __cplusplus >= 202002L
 
 #ifdef __has_include
 

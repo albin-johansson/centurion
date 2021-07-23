@@ -21,7 +21,7 @@
 
 #else
 
-#ifdef CENTURION_HAS_FEATURE_VA_OPT
+#ifdef CENTURION_HAS_FEATURE_CPP20
 
 // clang-format off
 #define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt __VA_OPT__(,) __VA_ARGS__)
@@ -43,7 +43,7 @@
 #define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
 // clang-format on
 
-#endif  // CENTURION_HAS_FEATURE_VA_OPT
+#endif  // CENTURION_HAS_FEATURE_CPP20
 
 #endif  // NDEBUG
 #endif  // CENTURION_NO_DEBUG_LOG_MACROS

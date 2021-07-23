@@ -9,7 +9,7 @@
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::qtwayland {
@@ -39,6 +39,6 @@ struct window_flags final : detail::string_hint<window_flags>
 
 }  // namespace cen::hint::qtwayland
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_QTWAYLAND_HINTS_HEADER

@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::x11 {
@@ -73,6 +73,6 @@ struct window_visual_id final : detail::string_hint<window_visual_id>
 
 }  // namespace cen::hint::x11
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_X11_HINTS_HEADER

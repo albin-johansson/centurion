@@ -10,7 +10,7 @@
 
 namespace cen {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 /**
@@ -90,7 +90,7 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 
 /// \} End of streaming
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen
 

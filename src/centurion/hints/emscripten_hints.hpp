@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::emscripten {
@@ -33,6 +33,6 @@ struct asyncify final : detail::bool_hint<asyncify>
 
 }  // namespace cen::hint::emscripten
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_EMSCRIPTEN_HINTS_HEADER

@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::joystick {
@@ -117,6 +117,6 @@ struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
 
 }  // namespace cen::hint::joystick
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_JOYSTICK_HINTS_HEADER

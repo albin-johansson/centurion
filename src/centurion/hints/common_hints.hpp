@@ -11,7 +11,7 @@
 
 namespace cen::hint {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 /**
@@ -427,7 +427,7 @@ struct audio_device_stream_name final : detail::string_hint<audio_device_stream_
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen::hint
 

@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::controller {
@@ -65,6 +65,6 @@ struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
 
 }  // namespace cen::hint::controller
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_CONTROLLER_HINTS_HEADER

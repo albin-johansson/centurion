@@ -6,7 +6,7 @@
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::windows {
@@ -66,6 +66,6 @@ struct int_resource_icon_small final : detail::string_hint<int_resource_icon_sma
 
 }  // namespace cen::hint::windows
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_WINDOWS_HINTS_HEADER

@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::winrt {
@@ -37,6 +37,6 @@ struct handle_back_button final : detail::bool_hint<handle_back_button>
 
 }  // namespace cen::hint::winrt
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_WINRT_HINTS_HEADER

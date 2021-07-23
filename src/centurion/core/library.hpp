@@ -1,8 +1,8 @@
 /// \defgroup core Core
 /// \brief Contains entities considered to be fundamental for the library.
 
-/// \defgroup configuration Configuration
-/// \brief Contains the API related to hints/configuration variables.
+/// \defgroup hints Hints
+/// \brief Contains the API related to hints (configuration variables).
 
 /// \defgroup event Events
 /// \brief Contains entities related to events.

@@ -11,7 +11,7 @@
 
 namespace cen::hint {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 struct render_driver;
@@ -32,7 +32,7 @@ namespace windows {
 struct d3d_compiler;
 }
 
-/// \} End of group configuration
+/// \} End of group hints
 
 /// \cond FALSE
 
@@ -174,7 +174,7 @@ struct enum_hint_traits<windows::d3d_compiler> final
 
 /// \endcond
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 template <class Derived>
@@ -205,7 +205,7 @@ class enum_hint
   }
 };
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen::hint
 

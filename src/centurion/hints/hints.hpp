@@ -41,7 +41,7 @@
 
 namespace cen {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 /**
@@ -237,7 +237,7 @@ inline void clear_hints() noexcept
   SDL_ClearHints();
 }
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen
 

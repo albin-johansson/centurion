@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::mouse {
@@ -73,6 +73,6 @@ struct relative_scaling final : detail::bool_hint<relative_scaling>
 
 }  // namespace cen::hint::mouse
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_MOUSE_HINTS_HEADER

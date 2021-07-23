@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::raspberrypi {
@@ -21,6 +21,6 @@ struct video_layer final : detail::int_hint<video_layer>
 
 }  // namespace cen::hint::raspberrypi
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_RASPBERRY_PI_HINTS_HEADER

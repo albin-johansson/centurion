@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::appletv {
@@ -29,6 +29,6 @@ struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
 
 }  // namespace cen::hint::appletv
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_APPLE_TV_HINTS_HEADER

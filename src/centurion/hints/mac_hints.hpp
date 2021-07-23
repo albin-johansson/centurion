@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::mac {
@@ -38,6 +38,6 @@ struct ctrl_click_emulate_right_click final
 
 }  // namespace cen::hint::mac
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_MAC_HINTS_HEADER

@@ -6,7 +6,7 @@
 #include "../core/czstring.hpp"
 #include "../detail/hints_impl.hpp"
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 namespace cen::hint::android {
@@ -59,6 +59,6 @@ struct pause_background_audio final : detail::bool_hint<pause_background_audio>
 
 }  // namespace cen::hint::android
 
-/// \} End of group configuration
+/// \} End of group hints
 
 #endif  // CENTURION_ANDROID_HINTS_HEADER

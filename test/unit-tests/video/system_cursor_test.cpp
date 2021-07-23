@@ -36,6 +36,11 @@ TEST(SystemCursor, Values)
   ASSERT_NE(SDL_SYSTEM_CURSOR_SIZEALL, cen::system_cursor::hand);
 }
 
+TEST(SystemCursor, SystemCursorCount)
+{
+  ASSERT_EQ(SDL_NUM_SYSTEM_CURSORS, cen::system_cursor_count());
+}
+
 TEST(SystemCursor, ToString)
 {
   ASSERT_THROW(cen::to_string(static_cast<cen::system_cursor>(SDL_NUM_SYSTEM_CURSORS)),

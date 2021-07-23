@@ -21,6 +21,7 @@ namespace cen {
  * \since 4.0.0
  *
  * \see `SDL_SystemCursor`
+ * \see `system_cursor_count()`
  */
 enum class system_cursor
 {
@@ -37,6 +38,18 @@ enum class system_cursor
   no = SDL_SYSTEM_CURSOR_NO,
   hand = SDL_SYSTEM_CURSOR_HAND
 };
+
+/**
+ * \brief Returns the number of available system cursors.
+ *
+ * \return the number of system cursors.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto system_cursor_count() noexcept -> int
+{
+  return SDL_NUM_SYSTEM_CURSORS;
+}
 
 /**
  * \brief Returns a textual version of the supplied system cursor.

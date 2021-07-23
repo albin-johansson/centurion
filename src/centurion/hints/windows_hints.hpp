@@ -18,7 +18,7 @@ struct d3d_compiler final : enum_hint<d3d_compiler>
       std::make_pair(value::v43, "d3dcompiler_43.dll"),
       std::make_pair(value::none, "none")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }

@@ -15,6 +15,9 @@ namespace cen {
 /// \addtogroup video
 /// \{
 
+/// \name Window functions
+/// \{
+
 /**
  * \brief Returns a handle to the currently grabbed window.
  *
@@ -115,6 +118,8 @@ template <typename T>
   cen::renderer renderer{window};
   return std::make_pair(std::move(window), std::move(renderer));
 }
+
+/// \} End of window functions
 
 /// \} End of group video
 

@@ -266,6 +266,9 @@ class keyboard final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a keyboard.
  *
@@ -284,6 +287,11 @@ class keyboard final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a keyboard.
  *
@@ -298,6 +306,8 @@ inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::o
 {
   return stream << to_string(keyboard);
 }
+
+/// \} End of streaming
 
 /**
  * \typedef key_state

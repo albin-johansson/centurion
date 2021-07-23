@@ -231,6 +231,9 @@ template <typename T>
 
 /// \} End of area comparison operators
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of an area.
  *
@@ -253,6 +256,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of an area using a stream.
  *
@@ -270,6 +278,8 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 {
   return stream << to_string(area);
 }
+
+/// \} End of streaming
 
 /// \} End of group math
 

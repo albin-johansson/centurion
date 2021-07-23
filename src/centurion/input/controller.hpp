@@ -1247,6 +1247,9 @@ class basic_controller final
   detail::pointer_manager<T, SDL_GameController, deleter> m_controller;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied controller mapping result.
  *
@@ -1301,31 +1304,6 @@ class basic_controller final
 }
 
 /**
- * \brief Prints a textual representation of a controller mapping result enumerator.
- *
- * \param stream the output stream that will be used.
- * \param result the enumerator that will be printed.
- *
- * \see `to_string(controller::mapping_result)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const controller::mapping_result result)
-    -> std::ostream&
-{
-  return stream << to_string(result);
-}
-
-/// \see operator<<(std::ostream&, controller::mapping_result)
-inline auto operator<<(std::ostream& stream,
-                       const controller_handle::mapping_result result) -> std::ostream&
-{
-  return stream << to_string(result);
-}
-
-/**
  * \brief Returns a textual representation of a game controller.
  *
  * \param controller the game controller that will be converted.
@@ -1356,6 +1334,36 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a controller mapping result enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param result the enumerator that will be printed.
+ *
+ * \see `to_string(controller::mapping_result)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller::mapping_result result)
+    -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
+/// \see operator<<(std::ostream&, controller::mapping_result)
+inline auto operator<<(std::ostream& stream,
+                       const controller_handle::mapping_result result) -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
 /**
  * \brief Prints a textual representation of a game controller.
  *
@@ -1372,6 +1380,8 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 {
   return stream << to_string(controller);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

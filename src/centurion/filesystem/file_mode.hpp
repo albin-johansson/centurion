@@ -42,6 +42,9 @@ enum class file_mode
   read_append_binary  ///< "ab+"
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied file mode.
  *
@@ -101,6 +104,11 @@ enum class file_mode
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a file mode enumerator.
  *
@@ -117,6 +125,8 @@ inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostre
 {
   return stream << to_string(mode);
 }
+
+/// \} End of streaming
 
 /// \} End of group system
 

@@ -34,6 +34,9 @@ enum class button_order : u32
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied button order.
  *
@@ -63,6 +66,11 @@ enum class button_order : u32
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a button order enumerator.
  *
@@ -79,6 +87,8 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 {
   return stream << to_string(order);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

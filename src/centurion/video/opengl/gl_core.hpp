@@ -40,6 +40,9 @@ enum class gl_swap_interval : int
   late_immediate = -1  ///< Allow immediate late swaps, instead of waiting for retrace.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied swap interval attribute.
  *
@@ -72,6 +75,11 @@ enum class gl_swap_interval : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a swap interval enumerator.
  *
@@ -89,6 +97,8 @@ inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
 {
   return stream << to_string(interval);
 }
+
+/// \} End of streaming
 
 }  // namespace cen
 

@@ -137,6 +137,9 @@ enum class window_event_id
   hit_test = SDL_WINDOWEVENT_HIT_TEST
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied window event ID.
  *
@@ -211,6 +214,11 @@ enum class window_event_id
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a window event ID enumerator.
  *
@@ -227,6 +235,8 @@ inline auto operator<<(std::ostream& stream, const window_event_id id) -> std::o
 {
   return stream << to_string(id);
 }
+
+/// \} End of streaming
 
 /// \name Window event ID comparison operators
 /// \{

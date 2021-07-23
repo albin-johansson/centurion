@@ -375,6 +375,9 @@ template <typename T>
 
 /// \} End of point-related functions
 
+/// \name String conversions
+/// \{
+
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
 #ifdef CENTURION_HAS_FEATURE_FORMAT
@@ -395,11 +398,18 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
 {
   return stream << to_string(point);
 }
+
+/// \} End of streaming
 
 /// \name Point cast specializations
 /// \{

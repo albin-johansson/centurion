@@ -655,6 +655,9 @@ class basic_texture final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a texture.
  *
@@ -679,6 +682,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a texture.
  *
@@ -695,7 +703,9 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
   return stream << to_string(texture);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

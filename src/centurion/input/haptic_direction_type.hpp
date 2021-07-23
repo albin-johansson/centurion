@@ -27,6 +27,9 @@ enum class haptic_direction_type
   spherical = SDL_HAPTIC_SPHERICAL
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied haptic direction type.
  *
@@ -59,6 +62,11 @@ enum class haptic_direction_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a haptic direction type enumerator.
  *
@@ -76,6 +84,8 @@ inline auto operator<<(std::ostream& stream, const haptic_direction_type type)
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

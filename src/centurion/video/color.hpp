@@ -803,6 +803,9 @@ class color final
   SDL_Color m_color{0, 0, 0, max()};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of the color.
  *
@@ -828,6 +831,11 @@ class color final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a color.
  *
@@ -842,6 +850,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 {
   return stream << to_string(color);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Blends two colors according to the specified bias.

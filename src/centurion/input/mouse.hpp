@@ -291,6 +291,9 @@ class mouse final
   bool m_prevRightPressed{};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a mouse.
  *
@@ -310,6 +313,11 @@ class mouse final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a mouse.
  *
@@ -324,6 +332,8 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 {
   return stream << to_string(mouse);
 }
+
+/// \} End of streaming
 
 /**
  * \typedef mouse_state

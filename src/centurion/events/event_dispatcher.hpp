@@ -322,6 +322,9 @@ class event_dispatcher final
   sink_tuple m_sinks;
 };
 
+/// \name String conversions
+/// \{
+
 template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
@@ -330,6 +333,11 @@ template <typename... E>
          ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 template <typename... E>
 inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispatcher)
     -> std::ostream&
@@ -337,6 +345,8 @@ inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispa
   stream << to_string(dispatcher);
   return stream;
 }
+
+/// \} End of streaming
 
 /// \} End of group event
 

@@ -43,6 +43,9 @@ enum class controller_type
   ///< Pro controller.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied controller type.
  *
@@ -94,6 +97,11 @@ enum class controller_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a controller type enumerator.
  *
@@ -110,6 +118,8 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Controller type comparison operators
 /// \{

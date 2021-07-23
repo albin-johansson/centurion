@@ -104,6 +104,9 @@ enum class pixel_format : u32
   external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied pixel format.
  *
@@ -256,6 +259,11 @@ enum class pixel_format : u32
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a pixel format enumerator.
  *
@@ -272,6 +280,8 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 {
   return stream << to_string(format);
 }
+
+/// \} End of streaming
 
 /// \name Pixel format comparison operators
 /// \{

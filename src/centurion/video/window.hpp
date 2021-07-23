@@ -1305,6 +1305,9 @@ class basic_window final
   detail::pointer_manager<T, SDL_Window, deleter> m_window;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a window.
  *
@@ -1329,6 +1332,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a window.
  *
@@ -1345,7 +1353,9 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
   return stream << to_string(window);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

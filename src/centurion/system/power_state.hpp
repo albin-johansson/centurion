@@ -31,6 +31,9 @@ enum class power_state
   charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied power state.
  *
@@ -69,6 +72,11 @@ enum class power_state
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a power state enumerator.
  *
@@ -85,6 +93,8 @@ inline auto operator<<(std::ostream& stream, const power_state state) -> std::os
 {
   return stream << to_string(state);
 }
+
+/// \} End of streaming
 
 /// \name Power state comparison operators
 /// \{

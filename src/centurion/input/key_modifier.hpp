@@ -118,6 +118,9 @@ using key_mod = key_modifier;
 
 /// \} End of key modifier bitwise operators
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied key modifiers.
  *
@@ -183,6 +186,11 @@ using key_mod = key_modifier;
   return stream.str();
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of the supplied key modifiers.
  *
@@ -199,6 +207,8 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 {
   return stream << to_string(mods);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

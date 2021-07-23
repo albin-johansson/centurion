@@ -58,6 +58,9 @@ enum class controller_button
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied controller button.
  *
@@ -154,6 +157,11 @@ enum class controller_button
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a controller button enumerator.
  *
@@ -171,6 +179,8 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
 {
   return stream << to_string(button);
 }
+
+/// \} End of streaming
 
 /// \name Controller button comparison operators
 /// \{

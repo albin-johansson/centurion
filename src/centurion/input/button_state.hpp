@@ -28,6 +28,9 @@ enum class button_state : u8
   pressed = SDL_PRESSED     ///< Corresponds to `SDL_PRESSED`.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied button state.
  *
@@ -57,6 +60,11 @@ enum class button_state : u8
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a button state enumerator.
  *
@@ -73,6 +81,8 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 {
   return stream << to_string(state);
 }
+
+/// \} End of streaming
 
 }  // namespace cen
 

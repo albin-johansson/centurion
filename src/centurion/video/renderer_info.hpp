@@ -199,6 +199,9 @@ class renderer_info final
   {}
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a `renderer_info` instance.
  *
@@ -218,6 +221,11 @@ class renderer_info final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a `renderer_info` instance.
  *
@@ -232,6 +240,8 @@ inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::
 {
   return stream << to_string(info);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Returns information about a renderer.

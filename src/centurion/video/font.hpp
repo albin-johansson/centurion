@@ -65,6 +65,9 @@ enum class font_hint : int
   none = TTF_HINTING_NONE
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied font hint.
  *
@@ -100,6 +103,11 @@ enum class font_hint : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a font hint enumerator.
  *
@@ -116,6 +124,8 @@ inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostre
 {
   return stream << to_string(hint);
 }
+
+/// \} End of streaming
 
 /**
  * \class font
@@ -815,6 +825,9 @@ class font final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a font instance.
  *
@@ -836,6 +849,11 @@ class font final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a font.
  *
@@ -850,6 +868,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 {
   return stream << to_string(font);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

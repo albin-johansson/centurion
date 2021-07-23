@@ -28,6 +28,9 @@ enum class mouse_wheel_direction
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied mouse wheel direction.
  *
@@ -57,6 +60,11 @@ enum class mouse_wheel_direction
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of an mouse wheel direction enumerator.
  *
@@ -74,6 +82,8 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
 {
   return stream << to_string(dir);
 }
+
+/// \} End of streaming
 
 /// \name Mouse wheel direction comparison operators
 /// \{

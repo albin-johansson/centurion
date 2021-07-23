@@ -34,6 +34,9 @@ enum class hat_state : u8
   left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied hat state.
  *
@@ -84,6 +87,11 @@ enum class hat_state : u8
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a hat state enumerator.
  *
@@ -100,6 +108,8 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 {
   return stream << to_string(state);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

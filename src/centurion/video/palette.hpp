@@ -213,6 +213,9 @@ class palette final
   std::unique_ptr<SDL_Palette, deleter> m_palette;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a palette.
  *
@@ -234,6 +237,11 @@ class palette final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a palette using a stream.
  *
@@ -248,6 +256,8 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 {
   return stream << to_string(palette);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

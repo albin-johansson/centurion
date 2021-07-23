@@ -50,6 +50,9 @@ enum class screen_orientation : int
   portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied screen orientation.
  *
@@ -88,6 +91,11 @@ enum class screen_orientation : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a screen orientation enumerator.
  *
@@ -105,6 +113,8 @@ inline auto operator<<(std::ostream& stream, const screen_orientation orientatio
 {
   return stream << to_string(orientation);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Sets whether or not screen savers are enabled.

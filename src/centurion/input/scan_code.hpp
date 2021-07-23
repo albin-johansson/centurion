@@ -321,6 +321,9 @@ class scan_code final
   SDL_Scancode m_code{SDL_SCANCODE_UNKNOWN};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a scan code.
  *
@@ -339,6 +342,11 @@ class scan_code final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a scan code using a stream.
  *
@@ -353,6 +361,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
 {
   return stream << to_string(scanCode);
 }
+
+/// \} End of streaming
 
 /// \name Scan code comparison operators
 /// \{

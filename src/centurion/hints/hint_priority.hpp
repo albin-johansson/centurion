@@ -30,6 +30,9 @@ enum class hint_priority
   override = SDL_HINT_OVERRIDE  ///< The highest priority.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied hint priority.
  *
@@ -62,6 +65,11 @@ enum class hint_priority
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a hint priority enumerator.
  *
@@ -79,6 +87,8 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 {
   return stream << to_string(priority);
 }
+
+/// \} End of streaming
 
 /// \} End of group configuration
 

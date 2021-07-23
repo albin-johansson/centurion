@@ -565,6 +565,9 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 
 /// \} End of callbacks
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a `music` instance.
  *
@@ -586,6 +589,11 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a `music` instance.
  *
@@ -600,6 +608,8 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 {
   return stream << to_string(music);
 }
+
+/// \} End of streaming
 
 /// \} End of group audio
 

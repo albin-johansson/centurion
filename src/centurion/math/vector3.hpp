@@ -131,6 +131,9 @@ template <typename T>
 
 /// \} End of vector3 comparison operators
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a string that represents a vector.
  *
@@ -153,6 +156,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a vector.
  *
@@ -170,6 +178,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 {
   return stream << to_string(vector);
 }
+
+/// \} End of streaming
 
 /// \} End of group math
 

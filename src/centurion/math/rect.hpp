@@ -845,6 +845,9 @@ template <>
 
 /// \} End of rectangle cast specializations
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a rectangle.
  *
@@ -872,6 +875,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a rectangle using a stream.
  *
@@ -889,6 +897,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 {
   return stream << to_string(rect);
 }
+
+/// \} End of streaming
 
 /// \} End of group math
 

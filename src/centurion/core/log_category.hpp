@@ -35,6 +35,9 @@ enum class log_category : int
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied log category.
  *
@@ -88,6 +91,11 @@ enum class log_category : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a log category enumerator.
  *
@@ -104,6 +112,8 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 {
   return stream << to_string(category);
 }
+
+/// \} End of streaming
 
 /// \name Log category comparison operators
 /// \{

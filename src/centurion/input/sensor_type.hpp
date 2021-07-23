@@ -30,6 +30,9 @@ enum class sensor_type
   gyroscope = SDL_SENSOR_GYRO        ///< Gyroscope
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied sensor type.
  *
@@ -65,6 +68,11 @@ enum class sensor_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a sensor type enumerator.
  *
@@ -81,6 +89,8 @@ inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ost
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Sensor type comparison operators
 /// \{

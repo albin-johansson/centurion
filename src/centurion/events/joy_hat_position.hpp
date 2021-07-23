@@ -34,6 +34,9 @@ enum class joy_hat_position : u8
   right_down = SDL_HAT_RIGHTDOWN
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied joystick hat position.
  *
@@ -84,6 +87,11 @@ enum class joy_hat_position : u8
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a joystick hat position enumerator.
  *
@@ -101,6 +109,8 @@ inline auto operator<<(std::ostream& stream, const joy_hat_position position)
 {
   return stream << to_string(position);
 }
+
+/// \} End of streaming
 
 /// \} End of group event
 

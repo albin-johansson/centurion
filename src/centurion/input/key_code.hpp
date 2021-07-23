@@ -326,6 +326,9 @@ class key_code final
   SDL_KeyCode m_key{SDLK_UNKNOWN};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a key code.
  *
@@ -344,6 +347,11 @@ class key_code final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a key code using a stream.
  *
@@ -358,6 +366,8 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
 {
   return stream << to_string(keyCode);
 }
+
+/// \} End of streaming
 
 /// \name Key code comparison operators
 /// \{

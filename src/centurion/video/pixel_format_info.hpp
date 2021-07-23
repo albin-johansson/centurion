@@ -285,6 +285,9 @@ class basic_pixel_format_info final
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a pixel format info instance.
  *
@@ -309,6 +312,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a pixel format info instance.
  *
@@ -327,6 +335,8 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
 {
   return stream << to_string(info);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

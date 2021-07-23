@@ -31,6 +31,9 @@ enum class scale_mode
   best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied scale mode.
  *
@@ -63,6 +66,11 @@ enum class scale_mode
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a scale mode enumerator.
  *
@@ -79,6 +87,8 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
 {
   return stream << to_string(mode);
 }
+
+/// \} End of streaming
 
 /// \name Scale mode comparison operators
 /// \{

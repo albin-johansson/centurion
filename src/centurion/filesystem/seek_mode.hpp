@@ -27,6 +27,9 @@ enum class seek_mode
   relative_to_end = RW_SEEK_END       ///< Relative to the end.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied seek mode.
  *
@@ -59,6 +62,11 @@ enum class seek_mode
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a seek mode enumerator.
  *
@@ -75,6 +83,8 @@ inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostre
 {
   return stream << to_string(mode);
 }
+
+/// \} End of streaming
 
 /// \} End of group system
 

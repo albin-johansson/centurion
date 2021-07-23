@@ -1088,6 +1088,9 @@ class basic_joystick final
   detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a joystick.
  *
@@ -1121,6 +1124,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a joystick using a stream.
  *
@@ -1138,6 +1146,8 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 {
   return stream << to_string(joystick);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

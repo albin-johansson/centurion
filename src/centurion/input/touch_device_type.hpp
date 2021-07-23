@@ -101,6 +101,9 @@ using touch_device_type = touch::device_type;
 
 namespace touch {
 
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a touch device type enumerator.
  *
@@ -119,7 +122,12 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
   return stream << to_string(type);
 }
 
+/// \} End of streaming
+
 }  // namespace touch
+
+/// \name String conversions
+/// \{
 
 /**
  * \brief Returns a textual version of the supplied touch device type.
@@ -155,6 +163,8 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
       throw cen_error{"Did not recognize touch device type!"};
   }
 }
+
+/// \} End of string conversions
 
 /// \} End of group input
 

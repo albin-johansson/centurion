@@ -38,6 +38,9 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied blend mode.
  *
@@ -83,6 +86,11 @@ enum class blend_mode
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a blend mode enumerator.
  *
@@ -99,6 +107,8 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 {
   return stream << to_string(mode);
 }
+
+/// \} End of streaming
 
 /// \name Blend mode comparison operators
 /// \{

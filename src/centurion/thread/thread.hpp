@@ -415,6 +415,9 @@ class thread final
   bool m_detached{false};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a thread.
  *
@@ -437,6 +440,11 @@ class thread final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a thread.
  *
@@ -452,6 +460,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
   stream << to_string(thread);
   return stream;
 }
+
+/// \} End of streaming
 
 /// \} End of group thread
 

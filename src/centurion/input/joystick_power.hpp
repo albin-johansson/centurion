@@ -31,6 +31,9 @@ enum class joystick_power
   max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied joystick power.
  *
@@ -75,6 +78,11 @@ enum class joystick_power
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a joystick power enumerator.
  *
@@ -91,6 +99,8 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
 {
   return stream << to_string(power);
 }
+
+/// \} End of streaming
 
 /// \name Joystick power comparison operators
 /// \{

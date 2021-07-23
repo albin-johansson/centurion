@@ -58,6 +58,9 @@ enum class gl_attribute
   context_no_error = SDL_GL_CONTEXT_NO_ERROR
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied OpenGL attribute.
  *
@@ -162,6 +165,11 @@ enum class gl_attribute
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of an OpenGL attribute enumerator.
  *
@@ -178,6 +186,8 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
 {
   return stream << to_string(attr);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

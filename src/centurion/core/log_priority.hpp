@@ -32,6 +32,9 @@ enum class log_priority : int
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied log priority.
  *
@@ -73,6 +76,11 @@ enum class log_priority : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a log priority enumerator.
  *
@@ -89,6 +97,8 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
 {
   return stream << to_string(priority);
 }
+
+/// \} End of streaming
 
 /// \name Log priority comparison operators
 /// \{

@@ -51,6 +51,9 @@ enum class system_cursor
   return SDL_NUM_SYSTEM_CURSORS;
 }
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied system cursor.
  *
@@ -110,6 +113,11 @@ enum class system_cursor
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a system cursor enumerator.
  *
@@ -126,6 +134,8 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
 {
   return stream << to_string(cursor);
 }
+
+/// \} End of streaming
 
 /// \name System cursor comparison operators
 /// \{

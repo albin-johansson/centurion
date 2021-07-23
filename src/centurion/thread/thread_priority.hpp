@@ -32,6 +32,9 @@ enum class thread_priority
   // clang-format on
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied thread priority.
  *
@@ -67,6 +70,11 @@ enum class thread_priority
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a thread priority enumerator.
  *
@@ -84,6 +92,8 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority)
 {
   return stream << to_string(priority);
 }
+
+/// \} End of streaming
 
 /// \name Thread priority comparison operators
 /// \{

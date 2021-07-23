@@ -31,6 +31,9 @@ enum class fade_status
   out = MIX_FADING_OUT   ///< Currently fading out music.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied fade status.
  *
@@ -63,6 +66,11 @@ enum class fade_status
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a fade status enumerator.
  *
@@ -79,6 +87,8 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 {
   return stream << to_string(status);
 }
+
+/// \} End of streaming
 
 /// \name Fade status comparison operators
 /// \{

@@ -40,6 +40,9 @@ enum class haptic_feature
   pause = SDL_HAPTIC_PAUSE
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied haptic feature.
  *
@@ -111,6 +114,11 @@ enum class haptic_feature
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a haptic feature enumerator.
  *
@@ -128,6 +136,8 @@ inline auto operator<<(std::ostream& stream, const haptic_feature feature)
 {
   return stream << to_string(feature);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

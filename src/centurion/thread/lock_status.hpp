@@ -20,6 +20,9 @@ enum class lock_status
   error = -1
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied lock status.
  *
@@ -52,6 +55,11 @@ enum class lock_status
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a lock status enumerator.
  *
@@ -68,6 +76,8 @@ inline auto operator<<(std::ostream& stream, const lock_status status) -> std::o
 {
   return stream << to_string(status);
 }
+
+/// \} End of streaming
 
 /// \} End of group thread
 

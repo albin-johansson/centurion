@@ -30,6 +30,9 @@ enum class mouse_button : u8
   x2 = SDL_BUTTON_X2
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied mouse button.
  *
@@ -68,6 +71,11 @@ enum class mouse_button : u8
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a mouse button enumerator.
  *
@@ -84,6 +92,8 @@ inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::
 {
   return stream << to_string(button);
 }
+
+/// \} End of streaming
 
 /// \} End of group input
 

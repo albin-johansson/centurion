@@ -34,6 +34,9 @@ enum class joystick_type
   throttle = SDL_JOYSTICK_TYPE_THROTTLE
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied joystick type.
  *
@@ -87,6 +90,11 @@ enum class joystick_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a joystick type enumerator.
  *
@@ -103,6 +111,8 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Joystick type comparison operators
 /// \{

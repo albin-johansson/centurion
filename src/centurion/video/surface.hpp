@@ -889,6 +889,9 @@ class basic_surface final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a surface.
  *
@@ -913,6 +916,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a surface.
  *
@@ -929,7 +937,9 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
   return stream << to_string(surface);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

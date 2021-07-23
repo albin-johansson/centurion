@@ -534,6 +534,9 @@ class message_box final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied default button.
  *
@@ -602,6 +605,11 @@ class message_box final
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a default button enumerator.
  *
@@ -637,6 +645,8 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 {
   return stream << to_string(id);
 }
+
+/// \} End of streaming
 
 /// \name Message box default button comparison operators
 /// \{

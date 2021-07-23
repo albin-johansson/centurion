@@ -30,6 +30,9 @@ enum class message_box_type : u32
   information = SDL_MESSAGEBOX_INFORMATION
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied message box type.
  *
@@ -62,6 +65,11 @@ enum class message_box_type : u32
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a message box type enumerator.
  *
@@ -78,6 +86,8 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

@@ -391,6 +391,9 @@ class basic_sensor final
   detail::pointer_manager<T, SDL_Sensor, deleter> m_sensor;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a sensor instance.
  *
@@ -415,6 +418,11 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.
  *
@@ -430,6 +438,8 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 {
   return stream << to_string(sensor);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Returns the standard gravity value.

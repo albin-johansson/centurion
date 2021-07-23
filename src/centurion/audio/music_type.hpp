@@ -37,6 +37,9 @@ enum class music_type
   opus = MUS_OPUS
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied music type.
  *
@@ -87,6 +90,11 @@ enum class music_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a music type enumerator.
  *
@@ -103,6 +111,8 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Music type comparison operators
 /// \{

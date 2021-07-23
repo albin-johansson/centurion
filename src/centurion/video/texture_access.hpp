@@ -33,6 +33,9 @@ enum class texture_access : int
   // clang-format on
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied texture access.
  *
@@ -65,6 +68,11 @@ enum class texture_access : int
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a texture access enumerator.
  *
@@ -81,6 +89,8 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
 {
   return stream << to_string(access);
 }
+
+/// \} End of streaming
 
 /// \name Texture access comparison operators
 /// \{

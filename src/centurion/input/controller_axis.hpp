@@ -34,6 +34,9 @@ enum class controller_axis
   max = SDL_CONTROLLER_AXIS_MAX
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied controller axis.
  *
@@ -81,6 +84,11 @@ enum class controller_axis
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a controller axis enumerator.
  *
@@ -97,6 +105,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
 {
   return stream << to_string(axis);
 }
+
+/// \} End of streaming
 
 /// \name Controller axis comparison operators
 /// \{

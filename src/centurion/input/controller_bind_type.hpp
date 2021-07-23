@@ -30,6 +30,9 @@ enum class controller_bind_type
   hat = SDL_CONTROLLER_BINDTYPE_HAT
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied controller bind type.
  *
@@ -65,6 +68,11 @@ enum class controller_bind_type
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a controller bind type enumerator.
  *
@@ -82,6 +90,8 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Controller bind type comparison operators
 /// \{

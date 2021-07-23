@@ -504,6 +504,9 @@ class basic_sound_effect final
   return sound_effect_handle{Mix_GetChunk(channel)};
 }
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a sound effect.
  *
@@ -525,6 +528,11 @@ class basic_sound_effect final
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a sound effect.
  *
@@ -539,6 +547,8 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 {
   return stream << to_string(sound);
 }
+
+/// \} End of streaming
 
 /// \} End of group audio
 

@@ -36,6 +36,9 @@ enum class platform_id
   android    ///< Represents the Android platform.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied platform ID.
  *
@@ -77,6 +80,11 @@ enum class platform_id
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a platform ID enumerator.
  *
@@ -93,6 +101,8 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 {
   return stream << to_string(id);
 }
+
+/// \} End of streaming
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

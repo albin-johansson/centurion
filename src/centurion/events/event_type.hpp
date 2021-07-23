@@ -90,6 +90,9 @@ enum class event_type : u32
   user = SDL_USEREVENT
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied event type.
  *
@@ -257,6 +260,11 @@ enum class event_type : u32
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of an event type enumerator.
  *
@@ -273,6 +281,8 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \name Event type comparison operators
 /// \{

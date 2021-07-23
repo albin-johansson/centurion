@@ -2232,6 +2232,9 @@ class basic_renderer final
   }
 };
 
+/// \name String conversions
+/// \{
+
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
@@ -2242,11 +2245,18 @@ template <typename T>
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std::ostream&
 {
   return stream << to_string(renderer);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

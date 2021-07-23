@@ -31,6 +31,9 @@ enum class file_type : uint
   memory_ro = SDL_RWOPS_MEMORY_RO  ///< A read-only memory stream file.
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual version of the supplied file type.
  *
@@ -72,6 +75,11 @@ enum class file_type : uint
   }
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a file type enumerator.
  *
@@ -88,6 +96,8 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
 {
   return stream << to_string(type);
 }
+
+/// \} End of streaming
 
 /// \} End of group system
 

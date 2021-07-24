@@ -65,7 +65,7 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
   {
-    return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
+    return SDL_GetHintBoolean(Hint::name(), SDL_FALSE) == SDL_TRUE;
   }
 
   [[nodiscard]] static auto convert(const czstring str) noexcept -> bool

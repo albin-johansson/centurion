@@ -1,32 +1,3 @@
-/**
- * \brief Provides utilities related to managing hints.
- *
- * \details Provides utilities related to managing hints ("configuration
- * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
- * <code>SDL_hints.hpp</code> header for details regarding any specific hint
- * type.
- *
- * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
- * `X11WindowVisualID` are string hints because the types of their values
- * isn't known. Should be fixed if the type isn't actually string.
- *
- * \todo C++20: Make callback signature depend on the `UserData` and the type
- * of the associated hint, so that the values supplied to the callback aren't
- * always strings.
- *
- * \todo Document all of the hint classes.
- *
- * \file hints.hpp
- *
- * \since 4.1.0
- *
- * \author Albin Johansson
- *
- * \date 2019-2021
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 

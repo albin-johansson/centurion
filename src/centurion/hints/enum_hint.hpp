@@ -182,6 +182,7 @@ class enum_hint
 {
  public:
   using value = typename enum_hint_traits<Derived>::value;
+  using value_type = value;
 
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool

@@ -49,8 +49,7 @@ auto set_hint(const Value& value) -> result
 /**
  * \brief Returns the current value of the specified hint.
  *
- * \note The returned value is a `std::optional` of the hint value type. Many
- * hints aren't actually set by default.
+ * \note Many hints aren't actually set by default.
  *
  * \tparam Hint the type of the Hint to obtain the value of.
  *
@@ -60,7 +59,7 @@ auto set_hint(const Value& value) -> result
  * \since 4.1.0
  */
 template <typename Hint>
-[[nodiscard]] auto get_hint() noexcept
+[[nodiscard]] auto get_hint() -> std::optional<typename Hint::value_type>
 {
   return Hint::current_value();
 }

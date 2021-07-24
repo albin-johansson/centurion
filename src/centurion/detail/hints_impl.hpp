@@ -20,6 +20,8 @@ template <typename Derived, typename Arg>
 class crtp_hint
 {
  public:
+  using value_type = Arg;
+
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
@@ -31,7 +33,7 @@ class crtp_hint
     return Derived::name();
   }
 
-  [[nodiscard]] static auto value() noexcept -> std::optional<Arg>
+  [[nodiscard]] static auto value() -> std::optional<value_type>
   {
     return Derived::current_value();
   }
@@ -105,7 +107,7 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
     return std::is_same_v<T, int>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
+  [[nodiscard]] static auto current_value() -> std::optional<int>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)
@@ -130,7 +132,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
     return std::is_same_v<T, uint>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<uint>
+  [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)
@@ -155,7 +157,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
     return std::is_same_v<T, float>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
+  [[nodiscard]] static auto current_value() -> std::optional<float>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value)

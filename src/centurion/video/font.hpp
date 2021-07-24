@@ -546,7 +546,7 @@ class font final
    * \brief Returns the kerning amount between two glyphs in the font, if kerning would be
    * enabled.
    *
-   * \details In other words, you can use this method to obtain the kerning amount
+   * \details In other words, you can use this function to obtain the kerning amount
    * between, for instance, the characters 'a' and 'V' if they were to be rendered next to
    * each other.
    *
@@ -766,7 +766,7 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended. However, it's useful since many SDL
+   * \warning Use of this function is not recommended. However, it's useful since many SDL
    * calls use non-const pointers even when no change will be applied.
    *
    * \warning Don't take ownership of the returned pointer!

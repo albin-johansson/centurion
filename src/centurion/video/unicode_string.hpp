@@ -85,7 +85,7 @@ class unicode_string final
   /**
    * \brief Reserves enough memory to hold the specified amount of elements.
    *
-   * \details Use this method to optimize additions to the string when you know or can
+   * \details Use this function to optimize additions to the string when you know or can
    * approximate the amount of elements that will be added. This can reduce the amount of
    * unnecessary allocations and copies of the underlying array.
    *
@@ -138,7 +138,7 @@ class unicode_string final
   /**
    * \brief Removes the last element from the string.
    *
-   * \details This method has no effect if the string is empty.
+   * \details This function has no effect if the string is empty.
    *
    * \since 5.0.0
    */
@@ -153,7 +153,7 @@ class unicode_string final
   /**
    * \brief Returns the number of elements stored in the string.
    *
-   * \note This method does *not* include the null-terminator.
+   * \note This function does *not* include the null-terminator.
    *
    * \return the number of elements in the string.
    *
@@ -252,7 +252,7 @@ class unicode_string final
   /**
    * \brief Returns the element at the specified index.
    *
-   * \details This method will throw an exception if the supplied index is out-of-bounds.
+   * \details This function will throw an exception if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -276,7 +276,7 @@ class unicode_string final
    *
    * \pre `index` **must** be in the range [0, `size()`);
    *
-   * \details This method will does *not* perform bounds-checking. However, in debug-mode,
+   * \details This function will does *not* perform bounds-checking. However, in debug-mode,
    * an assertion will abort the program if the supplied index is out-of-bounds.
    *
    * \param index the index of the desired element.

@@ -113,7 +113,7 @@ class music final
   /**
    * \brief Plays the music associated with this instance.
    *
-   * \details Any previously playing music will be halted. However, this method will wait
+   * \details Any previously playing music will be halted. However, this function will wait
    * for music that was fading out to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
@@ -146,7 +146,7 @@ class music final
   /**
    * \brief Resumes playing the music.
    *
-   * \details This method can safely be invoked with halted, paused and even currently
+   * \details This function can safely be invoked with halted, paused and even currently
    * playing music.
    *
    * \since 3.0.0
@@ -159,7 +159,7 @@ class music final
   /**
    * \brief Pauses any currently playing music.
    *
-   * \note This method only affects music that is currently playing, which doesn't include
+   * \note This function only affects music that is currently playing, which doesn't include
    * music that is being faded in/out.
    *
    * \since 3.0.0
@@ -172,7 +172,7 @@ class music final
   /**
    * \brief Stops ALL currently playing and fading music.
    *
-   * \details Unlike `pause()`, this method affects all kinds of music.
+   * \details Unlike `pause()`, this function affects all kinds of music.
    *
    * \since 3.0.0
    */
@@ -222,7 +222,7 @@ class music final
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played forever.
    * Furthermore, the values 0 and 1 both results in the music being played *one time*.
-   * Except for these "special" values, the method behaves as expected.
+   * Except for these "special" values, the function behaves as expected.
    *
    * \param ms the amount of time it takes for the fade to complete.
    *
@@ -247,9 +247,9 @@ class music final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method only affects music that is currently playing and not currently
-   * fading out. In other words, this method has no effect if music is currently being
-   * faded by the time the method is invoked.
+   * \details This function only affects music that is currently playing and not currently
+   * fading out. In other words, this function has no effect if music is currently being
+   * faded by the time the function is invoked.
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *

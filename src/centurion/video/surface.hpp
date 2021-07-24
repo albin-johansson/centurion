@@ -407,7 +407,7 @@ class basic_surface final
    * \brief Attempts to lock the surface, so that the associated pixel data can
    * be modified.
    *
-   * \details This method has no effect if `must_lock()` returns `false`.
+   * \details This function has no effect if `must_lock()` returns `false`.
    *
    * \return `success` if the locking of the surface was successful or if
    * locking isn't required for modifying the surface; `failure` if something
@@ -430,7 +430,7 @@ class basic_surface final
   /**
    * \brief Unlocks the surface.
    *
-   * \details This method has no effect if `must_lock()` returns `false`.
+   * \details This function has no effect if `must_lock()` returns `false`.
    *
    * \since 4.0.0
    */
@@ -464,7 +464,7 @@ class basic_surface final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the coordinate is out-of-bounds or if
+   * \details This function has no effect if the coordinate is out-of-bounds or if
    * something goes wrong when attempting to modify the pixel data.
    *
    * \param pixel the pixel that will be changed.

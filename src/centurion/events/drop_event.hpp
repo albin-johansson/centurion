@@ -45,7 +45,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    * \brief Destroys the drop event.
    *
    * \details The associated file will be freed depending on the value
-   * returned from the `will_free_file()` method.
+   * returned from the `will_free_file()` function.
    *
    * \since 4.0.0
    */
@@ -85,12 +85,12 @@ class drop_event final : public common_event<SDL_DropEvent>
    * **true**.
    *
    * \note If the `will_free_file` property is `true`, then **the previously
-   * set file pointer will be freed** by calling this method. However, if the
+   * set file pointer will be freed** by calling this function. However, if the
    * `will_free_file` property is `false`, then the old file pointer is
    * simply overridden. Of course, this may, if you're not careful, introduce a
    * memory leak in your program!
    *
-   * \warning Make sure you know what you are doing when using this method.
+   * \warning Make sure you know what you are doing when using this function.
    *
    * \param file a pointer to a file, can safely be null.
    *

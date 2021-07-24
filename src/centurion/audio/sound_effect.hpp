@@ -240,7 +240,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect is currently playing.
+   * \details This function has no effect if the sound effect is currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -260,7 +260,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect isn't currently playing.
+   * \details This function has no effect if the sound effect isn't currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -298,7 +298,7 @@ class basic_sound_effect final
   /**
    * \brief Sets the volume of the sound effect.
    *
-   * \details This method will adjust input values outside the legal range to the closest
+   * \details This function will adjust input values outside the legal range to the closest
    * legal value.
    *
    * \param volume the volume of the sound effect, in the range [0,

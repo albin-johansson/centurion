@@ -78,7 +78,7 @@ class event final
   /**
    * \brief Updates the event loop, gathering events from the input devices.
    *
-   * \note You might not have to call this method by yourself.
+   * \note You might not have to call this function by yourself.
    *
    * \see `SDL_PumpEvents`
    *
@@ -256,7 +256,7 @@ class event final
   /**
    * \brief Indicates whether or not the event is of a particular type.
    *
-   * \details This method is useful for checking the event type before
+   * \details This function is useful for checking the event type before
    * calling `get<T>`, to avoid exceptions being thrown.
    *
    * \tparam T the event type that will be checked, e.g. `window_event`.
@@ -278,11 +278,11 @@ class event final
    * \brief Attempts to return the internal event instance.
    *
    * \details If you're certain about the internal type, then you could use this
-   * method to simply extract the internal event.
+   * function to simply extract the internal event.
    *
    * \note This functions throws if the internal event isn't of the specified
    * type! You might want to make sure that the internal type is `T` with the
-   * `is()` method before calling this method, or use `try_get()`.
+   * `is()` function before calling this function, or use `try_get()`.
    *
    * \tparam T the event type to obtain.
    *
@@ -313,7 +313,7 @@ class event final
   /**
    * \brief Attempts to return the internal event instance.
    *
-   * \details This method returns a null pointer if the internal event
+   * \details This function returns a null pointer if the internal event
    * doesn't match the specified type.
    *
    * \tparam T the event type to obtain.

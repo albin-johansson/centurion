@@ -106,8 +106,8 @@ namespace cen::battery {
 /**
  * \brief Indicates whether or not the system is running on a battery.
  *
- * \details This method is simply a convenience method that is based on the
- * `battery::state()` method.
+ * \details This function is simply a convenience function that is based on the
+ * `battery::state()` function.
  *
  * \return `true` if the system is running on a battery; `false` otherwise.
  *

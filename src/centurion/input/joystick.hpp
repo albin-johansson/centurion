@@ -188,7 +188,7 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this method cancels any previous rumble effects. This method has no
+   * \details Invoking this function cancels any previous rumble effects. This function has no
    * effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
@@ -502,7 +502,7 @@ class basic_joystick final
   /**
    * \brief Returns the name associated with the joystick.
    *
-   * \note If no name can be found, this method returns a null string.
+   * \note If no name can be found, this function returns a null string.
    *
    * \return the name of the joystick; a null pointer if no name is found.
    *
@@ -563,7 +563,7 @@ class basic_joystick final
    * \brief Returns the player index of the joystick associated with the specified device
    * index.
    *
-   * \note This method can be called before any joysticks are opened.
+   * \note This function can be called before any joysticks are opened.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
@@ -920,7 +920,7 @@ class basic_joystick final
    * \brief Locks the access to all joysticks.
    *
    * \details If you are using the joystick API from multiple threads you should use this
-   * method to restrict access to the joysticks.
+   * function to restrict access to the joysticks.
    *
    * \since 4.2.0
    */

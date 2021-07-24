@@ -267,7 +267,7 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the texture access isn't `streaming` or if the
+   * \details This function has no effect if the texture access isn't `streaming` or if the
    * coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
@@ -329,7 +329,7 @@ class basic_texture final
   /**
    * \brief Sets the color modulation of the texture.
    *
-   * \note The alpha component in the color struct is ignored by this method.
+   * \note The alpha component in the color struct is ignored by this function.
    *
    * \param color the color that will be used to modulate the color of the texture.
    *
@@ -614,7 +614,7 @@ class basic_texture final
   /**
    * \brief Locks the texture for write-only pixel access.
    *
-   * \remarks This method is only applicable if the texture access of the texture is
+   * \remarks This function is only applicable if the texture access of the texture is
    * `Streaming`.
    *
    * \param pixels this will be filled with a pointer to the locked pixels.

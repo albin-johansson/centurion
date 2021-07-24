@@ -165,7 +165,7 @@ struct config final
  *   }
  * \endcode
  *
- * \note The signature of the main-method must be `ìnt(int, char**)` when
+ * \note The signature of the main-function must be `ìnt(int, char**)` when
  * using the Centurion library!
  *
  * \since 3.0.0

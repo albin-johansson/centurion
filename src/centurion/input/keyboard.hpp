@@ -58,7 +58,7 @@ class keyboard final
   /**
    * \brief Updates the state of the key state object.
    *
-   * \note `SDL_PumpEvents` isn't invoked by this method.
+   * \note `SDL_PumpEvents` isn't invoked by this function.
    *
    * \since 3.0.0
    */
@@ -70,7 +70,7 @@ class keyboard final
   /**
    * \brief Indicates whether or not the specified key is being pressed.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -87,9 +87,9 @@ class keyboard final
   /**
    * \brief Indicates whether or not the specified key is being pressed.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -106,7 +106,7 @@ class keyboard final
    * \brief Indicates whether or not the specified key has been pressed during more than
    * one update of the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -125,9 +125,9 @@ class keyboard final
    * \brief Indicates whether or not the specified key has been pressed during more than
    * one update of the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -144,7 +144,7 @@ class keyboard final
    * \brief Indicates whether or not a key just became pressed in the last update of the
    * key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -163,9 +163,9 @@ class keyboard final
    * \brief Indicates whether or not a key just became pressed in the last update of the
    * key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -182,7 +182,7 @@ class keyboard final
    * \brief Indicates whether or not the specified key was released in the last update of
    * the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -202,9 +202,9 @@ class keyboard final
    * \brief Indicates whether or not the specified key was released in the last update of
    * the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *

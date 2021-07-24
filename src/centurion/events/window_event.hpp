@@ -45,7 +45,7 @@ class window_event final : public common_event<SDL_WindowEvent>
   /**
    * \brief Returns the event ID of this window event.
    *
-   * \details There are many different kinds of window events, use this method to check
+   * \details There are many different kinds of window events, use this function to check
    * what kind of action that triggered this event.
    *
    * \return the event ID of this window event.
@@ -66,7 +66,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
    * data2 represent the new width and height of the window respectively. See the
    * `window_event_id` documentation for more details about whether the value returned
-   * from this method is meaningful in regard to the window event ID.
+   * from this function is meaningful in regard to the window event ID.
    *
    * \return the value of the first data value.
    *
@@ -86,7 +86,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    * For instance, if the event ID is `window_event_id::size_changed`, then data1 and
    * data2 represent the new width and height of the window respectively. See the
    * `window_event_id` documentation for more details about whether the value returned
-   * from this method is meaningful in regard to the window event ID.
+   * from this function is meaningful in regard to the window event ID.
    *
    * \return the value of the second data value.
    *

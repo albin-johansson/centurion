@@ -27,7 +27,7 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This method has no effect if the supplied string is null. Usage of this method
+ * \details This function has no effect if the supplied string is null. Usage of this function
  * is quite bulky, so refer to the other logging methods for casual logging.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
@@ -54,7 +54,7 @@ void msg(const log_priority priority,
 /**
  * \brief Logs a message with `log_priority::info` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -75,7 +75,7 @@ void info(const log_category category,
 /**
  * \brief Logs a message with `log_priority::info` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -93,7 +93,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a message with `log_priority::warn` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -114,7 +114,7 @@ void warn(const log_category category,
 /**
  * \brief Logs a message with `log_priority::warn` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -132,7 +132,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a message with `log_priority::verbose` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -153,7 +153,7 @@ void verbose(const log_category category,
 /**
  * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -171,7 +171,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a message with `log_priority::debug` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -192,7 +192,7 @@ void debug(const log_category category,
 /**
  * \brief Logs a message with `log_priority::debug` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -210,7 +210,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a message with `log_priority::critical` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -231,7 +231,7 @@ void critical(const log_category category,
 /**
  * \brief Logs a message with `log_priority::critical` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -249,7 +249,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
 /**
  * \brief Logs a message with `log_priority::error` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *

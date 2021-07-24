@@ -92,14 +92,13 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring>
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
   {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
+    if (const czstring value = SDL_GetHint(Hint::name()))
     {
-      return std::nullopt;
+      return value;
     }
     else
     {
-      return value;
+      return std::nullopt;
     }
   }
 
@@ -127,14 +126,13 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 
   [[nodiscard]] static auto current_value() -> std::optional<int>
   {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
+    if (const czstring value = SDL_GetHint(Hint::name()))
     {
-      return std::nullopt;
+      return std::stoi(value);
     }
     else
     {
-      return std::stoi(value);
+      return std::nullopt;
     }
   }
 
@@ -157,14 +155,13 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
 
   [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
+    if (const czstring value = SDL_GetHint(Hint::name()))
     {
-      return std::nullopt;
+      return static_cast<uint>(std::stoul(value));
     }
     else
     {
-      return static_cast<uint>(std::stoul(value));
+      return std::nullopt;
     }
   }
 
@@ -187,14 +184,13 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 
   [[nodiscard]] static auto current_value() -> std::optional<float>
   {
-    const czstring value = SDL_GetHint(Hint::name());
-    if (!value)
+    if (const czstring value = SDL_GetHint(Hint::name()))
     {
-      return std::nullopt;
+      return std::stof(value);
     }
     else
     {
-      return std::stof(value);
+      return std::nullopt;
     }
   }
 

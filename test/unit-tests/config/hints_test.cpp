@@ -493,6 +493,8 @@ TEST_F(BasicHintTest, AddHintCallback)
       render_driver::value::opengl);
 }
 
+#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+
 TEST_F(BasicHintTest, AddHintCallbackExFull)
 {
   using cen::hint::render_driver;
@@ -532,6 +534,8 @@ TEST_F(BasicHintTest, AddHintCallbackExFull)
   cen::set_hint<render_driver, cen::hint_priority::override>(
       render_driver::value::opengl);
 }
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 TEST_F(BasicHintTest, HintPriority)
 {

@@ -1,8 +1,18 @@
 /// \defgroup core Core
 /// \brief Contains entities considered to be fundamental for the library.
 
-/// \defgroup hints Hints
-/// \brief Contains the API related to hints (configuration variables).
+/**
+ * \defgroup hints Hints
+ *
+ * \brief Contains the API related to hints (configuration variables).
+ *
+ * \details Refer to the official SDL2 wiki or the `SDL_hints.hpp` header for details
+ * regarding any specific hint type.
+ *
+ * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`, `X11WindowVisualID` are
+ * string hints because the types of their values isn't known. Should be fixed if the type
+ * isn't actually string.
+ */
 
 /// \defgroup event Events
 /// \brief Contains entities related to events.

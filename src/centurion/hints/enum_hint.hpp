@@ -190,17 +190,24 @@ class enum_hint
     return std::is_same_v<T, value>;
   }
 
-  [[nodiscard]] static auto current_value() noexcept -> std::optional<value>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    czstring hint = SDL_GetHint(Derived::name());
-    if (!hint)
+    if (const czstring hint = SDL_GetHint(Derived::name()))
+    {
+      return Derived::map.key_from(hint);
+    }
+    else
     {
       return std::nullopt;
     }
-    return Derived::map.key_from(hint);
   }
 
-  static auto to_string(const value value) -> std::string
+  [[nodiscard]] static auto from_string(const czstring str) -> value_type
+  {
+    return Derived::map.key_from(str);
+  }
+
+  [[nodiscard]] static auto to_string(const value_type value) -> std::string
   {
     return Derived::map.find(value);
   }

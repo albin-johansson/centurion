@@ -8,9 +8,12 @@
 #include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "czstring_compare.hpp"
+#include "czstring_eq.hpp"
+#include "from_string.hpp"
 #include "static_bimap.hpp"
 
 /// \cond FALSE
+
 namespace cen::detail {
 
 template <typename Key, usize Size>
@@ -25,7 +28,7 @@ class crtp_hint
   template <typename T>
   [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Arg>;
+    return std::is_same_v<T, value_type>;
   }
 
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
@@ -38,7 +41,12 @@ class crtp_hint
     return Derived::current_value();
   }
 
-  [[nodiscard]] static auto to_string(Arg value) -> std::string
+  [[nodiscard]] static auto from_string(const czstring str) -> value_type
+  {
+    return Derived::convert(str);
+  }
+
+  [[nodiscard]] static auto to_string(value_type value) -> std::string
   {
     return std::to_string(value);
   }
@@ -58,6 +66,11 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
   [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
   {
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
+  }
+
+  [[nodiscard]] static auto convert(const czstring str) noexcept -> bool
+  {
+    return czstring_eq(str, "1") ? true : false;
   }
 
   [[nodiscard]] static auto to_string(const bool value) -> std::string
@@ -90,6 +103,11 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring>
     }
   }
 
+  [[nodiscard]] static auto convert(const czstring str) noexcept -> czstring
+  {
+    return str;
+  }
+
   [[nodiscard]] static auto to_string(const czstring value) -> std::string
   {
     return value;
@@ -119,6 +137,11 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
       return std::stoi(value);
     }
   }
+
+  [[nodiscard]] static auto convert(const czstring str) -> int
+  {
+    return from_string<int>(str).value();
+  }
 };
 
 // A hint class that only accepts unsigned integers
@@ -143,6 +166,11 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
     {
       return static_cast<uint>(std::stoul(value));
     }
+  }
+
+  [[nodiscard]] static auto convert(const czstring str) -> uint
+  {
+    return from_string<uint>(str).value();
   }
 };
 
@@ -169,9 +197,15 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
       return std::stof(value);
     }
   }
+
+  [[nodiscard]] static auto convert(const czstring str) -> float
+  {
+    return from_string<float>(str).value();
+  }
 };
 
 }  // namespace cen::detail
+
 /// \endcond
 
 #endif  // CENTURION_DETAIL_HINTS_IMPL_HEADER

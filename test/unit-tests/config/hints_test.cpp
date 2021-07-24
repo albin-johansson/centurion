@@ -172,6 +172,9 @@ class HintTest : public testing::Test
 
 CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(BoolHintTest, HintTest, boolean_hints)
 {
+  ASSERT_TRUE(TypeParam::from_string("1"));
+  ASSERT_FALSE(TypeParam::from_string("0"));
+
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(true));
     ASSERT_TRUE(cen::get_hint<TypeParam>().value());
@@ -183,6 +186,8 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(BoolHintTest, HintTest, boolean_hints)
 
 CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 {
+  ASSERT_EQ(123, TypeParam::from_string("123"));
+
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1));
     ASSERT_EQ(1, cen::get_hint<TypeParam>().value());
@@ -194,6 +199,8 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 
 CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest, HintTest, unsigned_hints)
 {
+  ASSERT_EQ(42, TypeParam::from_string("42"));
+
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));
     ASSERT_EQ(1u, cen::get_hint<TypeParam>().value());
@@ -205,6 +212,8 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest, HintTest, unsigned_hint
 
 CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(FloatHintTest, HintTest, float_hints)
 {
+  ASSERT_FLOAT_EQ(12.3f, TypeParam::from_string("12.3"));
+
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1.0f));
     ASSERT_EQ(1.0f, cen::get_hint<TypeParam>().value());
@@ -347,6 +356,8 @@ TEST_F(BasicHintTest, RenderDriver)
                                 render_driver::value::opengles2,
                                 render_driver::value::metal,
                                 render_driver::value::software);
+
+  ASSERT_EQ(render_driver::value::direct3d, render_driver::from_string("direct3d"));
 }
 
 TEST_F(BasicHintTest, AudioResamplingMode)
@@ -356,6 +367,9 @@ TEST_F(BasicHintTest, AudioResamplingMode)
                                         audio_resampling_mode::value::fast,
                                         audio_resampling_mode::value::medium,
                                         audio_resampling_mode::value::best);
+
+  ASSERT_EQ(audio_resampling_mode::value::medium,
+            audio_resampling_mode::from_string("medium"));
 }
 
 TEST_F(BasicHintTest, ScaleQuality)
@@ -441,29 +455,73 @@ TEST_F(BasicHintTest, D3DCompiler)
 TEST_F(BasicHintTest, AddHintCallback)
 {
   using cen::hint::render_driver;
-  cen::set_hint<render_driver>(render_driver::value::software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::software);
+
+  const auto callable = [](void* data,
+                           const cen::czstring hint,
+                           const cen::czstring oldVal,
+                           const cen::czstring newVal) {
+    static bool first = true;
+    if (first)
+    {
+      first = false;
+    }
+    else
+    {
+      const auto ptr = reinterpret_cast<int*>(data);
+
+      ASSERT_TRUE(ptr);
+      ASSERT_EQ(7, *ptr);
+
+      ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
+      ASSERT_STREQ("software", oldVal);
+      ASSERT_STREQ("opengl", newVal);
+    }
+  };
 
   int data = 7;
-  auto handle = cen::add_hint_callback<render_driver>(
-      [](void* data, cen::czstring hint, cen::czstring oldVal, cen::czstring newVal) {
-        static bool first = true;
-        if (first)
-        {
-          first = false;
-        }
-        else
-        {
-          const auto ptr = reinterpret_cast<int*>(data);
+  auto handle = cen::add_hint_callback<render_driver>(callable, &data);
+  ASSERT_EQ(&data, handle.user_data());
 
-          ASSERT_TRUE(ptr);
-          ASSERT_EQ(7, *ptr);
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::software);
 
-          ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
-          ASSERT_STREQ("software", oldVal);
-          ASSERT_STREQ("opengl", newVal);
-        }
-      },
-      &data);
+  handle.disconnect();
+
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::opengl);
+}
+
+TEST_F(BasicHintTest, AddHintCallbackExFull)
+{
+  using cen::hint::render_driver;
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::software);
+
+  const auto callable = [](int* ptr,
+                           const cen::czstring name,
+                           const render_driver::value oldValue,
+                           const render_driver::value newValue) {
+    static bool first = true;
+    if (first)
+    {
+      first = false;
+    }
+    else
+    {
+      ASSERT_TRUE(ptr);
+      ASSERT_EQ(42, *ptr);
+
+      ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, name);
+
+      ASSERT_EQ(render_driver::value::software, oldValue);
+      ASSERT_EQ(render_driver::value::opengl, newValue);
+    }
+  };
+
+  int data = 42;
+  auto handle = cen::add_hint_callback_ex<render_driver>(callable, &data);
   ASSERT_EQ(&data, handle.user_data());
 
   cen::set_hint<render_driver, cen::hint_priority::override>(

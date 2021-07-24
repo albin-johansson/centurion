@@ -10,7 +10,7 @@
 #include <cassert>      // assert
 #include <ostream>      // ostream
 #include <string>       // string, to_string
-#include <type_traits>  // invoke_result_t
+#include <type_traits>  // invoke_result_t, declval
 
 #ifdef CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -192,7 +192,7 @@ class thread final
   {
     assert(name);
 
-    constexpr bool isNoexcept = noexcept(Callable{}(static_cast<T*>(nullptr)));
+    constexpr bool isNoexcept = noexcept(Callable{}(std::declval<T*>()));
 
     const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
       auto* ptr = static_cast<T*>(erased);

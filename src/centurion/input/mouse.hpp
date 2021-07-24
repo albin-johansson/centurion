@@ -335,15 +335,6 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 
 /// \} End of streaming
 
-/**
- * \typedef mouse_state
- *
- * \brief This is provided for backwards compatibility with Centurion 5.
- *
- * \deprecated This was deprecated in Centurion 6.0.0.
- */
-using mouse_state [[deprecated]] = mouse;
-
 /// \} End of group input
 
 }  // namespace cen

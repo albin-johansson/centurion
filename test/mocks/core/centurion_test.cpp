@@ -40,7 +40,8 @@ TEST_F(CenturionTest, NoFailureDefaultConfiguration)
     ASSERT_EQ(cfg.mixerFormat, Mix_OpenAudio_fake.arg1_val);
     ASSERT_EQ(cfg.mixerChannels, Mix_OpenAudio_fake.arg2_val);
     ASSERT_EQ(cfg.mixerChunkSize, Mix_OpenAudio_fake.arg3_val);
-  } catch (...)
+  }
+  catch (...)
   {
     FAIL();
   }

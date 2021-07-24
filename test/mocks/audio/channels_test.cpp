@@ -45,8 +45,7 @@ class ChannelsTest : public testing::Test
 
 TEST_F(ChannelsTest, OnFinished)
 {
-  cen::channels::on_finished([](cen::channel_index channel) noexcept {
-  });
+  cen::channels::on_finished([](cen::channel_index channel) noexcept {});
 
   ASSERT_EQ(1, Mix_ChannelFinished_fake.call_count);
 }

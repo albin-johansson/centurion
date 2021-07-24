@@ -194,8 +194,7 @@ TEST_F(MusicTest, Type)
 
 TEST_F(MusicTest, SetHook)
 {
-  cen::music::set_hook([](void*, cen::u8*, int) noexcept {
-  });
+  cen::music::set_hook([](void*, cen::u8*, int) noexcept {});
 
   ASSERT_EQ(1, Mix_HookMusic_fake.call_count);
   ASSERT_NE(nullptr, Mix_HookMusic_fake.arg0_val);
@@ -234,8 +233,7 @@ TEST_F(MusicTest, DecoderCount)
 
 TEST_F(MusicTest, OnMusicFinished)
 {
-  cen::on_music_finished([]() noexcept {
-  });
+  cen::on_music_finished([]() noexcept {});
   ASSERT_EQ(1, Mix_HookMusicFinished_fake.call_count);
 }
 

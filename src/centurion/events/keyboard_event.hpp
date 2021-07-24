@@ -282,7 +282,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::shift)` instead.
    *
    * \since 4.0.0
    */
@@ -296,7 +296,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::ctrl)` instead.
    *
    * \since 4.0.0
    */
@@ -310,7 +310,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::alt)` instead.
    *
    * \since 4.0.0
    */
@@ -324,7 +324,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::gui)` instead.
    *
    * \since 4.0.0
    */
@@ -338,7 +338,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::caps)` instead.
    *
    * \since 4.0.0
    */
@@ -352,7 +352,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::num)` instead.
    *
    * \since 4.0.0
    */

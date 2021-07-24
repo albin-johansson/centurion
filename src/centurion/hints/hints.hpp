@@ -18,10 +18,10 @@ namespace cen {
 /**
  * \brief Sets the value of the specified hint.
  *
- * \details This method will only accept values that are related to the
+ * \details This function will only accept values that are related to the
  * specified hint, supplying the wrong kind of value causes a compile-time
  * error. See the related hint class for more details about the associated
- * value type. However, whilst this method is type-safe, it doesn't ensure
+ * value type. However, whilst this function is type-safe, it doesn't ensure
  * that *correct* values are specified for the hints.
  *
  * \tparam Hint the type of the hint that will be modified.

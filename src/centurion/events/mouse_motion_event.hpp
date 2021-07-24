@@ -164,9 +164,8 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   /**
    * \brief Returns a bitmask for the current mouse button state.
    *
-   * \remark If you want to check if a specific mouse button is pressed or
-   * released, a better alternative would be to use the `pressed(MouseButton)
-   * ` function.
+   * \remark If you want to check if a specific mouse button is pressed or released, a
+   * better alternative would be to use the `pressed()` function.
    *
    * \return a bitmask for the current mouse button state.
    *

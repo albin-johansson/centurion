@@ -310,15 +310,6 @@ inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::o
 /// \} End of streaming
 
 /**
- * \typedef key_state
- *
- * \brief This is provided for backwards compatibility with Centurion 5.
- *
- * \deprecated This is deprecated since Centurion 6.0.0.
- */
-using key_state [[deprecated]] = keyboard;
-
-/**
  * \brief Indicates whether or not the platform has screen keyboard support.
  *
  * \return `true` if the current platform has some form of screen keyboard support;

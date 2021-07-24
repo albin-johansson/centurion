@@ -144,7 +144,7 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, uint>
+class uint_hint : public crtp_hint<uint_hint<Hint>, uint>
 {
  public:
   template <typename T>

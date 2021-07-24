@@ -363,7 +363,7 @@ struct event_logging final : detail::int_hint<event_logging>
   }
 };
 
-struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
+struct thread_stack_size final : detail::uint_hint<thread_stack_size>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
@@ -371,7 +371,7 @@ struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
   }
 };
 
-struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
+struct timer_resolution final : detail::uint_hint<timer_resolution>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {

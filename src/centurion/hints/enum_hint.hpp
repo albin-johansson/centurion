@@ -184,12 +184,12 @@ class enum_hint
   using value = typename enum_hint_traits<Derived>::value;
 
   template <typename T>
-  constexpr static auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, value>;
   }
 
-  static auto current_value() noexcept -> std::optional<value>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(Derived::name());
     if (!hint)

@@ -32,6 +32,18 @@ enum class log_priority : int
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
 
+/**
+ * \brief Returns the number of available log priorities.
+ *
+ * \return the number of log priorities.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto log_priority_count() noexcept -> int
+{
+  return SDL_NUM_LOG_PRIORITIES;
+}
+
 /// \name String conversions
 /// \{
 

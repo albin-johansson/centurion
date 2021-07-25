@@ -40,3 +40,8 @@ TEST(LogPriority, ToString)
 
   std::cout << "Log priority example: " << cen::log_priority::info << '\n';
 }
+
+TEST(LogPriority, LogPriorityCount)
+{
+  ASSERT_EQ(SDL_NUM_LOG_PRIORITIES, cen::log_priority_count());
+}

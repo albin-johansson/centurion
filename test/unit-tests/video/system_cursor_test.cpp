@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(SystemCursor, Values)
 {
@@ -59,5 +59,5 @@ TEST(SystemCursor, ToString)
   ASSERT_EQ("no", cen::to_string(cen::system_cursor::no));
   ASSERT_EQ("hand", cen::to_string(cen::system_cursor::hand));
 
-  std::cout << "System cursor example: " << cen::system_cursor::hand << '\n';
+  std::clog << "System cursor example: " << cen::system_cursor::hand << '\n';
 }

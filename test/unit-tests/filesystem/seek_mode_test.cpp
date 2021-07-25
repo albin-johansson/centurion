@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -21,5 +21,5 @@ TEST(SeekMode, ToString)
   ASSERT_EQ("relative_to_current", cen::to_string(cen::seek_mode::relative_to_current));
   ASSERT_EQ("relative_to_end", cen::to_string(cen::seek_mode::relative_to_end));
 
-  std::cout << "Seek mode example: " << cen::seek_mode::from_beginning << '\n';
+  std::clog << "Seek mode example: " << cen::seek_mode::from_beginning << '\n';
 }

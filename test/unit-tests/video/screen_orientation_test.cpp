@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 #include "video/screen.hpp"
@@ -35,6 +35,6 @@ TEST(ScreenOrientation, ToString)
   ASSERT_EQ("portrait_flipped",
             cen::to_string(cen::screen_orientation::portrait_flipped));
 
-  std::cout << "Screen orientation example: " << cen::screen_orientation::portrait
+  std::clog << "Screen orientation example: " << cen::screen_orientation::portrait
             << '\n';
 }

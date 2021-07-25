@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/log.hpp"
 
@@ -122,5 +122,5 @@ TEST(EventDispatcher, ToString)
 TEST(EventDispatcher, StreamOperator)
 {
   event_dispatcher dispatcher;
-  std::cout << "COUT: " << dispatcher << '\n';
+  std::clog << dispatcher << '\n';
 }

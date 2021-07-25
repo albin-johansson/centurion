@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 
 #include "core/log.hpp"
@@ -98,7 +98,7 @@ TEST_F(WindowTest, ToString)
 
 TEST_F(WindowTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_window << '\n';
+  std::clog << *m_window << '\n';
 }
 
 TEST_F(WindowTest, WindowFlagsEnum)

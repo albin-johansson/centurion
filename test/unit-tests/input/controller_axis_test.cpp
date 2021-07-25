@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 using axis = cen::controller_axis;
 
@@ -44,5 +44,5 @@ TEST(ControllerAxis, ToString)
   ASSERT_EQ("trigger_right", cen::to_string(axis::trigger_right));
   ASSERT_EQ("max", cen::to_string(axis::max));
 
-  std::cout << "Controller axis example: " << axis::right_x << '\n';
+  std::clog << "Controller axis example: " << axis::right_x << '\n';
 }

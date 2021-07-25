@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -25,5 +25,5 @@ TEST(ButtonOrder, ToString)
   ASSERT_EQ("left_to_right", cen::to_string(cen::button_order::left_to_right));
   ASSERT_EQ("right_to_left", cen::to_string(cen::button_order::right_to_left));
 
-  std::cout << "Button order example: " << cen::button_order::left_to_right << '\n';
+  std::clog << "Button order example: " << cen::button_order::left_to_right << '\n';
 }

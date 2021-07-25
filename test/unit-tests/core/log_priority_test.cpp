@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -38,7 +38,7 @@ TEST(LogPriority, ToString)
   ASSERT_EQ("error", cen::to_string(cen::log_priority::error));
   ASSERT_EQ("critical", cen::to_string(cen::log_priority::critical));
 
-  std::cout << "Log priority example: " << cen::log_priority::info << '\n';
+  std::clog << "Log priority example: " << cen::log_priority::info << '\n';
 }
 
 TEST(LogPriority, LogPriorityCount)

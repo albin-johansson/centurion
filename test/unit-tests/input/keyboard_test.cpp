@@ -93,5 +93,5 @@ TEST(Keyboard, ToString)
   ASSERT_EQ("keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}",
             cen::to_string(keyboard));
 
-  std::cout << keyboard;
+  std::clog << keyboard;
 }

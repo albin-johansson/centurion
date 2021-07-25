@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -21,5 +21,5 @@ TEST(HintPriority, ToString)
   ASSERT_EQ("normal", cen::to_string(cen::hint_priority::normal));
   ASSERT_EQ("override", cen::to_string(cen::hint_priority::override));
 
-  std::cout << "Hint priority example: " << cen::hint_priority::override << '\n';
+  std::clog << "Hint priority example: " << cen::hint_priority::override << '\n';
 }

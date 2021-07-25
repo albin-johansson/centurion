@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(MusicType, Values)
 {
@@ -42,5 +42,5 @@ TEST(MusicType, ToString)
   ASSERT_EQ("flac", cen::to_string(cen::music_type::flac));
   ASSERT_EQ("opus", cen::to_string(cen::music_type::opus));
 
-  std::cout << "Music type example: " << cen::music_type::mp3 << '\n';
+  std::clog << "Music type example: " << cen::music_type::mp3 << '\n';
 }

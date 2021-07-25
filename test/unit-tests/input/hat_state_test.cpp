@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -33,5 +33,5 @@ TEST(HatState, ToString)
   ASSERT_EQ("left_up", cen::to_string(cen::hat_state::left_up));
   ASSERT_EQ("left_down", cen::to_string(cen::hat_state::left_down));
 
-  std::cout << "Hat state example: " << cen::hat_state::centered << '\n';
+  std::clog << "Hat state example: " << cen::hat_state::centered << '\n';
 }

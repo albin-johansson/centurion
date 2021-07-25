@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "events/event.hpp"
 
@@ -76,5 +76,5 @@ TEST(WindowEventID, ToString)
   ASSERT_EQ("take_focus", cen::to_string(id::take_focus));
   ASSERT_EQ("hit_test", cen::to_string(id::hit_test));
 
-  std::cout << "Window event ID example: " << id::resized << '\n';
+  std::clog << "Window event ID example: " << id::resized << '\n';
 }

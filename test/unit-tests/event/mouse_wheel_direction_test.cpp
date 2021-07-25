@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "events/event.hpp"
 
@@ -34,6 +34,6 @@ TEST(MouseWheelDirection, ToString)
   ASSERT_EQ("normal", cen::to_string(cen::mouse_wheel_direction::normal));
   ASSERT_EQ("flipped", cen::to_string(cen::mouse_wheel_direction::flipped));
 
-  std::cout << "Mouse wheel direction example: " << cen::mouse_wheel_direction::normal
+  std::clog << "Mouse wheel direction example: " << cen::mouse_wheel_direction::normal
             << '\n';
 }

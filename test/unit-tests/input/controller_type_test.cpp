@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -53,7 +53,7 @@ TEST(ControllerType, ToString)
   ASSERT_EQ("virt", cen::to_string(cen::controller_type::virt));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  std::cout << "Controller type example: " << cen::controller_type::ps4 << '\n';
+  std::clog << "Controller type example: " << cen::controller_type::ps4 << '\n';
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

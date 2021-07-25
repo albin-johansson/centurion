@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(SensorType, Values)
 {
@@ -29,5 +29,5 @@ TEST(SensorType, ToString)
   ASSERT_EQ("accelerometer", cen::to_string(cen::sensor_type::accelerometer));
   ASSERT_EQ("gyroscope", cen::to_string(cen::sensor_type::gyroscope));
 
-  std::cout << "Sensor type example: " << cen::sensor_type::accelerometer << '\n';
+  std::clog << "Sensor type example: " << cen::sensor_type::accelerometer << '\n';
 }

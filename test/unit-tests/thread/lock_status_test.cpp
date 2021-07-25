@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -21,5 +21,5 @@ TEST(LockStatus, ToString)
   ASSERT_EQ("timed_out", cen::to_string(cen::lock_status::timed_out));
   ASSERT_EQ("error", cen::to_string(cen::lock_status::error));
 
-  std::cout << "Lock status example: " << cen::lock_status::timed_out << '\n';
+  std::clog << "Lock status example: " << cen::lock_status::timed_out << '\n';
 }

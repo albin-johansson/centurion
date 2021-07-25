@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 #include "video/opengl/gl_core.hpp"
@@ -83,5 +83,5 @@ TEST(GLAttribute, ToString)
   ASSERT_EQ("framebuffer_srgb_capable", cen::to_string(cen::gl_attribute::framebuffer_srgb_capable));
   // clang-format on
 
-  std::cout << "OpenGL attribute example: " << cen::gl_attribute::double_buffer << '\n';
+  std::clog << "OpenGL attribute example: " << cen::gl_attribute::double_buffer << '\n';
 }

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "video/message_box.hpp"
 
@@ -33,5 +33,5 @@ TEST(MessageBoxColorID, ToString)
   ASSERT_EQ("button_background", cen::to_string(id::button_background));
   ASSERT_EQ("button_selected", cen::to_string(id::button_selected));
 
-  std::cout << "Message box color ID example: " << id::background << '\n';
+  std::clog << "Message box color ID example: " << id::background << '\n';
 }

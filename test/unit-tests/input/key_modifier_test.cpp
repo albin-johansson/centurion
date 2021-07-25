@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -95,5 +95,5 @@ TEST(KeyModifier, ToString)
         cen::to_string(mods));
   }
 
-  std::cout << "Key modifier example: " << cen::key_mod::left_shift << '\n';
+  std::clog << "Key modifier example: " << cen::key_mod::left_shift << '\n';
 }

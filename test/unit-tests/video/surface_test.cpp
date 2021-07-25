@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 #include <utility>  // move
@@ -252,5 +252,5 @@ TEST_F(SurfaceTest, ToString)
 
 TEST_F(SurfaceTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_surface << '\n';
+  std::clog << *m_surface << '\n';
 }

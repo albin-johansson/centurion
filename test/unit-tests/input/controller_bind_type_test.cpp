@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(ControllerBindType, Values)
 {
@@ -29,6 +29,6 @@ TEST(ControllerBindType, ToString)
   ASSERT_EQ("axis", cen::to_string(cen::controller_bind_type::axis));
   ASSERT_EQ("hat", cen::to_string(cen::controller_bind_type::hat));
 
-  std::cout << "Controller bind type example: " << cen::controller_bind_type::button
+  std::clog << "Controller bind type example: " << cen::controller_bind_type::button
             << '\n';
 }

@@ -204,7 +204,7 @@ TEST(ScanCode, ToString)
 
 TEST(ScanCode, StreamOperator)
 {
-  std::cout << "COUT: " << cen::scancodes::x << '\n';
+  std::clog << cen::scancodes::x << '\n';
 }
 
 TEST(ScanCode, Constants)

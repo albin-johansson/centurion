@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(FileMode, ToString)
 {
@@ -29,5 +29,5 @@ TEST(FileMode, ToString)
   ASSERT_EQ("read_append", cen::to_string(cen::file_mode::read_append));
   ASSERT_EQ("read_append_binary", cen::to_string(cen::file_mode::read_append_binary));
 
-  std::cout << "File mode example: " << cen::file_mode::write << '\n';
+  std::clog << "File mode example: " << cen::file_mode::write << '\n';
 }

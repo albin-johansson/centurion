@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(LogCategory, Values)
 {
@@ -49,5 +49,5 @@ TEST(LogCategory, ToString)
   ASSERT_EQ("test", cen::to_string(cen::log_category::test));
   ASSERT_EQ("misc", cen::to_string(cen::log_category::misc));
 
-  std::cout << "Log category example: " << cen::log_category::video << '\n';
+  std::clog << "Log category example: " << cen::log_category::video << '\n';
 }

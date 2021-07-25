@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(JoystickPower, Values)
 {
@@ -40,5 +40,5 @@ TEST(JoystickPower, ToString)
   ASSERT_EQ("wired", cen::to_string(cen::joystick_power::wired));
   ASSERT_EQ("max", cen::to_string(cen::joystick_power::max));
 
-  std::cout << "Joystick power example: " << cen::joystick_power::wired << '\n';
+  std::clog << "Joystick power example: " << cen::joystick_power::wired << '\n';
 }

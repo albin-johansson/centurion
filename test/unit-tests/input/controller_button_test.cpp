@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 using button = cen::controller_button;
 
@@ -79,5 +79,5 @@ TEST(ControllerButton, ToString)
 
   ASSERT_EQ("max", cen::to_string(button::max));
 
-  std::cout << "Controller button example: " << button::x << '\n';
+  std::clog << "Controller button example: " << button::x << '\n';
 }

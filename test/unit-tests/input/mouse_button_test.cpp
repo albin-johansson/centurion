@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -25,5 +25,5 @@ TEST(MouseButton, ToString)
   ASSERT_EQ("x1", cen::to_string(cen::mouse_button::x1));
   ASSERT_EQ("x2", cen::to_string(cen::mouse_button::x2));
 
-  std::cout << "Mouse button example: " << cen::mouse_button::middle << '\n';
+  std::clog << "Mouse button example: " << cen::mouse_button::middle << '\n';
 }

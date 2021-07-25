@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -27,5 +27,5 @@ TEST(FileType, ToString)
   ASSERT_EQ("memory", cen::to_string(cen::file_type::memory));
   ASSERT_EQ("memory_ro", cen::to_string(cen::file_type::memory_ro));
 
-  std::cout << "File type example: " << cen::file_type::win32 << '\n';
+  std::clog << "File type example: " << cen::file_type::win32 << '\n';
 }

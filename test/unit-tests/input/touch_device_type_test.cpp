@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(TouchDeviceType, Values)
 {
@@ -35,5 +35,5 @@ TEST(TouchDeviceType, ToString)
   ASSERT_EQ("indirect_relative",
             cen::to_string(cen::touch_device_type::indirect_relative));
 
-  std::cout << "Touch device type: " << cen::touch_device_type::direct << '\n';
+  std::clog << "Touch device type: " << cen::touch_device_type::direct << '\n';
 }

@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -49,5 +49,5 @@ TEST(HapticFeature, ToString)
   ASSERT_EQ("status", cen::to_string(cen::haptic_feature::status));
   ASSERT_EQ("pause", cen::to_string(cen::haptic_feature::pause));
 
-  std::cout << "Haptic feature example: " << cen::haptic_feature::spring << '\n';
+  std::clog << "Haptic feature example: " << cen::haptic_feature::spring << '\n';
 }

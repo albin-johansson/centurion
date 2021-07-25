@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>     // cout
+#include <iostream>     // clog
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
@@ -414,7 +414,7 @@ TEST(Color, ToString)
 TEST(Color, StreamOperator)
 {
   constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
-  std::cout << "COUT: " << color << '\n';
+  std::clog << color << '\n';
 }
 
 TEST(Color, Serialization)

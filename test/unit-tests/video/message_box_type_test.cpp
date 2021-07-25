@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -22,5 +22,5 @@ TEST(MessageBoxType, ToString)
   ASSERT_EQ("error", cen::to_string(cen::message_box_type::error));
   ASSERT_EQ("warning", cen::to_string(cen::message_box_type::warning));
 
-  std::cout << "Message box type example: " << cen::message_box_type::information << '\n';
+  std::clog << "Message box type example: " << cen::message_box_type::information << '\n';
 }

@@ -83,5 +83,5 @@ TEST_F(RendererInfoTest, Foo)
   ASSERT_EQ(texture_format_1, static_cast<Uint32>(info->format(1)));
   ASSERT_EQ(texture_format_2, static_cast<Uint32>(info->format(2)));
 
-  std::cout << "COUT: " << *info << '\n';
+  std::clog << *info << '\n';
 }

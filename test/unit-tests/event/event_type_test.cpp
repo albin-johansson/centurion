@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "events/event.hpp"
 
@@ -176,5 +176,5 @@ TEST(EventType, ToString)
 
   ASSERT_EQ("user", cen::to_string(type::user));
 
-  std::cout << "Event type example: " << type::app_low_memory << '\n';
+  std::clog << "Event type example: " << type::app_low_memory << '\n';
 }

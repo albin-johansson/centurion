@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -19,5 +19,5 @@ TEST(ButtonState, ToString)
   ASSERT_EQ("released", cen::to_string(cen::button_state::released));
   ASSERT_EQ("pressed", cen::to_string(cen::button_state::pressed));
 
-  std::cout << "Button state example: " << cen::button_state::pressed << '\n';
+  std::clog << "Button state example: " << cen::button_state::pressed << '\n';
 }

@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(TextureAccess, Values)
 {
@@ -26,5 +26,5 @@ TEST(TextureAccess, ToString)
   ASSERT_EQ("streaming", cen::to_string(cen::texture_access::streaming));
   ASSERT_EQ("target", cen::to_string(cen::texture_access::target));
 
-  std::cout << "Texture access example: " << cen::texture_access::streaming << '\n';
+  std::clog << "Texture access example: " << cen::texture_access::streaming << '\n';
 }

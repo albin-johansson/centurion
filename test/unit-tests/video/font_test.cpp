@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <type_traits>
 
 #include "core/library.hpp"
@@ -301,5 +301,5 @@ TEST(Font, ToString)
 TEST(Font, StreamOperator)
 {
   const cen::font font{typeWriterPath, 12};
-  std::cout << "COUT: " << font << '\n';
+  std::clog << font << '\n';
 }

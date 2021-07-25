@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "system/platform.hpp"
 
@@ -15,5 +15,5 @@ TEST(PlatformID, ToString)
   ASSERT_EQ("ios", cen::to_string(cen::platform_id::ios));
   ASSERT_EQ("android", cen::to_string(cen::platform_id::android));
 
-  std::cout << "Platform ID example: " << cen::platform_id::windows << '\n';
+  std::clog << "Platform ID example: " << cen::platform_id::windows << '\n';
 }

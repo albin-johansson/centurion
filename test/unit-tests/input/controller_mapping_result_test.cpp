@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "input/controller.hpp"
 
@@ -20,9 +20,9 @@ TEST(ControllerMappingResult, ToString)
   ASSERT_EQ("added", cen::to_string(cen::controller::mapping_result::added));
   ASSERT_EQ("added", cen::to_string(cen::controller_handle::mapping_result::added));
 
-  std::cout << "Controller mapping result example #1: "
+  std::clog << "Controller mapping result example #1: "
             << cen::controller::mapping_result::added << '\n';
 
-  std::cout << "Controller mapping result example #2: "
+  std::clog << "Controller mapping result example #2: "
             << cen::controller_handle::mapping_result::added << '\n';
 }

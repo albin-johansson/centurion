@@ -134,7 +134,7 @@ TEST_F(SensorTest, Count)
 
 TEST_F(SensorTest, StreamOperator)
 {
-  std::cout << "COUT: " << m_sensor << '\n';
+  std::clog << m_sensor << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

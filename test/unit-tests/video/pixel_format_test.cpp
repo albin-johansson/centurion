@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "system/cpu.hpp"
 
@@ -233,5 +233,5 @@ TEST(PixelFormat, ToString)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  std::cout << "Pixel format example: " << cen::pixel_format::rgba8888 << '\n';
+  std::clog << "Pixel format example: " << cen::pixel_format::rgba8888 << '\n';
 }

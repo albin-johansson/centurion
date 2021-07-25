@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 
@@ -24,6 +24,6 @@ TEST(HapticDirectionType, ToString)
   ASSERT_EQ("cartesian", cen::to_string(cen::haptic_direction_type::cartesian));
   ASSERT_EQ("spherical", cen::to_string(cen::haptic_direction_type::spherical));
 
-  std::cout << "Haptic direction type example: " << cen::haptic_direction_type::cartesian
+  std::clog << "Haptic direction type example: " << cen::haptic_direction_type::cartesian
             << '\n';
 }

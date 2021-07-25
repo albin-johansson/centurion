@@ -139,7 +139,7 @@ TEST(Thread, ToString)
 TEST(Thread, StreamOperator)
 {
   cen::thread thread{dummy, "myThread"};
-  std::cout << "COUT: " << cen::to_string(thread) << '\n';
+  std::clog << cen::to_string(thread) << '\n';
 }
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

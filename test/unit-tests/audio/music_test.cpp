@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 
@@ -251,7 +251,7 @@ TEST_F(MusicTest, ToString)
 
 TEST_F(MusicTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_music << '\n';
+  std::clog << *m_music << '\n';
 }
 
 TEST_F(MusicTest, SDLPointerConversion)

@@ -410,7 +410,7 @@ TEST_F(ControllerTest, IsPolling)
 
 TEST_F(ControllerTest, ToString)
 {
-  std::cout << m_controller << '\n';
+  std::clog << m_controller << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

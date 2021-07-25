@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(PowerState, Values)
 {
@@ -32,5 +32,5 @@ TEST(PowerState, ToString)
   ASSERT_EQ("charging", cen::to_string(cen::power_state::charging));
   ASSERT_EQ("charged", cen::to_string(cen::power_state::charged));
 
-  std::cout << "Power state example: " << cen::power_state::on_battery << '\n';
+  std::clog << "Power state example: " << cen::power_state::on_battery << '\n';
 }

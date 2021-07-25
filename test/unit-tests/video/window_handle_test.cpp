@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/log.hpp"
 #include "video/window.hpp"
@@ -42,5 +42,5 @@ TEST(WindowHandle, StreamOperator)
   cen::window window;
   cen::window_handle handle{window};
 
-  std::cout << "COUT: " << handle << '\n';
+  std::clog << handle << '\n';
 }

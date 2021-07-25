@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 #include "events/event.hpp"
@@ -33,5 +33,5 @@ TEST(JoyHatPosition, ToString)
   ASSERT_EQ("right", cen::to_string(cen::joy_hat_position::right));
   ASSERT_EQ("right_down", cen::to_string(cen::joy_hat_position::right_down));
 
-  std::cout << "Joystick hat position example: " << cen::joy_hat_position::left << '\n';
+  std::clog << "Joystick hat position example: " << cen::joy_hat_position::left << '\n';
 }

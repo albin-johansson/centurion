@@ -237,7 +237,7 @@ TEST(KeyCode, ToString)
 
 TEST(KeyCode, StreamOperator)
 {
-  std::cout << "COUT: " << cen::keycodes::a << '\n';
+  std::clog << cen::keycodes::a << '\n';
 }
 
 TEST(KeyCode, Constants)

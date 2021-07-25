@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 
 #include "core/log.hpp"
@@ -54,6 +54,6 @@ TEST_F(RendererHandleTest, ToStringAndStreamOperator)
 {
   const cen::renderer_handle handle{*m_renderer};
 
-  std::cout << "COUT: " << handle << '\n';
+  std::clog << handle << '\n';
   cen::log::put(cen::to_string(handle));
 }

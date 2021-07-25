@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -28,7 +28,7 @@ TEST(ScaleMode, ToString)
   ASSERT_EQ("linear", cen::to_string(cen::scale_mode::linear));
   ASSERT_EQ("best", cen::to_string(cen::scale_mode::best));
 
-  std::cout << "Scale mode example: " << cen::scale_mode::linear << '\n';
+  std::clog << "Scale mode example: " << cen::scale_mode::linear << '\n';
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(JoystickType, Values)
 {
@@ -44,5 +44,5 @@ TEST(JoystickType, ToString)
   ASSERT_EQ("arcade_pad", cen::to_string(cen::joystick_type::arcade_pad));
   ASSERT_EQ("throttle", cen::to_string(cen::joystick_type::throttle));
 
-  std::cout << "Joystick type example: " << cen::joystick_type::guitar << '\n';
+  std::clog << "Joystick type example: " << cen::joystick_type::guitar << '\n';
 }

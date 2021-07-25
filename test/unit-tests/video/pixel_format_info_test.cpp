@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 
 #include "system/cpu.hpp"
@@ -89,5 +89,5 @@ TEST_F(PixelFormatInfoTest, PixelToRGBA)
 
 TEST_F(PixelFormatInfoTest, ToString)
 {
-  std::cout << *m_info << '\n';
+  std::clog << *m_info << '\n';
 }

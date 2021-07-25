@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(ThreadPriority, Values)
 {
@@ -29,5 +29,5 @@ TEST(ThreadPriority, ToString)
   ASSERT_EQ("high", cen::to_string(cen::thread_priority::high));
   ASSERT_EQ("critical", cen::to_string(cen::thread_priority::critical));
 
-  std::cout << "Thread priority example: " << cen::thread_priority::high << '\n';
+  std::clog << "Thread priority example: " << cen::thread_priority::high << '\n';
 }

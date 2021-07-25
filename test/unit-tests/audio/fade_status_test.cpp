@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(FadeStatus, Values)
 {
@@ -24,5 +24,5 @@ TEST(FadeStatus, ToString)
   ASSERT_EQ("in", cen::to_string(cen::fade_status::in));
   ASSERT_EQ("out", cen::to_string(cen::fade_status::out));
 
-  std::cout << "Fade status example: " << cen::fade_status::in << '\n';
+  std::clog << "Fade status example: " << cen::fade_status::in << '\n';
 }

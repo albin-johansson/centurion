@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/to_underlying.hpp"
 #include "video/font.hpp"
@@ -22,5 +22,5 @@ TEST(FontHint, ToString)
   ASSERT_EQ("mono", cen::to_string(cen::font_hint::mono));
   ASSERT_EQ("none", cen::to_string(cen::font_hint::none));
 
-  std::cout << "Font hint example: " << cen::font_hint::normal << '\n';
+  std::clog << "Font hint example: " << cen::font_hint::normal << '\n';
 }

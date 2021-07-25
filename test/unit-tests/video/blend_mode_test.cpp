@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(BlendMode, EqualityOperator)
 {
@@ -50,5 +50,5 @@ TEST(BlendMode, ToString)
   ASSERT_EQ("mul", cen::to_string(cen::blend_mode::mul));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-  std::cout << "Blend mode example: " << cen::blend_mode::blend << '\n';
+  std::clog << "Blend mode example: " << cen::blend_mode::blend << '\n';
 }

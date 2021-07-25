@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "video/message_box.hpp"
 
@@ -24,5 +24,5 @@ TEST(MessageBoxDefaultButton, ToString)
   ASSERT_EQ("return_key", cen::to_string(button::return_key));
   ASSERT_EQ("escape_key", cen::to_string(button::escape_key));
 
-  std::cout << "Message box default button example: " << button::return_key << '\n';
+  std::clog << "Message box default button example: " << button::return_key << '\n';
 }

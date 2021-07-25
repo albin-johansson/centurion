@@ -17,6 +17,7 @@
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "../core/str.hpp"
+#include "../core/to_underlying.hpp"
 #include "file_mode.hpp"
 #include "file_type.hpp"
 #include "seek_mode.hpp"
@@ -679,7 +680,7 @@ class file final
       -> std::optional<i64>
   {
     assert(m_context);
-    const auto result = SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
+    const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
     if (result != -1)
     {
       return result;

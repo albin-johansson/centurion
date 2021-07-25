@@ -5,8 +5,8 @@
 
 #include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
+#include "../core/str.hpp"
 #include "../detail/clamp.hpp"
 #include "common_event.hpp"
 

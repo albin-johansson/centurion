@@ -21,10 +21,10 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"

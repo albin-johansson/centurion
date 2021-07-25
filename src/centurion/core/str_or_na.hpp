@@ -1,8 +1,8 @@
 #ifndef CENTURION_STR_OR_NA_HEADER
 #define CENTURION_STR_OR_NA_HEADER
 
-#include "czstring.hpp"
 #include "not_null.hpp"
+#include "str.hpp"
 
 namespace cen {
 

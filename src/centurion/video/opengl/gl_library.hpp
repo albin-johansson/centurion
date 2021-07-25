@@ -12,9 +12,9 @@
 
 #include <cassert>  // assert
 
-#include "../../core/czstring.hpp"
 #include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
+#include "../../core/str.hpp"
 
 namespace cen {
 

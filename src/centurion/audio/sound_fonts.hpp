@@ -6,8 +6,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "../core/czstring.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 
 namespace cen {
 

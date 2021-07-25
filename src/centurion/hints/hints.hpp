@@ -9,11 +9,11 @@
 
 #include <optional>  // optional
 
-#include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/is_stateless_callable.hpp"
 #include "../core/log.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
 #include "hint_priority.hpp"
 

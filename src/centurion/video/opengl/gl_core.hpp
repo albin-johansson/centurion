@@ -11,10 +11,10 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
-#include "../../core/czstring.hpp"
 #include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
 #include "../../core/result.hpp"
+#include "../../core/str.hpp"
 #include "../../core/to_underlying.hpp"
 #include "../../math/area.hpp"
 #include "../texture.hpp"

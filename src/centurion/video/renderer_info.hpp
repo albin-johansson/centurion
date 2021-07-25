@@ -18,9 +18,9 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/str.hpp"
 #include "../core/str_or_na.hpp"
 #include "../math/area.hpp"
 #include "pixel_format.hpp"

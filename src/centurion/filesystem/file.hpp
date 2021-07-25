@@ -13,10 +13,10 @@
 #include <optional>  // optional
 #include <string>    // string
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "file_mode.hpp"
 #include "file_type.hpp"
 #include "seek_mode.hpp"

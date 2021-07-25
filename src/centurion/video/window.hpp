@@ -18,12 +18,12 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"

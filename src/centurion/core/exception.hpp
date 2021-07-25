@@ -17,7 +17,7 @@
 
 #include <exception>  // exception
 
-#include "czstring.hpp"
+#include "str.hpp"
 
 namespace cen {
 

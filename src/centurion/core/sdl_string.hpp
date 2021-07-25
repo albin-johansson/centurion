@@ -7,8 +7,8 @@
 #include <string>  // string
 
 #include "../detail/sdl_deleter.hpp"
-#include "czstring.hpp"
 #include "owner.hpp"
+#include "str.hpp"
 
 namespace cen {
 

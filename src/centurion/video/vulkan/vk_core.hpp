@@ -11,9 +11,9 @@
 #include <optional>  // optional
 #include <vector>    // vector
 
-#include "../../core/czstring.hpp"
 #include "../../core/integers.hpp"
 #include "../../core/result.hpp"
+#include "../../core/str.hpp"
 #include "../window.hpp"
 
 /**

@@ -8,10 +8,10 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
-#include "../core/czstring.hpp"
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/czstring_eq.hpp"
 
 namespace cen {

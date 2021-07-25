@@ -1,5 +1,5 @@
-#ifndef CENTURION_CZSTRING_HEADER
-#define CENTURION_CZSTRING_HEADER
+#ifndef CENTURION_STR_HEADER
+#define CENTURION_STR_HEADER
 
 namespace cen {
 
@@ -34,4 +34,4 @@ using zstring [[deprecated]] = char*;
 
 }  // namespace cen
 
-#endif  // CENTURION_CZSTRING_HEADER
+#endif  // CENTURION_STR_HEADER

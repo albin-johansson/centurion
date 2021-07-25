@@ -7,10 +7,10 @@
 #include <string>   // string
 #include <utility>  // forward
 
-#include "czstring.hpp"
 #include "log_category.hpp"
 #include "log_priority.hpp"
 #include "not_null.hpp"
+#include "str.hpp"
 #include "to_underlying.hpp"
 
 namespace cen {

@@ -6,9 +6,9 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
 #include "../core/sdl_string.hpp"
+#include "../core/str.hpp"
 
 namespace cen {
 

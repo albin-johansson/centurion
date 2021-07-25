@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/czstring.hpp"
+#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
 
 namespace cen::hint::controller {

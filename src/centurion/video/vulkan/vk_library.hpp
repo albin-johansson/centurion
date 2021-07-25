@@ -10,8 +10,8 @@
 #include <SDL.h>
 #include <SDL_vulkan.h>
 
-#include "../../core/czstring.hpp"
 #include "../../core/exception.hpp"
+#include "../../core/str.hpp"
 
 namespace cen {
 

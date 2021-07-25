@@ -18,6 +18,8 @@ TEST(FileType, Values)
 
 TEST(FileType, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::file_type>(6)), cen::cen_error);
+
   ASSERT_EQ("unknown", cen::to_string(cen::file_type::unknown));
   ASSERT_EQ("win32", cen::to_string(cen::file_type::win32));
   ASSERT_EQ("stdio", cen::to_string(cen::file_type::stdio));

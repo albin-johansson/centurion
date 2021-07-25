@@ -5,8 +5,8 @@
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 
@@ -48,7 +48,7 @@ enum class fade_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const fade_status status) -> std::string
+[[nodiscard]] inline auto to_string(const fade_status status) -> std::string_view
 {
   switch (status)
   {

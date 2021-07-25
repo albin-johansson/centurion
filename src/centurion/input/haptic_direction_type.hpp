@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -45,7 +45,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
 {
   switch (type)
   {

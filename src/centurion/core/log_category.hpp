@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "exception.hpp"
 #include "sdl_log_category_workaround.hpp"
@@ -52,7 +52,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {

@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -58,7 +58,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {

@@ -9,11 +9,12 @@
 
 #include <SDL_ttf.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <memory>       // unique_ptr
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -82,7 +83,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string
+[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {

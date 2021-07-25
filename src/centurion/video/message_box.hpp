@@ -552,7 +552,7 @@ class message_box final
  * \since 6.2.0
  */
 [[nodiscard]] inline auto to_string(const message_box::default_button button)
-    -> std::string
+    -> std::string_view
 {
   switch (button)
   {
@@ -581,7 +581,7 @@ class message_box final
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string
+[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string_view
 {
   switch (id)
   {

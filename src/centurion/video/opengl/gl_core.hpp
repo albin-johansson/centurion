@@ -6,10 +6,11 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
 #include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
@@ -60,7 +61,7 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string
+[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string_view
 {
   switch (interval)
   {

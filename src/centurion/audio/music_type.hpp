@@ -5,8 +5,8 @@
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 
@@ -54,7 +54,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string
+[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {

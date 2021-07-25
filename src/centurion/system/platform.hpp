@@ -3,10 +3,11 @@
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
@@ -53,7 +54,7 @@ enum class platform_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const platform_id id) -> std::string
+[[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
   switch (id)
   {

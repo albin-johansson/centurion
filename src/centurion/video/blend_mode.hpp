@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 
@@ -55,7 +55,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {

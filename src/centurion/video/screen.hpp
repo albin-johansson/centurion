@@ -3,9 +3,9 @@
 
 #include <SDL.h>
 
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/str.hpp"
@@ -67,7 +67,8 @@ enum class screen_orientation : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const screen_orientation orientation) -> std::string
+[[nodiscard]] inline auto to_string(const screen_orientation orientation)
+    -> std::string_view
 {
   switch (orientation)
   {

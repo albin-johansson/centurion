@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -47,7 +47,7 @@ enum class mouse_button : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string
+[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string_view
 {
   switch (button)
   {

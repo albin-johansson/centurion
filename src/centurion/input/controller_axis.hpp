@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 
@@ -51,7 +51,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string
+[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {

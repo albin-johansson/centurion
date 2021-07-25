@@ -7,11 +7,12 @@
 
 #include <SDL.h>
 
-#include <array>     // array
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -1265,7 +1266,7 @@ class basic_controller final
  * \since 6.2.0
  */
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {
@@ -1285,7 +1286,7 @@ class basic_controller final
 
 /// \see to_string(controller::mapping_result)
 [[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {

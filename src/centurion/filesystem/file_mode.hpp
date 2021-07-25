@@ -1,8 +1,8 @@
 #ifndef CENTURION_FILE_MODE_HEADER
 #define CENTURION_FILE_MODE_HEADER
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 
@@ -59,7 +59,7 @@ enum class file_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string_view
 {
   switch (mode)
   {

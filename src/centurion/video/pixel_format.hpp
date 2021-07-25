@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -121,7 +121,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string
+[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {

@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
@@ -46,7 +46,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string
+[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
   switch (dir)
   {

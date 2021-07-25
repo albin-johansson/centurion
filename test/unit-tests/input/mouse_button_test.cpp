@@ -17,6 +17,8 @@ TEST(MouseButton, Values)
 
 TEST(MouseButton, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::mouse_button>(6)), cen::cen_error);
+
   ASSERT_EQ("left", cen::to_string(cen::mouse_button::left));
   ASSERT_EQ("middle", cen::to_string(cen::mouse_button::middle));
   ASSERT_EQ("right", cen::to_string(cen::mouse_button::right));

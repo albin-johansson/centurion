@@ -13,13 +13,11 @@
 #include "str.hpp"
 #include "to_underlying.hpp"
 
-namespace cen {
-
 /// \namespace cen::log
 /// \brief Contains easy-to-use logging facilities.
 /// \ingroup core
 /// \since 3.0.0
-namespace log {
+namespace cen::log {
 
 /// \addtogroup core
 /// \{
@@ -370,7 +368,6 @@ inline void set_priority(const log_category category,
 
 /// \} End of group core
 
-}  // namespace log
-}  // namespace cen
+}  // namespace cen::log
 
 #endif  // CENTURION_LOG_HEADER

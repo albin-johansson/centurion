@@ -1,9 +1,10 @@
+#include "core/library.hpp"
+
 #include <gtest/gtest.h>
 
-#include "core/library.hpp"
 #include "core_mocks.hpp"
 
-class CenturionTest : public testing::Test
+class LibraryTest : public testing::Test
 {
  protected:
   void SetUp() override
@@ -20,7 +21,7 @@ class CenturionTest : public testing::Test
   }
 };
 
-TEST_F(CenturionTest, NoFailureDefaultConfiguration)
+TEST_F(LibraryTest, NoFailureDefaultConfiguration)
 {
   try
   {
@@ -47,31 +48,31 @@ TEST_F(CenturionTest, NoFailureDefaultConfiguration)
   }
 }
 
-TEST_F(CenturionTest, SDLCoreInitFailure)
+TEST_F(LibraryTest, SDLCoreInitFailure)
 {
   SDL_Init_fake.return_val = -1;
   ASSERT_THROW(cen::library{}, cen::sdl_error);
 }
 
-TEST_F(CenturionTest, SDLTTFInitFailure)
+TEST_F(LibraryTest, SDLTTFInitFailure)
 {
   TTF_Init_fake.return_val = -1;
   ASSERT_THROW(cen::library{}, cen::ttf_error);
 }
 
-TEST_F(CenturionTest, SDLImageInitFailure)
+TEST_F(LibraryTest, SDLImageInitFailure)
 {
   IMG_Init_fake.return_val = 0;
   ASSERT_THROW(cen::library{}, cen::img_error);
 }
 
-TEST_F(CenturionTest, SDLMixInitFailure)
+TEST_F(LibraryTest, SDLMixInitFailure)
 {
   Mix_Init_fake.return_val = 0;
   ASSERT_THROW(cen::library{}, cen::mix_error);
 }
 
-TEST_F(CenturionTest, SDLMixOpenFailure)
+TEST_F(LibraryTest, SDLMixOpenFailure)
 {
   Mix_OpenAudio_fake.return_val = -1;
   ASSERT_THROW(cen::library{}, cen::mix_error);

@@ -8,7 +8,7 @@ extern "C" {
 FAKE_VALUE_FUNC(char*, SDL_GetPrefPath, const char*, const char*)
 }
 
-class PrefPathTest : public testing::Test
+class PreferredPathTest : public testing::Test
 {
  protected:
   void SetUp() override
@@ -18,7 +18,7 @@ class PrefPathTest : public testing::Test
   }
 };
 
-TEST_F(PrefPathTest, FunctionCall)
+TEST_F(PreferredPathTest, FunctionCall)
 {
   const auto path [[maybe_unused]] = cen::preferred_path("centurion", "tests");
   ASSERT_EQ(1, SDL_GetPrefPath_fake.call_count);

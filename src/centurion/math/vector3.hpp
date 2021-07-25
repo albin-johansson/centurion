@@ -87,7 +87,7 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two 3D vectors are equal.

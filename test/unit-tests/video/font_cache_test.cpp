@@ -37,7 +37,7 @@ class FontCacheTest : public testing::Test
   using unicode_signature = void(id_type, const cen::unicode_string&);
   using unicode_store_fn = std::function<unicode_signature>;
 
-  using normal_signature = void(id_type, cen::czstring);
+  using normal_signature = void(id_type, cen::str);
   using normal_store_fn = std::function<normal_signature>;
 
   FontCacheTest() : testing::Test{}, m_cache{fontPath, 12}
@@ -117,56 +117,56 @@ TEST_F(FontCacheTest, StoreShadedUnicode)
 
 TEST_F(FontCacheTest, StoreBlendedUTF8)
 {
-  test_store_utf_8([this](const id_type id, cen::czstring str) {
+  test_store_utf_8([this](const id_type id, cen::str str) {
     m_cache.store_blended_utf8(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedUTF8)
 {
-  test_store_utf_8([this](const id_type id, cen::czstring str) {
+  test_store_utf_8([this](const id_type id, cen::str str) {
     m_cache.store_blended_wrapped_utf8(id, str, *m_renderer, 80);
   });
 }
 
 TEST_F(FontCacheTest, StoreSolidUTF8)
 {
-  test_store_utf_8([this](const id_type id, cen::czstring str) {
+  test_store_utf_8([this](const id_type id, cen::str str) {
     m_cache.store_solid_utf8(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreShadedUTF8)
 {
-  test_store_utf_8([this](const id_type id, cen::czstring str) {
+  test_store_utf_8([this](const id_type id, cen::str str) {
     m_cache.store_shaded_utf8(id, str, *m_renderer, cen::colors::cyan);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedLatin1)
 {
-  test_store_latin_1([this](const id_type id, cen::czstring str) {
+  test_store_latin_1([this](const id_type id, cen::str str) {
     m_cache.store_blended_latin1(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreBlendedWrappedLatin1)
 {
-  test_store_latin_1([this](const id_type id, cen::czstring str) {
+  test_store_latin_1([this](const id_type id, cen::str str) {
     m_cache.store_blended_wrapped_latin1(id, str, *m_renderer, 120);
   });
 }
 
 TEST_F(FontCacheTest, StoreSolidLatin1)
 {
-  test_store_latin_1([this](const id_type id, cen::czstring str) {
+  test_store_latin_1([this](const id_type id, cen::str str) {
     m_cache.store_solid_latin1(id, str, *m_renderer);
   });
 }
 
 TEST_F(FontCacheTest, StoreShadedLatin1)
 {
-  test_store_latin_1([this](const id_type id, cen::czstring str) {
+  test_store_latin_1([this](const id_type id, cen::str str) {
     m_cache.store_shaded_latin1(id, str, *m_renderer, cen::colors::aqua);
   });
 }

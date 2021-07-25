@@ -115,7 +115,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return m_info.name;
   }

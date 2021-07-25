@@ -78,7 +78,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    */
   [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<czstring>(m_event.text)};
+    return std::string_view{static_cast<str>(m_event.text)};
   }
 };
 

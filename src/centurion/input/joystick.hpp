@@ -508,7 +508,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return SDL_JoystickName(m_joystick);
   }
@@ -535,7 +535,7 @@ class basic_joystick final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto serial() const noexcept -> czstring
+  [[nodiscard]] auto serial() const noexcept -> str
   {
     return SDL_JoystickGetSerial(m_joystick);
   }
@@ -700,7 +700,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> czstring
+  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> str
   {
     return SDL_JoystickNameForIndex(deviceIndex);
   }
@@ -1001,7 +1001,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto guid_from_string(const not_null<czstring> str) noexcept
+  [[nodiscard]] static auto guid_from_string(const not_null<str> str) noexcept
       -> SDL_JoystickGUID
   {
     assert(str);
@@ -1105,7 +1105,7 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  czstring serial{};
+  str serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
     serial = joystick.serial();

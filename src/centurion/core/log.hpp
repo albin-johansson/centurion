@@ -42,7 +42,7 @@ namespace log {
 template <typename... Args>
 void msg(const log_priority priority,
          const log_category category,
-         const not_null<czstring> fmt,
+         const not_null<str> fmt,
          Args&&... args) noexcept
 {
   assert(fmt);
@@ -65,9 +65,7 @@ void msg(const log_priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const log_category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void info(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::info, category, fmt, std::forward<Args>(args)...);
 }
@@ -85,7 +83,7 @@ void info(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const not_null<czstring> fmt, Args&&... args) noexcept
+void info(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::info(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -104,9 +102,7 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const log_category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void warn(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::warn, category, fmt, std::forward<Args>(args)...);
 }
@@ -124,7 +120,7 @@ void warn(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const not_null<czstring> fmt, Args&&... args) noexcept
+void warn(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::warn(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -144,7 +140,7 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  */
 template <typename... Args>
 void verbose(const log_category category,
-             const not_null<czstring> fmt,
+             const not_null<str> fmt,
              Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
@@ -163,7 +159,7 @@ void verbose(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
+void verbose(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::verbose(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -182,9 +178,7 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const log_category category,
-           const not_null<czstring> fmt,
-           Args&&... args) noexcept
+void debug(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::debug, category, fmt, std::forward<Args>(args)...);
 }
@@ -202,7 +196,7 @@ void debug(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const not_null<czstring> fmt, Args&&... args) noexcept
+void debug(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::debug(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -222,7 +216,7 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  */
 template <typename... Args>
 void critical(const log_category category,
-              const not_null<czstring> fmt,
+              const not_null<str> fmt,
               Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
@@ -241,7 +235,7 @@ void critical(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const not_null<czstring> fmt, Args&&... args) noexcept
+void critical(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -260,7 +254,7 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const log_category category, const czstring fmt, Args&&... args) noexcept
+void error(const log_category category, const str fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::error, category, fmt, std::forward<Args>(args)...);
 }
@@ -276,7 +270,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const not_null<czstring> fmt, Args&&... args) noexcept
+void error(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::error(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -298,7 +292,7 @@ inline void put(const std::string& str) noexcept
 }
 
 /// \copydoc put()
-inline void put(const not_null<czstring> str) noexcept
+inline void put(const not_null<str> str) noexcept
 {
   log::info("%s", str);
 }

@@ -101,7 +101,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const not_null<czstring> name) noexcept
+  explicit scan_code(const not_null<str> name) noexcept
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
@@ -171,7 +171,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  auto operator=(const not_null<czstring> name) noexcept -> scan_code&
+  auto operator=(const not_null<str> name) noexcept -> scan_code&
   {
     assert(name);
     m_code = SDL_GetScancodeFromName(name);

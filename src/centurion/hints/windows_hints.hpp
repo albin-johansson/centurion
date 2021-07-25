@@ -18,7 +18,7 @@ struct d3d_compiler final : enum_hint<d3d_compiler>
       std::make_pair(value::v43, "d3dcompiler_43.dll"),
       std::make_pair(value::none, "none")};
 
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
@@ -26,7 +26,7 @@ struct d3d_compiler final : enum_hint<d3d_compiler>
 
 struct no_thread_naming final : detail::bool_hint<no_thread_naming>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
   }
@@ -34,7 +34,7 @@ struct no_thread_naming final : detail::bool_hint<no_thread_naming>
 
 struct enable_message_loop final : detail::bool_hint<enable_message_loop>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
   }
@@ -42,7 +42,7 @@ struct enable_message_loop final : detail::bool_hint<enable_message_loop>
 
 struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
   }
@@ -50,7 +50,7 @@ struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
 
 struct int_resource_icon final : detail::string_hint<int_resource_icon>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
   }
@@ -58,7 +58,7 @@ struct int_resource_icon final : detail::string_hint<int_resource_icon>
 
 struct int_resource_icon_small final : detail::string_hint<int_resource_icon_small>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
   }

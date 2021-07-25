@@ -85,7 +85,7 @@ class music final
    *
    * \since 3.0.0
    */
-  explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
+  explicit music(const not_null<str> file) : m_music{Mix_LoadMUS(file)}
   {
     if (!m_music)
     {
@@ -488,7 +488,7 @@ class music final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> str
   {
     return Mix_GetMusicDecoder(index);
   }
@@ -504,7 +504,7 @@ class music final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
+  [[nodiscard]] static auto has_decoder(const str name) noexcept -> bool
   {
     return Mix_HasMusicDecoder(name) == SDL_TRUE;
   }

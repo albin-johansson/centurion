@@ -156,7 +156,7 @@ class font final
    *
    * \since 3.0.0
    */
-  font(const not_null<czstring> file, const int size) : m_size{size}
+  font(const not_null<str> file, const int size) : m_size{size}
   {
     assert(file);
 
@@ -506,7 +506,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto family_name() const noexcept -> czstring
+  [[nodiscard]] auto family_name() const noexcept -> str
   {
     return TTF_FontFaceFamilyName(m_font.get());
   }
@@ -520,7 +520,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto style_name() const noexcept -> czstring
+  [[nodiscard]] auto style_name() const noexcept -> str
   {
     return TTF_FontFaceStyleName(m_font.get());
   }
@@ -622,7 +622,7 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto string_size(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_size(const not_null<str> str) const noexcept
       -> std::optional<iarea>
   {
     assert(str);
@@ -664,7 +664,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
     if (const auto size = string_size(str))
@@ -703,7 +703,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_height(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_height(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
     if (const auto size = string_size(str))

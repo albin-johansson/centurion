@@ -138,7 +138,7 @@ void test_hint(T&& callable)
 }
 
 template <typename Hint>
-void test_string_hint(cen::czstring str)
+void test_string_hint(cen::str str)
 {
   test_hint<Hint>([str] {
     ASSERT_TRUE(cen::set_hint<Hint>(str));
@@ -458,27 +458,25 @@ TEST_F(BasicHintTest, AddHintCallback)
   cen::set_hint<render_driver, cen::hint_priority::override>(
       render_driver::value::software);
 
-  const auto callable = [](void* data,
-                           const cen::czstring hint,
-                           const cen::czstring oldVal,
-                           const cen::czstring newVal) {
-    static bool first = true;
-    if (first)
-    {
-      first = false;
-    }
-    else
-    {
-      const auto ptr = reinterpret_cast<int*>(data);
+  const auto callable =
+      [](void* data, const cen::str hint, const cen::str oldVal, const cen::str newVal) {
+        static bool first = true;
+        if (first)
+        {
+          first = false;
+        }
+        else
+        {
+          const auto ptr = reinterpret_cast<int*>(data);
 
-      ASSERT_TRUE(ptr);
-      ASSERT_EQ(7, *ptr);
+          ASSERT_TRUE(ptr);
+          ASSERT_EQ(7, *ptr);
 
-      ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
-      ASSERT_STREQ("software", oldVal);
-      ASSERT_STREQ("opengl", newVal);
-    }
-  };
+          ASSERT_STREQ(SDL_HINT_RENDER_DRIVER, hint);
+          ASSERT_STREQ("software", oldVal);
+          ASSERT_STREQ("opengl", newVal);
+        }
+      };
 
   int data = 7;
   auto handle = cen::add_hint_callback<render_driver>(callable, &data);
@@ -502,7 +500,7 @@ TEST_F(BasicHintTest, AddHintCallbackExFull)
       render_driver::value::software);
 
   const auto callable = [](int* ptr,
-                           const cen::czstring name,
+                           const cen::str name,
                            const render_driver::value oldValue,
                            const render_driver::value newValue) {
     static bool first = true;

@@ -41,7 +41,7 @@ class gl_library final
    *
    * \since 6.0.0
    */
-  CENTURION_NODISCARD_CTOR explicit gl_library(const czstring path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit gl_library(const str path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1)
     {
@@ -79,7 +79,7 @@ class gl_library final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto address_of(const not_null<czstring> function) const noexcept // NOLINT
+  [[nodiscard]] auto address_of(const not_null<str> function) const noexcept // NOLINT
       -> void*
   {
     assert(function);

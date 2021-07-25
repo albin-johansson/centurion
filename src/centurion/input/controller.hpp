@@ -320,7 +320,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const not_null<czstring> str) noexcept
+  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept
       -> controller_button
   {
     assert(str);
@@ -351,7 +351,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept -> czstring
+  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept -> str
   {
     return SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(axis));
   }
@@ -365,7 +365,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_button button) noexcept -> czstring
+  [[nodiscard]] static auto stringify(const controller_button button) noexcept -> str
   {
     return SDL_GameControllerGetStringForButton(
         static_cast<SDL_GameControllerButton>(button));
@@ -479,8 +479,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_axis(const not_null<czstring> str) noexcept
-      -> controller_axis
+  [[nodiscard]] static auto get_axis(const not_null<str> str) noexcept -> controller_axis
   {
     assert(str);
     return static_cast<controller_axis>(SDL_GameControllerGetAxisFromString(str));
@@ -703,7 +702,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto serial() const noexcept -> czstring
+  [[nodiscard]] auto serial() const noexcept -> str
   {
     return SDL_GameControllerGetSerial(m_controller);
   }
@@ -756,7 +755,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return SDL_GameControllerName(m_controller);
   }
@@ -1057,7 +1056,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto add_mapping(const not_null<czstring> mapping) noexcept -> mapping_result
+  static auto add_mapping(const not_null<str> mapping) noexcept -> mapping_result
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
@@ -1111,7 +1110,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto load_mappings(const not_null<czstring> file) noexcept -> std::optional<int>
+  static auto load_mappings(const not_null<str> file) noexcept -> std::optional<int>
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
@@ -1317,7 +1316,7 @@ template <typename T>
 {
   const auto* name = controller.name();
 
-  czstring serial{};
+  str serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
     serial = controller.serial();

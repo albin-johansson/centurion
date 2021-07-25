@@ -13,7 +13,7 @@ namespace cen::hint::emscripten {
 
 struct keyboard_element final : detail::string_hint<keyboard_element>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
   }
@@ -23,7 +23,7 @@ struct keyboard_element final : detail::string_hint<keyboard_element>
 
 struct asyncify final : detail::bool_hint<asyncify>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_EMSCRIPTEN_ASYNCIFY;
   }

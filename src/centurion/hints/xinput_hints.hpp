@@ -13,7 +13,7 @@ namespace cen::hint::xinput {
 
 struct is_enabled final : detail::bool_hint<is_enabled>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_XINPUT_ENABLED;
   }
@@ -21,7 +21,7 @@ struct is_enabled final : detail::bool_hint<is_enabled>
 
 struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mapping>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
   }

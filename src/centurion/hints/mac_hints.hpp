@@ -13,7 +13,7 @@ namespace cen::hint::mac {
 
 struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
   }
@@ -21,7 +21,7 @@ struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
 
 struct background_app final : detail::bool_hint<background_app>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_MAC_BACKGROUND_APP;
   }
@@ -30,7 +30,7 @@ struct background_app final : detail::bool_hint<background_app>
 struct ctrl_click_emulate_right_click final
     : detail::bool_hint<ctrl_click_emulate_right_click>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
   }

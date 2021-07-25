@@ -93,7 +93,7 @@ class hint_callback final
    * \brief Creates a hint callback.
    *
    * \param callback the function object that will be called whenever the associated hint
-   * is updated. The signature should be `void(void*, czstring, czstring, czstring)`.
+   * is updated. The signature should be `void(void*, str, str, str)`.
    * \param userData a pointer to some user data. Defaults to `nullptr`.
    *
    * \throws cen_error if the supplied function pointer is null.
@@ -177,11 +177,11 @@ class hint_callback final
  * \note The callback will be immediately invoked with the current value of the hint.
  *
  * \tparam Hint should one of the many hint types defined in this header. However, all it
- * requires is that the type provides a static function that returns a `czstring`.
+ * requires is that the type provides a static function that returns a `str`.
  * \tparam UserData the type of the user data, defaults to void.
  *
  * \param fun the function object that will be invoked when the hint is updated. The
- * signature should be `void(void*, czstring, czstring, czstring)`.
+ * signature should be `void(void*, str, str, str)`.
  * \param userData the user data to associate with the callback.
  *
  * \return a handle to the added callback.
@@ -205,7 +205,7 @@ auto add_hint_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexc
 template <typename T, typename Hint, typename UserData>
 concept is_hint_callback = is_stateless_callable<T,
                                                  UserData*,
-                                                 czstring,
+                                                 str,
                                                  typename Hint::value_type,
                                                  typename Hint::value_type>;
 
@@ -215,8 +215,8 @@ concept is_hint_callback = is_stateless_callable<T,
  * \details This function returns a callback handle object, which can be used to easily
  * disconnect the callback at a later time.
  *
- * \details The signature of the callable should be equivalent to `void(UserData*,
- * czstring, Hint::value_type, Hint::value_type)`.
+ * \details The signature of the callable should be equivalent to `void(UserData*, str,
+ * Hint::value_type, Hint::value_type)`.
  *
  * \note This function can be used with any function object that is stateless, such as
  * traditional function pointers or non-capturing lambdas.
@@ -224,7 +224,7 @@ concept is_hint_callback = is_stateless_callable<T,
  * \details The following is an example of how usage of this function might look.
  * \code{cpp}
  * auto callable = [](int* data,
- *                    cen::czstring name,
+ *                    cen::str name,
  *                    cen::hint::render_driver::value_type previous,
  *                    cen::hint::render_driver::value_type current) {
  *   // Do stuff when the value of the hint is updated...
@@ -253,17 +253,15 @@ template <typename Hint,
 auto add_hint_callback_ex(Callable fun, UserData* data = nullptr)
     -> hint_callback<Hint, UserData>
 {
-  const auto wrapper = [](void* erased,
-                          const czstring name,
-                          const czstring oldValue,
-                          const czstring newValue) {
-    Callable callable;
+  const auto wrapper =
+      [](void* erased, const str name, const str oldValue, const str newValue) {
+        Callable callable;
 
-    const auto previous = Hint::from_string(oldValue);
-    const auto current = Hint::from_string(newValue);
+        const auto previous = Hint::from_string(oldValue);
+        const auto current = Hint::from_string(newValue);
 
-    callable(static_cast<UserData*>(erased), name, previous, current);
-  };
+        callable(static_cast<UserData*>(erased), name, previous, current);
+      };
 
   return add_hint_callback<Hint>(wrapper, data);
 }

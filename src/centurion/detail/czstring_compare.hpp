@@ -9,7 +9,7 @@ namespace cen::detail {
 
 struct czstring_compare final
 {
-  auto operator()(const czstring lhs, const czstring rhs) const noexcept -> bool
+  auto operator()(const str lhs, const str rhs) const noexcept -> bool
   {
     return detail::czstring_eq(lhs, rhs);
   }

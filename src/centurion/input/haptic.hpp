@@ -743,7 +743,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     if (const auto i = index())
     {

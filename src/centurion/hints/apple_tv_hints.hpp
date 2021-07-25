@@ -13,7 +13,7 @@ namespace cen::hint::appletv {
 
 struct controller_ui_events final : detail::bool_hint<controller_ui_events>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
   }
@@ -21,7 +21,7 @@ struct controller_ui_events final : detail::bool_hint<controller_ui_events>
 
 struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
   }

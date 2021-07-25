@@ -43,7 +43,7 @@ class sdl_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring
+  [[nodiscard]] auto get() const noexcept -> str
   {
     return m_str.get();
   }

@@ -154,7 +154,7 @@ using key_mod = key_modifier;
   const auto mask = to_underlying(mods);
   std::stringstream stream;
 
-  auto check = [&stream, mask, count = 0](const key_mod mod, const czstring str) mutable {
+  auto check = [&stream, mask, count = 0](const key_mod mod, const str name) mutable {
     if (mask & to_underlying(mod))
     {
       if (count != 0)
@@ -162,7 +162,7 @@ using key_mod = key_modifier;
         stream << ',';
       }
 
-      stream << str;
+      stream << name;
       ++count;
     }
   };

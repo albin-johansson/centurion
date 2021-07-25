@@ -13,7 +13,7 @@ namespace cen::hint::x11 {
 
 struct net_wm_ping final : detail::bool_hint<net_wm_ping>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_NET_WM_PING;
   }
@@ -21,7 +21,7 @@ struct net_wm_ping final : detail::bool_hint<net_wm_ping>
 
 struct net_wm_bypass_compositor final : detail::bool_hint<net_wm_bypass_compositor>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
   }
@@ -29,7 +29,7 @@ struct net_wm_bypass_compositor final : detail::bool_hint<net_wm_bypass_composit
 
 struct xinerama final : detail::bool_hint<xinerama>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_XINERAMA;
   }
@@ -37,7 +37,7 @@ struct xinerama final : detail::bool_hint<xinerama>
 
 struct xrandr final : detail::bool_hint<xrandr>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_XRANDR;
   }
@@ -45,7 +45,7 @@ struct xrandr final : detail::bool_hint<xrandr>
 
 struct xvidmode final : detail::bool_hint<xvidmode>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_XVIDMODE;
   }
@@ -55,7 +55,7 @@ struct xvidmode final : detail::bool_hint<xvidmode>
 
 struct force_egl final : detail::bool_hint<force_egl>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_FORCE_EGL;
   }
@@ -63,7 +63,7 @@ struct force_egl final : detail::bool_hint<force_egl>
 
 struct window_visual_id final : detail::string_hint<window_visual_id>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
   }

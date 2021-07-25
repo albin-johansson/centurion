@@ -23,7 +23,7 @@ struct content_orientation final : enum_hint<content_orientation>
       std::make_pair(value::inverted_portrait, "inverted-portrait"),
       std::make_pair(value::inverted_landscape, "inverted-landscape")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
@@ -31,7 +31,7 @@ struct content_orientation final : enum_hint<content_orientation>
 
 struct window_flags final : detail::string_hint<window_flags>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
   }

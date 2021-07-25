@@ -639,7 +639,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -682,7 +682,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<czstring> str,
+  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<str> str,
                                                  const font& font,
                                                  const u32 wrap) -> texture
   {
@@ -726,7 +726,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_utf8(const not_null<czstring> str,
+  [[nodiscard]] auto render_shaded_utf8(const not_null<str> str,
                                         const font& font,
                                         const color& background) -> texture
   {
@@ -768,7 +768,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -807,7 +807,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_blended_latin1(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -850,7 +850,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<czstring> str,
+  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<str> str,
                                                    const font& font,
                                                    const u32 wrap) -> texture
   {
@@ -894,7 +894,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_latin1(const not_null<czstring> str,
+  [[nodiscard]] auto render_shaded_latin1(const not_null<str> str,
                                           const font& font,
                                           const color& background) -> texture
   {
@@ -936,7 +936,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);

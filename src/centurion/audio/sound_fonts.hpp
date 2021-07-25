@@ -14,7 +14,7 @@ namespace cen {
 /// \addtogroup audio
 /// \{
 
-using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
+using sound_font_visit_callback = int(SDLCALL*)(str, void*) noexcept;
 
 /**
  * \brief Sets the paths to the available SoundFont files.
@@ -27,7 +27,7 @@ using sound_font_visit_callback = int(SDLCALL*)(czstring, void*) noexcept;
  *
  * \since 6.0.0
  */
-inline auto set_sound_fonts(const czstring paths) noexcept -> result
+inline auto set_sound_fonts(const str paths) noexcept -> result
 {
   return Mix_SetSoundFonts(paths) != 0;
 }
@@ -41,7 +41,7 @@ inline auto set_sound_fonts(const czstring paths) noexcept -> result
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto get_sound_fonts() noexcept -> czstring
+[[nodiscard]] inline auto get_sound_fonts() noexcept -> str
 {
   return Mix_GetSoundFonts();
 }

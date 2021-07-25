@@ -278,8 +278,8 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto is_extension_supported(
-    const not_null<czstring> extension) noexcept -> bool
+[[nodiscard]] inline auto is_extension_supported(const not_null<str> extension) noexcept
+    -> bool
 {
   assert(extension);
   return SDL_GL_ExtensionSupported(extension) == SDL_TRUE;

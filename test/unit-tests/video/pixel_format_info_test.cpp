@@ -34,6 +34,12 @@ TEST_F(PixelFormatInfoTest, PointerConstructor)
   ASSERT_NO_THROW(cen::pixel_format_info_handle{nullptr});
 }
 
+TEST_F(PixelFormatInfoTest, FormatConstructor)
+{
+  const auto invalid = static_cast<cen::pixel_format>(0xFFFFFFFF);
+  ASSERT_THROW(cen::pixel_format_info{invalid}, cen::sdl_error);
+}
+
 TEST_F(PixelFormatInfoTest, HandleFromOwner)
 {
   const cen::pixel_format_info_handle handle{*m_info};

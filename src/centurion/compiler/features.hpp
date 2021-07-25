@@ -6,7 +6,9 @@
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors

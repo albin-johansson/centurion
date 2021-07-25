@@ -25,6 +25,8 @@ TEST(ScreenOrientation, Values)
 
 TEST(ScreenOrientation, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::screen_orientation>(6)), cen::cen_error);
+
   ASSERT_EQ("unknown", cen::to_string(cen::screen_orientation::unknown));
   ASSERT_EQ("landscape", cen::to_string(cen::screen_orientation::landscape));
   ASSERT_EQ("landscape_flipped",

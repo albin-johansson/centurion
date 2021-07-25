@@ -33,7 +33,7 @@ class sdl_string final
    *
    * \since 5.0.0
    */
-  explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
+  explicit sdl_string(owner<char*> str) noexcept : m_str{str}
   {}
 
   /**

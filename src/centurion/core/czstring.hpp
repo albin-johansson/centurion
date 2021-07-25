@@ -9,27 +9,28 @@ namespace cen {
 /// \{
 
 /**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- */
-using czstring = const char*;
-
-/**
  * \typedef str
  *
- * \brief Shorter alternative to `czstring`.
+ * \brief Alias for a C-style string.
  *
  * \since 6.2.0
  */
-using str = czstring;
+using str = const char*;
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ *
+ * \deprecated Since 6.2.0, use `str` instead.
+ */
+using czstring [[deprecated]] = const char*;
 
 /**
  * \typedef zstring
- *
- * \brief Alias for a C-style null-terminated string.
+ * \deprecated Since 6.2.0.
  */
-using zstring = char*;
+using zstring [[deprecated]] = char*;
 
 /**
  * \brief Simply returns the string if it isn't null, returning a placeholder otherwise.

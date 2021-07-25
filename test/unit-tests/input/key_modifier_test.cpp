@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 #include "core/to_underlying.hpp"
 
 TEST(KeyModifier, Values)
@@ -92,4 +94,6 @@ TEST(KeyModifier, ToString)
         "gui,num,caps,mode",
         cen::to_string(mods));
   }
+
+  std::cout << "Key modifier example: " << cen::key_mod::left_shift << '\n';
 }

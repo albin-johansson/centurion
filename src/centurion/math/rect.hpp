@@ -11,7 +11,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -862,7 +862,7 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
                      rect.x(),
                      rect.y(),

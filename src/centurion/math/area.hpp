@@ -9,7 +9,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -79,7 +79,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -248,7 +248,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +

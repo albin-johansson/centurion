@@ -15,7 +15,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -579,7 +579,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("music{{data: {}, volume: {}}}",
                      detail::address_of(music.get()),
                      music::volume());

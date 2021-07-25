@@ -12,7 +12,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -380,7 +380,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -390,7 +390,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +

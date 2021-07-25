@@ -495,7 +495,7 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};

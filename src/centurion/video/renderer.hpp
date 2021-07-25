@@ -17,7 +17,7 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -2238,7 +2238,7 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
 #else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";

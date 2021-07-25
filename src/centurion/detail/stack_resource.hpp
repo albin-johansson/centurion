@@ -7,7 +7,7 @@
 
 #include "../core/integers.hpp"
 
-#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte

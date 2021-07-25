@@ -17,7 +17,7 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -817,7 +817,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),

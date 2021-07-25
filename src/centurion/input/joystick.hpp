@@ -12,7 +12,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -1112,7 +1112,7 @@ template <typename T>
     serial = joystick.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
                      detail::address_of(joystick.get()),
                      joystick.instance_id(),

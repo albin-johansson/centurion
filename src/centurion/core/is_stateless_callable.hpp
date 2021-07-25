@@ -5,7 +5,7 @@
 #include "../compiler/features.hpp"
 // clang-format on
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // default_initializable, invocable
 

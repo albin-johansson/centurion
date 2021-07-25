@@ -142,7 +142,7 @@ TEST(Thread, StreamOperator)
   std::cout << "COUT: " << cen::to_string(thread) << '\n';
 }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 TEST(Thread, Init)
 {

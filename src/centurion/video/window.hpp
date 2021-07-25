@@ -12,7 +12,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -1320,7 +1320,7 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("window{{data: {}, width: {}, height: {}}}",
                      detail::address_of(window.get()),
                      window.width(),

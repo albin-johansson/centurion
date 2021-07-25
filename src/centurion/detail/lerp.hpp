@@ -14,7 +14,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);

@@ -15,7 +15,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -518,7 +518,7 @@ class basic_sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sound_effect{{data: {}, volume: {}}}",
                      detail::address_of(sound.get()),
                      sound.volume());

@@ -12,7 +12,7 @@
 #include <ostream>    // ostream
 #include <string>     // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -280,7 +280,7 @@ class keyboard final
  */
 [[nodiscard]] inline auto to_string(const keyboard& keyboard) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("keyboard{{#keys: {}}}", keyboard.key_count());
 #else
   return "keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}";

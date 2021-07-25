@@ -11,7 +11,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -340,7 +340,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("key_code{{key: {}}}", keyCode.name());
 #else
   return "key_code{key: " + keyCode.name() + "}";

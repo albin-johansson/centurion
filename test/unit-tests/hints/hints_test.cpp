@@ -491,7 +491,7 @@ TEST_F(BasicHintTest, AddHintCallback)
       render_driver::value::opengl);
 }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 TEST_F(BasicHintTest, AddHintCallbackExFull)
 {

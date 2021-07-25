@@ -10,7 +10,7 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -302,7 +302,7 @@ class basic_pixel_format_info final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("pixel_format_info{{data: {}, name: {}}}",
                      detail::address_of(info.get()),
                      info.name());

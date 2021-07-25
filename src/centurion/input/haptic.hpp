@@ -12,7 +12,7 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -962,7 +962,7 @@ class basic_haptic final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("haptic{{data: {}, name: {}}}",
                      detail::address_of(haptic.get()),
                      str_or_na(haptic.name()));

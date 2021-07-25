@@ -11,7 +11,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -335,7 +335,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("scan_code{{key: {}}}", code.name());
 #else
   return "scan_code{key: " + code.name() + "}";

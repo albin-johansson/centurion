@@ -13,7 +13,7 @@
 #include <ostream>   // ostream
 #include <string>    // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -1323,7 +1323,7 @@ template <typename T>
     serial = controller.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("controller{{data: {}, name: {}, serial: {}}}",
                      detail::address_of(controller.get()),
                      str_or_na(name),

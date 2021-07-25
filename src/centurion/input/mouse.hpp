@@ -8,7 +8,7 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -305,7 +305,7 @@ class mouse final
  */
 [[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
 #else
   return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +

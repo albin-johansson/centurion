@@ -8,7 +8,7 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -39,7 +39,7 @@ struct vector3 final
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
 
@@ -148,7 +148,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
 #else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +

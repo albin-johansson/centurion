@@ -12,7 +12,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -214,7 +214,7 @@ class renderer_info final
  */
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("renderer_info{{name: {}}}", str_or_na(info.name()));
 #else
   using namespace std::string_literals;

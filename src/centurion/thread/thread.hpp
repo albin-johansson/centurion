@@ -12,13 +12,13 @@
 #include <string>       // string, to_string
 #include <type_traits>  // invoke_result_t, declval
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // convertible_to, default_initializable, invocable
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -122,7 +122,7 @@ class thread final
     }
   }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
   /**
    * \brief Creates a thread that will execute the supplied callable.
@@ -420,7 +420,7 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("thread{{data: {}, name: {}, id: {}}}",
                      detail::address_of(thread.get()),
                      thread.name(),

@@ -15,7 +15,7 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -903,7 +903,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),

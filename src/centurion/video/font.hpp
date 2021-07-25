@@ -15,7 +15,7 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -837,7 +837,7 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("font{{data: {}, name: {}, size: {}}}",
                      detail::address_of(font.get()),
                      font.family_name(),

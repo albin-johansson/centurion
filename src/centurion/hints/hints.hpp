@@ -199,7 +199,7 @@ auto add_hint_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexc
   return hintCallback;
 }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 /// \since 6.2.0
 template <typename T, typename Hint, typename UserData>

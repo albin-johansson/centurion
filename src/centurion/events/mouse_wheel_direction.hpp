@@ -7,6 +7,7 @@
 #include <string>   // string
 
 #include "../core/exception.hpp"
+#include "../core/integers.hpp"
 
 namespace cen {
 
@@ -22,7 +23,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class mouse_wheel_direction
+enum class mouse_wheel_direction : u32
 {
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural

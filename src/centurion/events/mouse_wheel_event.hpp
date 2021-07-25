@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "common_event.hpp"
 #include "mouse_wheel_direction.hpp"
 
@@ -106,7 +107,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = static_cast<u32>(direction);
+    m_event.direction = to_underlying(direction);
   }
 
   /**

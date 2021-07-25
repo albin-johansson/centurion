@@ -22,6 +22,8 @@ TEST(ScaleMode, EnumValues)
 
 TEST(ScaleMode, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::scale_mode>(4)), cen::cen_error);
+
   ASSERT_EQ("nearest", cen::to_string(cen::scale_mode::nearest));
   ASSERT_EQ("linear", cen::to_string(cen::scale_mode::linear));
   ASSERT_EQ("best", cen::to_string(cen::scale_mode::best));

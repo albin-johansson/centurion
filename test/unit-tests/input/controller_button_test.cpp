@@ -41,6 +41,9 @@ TEST(ControllerButton, Values)
 
 TEST(ControllerButton, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<button>(SDL_CONTROLLER_BUTTON_MAX + 1)),
+               cen::cen_error);
+
   ASSERT_EQ("invalid", cen::to_string(button::invalid));
 
   ASSERT_EQ("a", cen::to_string(button::a));

@@ -123,5 +123,5 @@ TEST(Mouse, ToString)
   const cen::mouse mouse;
   ASSERT_EQ("mouse{x: 0, y: 0}", cen::to_string(mouse));
 
-  std::clog << mouse;
+  std::clog << mouse << '\n';
 }

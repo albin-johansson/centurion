@@ -7,6 +7,7 @@
 #include <string>   // string
 
 #include "../core/exception.hpp"
+#include "../core/integers.hpp"
 
 namespace cen {
 
@@ -20,7 +21,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_feature
+enum class haptic_feature : uint
 {
   constant = SDL_HAPTIC_CONSTANT,
   sine = SDL_HAPTIC_SINE,

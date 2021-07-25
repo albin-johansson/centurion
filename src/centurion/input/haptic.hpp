@@ -25,6 +25,7 @@
 #include "../core/str.hpp"
 #include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
+#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -483,7 +484,7 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
-    return has_feature(static_cast<uint>(feature));
+    return has_feature(to_underlying(feature));
   }
 
   /**

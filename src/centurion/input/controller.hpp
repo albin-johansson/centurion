@@ -261,7 +261,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto is_supported(const joystick_index index) noexcept -> bool
   {
-    return static_cast<bool>(SDL_IsGameController(index));
+    return SDL_IsGameController(index) == SDL_TRUE;
   }
 
   /**
@@ -743,7 +743,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
+    return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
   }
 
   /**

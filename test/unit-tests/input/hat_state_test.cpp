@@ -21,6 +21,8 @@ TEST(HatState, Values)
 
 TEST(HatState, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::hat_state>(0x10)), cen::cen_error);
+
   ASSERT_EQ("centered", cen::to_string(cen::hat_state::centered));
   ASSERT_EQ("up", cen::to_string(cen::hat_state::up));
   ASSERT_EQ("right", cen::to_string(cen::hat_state::right));

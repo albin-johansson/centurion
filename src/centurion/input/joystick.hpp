@@ -24,6 +24,7 @@
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"

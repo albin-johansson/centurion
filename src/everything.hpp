@@ -54,6 +54,7 @@
 #include "centurion/core/sdl_log_category_workaround.hpp"
 #include "centurion/core/sdl_string.hpp"
 #include "centurion/core/sfinae.hpp"
+#include "centurion/core/str_or_na.hpp"
 #include "centurion/core/time.hpp"
 #include "centurion/core/to_underlying.hpp"
 #include "centurion/core/version.hpp"

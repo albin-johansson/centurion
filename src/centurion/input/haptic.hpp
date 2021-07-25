@@ -23,6 +23,7 @@
 #include "../core/integers.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"

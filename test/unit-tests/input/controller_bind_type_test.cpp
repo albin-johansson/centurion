@@ -22,6 +22,8 @@ TEST(ControllerBindType, Values)
 
 TEST(ControllerBindType, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::controller_bind_type>(4)), cen::cen_error);
+
   ASSERT_EQ("none", cen::to_string(cen::controller_bind_type::none));
   ASSERT_EQ("button", cen::to_string(cen::controller_bind_type::button));
   ASSERT_EQ("axis", cen::to_string(cen::controller_bind_type::axis));

@@ -14,6 +14,7 @@
 #include "../core/is_stateless_callable.hpp"
 #include "../core/log.hpp"
 #include "../core/result.hpp"
+#include "../detail/hints_impl.hpp"
 #include "hint_priority.hpp"
 
 namespace cen {
@@ -43,13 +44,12 @@ namespace cen {
 template <typename Hint,
           hint_priority priority = hint_priority::normal,
           typename Value,
-          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
+          detail::enable_if_hint_arg_t<Hint, Value> = 0>
 auto set_hint(const Value& value) -> result
 {
-  return static_cast<bool>(
-      SDL_SetHintWithPriority(Hint::name(),
-                              Hint::to_string(value).c_str(),
-                              static_cast<SDL_HintPriority>(priority)));
+  return SDL_SetHintWithPriority(Hint::name(),
+                                 Hint::to_string(value).c_str(),
+                                 static_cast<SDL_HintPriority>(priority)) == SDL_TRUE;
 }
 
 /**

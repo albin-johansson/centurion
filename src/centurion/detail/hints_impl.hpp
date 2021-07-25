@@ -3,7 +3,7 @@
 
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
-#include <type_traits>  // is_same_v, is_convertible_v
+#include <type_traits>  // enable_if_t, is_same_v, is_convertible_v
 
 #include "../core/czstring.hpp"
 #include "../core/integers.hpp"
@@ -15,6 +15,9 @@
 /// \cond FALSE
 
 namespace cen::detail {
+
+template <typename Hint, typename T>
+using enable_if_hint_arg_t = std::enable_if_t<Hint::template valid_arg<T>(), int>;
 
 template <typename Key, usize Size>
 using string_map = static_bimap<Key, czstring, czstring_compare, Size>;

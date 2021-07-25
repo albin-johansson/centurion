@@ -269,11 +269,11 @@ TEST(HapticDirection, SDLDirectionConstructor)
   ASSERT_EQ(source.dir[2], direction.value().z);
 }
 
-TEST(HapticDirectionType, EnumValues)
+TEST(HapticDirectionType, Values)
 {
-  ASSERT_EQ(SDL_HAPTIC_POLAR, static_cast<int>(cen::haptic_direction_type::polar));
+  ASSERT_EQ(SDL_HAPTIC_POLAR, cen::to_underlying(cen::haptic_direction_type::polar));
   ASSERT_EQ(SDL_HAPTIC_CARTESIAN,
-            static_cast<int>(cen::haptic_direction_type::cartesian));
+            cen::to_underlying(cen::haptic_direction_type::cartesian));
   ASSERT_EQ(SDL_HAPTIC_SPHERICAL,
-            static_cast<int>(cen::haptic_direction_type::spherical));
+            cen::to_underlying(cen::haptic_direction_type::spherical));
 }

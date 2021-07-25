@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../math/vector3.hpp"
 #include "haptic_direction_type.hpp"
 
@@ -56,7 +57,7 @@ class haptic_direction final
    */
   void set_type(const haptic_direction_type type) noexcept
   {
-    m_direction.type = static_cast<u8>(type);
+    m_direction.type = to_underlying(type);
   }
 
   /**

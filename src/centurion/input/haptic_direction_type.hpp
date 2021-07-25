@@ -7,6 +7,7 @@
 #include <string>   // string
 
 #include "../core/exception.hpp"
+#include "../core/integers.hpp"
 
 namespace cen {
 
@@ -20,7 +21,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_direction_type
+enum class haptic_direction_type : u8
 {
   polar = SDL_HAPTIC_POLAR,
   cartesian = SDL_HAPTIC_CARTESIAN,

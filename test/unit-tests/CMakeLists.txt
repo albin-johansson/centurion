@@ -59,8 +59,11 @@ set(SOURCE_FILES
     event/window_event_test.cpp
     event/window_event_id_test.cpp
 
+    filesystem/base_path_test.cpp
     filesystem/file_mode_test.cpp
+    filesystem/file_test.cpp
     filesystem/file_type_test.cpp
+    filesystem/preferred_path_test.cpp
     filesystem/seek_mode_test.cpp
 
     hints/hint_priority_test.cpp
@@ -96,18 +99,15 @@ set(SOURCE_FILES
     math/point_test.cpp
     math/vector3_test.cpp
 
-    system/base_path_test.cpp
     system/battery_test.cpp
     system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
-    system/file_test.cpp
     system/locale_test.cpp
     system/platform_id_test.cpp
     system/platform_test.cpp
     system/power_state_test.cpp
-    system/preferred_path_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp
     system/simd_block_test.cpp

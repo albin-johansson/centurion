@@ -6,6 +6,8 @@
 
 TEST(FileMode, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::file_mode>(13)), cen::cen_error);
+
   ASSERT_EQ("read_existing", cen::to_string(cen::file_mode::read_existing));
   ASSERT_EQ("read_existing_binary", cen::to_string(cen::file_mode::read_existing_binary));
 

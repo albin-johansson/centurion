@@ -76,7 +76,7 @@ auto create_surface(basic_window<T>& window,
  *
  * \since 6.0.0
  */
-inline auto required_extensions() -> std::optional<std::vector<czstring>>
+inline auto required_extensions() -> std::optional<std::vector<str>>
 {
   uint count{};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr))
@@ -84,7 +84,7 @@ inline auto required_extensions() -> std::optional<std::vector<czstring>>
     return std::nullopt;
   }
 
-  std::vector<czstring> names(count);
+  std::vector<str> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
   {
     return std::nullopt;

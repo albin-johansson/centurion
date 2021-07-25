@@ -124,7 +124,7 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
  *
  * \since 5.2.0
  */
-inline auto open_url(const not_null<czstring> url) noexcept -> result
+inline auto open_url(const not_null<str> url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;
@@ -151,7 +151,7 @@ inline auto open_url(const std::string& url) noexcept -> result
  */
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
-  const czstring platform = SDL_GetPlatform();
+  const str platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows"))
   {
     return platform_id::windows;

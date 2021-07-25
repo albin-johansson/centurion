@@ -34,7 +34,7 @@ class vk_library final
    * \param path optional file path to a Vulkan library; a null path indicates that the
    * default library will be used.
    */
-  CENTURION_NODISCARD_CTOR explicit vk_library(const czstring path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit vk_library(const str path = nullptr)
   {
     if (SDL_Vulkan_LoadLibrary(path) == -1)
     {

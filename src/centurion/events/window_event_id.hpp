@@ -21,98 +21,25 @@ namespace cen {
  * \details Depending on the event ID of a `window_event` instance, the
  * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
- * <table style="width:100%">
- *   <tr>
- *     <th>Value</th>
- *     <th>data_1</th>
- *     <th>data_2</th>
- *   </tr>
- *   <tr>
- *    <td><code>None</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Shown</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Hidden</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Exposed</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Moved</code></td>
- *    <td>X</td>
- *    <td>Y</td>
- *   </tr>
- *   <tr>
- *    <td><code>Resized</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>SizeChanged</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>Minimized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Maximized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Restored</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Enter</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Leave</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusGained</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusLost</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Close</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>TakeFocus</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>HitTest</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- * </table>
+ * | ID             | data_1 | data_2 |
+ * | -------------- | ------ | ------ |
+ * | `none`         | N/A    | N/A    |
+ * | `shown`        | N/A    | N/A    |
+ * | `hidden`       | N/A    | N/A    |
+ * | `exposed`      | N/A    | N/A    |
+ * | `moved`        | X      | Y      |
+ * | `resized`      | Width  | Height |
+ * | `size_changed` | Width  | Height |
+ * | `minimized`    | N/A    | N/A    |
+ * | `maximized`    | N/A    | N/A    |
+ * | `restored`     | N/A    | N/A    |
+ * | `enter`        | N/A    | N/A    |
+ * | `leave`        | N/A    | N/A    |
+ * | `focus_gained` | N/A    | N/A    |
+ * | `focus_lost`   | N/A    | N/A    |
+ * | `close`        | N/A    | N/A    |
+ * | `take_focus`   | N/A    | N/A    |
+ * | `hit_test`     | N/A    | N/A    |
  *
  * \since 4.0.0
  */

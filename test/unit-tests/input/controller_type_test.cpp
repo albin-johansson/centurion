@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // cout
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST(ControllerType, Values)
@@ -36,6 +38,8 @@ TEST(ControllerType, Values)
 
 TEST(ControllerType, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(8)), cen::cen_error);
+
   ASSERT_EQ("unknown", cen::to_string(cen::controller_type::unknown));
   ASSERT_EQ("nintendo_switch_pro",
             cen::to_string(cen::controller_type::nintendo_switch_pro));
@@ -48,6 +52,8 @@ TEST(ControllerType, ToString)
   ASSERT_EQ("ps5", cen::to_string(cen::controller_type::ps5));
   ASSERT_EQ("virt", cen::to_string(cen::controller_type::virt));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  std::cout << "Controller type example: " << cen::controller_type::ps4 << '\n';
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)

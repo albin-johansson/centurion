@@ -11,9 +11,6 @@ set(SOURCE_FILES
     compiler/compiler_test.cpp
     compiler/features_test.cpp
 
-    config/hint_priority_test.cpp
-    config/hints_test.cpp
-
     core/exception_test.cpp
     core/log_category_test.cpp
     core/log_priority_test.cpp
@@ -65,6 +62,9 @@ set(SOURCE_FILES
     filesystem/file_mode_test.cpp
     filesystem/file_type_test.cpp
     filesystem/seek_mode_test.cpp
+
+    hints/hint_priority_test.cpp
+    hints/hints_test.cpp
 
     input/button_state_test.cpp
     input/controller_axis_test.cpp

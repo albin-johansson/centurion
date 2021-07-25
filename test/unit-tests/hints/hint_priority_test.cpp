@@ -15,6 +15,8 @@ TEST(HintPriority, Values)
 
 TEST(HintPriority, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::hint_priority>(4)), cen::cen_error);
+
   ASSERT_EQ("low", cen::to_string(cen::hint_priority::low));
   ASSERT_EQ("normal", cen::to_string(cen::hint_priority::normal));
   ASSERT_EQ("override", cen::to_string(cen::hint_priority::override));

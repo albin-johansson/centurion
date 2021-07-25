@@ -20,6 +20,9 @@ TEST(JoyHatPosition, Values)
 
 TEST(JoyHatPosition, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::joy_hat_position>(SDL_HAT_RIGHTDOWN + 1)),
+               cen::cen_error);
+
   ASSERT_EQ("left_up", cen::to_string(cen::joy_hat_position::left_up));
   ASSERT_EQ("left", cen::to_string(cen::joy_hat_position::left));
   ASSERT_EQ("left_down", cen::to_string(cen::joy_hat_position::left_down));

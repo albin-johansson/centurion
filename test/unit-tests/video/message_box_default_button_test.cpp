@@ -19,6 +19,8 @@ TEST(MessageBoxDefaultButton, Values)
 
 TEST(MessageBoxDefaultButton, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<button>(3)), cen::cen_error);
+
   ASSERT_EQ("return_key", cen::to_string(button::return_key));
   ASSERT_EQ("escape_key", cen::to_string(button::escape_key));
 

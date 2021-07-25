@@ -15,6 +15,8 @@ TEST(FontHint, Values)
 
 TEST(FontHint, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::font_hint>(4)), cen::cen_error);
+
   ASSERT_EQ("normal", cen::to_string(cen::font_hint::normal));
   ASSERT_EQ("light", cen::to_string(cen::font_hint::light));
   ASSERT_EQ("mono", cen::to_string(cen::font_hint::mono));

@@ -32,6 +32,9 @@ TEST(ControllerAxis, Values)
 
 TEST(ControllerAxis, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<axis>(SDL_CONTROLLER_AXIS_MAX + 1)),
+               cen::cen_error);
+
   ASSERT_EQ("invalid", cen::to_string(axis::invalid));
   ASSERT_EQ("left_x", cen::to_string(axis::left_x));
   ASSERT_EQ("left_y", cen::to_string(axis::left_y));

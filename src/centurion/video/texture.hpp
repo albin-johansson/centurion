@@ -267,8 +267,8 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This function has no effect if the texture access isn't `streaming` or if the
-   * coordinate is out-of-bounds.
+   * \details This function has no effect if the texture access isn't `streaming` or if
+   * the coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
    * \param color the new color of the pixel.

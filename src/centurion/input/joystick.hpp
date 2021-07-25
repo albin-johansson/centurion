@@ -188,8 +188,8 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this function cancels any previous rumble effects. This function has no
-   * effect if the joystick doesn't support rumble effects.
+   * \details Invoking this function cancels any previous rumble effects. This function
+   * has no effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
    * \param highFreq the intensity of the high frequency (right) motor.

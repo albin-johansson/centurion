@@ -298,8 +298,8 @@ class basic_sound_effect final
   /**
    * \brief Sets the volume of the sound effect.
    *
-   * \details This function will adjust input values outside the legal range to the closest
-   * legal value.
+   * \details This function will adjust input values outside the legal range to the
+   * closest legal value.
    *
    * \param volume the volume of the sound effect, in the range [0,
    * `sound_effect::max_volume()`].

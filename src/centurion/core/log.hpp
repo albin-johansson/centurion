@@ -27,8 +27,8 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This function has no effect if the supplied string is null. Usage of this function
- * is quite bulky, so refer to the other logging methods for casual logging.
+ * \details This function has no effect if the supplied string is null. Usage of this
+ * function is quite bulky, so refer to the other logging methods for casual logging.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *

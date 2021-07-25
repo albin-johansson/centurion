@@ -113,8 +113,8 @@ class music final
   /**
    * \brief Plays the music associated with this instance.
    *
-   * \details Any previously playing music will be halted. However, this function will wait
-   * for music that was fading out to complete.
+   * \details Any previously playing music will be halted. However, this function will
+   * wait for music that was fading out to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played forever.
@@ -159,8 +159,8 @@ class music final
   /**
    * \brief Pauses any currently playing music.
    *
-   * \note This function only affects music that is currently playing, which doesn't include
-   * music that is being faded in/out.
+   * \note This function only affects music that is currently playing, which doesn't
+   * include music that is being faded in/out.
    *
    * \since 3.0.0
    */

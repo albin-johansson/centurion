@@ -28,7 +28,7 @@ enum class joystick_power
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
   wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+  max = SDL_JOYSTICK_POWER_MAX
 };
 
 /// \name String conversions

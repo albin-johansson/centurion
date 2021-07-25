@@ -18,8 +18,14 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
- * using `SDL_free`.
+ * \brief Represents an SDL string.
+ *
+ * \details Certain SDL APIs return `char*` strings that need to be freed using
+ * `SDL_free`, this class serves as a small wrapper around such strings. Use the `copy()`
+ * member function to convert the string into a corresponding `std::string`.
+ *
+ * \note Instances of `sdl_string` might manage null strings. Use the overloaded `operator
+ * bool()` in order to determine whether or not any associated string is null.
  *
  * \since 5.0.0
  */

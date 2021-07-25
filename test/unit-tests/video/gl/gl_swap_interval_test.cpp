@@ -14,6 +14,8 @@ TEST(GLSwapInterval, Values)
 
 TEST(GLSwapInterval, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::gl_swap_interval>(2)), cen::cen_error);
+
   ASSERT_EQ("immediate", cen::to_string(cen::gl_swap_interval::immediate));
   ASSERT_EQ("synchronized", cen::to_string(cen::gl_swap_interval::synchronized));
   ASSERT_EQ("late_immediate", cen::to_string(cen::gl_swap_interval::late_immediate));

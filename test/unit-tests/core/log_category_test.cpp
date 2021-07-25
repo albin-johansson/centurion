@@ -34,6 +34,10 @@ TEST(LogCategory, Values)
 
 TEST(LogCategory, ToString)
 {
+  ASSERT_THROW(
+      cen::to_string(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
+      cen::cen_error);
+
   ASSERT_EQ("app", cen::to_string(cen::log_category::app));
   ASSERT_EQ("error", cen::to_string(cen::log_category::error));
   ASSERT_EQ("assert", cen::to_string(cen::log_category::assert));
@@ -42,6 +46,7 @@ TEST(LogCategory, ToString)
   ASSERT_EQ("video", cen::to_string(cen::log_category::video));
   ASSERT_EQ("render", cen::to_string(cen::log_category::render));
   ASSERT_EQ("input", cen::to_string(cen::log_category::input));
+  ASSERT_EQ("test", cen::to_string(cen::log_category::test));
   ASSERT_EQ("misc", cen::to_string(cen::log_category::misc));
 
   std::cout << "Log category example: " << cen::log_category::video << '\n';

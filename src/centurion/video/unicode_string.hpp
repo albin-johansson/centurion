@@ -252,7 +252,8 @@ class unicode_string final
   /**
    * \brief Returns the element at the specified index.
    *
-   * \details This function will throw an exception if the supplied index is out-of-bounds.
+   * \details This function will throw an exception if the supplied index is
+   * out-of-bounds.
    *
    * \param index the index of the desired element.
    *
@@ -276,8 +277,9 @@ class unicode_string final
    *
    * \pre `index` **must** be in the range [0, `size()`);
    *
-   * \details This function will does *not* perform bounds-checking. However, in debug-mode,
-   * an assertion will abort the program if the supplied index is out-of-bounds.
+   * \details This function will does *not* perform bounds-checking. However, in
+   * debug-mode, an assertion will abort the program if the supplied index is
+   * out-of-bounds.
    *
    * \param index the index of the desired element.
    *

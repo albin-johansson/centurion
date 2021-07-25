@@ -102,7 +102,7 @@ TEST_F(FileTest, Queries)
   const cen::file file{path, cen::file_mode::read_existing_binary};
   ASSERT_EQ(SDL_RWtell(file.get()), file.offset());
   ASSERT_EQ(SDL_RWsize(file.get()), file.size());
-  ASSERT_EQ(file.get()->type, static_cast<cen::u32>(file.type()));
+  ASSERT_EQ(file.get()->type, cen::to_underlying(file.type()));
 }
 
 TEST_F(FileTest, IsPNG)

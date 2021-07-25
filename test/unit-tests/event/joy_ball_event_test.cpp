@@ -90,6 +90,6 @@ TEST(JoyBallEvent, AsSDLEvent)
   const cen::joy_ball_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.jball.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.jball.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.jball.timestamp, event.time());
 }

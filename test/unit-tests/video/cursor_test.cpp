@@ -96,5 +96,5 @@ TEST(Cursor, SetVisible)
 
 TEST(Cursor, Count)
 {
-  ASSERT_EQ(cen::cursor::count(), static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+  ASSERT_EQ(SDL_NUM_SYSTEM_CURSORS, cen::cursor::count());
 }

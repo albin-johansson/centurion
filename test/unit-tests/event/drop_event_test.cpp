@@ -74,6 +74,6 @@ TEST(DropEvent, AsSDLEvent)
   const cen::drop_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.drop.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.drop.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.drop.timestamp, event.time());
 }

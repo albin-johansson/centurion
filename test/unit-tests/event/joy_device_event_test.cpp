@@ -33,6 +33,6 @@ TEST(JoyDeviceEvent, AsSDLEvent)
   const cen::joy_device_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.jdevice.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.jdevice.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.jdevice.timestamp, event.time());
 }

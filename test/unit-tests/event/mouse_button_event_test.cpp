@@ -103,7 +103,7 @@ TEST(MouseButtonEvent, Button)
   sdl.button = SDL_BUTTON_X1;
 
   const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.button, static_cast<cen::u8>(event.button()));
+  ASSERT_EQ(sdl.button, cen::to_underlying(event.button()));
 }
 
 TEST(MouseButtonEvent, State)
@@ -112,7 +112,7 @@ TEST(MouseButtonEvent, State)
   sdl.state = SDL_PRESSED;
 
   const cen::mouse_button_event event{sdl};
-  ASSERT_EQ(sdl.state, static_cast<cen::u8>(event.state()));
+  ASSERT_EQ(sdl.state, cen::to_underlying(event.state()));
 }
 
 TEST(MouseButtonEvent, Pressed)
@@ -165,6 +165,6 @@ TEST(MouseButtonEvent, AsSDLEvent)
   const cen::mouse_button_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.button.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.button.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.button.timestamp, event.time());
 }

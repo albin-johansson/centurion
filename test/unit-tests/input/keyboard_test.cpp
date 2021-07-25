@@ -83,7 +83,7 @@ TEST(Keyboard, IsActive)
 TEST(Keyboard, KeyCount)
 {
   cen::keyboard keyboard;
-  ASSERT_EQ(static_cast<int>(SDL_NUM_SCANCODES), keyboard.key_count());
+  ASSERT_EQ(SDL_NUM_SCANCODES, keyboard.key_count());
 }
 
 TEST(Keyboard, ToString)

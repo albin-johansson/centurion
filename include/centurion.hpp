@@ -5736,6 +5736,18 @@ enum class log_priority : int
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
 
+/**
+ * \brief Returns the number of available log priorities.
+ *
+ * \return the number of log priorities.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto log_priority_count() noexcept -> int
+{
+  return SDL_NUM_LOG_PRIORITIES;
+}
+
 /// \name String conversions
 /// \{
 
@@ -6969,6 +6981,18 @@ enum class log_priority : int
   error = SDL_LOG_PRIORITY_ERROR,
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
+
+/**
+ * \brief Returns the number of available log priorities.
+ *
+ * \return the number of log priorities.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto log_priority_count() noexcept -> int
+{
+  return SDL_NUM_LOG_PRIORITIES;
+}
 
 /// \name String conversions
 /// \{
@@ -16520,7 +16544,7 @@ enum class joystick_power
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
   wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+  max = SDL_JOYSTICK_POWER_MAX
 };
 
 /// \name String conversions
@@ -19174,7 +19198,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto is_supported(const joystick_index index) noexcept -> bool
   {
-    return static_cast<bool>(SDL_IsGameController(index));
+    return SDL_IsGameController(index) == SDL_TRUE;
   }
 
   /**
@@ -19656,7 +19680,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
+    return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
   }
 
   /**
@@ -25694,6 +25718,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "common_event.hpp"
 
 // #include "mouse_wheel_direction.hpp"
@@ -25706,6 +25732,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 #include <string>   // string
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 
 namespace cen {
@@ -25722,7 +25750,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class mouse_wheel_direction
+enum class mouse_wheel_direction : u32
 {
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
@@ -25945,7 +25973,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = static_cast<u32>(direction);
+    m_event.direction = to_underlying(direction);
   }
 
   /**
@@ -27065,98 +27093,25 @@ namespace cen {
  * \details Depending on the event ID of a `window_event` instance, the
  * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
- * <table style="width:100%">
- *   <tr>
- *     <th>Value</th>
- *     <th>data_1</th>
- *     <th>data_2</th>
- *   </tr>
- *   <tr>
- *    <td><code>None</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Shown</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Hidden</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Exposed</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Moved</code></td>
- *    <td>X</td>
- *    <td>Y</td>
- *   </tr>
- *   <tr>
- *    <td><code>Resized</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>SizeChanged</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>Minimized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Maximized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Restored</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Enter</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Leave</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusGained</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusLost</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Close</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>TakeFocus</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>HitTest</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- * </table>
+ * | ID             | data_1 | data_2 |
+ * | -------------- | ------ | ------ |
+ * | `none`         | N/A    | N/A    |
+ * | `shown`        | N/A    | N/A    |
+ * | `hidden`       | N/A    | N/A    |
+ * | `exposed`      | N/A    | N/A    |
+ * | `moved`        | X      | Y      |
+ * | `resized`      | Width  | Height |
+ * | `size_changed` | Width  | Height |
+ * | `minimized`    | N/A    | N/A    |
+ * | `maximized`    | N/A    | N/A    |
+ * | `restored`     | N/A    | N/A    |
+ * | `enter`        | N/A    | N/A    |
+ * | `leave`        | N/A    | N/A    |
+ * | `focus_gained` | N/A    | N/A    |
+ * | `focus_lost`   | N/A    | N/A    |
+ * | `close`        | N/A    | N/A    |
+ * | `take_focus`   | N/A    | N/A    |
+ * | `hit_test`     | N/A    | N/A    |
  *
  * \since 4.0.0
  */
@@ -31129,6 +31084,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 
 // #include "../core/exception.hpp"
 
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -31144,7 +31101,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class mouse_wheel_direction
+enum class mouse_wheel_direction : u32
 {
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
@@ -31275,6 +31232,8 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "common_event.hpp"
 
 // #include "mouse_wheel_direction.hpp"
@@ -31379,7 +31338,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = static_cast<u32>(direction);
+    m_event.direction = to_underlying(direction);
   }
 
   /**
@@ -32520,98 +32479,25 @@ namespace cen {
  * \details Depending on the event ID of a `window_event` instance, the
  * `window_event::data_1()` and `window_event::data_2()` methods have special meanings.
  *
- * <table style="width:100%">
- *   <tr>
- *     <th>Value</th>
- *     <th>data_1</th>
- *     <th>data_2</th>
- *   </tr>
- *   <tr>
- *    <td><code>None</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Shown</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Hidden</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Exposed</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Moved</code></td>
- *    <td>X</td>
- *    <td>Y</td>
- *   </tr>
- *   <tr>
- *    <td><code>Resized</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>SizeChanged</code></td>
- *    <td>Width</td>
- *    <td>Height</td>
- *   </tr>
- *   <tr>
- *    <td><code>Minimized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Maximized</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Restored</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Enter</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Leave</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusGained</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>FocusLost</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>Close</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>TakeFocus</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- *   <tr>
- *    <td><code>HitTest</code></td>
- *    <td>N/A</td>
- *    <td>N/A</td>
- *   </tr>
- * </table>
+ * | ID             | data_1 | data_2 |
+ * | -------------- | ------ | ------ |
+ * | `none`         | N/A    | N/A    |
+ * | `shown`        | N/A    | N/A    |
+ * | `hidden`       | N/A    | N/A    |
+ * | `exposed`      | N/A    | N/A    |
+ * | `moved`        | X      | Y      |
+ * | `resized`      | Width  | Height |
+ * | `size_changed` | Width  | Height |
+ * | `minimized`    | N/A    | N/A    |
+ * | `maximized`    | N/A    | N/A    |
+ * | `restored`     | N/A    | N/A    |
+ * | `enter`        | N/A    | N/A    |
+ * | `leave`        | N/A    | N/A    |
+ * | `focus_gained` | N/A    | N/A    |
+ * | `focus_lost`   | N/A    | N/A    |
+ * | `close`        | N/A    | N/A    |
+ * | `take_focus`   | N/A    | N/A    |
+ * | `hit_test`     | N/A    | N/A    |
  *
  * \since 4.0.0
  */
@@ -33515,6 +33401,40 @@ using zstring [[deprecated]] = char*;
 }  // namespace cen
 
 #endif  // CENTURION_STR_HEADER
+
+// #include "../core/to_underlying.hpp"
+#ifndef CENTURION_TO_UNDERLYING_HEADER
+#define CENTURION_TO_UNDERLYING_HEADER
+
+#include <type_traits>  // underlying_type_t, enable_if_t, is_enum_v
+
+namespace cen {
+
+/**
+ * \brief Converts an enum value to an integral value using the underlying type.
+ *
+ * \ingroup core
+ *
+ * \note If you're using C++23, see `std::to_underlying()`.
+ *
+ * \tparam Enum the enum type.
+ *
+ * \param value the enum value that will be converted.
+ *
+ * \return the value of the enum, in the underlying type.
+ *
+ * \since 6.0.0
+ */
+template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
+[[nodiscard]] constexpr auto to_underlying(const Enum value) noexcept
+    -> std::underlying_type_t<Enum>
+{
+  return static_cast<std::underlying_type_t<Enum>>(value);
+}
+
+}  // namespace cen
+
+#endif  // CENTURION_TO_UNDERLYING_HEADER
 
 // #include "file_mode.hpp"
 #ifndef CENTURION_FILE_MODE_HEADER
@@ -34708,7 +34628,7 @@ class file final
       -> std::optional<i64>
   {
     assert(m_context);
-    const auto result = SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
+    const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
     if (result != -1)
     {
       return result;
@@ -38611,6 +38531,18 @@ enum class log_priority : int
   error = SDL_LOG_PRIORITY_ERROR,
   critical = SDL_LOG_PRIORITY_CRITICAL,
 };
+
+/**
+ * \brief Returns the number of available log priorities.
+ *
+ * \return the number of log priorities.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto log_priority_count() noexcept -> int
+{
+  return SDL_NUM_LOG_PRIORITIES;
+}
 
 /// \name String conversions
 /// \{
@@ -45627,7 +45559,7 @@ enum class joystick_power
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
   wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+  max = SDL_JOYSTICK_POWER_MAX
 };
 
 /// \name String conversions
@@ -48281,7 +48213,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto is_supported(const joystick_index index) noexcept -> bool
   {
-    return static_cast<bool>(SDL_IsGameController(index));
+    return SDL_IsGameController(index) == SDL_TRUE;
   }
 
   /**
@@ -48763,7 +48695,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
+    return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
   }
 
   /**
@@ -49800,6 +49732,8 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 
 // #include "../core/time.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../detail/address_of.hpp"
 
 // #include "../detail/clamp.hpp"
@@ -50122,6 +50056,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../math/vector3.hpp"
 
 // #include "haptic_direction_type.hpp"
@@ -50134,6 +50070,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 #include <string>   // string
 
 // #include "../core/exception.hpp"
+
+// #include "../core/integers.hpp"
 
 
 namespace cen {
@@ -50148,7 +50086,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_direction_type
+enum class haptic_direction_type : u8
 {
   polar = SDL_HAPTIC_POLAR,
   cartesian = SDL_HAPTIC_CARTESIAN,
@@ -50271,7 +50209,7 @@ class haptic_direction final
    */
   void set_type(const haptic_direction_type type) noexcept
   {
-    m_direction.type = static_cast<u8>(type);
+    m_direction.type = to_underlying(type);
   }
 
   /**
@@ -50767,6 +50705,8 @@ class haptic_effect
 
 // #include "../core/exception.hpp"
 
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -50780,7 +50720,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_feature
+enum class haptic_feature : uint
 {
   constant = SDL_HAPTIC_CONSTANT,
   sine = SDL_HAPTIC_SINE,
@@ -51358,7 +51298,7 @@ class basic_haptic final
    */
   [[nodiscard]] auto has_feature(const haptic_feature feature) const noexcept -> bool
   {
-    return has_feature(static_cast<uint>(feature));
+    return has_feature(to_underlying(feature));
   }
 
   /**
@@ -52426,6 +52366,8 @@ class haptic_custom final : public haptic_effect<haptic_custom>
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../math/vector3.hpp"
 
 // #include "haptic_direction_type.hpp"
@@ -52480,7 +52422,7 @@ class haptic_direction final
    */
   void set_type(const haptic_direction_type type) noexcept
   {
-    m_direction.type = static_cast<u8>(type);
+    m_direction.type = to_underlying(type);
   }
 
   /**
@@ -52554,6 +52496,8 @@ class haptic_direction final
 
 // #include "../core/exception.hpp"
 
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -52567,7 +52511,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_direction_type
+enum class haptic_direction_type : u8
 {
   polar = SDL_HAPTIC_POLAR,
   cartesian = SDL_HAPTIC_CARTESIAN,
@@ -53087,6 +53031,8 @@ class haptic_effect
 
 // #include "../core/exception.hpp"
 
+// #include "../core/integers.hpp"
+
 
 namespace cen {
 
@@ -53100,7 +53046,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class haptic_feature
+enum class haptic_feature : uint
 {
   constant = SDL_HAPTIC_CONSTANT,
   sine = SDL_HAPTIC_SINE,
@@ -53358,6 +53304,8 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
 
 // #include "../core/time.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "haptic_effect.hpp"
 
 
@@ -53422,7 +53370,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    */
   void set_type(const periodic_type type) noexcept
   {
-    representation().type = static_cast<u16>(type);
+    representation().type = to_underlying(type);
   }
 
   /**
@@ -54998,7 +54946,7 @@ enum class joystick_power
   medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
   full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
   wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
+  max = SDL_JOYSTICK_POWER_MAX
 };
 
 /// \name String conversions

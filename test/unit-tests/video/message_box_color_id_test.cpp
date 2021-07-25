@@ -24,6 +24,9 @@ TEST(MessageBoxColorID, Values)
 
 TEST(MessageBoxColorID, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<id>(SDL_MESSAGEBOX_COLOR_MAX + 1)),
+               cen::cen_error);
+
   ASSERT_EQ("background", cen::to_string(id::background));
   ASSERT_EQ("text", cen::to_string(id::text));
   ASSERT_EQ("button_border", cen::to_string(id::button_border));

@@ -5,6 +5,7 @@
 
 #include "../core/integers.hpp"
 #include "../core/time.hpp"
+#include "../core/to_underlying.hpp"
 #include "haptic_effect.hpp"
 
 namespace cen {
@@ -68,7 +69,7 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
    */
   void set_type(const periodic_type type) noexcept
   {
-    representation().type = static_cast<u16>(type);
+    representation().type = to_underlying(type);
   }
 
   /**

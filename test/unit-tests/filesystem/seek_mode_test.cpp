@@ -15,6 +15,8 @@ TEST(SeekMode, Values)
 
 TEST(SeekMode, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::seek_mode>(3)), cen::cen_error);
+
   ASSERT_EQ("from_beginning", cen::to_string(cen::seek_mode::from_beginning));
   ASSERT_EQ("relative_to_current", cen::to_string(cen::seek_mode::relative_to_current));
   ASSERT_EQ("relative_to_end", cen::to_string(cen::seek_mode::relative_to_end));

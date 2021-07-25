@@ -170,6 +170,9 @@ TEST(PixelFormat, Values)
 
 TEST(PixelFormat, ToString)
 {
+  ASSERT_THROW(cen::to_string(static_cast<cen::pixel_format>(0xFFFFFFFF)),
+               cen::cen_error);
+
   ASSERT_EQ("unknown", cen::to_string(cen::pixel_format::unknown));
   ASSERT_EQ("index1lsb", cen::to_string(cen::pixel_format::index1lsb));
   ASSERT_EQ("index1msb", cen::to_string(cen::pixel_format::index1msb));

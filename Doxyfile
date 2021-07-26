@@ -2243,6 +2243,7 @@ PREDEFINED             = CENTURION___DOXYGEN \
                          CENTURION_HAS_FEATURE_MEMORY_RESOURCE \
                          CENTURION_HAS_FEATURE_LERP \
                          CENTURION_HAS_FEATURE_SPACESHIP \
+                         CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES \
                          SDL_VERSION_ATLEAST
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this

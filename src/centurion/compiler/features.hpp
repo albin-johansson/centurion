@@ -54,6 +54,12 @@
 #define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
 
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler

@@ -60,7 +60,9 @@
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -77,24 +79,40 @@
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -824,8 +842,8 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -1094,7 +1112,7 @@ enum class fade_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const fade_status status) -> std::string
+[[nodiscard]] inline auto to_string(const fade_status status) -> std::string_view
 {
   switch (status)
   {
@@ -1210,7 +1228,9 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -1227,24 +1247,40 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -1262,7 +1298,7 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -1676,8 +1712,8 @@ template <typename T>
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -1720,7 +1756,7 @@ enum class fade_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const fade_status status) -> std::string
+[[nodiscard]] inline auto to_string(const fade_status status) -> std::string_view
 {
   switch (status)
   {
@@ -1828,8 +1864,8 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -1878,7 +1914,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string
+[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {
@@ -2543,7 +2579,7 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("music{{data: {}, volume: {}}}",
                      detail::address_of(music.get()),
                      music::volume());
@@ -2589,8 +2625,8 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 
 #include <SDL_mixer.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -2639,7 +2675,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string
+[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {
@@ -2776,7 +2812,7 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -3659,7 +3695,7 @@ class basic_sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sound_effect{{data: {}, volume: {}}}",
                      detail::address_of(sound.get()),
                      sound.volume());
@@ -4381,7 +4417,9 @@ namespace literals {
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -4398,24 +4436,40 @@ namespace literals {
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -4425,7 +4479,7 @@ namespace literals {
 
 // clang-format on
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // default_initializable, invocable
 
@@ -5201,11 +5255,53 @@ class library final
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
+#include <cassert>   // assert
+#include <chrono>    // zoned_time, current_zone, system_clock
+#include <iostream>  // clog
+#include <string>    // string
+#include <utility>   // forward
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "is_stateless_callable.hpp"
+#ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
+#define CENTURION_IS_STATELESS_CALLABLE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // default_initializable, invocable
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+template <typename T, typename... Args>
+concept is_stateless_callable =
+    std::default_initializable<T> && std::invocable<T, Args...>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // CENTURION_IS_STATELESS_CALLABLE_HEADER
 
 // #include "log_category.hpp"
 #ifndef CENTURION_LOG_CATEGORY_HEADER
@@ -5213,8 +5309,8 @@ class library final
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 
@@ -5580,7 +5676,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -5706,8 +5802,8 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 
@@ -5765,7 +5861,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -5971,13 +6067,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
 
-namespace cen {
-
 /// \namespace cen::log
 /// \brief Contains easy-to-use logging facilities.
 /// \ingroup core
 /// \since 3.0.0
-namespace log {
+namespace cen::log {
 
 /// \addtogroup core
 /// \{
@@ -6326,10 +6420,103 @@ inline void set_priority(const log_category category,
   return SDL_MAX_LOG_MESSAGE;
 }
 
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <is_stateless_callable<log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, nullptr);
+}
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam UserData the type of the user data.
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ * \param data a pointer to the user data, can safely be null. However, see the other
+ * overload of this function if you do not need the user data.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <typename UserData,
+          is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable, UserData* data) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<UserData*>(erased),
+        static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, data);
+}
+
+#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+/**
+ * \brief Sets the logging output function to a convenient preset.
+ *
+ * \details Calling this function will make the logging output be channeled through
+ * `std::clog`, and use an output format that includes the current time (taking the
+ * current time zone into account) and the log priority associated with each message.
+ *
+ * \see `set_output_function()`
+ *
+ * \since 6.2.0
+ */
+inline void use_preset_output_function() noexcept
+{
+  using std::chrono::current_zone;
+  using std::chrono::system_clock;
+  using std::chrono::zoned_time;
+
+  set_output_function([](const log_category,
+                         const log_priority priority,
+                         const str message) {
+    const zoned_time time{current_zone(), system_clock::now()};
+    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+  });
+}
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
 /// \} End of group core
 
-}  // namespace log
-}  // namespace cen
+}  // namespace cen::log
 
 #endif  // CENTURION_LOG_HEADER
 
@@ -6339,8 +6526,8 @@ inline void set_priority(const log_category category,
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 
@@ -6390,7 +6577,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -6525,11 +6712,26 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
+#include <cassert>   // assert
+#include <chrono>    // zoned_time, current_zone, system_clock
+#include <iostream>  // clog
+#include <string>    // string
+#include <utility>   // forward
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "is_stateless_callable.hpp"
 
 // #include "log_category.hpp"
 
@@ -6542,13 +6744,11 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 // #include "to_underlying.hpp"
 
 
-namespace cen {
-
 /// \namespace cen::log
 /// \brief Contains easy-to-use logging facilities.
 /// \ingroup core
 /// \since 3.0.0
-namespace log {
+namespace cen::log {
 
 /// \addtogroup core
 /// \{
@@ -6897,10 +7097,103 @@ inline void set_priority(const log_category category,
   return SDL_MAX_LOG_MESSAGE;
 }
 
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <is_stateless_callable<log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, nullptr);
+}
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam UserData the type of the user data.
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ * \param data a pointer to the user data, can safely be null. However, see the other
+ * overload of this function if you do not need the user data.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <typename UserData,
+          is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable, UserData* data) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<UserData*>(erased),
+        static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, data);
+}
+
+#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+/**
+ * \brief Sets the logging output function to a convenient preset.
+ *
+ * \details Calling this function will make the logging output be channeled through
+ * `std::clog`, and use an output format that includes the current time (taking the
+ * current time zone into account) and the log priority associated with each message.
+ *
+ * \see `set_output_function()`
+ *
+ * \since 6.2.0
+ */
+inline void use_preset_output_function() noexcept
+{
+  using std::chrono::current_zone;
+  using std::chrono::system_clock;
+  using std::chrono::zoned_time;
+
+  set_output_function([](const log_category,
+                         const log_priority priority,
+                         const str message) {
+    const zoned_time time{current_zone(), system_clock::now()};
+    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+  });
+}
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
 /// \} End of group core
 
-}  // namespace log
-}  // namespace cen
+}  // namespace cen::log
 
 #endif  // CENTURION_LOG_HEADER
 
@@ -6917,7 +7210,7 @@ inline void set_priority(const log_category category,
 
 #else
 
-#ifdef CENTURION_HAS_FEATURE_CPP20
+#if CENTURION_HAS_FEATURE_CPP20
 
 // clang-format off
 #define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt __VA_OPT__(,) __VA_ARGS__)
@@ -6952,8 +7245,8 @@ inline void set_priority(const log_category category,
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 
@@ -7011,7 +7304,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -9380,7 +9673,9 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -9397,24 +9692,40 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -9433,7 +9744,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -9948,7 +10259,7 @@ namespace cen::detail {
 // #include "../core/integers.hpp"
 
 
-#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte
@@ -10344,8 +10655,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -10676,7 +10987,7 @@ enum class event_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const event_type type) -> std::string
+[[nodiscard]] inline auto to_string(const event_type type) -> std::string_view
 {
   switch (type)
   {
@@ -11341,7 +11652,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -11358,24 +11671,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -11387,13 +11716,14 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <array>     // array
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -13502,7 +13832,9 @@ namespace cen::detail {
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -13519,24 +13851,40 @@ namespace cen::detail {
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -13558,7 +13906,7 @@ namespace cen::detail {
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -14394,7 +14742,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -14411,24 +14761,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -14447,7 +14813,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -15248,7 +15614,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -15456,8 +15822,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -15503,7 +15869,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string
+[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -15553,8 +15919,8 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -15602,7 +15968,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string
+[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -15723,8 +16089,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -15768,7 +16134,7 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string
+[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string_view
 {
   switch (type)
   {
@@ -15880,8 +16246,8 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -15953,7 +16319,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_button button) -> std::string
+[[nodiscard]] inline auto to_string(const controller_button button) -> std::string_view
 {
   switch (button)
   {
@@ -16129,8 +16495,8 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -16187,7 +16553,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string
+[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -16324,7 +16690,7 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -16396,8 +16762,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -16446,7 +16812,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string
+[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -16518,8 +16884,8 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -16564,7 +16930,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -16699,8 +17065,8 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -16748,7 +17114,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -17963,7 +18329,7 @@ template <typename T>
     serial = joystick.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
                      detail::address_of(joystick.get()),
                      joystick.instance_id(),
@@ -18022,7 +18388,7 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -18048,8 +18414,8 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -18093,7 +18459,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string
+[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -18576,7 +18942,7 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sensor{{data: {}, id: {}, name: {}}}",
                      detail::address_of(sensor.get()),
                      sensor.id(),
@@ -18647,8 +19013,8 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -18742,7 +19108,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string;
+[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -18788,7 +19154,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string
+[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -20202,7 +20568,7 @@ class basic_controller final
  * \since 6.2.0
  */
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {
@@ -20222,7 +20588,7 @@ class basic_controller final
 
 /// \see to_string(controller::mapping_result)
 [[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {
@@ -20260,7 +20626,7 @@ template <typename T>
     serial = controller.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("controller{{data: {}, name: {}, serial: {}}}",
                      detail::address_of(controller.get()),
                      str_or_na(name),
@@ -22643,8 +23009,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyBallEvent>& event) -> SDL_Eve
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -22690,7 +23056,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string
+[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -23006,8 +23372,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_E
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -23056,7 +23422,7 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joy_hat_position position) -> std::string
+[[nodiscard]] inline auto to_string(const joy_hat_position position) -> std::string_view
 {
   switch (position)
   {
@@ -23255,7 +23621,7 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -23887,7 +24253,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("key_code{{key: {}}}", keyCode.name());
 #else
   return "key_code{key: " + keyCode.name() + "}";
@@ -24194,7 +24560,7 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -24521,7 +24887,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("scan_code{{key: {}}}", code.name());
 #else
   return "scan_code{key: " + code.name() + "}";
@@ -25093,8 +25459,8 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -25139,7 +25505,7 @@ enum class mouse_button : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string
+[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string_view
 {
   switch (button)
   {
@@ -25728,8 +26094,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -25773,7 +26139,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string
+[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
   switch (dir)
   {
@@ -27074,8 +27440,8 @@ inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -27153,7 +27519,7 @@ enum class window_event_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string
+[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string_view
 {
   switch (id)
   {
@@ -29008,8 +29374,8 @@ inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispa
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -29114,7 +29480,7 @@ enum class event_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const event_type type) -> std::string
+[[nodiscard]] inline auto to_string(const event_type type) -> std::string_view
 {
   switch (type)
   {
@@ -31079,8 +31445,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -31124,7 +31490,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string
+[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
   switch (dir)
   {
@@ -32460,8 +32826,8 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Even
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -32539,7 +32905,7 @@ enum class window_event_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string
+[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string_view
 {
   switch (id)
   {
@@ -33440,8 +33806,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #ifndef CENTURION_FILE_MODE_HEADER
 #define CENTURION_FILE_MODE_HEADER
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -33688,7 +34054,7 @@ enum class file_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -33769,8 +34135,8 @@ inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostre
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -33816,7 +34182,7 @@ enum class file_type : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_type type) -> std::string
+[[nodiscard]] inline auto to_string(const file_type type) -> std::string_view
 {
   switch (type)
   {
@@ -33879,8 +34245,8 @@ inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostre
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -33921,7 +34287,7 @@ enum class seek_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -34776,8 +35142,8 @@ class file final
 #ifndef CENTURION_FILE_MODE_HEADER
 #define CENTURION_FILE_MODE_HEADER
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -34835,7 +35201,7 @@ enum class file_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -34916,8 +35282,8 @@ inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostre
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -34963,7 +35329,7 @@ enum class file_type : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_type type) -> std::string
+[[nodiscard]] inline auto to_string(const file_type type) -> std::string_view
 {
   switch (type)
   {
@@ -35106,8 +35472,8 @@ namespace cen {
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -35148,7 +35514,7 @@ enum class seek_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -37342,8 +37708,8 @@ class enum_hint
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -37613,7 +37979,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -37676,7 +38042,9 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -37693,24 +38061,40 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -37740,7 +38124,9 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -37757,24 +38143,40 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -37784,7 +38186,7 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 
 // clang-format on
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // default_initializable, invocable
 
@@ -37808,11 +38210,53 @@ concept is_stateless_callable =
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
+#include <cassert>   // assert
+#include <chrono>    // zoned_time, current_zone, system_clock
+#include <iostream>  // clog
+#include <string>    // string
+#include <utility>   // forward
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+// #include "is_stateless_callable.hpp"
+#ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
+#define CENTURION_IS_STATELESS_CALLABLE_HEADER
+
+// clang-format off
+// #include "../compiler/features.hpp"
+
+// clang-format on
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // default_initializable, invocable
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+template <typename T, typename... Args>
+concept is_stateless_callable =
+    std::default_initializable<T> && std::invocable<T, Args...>;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+#endif  // CENTURION_IS_STATELESS_CALLABLE_HEADER
 
 // #include "log_category.hpp"
 #ifndef CENTURION_LOG_CATEGORY_HEADER
@@ -37820,8 +38264,8 @@ concept is_stateless_callable =
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -38376,7 +38820,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string
+[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -38502,8 +38946,8 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "exception.hpp"
 
@@ -38561,7 +39005,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -38767,13 +39211,11 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #endif  // CENTURION_TO_UNDERLYING_HEADER
 
 
-namespace cen {
-
 /// \namespace cen::log
 /// \brief Contains easy-to-use logging facilities.
 /// \ingroup core
 /// \since 3.0.0
-namespace log {
+namespace cen::log {
 
 /// \addtogroup core
 /// \{
@@ -39122,10 +39564,103 @@ inline void set_priority(const log_category category,
   return SDL_MAX_LOG_MESSAGE;
 }
 
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <is_stateless_callable<log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, nullptr);
+}
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam UserData the type of the user data.
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ * \param data a pointer to the user data, can safely be null. However, see the other
+ * overload of this function if you do not need the user data.
+ *
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
+ */
+template <typename UserData,
+          is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable, UserData* data) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<UserData*>(erased),
+        static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, data);
+}
+
+#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+/**
+ * \brief Sets the logging output function to a convenient preset.
+ *
+ * \details Calling this function will make the logging output be channeled through
+ * `std::clog`, and use an output format that includes the current time (taking the
+ * current time zone into account) and the log priority associated with each message.
+ *
+ * \see `set_output_function()`
+ *
+ * \since 6.2.0
+ */
+inline void use_preset_output_function() noexcept
+{
+  using std::chrono::current_zone;
+  using std::chrono::system_clock;
+  using std::chrono::zoned_time;
+
+  set_output_function([](const log_category,
+                         const log_priority priority,
+                         const str message) {
+    const zoned_time time{current_zone(), system_clock::now()};
+    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+  });
+}
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
 /// \} End of group core
 
-}  // namespace log
-}  // namespace cen
+}  // namespace cen::log
 
 #endif  // CENTURION_LOG_HEADER
 
@@ -39312,8 +39847,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -39357,7 +39892,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -39589,7 +40124,7 @@ auto add_hint_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexc
   return hintCallback;
 }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 /// \since 6.2.0
 template <typename T, typename Hint, typename UserData>
@@ -40251,8 +40786,8 @@ struct use_old_joystick_mapping final : detail::bool_hint<use_old_joystick_mappi
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -40716,7 +41251,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string
+[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -40774,7 +41309,9 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -40791,24 +41328,40 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -40820,13 +41373,14 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 #include <SDL.h>
 
-#include <array>     // array
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -42517,7 +43071,9 @@ namespace cen::detail {
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -42534,24 +43090,40 @@ namespace cen::detail {
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -42573,7 +43145,7 @@ namespace cen::detail {
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -43409,7 +43981,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -43426,24 +44000,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -43462,7 +44052,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -44263,7 +44853,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -44471,8 +45061,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -44518,7 +45108,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string
+[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -44568,8 +45158,8 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -44617,7 +45207,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string
+[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -44738,8 +45328,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -44783,7 +45373,7 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string
+[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string_view
 {
   switch (type)
   {
@@ -44895,8 +45485,8 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -44968,7 +45558,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_button button) -> std::string
+[[nodiscard]] inline auto to_string(const controller_button button) -> std::string_view
 {
   switch (button)
   {
@@ -45144,8 +45734,8 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -45202,7 +45792,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string
+[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -45339,7 +45929,7 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -45411,8 +46001,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -45461,7 +46051,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string
+[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -45533,8 +46123,8 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -45579,7 +46169,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -45714,8 +46304,8 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -45763,7 +46353,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -46978,7 +47568,7 @@ template <typename T>
     serial = joystick.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
                      detail::address_of(joystick.get()),
                      joystick.instance_id(),
@@ -47037,7 +47627,7 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -47063,8 +47653,8 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -47108,7 +47698,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string
+[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -47591,7 +48181,7 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sensor{{data: {}, id: {}, name: {}}}",
                      detail::address_of(sensor.get()),
                      sensor.id(),
@@ -47662,8 +48252,8 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -47757,7 +48347,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string;
+[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -47803,7 +48393,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string
+[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -49217,7 +49807,7 @@ class basic_controller final
  * \since 6.2.0
  */
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {
@@ -49237,7 +49827,7 @@ class basic_controller final
 
 /// \see to_string(controller::mapping_result)
 [[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
-    -> std::string
+    -> std::string_view
 {
   switch (result)
   {
@@ -49275,7 +49865,7 @@ template <typename T>
     serial = controller.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("controller{{data: {}, name: {}, serial: {}}}",
                      detail::address_of(controller.get()),
                      str_or_na(name),
@@ -49347,8 +49937,8 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -49396,7 +49986,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string
+[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -49517,8 +50107,8 @@ inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -49575,7 +50165,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string
+[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -49712,7 +50302,7 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #include <ostream>   // ostream
 #include <string>    // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -49810,7 +50400,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -49827,24 +50419,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -49857,7 +50465,7 @@ template <typename T>
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -49888,7 +50496,7 @@ struct vector3 final
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
 
@@ -49936,7 +50544,7 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
@@ -49997,7 +50605,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
 #else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
@@ -50066,8 +50674,8 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -50110,7 +50718,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
 {
   switch (type)
   {
@@ -50700,8 +51308,8 @@ class haptic_effect
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -50757,7 +51365,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {
@@ -51776,7 +52384,7 @@ class basic_haptic final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_haptic<T>& haptic) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("haptic{{data: {}, name: {}}}",
                      detail::address_of(haptic.get()),
                      str_or_na(haptic.name()));
@@ -52491,8 +53099,8 @@ class haptic_direction final
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -52535,7 +53143,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
 {
   switch (type)
   {
@@ -53026,8 +53634,8 @@ class haptic_effect
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -53083,7 +53691,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string
+[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {
@@ -53622,8 +54230,8 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -53672,7 +54280,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string
+[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -53754,7 +54362,7 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -54871,7 +55479,7 @@ template <typename T>
     serial = joystick.serial();
   }
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
                      detail::address_of(joystick.get()),
                      joystick.instance_id(),
@@ -54920,8 +55528,8 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -54966,7 +55574,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -55101,8 +55709,8 @@ inline auto operator<<(std::ostream& stream, const joystick_power power) -> std:
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -55150,7 +55758,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string
+[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -55303,7 +55911,7 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -55935,7 +56543,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("key_code{{key: {}}}", keyCode.name());
 #else
   return "key_code{key: " + keyCode.name() + "}";
@@ -56243,7 +56851,7 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 #include <ostream>    // ostream
 #include <string>     // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -56399,7 +57007,7 @@ namespace cen {
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -56731,7 +57339,7 @@ class key_code final
  */
 [[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("key_code{{key: {}}}", keyCode.name());
 #else
   return "key_code{key: " + keyCode.name() + "}";
@@ -57038,7 +57646,7 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -57365,7 +57973,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("scan_code{{key: {}}}", code.name());
 #else
   return "scan_code{key: " + code.name() + "}";
@@ -57693,7 +58301,7 @@ class keyboard final
  */
 [[nodiscard]] inline auto to_string(const keyboard& keyboard) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("keyboard{{#keys: {}}}", keyboard.key_count());
 #else
   return "keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}";
@@ -58287,7 +58895,7 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -58310,7 +58918,7 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -58414,7 +59022,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -58526,7 +59134,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -58583,7 +59191,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -58637,7 +59245,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -59041,7 +59649,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -59051,7 +59659,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -59489,7 +60097,7 @@ class mouse final
  */
 [[nodiscard]] inline auto to_string(const mouse& mouse) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
 #else
   return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +
@@ -59539,7 +60147,7 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -59866,7 +60474,7 @@ class scan_code final
  */
 [[nodiscard]] inline auto to_string(const scan_code& code) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("scan_code{{key: {}}}", code.name());
 #else
   return "scan_code{key: " + code.name() + "}";
@@ -60487,7 +61095,7 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -60890,7 +61498,7 @@ class basic_sensor final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_sensor<T>& sensor) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("sensor{{data: {}, id: {}, name: {}}}",
                      detail::address_of(sensor.get()),
                      sensor.id(),
@@ -60949,8 +61557,8 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -60994,7 +61602,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string
+[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -61276,8 +61884,8 @@ using touch_finger_state = touch::finger_state;
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -61371,7 +61979,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string;
+[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -61417,7 +62025,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string
+[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -61460,7 +62068,9 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -61477,24 +62087,40 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -61508,7 +62134,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -61612,7 +62238,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -61724,7 +62350,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -61781,7 +62407,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -61835,7 +62461,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -62239,7 +62865,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -62249,7 +62875,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -62415,7 +63041,7 @@ template <typename T>
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -62474,7 +63100,7 @@ template <typename T>
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -62545,7 +63171,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -62657,7 +63283,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -62714,7 +63340,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -62768,7 +63394,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -63138,7 +63764,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -63148,7 +63774,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -64138,7 +64764,7 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
                      rect.x(),
                      rect.y(),
@@ -64193,7 +64819,7 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -64224,7 +64850,7 @@ struct vector3 final
   value_type y{};  ///< The y-coordinate of the vector.
   value_type z{};  ///< The z-coordinate of the vector.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator<=>(const vector3&) const noexcept = default;
 
@@ -64272,7 +64898,7 @@ void serialize(Archive& archive, vector3<T>& vector)
 /// \name Vector3 comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two 3D vectors are equal.
@@ -64333,7 +64959,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const vector3<T>& vector) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
 #else
   return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
@@ -64714,8 +65340,8 @@ template <typename T, typename... Args>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -64986,7 +65612,7 @@ enum class power_state
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const power_state state) -> std::string
+[[nodiscard]] inline auto to_string(const power_state state) -> std::string_view
 {
   switch (state)
   {
@@ -66827,10 +67453,11 @@ class locale final
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -66882,7 +67509,7 @@ enum class platform_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const platform_id id) -> std::string
+[[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
   switch (id)
   {
@@ -67194,8 +67821,8 @@ inline auto open_url(const std::string& url) noexcept -> result
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -67240,7 +67867,7 @@ enum class power_state
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const power_state state) -> std::string
+[[nodiscard]] inline auto to_string(const power_state state) -> std::string_view
 {
   switch (state)
   {
@@ -68421,8 +69048,8 @@ namespace literals {
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -68456,7 +69083,7 @@ enum class lock_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const lock_status status) -> std::string
+[[nodiscard]] inline auto to_string(const lock_status status) -> std::string_view
 {
   switch (status)
   {
@@ -68639,7 +69266,9 @@ class mutex final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -68656,24 +69285,40 @@ class mutex final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -68860,8 +69505,8 @@ class condition final
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -68895,7 +69540,7 @@ enum class lock_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const lock_status status) -> std::string
+[[nodiscard]] inline auto to_string(const lock_status status) -> std::string_view
 {
   switch (status)
   {
@@ -69289,13 +69934,13 @@ class semaphore final
 #include <string>       // string, to_string
 #include <type_traits>  // invoke_result_t, declval
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // convertible_to, default_initializable, invocable
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -69319,7 +69964,9 @@ class semaphore final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -69336,24 +69983,40 @@ class semaphore final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -69363,7 +70026,7 @@ class semaphore final
 
 // clang-format on
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 #include <concepts>  // default_initializable, invocable
 
@@ -69674,8 +70337,8 @@ namespace cen::detail {
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -69721,7 +70384,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -69913,7 +70576,7 @@ class thread final
     }
   }
 
-#ifdef CENTURION_HAS_FEATURE_CONCEPTS
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
   /**
    * \brief Creates a thread that will execute the supplied callable.
@@ -70211,7 +70874,7 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("thread{{data: {}, name: {}, id: {}}}",
                      detail::address_of(thread.get()),
                      thread.name(),
@@ -70257,8 +70920,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -70304,7 +70967,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string
+[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -70539,8 +71202,8 @@ class try_lock final
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -70818,7 +71481,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -70936,8 +71599,8 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -71178,7 +71841,7 @@ enum class button_order : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_order order) -> std::string
+[[nodiscard]] inline auto to_string(const button_order order) -> std::string_view
 {
   switch (order)
   {
@@ -71237,7 +71900,9 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -71254,24 +71919,40 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -71293,7 +71974,7 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -71711,7 +72392,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -71728,24 +72411,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -71764,7 +72463,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -72565,7 +73264,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -72792,7 +73491,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -73598,7 +74297,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -75215,7 +75914,9 @@ class pointer_manager final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -75232,24 +75933,40 @@ class pointer_manager final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -75266,7 +75983,7 @@ class pointer_manager final
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -75703,7 +76420,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -75713,7 +76430,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -75883,7 +76600,7 @@ template <typename T>
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -76306,7 +77023,7 @@ namespace cen::detail {
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -76377,7 +77094,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -76489,7 +77206,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -76546,7 +77263,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -76599,7 +77316,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -76658,7 +77375,7 @@ template <typename T>
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -76729,7 +77446,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -76841,7 +77558,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -76898,7 +77615,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -76952,7 +77669,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -77322,7 +78039,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -77332,7 +78049,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -78322,7 +79039,7 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
                      rect.x(),
                      rect.y(),
@@ -78371,8 +79088,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -78424,7 +79141,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -78552,7 +79269,7 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -78582,8 +79299,8 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -78702,7 +79419,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string
+[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -79197,7 +79914,7 @@ class basic_pixel_format_info final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("pixel_format_info{{data: {}, name: {}}}",
                      detail::address_of(info.get()),
                      info.name());
@@ -80107,7 +80824,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),
@@ -80154,8 +80871,8 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -80220,7 +80937,7 @@ enum class system_cursor
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string
+[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string_view
 {
   switch (cursor)
   {
@@ -80637,13 +81354,14 @@ class basic_cursor final
 
 #include <SDL_ttf.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <memory>       // unique_ptr
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -81133,7 +81851,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string
+[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {
@@ -81888,7 +82606,7 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("font{{data: {}, name: {}, size: {}}}",
                      detail::address_of(font.get()),
                      font.family_name(),
@@ -81958,13 +82676,14 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 #include <SDL_ttf.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <memory>       // unique_ptr
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -82038,7 +82757,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string
+[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {
@@ -82793,7 +83512,7 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("font{{data: {}, name: {}, size: {}}}",
                      detail::address_of(font.get()),
                      font.family_name(),
@@ -82854,7 +83573,7 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -82892,8 +83611,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -82938,7 +83657,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -83047,8 +83766,8 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -83095,7 +83814,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string
+[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -83828,7 +84547,7 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("texture{{data: {}, width: {}, height: {}}}",
                      detail::address_of(texture.get()),
                      texture.width(),
@@ -84961,7 +85680,7 @@ namespace literals {
 #endif  // CENTURION_INTEGERS_HEADER
 
 
-#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte
@@ -84996,8 +85715,8 @@ class stack_resource final
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -85046,7 +85765,7 @@ enum class button_order : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_order order) -> std::string
+[[nodiscard]] inline auto to_string(const button_order order) -> std::string_view
 {
   switch (order)
   {
@@ -86167,8 +86886,8 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -86213,7 +86932,7 @@ enum class message_box_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string
+[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string_view
 {
   switch (type)
   {
@@ -86277,7 +86996,7 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -87642,7 +88361,7 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("window{{data: {}, width: {}, height: {}}}",
                      detail::address_of(window.get()),
                      window.width(),
@@ -88153,7 +88872,7 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-#ifdef CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
@@ -88210,7 +88929,7 @@ class message_box final
  * \since 6.2.0
  */
 [[nodiscard]] inline auto to_string(const message_box::default_button button)
-    -> std::string
+    -> std::string_view
 {
   switch (button)
   {
@@ -88239,7 +88958,7 @@ class message_box final
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string
+[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string_view
 {
   switch (id)
   {
@@ -88426,8 +89145,8 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -88472,7 +89191,7 @@ enum class message_box_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string
+[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string_view
 {
   switch (type)
   {
@@ -88529,8 +89248,8 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -88825,7 +89544,7 @@ enum class gl_attribute
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string
+[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string_view
 {
   switch (attr)
   {
@@ -89555,7 +90274,9 @@ class pointer_manager final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -89572,24 +90293,40 @@ class pointer_manager final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -89606,7 +90343,7 @@ class pointer_manager final
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -90980,7 +91717,9 @@ class pointer_manager final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -90997,24 +91736,40 @@ class pointer_manager final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -91028,7 +91783,7 @@ class pointer_manager final
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -91132,7 +91887,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -91244,7 +91999,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -91301,7 +92056,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -91354,7 +92109,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -91447,7 +92202,7 @@ template <typename T>
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -91518,7 +92273,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -91630,7 +92385,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -91687,7 +92442,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -91741,7 +92496,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -92111,7 +92866,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -92121,7 +92876,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -93111,7 +93866,7 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
                      rect.x(),
                      rect.y(),
@@ -93160,8 +93915,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -93280,7 +94035,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string
+[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -93518,7 +94273,7 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -93584,8 +94339,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -93637,7 +94392,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -93770,7 +94525,7 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -94001,7 +94756,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -94018,24 +94775,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -94054,7 +94827,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -94855,7 +95628,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -95071,7 +95844,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -95373,7 +96146,7 @@ class basic_pixel_format_info final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("pixel_format_info{{data: {}, name: {}}}",
                      detail::address_of(info.get()),
                      info.name());
@@ -96283,7 +97056,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),
@@ -97611,7 +98384,7 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("window{{data: {}, width: {}, height: {}}}",
                      detail::address_of(window.get()),
                      window.width(),
@@ -97808,10 +98581,11 @@ using gl_context_handle = gl::context_handle;
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
 // #include "../../core/exception.hpp"
 
@@ -97931,7 +98705,9 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -97948,24 +98724,40 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -97979,7 +98771,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -98083,7 +98875,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -98195,7 +98987,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -98252,7 +99044,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -98309,7 +99101,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -98349,7 +99141,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -98719,7 +99511,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -98729,7 +99521,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -98892,8 +99684,8 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -98938,7 +99730,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -99047,8 +99839,8 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -99095,7 +99887,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string
+[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -99828,7 +100620,7 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("texture{{data: {}, width: {}, height: {}}}",
                      detail::address_of(texture.get()),
                      texture.width(),
@@ -99879,8 +100671,8 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../../core/exception.hpp"
 
@@ -99949,7 +100741,7 @@ enum class gl_attribute
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string
+[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string_view
 {
   switch (attr)
   {
@@ -100278,7 +101070,7 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string
+[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string_view
 {
   switch (interval)
   {
@@ -100579,7 +101371,9 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -100596,24 +101390,40 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -100731,7 +101541,7 @@ class gl_library final
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -100951,7 +101761,7 @@ class palette final
  */
 [[nodiscard]] inline auto to_string(const palette& palette) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("palette{{data: {}, size: {}}}",
                      detail::address_of(palette.get()),
                      palette.size());
@@ -100995,8 +101805,8 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -101115,7 +101925,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string
+[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -101348,7 +102158,7 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -101650,7 +102460,7 @@ class basic_pixel_format_info final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("pixel_format_info{{data: {}, name: {}}}",
                      detail::address_of(info.get()),
                      info.name());
@@ -101713,7 +102523,7 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -104766,7 +105576,7 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
 #else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
@@ -104808,7 +105618,7 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -104906,7 +105716,7 @@ namespace cen {
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -107144,7 +107954,7 @@ class basic_renderer final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
 #else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
@@ -107359,7 +108169,7 @@ class renderer_info final
  */
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("renderer_info{{name: {}}}", str_or_na(info.name()));
 #else
   using namespace std::string_literals;
@@ -107428,8 +108238,8 @@ template <typename T>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -107474,7 +108284,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -107581,9 +108391,9 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
 
 #include <SDL.h>
 
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -107650,7 +108460,8 @@ enum class screen_orientation : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const screen_orientation orientation) -> std::string
+[[nodiscard]] inline auto to_string(const screen_orientation orientation)
+    -> std::string_view
 {
   switch (orientation)
   {
@@ -108111,7 +108922,7 @@ namespace cen::screen {
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -109013,7 +109824,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),
@@ -109060,8 +109871,8 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -109126,7 +109937,7 @@ enum class system_cursor
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string
+[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string_view
 {
   switch (cursor)
   {
@@ -109272,7 +110083,7 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -109943,7 +110754,7 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("texture{{data: {}, width: {}, height: {}}}",
                      detail::address_of(texture.get()),
                      texture.width(),
@@ -109989,8 +110800,8 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -110037,7 +110848,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string
+[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -110989,7 +111800,9 @@ using zstring [[deprecated]] = char*;
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -111006,24 +111819,40 @@ using zstring [[deprecated]] = char*;
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -111040,7 +111869,7 @@ using zstring [[deprecated]] = char*;
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -112414,7 +113243,9 @@ class pointer_manager final
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -112431,24 +113262,40 @@ class pointer_manager final
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -112462,7 +113309,7 @@ class pointer_manager final
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -112566,7 +113413,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -112678,7 +113525,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -112735,7 +113582,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -112788,7 +113635,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -112881,7 +113728,7 @@ template <typename T>
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -112952,7 +113799,7 @@ struct basic_area final
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-#ifdef CENTURION_HAS_FEATURE_SPACESHIP
+#if CENTURION_HAS_FEATURE_SPACESHIP
 
   [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
       -> bool = default;
@@ -113064,7 +113911,7 @@ template <>
 /// \name Area comparison operators
 /// \{
 
-#ifndef CENTURION_HAS_FEATURE_SPACESHIP
+#if !CENTURION_HAS_FEATURE_SPACESHIP
 
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
@@ -113121,7 +113968,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
   return "area{width: " + std::to_string(area.width) +
@@ -113175,7 +114022,7 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -113545,7 +114392,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -113555,7 +114402,7 @@ template <typename T>
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
@@ -114545,7 +115392,7 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
                      rect.x(),
                      rect.y(),
@@ -114594,8 +115441,8 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -114714,7 +115561,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string
+[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -114952,7 +115799,7 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -115018,8 +115865,8 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 #include <SDL.h>
 
-#include <ostream>  // ostream
-#include <string>   // string
+#include <ostream>      // ostream
+#include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
 
@@ -115071,7 +115918,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string
+[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -115204,7 +116051,7 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -115435,7 +116282,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -115452,24 +116301,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -115488,7 +116353,7 @@ namespace cen::detail {
 [[nodiscard]] constexpr auto lerp(const float a, const float b, const float bias) noexcept
     -> float
 {
-#ifdef CENTURION_HAS_FEATURE_LERP
+#if CENTURION_HAS_FEATURE_LERP
   return std::lerp(a, b, bias);
 #else
   return (a * (1.0f - bias)) + (b * bias);
@@ -116289,7 +117154,7 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
                      +color.red(),
                      +color.green(),
@@ -116505,7 +117370,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -116807,7 +117672,7 @@ class basic_pixel_format_info final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_pixel_format_info<T>& info) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("pixel_format_info{{data: {}, name: {}}}",
                      detail::address_of(info.get()),
                      info.name());
@@ -117717,7 +118582,7 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("surface{{data: {}, width: {}, height: {}}}",
                      detail::address_of(surface.get()),
                      surface.width(),
@@ -119045,7 +119910,7 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("window{{data: {}, width: {}, height: {}}}",
                      detail::address_of(window.get()),
                      window.width(),
@@ -119215,7 +120080,9 @@ template <typename T>
 
 // Do we have general C++20 support?
 #if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
 #endif  // __cplusplus >= 202002L
 
 // C++20 nodiscard constructors
@@ -119232,24 +120099,40 @@ template <typename T>
 #endif  // __has_include(<version>)
 
 #ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
 #endif  // __cpp_lib_format
 
 #ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
 #endif  // __cpp_lib_concepts
 
 #ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
 #endif  // __cpp_lib_memory_resource
 
 #ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
 #endif  // __cpp_lib_interpolate
 
 #ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
 #endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
 #endif  // __has_include
 
@@ -119557,7 +120440,7 @@ class vk_library final
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
 
 #include <format>  // format
 
@@ -120880,7 +121763,7 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
-#ifdef CENTURION_HAS_FEATURE_FORMAT
+#if CENTURION_HAS_FEATURE_FORMAT
   return std::format("window{{data: {}, width: {}, height: {}}}",
                      detail::address_of(window.get()),
                      window.width(),

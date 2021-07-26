@@ -1,12 +1,18 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <string>   // string
 #include <utility>  // forward
 
+
+#include "is_stateless_callable.hpp"
 #include "log_category.hpp"
 #include "log_priority.hpp"
 #include "not_null.hpp"
@@ -365,6 +371,67 @@ inline void set_priority(const log_category category,
 {
   return SDL_MAX_LOG_MESSAGE;
 }
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ *
+ * \since 6.2.0
+ */
+template <is_stateless_callable<log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, nullptr);
+}
+
+/**
+ * \brief Sets the logging output function that will be used.
+ *
+ * \tparam UserData the type of the user data.
+ * \tparam Callable the type of the function object.
+ *
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ * \param data a pointer to the user data, can safely be null. However, see the other
+ * overload of this function if you do not need the user data.
+ *
+ * \since 6.2.0
+ */
+template <typename UserData,
+          is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable, UserData* data) noexcept
+{
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<UserData*>(erased),
+        static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, data);
+}
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 /// \} End of group core
 

@@ -30,6 +30,21 @@ TEST(KeyModifier, Values)
   ASSERT_EQ(cen::to_underlying(cen::key_mod::reserved), KMOD_RESERVED);
 }
 
+TEST(KeyModifier, SetModifiers)
+{
+  const auto previous = cen::get_modifiers();
+
+  cen::set_modifiers(cen::key_mod::left_shift | cen::key_mod::right_alt);
+  ASSERT_EQ(cen::key_mod::left_shift | cen::key_mod::right_alt, cen::get_modifiers());
+
+  cen::set_modifiers(previous);
+}
+
+TEST(KeyModifier, GetModifiers)
+{
+  ASSERT_EQ(SDL_GetModState(), cen::to_underlying(cen::get_modifiers()));
+}
+
 TEST(KeyModifier, BitwiseNot)
 {
   ASSERT_EQ(cen::u16(~cen::u16{KMOD_SHIFT}), cen::to_underlying(~cen::key_mod::shift));

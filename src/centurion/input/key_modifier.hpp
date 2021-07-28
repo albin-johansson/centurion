@@ -212,6 +212,65 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 /// \} End of group input
 
+/// \cond FALSE
+
+namespace detail {
+
+[[nodiscard]] inline auto is_active(const key_mod modifiers,
+                                    const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+  else
+  {
+    return currentMask & to_underlying(modifiers);
+  }
+}
+
+[[nodiscard]] inline auto is_only_active(const key_mod modifiers,
+                                         const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+  const auto hits = currentMask & mask;
+
+  if (hits != mask)
+  {
+    return false;  // The specified modifiers were a combo that wasn't fully active
+  }
+  else
+  {
+    const auto others = currentMask & ~hits;
+    return hits && !others;
+  }
+}
+
+[[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
+                                                const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+
+  const auto hits = currentMask & mask;
+  const auto others = currentMask & ~hits;
+
+  return hits && !others;
+}
+
+}  // namespace detail
+
+/// \endcond
+
 }  // namespace cen
 
 #endif  // CENTURION_KEY_MODIFIER_HEADER

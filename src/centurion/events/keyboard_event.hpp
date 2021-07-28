@@ -177,14 +177,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-    else
-    {
-      return m_event.keysym.mod & to_underlying(modifiers);
-    }
+    return detail::is_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -205,23 +198,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-    const auto hits = m_event.keysym.mod & mask;
-
-    if (hits != mask)
-    {
-      return false;  // The specified modifiers were a combo that wasn't fully active
-    }
-    else
-    {
-      const auto others = m_event.keysym.mod & ~hits;
-      return hits && !others;
-    }
+    return detail::is_only_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -245,17 +222,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-
-    const auto hits = m_event.keysym.mod & mask;
-    const auto others = m_event.keysym.mod & ~hits;
-
-    return hits && !others;
+    return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
   }
 
   /**

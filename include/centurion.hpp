@@ -24397,6 +24397,34 @@ enum class key_modifier : u16
  */
 using key_mod = key_modifier;
 
+/**
+ * \brief Sets the current key modifier flags.
+ *
+ * \param mods the modifier flags that will be used.
+ *
+ * \see `get_modifiers()`
+ *
+ * \since 6.2.0
+ */
+inline void set_modifiers(const key_mod mods) noexcept
+{
+  SDL_SetModState(static_cast<SDL_Keymod>(mods));
+}
+
+/**
+ * \brief Returns the current key modifier state.
+ *
+ * \return the current key modifier flags.
+ *
+ * \see `set_modifiers()`
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto get_modifiers() noexcept -> key_mod
+{
+  return static_cast<key_mod>(SDL_GetModState());
+}
+
 /// \name Key modifier bitwise operators
 /// \{
 
@@ -24541,6 +24569,65 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 /// \} End of streaming
 
 /// \} End of group input
+
+/// \cond FALSE
+
+namespace detail {
+
+[[nodiscard]] inline auto is_active(const key_mod modifiers,
+                                    const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+  else
+  {
+    return currentMask & to_underlying(modifiers);
+  }
+}
+
+[[nodiscard]] inline auto is_only_active(const key_mod modifiers,
+                                         const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+  const auto hits = currentMask & mask;
+
+  if (hits != mask)
+  {
+    return false;  // The specified modifiers were a combo that wasn't fully active
+  }
+  else
+  {
+    const auto others = currentMask & ~hits;
+    return hits && !others;
+  }
+}
+
+[[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
+                                                const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+
+  const auto hits = currentMask & mask;
+  const auto others = currentMask & ~hits;
+
+  return hits && !others;
+}
+
+}  // namespace detail
+
+/// \endcond
 
 }  // namespace cen
 
@@ -25127,14 +25214,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-    else
-    {
-      return m_event.keysym.mod & to_underlying(modifiers);
-    }
+    return detail::is_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -25155,23 +25235,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-    const auto hits = m_event.keysym.mod & mask;
-
-    if (hits != mask)
-    {
-      return false;  // The specified modifiers were a combo that wasn't fully active
-    }
-    else
-    {
-      const auto others = m_event.keysym.mod & ~hits;
-      return hits && !others;
-    }
+    return detail::is_only_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -25195,17 +25259,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-
-    const auto hits = m_event.keysym.mod & mask;
-    const auto others = m_event.keysym.mod & ~hits;
-
-    return hits && !others;
+    return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -30593,14 +30647,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-    else
-    {
-      return m_event.keysym.mod & to_underlying(modifiers);
-    }
+    return detail::is_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -30621,23 +30668,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-    const auto hits = m_event.keysym.mod & mask;
-
-    if (hits != mask)
-    {
-      return false;  // The specified modifiers were a combo that wasn't fully active
-    }
-    else
-    {
-      const auto others = m_event.keysym.mod & ~hits;
-      return hits && !others;
-    }
+    return detail::is_only_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -30661,17 +30692,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-
-    const auto hits = m_event.keysym.mod & mask;
-    const auto others = m_event.keysym.mod & ~hits;
-
-    return hits && !others;
+    return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -56687,6 +56708,34 @@ enum class key_modifier : u16
  */
 using key_mod = key_modifier;
 
+/**
+ * \brief Sets the current key modifier flags.
+ *
+ * \param mods the modifier flags that will be used.
+ *
+ * \see `get_modifiers()`
+ *
+ * \since 6.2.0
+ */
+inline void set_modifiers(const key_mod mods) noexcept
+{
+  SDL_SetModState(static_cast<SDL_Keymod>(mods));
+}
+
+/**
+ * \brief Returns the current key modifier state.
+ *
+ * \return the current key modifier flags.
+ *
+ * \see `set_modifiers()`
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto get_modifiers() noexcept -> key_mod
+{
+  return static_cast<key_mod>(SDL_GetModState());
+}
+
 /// \name Key modifier bitwise operators
 /// \{
 
@@ -56831,6 +56880,65 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 /// \} End of streaming
 
 /// \} End of group input
+
+/// \cond FALSE
+
+namespace detail {
+
+[[nodiscard]] inline auto is_active(const key_mod modifiers,
+                                    const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+  else
+  {
+    return currentMask & to_underlying(modifiers);
+  }
+}
+
+[[nodiscard]] inline auto is_only_active(const key_mod modifiers,
+                                         const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+  const auto hits = currentMask & mask;
+
+  if (hits != mask)
+  {
+    return false;  // The specified modifiers were a combo that wasn't fully active
+  }
+  else
+  {
+    const auto others = currentMask & ~hits;
+    return hits && !others;
+  }
+}
+
+[[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
+                                                const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+
+  const auto hits = currentMask & mask;
+  const auto others = currentMask & ~hits;
+
+  return hits && !others;
+}
+
+}  // namespace detail
+
+/// \endcond
 
 }  // namespace cen
 
@@ -57483,6 +57591,34 @@ enum class key_modifier : u16
  */
 using key_mod = key_modifier;
 
+/**
+ * \brief Sets the current key modifier flags.
+ *
+ * \param mods the modifier flags that will be used.
+ *
+ * \see `get_modifiers()`
+ *
+ * \since 6.2.0
+ */
+inline void set_modifiers(const key_mod mods) noexcept
+{
+  SDL_SetModState(static_cast<SDL_Keymod>(mods));
+}
+
+/**
+ * \brief Returns the current key modifier state.
+ *
+ * \return the current key modifier flags.
+ *
+ * \see `set_modifiers()`
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto get_modifiers() noexcept -> key_mod
+{
+  return static_cast<key_mod>(SDL_GetModState());
+}
+
 /// \name Key modifier bitwise operators
 /// \{
 
@@ -57627,6 +57763,65 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 /// \} End of streaming
 
 /// \} End of group input
+
+/// \cond FALSE
+
+namespace detail {
+
+[[nodiscard]] inline auto is_active(const key_mod modifiers,
+                                    const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+  else
+  {
+    return currentMask & to_underlying(modifiers);
+  }
+}
+
+[[nodiscard]] inline auto is_only_active(const key_mod modifiers,
+                                         const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+  const auto hits = currentMask & mask;
+
+  if (hits != mask)
+  {
+    return false;  // The specified modifiers were a combo that wasn't fully active
+  }
+  else
+  {
+    const auto others = currentMask & ~hits;
+    return hits && !others;
+  }
+}
+
+[[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
+                                                const u16 currentMask) noexcept -> bool
+{
+  if (modifiers == key_mod::none)
+  {
+    return !currentMask;
+  }
+
+  const auto mask = to_underlying(modifiers);
+
+  const auto hits = currentMask & mask;
+  const auto others = currentMask & ~hits;
+
+  return hits && !others;
+}
+
+}  // namespace detail
+
+/// \endcond
 
 }  // namespace cen
 
@@ -58247,11 +58442,62 @@ class keyboard final
    *
    * \return `true` if any of the modifiers are active; `false` otherwise.
    *
+   * \see `is_only_active()`
+   * \see `is_only_any_of_active()`
+   *
    * \since 4.0.0
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
+    return detail::is_active(modifiers, SDL_GetModState());
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_mod)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   * \see `is_only_any_of_active()`
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
+  {
+    return detail::is_only_active(modifiers, SDL_GetModState());
+  }
+
+  /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   * \see `is_only_active()`
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept
+      -> bool
+  {
+    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
   }
 
   /**

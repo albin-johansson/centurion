@@ -76,7 +76,7 @@ TEST(Keyboard, IsActive)
   cen::keyboard keyboard;
   ASSERT_FALSE(keyboard.is_active(cen::key_modifier::caps));
 
-  SDL_SetModState(SDL_Keymod::KMOD_CAPS);
+  cen::set_modifiers(cen::key_mod::caps);
   ASSERT_TRUE(keyboard.is_active(cen::key_modifier::caps));
 }
 

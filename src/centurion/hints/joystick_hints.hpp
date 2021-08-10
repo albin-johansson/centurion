@@ -97,6 +97,18 @@ struct use_raw_input final : detail::bool_hint<use_raw_input>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+struct rawinput_correlate_xinput final : detail::bool_hint<rawinput_correlate_xinput>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT;
+  }
+};
+
+#else
+
 struct hidapi_correlate_xinput final : detail::bool_hint<hidapi_correlate_xinput>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> str
@@ -104,6 +116,8 @@ struct hidapi_correlate_xinput final : detail::bool_hint<hidapi_correlate_xinput
     return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2,0,16)
 
 struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
 {

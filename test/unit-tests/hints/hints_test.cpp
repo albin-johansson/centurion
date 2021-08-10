@@ -85,7 +85,13 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::joystick::use_hidapi_ps5,
                                      cen::hint::joystick::use_raw_input,
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+                                     cen::hint::joystick::rawinput_correlate_xinput,
+#else
                                      cen::hint::joystick::hidapi_correlate_xinput,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
                                      cen::hint::joystick::linux_use_deadzones,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

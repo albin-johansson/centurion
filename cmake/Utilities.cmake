@@ -54,6 +54,7 @@ function(cen_set_compiler_options target)
         /EHsc
         /MP
         /W3
+        /Zc:preprocessor # Enable conforming preprocessor
         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
         )
 

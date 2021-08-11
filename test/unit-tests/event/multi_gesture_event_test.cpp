@@ -59,12 +59,14 @@ TEST(MultiGestureEvent, SetCenterY)
   ASSERT_EQ(centerY, event.center_y());
 }
 
-TEST(MultiGestureEvent, SetFingerCount)
+TEST(MultiGestureEvent, SetFingers)
 {
   cen::multi_gesture_event event;
 
-  event.set_finger_count(3);
-  ASSERT_EQ(3, event.finger_count());
+  constexpr auto fingers = 3;
+  event.set_fingers(fingers);
+
+  ASSERT_EQ(fingers, event.fingers());
 }
 
 TEST(MultiGestureEvent, TouchId)
@@ -112,13 +114,13 @@ TEST(MultiGestureEvent, CenterY)
   ASSERT_EQ(sdl.y, event.center_y());
 }
 
-TEST(MultiGestureEvent, FingerCount)
+TEST(MultiGestureEvent, Fingers)
 {
   SDL_MultiGestureEvent sdl;
   sdl.numFingers = 2;
 
   const cen::multi_gesture_event event{sdl};
-  ASSERT_EQ(sdl.numFingers, event.finger_count());
+  ASSERT_EQ(sdl.numFingers, event.fingers());
 }
 
 TEST(MultiGestureEvent, AsSDLEvent)

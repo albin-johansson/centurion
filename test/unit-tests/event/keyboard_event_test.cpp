@@ -35,15 +35,15 @@ TEST(KeyboardEvent, SetModifier)
   constexpr auto caps = cen::key_mod::caps;
 
   event.set_modifier(shift, true);
-  ASSERT_TRUE(event.modifier_active(shift));
+  ASSERT_TRUE(event.is_active(shift));
 
   event.set_modifier(caps, true);
-  ASSERT_TRUE(event.modifier_active(shift));
-  ASSERT_TRUE(event.modifier_active(caps));
+  ASSERT_TRUE(event.is_active(shift));
+  ASSERT_TRUE(event.is_active(caps));
 
   event.set_modifier(shift, false);
-  ASSERT_FALSE(event.modifier_active(shift));
-  ASSERT_TRUE(event.modifier_active(caps));
+  ASSERT_FALSE(event.is_active(shift));
+  ASSERT_TRUE(event.is_active(caps));
 }
 
 TEST(KeyboardEvent, SetRepeated)
@@ -72,14 +72,35 @@ TEST(KeyboardEvent, IsActive)
   SDL_KeyboardEvent sdl{};
   sdl.keysym.scancode = SDL_SCANCODE_Q;
   sdl.keysym.sym = SDLK_d;
+  sdl.keysym.mod = KMOD_LSHIFT | KMOD_RALT;
 
   const cen::keyboard_event event{sdl};
 
   ASSERT_TRUE(event.is_active(cen::keycodes::d));
   ASSERT_TRUE(event.is_active(cen::scancodes::q));
+  ASSERT_TRUE(event.is_active(cen::key_mod::left_shift));
+  ASSERT_TRUE(event.is_active(cen::key_mod::right_alt));
 
   ASSERT_FALSE(event.is_active(cen::keycodes::x));
   ASSERT_FALSE(event.is_active(cen::scancodes::o));
+  ASSERT_FALSE(event.is_active(cen::key_mod::gui));
+}
+
+TEST(KeyboardEvent, IsActiveModifier)
+{
+  SDL_KeyboardEvent sdl{};
+
+  SDL_Keysym keysym{};
+  keysym.mod = KMOD_LALT | KMOD_CAPS;
+
+  sdl.keysym = keysym;
+
+  const cen::keyboard_event event{sdl};
+
+  // Check that multiple key modifiers can be active at the same time
+  ASSERT_TRUE(event.is_active(cen::key_mod::left_alt));
+  ASSERT_TRUE(event.is_active(cen::key_mod::alt));
+  ASSERT_TRUE(event.is_active(cen::key_mod::caps));
 }
 
 TEST(KeyboardEvent, IsOnlyActive)
@@ -143,214 +164,6 @@ TEST(KeyboardEvent, IsOnlyAnyOfActive)
   ASSERT_TRUE(
       event.is_only_any_of_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
   ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::shift | cen::key_mod::gui));
-}
-
-TEST(KeyboardEvent, ModifierActive)
-{
-  SDL_KeyboardEvent sdl{};
-
-  SDL_Keysym keysym{};
-  keysym.mod = KMOD_LALT | KMOD_CAPS;
-
-  sdl.keysym = keysym;
-
-  const cen::keyboard_event event{sdl};
-
-  // Check that multiple key modifiers can be active at the same time
-  ASSERT_TRUE(event.modifier_active(cen::key_mod::left_alt));
-  ASSERT_TRUE(event.modifier_active(cen::key_mod::caps));
-}
-
-TEST(KeyboardEvent, ShiftActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.shift_active());
-  }
-
-  {  // One modifier (Both LSHIFT and RSHIFT)
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_SHIFT;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.shift_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_RSHIFT | KMOD_CAPS | KMOD_LGUI;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.shift_active());
-  }
-}
-
-TEST(KeyboardEvent, CtrlActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.ctrl_active());
-  }
-
-  {  // One modifier (Both LCTRL and RCTRL)
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_CTRL;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.ctrl_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_LCTRL | KMOD_ALT | KMOD_LGUI;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.ctrl_active());
-  }
-}
-
-TEST(KeyboardEvent, AltActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.alt_active());
-  }
-
-  {  // One modifier (Both LALT and RALT)
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_ALT;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.alt_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_RALT | KMOD_RSHIFT | KMOD_CAPS;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.alt_active());
-  }
-}
-
-TEST(KeyboardEvent, GuiActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.gui_active());
-  }
-
-  {  // One modifier (Both LGUI and RGUI)
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_GUI;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.gui_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_LGUI | KMOD_RSHIFT | KMOD_CAPS;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.gui_active());
-  }
-}
-
-TEST(KeyboardEvent, CapsActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.caps_active());
-  }
-
-  {  // One modifier
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_CAPS;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.caps_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_CAPS | KMOD_RSHIFT | KMOD_LCTRL;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.caps_active());
-  }
-}
-
-TEST(KeyboardEvent, NumActive)
-{
-  {  // No modifiers
-    const cen::keyboard_event event;
-    ASSERT_FALSE(event.num_active());
-  }
-
-  {  // One modifier
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_NUM;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.num_active());
-  }
-
-  {  // With other modifiers
-    SDL_KeyboardEvent sdl{};
-
-    SDL_Keysym keysym{};
-    keysym.mod = KMOD_NUM | KMOD_RSHIFT | KMOD_LCTRL;
-
-    sdl.keysym = keysym;
-
-    const cen::keyboard_event event{sdl};
-    ASSERT_TRUE(event.num_active());
-  }
 }
 
 TEST(KeyboardEvent, Repeated)

@@ -91,6 +91,9 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
                                      cen::hint::audio_include_monitors,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
                                      cen::hint::joystick::rawinput_correlate_xinput
 #elif SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::joystick::hidapi_correlate_xinput

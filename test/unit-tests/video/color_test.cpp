@@ -89,24 +89,24 @@ TEST(Color, FromSDLMessageBoxColor)
 
 TEST(Color, FromHSV)
 {
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0.0, 0.0, 0.0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(359.0, 0.0, 0.0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0.0, 100.0, 0.0));
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsv(0.0, 0.0, 100.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(359, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsv(0, 100, 0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsv(0, 0, 100));
 
-  ASSERT_EQ(cen::colors::red, cen::color::from_hsv(0.0, 100.0, 100.0));
-  ASSERT_EQ(cen::colors::lime, cen::color::from_hsv(120.0, 100.0, 100.0));
-  ASSERT_EQ(cen::colors::blue, cen::color::from_hsv(240.0, 100.0, 100.0));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsv(0, 100, 100));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsv(120, 100, 100));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsv(240, 100, 100));
 
   // Random colors
-  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280.0, 75.5, 80));
-  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsv(174.0, 71.4, 87.8));
-  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsv(348.0, 90.9, 86.3));
-  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsv(351.0, 28.6, 100.0));
-  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsv(300.0, 11.6, 84.7));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsv(280, 75.5f, 80));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsv(174, 71.4f, 87.8f));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsv(348, 90.9f, 86.3f));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsv(351, 28.6f, 100));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsv(300, 11.6f, 84.7f));
 
   {  // Maxed out
-    const auto color = cen::color::from_hsv(359.0, 100.0, 100.0);
+    const auto color = cen::color::from_hsv(359, 100, 100);
     ASSERT_EQ(255, color.red());
     ASSERT_EQ(0, color.green());
     ASSERT_EQ(4, color.blue());
@@ -116,24 +116,24 @@ TEST(Color, FromHSV)
 
 TEST(Color, FromHSL)
 {
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0.0, 0.0, 0.0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(359.0, 0.0, 0.0));
-  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0.0, 100.0, 0.0));
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(0.0, 0.0, 100.0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(359, 0, 0));
+  ASSERT_EQ(cen::colors::black, cen::color::from_hsl(0, 100, 0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(0, 0, 100));
 
-  ASSERT_EQ(cen::colors::red, cen::color::from_hsl(0.0, 100.0, 50.0));
-  ASSERT_EQ(cen::colors::lime, cen::color::from_hsl(120.0, 100.0, 50.0));
-  ASSERT_EQ(cen::colors::blue, cen::color::from_hsl(240.0, 100.0, 50.0));
+  ASSERT_EQ(cen::colors::red, cen::color::from_hsl(0, 100, 50));
+  ASSERT_EQ(cen::colors::lime, cen::color::from_hsl(120, 100, 50));
+  ASSERT_EQ(cen::colors::blue, cen::color::from_hsl(240, 100, 50));
 
   // Random colors
-  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280.0, 60.6, 49.8));
-  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsl(174.0, 72.1, 56.5));
-  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsl(348.0, 83.3, 47.1));
-  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsl(351.0, 100.0, 85.7));
-  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsl(300.0, 24.3, 79.8));
+  ASSERT_EQ(cen::colors::dark_orchid, cen::color::from_hsl(280, 60.6f, 49.8f));
+  ASSERT_EQ(cen::colors::turquoise, cen::color::from_hsl(174, 72.1f, 56.5f));
+  ASSERT_EQ(cen::colors::crimson, cen::color::from_hsl(348, 83.3f, 47.1f));
+  ASSERT_EQ(cen::colors::light_pink, cen::color::from_hsl(351, 100, 85.7f));
+  ASSERT_EQ(cen::colors::thistle, cen::color::from_hsl(300, 24.3f, 79.8f));
 
   // Maxed out
-  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359.0, 100.0, 100.0));
+  ASSERT_EQ(cen::colors::white, cen::color::from_hsl(359, 100, 100));
 }
 
 TEST(Color, FromRGB)

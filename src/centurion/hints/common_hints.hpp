@@ -59,6 +59,14 @@ struct audio_include_monitors final : detail::bool_hint<audio_include_monitors>
   }
 };
 
+struct audio_device_stream_role final : detail::string_hint<audio_device_stream_role>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_ROLE;
+  }
+};
+
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 struct scale_quality final : enum_hint<scale_quality>

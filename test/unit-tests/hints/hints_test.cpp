@@ -217,16 +217,6 @@ CENTURION_REGISTER_TYPED_TEST(FloatHintTest, float_hints);
 
 using BasicHintTest = HintTest<void>;
 
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-TEST_F(BasicHintTest, DisplayUsableBounds)
-{
-  using cen::hint::display_usable_bounds;
-  test_string_hint<display_usable_bounds>("10, 20, 30, 40");
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
 TEST_F(BasicHintTest, WindowSharePixelFormat)
 {
   using cen::hint::window_share_pixel_format;
@@ -295,44 +285,6 @@ TEST_F(BasicHintTest, IntResourceIconSmall)
   using cen::hint::windows::int_resource_icon_small;
   test_string_hint<int_resource_icon_small>("bar");
 }
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-TEST_F(BasicHintTest, WindowVisualID)
-{
-  using cen::hint::x11::window_visual_id;
-  test_string_hint<window_visual_id>("foo");
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-TEST_F(BasicHintTest, PreferredLocales)
-{
-  using cen::hint::preferred_locales;
-  test_string_hint<preferred_locales>("en_GB,en_US,se");
-}
-
-TEST_F(BasicHintTest, ThreadPriorityPolicy)
-{
-  using cen::hint::thread_priority_policy;
-  test_string_hint<thread_priority_policy>("current");
-}
-
-TEST_F(BasicHintTest, AudioDeviceAppName)
-{
-  using cen::hint::audio_device_app_name;
-  test_string_hint<audio_device_app_name>("Centurion");
-}
-
-TEST_F(BasicHintTest, AudioDeviceStreamName)
-{
-  using cen::hint::audio_device_stream_name;
-  test_string_hint<audio_device_stream_name>("Audio Stream");
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST_F(BasicHintTest, RenderDriver)
 {
@@ -477,6 +429,60 @@ TEST_F(BasicHintTest, AddHintCallback)
   cen::set_hint<render_driver, cen::hint_priority::override>(
       render_driver::value::opengl);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+TEST_F(BasicHintTest, DisplayUsableBounds)
+{
+  using cen::hint::display_usable_bounds;
+  test_string_hint<display_usable_bounds>("10, 20, 30, 40");
+}
+
+TEST_F(BasicHintTest, WindowVisualID)
+{
+  using cen::hint::x11::window_visual_id;
+  test_string_hint<window_visual_id>("foo");
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+TEST_F(BasicHintTest, PreferredLocales)
+{
+  using cen::hint::preferred_locales;
+  test_string_hint<preferred_locales>("en_GB,en_US,se");
+}
+
+TEST_F(BasicHintTest, ThreadPriorityPolicy)
+{
+  using cen::hint::thread_priority_policy;
+  test_string_hint<thread_priority_policy>("current");
+}
+
+TEST_F(BasicHintTest, AudioDeviceAppName)
+{
+  using cen::hint::audio_device_app_name;
+  test_string_hint<audio_device_app_name>("Centurion");
+}
+
+TEST_F(BasicHintTest, AudioDeviceStreamName)
+{
+  using cen::hint::audio_device_stream_name;
+  test_string_hint<audio_device_stream_name>("Audio Stream");
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(BasicHintTest, AudioDeviceStreamRole)
+{
+  using cen::hint::audio_device_stream_role;
+  test_string_hint<audio_device_stream_role>("Foo");
+}
+
+#endif  //SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 

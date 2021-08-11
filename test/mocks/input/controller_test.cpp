@@ -70,7 +70,12 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerIsSensorEnabled, SDL_GameController*
 FAKE_VALUE_FUNC(int, SDL_GameControllerGetSensorData, SDL_GameController*, SDL_SensorType, float*, int)
 FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
 FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
-}
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+FAKE_VALUE_FUNC(float, SDL_GameControllerGetSensorDataRate, SDL_GameController*, SDL_SensorType)
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+} // extern "C"
 // clang-format on
 
 class ControllerTest : public testing::Test
@@ -124,6 +129,10 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetType)
     RESET_FAKE(SDL_GameControllerTypeForIndex)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+    RESET_FAKE(SDL_GameControllerGetSensorDataRate)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
   /**
@@ -563,3 +572,19 @@ TEST_F(ControllerTest, HasLED)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(ControllerTest, GetSensorDataRate)
+{
+  std::array values{0.0f, 45.3f};
+  SET_RETURN_SEQ(SDL_GameControllerGetSensorDataRate, values.data(), cen::isize(values));
+
+  ASSERT_EQ(0.0f, m_controller.get_sensor_data_rate(cen::sensor_type::gyroscope));
+  ASSERT_EQ(SDL_SENSOR_GYRO, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
+
+  ASSERT_EQ(45.3f, m_controller.get_sensor_data_rate(cen::sensor_type::accelerometer));
+  ASSERT_EQ(SDL_SENSOR_ACCEL, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)

@@ -1005,6 +1005,26 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Returns the data rate of a controller sensor, i.e. the number of supported
+   * events per second.
+   *
+   * \param type the sensor type that will be queried.
+   *
+   * \return the data rate (may be zero if the data rate isn't available).
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] auto get_sensor_data_rate(const sensor_type type) const noexcept -> float
+  {
+    return SDL_GameControllerGetSensorDataRate(m_controller,
+                                               static_cast<SDL_SensorType>(type));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of sensor functions
 
   /// \name LED functions

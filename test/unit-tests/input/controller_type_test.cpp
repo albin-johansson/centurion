@@ -32,13 +32,21 @@ TEST(ControllerType, Values)
   ASSERT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+  ASSERT_EQ(type::amazon_luna, SDL_CONTROLLER_TYPE_AMAZON_LUNA);
+  ASSERT_EQ(type::google_stadia, SDL_CONTROLLER_TYPE_GOOGLE_STADIA);
+
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_AMAZON_LUNA, type::amazon_luna);
+  ASSERT_EQ(SDL_CONTROLLER_TYPE_GOOGLE_STADIA, type::google_stadia);
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   ASSERT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
   ASSERT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
 }
 
 TEST(ControllerType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(8)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(10)), cen::cen_error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::controller_type::unknown));
   ASSERT_EQ("nintendo_switch_pro",
@@ -52,6 +60,11 @@ TEST(ControllerType, ToString)
   ASSERT_EQ("ps5", cen::to_string(cen::controller_type::ps5));
   ASSERT_EQ("virt", cen::to_string(cen::controller_type::virt));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+  ASSERT_EQ("amazon_luna", cen::to_string(cen::controller_type::amazon_luna));
+  ASSERT_EQ("google_stadia", cen::to_string(cen::controller_type::google_stadia));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   std::clog << "Controller type example: " << cen::controller_type::ps4 << '\n';
 }

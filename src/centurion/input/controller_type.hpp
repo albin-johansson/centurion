@@ -26,6 +26,7 @@ namespace cen {
  */
 enum class controller_type
 {
+  // clang-format off
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
@@ -39,8 +40,15 @@ enum class controller_type
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-  ///< Pro controller.
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
+  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
+  // clang-format on
 };
 
 /// \name String conversions
@@ -90,7 +98,17 @@ enum class controller_type
     case controller_type::virt:
       return "virt";
 
-#endif  //  SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    case controller_type::amazon_luna:
+      return "amazon_luna";
+
+    case controller_type::google_stadia:
+      return "google_stadia";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
       throw cen_error{"Did not recognize controller type!"};

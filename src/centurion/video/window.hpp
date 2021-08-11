@@ -505,6 +505,23 @@ class basic_window final
     return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of setters
 
   /// \name Position functions

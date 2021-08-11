@@ -45,6 +45,7 @@ FAKE_VALUE_FUNC(float, SDL_GetWindowBrightness, SDL_Window*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
+FAKE_VOID_FUNC(SDL_SetWindowAlwaysOnTop, SDL_Window*, SDL_bool)
 FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
@@ -96,6 +97,7 @@ class WindowTest : public testing::Test
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
+    RESET_FAKE(SDL_SetWindowAlwaysOnTop)
     RESET_FAKE(SDL_FlashWindow)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
@@ -723,6 +725,15 @@ TEST_F(WindowTest, Title)
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(WindowTest, SetAlwaysOnTop)
+{
+  m_window.set_always_on_top(true);
+  ASSERT_EQ(SDL_TRUE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
+
+  m_window.set_always_on_top(false);
+  ASSERT_EQ(SDL_FALSE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
+}
 
 TEST_F(WindowTest, Flash)
 {

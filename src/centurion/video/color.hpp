@@ -178,6 +178,19 @@ class color final
   }
 
   /**
+   * \copydoc from_hsv()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
+                                                 const double saturation,
+                                                 const double value) -> color
+  {
+    return from_hsv(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(value));
+  }
+
+  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -253,6 +266,19 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
+  }
+
+  /**
+   * \copydoc from_hsl()
+   * \deprecated Since 6.1.0, use the `float` overload instead.
+   */
+  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
+                                                 const double saturation,
+                                                 const double lightness) -> color
+  {
+    return from_hsl(static_cast<float>(hue),
+                    static_cast<float>(saturation),
+                    static_cast<float>(lightness));
   }
 
   /**

@@ -74,6 +74,8 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \param fingers the amount of fingers used to draw the stroke.
    *
+   * \todo Centurion 7.0.0: Rename to set_finger_count.
+   *
    * \since 4.0.0
    */
   void set_fingers(const u32 fingers) noexcept

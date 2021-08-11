@@ -34,9 +34,6 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
                                      cen::hint::vsync,
                                      cen::hint::opengl_es_driver,
                                      cen::hint::allow_screensaver,
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-                                     cen::hint::video_external_context,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                                      cen::hint::disable_high_dpi,
                                      cen::hint::minimize_on_focus_loss,
                                      cen::hint::window_frame_usable_while_cursor_hidden,
@@ -45,26 +42,14 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
                                      cen::hint::return_key_hides_ime,
                                      cen::hint::touch_mouse_events,
                                      cen::hint::tv_remote_as_joystick,
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::treat_time_critical_as_real_time,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::appletv::controller_ui_events,
                                      cen::hint::appletv::remote_allow_rotation,
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::emscripten::asyncify,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::xinput::is_enabled,
                                      cen::hint::xinput::use_old_joystick_mapping,
                                      cen::hint::mouse::focus_clickthrough,
                                      cen::hint::mouse::relative_mode_warp,
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::mouse::relative_scaling,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::d3d::v11_debug,
                                      cen::hint::d3d::thread_safe,
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-                                     cen::hint::controller::use_button_labels,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
                                      cen::hint::winrt::handle_back_button,
                                      cen::hint::windows::no_thread_naming,
                                      cen::hint::windows::enable_message_loop,
@@ -74,47 +59,43 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
                                      cen::hint::mac::fullscreen_spaces,
                                      cen::hint::android::block_on_pause,
                                      cen::hint::android::trap_back_button,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::android::pause_background_audio,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
                                      cen::hint::joystick::allow_background_events,
                                      cen::hint::joystick::use_hidapi,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::joystick::use_hidapi_ps5,
-                                     cen::hint::joystick::use_raw_input,
-
-#if SDL_VERSION_ATLEAST(2, 0, 16)
-                                     cen::hint::joystick::rawinput_correlate_xinput,
-#else
-                                     cen::hint::joystick::hidapi_correlate_xinput,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
-
-                                     cen::hint::joystick::linux_use_deadzones,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
                                      cen::hint::joystick::use_hidapi_ps4,
                                      cen::hint::joystick::use_hidapi_ps4_rumble,
                                      cen::hint::joystick::use_hidapi_steam,
                                      cen::hint::joystick::use_hidapi_switch,
                                      cen::hint::joystick::use_hidapi_xbox,
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-                                     cen::hint::joystick::use_hidapi_game_cube,
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
                                      cen::hint::x11::net_wm_ping,
                                      cen::hint::x11::net_wm_bypass_compositor,
+                                     cen::hint::x11::xinerama,
+                                     cen::hint::x11::xrandr,
+                                     cen::hint::x11::xvidmode,
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
+                                     cen::hint::video_external_context,
+                                     cen::hint::controller::use_button_labels,
+                                     cen::hint::joystick::use_hidapi_game_cube,
                                      cen::hint::x11::force_egl,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-                                     cen::hint::x11::xinerama,
-                                     cen::hint::x11::xrandr,
-                                     cen::hint::x11::xvidmode>;
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+                                     cen::hint::treat_time_critical_as_real_time,
+                                     cen::hint::emscripten::asyncify,
+                                     cen::hint::mouse::relative_scaling,
+                                     cen::hint::android::pause_background_audio,
+                                     cen::hint::joystick::use_hidapi_ps5,
+                                     cen::hint::joystick::use_raw_input,
+                                     cen::hint::joystick::linux_use_deadzones,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+                                     cen::hint::audio_include_monitors,
+                                     cen::hint::joystick::rawinput_correlate_xinput
+#else
+                                     cen::hint::joystick::hidapi_correlate_xinput
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+                                     >;
 
 using integer_hints =
     testing::Types<cen::hint::event_logging,

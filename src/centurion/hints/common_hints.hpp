@@ -49,6 +49,18 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+struct audio_include_monitors final : detail::bool_hint<audio_include_monitors>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_INCLUDE_MONITORS;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
 struct scale_quality final : enum_hint<scale_quality>
 {
   static inline constexpr detail::string_map<value, 3> map{

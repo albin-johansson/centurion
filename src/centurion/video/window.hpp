@@ -494,17 +494,15 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)

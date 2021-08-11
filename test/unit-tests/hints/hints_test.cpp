@@ -95,7 +95,7 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
 #if SDL_VERSION_ATLEAST(2, 0, 16)
                                      cen::hint::joystick::rawinput_correlate_xinput,
 #elif SDL_VERSION_ATLEAST(2, 0, 14)
-                                     cen::hint::joystick::hidapi_correlate_xinput
+                                     cen::hint::joystick::hidapi_correlate_xinput,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
                                      // Use "normal" hint here to avoid issues with commas

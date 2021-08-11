@@ -29,7 +29,7 @@ struct render_driver final : enum_hint<render_driver>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_DRIVER;
   }
@@ -43,7 +43,7 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
       std::make_pair(value::medium, "medium"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
@@ -76,7 +76,7 @@ struct scale_quality final : enum_hint<scale_quality>
       std::make_pair(value::linear, "linear"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
@@ -94,7 +94,7 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
@@ -106,7 +106,7 @@ struct audio_category final : enum_hint<audio_category>
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_CATEGORY;
   }
@@ -120,7 +120,7 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
       std::make_pair(value::ignore_zero, "ignorezero"),
       std::make_pair(value::maximum, "maximum")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
@@ -134,7 +134,7 @@ struct wave_truncation final : enum_hint<wave_truncation>
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::very_strict, "verystrict")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_TRUNCATION;
   }
@@ -148,7 +148,7 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
       std::make_pair(value::ignore, "ignore"),
       std::make_pair(value::truncate, "truncate")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
@@ -160,7 +160,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }

@@ -81,7 +81,7 @@ enum class window_event_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
   switch (id)
   {

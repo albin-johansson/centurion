@@ -51,7 +51,8 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joy_hat_position position) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joy_hat_position position)
+    -> std::string_view
 {
   switch (position)
   {

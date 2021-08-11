@@ -83,7 +83,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {

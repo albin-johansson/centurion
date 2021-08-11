@@ -47,7 +47,7 @@ enum class message_box_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
   switch (type)
   {

@@ -68,7 +68,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {

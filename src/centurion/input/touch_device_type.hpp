@@ -97,7 +97,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
+[[nodiscard]] constexpr auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -143,7 +143,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {

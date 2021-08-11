@@ -49,7 +49,7 @@ enum class flash_op
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const flash_op op) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
   switch (op)
   {

@@ -68,7 +68,7 @@ enum class system_cursor
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
   switch (cursor)
   {

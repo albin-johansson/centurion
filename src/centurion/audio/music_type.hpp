@@ -54,7 +54,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {

@@ -51,7 +51,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {

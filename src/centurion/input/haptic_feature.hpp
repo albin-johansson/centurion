@@ -58,7 +58,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {

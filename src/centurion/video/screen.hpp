@@ -67,7 +67,7 @@ enum class screen_orientation : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const screen_orientation orientation)
+[[nodiscard]] constexpr auto to_string(const screen_orientation orientation)
     -> std::string_view
 {
   switch (orientation)

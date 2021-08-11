@@ -48,7 +48,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {

@@ -48,7 +48,7 @@ enum class file_type : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
   switch (type)
   {

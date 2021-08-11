@@ -50,7 +50,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {

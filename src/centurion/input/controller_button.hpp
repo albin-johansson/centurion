@@ -75,7 +75,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
   switch (button)
   {

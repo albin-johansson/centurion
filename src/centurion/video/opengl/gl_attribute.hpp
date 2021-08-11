@@ -75,7 +75,7 @@ enum class gl_attribute
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
   switch (attr)
   {

@@ -45,7 +45,8 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
+    -> std::string_view
 {
   switch (type)
   {

@@ -1325,7 +1325,7 @@ class basic_controller final
 }
 
 /// \see to_string(controller::mapping_result)
-[[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
+[[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
   switch (result)

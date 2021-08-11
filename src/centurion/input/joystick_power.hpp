@@ -48,7 +48,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {

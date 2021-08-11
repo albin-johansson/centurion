@@ -48,7 +48,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {

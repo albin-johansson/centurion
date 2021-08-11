@@ -107,7 +107,7 @@ enum class event_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const event_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
   switch (type)
   {

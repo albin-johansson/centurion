@@ -51,7 +51,7 @@ enum class button_order : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_order order) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
   switch (order)
   {

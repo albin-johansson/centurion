@@ -47,7 +47,7 @@ enum class mouse_button : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
 {
   switch (button)
   {

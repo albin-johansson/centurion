@@ -48,7 +48,7 @@ enum class power_state
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const power_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
   switch (state)
   {

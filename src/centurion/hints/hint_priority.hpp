@@ -47,7 +47,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
   switch (priority)
   {

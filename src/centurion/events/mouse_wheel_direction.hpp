@@ -46,7 +46,8 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
+    -> std::string_view
 {
   switch (dir)
   {

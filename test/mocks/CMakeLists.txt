@@ -32,6 +32,7 @@ set(SOURCE_FILES
     input/touch_test.cpp
 
     system/battery_test.cpp
+    system/open_url_test.cpp
     system/platform_test.cpp
     system/shared_object_test.cpp
 
@@ -52,7 +53,8 @@ set(SOURCE_FILES
     video/renderer_test.cpp
     video/surface_test.cpp
     video/window_test.cpp
-    video/window_utils_test.cpp)
+    video/window_utils_test.cpp
+    )
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   list(APPEND SOURCE_FILES

@@ -70,7 +70,6 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
                                      cen::hint::x11::net_wm_bypass_compositor,
                                      cen::hint::x11::xinerama,
                                      cen::hint::x11::xrandr,
-                                     cen::hint::x11::xvidmode,
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
                                      cen::hint::video_external_context,
@@ -94,11 +93,13 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-                                     cen::hint::joystick::rawinput_correlate_xinput
+                                     cen::hint::joystick::rawinput_correlate_xinput,
 #elif SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::joystick::hidapi_correlate_xinput
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-                                     >;
+
+                                     // Use "normal" hint here to avoid issues with commas
+                                     cen::hint::x11::xvidmode>;
 
 using integer_hints =
     testing::Types<cen::hint::event_logging,

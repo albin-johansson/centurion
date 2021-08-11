@@ -272,6 +272,26 @@ class basic_joystick final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of joystick specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the joystick
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \name Virtual joystick API
   /// \{
 

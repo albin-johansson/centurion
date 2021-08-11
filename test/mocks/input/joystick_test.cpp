@@ -63,7 +63,12 @@ FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
 FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
 FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
 FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
-}
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+}  // extern "C"
 // clang-format on
 
 using namespace cen::literals;
@@ -124,6 +129,10 @@ class JoystickTest : public testing::Test
     RESET_FAKE(SDL_JoystickGetSerial)
     RESET_FAKE(SDL_JoystickEventState)
     RESET_FAKE(SDL_JoystickGetGUIDFromString)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+    RESET_FAKE(SDL_JoystickSendEffect)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
   cen::joystick_handle m_joystick{nullptr};
@@ -485,3 +494,21 @@ TEST_F(JoystickTest, Serial)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(JoystickTest, SendEffect)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_JoystickSendEffect, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_joystick.send_effect(nullptr, 24));
+  ASSERT_EQ(1, SDL_JoystickSendEffect_fake.call_count);
+  ASSERT_EQ(24, SDL_JoystickSendEffect_fake.arg2_val);
+
+  ASSERT_TRUE(m_joystick.send_effect(nullptr, 42));
+  ASSERT_EQ(2, SDL_JoystickSendEffect_fake.call_count);
+  ASSERT_EQ(42, SDL_JoystickSendEffect_fake.arg2_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)

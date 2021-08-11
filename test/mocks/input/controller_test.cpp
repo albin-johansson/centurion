@@ -73,6 +73,7 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 FAKE_VALUE_FUNC(float, SDL_GameControllerGetSensorDataRate, SDL_GameController*, SDL_SensorType)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
 #endif // SDL_VERSION_ATLEAST(2, 0, 16)
 
 } // extern "C"
@@ -132,6 +133,7 @@ class ControllerTest : public testing::Test
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
     RESET_FAKE(SDL_GameControllerGetSensorDataRate)
+    RESET_FAKE(SDL_GameControllerSendEffect)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
@@ -585,6 +587,20 @@ TEST_F(ControllerTest, GetSensorDataRate)
 
   ASSERT_EQ(45.3f, m_controller.get_sensor_data_rate(cen::sensor_type::accelerometer));
   ASSERT_EQ(SDL_SENSOR_ACCEL, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
+}
+
+TEST_F(ControllerTest, SendEffect)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSendEffect, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_controller.send_effect(nullptr, 12));
+  ASSERT_EQ(1, SDL_GameControllerSendEffect_fake.call_count);
+  ASSERT_EQ(12, SDL_GameControllerSendEffect_fake.arg2_val);
+
+  ASSERT_TRUE(m_controller.send_effect(nullptr, 27));
+  ASSERT_EQ(2, SDL_GameControllerSendEffect_fake.call_count);
+  ASSERT_EQ(27, SDL_GameControllerSendEffect_fake.arg2_val);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)

@@ -1112,7 +1112,7 @@ enum class fade_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const fade_status status) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
 {
   switch (status)
   {
@@ -1756,7 +1756,7 @@ enum class fade_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const fade_status status) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
 {
   switch (status)
   {
@@ -1914,7 +1914,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {
@@ -2675,7 +2675,7 @@ enum class music_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const music_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
   switch (type)
   {
@@ -5676,7 +5676,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -5861,7 +5861,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -6577,7 +6577,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -7304,7 +7304,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -10987,7 +10987,7 @@ enum class event_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const event_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
   switch (type)
   {
@@ -15869,7 +15869,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -15968,7 +15968,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -16134,7 +16134,8 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type)
+    -> std::string_view
 {
   switch (type)
   {
@@ -16319,7 +16320,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
   switch (button)
   {
@@ -16519,6 +16520,7 @@ namespace cen {
  */
 enum class controller_type
 {
+  // clang-format off
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
@@ -16532,8 +16534,15 @@ enum class controller_type
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-  ///< Pro controller.
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
+  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
+  // clang-format on
 };
 
 /// \name String conversions
@@ -16553,7 +16562,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -16583,7 +16592,17 @@ enum class controller_type
     case controller_type::virt:
       return "virt";
 
-#endif  //  SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    case controller_type::amazon_luna:
+      return "amazon_luna";
+
+    case controller_type::google_stadia:
+      return "google_stadia";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
       throw cen_error{"Did not recognize controller type!"};
@@ -16812,7 +16831,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -16930,7 +16949,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -17114,7 +17133,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -17488,6 +17507,26 @@ class basic_joystick final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of joystick specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the joystick
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Virtual joystick API
   /// \{
@@ -18459,7 +18498,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -19108,7 +19147,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
+[[nodiscard]] constexpr auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -19154,7 +19193,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -19611,6 +19650,26 @@ class basic_controller final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of controller specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the controller
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_GameControllerSendEffect(m_controller, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Button and axis functions
   /// \{
@@ -20307,6 +20366,26 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Returns the data rate of a controller sensor, i.e. the number of supported
+   * events per second.
+   *
+   * \param type the sensor type that will be queried.
+   *
+   * \return the data rate (may be zero if the data rate isn't available).
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] auto get_sensor_data_rate(const sensor_type type) const noexcept -> float
+  {
+    return SDL_GameControllerGetSensorDataRate(m_controller,
+                                               static_cast<SDL_SensorType>(type));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of sensor functions
 
   /// \name LED functions
@@ -20587,7 +20666,7 @@ class basic_controller final
 }
 
 /// \see to_string(controller::mapping_result)
-[[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
+[[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
   switch (result)
@@ -21176,6 +21255,8 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    * \brief Sets the amount of fingers used to draw the stroke.
    *
    * \param fingers the amount of fingers used to draw the stroke.
+   *
+   * \todo Centurion 7.0.0: Rename to set_finger_count.
    *
    * \since 4.0.0
    */
@@ -22338,6 +22419,8 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \param fingers the amount of fingers used to draw the stroke.
    *
+   * \todo Centurion 7.0.0: Rename to set_finger_count.
+   *
    * \since 4.0.0
    */
   void set_fingers(const u32 fingers) noexcept
@@ -23056,7 +23139,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -23422,7 +23505,8 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joy_hat_position position) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joy_hat_position position)
+    -> std::string_view
 {
   switch (position)
   {
@@ -25559,7 +25643,7 @@ enum class mouse_button : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
 {
   switch (button)
   {
@@ -26193,7 +26277,8 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
+    -> std::string_view
 {
   switch (dir)
   {
@@ -27573,7 +27658,7 @@ enum class window_event_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
   switch (id)
   {
@@ -29534,7 +29619,7 @@ enum class event_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const event_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
   switch (type)
   {
@@ -31511,7 +31596,8 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const mouse_wheel_direction dir) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
+    -> std::string_view
 {
   switch (dir)
   {
@@ -32926,7 +33012,7 @@ enum class window_event_id
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const window_event_id id) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
   switch (id)
   {
@@ -34075,7 +34161,7 @@ enum class file_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -34203,7 +34289,7 @@ enum class file_type : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
   switch (type)
   {
@@ -34308,7 +34394,7 @@ enum class seek_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -35222,7 +35308,7 @@ enum class file_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -35350,7 +35436,7 @@ enum class file_type : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const file_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
   switch (type)
   {
@@ -35535,7 +35621,7 @@ enum class seek_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const seek_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -36947,7 +37033,7 @@ struct render_driver final : enum_hint<render_driver>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_DRIVER;
   }
@@ -36961,11 +37047,31 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
       std::make_pair(value::medium, "medium"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+struct audio_include_monitors final : detail::bool_hint<audio_include_monitors>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_INCLUDE_MONITORS;
+  }
+};
+
+struct audio_device_stream_role final : detail::string_hint<audio_device_stream_role>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_ROLE;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 struct scale_quality final : enum_hint<scale_quality>
 {
@@ -36974,7 +37080,7 @@ struct scale_quality final : enum_hint<scale_quality>
       std::make_pair(value::linear, "linear"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
@@ -36992,7 +37098,7 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
@@ -37004,7 +37110,7 @@ struct audio_category final : enum_hint<audio_category>
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_CATEGORY;
   }
@@ -37018,7 +37124,7 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
       std::make_pair(value::ignore_zero, "ignorezero"),
       std::make_pair(value::maximum, "maximum")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
@@ -37032,7 +37138,7 @@ struct wave_truncation final : enum_hint<wave_truncation>
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::very_strict, "verystrict")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_TRUNCATION;
   }
@@ -37046,7 +37152,7 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
       std::make_pair(value::ignore, "ignore"),
       std::make_pair(value::truncate, "truncate")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
@@ -37058,7 +37164,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
 
-  constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
@@ -38000,7 +38106,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -38841,7 +38947,7 @@ enum class log_category : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_category category) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
   switch (category)
   {
@@ -39026,7 +39132,7 @@ enum class log_priority : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const log_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -39913,7 +40019,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hint_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -40334,6 +40440,18 @@ struct use_raw_input final : detail::bool_hint<use_raw_input>
   }
 };
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+struct rawinput_correlate_xinput final : detail::bool_hint<rawinput_correlate_xinput>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT;
+  }
+};
+
+#else
+
 struct hidapi_correlate_xinput final : detail::bool_hint<hidapi_correlate_xinput>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> str
@@ -40341,6 +40459,8 @@ struct hidapi_correlate_xinput final : detail::bool_hint<hidapi_correlate_xinput
     return SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT;
   }
 };
+
+#endif  // SDL_VERSION_ATLEAST(2,0,16)
 
 struct linux_use_deadzones final : detail::bool_hint<linux_use_deadzones>
 {
@@ -41272,7 +41392,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -45129,7 +45249,7 @@ enum class button_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
   switch (state)
   {
@@ -45228,7 +45348,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -45394,7 +45514,8 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_bind_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type)
+    -> std::string_view
 {
   switch (type)
   {
@@ -45579,7 +45700,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_button button) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
   switch (button)
   {
@@ -45779,6 +45900,7 @@ namespace cen {
  */
 enum class controller_type
 {
+  // clang-format off
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
@@ -45792,8 +45914,15 @@ enum class controller_type
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-  ///< Pro controller.
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
+  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
+  // clang-format on
 };
 
 /// \name String conversions
@@ -45813,7 +45942,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -45843,7 +45972,17 @@ enum class controller_type
     case controller_type::virt:
       return "virt";
 
-#endif  //  SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    case controller_type::amazon_luna:
+      return "amazon_luna";
+
+    case controller_type::google_stadia:
+      return "google_stadia";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
       throw cen_error{"Did not recognize controller type!"};
@@ -46072,7 +46211,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -46190,7 +46329,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -46374,7 +46513,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -46748,6 +46887,26 @@ class basic_joystick final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of joystick specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the joystick
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Virtual joystick API
   /// \{
@@ -47719,7 +47878,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -48368,7 +48527,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
+[[nodiscard]] constexpr auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -48414,7 +48573,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -48871,6 +49030,26 @@ class basic_controller final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of controller specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the controller
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_GameControllerSendEffect(m_controller, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Button and axis functions
   /// \{
@@ -49567,6 +49746,26 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Returns the data rate of a controller sensor, i.e. the number of supported
+   * events per second.
+   *
+   * \param type the sensor type that will be queried.
+   *
+   * \return the data rate (may be zero if the data rate isn't available).
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] auto get_sensor_data_rate(const sensor_type type) const noexcept -> float
+  {
+    return SDL_GameControllerGetSensorDataRate(m_controller,
+                                               static_cast<SDL_SensorType>(type));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of sensor functions
 
   /// \name LED functions
@@ -49847,7 +50046,7 @@ class basic_controller final
 }
 
 /// \see to_string(controller::mapping_result)
-[[nodiscard]] inline auto to_string(const controller_handle::mapping_result result)
+[[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
   switch (result)
@@ -50007,7 +50206,7 @@ enum class controller_axis
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_axis axis) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
   switch (axis)
   {
@@ -50152,6 +50351,7 @@ namespace cen {
  */
 enum class controller_type
 {
+  // clang-format off
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
@@ -50165,8 +50365,15 @@ enum class controller_type
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-  ///< Pro controller.
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
+  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
+  // clang-format on
 };
 
 /// \name String conversions
@@ -50186,7 +50393,7 @@ enum class controller_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const controller_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
   switch (type)
   {
@@ -50216,7 +50423,17 @@ enum class controller_type
     case controller_type::virt:
       return "virt";
 
-#endif  //  SDL_VERSION_ATLEAST(2, 0, 14)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    case controller_type::amazon_luna:
+      return "amazon_luna";
+
+    case controller_type::google_stadia:
+      return "google_stadia";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
       throw cen_error{"Did not recognize controller type!"};
@@ -50739,7 +50956,8 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
+    -> std::string_view
 {
   switch (type)
   {
@@ -51386,7 +51604,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {
@@ -53164,7 +53382,8 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_direction_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
+    -> std::string_view
 {
   switch (type)
   {
@@ -53712,7 +53931,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const haptic_feature feature) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
   switch (feature)
   {
@@ -54301,7 +54520,7 @@ enum class hat_state : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const hat_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
   switch (state)
   {
@@ -54659,6 +54878,26 @@ class basic_joystick final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of joystick specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the joystick
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Virtual joystick API
   /// \{
@@ -55595,7 +55834,7 @@ enum class joystick_power
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_power power) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
   switch (power)
   {
@@ -55779,7 +56018,7 @@ enum class joystick_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const joystick_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
   switch (type)
   {
@@ -61848,7 +62087,7 @@ enum class sensor_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const sensor_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
   switch (type)
   {
@@ -62225,7 +62464,7 @@ enum class device_type
 // Added for consistency with rest of codebase (no classes in nested namespaces)
 using touch_device_type = touch::device_type;
 
-[[nodiscard]] auto to_string(touch_device_type type) -> std::string_view;
+[[nodiscard]] constexpr auto to_string(touch_device_type type) -> std::string_view;
 
 namespace touch {
 
@@ -62271,7 +62510,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const touch_device_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
   switch (type)
   {
@@ -65858,7 +66097,7 @@ enum class power_state
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const power_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
   switch (state)
   {
@@ -67693,23 +67932,79 @@ class locale final
 
 #endif  // CENTURION_LOCALE_HEADER
 
+// #include "centurion/system/open_url.hpp"
+#ifndef CENTURION_OPEN_URL_HEADER
+#define CENTURION_OPEN_URL_HEADER
+
+#include <SDL.h>
+
+#include <cassert>  // assert
+#include <string>   // string
+
+// #include "../core/not_null.hpp"
+
+// #include "../core/result.hpp"
+
+// #include "../core/str.hpp"
+
+
+namespace cen {
+
+/// \addtogroup system
+/// \{
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/**
+ * \brief Attempts to open a URL using a web browser or even a file manager for local
+ * files.
+ *
+ * \note This function will return `success` if there was at least an "attempt" to open
+ * the specified URL, but it doesn't mean that the URL was successfully loaded.
+ *
+ * \remarks This function will differ greatly in its effects depending on the current
+ * platform.
+ *
+ * \param url the URL that should be opened, cannot be null.
+ *
+ * \return `success` if there was an attempt to open the URL; `failure` otherwise.
+ *
+ * \since 5.2.0
+ */
+inline auto open_url(const not_null<str> url) noexcept -> result
+{
+  assert(url);
+  return SDL_OpenURL(url) == 0;
+}
+
+/**
+ * \see open_url()
+ * \since 5.3.0
+ */
+inline auto open_url(const std::string& url) noexcept -> result
+{
+  return open_url(url.c_str());
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \} End of group system
+
+}  // namespace cen
+
+#endif  // CENTURION_OPEN_URL_HEADER
 // #include "centurion/system/platform.hpp"
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
 #include <SDL.h>
 
-#include <cassert>      // assert
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
 
 // #include "../core/exception.hpp"
-
-// #include "../core/not_null.hpp"
-
-// #include "../core/result.hpp"
 
 // #include "../core/str.hpp"
 
@@ -67805,41 +68100,6 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 }
 
 /// \} End of streaming
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-/**
- * \brief Attempts to open a URL using a web browser or even a file manager for local
- * files.
- *
- * \note This function will return `success` if there was at least an "attempt" to open
- * the specified URL, but it doesn't mean that the URL was successfully loaded.
- *
- * \remarks This function will differ greatly in its effects depending on the current
- * platform.
- *
- * \param url the URL that should be opened, cannot be null.
- *
- * \return `success` if there was an attempt to open the URL; `failure` otherwise.
- *
- * \see SDL_OpenURL
- *
- * \since 5.2.0
- */
-inline auto open_url(const not_null<str> url) noexcept -> result
-{
-  assert(url);
-  return SDL_OpenURL(url) == 0;
-}
-
-/// \see open_url()
-/// \since 5.3.0
-inline auto open_url(const std::string& url) noexcept -> result
-{
-  return open_url(url.c_str());
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 /// \name Platform information functions
 /// \{
@@ -68113,7 +68373,7 @@ enum class power_state
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const power_state state) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
   switch (state)
   {
@@ -69329,7 +69589,7 @@ enum class lock_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const lock_status status) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
   switch (status)
   {
@@ -69786,7 +70046,7 @@ enum class lock_status
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const lock_status status) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
   switch (status)
   {
@@ -70630,7 +70890,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -71213,7 +71473,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const thread_priority priority) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
   switch (priority)
   {
@@ -71727,7 +71987,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -72087,7 +72347,7 @@ enum class button_order : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_order order) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
   switch (order)
   {
@@ -79387,7 +79647,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -79665,7 +79925,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -81183,7 +81443,7 @@ enum class system_cursor
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
   switch (cursor)
   {
@@ -81587,6 +81847,109 @@ class basic_cursor final
 }  // namespace cen
 
 #endif  // CENTURION_CURSOR_HEADER
+// #include "centurion/video/flash_op.hpp"
+#ifndef CENTURION_FLASH_OP_HEADER
+#define CENTURION_FLASH_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum flash_op
+ *
+ * \brief Represents different window flash operations.
+ *
+ * \see `basic_window::flash()`
+ * \see `to_string(flash_op)`
+ *
+ * \since 6.2.0
+ */
+enum class flash_op
+{
+  cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
+  briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
+  until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied window flash operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(flash_op::briefly) == "briefly"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
+{
+  switch (op)
+  {
+    case flash_op::cancel:
+      return "cancel";
+
+    case flash_op::briefly:
+      return "briefly";
+
+    case flash_op::until_focused:
+      return "until_focused";
+
+    default:
+      throw cen_error{"Did not recognize window flash operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a window flash operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(flash_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#endif  // CENTURION_FLASH_OP_HEADER
+
 // #include "centurion/video/font.hpp"
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
@@ -82097,7 +82460,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {
@@ -83003,7 +83366,7 @@ enum class font_hint : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const font_hint hint) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
   switch (hint)
   {
@@ -83903,7 +84266,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -84060,7 +84423,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -86011,7 +86374,7 @@ enum class button_order : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const button_order order) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
   switch (order)
   {
@@ -87178,7 +87541,7 @@ enum class message_box_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
   switch (type)
   {
@@ -87315,6 +87678,109 @@ template <typename T>
 // #include "../math/area.hpp"
 
 // #include "../math/rect.hpp"
+
+// #include "flash_op.hpp"
+#ifndef CENTURION_FLASH_OP_HEADER
+#define CENTURION_FLASH_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum flash_op
+ *
+ * \brief Represents different window flash operations.
+ *
+ * \see `basic_window::flash()`
+ * \see `to_string(flash_op)`
+ *
+ * \since 6.2.0
+ */
+enum class flash_op
+{
+  cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
+  briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
+  until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied window flash operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(flash_op::briefly) == "briefly"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
+{
+  switch (op)
+  {
+    case flash_op::cancel:
+      return "cancel";
+
+    case flash_op::briefly:
+      return "briefly";
+
+    case flash_op::until_focused:
+      return "until_focused";
+
+    default:
+      throw cen_error{"Did not recognize window flash operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a window flash operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(flash_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#endif  // CENTURION_FLASH_OP_HEADER
 
 // #include "pixel_format.hpp"
 
@@ -87608,6 +88074,24 @@ class basic_window final
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of mutators
 
   /// \name Setters
@@ -87728,14 +88212,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -87760,18 +88246,47 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of setters
 
@@ -89174,7 +89689,7 @@ class message_box final
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box::default_button button)
+[[nodiscard]] constexpr auto to_string(const message_box::default_button button)
     -> std::string_view
 {
   switch (button)
@@ -89204,7 +89719,7 @@ class message_box final
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box::color_id id) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const message_box::color_id id) -> std::string_view
 {
   switch (id)
   {
@@ -89437,7 +89952,7 @@ enum class message_box_type : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const message_box_type type) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
   switch (type)
   {
@@ -89790,7 +90305,7 @@ enum class gl_attribute
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
   switch (attr)
   {
@@ -94155,6 +94670,109 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 }  // namespace cen
 
 #endif  // CENTURION_RECTANGLE_HEADER
+// #include "flash_op.hpp"
+#ifndef CENTURION_FLASH_OP_HEADER
+#define CENTURION_FLASH_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum flash_op
+ *
+ * \brief Represents different window flash operations.
+ *
+ * \see `basic_window::flash()`
+ * \see `to_string(flash_op)`
+ *
+ * \since 6.2.0
+ */
+enum class flash_op
+{
+  cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
+  briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
+  until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied window flash operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(flash_op::briefly) == "briefly"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
+{
+  switch (op)
+  {
+    case flash_op::cancel:
+      return "cancel";
+
+    case flash_op::briefly:
+      return "briefly";
+
+    case flash_op::until_focused:
+      return "until_focused";
+
+    default:
+      throw cen_error{"Did not recognize window flash operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a window flash operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(flash_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#endif  // CENTURION_FLASH_OP_HEADER
+
 // #include "pixel_format.hpp"
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
@@ -94281,7 +94899,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -94638,7 +95256,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -97631,6 +98249,24 @@ class basic_window final
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of mutators
 
   /// \name Setters
@@ -97751,14 +98387,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -97783,18 +98421,47 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of setters
 
@@ -99976,7 +100643,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -100133,7 +100800,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -100987,7 +101654,7 @@ enum class gl_attribute
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_attribute attr) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
   switch (attr)
   {
@@ -101316,7 +101983,8 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const gl_swap_interval interval) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval)
+    -> std::string_view
 {
   switch (interval)
   {
@@ -102171,7 +102839,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -108530,7 +109198,7 @@ enum class scale_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const scale_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -108706,7 +109374,7 @@ enum class screen_orientation : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const screen_orientation orientation)
+[[nodiscard]] constexpr auto to_string(const screen_orientation orientation)
     -> std::string_view
 {
   switch (orientation)
@@ -110183,7 +110851,7 @@ enum class system_cursor
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const system_cursor cursor) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
   switch (cursor)
   {
@@ -111094,7 +111762,7 @@ enum class texture_access : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const texture_access access) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
   switch (access)
   {
@@ -115681,6 +116349,109 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 }  // namespace cen
 
 #endif  // CENTURION_RECTANGLE_HEADER
+// #include "flash_op.hpp"
+#ifndef CENTURION_FLASH_OP_HEADER
+#define CENTURION_FLASH_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum flash_op
+ *
+ * \brief Represents different window flash operations.
+ *
+ * \see `basic_window::flash()`
+ * \see `to_string(flash_op)`
+ *
+ * \since 6.2.0
+ */
+enum class flash_op
+{
+  cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
+  briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
+  until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied window flash operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(flash_op::briefly) == "briefly"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
+{
+  switch (op)
+  {
+    case flash_op::cancel:
+      return "cancel";
+
+    case flash_op::briefly:
+      return "briefly";
+
+    case flash_op::until_focused:
+      return "until_focused";
+
+    default:
+      throw cen_error{"Did not recognize window flash operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a window flash operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(flash_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+#endif  // CENTURION_FLASH_OP_HEADER
+
 // #include "pixel_format.hpp"
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
@@ -115807,7 +116578,7 @@ enum class pixel_format : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const pixel_format format) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
   switch (format)
   {
@@ -116164,7 +116935,7 @@ enum class blend_mode
  *
  * \since 6.2.0
  */
-[[nodiscard]] inline auto to_string(const blend_mode mode) -> std::string_view
+[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
   switch (mode)
   {
@@ -119157,6 +119928,24 @@ class basic_window final
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of mutators
 
   /// \name Setters
@@ -119277,14 +120066,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -119309,18 +120100,47 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of setters
 
@@ -120718,6 +121538,8 @@ class vk_library final
 
 // #include "../math/rect.hpp"
 
+// #include "flash_op.hpp"
+
 // #include "pixel_format.hpp"
 
 // #include "surface.hpp"
@@ -121010,6 +121832,24 @@ class basic_window final
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of mutators
 
   /// \name Setters
@@ -121130,14 +121970,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -121162,18 +122004,47 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of setters
 

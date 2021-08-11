@@ -31,6 +31,7 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
+#include "flash_op.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
 
@@ -320,6 +321,24 @@ class basic_window final
   {
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of mutators
 

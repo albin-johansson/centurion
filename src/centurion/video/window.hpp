@@ -460,14 +460,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -506,6 +508,20 @@ class basic_window final
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
 
   /**
    * \brief Sets whether or not a window is always on top of other windows.

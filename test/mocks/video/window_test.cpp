@@ -8,6 +8,7 @@
 #include "core_mocks.hpp"
 
 extern "C" {
+
 FAKE_VOID_FUNC(SDL_ShowWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
@@ -35,14 +36,20 @@ FAKE_VALUE_FUNC(SDL_Surface*, SDL_GetWindowSurface, SDL_Window*)
 FAKE_VALUE_FUNC(const char*, SDL_GetWindowTitle, SDL_Window*)
 FAKE_VALUE_FUNC(int, SDL_CaptureMouse, SDL_bool)
 FAKE_VALUE_FUNC(int, SDL_UpdateWindowSurface, SDL_Window*)
-FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
 FAKE_VALUE_FUNC(int, SDL_GetWindowDisplayIndex, SDL_Window*)
 FAKE_VALUE_FUNC(int, SDL_SetWindowFullscreen, SDL_Window*, Uint32)
 FAKE_VALUE_FUNC(int, SDL_SetWindowBrightness, SDL_Window*, float)
 FAKE_VALUE_FUNC(int, SDL_SetWindowOpacity, SDL_Window*, float)
 FAKE_VALUE_FUNC(int, SDL_GetWindowOpacity, SDL_Window*, float*)
 FAKE_VALUE_FUNC(float, SDL_GetWindowBrightness, SDL_Window*)
-}
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+}  // extern "C"
 
 class WindowTest : public testing::Test
 {
@@ -80,13 +87,18 @@ class WindowTest : public testing::Test
     RESET_FAKE(SDL_GetWindowTitle)
     RESET_FAKE(SDL_CaptureMouse)
     RESET_FAKE(SDL_UpdateWindowSurface)
-    RESET_FAKE(SDL_FlashWindow)
     RESET_FAKE(SDL_GetWindowDisplayIndex)
     RESET_FAKE(SDL_SetWindowFullscreen)
     RESET_FAKE(SDL_SetWindowBrightness)
     RESET_FAKE(SDL_SetWindowOpacity)
     RESET_FAKE(SDL_GetWindowOpacity)
     RESET_FAKE(SDL_GetWindowBrightness)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    RESET_FAKE(SDL_FlashWindow)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
   cen::window_handle m_window{nullptr};
@@ -147,22 +159,6 @@ TEST_F(WindowTest, UpdateSurface)
   m_window.update_surface();
   ASSERT_EQ(1, SDL_UpdateWindowSurface_fake.call_count);
 }
-
-#if SDL_VERSION_ATLEAST(2, 0, 16)
-
-TEST_F(WindowTest, Flash)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_FlashWindow, values.data(), cen::isize(values));
-
-  ASSERT_FALSE(m_window.flash());
-  ASSERT_EQ(SDL_FLASH_BRIEFLY, SDL_FlashWindow_fake.arg1_val);
-
-  ASSERT_TRUE(m_window.flash(cen::flash_op::until_focused));
-  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, SDL_FlashWindow_fake.arg1_val);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 TEST_F(WindowTest, SetFullscreen)
 {
@@ -725,3 +721,19 @@ TEST_F(WindowTest, Title)
   const auto title [[maybe_unused]] = m_window.title();
   ASSERT_EQ(1, SDL_GetWindowTitle_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(WindowTest, Flash)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_FlashWindow, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.flash());
+  ASSERT_EQ(SDL_FLASH_BRIEFLY, SDL_FlashWindow_fake.arg1_val);
+
+  ASSERT_TRUE(m_window.flash(cen::flash_op::until_focused));
+  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, SDL_FlashWindow_fake.arg1_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)

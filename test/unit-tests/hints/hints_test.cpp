@@ -92,9 +92,9 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
 #if SDL_VERSION_ATLEAST(2, 0, 16)
                                      cen::hint::audio_include_monitors,
                                      cen::hint::joystick::rawinput_correlate_xinput
-#else
+#elif SDL_VERSION_ATLEAST(2, 0, 14)
                                      cen::hint::joystick::hidapi_correlate_xinput
-#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
                                      >;
 
 using integer_hints =
@@ -482,7 +482,7 @@ TEST_F(BasicHintTest, AudioDeviceStreamRole)
   test_string_hint<audio_device_stream_role>("Foo");
 }
 
-#endif  //SDL_VERSION_ATLEAST(2, 0, 16)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 

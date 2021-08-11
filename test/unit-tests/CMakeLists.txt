@@ -128,6 +128,7 @@ set(SOURCE_FILES
     video/button_order_test.cpp
     video/color_test.cpp
     video/cursor_test.cpp
+    video/flash_op_test.cpp
     video/font_cache_test.cpp
     video/font_hint_test.cpp
     video/font_test.cpp

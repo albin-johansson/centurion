@@ -70,7 +70,13 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerIsSensorEnabled, SDL_GameController*
 FAKE_VALUE_FUNC(int, SDL_GameControllerGetSensorData, SDL_GameController*, SDL_SensorType, float*, int)
 FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
 FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
-}
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+FAKE_VALUE_FUNC(float, SDL_GameControllerGetSensorDataRate, SDL_GameController*, SDL_SensorType)
+FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+} // extern "C"
 // clang-format on
 
 class ControllerTest : public testing::Test
@@ -124,6 +130,11 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetType)
     RESET_FAKE(SDL_GameControllerTypeForIndex)
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+    RESET_FAKE(SDL_GameControllerGetSensorDataRate)
+    RESET_FAKE(SDL_GameControllerSendEffect)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
   /**
@@ -197,7 +208,7 @@ TEST_F(ControllerTest, IsConnected)
 
 TEST_F(ControllerTest, Name)
 {
-  std::array<cen::czstring, 2> values{nullptr, "foobar"};
+  std::array<cen::str, 2> values{nullptr, "foobar"};
   SET_RETURN_SEQ(SDL_GameControllerName, values.data(), cen::isize(values));
 
   ASSERT_EQ(nullptr, m_controller.name());
@@ -408,6 +419,11 @@ TEST_F(ControllerTest, IsPolling)
   ASSERT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
 }
 
+TEST_F(ControllerTest, ToString)
+{
+  std::clog << m_controller << '\n';
+}
+
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
 TEST_F(ControllerTest, SetPlayerIndex)
@@ -558,3 +574,33 @@ TEST_F(ControllerTest, HasLED)
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(ControllerTest, GetSensorDataRate)
+{
+  std::array values{0.0f, 45.3f};
+  SET_RETURN_SEQ(SDL_GameControllerGetSensorDataRate, values.data(), cen::isize(values));
+
+  ASSERT_EQ(0.0f, m_controller.get_sensor_data_rate(cen::sensor_type::gyroscope));
+  ASSERT_EQ(SDL_SENSOR_GYRO, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
+
+  ASSERT_EQ(45.3f, m_controller.get_sensor_data_rate(cen::sensor_type::accelerometer));
+  ASSERT_EQ(SDL_SENSOR_ACCEL, SDL_GameControllerGetSensorDataRate_fake.arg1_val);
+}
+
+TEST_F(ControllerTest, SendEffect)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_GameControllerSendEffect, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_controller.send_effect(nullptr, 12));
+  ASSERT_EQ(1, SDL_GameControllerSendEffect_fake.call_count);
+  ASSERT_EQ(12, SDL_GameControllerSendEffect_fake.arg2_val);
+
+  ASSERT_TRUE(m_controller.send_effect(nullptr, 27));
+  ASSERT_EQ(2, SDL_GameControllerSendEffect_fake.call_count);
+  ASSERT_EQ(27, SDL_GameControllerSendEffect_fake.arg2_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)

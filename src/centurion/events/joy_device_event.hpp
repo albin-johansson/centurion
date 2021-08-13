@@ -72,6 +72,9 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_Event
 {
@@ -79,6 +82,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyDeviceEvent>& event) -> SDL_E
   e.jdevice = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

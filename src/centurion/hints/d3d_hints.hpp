@@ -3,17 +3,17 @@
 
 #include <SDL.h>
 
-#include "../core/czstring.hpp"
+#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
-
-/// \addtogroup configuration
-/// \{
 
 namespace cen::hint::d3d {
 
+/// \addtogroup hints
+/// \{
+
 struct v11_debug final : detail::bool_hint<v11_debug>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
   }
@@ -21,14 +21,14 @@ struct v11_debug final : detail::bool_hint<v11_debug>
 
 struct thread_safe final : detail::bool_hint<thread_safe>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
   }
 };
 
-}  // namespace cen::hint::d3d
+/// \} End of group hints
 
-/// \} End of group configuration
+}  // namespace cen::hint::d3d
 
 #endif  // CENTURION_D3D_HINTS_HEADER

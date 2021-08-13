@@ -3,13 +3,13 @@ BasedOnStyle: Google
 IndentWidth: 2
 ---
 Language: Cpp
-Standard: c++17
+Standard: c++20
 ColumnLimit: 90
 DerivePointerAlignment: false
 PointerAlignment: Left
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowAllArgumentsOnNextLine: false
-AllowShortLambdasOnASingleLine: None
+AllowShortLambdasOnASingleLine: All
 AllowShortFunctionsOnASingleLine: None
 AllowShortBlocksOnASingleLine: Never
 AllowShortEnumsOnASingleLine: false
@@ -34,3 +34,6 @@ BreakConstructorInitializers: BeforeComma
 AllowAllConstructorInitializersOnNextLine: false
 
 BreakInheritanceList: BeforeColon
+
+IndentPPDirectives: None
+IndentRequires: true

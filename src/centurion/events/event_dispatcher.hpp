@@ -322,6 +322,9 @@ class event_dispatcher final
   sink_tuple m_sinks;
 };
 
+/// \name String conversions
+/// \{
+
 template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
     -> std::string
@@ -329,6 +332,11 @@ template <typename... E>
   return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
          ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 template <typename... E>
 inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispatcher)
@@ -338,7 +346,9 @@ inline auto operator<<(std::ostream& stream, const event_dispatcher<E...>& dispa
   return stream;
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group event
 
 }  // namespace cen
 

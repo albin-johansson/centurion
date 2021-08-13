@@ -7,18 +7,12 @@
 
 #include "../core/exception.hpp"
 #include "../core/result.hpp"
+#include "lock_status.hpp"
 
 namespace cen {
 
 /// \addtogroup thread
 /// \{
-
-enum class lock_status
-{
-  success = 0,
-  timed_out = SDL_MUTEX_TIMEDOUT,
-  error = -1
-};
 
 /**
  * \class mutex

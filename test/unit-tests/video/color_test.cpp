@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>     // cout
+#include <iostream>     // clog
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
@@ -138,11 +138,12 @@ TEST(Color, FromHSL)
 
 TEST(Color, FromRGB)
 {
-  ASSERT_FALSE(cen::color::from_rgb("112233"));  // Missing leading '#'
+  ASSERT_FALSE(cen::color::from_rgb("112233"));
 
-  // Invalid length
   ASSERT_FALSE(cen::color::from_rgb("#1122333"));
   ASSERT_FALSE(cen::color::from_rgb("#11223"));
+
+  ASSERT_FALSE(cen::color::from_rgb("#XY0000"));
 
   const auto color = cen::color::from_rgb("#2AEB9C");
   ASSERT_TRUE(color);
@@ -154,11 +155,12 @@ TEST(Color, FromRGB)
 
 TEST(Color, FromRGBA)
 {
-  ASSERT_FALSE(cen::color::from_rgba("11223344"));  // Missing leading '#'
+  ASSERT_FALSE(cen::color::from_rgba("11223344"));
 
-  // Invalid length
   ASSERT_FALSE(cen::color::from_rgba("#112233444"));
   ASSERT_FALSE(cen::color::from_rgba("#112233"));
+
+  ASSERT_FALSE(cen::color::from_rgb("#11X23344"));
 
   const auto color = cen::color::from_rgba("#7BCF39EA");
   ASSERT_TRUE(color);
@@ -170,11 +172,12 @@ TEST(Color, FromRGBA)
 
 TEST(Color, FromARGB)
 {
-  ASSERT_FALSE(cen::color::from_argb("11223344"));  // Missing leading '#'
+  ASSERT_FALSE(cen::color::from_argb("11223344"));
 
-  // Invalid length
   ASSERT_FALSE(cen::color::from_argb("#112233444"));
   ASSERT_FALSE(cen::color::from_argb("#112233"));
+
+  ASSERT_FALSE(cen::color::from_rgb("#112233N4"));
 
   const auto color = cen::color::from_argb("#B281CDA7");
   ASSERT_TRUE(color);
@@ -323,8 +326,8 @@ TEST(Color, WithAlpha)
 TEST(Color, Blend)
 {
   ASSERT_EQ(cen::colors::gray, cen::blend(cen::colors::white, cen::colors::black));
-  ASSERT_EQ(cen::colors::white, cen::blend(cen::colors::white, cen::colors::black, 0));
-  ASSERT_EQ(cen::colors::black, cen::blend(cen::colors::white, cen::colors::black, 1));
+  ASSERT_EQ(cen::colors::white, cen::blend(cen::colors::white, cen::colors::black, 0.0));
+  ASSERT_EQ(cen::colors::black, cen::blend(cen::colors::white, cen::colors::black, 1.0));
 
   // light pink: #FFB6C1, crimson:  #DC143C
   const auto c = cen::blend(cen::colors::light_pink, cen::colors::crimson, 0.4);
@@ -411,7 +414,7 @@ TEST(Color, ToString)
 TEST(Color, StreamOperator)
 {
   constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
-  std::cout << "COUT: " << color << '\n';
+  std::clog << color << '\n';
 }
 
 TEST(Color, Serialization)

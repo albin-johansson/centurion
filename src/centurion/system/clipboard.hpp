@@ -6,22 +6,27 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
-
-/// \addtogroup system
-/// \{
+#include "../core/str.hpp"
 
 /**
  * \namespace cen::clipboard
  *
  * \brief Provides functions related to managing the clipboard.
  *
+ * \ingroup system
+ *
  * \since 5.0.0
  */
 namespace cen::clipboard {
+
+/// \addtogroup system
+/// \{
+
+/// \name Clipboard functions
+/// \{
 
 /**
  * \brief Indicates whether or not there is a clipboard exists and that it contains
@@ -62,7 +67,7 @@ namespace cen::clipboard {
  *
  * \since 5.0.0
  */
-inline auto set_text(const not_null<czstring> text) noexcept -> bool
+inline auto set_text(const not_null<str> text) noexcept -> bool
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
@@ -82,8 +87,10 @@ inline auto set_text(const std::string& text) noexcept -> result
   return set_text(text.c_str());
 }
 
-}  // namespace cen::clipboard
+/// \} End of clipboard functions
 
 /// \} End of group system
+
+}  // namespace cen::clipboard
 
 #endif  // CENTURION_CLIPBOARD_HEADER

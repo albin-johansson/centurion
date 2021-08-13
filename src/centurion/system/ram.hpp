@@ -3,17 +3,22 @@
 
 #include <SDL.h>
 
-/// \addtogroup system
-/// \{
-
 /**
  * \namespace cen::ram
  *
  * \brief Contains functions related to the system memory.
  *
+ * \ingroup system
+ *
  * \since 5.0.0
  */
 namespace cen::ram {
+
+/// \addtogroup system
+/// \{
+
+/// \name RAM functions
+/// \{
 
 /**
  * \brief Returns the total amount of system RAM in megabytes.
@@ -39,8 +44,10 @@ namespace cen::ram {
   return amount_mb() / 1'000;
 }
 
-}  // namespace cen::ram
+/// \} End of RAM functions
 
 /// \} End of group system
+
+}  // namespace cen::ram
 
 #endif  // CENTURION_RAM_HEADER

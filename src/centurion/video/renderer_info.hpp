@@ -1,6 +1,10 @@
 #ifndef CENTURION_RENDERER_INFO_HEADER
 #define CENTURION_RENDERER_INFO_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
@@ -8,9 +12,16 @@
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/str.hpp"
+#include "../core/str_or_na.hpp"
 #include "../math/area.hpp"
 #include "pixel_format.hpp"
 #include "renderer.hpp"
@@ -105,7 +116,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return m_info.name;
   }
@@ -189,6 +200,9 @@ class renderer_info final
   {}
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a `renderer_info` instance.
  *
@@ -200,9 +214,18 @@ class renderer_info final
  */
 [[nodiscard]] inline auto to_string(const renderer_info& info) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer_info{{name: {}}}", str_or_na(info.name()));
+#else
   using namespace std::string_literals;
   return "renderer_info{name: "s + str_or_na(info.name()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a `renderer_info` instance.
@@ -218,6 +241,8 @@ inline auto operator<<(std::ostream& stream, const renderer_info& info) -> std::
 {
   return stream << to_string(info);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Returns information about a renderer.

@@ -2,7 +2,7 @@
 
 namespace {
 
-inline constexpr auto msg_cache = "L1 cache size in bytes: ";
+inline constexpr auto msg_cache = "L1 cache line size in bytes: ";
 inline constexpr auto msg_cores = "Number of cores: ";
 inline constexpr auto msg_endianness = "Endianness: ";
 inline constexpr auto msg_simd = "SIMD alignment: ";

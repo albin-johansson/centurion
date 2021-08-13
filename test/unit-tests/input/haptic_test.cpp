@@ -2,6 +2,12 @@
 
 #include <gtest/gtest.h>
 
+#include "input/haptic_condition.hpp"
+#include "input/haptic_constant.hpp"
+#include "input/haptic_custom.hpp"
+#include "input/haptic_left_right.hpp"
+#include "input/haptic_periodic.hpp"
+#include "input/haptic_ramp.hpp"
 #include "typed_test_macros.hpp"
 
 using namespace cen::literals;
@@ -261,13 +267,4 @@ TEST(HapticDirection, SDLDirectionConstructor)
   ASSERT_EQ(source.dir[0], direction.value().x);
   ASSERT_EQ(source.dir[1], direction.value().y);
   ASSERT_EQ(source.dir[2], direction.value().z);
-}
-
-TEST(HapticDirectionType, EnumValues)
-{
-  ASSERT_EQ(SDL_HAPTIC_POLAR, static_cast<int>(cen::haptic_direction_type::polar));
-  ASSERT_EQ(SDL_HAPTIC_CARTESIAN,
-            static_cast<int>(cen::haptic_direction_type::cartesian));
-  ASSERT_EQ(SDL_HAPTIC_SPHERICAL,
-            static_cast<int>(cen::haptic_direction_type::spherical));
 }

@@ -7,10 +7,10 @@
 
 #include "../core/integers.hpp"
 
+namespace cen {
+
 /// \addtogroup system
 /// \{
-
-namespace cen {
 
 /**
  * \class simd_block
@@ -119,6 +119,8 @@ class simd_block final
   std::unique_ptr<void, deleter> m_data;
 };
 
+/// \} End of group system
+
 }  // namespace cen
 
 /**
@@ -129,6 +131,12 @@ class simd_block final
  * \since 5.0.0
  */
 namespace cen::cpu {
+
+/// \addtogroup system
+/// \{
+
+/// \name CPU functions
+/// \{
 
 /**
  * \brief Returns the CPU L1 cache line size.
@@ -364,8 +372,10 @@ namespace cen::cpu {
   return SDL_BYTEORDER == SDL_LIL_ENDIAN;
 }
 
-}  // namespace cen::cpu
+/// \} End of CPU functions
 
 /// \} End of group system
+
+}  // namespace cen::cpu
 
 #endif  // CENTURION_CPU_HEADER

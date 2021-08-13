@@ -177,14 +177,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-    else
-    {
-      return m_event.keysym.mod & to_underlying(modifiers);
-    }
+    return detail::is_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -205,23 +198,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-    const auto hits = m_event.keysym.mod & mask;
-
-    if (hits != mask)
-    {
-      return false;  // The specified modifiers were a combo that wasn't fully active
-    }
-    else
-    {
-      const auto others = m_event.keysym.mod & ~hits;
-      return hits && !others;
-    }
+    return detail::is_only_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -245,17 +222,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
-    if (modifiers == key_mod::none)
-    {
-      return !m_event.keysym.mod;
-    }
-
-    const auto mask = to_underlying(modifiers);
-
-    const auto hits = m_event.keysym.mod & mask;
-    const auto others = m_event.keysym.mod & ~hits;
-
-    return hits && !others;
+    return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
   }
 
   /**
@@ -282,7 +249,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::shift)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::shift)` instead.
    *
    * \since 4.0.0
    */
@@ -296,7 +263,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::ctrl)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::ctrl)` instead.
    *
    * \since 4.0.0
    */
@@ -310,7 +277,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the ALT modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::alt)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::alt)` instead.
    *
    * \since 4.0.0
    */
@@ -324,7 +291,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if any of the GUI modifiers are active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::gui)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::gui)` instead.
    *
    * \since 4.0.0
    */
@@ -338,7 +305,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the CAPS modifier is active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::caps)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::caps)` instead.
    *
    * \since 4.0.0
    */
@@ -352,7 +319,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \return `true` if the NUM modifier is active; `false` otherwise.
    *
-   * \deprecated Since 6.1.0, use `is_active(keymod::num)` instead.
+   * \deprecated Since 6.1.0, use `is_active(key_mod::num)` instead.
    *
    * \since 4.0.0
    */
@@ -472,6 +439,9 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Event
 {
@@ -479,6 +449,8 @@ inline auto as_sdl_event(const common_event<SDL_KeyboardEvent>& event) -> SDL_Ev
   e.key = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

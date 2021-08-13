@@ -4,27 +4,14 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "common_event.hpp"
+#include "mouse_wheel_direction.hpp"
 
 namespace cen {
 
 /// \addtogroup event
 /// \{
-
-/**
- * \enum mouse_wheel_direction
- *
- * \brief Represents mouse wheel directions.
- *
- * \see `SDL_MouseWheelDirection`
- *
- * \since 4.0.0
- */
-enum class mouse_wheel_direction
-{
-  normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
-  flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
-};
 
 /**
  * \class mouse_wheel_event
@@ -120,7 +107,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    */
   void set_direction(const mouse_wheel_direction direction) noexcept
   {
-    m_event.direction = static_cast<u32>(direction);
+    m_event.direction = to_underlying(direction);
   }
 
   /**
@@ -191,6 +178,9 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_Event
 {
@@ -199,54 +189,7 @@ inline auto as_sdl_event(const common_event<SDL_MouseWheelEvent>& event) -> SDL_
   return e;
 }
 
-/**
- * \brief Indicates whether or not two mouse wheel direction values are equal.
- *
- * \param lhs the left-hand side mouse wheel direction value.
- * \param rhs the right-hand side mouse wheel direction value.
- *
- * \return `true` if the two values are equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
-{
-  return lhs == static_cast<mouse_wheel_direction>(rhs);
-}
-
-/// \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
-[[nodiscard]] constexpr auto operator==(const SDL_MouseWheelDirection lhs,
-                                        const mouse_wheel_direction rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two mouse wheel direction values aren't
- * equal.
- *
- * \param lhs the left-hand side mouse wheel direction value.
- * \param rhs the right-hand side mouse wheel direction value.
- *
- * \return `true` if the two values aren't equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
-[[nodiscard]] constexpr auto operator!=(const SDL_MouseWheelDirection lhs,
-                                        const mouse_wheel_direction rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

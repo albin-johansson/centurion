@@ -74,6 +74,6 @@ TEST(AudioDeviceEvent, AsSDLEvent)
   const cen::audio_device_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.adevice.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.adevice.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.adevice.timestamp, event.time());
 }

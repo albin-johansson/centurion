@@ -1,42 +1,45 @@
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <ostream>  // ostream
-#include <string>   // string, to_string
+#include <cassert>      // assert
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // invoke_result_t, declval
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // convertible_to, default_initializable, invocable
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
+#include "../core/is_stateless_callable.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
+#include "thread_priority.hpp"
 
 namespace cen {
 
 /// \addtogroup thread
 /// \{
 
-/**
- * \enum thread_priority
- *
- * \brief Represents different thread priorities.
- *
- * \note You might need higher privileges to use `high` or `critical` priorities.
- *
- * \since 5.0.0
- */
-enum class thread_priority
-{
-  low = SDL_THREAD_PRIORITY_LOW,                ///< Non-urgent, background processing.
-  normal = SDL_THREAD_PRIORITY_NORMAL,          ///< General purpose processing, this is
-                                                ///< the default.
-  high = SDL_THREAD_PRIORITY_HIGH,              ///< For high-priority processing.
-  critical = SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
-};
+using thread_id = SDL_threadID;
 
 /**
  * \class thread
@@ -52,8 +55,6 @@ enum class thread_priority
  * standard library API.
  *
  * \since 5.0.0
- *
- * \todo C++20: Support templated user data instead of just `void*`.
  */
 class thread final
 {
@@ -72,9 +73,11 @@ class thread final
    *
    * \brief The type used for thread identifiers.
    *
+   * \deprecated Since 6.2.0, use `thread_id` instead.
+   *
    * \since 5.0.0
    */
-  using id = SDL_threadID;
+  using id [[deprecated]] = SDL_threadID;
 
   /// \name Construction/Destruction
   /// \{
@@ -91,9 +94,9 @@ class thread final
    *
    * \since 5.0.0
    */
-  explicit thread(task_type task,
-                  not_null<czstring> name = "thread",
-                  void* data = nullptr)
+  CENTURION_NODISCARD_CTOR explicit thread(task_type task,
+                                           const not_null<str> name = "thread",
+                                           void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
     if (!m_thread)
@@ -118,6 +121,98 @@ class thread final
       join();
     }
   }
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <is_stateless_callable Callable>
+  [[nodiscard]] static auto init(Callable&& task, const not_null<str> name = "thread")
+      -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}());
+
+    const auto wrapper = [](void* /*data*/) noexcept(isNoexcept) -> int {
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
+      {
+        return callable();
+      }
+      else
+      {
+        callable();
+        return 0;
+      }
+    };
+
+    return thread{wrapper, name};
+  }
+
+  /**
+   * \brief Creates a thread that will execute the supplied callable.
+   *
+   * \details The supplied callable can either either return nothing or return a value
+   * convertible to an `int`. If the callable returns nothing, the thread will simply
+   * return `0`.
+   *
+   * \note If you supply a lambda to this function, it must be stateless.
+   *
+   * \tparam Callable the type of the callable.
+   *
+   * \param task the callable that will be invoked when the thread starts running.
+   * \param userData optional user data that will be supplied to the callable.
+   * \param name the name of the thread.
+   *
+   * \return the created thread.
+   *
+   * \since 6.2.0
+   */
+  template <typename T = void, is_stateless_callable<T*> Callable>
+  [[nodiscard]] static auto init(Callable&& task,
+                                 T* userData = nullptr,
+                                 const not_null<str> name = "thread") -> thread
+  {
+    assert(name);
+
+    constexpr bool isNoexcept = noexcept(Callable{}(std::declval<T*>()));
+
+    const auto wrapper = [](void* erased) noexcept(isNoexcept) -> int {
+      auto* ptr = static_cast<T*>(erased);
+
+      Callable callable;
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>)
+      {
+        return callable(ptr);
+      }
+      else
+      {
+        callable(ptr);
+        return 0;
+      }
+    };
+
+    return thread{wrapper, name, userData};
+  }
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
   /// \} End of construction/destruction
 
@@ -254,7 +349,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> id
+  [[nodiscard]] auto get_id() const noexcept -> thread_id
   {
     return SDL_GetThreadID(m_thread);
   }
@@ -266,7 +361,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> id
+  [[nodiscard]] static auto current_id() noexcept -> thread_id
   {
     return SDL_ThreadID();
   }
@@ -311,6 +406,9 @@ class thread final
   bool m_detached{false};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a thread.
  *
@@ -322,9 +420,21 @@ class thread final
  */
 [[nodiscard]] inline auto to_string(const thread& thread) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("thread{{data: {}, name: {}, id: {}}}",
+                     detail::address_of(thread.get()),
+                     thread.name(),
+                     thread.get_id());
+#else
   return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
          ", id: " + std::to_string(thread.get_id()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a thread.
@@ -342,56 +452,7 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
   return stream;
 }
 
-/// \name Thread priority comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two thread priorities are the same.
- *
- * \param lhs the left-hand side thread priority.
- * \param rhs the right-hand side thread priority.
- *
- * \return `true` if the priorities are the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator==(const thread_priority lhs,
-                                        const SDL_ThreadPriority rhs) noexcept -> bool
-{
-  return static_cast<SDL_ThreadPriority>(lhs) == rhs;
-}
-
-/// \copydoc operator==(thread_priority, SDL_ThreadPriority)
-[[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
-                                        const thread_priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two thread priorities aren't the same.
- *
- * \param lhs the left-hand side thread priority.
- * \param rhs the right-hand side thread priority.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const thread_priority lhs,
-                                        const SDL_ThreadPriority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(thread_priority, SDL_ThreadPriority)
-[[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
-                                        const thread_priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of thread comparison operators
+/// \} End of streaming
 
 /// \} End of group thread
 

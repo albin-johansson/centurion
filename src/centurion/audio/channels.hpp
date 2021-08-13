@@ -33,6 +33,9 @@ namespace channels {
 /// \addtogroup audio
 /// \{
 
+/// \name Channel functions
+/// \{
+
 /**
  * \brief Assigns a callback for when a channel finishes its playback.
  *
@@ -233,6 +236,10 @@ inline auto reset_group(const channel_index channel) noexcept -> result
     return std::nullopt;
   }
 }
+
+/// \} End of channel functions
+
+/// \} End of group audio
 
 }  // namespace channels
 

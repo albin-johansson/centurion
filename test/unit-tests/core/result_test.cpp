@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 TEST(Result, Values)
 {
@@ -20,6 +20,6 @@ TEST(Result, Values)
 
 TEST(Result, ToString)
 {
-  std::cout << "result (success): \"" << cen::success << "\"\n";
-  std::cout << "result (failure): \"" << cen::failure << "\"\n";
+  std::clog << "result (success): \"" << cen::success << "\"\n";
+  std::clog << "result (failure): \"" << cen::failure << "\"\n";
 }

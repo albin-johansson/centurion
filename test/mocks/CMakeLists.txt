@@ -14,13 +14,15 @@ set(SOURCE_FILES
     audio/channels_test.cpp
     audio/sound_fonts_test.cpp
 
-    config/hints_test.cpp
-
-    core/centurion_test.cpp
+    core/library_test.cpp
 
     event/event_test.cpp
 
+    filesystem/base_path_test.cpp
     filesystem/file_test.cpp
+    filesystem/preferred_path_test.cpp
+
+    hints/hints_test.cpp
 
     input/controller_test.cpp
     input/haptic_test.cpp
@@ -29,10 +31,9 @@ set(SOURCE_FILES
     input/sensor_test.cpp
     input/touch_test.cpp
 
-    system/base_path_test.cpp
     system/battery_test.cpp
+    system/open_url_test.cpp
     system/platform_test.cpp
-    system/pref_path_test.cpp
     system/shared_object_test.cpp
 
     thread/condition_test.cpp
@@ -52,12 +53,11 @@ set(SOURCE_FILES
     video/renderer_test.cpp
     video/surface_test.cpp
     video/window_test.cpp
-    video/window_utils_test.cpp)
+    video/window_utils_test.cpp
+    )
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
-  set(SOURCE_FILES
-      ${SOURCE_FILES}
-
+  list(APPEND SOURCE_FILES
       audio/music_test.cpp
       audio/sound_effect_test.cpp)
 endif ()

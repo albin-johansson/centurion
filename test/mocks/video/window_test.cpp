@@ -8,6 +8,7 @@
 #include "core_mocks.hpp"
 
 extern "C" {
+
 FAKE_VOID_FUNC(SDL_ShowWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
 FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
@@ -41,7 +42,16 @@ FAKE_VALUE_FUNC(int, SDL_SetWindowBrightness, SDL_Window*, float)
 FAKE_VALUE_FUNC(int, SDL_SetWindowOpacity, SDL_Window*, float)
 FAKE_VALUE_FUNC(int, SDL_GetWindowOpacity, SDL_Window*, float*)
 FAKE_VALUE_FUNC(float, SDL_GetWindowBrightness, SDL_Window*)
-}
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+FAKE_VOID_FUNC(SDL_SetWindowAlwaysOnTop, SDL_Window*, SDL_bool)
+FAKE_VOID_FUNC(SDL_SetWindowKeyboardGrab, SDL_Window*, SDL_bool)
+FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+}  // extern "C"
 
 class WindowTest : public testing::Test
 {
@@ -85,6 +95,14 @@ class WindowTest : public testing::Test
     RESET_FAKE(SDL_SetWindowOpacity)
     RESET_FAKE(SDL_GetWindowOpacity)
     RESET_FAKE(SDL_GetWindowBrightness)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    RESET_FAKE(SDL_SetWindowAlwaysOnTop)
+    RESET_FAKE(SDL_SetWindowKeyboardGrab)
+    RESET_FAKE(SDL_FlashWindow)
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
   }
 
   cen::window_handle m_window{nullptr};
@@ -707,3 +725,37 @@ TEST_F(WindowTest, Title)
   const auto title [[maybe_unused]] = m_window.title();
   ASSERT_EQ(1, SDL_GetWindowTitle_fake.call_count);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+TEST_F(WindowTest, SetAlwaysOnTop)
+{
+  m_window.set_always_on_top(true);
+  ASSERT_EQ(SDL_TRUE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
+
+  m_window.set_always_on_top(false);
+  ASSERT_EQ(SDL_FALSE, SDL_SetWindowAlwaysOnTop_fake.arg1_val);
+}
+
+TEST_F(WindowTest, SetGrabKeyboard)
+{
+  m_window.set_grab_keyboard(true);
+  ASSERT_EQ(SDL_TRUE, SDL_SetWindowKeyboardGrab_fake.arg1_val);
+
+  m_window.set_grab_keyboard(false);
+  ASSERT_EQ(SDL_FALSE, SDL_SetWindowKeyboardGrab_fake.arg1_val);
+}
+
+TEST_F(WindowTest, Flash)
+{
+  std::array values{-1, 0};
+  SET_RETURN_SEQ(SDL_FlashWindow, values.data(), cen::isize(values));
+
+  ASSERT_FALSE(m_window.flash());
+  ASSERT_EQ(SDL_FLASH_BRIEFLY, SDL_FlashWindow_fake.arg1_val);
+
+  ASSERT_TRUE(m_window.flash(cen::flash_op::until_focused));
+  ASSERT_EQ(SDL_FLASH_UNTIL_FOCUSED, SDL_FlashWindow_fake.arg1_val);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)

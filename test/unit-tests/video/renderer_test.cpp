@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 
 #include "core/exception.hpp"
@@ -380,7 +380,7 @@ TEST_F(RendererTest, ToString)
 
 TEST_F(RendererTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_renderer << '\n';
+  std::clog << *m_renderer << '\n';
 }
 
 TEST_F(RendererTest, RendererFlagsEnum)

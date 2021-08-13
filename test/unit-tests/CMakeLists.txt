@@ -9,10 +9,11 @@ set(SOURCE_FILES
     test_main.cpp
 
     compiler/compiler_test.cpp
-
-    config/hints_test.cpp
+    compiler/features_test.cpp
 
     core/exception_test.cpp
+    core/log_category_test.cpp
+    core/log_priority_test.cpp
     core/log_test.cpp
     core/result_test.cpp
     core/sdl_string_test.cpp
@@ -58,11 +59,30 @@ set(SOURCE_FILES
     event/window_event_test.cpp
     event/window_event_id_test.cpp
 
+    filesystem/base_path_test.cpp
+    filesystem/file_mode_test.cpp
+    filesystem/file_test.cpp
+    filesystem/file_type_test.cpp
+    filesystem/preferred_path_test.cpp
+    filesystem/seek_mode_test.cpp
+
+    hints/hint_priority_test.cpp
+    hints/hints_test.cpp
+
+    input/button_state_test.cpp
     input/controller_axis_test.cpp
+    input/controller_bind_type_test.cpp
     input/controller_button_test.cpp
+    input/controller_mapping_result_test.cpp
     input/controller_test.cpp
+    input/controller_type_test.cpp
+    input/haptic_direction_type_test.cpp
+    input/haptic_feature_test.cpp
     input/haptic_test.cpp
+    input/hat_state_test.cpp
+    input/joystick_power_test.cpp
     input/joystick_test.cpp
+    input/joystick_type_test.cpp
     input/key_code_tests.cpp
     input/key_modifier_test.cpp
     input/keyboard_test.cpp
@@ -70,6 +90,8 @@ set(SOURCE_FILES
     input/mouse_test.cpp
     input/scan_code_tests.cpp
     input/sensor_test.cpp
+    input/sensor_type_test.cpp
+    input/touch_device_type_test.cpp
     input/touch_test.cpp
 
     math/area_test.cpp
@@ -77,43 +99,54 @@ set(SOURCE_FILES
     math/point_test.cpp
     math/vector3_test.cpp
 
-    system/base_path_test.cpp
     system/battery_test.cpp
     system/byte_order_test.cpp
     system/clipboard_test.cpp
     system/counter_test.cpp
     system/cpu_test.cpp
-    system/file_test.cpp
     system/locale_test.cpp
+    system/platform_id_test.cpp
     system/platform_test.cpp
-    system/preferred_path_test.cpp
+    system/power_state_test.cpp
     system/ram_test.cpp
     system/shared_object_test.cpp
     system/simd_block_test.cpp
 
     thread/condition_test.cpp
+    thread/lock_status_test.cpp
     thread/mutex_test.cpp
     thread/scoped_lock_test.cpp
-    thread/try_lock_test.cpp
     thread/semaphore_test.cpp
+    thread/thread_priority_test.cpp
     thread/thread_test.cpp
+    thread/try_lock_test.cpp
 
-    video/gl/gl_core_test.cpp
+    video/gl/gl_attribute_test.cpp
+    video/gl/gl_swap_interval_test.cpp
 
     video/blend_mode_test.cpp
+    video/button_order_test.cpp
     video/color_test.cpp
     video/cursor_test.cpp
+    video/flash_op_test.cpp
     video/font_cache_test.cpp
+    video/font_hint_test.cpp
     video/font_test.cpp
     video/graphics_drivers_test.cpp
+    video/message_box_color_id_test.cpp
+    video/message_box_default_button_test.cpp
     video/message_box_test.cpp
+    video/message_box_type_test.cpp
     video/palette_test.cpp
+    video/pixel_format_info_test.cpp
     video/pixel_format_test.cpp
     video/renderer_test.cpp
     video/renderer_handle_test.cpp
     video/scale_mode_test.cpp
+    video/screen_orientation_test.cpp
     video/screen_test.cpp
     video/surface_test.cpp
+    video/system_cursor_test.cpp
     video/surface_handle_test.cpp
     video/texture_test.cpp
     video/unicode_string_test.cpp
@@ -124,10 +157,11 @@ set(SOURCE_FILES
     )
 
 if (CEN_AUDIO)
-  set(SOURCE_FILES
-      ${SOURCE_FILES}
-      audio/sound_effect_test.cpp
-      audio/music_test.cpp)
+  list(APPEND SOURCE_FILES
+      audio/fade_status_test.cpp
+      audio/music_test.cpp
+      audio/music_type_test.cpp
+      audio/sound_effect_test.cpp)
 endif ()
 
 cen_create_executable(${CENTURION_TEST_TARGET} "${SOURCE_FILES}")

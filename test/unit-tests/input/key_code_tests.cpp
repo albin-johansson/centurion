@@ -4,6 +4,7 @@
 
 #include "core/log.hpp"
 #include "input/key_code.hpp"
+#include "input/keycodes.hpp"
 #include "serialization_utils.hpp"
 
 TEST(KeyCode, DefaultValue)
@@ -236,7 +237,7 @@ TEST(KeyCode, ToString)
 
 TEST(KeyCode, StreamOperator)
 {
-  std::cout << "COUT: " << cen::keycodes::a << '\n';
+  std::clog << cen::keycodes::a << '\n';
 }
 
 TEST(KeyCode, Constants)

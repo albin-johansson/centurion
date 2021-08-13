@@ -1,10 +1,22 @@
 #ifndef CENTURION_KEYBOARD_HEADER
 #define CENTURION_KEYBOARD_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <algorithm>  // copy
 #include <array>      // array
+#include <ostream>    // ostream
+#include <string>     // string, to_string
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../compiler/compiler.hpp"
 #include "../core/integers.hpp"
@@ -46,7 +58,7 @@ class keyboard final
   /**
    * \brief Updates the state of the key state object.
    *
-   * \note `SDL_PumpEvents` isn't invoked by this method.
+   * \note `SDL_PumpEvents` isn't invoked by this function.
    *
    * \since 3.0.0
    */
@@ -58,7 +70,7 @@ class keyboard final
   /**
    * \brief Indicates whether or not the specified key is being pressed.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -68,17 +80,16 @@ class keyboard final
    */
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
-    return check_state(code, [this](const SDL_Scancode sc) noexcept {
-      return m_states[sc];
-    });
+    return check_state(code,
+                       [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
   }
 
   /**
    * \brief Indicates whether or not the specified key is being pressed.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -95,7 +106,7 @@ class keyboard final
    * \brief Indicates whether or not the specified key has been pressed during more than
    * one update of the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -114,9 +125,9 @@ class keyboard final
    * \brief Indicates whether or not the specified key has been pressed during more than
    * one update of the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -133,7 +144,7 @@ class keyboard final
    * \brief Indicates whether or not a key just became pressed in the last update of the
    * key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -152,9 +163,9 @@ class keyboard final
    * \brief Indicates whether or not a key just became pressed in the last update of the
    * key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -171,7 +182,7 @@ class keyboard final
    * \brief Indicates whether or not the specified key was released in the last update of
    * the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
    * \param code the scan code that will be checked.
    *
@@ -191,9 +202,9 @@ class keyboard final
    * \brief Indicates whether or not the specified key was released in the last update of
    * the key state.
    *
-   * \details This method returns false if the supplied key isn't recognized.
+   * \details This function returns false if the supplied key isn't recognized.
    *
-   * \note This method is slightly slower that the `scan_code` version.
+   * \note This function is slightly slower that the `scan_code` version.
    *
    * \param code the key code that will be checked.
    *
@@ -215,11 +226,62 @@ class keyboard final
    *
    * \return `true` if any of the modifiers are active; `false` otherwise.
    *
+   * \see `is_only_active()`
+   * \see `is_only_any_of_active()`
+   *
    * \since 4.0.0
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return static_cast<SDL_Keymod>(modifiers) & SDL_GetModState();
+    return detail::is_active(modifiers, SDL_GetModState());
+  }
+
+  /**
+   * \brief Indicates whether or not the specified modifiers are solely active.
+   *
+   * \details This function differs from `is_active(key_mod)` in that this function
+   * will return `false` if modifiers other than those specified are active. For example,
+   * if the `shift` and `alt` modifiers are being pressed, then
+   * `is_only_active(cen::key_mod::shift)` would evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *only* the specified modifiers are active; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   * \see `is_only_any_of_active()`
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
+  {
+    return detail::is_only_active(modifiers, SDL_GetModState());
+  }
+
+  /**
+   * \brief Indicates whether or not only any of the specified modifiers are active.
+   *
+   * \details This function is very similar to `is_only_active()`, but differs in that not
+   * all of the specified modifiers need to be active for this function to return `true`.
+   * For example, if you supply `shift` to this function, and only the left shift key is
+   * being pressed, then `is_only_any_of_active(cen::key_mod::shift)` would evaluate
+   * to `true`. However, if some other modifiers were also being pressed other than the
+   * left shift key, the same function call would instead evaluate to `false`.
+   *
+   * \param modifiers the modifiers to check for.
+   *
+   * \return `true` if *any* of the specified modifiers are active, but no other
+   * modifiers; false otherwise.
+   *
+   * \see `is_active(key_mod)`
+   * \see `is_only_active()`
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept
+      -> bool
+  {
+    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
   }
 
   /**
@@ -255,14 +317,48 @@ class keyboard final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
- * \typedef key_state
+ * \brief Returns a textual representation of a keyboard.
  *
- * \brief This is provided for backwards compatibility with Centurion 5.
+ * \param keyboard the keyboard instance that will be converted.
  *
- * \deprecated This is deprecated since Centurion 6.0.0.
+ * \return a string that represents the keyboard.
+ *
+ * \since 6.2.0
  */
-using key_state [[deprecated]] = keyboard;
+[[nodiscard]] inline auto to_string(const keyboard& keyboard) -> std::string
+{
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("keyboard{{#keys: {}}}", keyboard.key_count());
+#else
+  return "keyboard{#keys: " + std::to_string(keyboard.key_count()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a keyboard.
+ *
+ * \param stream the output stream that will be used.
+ * \param keyboard the keyboard that will be printed.
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const keyboard& keyboard) -> std::ostream&
+{
+  return stream << to_string(keyboard);
+}
+
+/// \} End of streaming
 
 /**
  * \brief Indicates whether or not the platform has screen keyboard support.

@@ -96,39 +96,5 @@ TEST(Cursor, SetVisible)
 
 TEST(Cursor, Count)
 {
-  ASSERT_EQ(cen::cursor::count(), static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
-}
-
-TEST(Cursor, SystemCursorEnumValues)
-{
-  using syscursor = cen::system_cursor;
-
-  ASSERT_EQ(syscursor::arrow, SDL_SYSTEM_CURSOR_ARROW);
-  ASSERT_EQ(syscursor::ibeam, SDL_SYSTEM_CURSOR_IBEAM);
-  ASSERT_EQ(syscursor::wait, SDL_SYSTEM_CURSOR_WAIT);
-  ASSERT_EQ(syscursor::crosshair, SDL_SYSTEM_CURSOR_CROSSHAIR);
-  ASSERT_EQ(syscursor::wait_arrow, SDL_SYSTEM_CURSOR_WAITARROW);
-  ASSERT_EQ(syscursor::arrow_nw_se, SDL_SYSTEM_CURSOR_SIZENWSE);
-  ASSERT_EQ(syscursor::arrow_ne_sw, SDL_SYSTEM_CURSOR_SIZENESW);
-  ASSERT_EQ(syscursor::arrow_w_e, SDL_SYSTEM_CURSOR_SIZEWE);
-  ASSERT_EQ(syscursor::arrow_n_s, SDL_SYSTEM_CURSOR_SIZENS);
-  ASSERT_EQ(syscursor::arrow_all, SDL_SYSTEM_CURSOR_SIZEALL);
-  ASSERT_EQ(syscursor::no, SDL_SYSTEM_CURSOR_NO);
-  ASSERT_EQ(syscursor::hand, SDL_SYSTEM_CURSOR_HAND);
-
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_ARROW, syscursor::arrow);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_IBEAM, syscursor::ibeam);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_WAIT, syscursor::wait);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_CROSSHAIR, syscursor::crosshair);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_WAITARROW, syscursor::wait_arrow);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_SIZENWSE, syscursor::arrow_nw_se);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_SIZENESW, syscursor::arrow_ne_sw);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_SIZEWE, syscursor::arrow_w_e);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_SIZENS, syscursor::arrow_n_s);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_SIZEALL, syscursor::arrow_all);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_NO, syscursor::no);
-  ASSERT_EQ(SDL_SYSTEM_CURSOR_HAND, syscursor::hand);
-
-  ASSERT_NE(syscursor::arrow_all, SDL_SYSTEM_CURSOR_WAIT);
-  ASSERT_NE(SDL_SYSTEM_CURSOR_SIZEALL, syscursor::hand);
+  ASSERT_EQ(SDL_NUM_SYSTEM_CURSORS, cen::cursor::count());
 }

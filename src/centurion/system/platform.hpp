@@ -3,15 +3,14 @@
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <string>    // string
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
-#include "../core/not_null.hpp"
-#include "../core/result.hpp"
+#include "../core/exception.hpp"
+#include "../core/str.hpp"
 #include "../detail/czstring_eq.hpp"
-#include "../video/pixel_format.hpp"
 
 namespace cen {
 
@@ -35,40 +34,76 @@ enum class platform_id
   android    ///< Represents the Android platform.
 };
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
+/// \name String conversions
+/// \{
 
 /**
- * \brief Attempts to open a URL using a web browser or even a file manager for local
- * files.
+ * \brief Returns a textual version of the supplied platform ID.
  *
- * \note This function will return `success` if there was at least an "attempt" to open
- * the specified URL, but it doesn't mean that the URL was successfully loaded.
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(platform_id::windows) == "windows"`.
  *
- * \remarks This function will differ greatly in its effects depending on the current
- * platform.
+ * \param id the enumerator that will be converted.
  *
- * \param url the URL that should be opened, cannot be null.
+ * \return a string that mirrors the name of the enumerator.
  *
- * \return `success` if there was an attempt to open the URL; `failure` otherwise.
+ * \throws cen_error if the enumerator is not recognized.
  *
- * \see SDL_OpenURL
- *
- * \since 5.2.0
+ * \since 6.2.0
  */
-inline auto open_url(const not_null<czstring> url) noexcept -> result
+[[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
-  assert(url);
-  return SDL_OpenURL(url) == 0;
+  switch (id)
+  {
+    case platform_id::unknown:
+      return "unknown";
+
+    case platform_id::windows:
+      return "windows";
+
+    case platform_id::mac_osx:
+      return "mac_osx";
+
+    case platform_id::linux_os:
+      return "linux_os";
+
+    case platform_id::ios:
+      return "ios";
+
+    case platform_id::android:
+      return "android";
+
+    default:
+      throw cen_error{"Did not recognize platform ID!"};
+  }
 }
 
-/// \see open_url()
-/// \since 5.3.0
-inline auto open_url(const std::string& url) noexcept -> result
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a platform ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(platform_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostream&
 {
-  return open_url(url.c_str());
+  return stream << to_string(id);
 }
 
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+/// \} End of streaming
+
+/// \name Platform information functions
+/// \{
 
 /**
  * \brief Returns the value that represents the current platform.
@@ -79,7 +114,7 @@ inline auto open_url(const std::string& url) noexcept -> result
  */
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
-  const czstring platform = SDL_GetPlatform();
+  const str platform = SDL_GetPlatform();
   if (detail::czstring_eq(platform, "Windows"))
   {
     return platform_id::windows;
@@ -279,6 +314,8 @@ inline auto open_url(const std::string& url) noexcept -> result
   return false;
 #endif
 }
+
+/// \} End of platform information functions
 
 /// \} End of group system
 

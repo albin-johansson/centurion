@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>
 #include <type_traits>
 
 static_assert(std::is_final_v<cen::mouse>);
@@ -115,4 +116,12 @@ TEST(Mouse, WasMoved)
 {
   const cen::mouse mouse;
   ASSERT_FALSE(mouse.was_moved());
+}
+
+TEST(Mouse, ToString)
+{
+  const cen::mouse mouse;
+  ASSERT_EQ("mouse{x: 0, y: 0}", cen::to_string(mouse));
+
+  std::clog << mouse << '\n';
 }

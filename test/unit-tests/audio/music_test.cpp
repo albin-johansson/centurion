@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 
@@ -251,7 +251,7 @@ TEST_F(MusicTest, ToString)
 
 TEST_F(MusicTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_music << '\n';
+  std::clog << *m_music << '\n';
 }
 
 TEST_F(MusicTest, SDLPointerConversion)
@@ -260,38 +260,4 @@ TEST_F(MusicTest, SDLPointerConversion)
 
   const auto& cMusic = *m_music;
   ASSERT_TRUE(static_cast<const Mix_Music*>(cMusic));
-}
-
-TEST_F(MusicTest, FadeStatusEnum)
-{
-  ASSERT_EQ(cen::fade_status::none, MIX_NO_FADING);
-  ASSERT_EQ(cen::fade_status::in, MIX_FADING_IN);
-  ASSERT_EQ(cen::fade_status::out, MIX_FADING_OUT);
-
-  ASSERT_EQ(MIX_NO_FADING, cen::fade_status::none);
-  ASSERT_EQ(MIX_FADING_IN, cen::fade_status::in);
-  ASSERT_EQ(MIX_FADING_OUT, cen::fade_status::out);
-}
-
-TEST_F(MusicTest, MusicTypeEnum)
-{
-  ASSERT_EQ(cen::music_type::unknown, MUS_NONE);
-  ASSERT_EQ(cen::music_type::mp3, MUS_MP3);
-  ASSERT_EQ(cen::music_type::wav, MUS_WAV);
-  ASSERT_EQ(cen::music_type::cmd, MUS_CMD);
-  ASSERT_EQ(cen::music_type::mod, MUS_MOD);
-  ASSERT_EQ(cen::music_type::ogg, MUS_OGG);
-  ASSERT_EQ(cen::music_type::flac, MUS_FLAC);
-  ASSERT_EQ(cen::music_type::midi, MUS_MID);
-  ASSERT_EQ(cen::music_type::opus, MUS_OPUS);
-
-  ASSERT_EQ(MUS_NONE, cen::music_type::unknown);
-  ASSERT_EQ(MUS_MP3, cen::music_type::mp3);
-  ASSERT_EQ(MUS_WAV, cen::music_type::wav);
-  ASSERT_EQ(MUS_CMD, cen::music_type::cmd);
-  ASSERT_EQ(MUS_MOD, cen::music_type::mod);
-  ASSERT_EQ(MUS_OGG, cen::music_type::ogg);
-  ASSERT_EQ(MUS_FLAC, cen::music_type::flac);
-  ASSERT_EQ(MUS_MID, cen::music_type::midi);
-  ASSERT_EQ(MUS_OPUS, cen::music_type::opus);
 }

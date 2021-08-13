@@ -275,6 +275,9 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL_Event
 {
@@ -282,6 +285,8 @@ inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL
   e.tfinger = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

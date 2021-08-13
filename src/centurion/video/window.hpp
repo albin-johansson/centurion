@@ -1,6 +1,10 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
@@ -8,12 +12,18 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/convert_bool.hpp"
@@ -21,6 +31,7 @@
 #include "../detail/owner_handle_api.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
+#include "flash_op.hpp"
 #include "pixel_format.hpp"
 #include "surface.hpp"
 
@@ -54,6 +65,8 @@ using window_handle = basic_window<detail::handle_type>;
  * \class basic_window
  *
  * \brief Represents an operating system window.
+ *
+ * \ownerhandle `window`/`window_handle`
  *
  * \since 5.0.0
  *
@@ -156,7 +169,7 @@ class basic_window final
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_window(const not_null<czstring> title,
+  explicit basic_window(const not_null<str> title,
                         const iarea size = default_size(),
                         const u32 flags = default_flags())
   {
@@ -309,6 +322,24 @@ class basic_window final
     return SDL_UpdateWindowSurface(m_window) == 0;
   }
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Modifies the flash state of the window to acquire attention from the user.
+   *
+   * \param op the flash operation that will be performed.
+   *
+   * \return `success` if the operation was successful; `failure` otherwise.
+   *
+   * \since 6.2.0
+   */
+  auto flash(const flash_op op = flash_op::briefly) noexcept -> result
+  {
+    return SDL_FlashWindow(m_window, static_cast<SDL_FlashOperation>(op)) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of mutators
 
   /// \name Setters
@@ -390,7 +421,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_title(const not_null<czstring> title) noexcept
+  void set_title(const not_null<str> title) noexcept
   {
     assert(title);
     SDL_SetWindowTitle(m_window, title);
@@ -429,14 +460,16 @@ class basic_window final
    *
    * \brief This property is disabled by default.
    *
-   * \param grabMouse `true` if the mouse should be confined within the window; `false`
+   * \param grab `true` if the mouse should be confined within the window; `false`
    * otherwise.
+   *
+   * \see `set_grab_keyboard()`
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(const bool grabMouse) noexcept
+  void set_grab_mouse(const bool grab) noexcept
   {
-    SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
+    SDL_SetWindowGrab(m_window, detail::convert_bool(grab));
   }
 
   /**
@@ -461,18 +494,47 @@ class basic_window final
    *
    * \note A window might have to be visible in order for the mouse to be captured.
    *
-   * \param capturingMouse `true` if the mouse should be captured; `false` otherwise.
+   * \param capture `true` if the mouse should be captured; `false` otherwise.
    *
    * \return `success` on the mouse capture was successfully changed; `failure` otherwise.
    *
-   * \see `SDL_CaptureMouse`
-   *
    * \since 5.0.0
    */
-  static auto set_capturing_mouse(const bool capturingMouse) noexcept -> result
+  static auto set_capturing_mouse(const bool capture) noexcept -> result
   {
-    return SDL_CaptureMouse(detail::convert_bool(capturingMouse)) == 0;
+    return SDL_CaptureMouse(detail::convert_bool(capture)) == 0;
   }
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sets whether or not the keyboard input should be grabbed by the window.
+   *
+   * \param grab `true` if the keyboard should be grabbed; `false` otherwise.
+   *
+   * \see `set_grab_mouse()`
+   *
+   * \since 6.2.0
+   */
+  void set_grab_keyboard(const bool grab) noexcept
+  {
+    SDL_SetWindowKeyboardGrab(m_window, detail::convert_bool(grab));
+  }
+
+  /**
+   * \brief Sets whether or not a window is always on top of other windows.
+   *
+   * \param enabled `true` if the window should be on top of all other windows; `false`
+   * otherwise.
+   *
+   * \since 6.2.0
+   */
+  void set_always_on_top(const bool enabled) noexcept
+  {
+    SDL_SetWindowAlwaysOnTop(m_window, detail::convert_bool(enabled));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \} End of setters
 
@@ -1293,6 +1355,9 @@ class basic_window final
   detail::pointer_manager<T, SDL_Window, deleter> m_window;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a window.
  *
@@ -1305,10 +1370,22 @@ class basic_window final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("window{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(window.get()),
+                     window.width(),
+                     window.height());
+#else
   return "window{data: " + detail::address_of(window.get()) +
          ", width: " + std::to_string(window.width()) +
          ", height: " + std::to_string(window.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a window.
@@ -1326,7 +1403,9 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
   return stream << to_string(window);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

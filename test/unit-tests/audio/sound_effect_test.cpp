@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 
@@ -151,7 +151,7 @@ TEST_F(SoundEffect, ToString)
 
 TEST_F(SoundEffect, StreamOperator)
 {
-  std::cout << "COUT: " << *m_sound << '\n';
+  std::clog << *m_sound << '\n';
 }
 
 TEST_F(SoundEffect, Forever)

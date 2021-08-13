@@ -7,8 +7,8 @@
 #include <string>  // string
 
 #include "../detail/sdl_deleter.hpp"
-#include "czstring.hpp"
 #include "owner.hpp"
+#include "str.hpp"
 
 namespace cen {
 
@@ -18,8 +18,14 @@ namespace cen {
 /**
  * \class sdl_string
  *
- * \brief Represents a string obtained from SDL, usually a `char*` that has to be freed
- * using `SDL_free`.
+ * \brief Represents an SDL string.
+ *
+ * \details Certain SDL APIs return `char*` strings that need to be freed using
+ * `SDL_free`, this class serves as a small wrapper around such strings. Use the `copy()`
+ * member function to convert the string into a corresponding `std::string`.
+ *
+ * \note Instances of `sdl_string` might manage null strings. Use the overloaded `operator
+ * bool()` in order to determine whether or not any associated string is null.
  *
  * \since 5.0.0
  */
@@ -33,7 +39,7 @@ class sdl_string final
    *
    * \since 5.0.0
    */
-  explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
+  explicit sdl_string(owner<char*> str) noexcept : m_str{str}
   {}
 
   /**
@@ -43,7 +49,7 @@ class sdl_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring
+  [[nodiscard]] auto get() const noexcept -> str
   {
     return m_str.get();
   }

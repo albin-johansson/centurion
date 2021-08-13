@@ -7,11 +7,11 @@
 #include <string>       // string
 #include <type_traits>  // is_same_v
 
-#include "../core/czstring.hpp"
+#include "../core/str.hpp"
 
 namespace cen::hint {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 struct render_driver;
@@ -32,7 +32,7 @@ namespace windows {
 struct d3d_compiler;
 }
 
-/// \} End of group configuration
+/// \} End of group hints
 
 /// \cond FALSE
 
@@ -174,7 +174,7 @@ struct enum_hint_traits<windows::d3d_compiler> final
 
 /// \endcond
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 template <class Derived>
@@ -182,30 +182,38 @@ class enum_hint
 {
  public:
   using value = typename enum_hint_traits<Derived>::value;
+  using value_type = value;
 
   template <typename T>
-  constexpr static auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, value>;
   }
 
-  static auto current_value() noexcept -> std::optional<value>
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    czstring hint = SDL_GetHint(Derived::name());
-    if (!hint)
+    if (const str hint = SDL_GetHint(Derived::name()))
+    {
+      return Derived::map.key_from(hint);
+    }
+    else
     {
       return std::nullopt;
     }
-    return Derived::map.key_from(hint);
   }
 
-  static auto to_string(const value value) -> std::string
+  [[nodiscard]] static auto from_string(const str value) -> value_type
+  {
+    return Derived::map.key_from(value);
+  }
+
+  [[nodiscard]] static auto to_string(const value_type value) -> std::string
   {
     return Derived::map.find(value);
   }
 };
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen::hint
 

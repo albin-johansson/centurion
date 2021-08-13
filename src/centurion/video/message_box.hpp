@@ -1,11 +1,16 @@
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
 #include <cstddef>      // nullptr_t
 #include <optional>     // optional
+#include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
 #include <utility>      // move
@@ -15,50 +20,16 @@
 #include "../core/integers.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/stack_resource.hpp"
+#include "button_order.hpp"
 #include "color.hpp"
 #include "colors.hpp"
+#include "message_box_type.hpp"
 #include "window.hpp"
 
 namespace cen {
 
 /// \addtogroup video
 /// \{
-
-/**
- * \enum message_box_type
- *
- * \brief Serves as a hint of the purpose of a message box. Message boxes can indicate
- * errors, warnings and general information.
- *
- * \since 5.0.0
- */
-enum class message_box_type : u32
-{
-  error = SDL_MESSAGEBOX_ERROR,
-  warning = SDL_MESSAGEBOX_WARNING,
-  information = SDL_MESSAGEBOX_INFORMATION
-};
-
-/**
- * \enum button_order
- *
- * \brief Provides hints for how the buttons in a message box should be aligned, either
- * left-to-right or right-to-left.
- *
- * \note This enum has no effect and shouldn't be used if you're using SDL 2.0.10.
- *
- * \since 4.0.0
- */
-enum class button_order : u32
-{
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-  left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
-  right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
-#else
-  left_to_right,
-  right_to_left
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-};
 
 /**
  * \class message_box
@@ -366,9 +337,7 @@ class message_box final
   {
     return std::any_of(m_buttons.begin(),
                        m_buttons.end(),
-                       [id](const button& button) noexcept {
-                         return button.id() == id;
-                       });
+                       [id](const button& button) noexcept { return button.id() == id; });
   }
 
   /**
@@ -526,7 +495,7 @@ class message_box final
     data.flags = to_flags(m_type, m_buttonOrder);
     data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
     // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
     detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
     std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
@@ -564,6 +533,123 @@ class message_box final
     }
   }
 };
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied default button.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(message_box::default_button::return_key) == "return_key"`.
+ *
+ * \param button the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const message_box::default_button button)
+    -> std::string_view
+{
+  switch (button)
+  {
+    case message_box::default_button::return_key:
+      return "return_key";
+
+    case message_box::default_button::escape_key:
+      return "escape_key";
+
+    default:
+      throw cen_error{"Did not recognize message box default button!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied color ID
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(message_box::color_id::text) == "text"`.
+ *
+ * \param id the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const message_box::color_id id) -> std::string_view
+{
+  switch (id)
+  {
+    case message_box::color_id::background:
+      return "background";
+
+    case message_box::color_id::text:
+      return "text";
+
+    case message_box::color_id::button_border:
+      return "button_border";
+
+    case message_box::color_id::button_background:
+      return "button_background";
+
+    case message_box::color_id::button_selected:
+      return "button_selected";
+
+    default:
+      throw cen_error{"Did not recognize message box color ID!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a default button enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param button the enumerator that will be printed.
+ *
+ * \see `to_string(message_box::default_button)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const message_box::default_button button)
+    -> std::ostream&
+{
+  return stream << to_string(button);
+}
+
+/**
+ * \brief Prints a textual representation of a color ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(message_box::color_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const message_box::color_id id)
+    -> std::ostream&
+{
+  return stream << to_string(id);
+}
+
+/// \} End of streaming
+
+/// \name Message box default button comparison operators
+/// \{
 
 /**
  * \brief Indicates whether or not the flags represent the same value.
@@ -615,6 +701,11 @@ class message_box final
   return !(lhs == rhs);
 }
 
+/// \} End of message box default button comparison operators
+
+/// \name Message box color ID comparison operators
+/// \{
+
 /**
  * \brief Indicates whether or not two message box are colors the same.
  *
@@ -663,7 +754,9 @@ class message_box final
   return !(lhs == rhs);
 }
 
-/// \}
+/// \} End of message box color ID comparison operators
+
+/// \} End of group video
 
 }  // namespace cen
 

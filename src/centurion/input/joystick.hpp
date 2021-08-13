@@ -1,6 +1,10 @@
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>   // assert
@@ -8,12 +12,19 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
+#include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
@@ -21,70 +32,14 @@
 #include "../detail/sdl_version_at_least.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
+#include "hat_state.hpp"
+#include "joystick_power.hpp"
+#include "joystick_type.hpp"
 
 namespace cen {
 
 /// \addtogroup input
 /// \{
-
-/**
- * \enum joystick_power
- *
- * \brief Provides values that represent different power states of a joystick.
- *
- * \since 4.2.0
- */
-enum class joystick_power
-{
-  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
-  max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-};
-
-/**
- * \enum hat_state
- *
- * \brief Represents the various states of a joystick hat.
- *
- * \since 4.2.0
- */
-enum class hat_state : u8
-{
-  centered = SDL_HAT_CENTERED,     ///< The hat is centered.
-  up = SDL_HAT_UP,                 ///< The hat is directed "north".
-  right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
-  down = SDL_HAT_DOWN,             ///< The hat is directed "south".
-  left = SDL_HAT_LEFT,             ///< The hat is directed "west".
-  right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
-  right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
-  left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
-  left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
-};
-
-/**
- * \enum joystick_type
- *
- * \brief Provides values that represent different types of "joysticks".
- *
- * \since 4.2.0
- */
-enum class joystick_type
-{
-  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-  wheel = SDL_JOYSTICK_TYPE_WHEEL,
-  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-  guitar = SDL_JOYSTICK_TYPE_GUITAR,
-  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-  throttle = SDL_JOYSTICK_TYPE_THROTTLE
-};
 
 /**
  * \struct ball_axis_change
@@ -124,6 +79,8 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  * \class basic_joystick
  *
  * \brief Represents a joystick device.
+ *
+ * \ownerhandle `joystick`/`joystick_handle`
  *
  * \details The game controller API is built on top of the joystick API, which means that
  * the game controller is higher-level and easier to use.
@@ -232,8 +189,8 @@ class basic_joystick final
   /**
    * \brief Makes the joystick rumble.
    *
-   * \details Invoking this method cancels any previous rumble effects. This method has no
-   * effect if the joystick doesn't support rumble effects.
+   * \details Invoking this function cancels any previous rumble effects. This function
+   * has no effect if the joystick doesn't support rumble effects.
    *
    * \param lowFreq the intensity of the low frequency (left) motor.
    * \param highFreq the intensity of the high frequency (right) motor.
@@ -314,6 +271,26 @@ class basic_joystick final
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of joystick specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the joystick
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_JoystickSendEffect(m_joystick, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
   /// \name Virtual joystick API
   /// \{
@@ -546,13 +523,13 @@ class basic_joystick final
   /**
    * \brief Returns the name associated with the joystick.
    *
-   * \note If no name can be found, this method returns a null string.
+   * \note If no name can be found, this function returns a null string.
    *
    * \return the name of the joystick; a null pointer if no name is found.
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return SDL_JoystickName(m_joystick);
   }
@@ -579,7 +556,7 @@ class basic_joystick final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto serial() const noexcept -> czstring
+  [[nodiscard]] auto serial() const noexcept -> str
   {
     return SDL_JoystickGetSerial(m_joystick);
   }
@@ -607,7 +584,7 @@ class basic_joystick final
    * \brief Returns the player index of the joystick associated with the specified device
    * index.
    *
-   * \note This method can be called before any joysticks are opened.
+   * \note This function can be called before any joysticks are opened.
    *
    * \param deviceIndex the device index of the joystick that will be queried.
    *
@@ -744,7 +721,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> czstring
+  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> str
   {
     return SDL_JoystickNameForIndex(deviceIndex);
   }
@@ -964,7 +941,7 @@ class basic_joystick final
    * \brief Locks the access to all joysticks.
    *
    * \details If you are using the joystick API from multiple threads you should use this
-   * method to restrict access to the joysticks.
+   * function to restrict access to the joysticks.
    *
    * \since 4.2.0
    */
@@ -1045,7 +1022,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto guid_from_string(const not_null<czstring> str) noexcept
+  [[nodiscard]] static auto guid_from_string(const not_null<str> str) noexcept
       -> SDL_JoystickGUID
   {
     assert(str);
@@ -1132,6 +1109,9 @@ class basic_joystick final
   detail::pointer_manager<T, SDL_Joystick, deleter> m_joystick;
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a joystick.
  *
@@ -1146,16 +1126,29 @@ class basic_joystick final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
-  czstring serial{};
+  str serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
     serial = joystick.serial();
   }
 
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("joystick{{data: {}, id: {}, name: {}, serial: {}}}",
+                     detail::address_of(joystick.get()),
+                     joystick.instance_id(),
+                     str_or_na(joystick.name()),
+                     str_or_na(joystick.serial()));
+#else
   return "joystick{data: " + detail::address_of(joystick.get()) +
          ", id: " + std::to_string(joystick.instance_id()) +
          ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a joystick using a stream.
@@ -1175,143 +1168,7 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
   return stream << to_string(joystick);
 }
 
-/// \name Joystick power comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values are the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_power lhs,
-                                        const SDL_JoystickPowerLevel rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \param lhs the left-hand side power type.
- * \param rhs the right-hand side power type.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
-                                        const joystick_power rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick power comparison operators
-
-/// \name Joystick type comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return static_cast<SDL_JoystickType>(lhs) == rhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values are the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const joystick_type lhs,
-                                        const SDL_JoystickType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two joystick type values aren't the same.
- *
- * \param lhs the left-hand side joystick type value.
- * \param rhs the right-hand side joystick type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.3.0
- */
-[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
-                                        const joystick_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of joystick type comparison operators
+/// \} End of streaming
 
 /// \} End of group input
 

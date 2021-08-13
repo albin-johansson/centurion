@@ -1,8 +1,13 @@
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
+#include "lock_status.hpp"
 #include "mutex.hpp"
 
 namespace cen {
@@ -28,7 +33,9 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  explicit try_lock(mutex& mutex) noexcept : m_mutex{&mutex}, m_status{mutex.try_lock()}
+  CENTURION_NODISCARD_CTOR explicit try_lock(mutex& mutex) noexcept
+      : m_mutex{&mutex}
+      , m_status{mutex.try_lock()}
   {}
 
   try_lock(const try_lock&) = delete;

@@ -8,6 +8,9 @@ env:
 jobs:
   macos-test:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        CPP_VERSION: [ 17, 20 ]
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
@@ -51,7 +54,7 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_INTERACTIVE=OFF -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_INTERACTIVE=OFF -GNinja
           ninja
 
       - name: Run unit tests

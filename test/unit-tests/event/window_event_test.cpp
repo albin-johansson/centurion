@@ -47,6 +47,6 @@ TEST(WindowEvent, AsSDLEvent)
   const cen::window_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.window.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.window.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.window.timestamp, event.time());
 }

@@ -164,9 +164,8 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   /**
    * \brief Returns a bitmask for the current mouse button state.
    *
-   * \remark If you want to check if a specific mouse button is pressed or
-   * released, a better alternative would be to use the `pressed(MouseButton)
-   * ` method.
+   * \remark If you want to check if a specific mouse button is pressed or released, a
+   * better alternative would be to use the `pressed()` function.
    *
    * \return a bitmask for the current mouse button state.
    *
@@ -240,6 +239,9 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL_Event
 {
@@ -247,6 +249,8 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
   e.motion = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

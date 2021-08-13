@@ -1,9 +1,19 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/cast.hpp"
 
@@ -47,6 +57,8 @@ using darea = basic_area<double>;
  *
  * \brief Simply represents an area with a width and height.
  *
+ * \serializable
+ *
  * \tparam T the type of the components of the area. Must be either an integral or
  * floating-point type. Can't be `bool`.
  *
@@ -59,13 +71,20 @@ using darea = basic_area<double>;
 template <typename T>
 struct basic_area final
 {
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
+
   using value_type = T;
 
   T width{0};   ///< The width of the area.
   T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+#if CENTURION_HAS_FEATURE_SPACESHIP
+
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
+      -> bool = default;
+
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
 
 /// \name Area-related functions
@@ -172,6 +191,8 @@ template <>
 /// \name Area comparison operators
 /// \{
 
+#if !CENTURION_HAS_FEATURE_SPACESHIP
+
 /**
  * \brief Indicates whether or not two areas are considered to be equal.
  *
@@ -206,7 +227,12 @@ template <typename T>
   return !(lhs == rhs);
 }
 
+#endif  // CENTURION_HAS_FEATURE_SPACESHIP
+
 /// \} End of area comparison operators
+
+/// \name String conversions
+/// \{
 
 /**
  * \brief Returns a textual representation of an area.
@@ -222,9 +248,18 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("area{{width: {}, height: {}}}", area.width, area.height);
+#else
   return "area{width: " + std::to_string(area.width) +
          ", height: " + std::to_string(area.height) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of an area using a stream.
@@ -243,6 +278,8 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 {
   return stream << to_string(area);
 }
+
+/// \} End of streaming
 
 /// \} End of group math
 

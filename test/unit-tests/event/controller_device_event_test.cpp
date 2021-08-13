@@ -41,6 +41,6 @@ TEST(ControllerDeviceEvent, AsSDLEvent)
   const cen::controller_device_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.cdevice.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.cdevice.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.cdevice.timestamp, event.time());
 }

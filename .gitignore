@@ -40,14 +40,11 @@
 
 # Custom stuff
 *.afdesign
-cmake-build-*
-build
-bin
-bin-*
-doxygen-out
-docs/_build
 .idea
 .vs
 .vscode
 .clangd
-compile_commands.json
+build
+bin
+cmake-build-*
+doxygen-out

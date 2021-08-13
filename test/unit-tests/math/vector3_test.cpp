@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/log.hpp"
 #include "serialization_utils.hpp"
@@ -40,7 +40,7 @@ TEST(Vector3, CastOperator)
 TEST(Vector3, StreamOperator)
 {
   const float3 vec{12.3f, 45.6f};
-  std::cout << "COUT: " << vec << '\n';
+  std::clog << vec << '\n';
 }
 
 TEST(Vector3, ToString)

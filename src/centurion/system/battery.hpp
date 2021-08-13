@@ -8,38 +8,24 @@
 
 #include "../core/time.hpp"
 #include "../detail/any_eq.hpp"
-
-namespace cen {
-
-/// \addtogroup system
-/// \{
-
-/**
- * \enum power_state
- *
- * \brief Provides values that represent different battery power states.
- *
- * \since 3.0.0
- *
- * \see `SDL_PowerState`
- */
-enum class power_state
-{
-  unknown = SDL_POWERSTATE_UNKNOWN,        ///< The status is unknown.
-  on_battery = SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.
-  no_battery = SDL_POWERSTATE_NO_BATTERY,  ///< No battery available.
-  charging = SDL_POWERSTATE_CHARGING,      ///< Currently charging the battery.
-  charged = SDL_POWERSTATE_CHARGED         ///< Currently plugged in and charged.
-};
+#include "power_state.hpp"
 
 /**
  * \namespace cen::battery
  *
  * \brief Contains utilities related to the battery of the system.
  *
+ * \ingroup system
+ *
  * \since 5.0.0
  */
-namespace battery {
+namespace cen::battery {
+
+/// \addtogroup system
+/// \{
+
+/// \name Battery functions
+/// \{
 
 /**
  * \brief Returns the seconds of battery life that is remaining.
@@ -120,8 +106,8 @@ namespace battery {
 /**
  * \brief Indicates whether or not the system is running on a battery.
  *
- * \details This method is simply a convenience method that is based on the
- * `battery::state()` method.
+ * \details This function is simply a convenience function that is based on the
+ * `battery::state()` function.
  *
  * \return `true` if the system is running on a battery; `false` otherwise.
  *
@@ -180,61 +166,10 @@ namespace battery {
   return !detail::any_eq(state(), power_state::no_battery, power_state::unknown);
 }
 
-}  // namespace battery
-
-/// \name Power state comparison operators
-/// \{
-
-/**
- * \brief Indicates whether or not two power states values are the same.
- *
- * \param lhs the left-hand side power state value.
- * \param rhs the right-hand side power state value.
- *
- * \return `true` if the power states are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept -> bool
-{
-  return static_cast<SDL_PowerState>(lhs) == rhs;
-}
-
-/// \copydoc operator==(power_state, SDL_PowerState)
-[[nodiscard]] constexpr auto operator==(const SDL_PowerState lhs,
-                                        const power_state rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two power states values aren't the same.
- *
- * \param lhs the left-hand side power state value.
- * \param rhs the right-hand side power state value.
- *
- * \return `true` if the power states aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const power_state lhs,
-                                        const SDL_PowerState rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(power_state, SDL_PowerState)
-[[nodiscard]] constexpr auto operator!=(const SDL_PowerState lhs,
-                                        const power_state rhs) noexcept -> bool
-{
-  return rhs != lhs;
-}
-
-/// \} End of power state comparison operators
+/// \} End of battery functions
 
 /// \} End of group system
 
-}  // namespace cen
+}  // namespace cen::battery
 
 #endif  // CENTURION_BATTERY_HEADER

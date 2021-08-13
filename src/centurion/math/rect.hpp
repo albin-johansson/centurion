@@ -1,11 +1,21 @@
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/cast.hpp"
 #include "../core/sfinae.hpp"
@@ -73,6 +83,8 @@ using frect = basic_rect<float>;
  * \class basic_rect
  *
  * \brief A simple rectangle implementation, based on either `SDL_Rect` or `SDL_FRect`.
+ *
+ * \serializable
  *
  * \tparam T the representation type. Must be convertible to either `int` or `float`.
  *
@@ -833,6 +845,9 @@ template <>
 
 /// \} End of rectangle cast specializations
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a rectangle.
  *
@@ -847,10 +862,23 @@ template <>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("rect{{x: {}, y: {}, width: {}, height: {}}}",
+                     rect.x(),
+                     rect.y(),
+                     rect.width(),
+                     rect.height());
+#else
   return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
          ", width: " + std::to_string(rect.width()) +
          ", height: " + std::to_string(rect.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a rectangle using a stream.
@@ -867,9 +895,10 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream&
 {
-  stream << to_string(rect);
-  return stream;
+  return stream << to_string(rect);
 }
+
+/// \} End of streaming
 
 /// \} End of group math
 

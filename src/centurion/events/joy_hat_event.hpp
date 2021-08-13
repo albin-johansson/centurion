@@ -6,31 +6,12 @@
 #include "../core/integers.hpp"
 #include "../core/to_underlying.hpp"
 #include "common_event.hpp"
+#include "joy_hat_position.hpp"
 
 namespace cen {
 
 /// \addtogroup event
 /// \{
-
-/**
- * \enum joy_hat_position
- *
- * \brief Serves as a wrapper for the `SDL_HAT_x` macro values.
- *
- * \since 4.0.0
- */
-enum class joy_hat_position : u8
-{
-  left_up = SDL_HAT_LEFTUP,
-  left = SDL_HAT_LEFT,
-  left_down = SDL_HAT_LEFTDOWN,
-  up = SDL_HAT_UP,
-  centered = SDL_HAT_CENTERED,
-  down = SDL_HAT_DOWN,
-  right_up = SDL_HAT_RIGHTUP,
-  right = SDL_HAT_RIGHT,
-  right_down = SDL_HAT_RIGHTDOWN
-};
 
 /**
  * \class joy_hat_event
@@ -112,6 +93,9 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Event
 {
@@ -119,6 +103,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
   e.jhat = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

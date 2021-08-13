@@ -144,6 +144,9 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event) -> SDL_Event
 {
@@ -151,6 +154,8 @@ inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event) -> SDL_E
   e.jbutton = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

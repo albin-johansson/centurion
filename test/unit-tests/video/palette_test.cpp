@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/log.hpp"
 #include "video/colors.hpp"
@@ -86,5 +86,5 @@ TEST(Palette, ToString)
 TEST(Palette, StreamOperator)
 {
   const cen::palette palette{7};
-  std::cout << "COUT: " << palette << '\n';
+  std::clog << palette << '\n';
 }

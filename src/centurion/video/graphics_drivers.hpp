@@ -60,7 +60,7 @@ namespace cen {
   }
 }
 
-/// \}
+/// \} End of group video
 
 }  // namespace cen
 

@@ -1,10 +1,13 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
-#include "../core/integers.hpp"
-#include "../core/macros.hpp"
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
 
-#ifdef CENTURION_HAS_STD_MEMORY_RESOURCE
+#include "../core/integers.hpp"
+
+#if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
 #include <cstddef>          // byte
@@ -24,11 +27,11 @@ class stack_resource final
 
  private:
   std::array<std::byte, BufferSize> m_buffer{};
-  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), m_buffer.size()};
+  std::pmr::monotonic_buffer_resource m_pool{m_buffer.data(), sizeof m_buffer};
 };
 
 }  // namespace cen::detail
-/// \endcond
+   /// \endcond
 
-#endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
+#endif  // CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER

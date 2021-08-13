@@ -1,6 +1,10 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -11,19 +15,25 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
-#include "pixel_format.hpp"
+#include "pixel_format_info.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"
@@ -44,6 +54,8 @@ using texture_handle = basic_texture<detail::handle_type>;
  *
  * \brief Represents an hardware-accelerated image, intended to be rendered using the
  * `basic_renderer` class.
+ *
+ * \ownerhandle `texture`/`texture_handle`
  *
  * \since 3.0.0
  *
@@ -108,7 +120,7 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const not_null<czstring> path)
+  basic_texture(const Renderer& renderer, const not_null<str> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture)
@@ -209,7 +221,7 @@ class basic_texture final
    */
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      const not_null<czstring> path,
+                                      const not_null<str> path,
                                       const pixel_format format) -> basic_texture
   {
     assert(path);
@@ -255,8 +267,8 @@ class basic_texture final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the texture access isn't `streaming` or if the
-   * coordinate is out-of-bounds.
+   * \details This function has no effect if the texture access isn't `streaming` or if
+   * the coordinate is out-of-bounds.
    *
    * \param pixel the pixel that will be changed.
    * \param color the new color of the pixel.
@@ -317,7 +329,7 @@ class basic_texture final
   /**
    * \brief Sets the color modulation of the texture.
    *
-   * \note The alpha component in the color struct is ignored by this method.
+   * \note The alpha component in the color struct is ignored by this function.
    *
    * \param color the color that will be used to modulate the color of the texture.
    *
@@ -602,7 +614,7 @@ class basic_texture final
   /**
    * \brief Locks the texture for write-only pixel access.
    *
-   * \remarks This method is only applicable if the texture access of the texture is
+   * \remarks This function is only applicable if the texture access of the texture is
    * `Streaming`.
    *
    * \param pixels this will be filled with a pointer to the locked pixels.
@@ -643,6 +655,9 @@ class basic_texture final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a texture.
  *
@@ -655,10 +670,22 @@ class basic_texture final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("texture{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(texture.get()),
+                     texture.width(),
+                     texture.height());
+#else
   return "texture{data: " + detail::address_of(texture.get()) +
          ", width: " + std::to_string(texture.width()) +
          ", height: " + std::to_string(texture.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a texture.
@@ -676,7 +703,9 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
   return stream << to_string(texture);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

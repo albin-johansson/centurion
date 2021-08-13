@@ -5,8 +5,8 @@
 
 #include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
+#include "../core/str.hpp"
 #include "../detail/clamp.hpp"
 #include "common_event.hpp"
 
@@ -113,7 +113,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    */
   [[nodiscard]] auto text() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<czstring>(m_event.text)};
+    return std::string_view{static_cast<str>(m_event.text)};
   }
 
   /**
@@ -149,6 +149,9 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL_Event
 {
@@ -156,6 +159,8 @@ inline auto as_sdl_event(const common_event<SDL_TextEditingEvent>& event) -> SDL
   e.edit = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

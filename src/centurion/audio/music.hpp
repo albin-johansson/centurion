@@ -3,6 +3,10 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -11,58 +15,28 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/max.hpp"
+#include "fade_status.hpp"
+#include "music_type.hpp"
 
 namespace cen {
 
 /// \addtogroup audio
 /// \{
-
-/**
- * \enum fade_status
- *
- * \brief Provides values that represent different fade playback states.
- *
- * \since 3.0.0
- *
- * \see `Mix_Fading`
- */
-enum class fade_status
-{
-  none = MIX_NO_FADING,  ///< No currently fading music.
-  in = MIX_FADING_IN,    ///< Currently fading in music.
-  out = MIX_FADING_OUT   ///< Currently fading out music.
-};
-
-/**
- * \enum music_type
- *
- * \brief Provides values that represent different supported music types.
- *
- * \since 3.0.0
- *
- * \see `Mix_MusicType`
- */
-enum class music_type
-{
-  unknown = MUS_NONE,
-  mp3 = MUS_MP3,
-  wav = MUS_WAV,
-  ogg = MUS_OGG,
-  mod = MUS_MOD,
-  midi = MUS_MID,
-  cmd = MUS_CMD,
-  flac = MUS_FLAC,
-  opus = MUS_OPUS
-};
 
 /**
  * \class music
@@ -111,7 +85,7 @@ class music final
    *
    * \since 3.0.0
    */
-  explicit music(const not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
+  explicit music(const not_null<str> file) : m_music{Mix_LoadMUS(file)}
   {
     if (!m_music)
     {
@@ -139,8 +113,8 @@ class music final
   /**
    * \brief Plays the music associated with this instance.
    *
-   * \details Any previously playing music will be halted. However, this method will wait
-   * for music that was fading out to complete.
+   * \details Any previously playing music will be halted. However, this function will
+   * wait for music that was fading out to complete.
    *
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played forever.
@@ -172,7 +146,7 @@ class music final
   /**
    * \brief Resumes playing the music.
    *
-   * \details This method can safely be invoked with halted, paused and even currently
+   * \details This function can safely be invoked with halted, paused and even currently
    * playing music.
    *
    * \since 3.0.0
@@ -185,8 +159,8 @@ class music final
   /**
    * \brief Pauses any currently playing music.
    *
-   * \note This method only affects music that is currently playing, which doesn't include
-   * music that is being faded in/out.
+   * \note This function only affects music that is currently playing, which doesn't
+   * include music that is being faded in/out.
    *
    * \since 3.0.0
    */
@@ -198,7 +172,7 @@ class music final
   /**
    * \brief Stops ALL currently playing and fading music.
    *
-   * \details Unlike `pause()`, this method affects all kinds of music.
+   * \details Unlike `pause()`, this function affects all kinds of music.
    *
    * \since 3.0.0
    */
@@ -248,7 +222,7 @@ class music final
    * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played forever.
    * Furthermore, the values 0 and 1 both results in the music being played *one time*.
-   * Except for these "special" values, the method behaves as expected.
+   * Except for these "special" values, the function behaves as expected.
    *
    * \param ms the amount of time it takes for the fade to complete.
    *
@@ -273,9 +247,9 @@ class music final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method only affects music that is currently playing and not currently
-   * fading out. In other words, this method has no effect if music is currently being
-   * faded by the time the method is invoked.
+   * \details This function only affects music that is currently playing and not currently
+   * fading out. In other words, this function has no effect if music is currently being
+   * faded by the time the function is invoked.
    *
    * \param ms the amount of time for the fade to complete, in milliseconds.
    *
@@ -514,7 +488,7 @@ class music final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> str
   {
     return Mix_GetMusicDecoder(index);
   }
@@ -530,7 +504,7 @@ class music final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
+  [[nodiscard]] static auto has_decoder(const str name) noexcept -> bool
   {
     return Mix_HasMusicDecoder(name) == SDL_TRUE;
   }
@@ -591,6 +565,9 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 
 /// \} End of callbacks
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a `music` instance.
  *
@@ -602,9 +579,20 @@ inline void on_music_finished(music_finished_callback callback) noexcept
  */
 [[nodiscard]] inline auto to_string(const music& music) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("music{{data: {}, volume: {}}}",
+                     detail::address_of(music.get()),
+                     music::volume());
+#else
   return "music{data: " + detail::address_of(music.get()) +
          ", volume: " + std::to_string(music::volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a `music` instance.
@@ -621,102 +609,8 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
   return stream << to_string(music);
 }
 
-/// \name Music-related comparison operators
-/// \{
+/// \} End of streaming
 
-/**
- * \brief Indicates whether or not the fading status values represent are the same.
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return static_cast<Mix_Fading>(lhs) == rhs;
-}
-
-/// \copydoc operator==(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the fading status values represent aren't the same.
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
-{
-  return !(lhs == rhs);  // NOLINT
-}
-
-/**
- * \brief Indicates whether or not the music type values are the same.
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
-{
-  return static_cast<Mix_MusicType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the music type values aren't the same.
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of music-related comparison operators
 /// \} End of group audio
 
 }  // namespace cen

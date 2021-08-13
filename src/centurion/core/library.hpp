@@ -1,8 +1,18 @@
 /// \defgroup core Core
 /// \brief Contains entities considered to be fundamental for the library.
 
-/// \defgroup configuration Configuration
-/// \brief Contains the API related to hints/configuration variables.
+/**
+ * \defgroup hints Hints
+ *
+ * \brief Contains the API related to hints (configuration variables).
+ *
+ * \details Refer to the official SDL2 wiki or the `SDL_hints.hpp` header for details
+ * regarding any specific hint type.
+ *
+ * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`, `X11WindowVisualID` are
+ * string hints because the types of their values isn't known. Should be fixed if the type
+ * isn't actually string.
+ */
 
 /// \defgroup event Events
 /// \brief Contains entities related to events.
@@ -17,6 +27,9 @@
 /// \defgroup video Video
 /// \brief Contains components related to window-management, rendering, fonts,
 /// etc.
+
+/// \defgroup filesystem Filesystem
+/// \brief Contains utilities related to files and directories.
 
 /// \defgroup system System
 /// \brief Contains various utilities related to system resources.
@@ -33,6 +46,10 @@
 
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER
+
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
 
 #include <SDL.h>
 
@@ -148,7 +165,7 @@ struct config final
  *   }
  * \endcode
  *
- * \note The signature of the main-method must be `ìnt(int, char**)` when
+ * \note The signature of the main-function must be `ìnt(int, char**)` when
  * using the Centurion library!
  *
  * \since 3.0.0
@@ -173,7 +190,7 @@ class library final
    *
    * \since 3.0.0
    */
-  library()
+  CENTURION_NODISCARD_CTOR library()
   {
     init();
   }
@@ -193,7 +210,7 @@ class library final
    *
    * \since 4.0.0
    */
-  explicit library(const config& cfg) : m_cfg{cfg}
+  CENTURION_NODISCARD_CTOR explicit library(const config& cfg) : m_cfg{cfg}
   {
     init();
   }

@@ -8,11 +8,12 @@ TEST(Platform, IsWindows)
 {
   ASSERT_EQ(cen::current_platform() == cen::platform_id::windows, cen::is_windows());
 
-  constexpr auto isWindows = cen::ifdef_win32() || cen::ifdef_win64();
-  ASSERT_EQ(cen::is_windows(), isWindows);
+  constexpr auto isWin32 = cen::ifdef_win32();
+  constexpr auto isWin64 = cen::ifdef_win64();
+  ASSERT_EQ(cen::is_windows(), isWin32 || isWin64);
 
   // Check that win64 -> win32
-  ASSERT_TRUE(!cen::ifdef_win64() || (cen::ifdef_win64() && cen::ifdef_win32()));
+  ASSERT_TRUE(!isWin64 || (isWin64 && isWin32));
 }
 
 TEST(Platform, IsMacOSX)

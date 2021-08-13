@@ -4,6 +4,7 @@
 
 #include "core/log.hpp"
 #include "input/scan_code.hpp"
+#include "input/scancodes.hpp"
 #include "serialization_utils.hpp"
 
 TEST(ScanCode, DefaultValue)
@@ -89,7 +90,7 @@ TEST(ScanCode, StringAssignmentOperator)
 
 TEST(ScanCode, Count)
 {
-  ASSERT_EQ(static_cast<int>(SDL_NUM_SCANCODES), cen::scan_code::count());
+  ASSERT_EQ(SDL_NUM_SCANCODES, cen::scan_code::count());
 }
 
 TEST(ScanCode, Unknown)
@@ -203,7 +204,7 @@ TEST(ScanCode, ToString)
 
 TEST(ScanCode, StreamOperator)
 {
-  std::cout << "COUT: " << cen::scancodes::x << '\n';
+  std::clog << cen::scancodes::x << '\n';
 }
 
 TEST(ScanCode, Constants)

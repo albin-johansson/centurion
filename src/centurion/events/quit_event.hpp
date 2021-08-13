@@ -42,6 +42,9 @@ class quit_event final : public common_event<SDL_QuitEvent>
   {}
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
 {
@@ -49,6 +52,8 @@ inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
   e.quit = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

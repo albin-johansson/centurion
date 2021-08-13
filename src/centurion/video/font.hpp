@@ -3,17 +3,28 @@
 
 #ifndef CENTURION_NO_SDL_TTF
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL_ttf.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <memory>       // unique_ptr
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
+#include "../core/str.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../math/area.hpp"
@@ -55,6 +66,68 @@ enum class font_hint : int
   none = TTF_HINTING_NONE
 };
 
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied font hint.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(font_hint::light) == "light"`.
+ *
+ * \param hint the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
+{
+  switch (hint)
+  {
+    case font_hint::normal:
+      return "normal";
+
+    case font_hint::light:
+      return "light";
+
+    case font_hint::mono:
+      return "mono";
+
+    case font_hint::none:
+      return "none";
+
+    default:
+      throw cen_error{"Did not recognize font hint!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a font hint enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param hint the enumerator that will be printed.
+ *
+ * \see `to_string(font_hint)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostream&
+{
+  return stream << to_string(hint);
+}
+
+/// \} End of streaming
+
 /**
  * \class font
  *
@@ -84,7 +157,7 @@ class font final
    *
    * \since 3.0.0
    */
-  font(const not_null<czstring> file, const int size) : m_size{size}
+  font(const not_null<str> file, const int size) : m_size{size}
   {
     assert(file);
 
@@ -434,7 +507,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto family_name() const noexcept -> czstring
+  [[nodiscard]] auto family_name() const noexcept -> str
   {
     return TTF_FontFaceFamilyName(m_font.get());
   }
@@ -448,7 +521,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto style_name() const noexcept -> czstring
+  [[nodiscard]] auto style_name() const noexcept -> str
   {
     return TTF_FontFaceStyleName(m_font.get());
   }
@@ -474,7 +547,7 @@ class font final
    * \brief Returns the kerning amount between two glyphs in the font, if kerning would be
    * enabled.
    *
-   * \details In other words, you can use this method to obtain the kerning amount
+   * \details In other words, you can use this function to obtain the kerning amount
    * between, for instance, the characters 'a' and 'V' if they were to be rendered next to
    * each other.
    *
@@ -550,7 +623,7 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto string_size(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_size(const not_null<str> str) const noexcept
       -> std::optional<iarea>
   {
     assert(str);
@@ -592,7 +665,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
     if (const auto size = string_size(str))
@@ -631,7 +704,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_height(const not_null<czstring> str) const noexcept
+  [[nodiscard]] auto string_height(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
     if (const auto size = string_size(str))
@@ -694,7 +767,7 @@ class font final
   /**
    * \brief Returns a pointer to the associated `TTF_Font`.
    *
-   * \warning Use of this method is not recommended. However, it's useful since many SDL
+   * \warning Use of this function is not recommended. However, it's useful since many SDL
    * calls use non-const pointers even when no change will be applied.
    *
    * \warning Don't take ownership of the returned pointer!
@@ -753,6 +826,9 @@ class font final
   }
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a font instance.
  *
@@ -762,10 +838,22 @@ class font final
  */
 [[nodiscard]] inline auto to_string(const font& font) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("font{{data: {}, name: {}, size: {}}}",
+                     detail::address_of(font.get()),
+                     font.family_name(),
+                     font.size());
+#else
   return "font{data: " + detail::address_of(font.get()) +
          ", name: " + std::string{font.family_name()} +
          ", size: " + std::to_string(font.size()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a font.
@@ -781,6 +869,8 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 {
   return stream << to_string(font);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

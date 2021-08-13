@@ -6,13 +6,13 @@
 #include <cassert>  // assert
 #include <string>   // string
 
-#include "../core/czstring.hpp"
 #include "../core/not_null.hpp"
 #include "../core/sdl_string.hpp"
+#include "../core/str.hpp"
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
 
 /**
@@ -33,8 +33,8 @@ namespace cen {
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto preferred_path(const not_null<czstring> org,
-                                         const not_null<czstring> app) -> sdl_string
+[[nodiscard]] inline auto preferred_path(const not_null<str> org, const not_null<str> app)
+    -> sdl_string
 {
   /* Looking at the SDL source code, it actually seems fine to supply a null
      string for the organization name. However, I haven't been able to find any
@@ -69,7 +69,7 @@ namespace cen {
   return preferred_path(org.c_str(), app.c_str());
 }
 
-/// \}
+/// \} End of group filesystem
 
 }  // namespace cen
 

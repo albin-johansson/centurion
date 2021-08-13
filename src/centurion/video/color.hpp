@@ -1,10 +1,14 @@
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>      // assert
-#include <cmath>        // round, abs, fmod
+#include <cmath>        // round, abs, fmod, lerp
 #include <iomanip>      // setfill, setw
 #include <ios>          // uppercase, hex
 #include <optional>     // optional
@@ -13,11 +17,18 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../compiler/compiler.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/from_string.hpp"
+#include "../detail/lerp.hpp"
 
 namespace cen {
 
@@ -29,9 +40,11 @@ namespace cen {
  *
  * \brief An 8-bit accuracy RGBA color.
  *
+ * \serializable
+ *
  * \details This class is designed to interact with the SDL colors, i.e. `SDL_Color` and
  * `SDL_MessageBoxColor`. For convenience, there are approximately 140 color constants
- * provided in the `cen::colors` namespace,
+ * provided in the `colors` namespace,
  *
  * \since 3.0.0
  */
@@ -790,6 +803,9 @@ class color final
   SDL_Color m_color{0, 0, 0, max()};
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of the color.
  *
@@ -801,11 +817,24 @@ class color final
  */
 [[nodiscard]] inline auto to_string(const color& color) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("color{{r: {}, g: {}, b: {}: a: {}}}",
+                     +color.red(),
+                     +color.green(),
+                     +color.blue(),
+                     +color.alpha());
+#else
   return "color{r: " + std::to_string(color.red()) +
          ", g: " + std::to_string(color.green()) +
          ", b: " + std::to_string(color.blue()) +
          ", a: " + std::to_string(color.alpha()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a color.
@@ -821,6 +850,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 {
   return stream << to_string(color);
 }
+
+/// \} End of streaming
 
 /**
  * \brief Blends two colors according to the specified bias.
@@ -839,27 +870,30 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Centurion 7: Make the bias parameter a `float`.
+ * \todo Default the bias to 0.5 when the `double` overload has been removed.
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const double bias = 0.5)
-    -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
 {
   assert(bias >= 0);
-  assert(bias <= 1.0);
+  assert(bias <= 1.0f);
 
-  const auto invBias = 1.0 - bias;
+  const auto red = detail::lerp(a.red_norm(), b.red_norm(), bias);
+  const auto green = detail::lerp(a.green_norm(), b.green_norm(), bias);
+  const auto blue = detail::lerp(a.blue_norm(), b.blue_norm(), bias);
+  const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
-  const auto red = (a.red() * invBias) + (b.red() * bias);
-  const auto green = (a.green() * invBias) + (b.green() * bias);
-  const auto blue = (a.blue() * invBias) + (b.blue() * bias);
-  const auto alpha = (a.alpha() * invBias) + (b.alpha() * bias);
+  return color::from_norm(red, green, blue, alpha);
+}
 
-  return color{static_cast<u8>(std::round(red)),
-               static_cast<u8>(std::round(green)),
-               static_cast<u8>(std::round(blue)),
-               static_cast<u8>(std::round(alpha))};
+/// \copydoc blend()
+/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
+[[nodiscard, deprecated]] inline auto blend(const color& a,
+                                            const color& b,
+                                            const double bias = 0.5) -> color
+{
+  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators

@@ -1,86 +1,36 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
-#include <cassert>  // assert
-#include <string>   // string
-#include <utility>  // forward
+#include <cassert>   // assert
+#include <chrono>    // zoned_time, current_zone, system_clock
+#include <iostream>  // clog
+#include <string>    // string
+#include <utility>   // forward
 
-#include "czstring.hpp"
-#include "macros.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
+#include "is_stateless_callable.hpp"
+#include "log_category.hpp"
+#include "log_priority.hpp"
 #include "not_null.hpp"
+#include "str.hpp"
 #include "to_underlying.hpp"
 
-#if CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-// Workaround for this enum being completely anonymous in SDL 2.0.10
-using SDL_LogCategory = decltype(SDL_LOG_CATEGORY_APPLICATION);
-
-#endif  // CENTURION_SDL_VERSION_IS(2, 0, 10)
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/**
- * \enum log_priority
- *
- * \brief Provides values that represent different logging priorities.
- *
- * \see `SDL_LogPriority`
- *
- * \since 3.0.0
- */
-enum class log_priority : int
-{
-  info = SDL_LOG_PRIORITY_INFO,
-  warn = SDL_LOG_PRIORITY_WARN,
-  verbose = SDL_LOG_PRIORITY_VERBOSE,
-  debug = SDL_LOG_PRIORITY_DEBUG,
-  critical = SDL_LOG_PRIORITY_CRITICAL,
-  error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * \enum log_category
- *
- * \brief Provides values that represent different logging categories.
- *
- * \see `SDL_LogCategory`
- *
- * \since 3.0.0
- */
-enum class log_category : int
-{
-  app = SDL_LOG_CATEGORY_APPLICATION,
-  error = SDL_LOG_CATEGORY_ERROR,
-  assert = SDL_LOG_CATEGORY_ASSERT,
-  system = SDL_LOG_CATEGORY_SYSTEM,
-  audio = SDL_LOG_CATEGORY_AUDIO,
-  video = SDL_LOG_CATEGORY_VIDEO,
-  render = SDL_LOG_CATEGORY_RENDER,
-  input = SDL_LOG_CATEGORY_INPUT,
-  test = SDL_LOG_CATEGORY_TEST,
-  misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/// \} End of group core
-
-/**
- * \namespace cen::log
- *
- * \ingroup core
- *
- * \brief Contains easy-to-use logging facilities.
- *
- * \details The usage of the logging API will be very familiar to most people that have
- * used the `printf` and/or the `SDL_Log` facilities.
- *
- * \since 3.0.0
- */
-namespace log {
+/// \namespace cen::log
+/// \brief Contains easy-to-use logging facilities.
+/// \ingroup core
+/// \since 3.0.0
+namespace cen::log {
 
 /// \addtogroup core
 /// \{
@@ -88,8 +38,8 @@ namespace log {
 /**
  * \brief Logs a message with the specified priority and category.
  *
- * \details This method has no effect if the supplied string is null. Usage of this method
- * is quite bulky, so refer to the other logging methods for casual logging.
+ * \details This function has no effect if the supplied string is null. Usage of this
+ * function is quite bulky, so refer to the other logging methods for casual logging.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -103,7 +53,7 @@ namespace log {
 template <typename... Args>
 void msg(const log_priority priority,
          const log_category category,
-         const not_null<czstring> fmt,
+         const not_null<str> fmt,
          Args&&... args) noexcept
 {
   assert(fmt);
@@ -113,9 +63,9 @@ void msg(const log_priority priority,
 }
 
 /**
- * \brief Logs a message with `priority::info` and the specified category.
+ * \brief Logs a message with `log_priority::info` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -126,17 +76,15 @@ void msg(const log_priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const log_category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void info(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::info, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::info` and `category::app`.
+ * \brief Logs a message with `log_priority::info` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -146,15 +94,15 @@ void info(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const not_null<czstring> fmt, Args&&... args) noexcept
+void info(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::info(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::warn` and the specified category.
+ * \brief Logs a message with `log_priority::warn` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -165,17 +113,15 @@ void info(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const log_category category,
-          const not_null<czstring> fmt,
-          Args&&... args) noexcept
+void warn(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::warn, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::warn` and `category::app`.
+ * \brief Logs a message with `log_priority::warn` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -185,15 +131,15 @@ void warn(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const not_null<czstring> fmt, Args&&... args) noexcept
+void warn(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::warn(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and the specified category.
+ * \brief Logs a message with `log_priority::verbose` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -205,16 +151,16 @@ void warn(const not_null<czstring> fmt, Args&&... args) noexcept
  */
 template <typename... Args>
 void verbose(const log_category category,
-             const not_null<czstring> fmt,
+             const not_null<str> fmt,
              Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::verbose` and `category::app`.
+ * \brief Logs a message with `log_priority::verbose` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -224,15 +170,15 @@ void verbose(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
+void verbose(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::verbose(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::debug` and the specified category.
+ * \brief Logs a message with `log_priority::debug` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -243,17 +189,15 @@ void verbose(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const log_category category,
-           const not_null<czstring> fmt,
-           Args&&... args) noexcept
+void debug(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::debug, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::debug` and `category::app`.
+ * \brief Logs a message with `log_priority::debug` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -263,15 +207,15 @@ void debug(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const not_null<czstring> fmt, Args&&... args) noexcept
+void debug(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::debug(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::critical` and the specified category.
+ * \brief Logs a message with `log_priority::critical` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -283,16 +227,16 @@ void debug(const not_null<czstring> fmt, Args&&... args) noexcept
  */
 template <typename... Args>
 void critical(const log_category category,
-              const not_null<czstring> fmt,
+              const not_null<str> fmt,
               Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::critical` and `category::app` .
+ * \brief Logs a message with `log_priority::critical` and `log_category::app`.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -302,15 +246,15 @@ void critical(const log_category category,
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const not_null<czstring> fmt, Args&&... args) noexcept
+void critical(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with `priority::error` and the specified category.
+ * \brief Logs a message with `log_priority::error` and the specified category.
  *
- * \details This method has no effect if the supplied string is null.
+ * \details This function has no effect if the supplied string is null.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -321,13 +265,13 @@ void critical(const not_null<czstring> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const log_category category, const czstring fmt, Args&&... args) noexcept
+void error(const log_category category, const str fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::error, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
- * \brief Logs a message with the `priority::error` and `category::app`.
+ * \brief Logs a message with the `log_priority::error` and `log_category::app`.
  *
  * \tparam Args the types of the arguments that will be used in the formatted string.
  *
@@ -337,7 +281,7 @@ void error(const log_category category, const czstring fmt, Args&&... args) noex
  * \since 4.0.0
  */
 template <typename... Args>
-void error(const not_null<czstring> fmt, Args&&... args) noexcept
+void error(const not_null<str> fmt, Args&&... args) noexcept
 {
   log::error(log_category::app, fmt, std::forward<Args>(args)...);
 }
@@ -346,7 +290,8 @@ void error(const not_null<czstring> fmt, Args&&... args) noexcept
  * \brief Logs a string.
  *
  * \details This function is meant to be used for casual logging, where you just want to
- * log a string. The message will be logged with `priority::info` and `category::app`.
+ * log a string. The message will be logged with `log_priority::info` and
+ * `log_category::app`.
  *
  * \param str the string that will be logged.
  *
@@ -357,8 +302,8 @@ inline void put(const std::string& str) noexcept
   log::info("%s", str.c_str());
 }
 
-/// \copydoc put(const std::string&)
-inline void put(const not_null<czstring> str) noexcept
+/// \copydoc put()
+inline void put(const not_null<str> str) noexcept
 {
   log::info("%s", str);
 }
@@ -434,240 +379,102 @@ inline void set_priority(const log_category category,
   return SDL_MAX_LOG_MESSAGE;
 }
 
-/// \} End of group core
-
-}  // namespace log
-
-/// \addtogroup core
-/// \{
+#if CENTURION_HAS_FEATURE_CONCEPTS
 
 /**
- * \brief Indicates whether or not the two log priorities values are the same.
+ * \brief Sets the logging output function that will be used.
  *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
+ * \tparam Callable the type of the function object.
  *
- * \return `true` if the priorities are the same; `false` otherwise.
+ * \param callable the function object that will be used as the new logging output
+ * function.
  *
- * \since 3.0.0
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
+template <is_stateless_callable<log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable) noexcept
 {
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
 
-/// \copydoc operator==(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the two log priorities values aren't the same.
- *
- * \param lhs the left-hand side log priority value.
- * \param rhs the right-hand side log priority value.
- *
- * \return `true` if the priorities aren't the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const log_priority lhs,
-                                        const SDL_LogPriority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(log_priority, SDL_LogPriority)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
-                                        const log_priority rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
+  SDL_LogSetOutputFunction(wrapper, nullptr);
 }
 
 /**
- * \brief Indicates whether or not the two log category values are the same.
+ * \brief Sets the logging output function that will be used.
  *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
+ * \tparam UserData the type of the user data.
+ * \tparam Callable the type of the function object.
  *
- * \return `true` if the categories are the same; `false` otherwise.
+ * \param callable the function object that will be used as the new logging output
+ * function.
+ * \param data a pointer to the user data, can safely be null. However, see the other
+ * overload of this function if you do not need the user data.
  *
- * \since 4.0.0
+ * \see `use_preset_output_function()`
+ *
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator==(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
+template <typename UserData,
+          is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
+inline void set_output_function(Callable callable, UserData* data) noexcept
 {
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
+  const auto wrapper = [](void* erased,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<UserData*>(erased),
+        static_cast<log_category>(category),
+        static_cast<log_priority>(priority),
+        message);
+  };
+
+  SDL_LogSetOutputFunction(wrapper, data);
 }
 
-/// \copydoc operator==(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
+#if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
 
 /**
- * \brief Indicates whether or not the two log category values are the same.
+ * \brief Sets the logging output function to a convenient preset.
  *
- * \param lhs the left-hand side log category value.
- * \param rhs the right-hand side log category value.
+ * \details Calling this function will make the logging output be channeled through
+ * `std::clog`, and use an output format that includes the current time (taking the
+ * current time zone into account) and the log priority associated with each message.
  *
- * \return `true` if the categories are the same; `false` otherwise.
+ * \see `set_output_function()`
  *
- * \since 4.0.0
+ * \since 6.2.0
  */
-[[nodiscard]] constexpr auto operator!=(const log_category lhs,
-                                        const SDL_LogCategory rhs) noexcept -> bool
+inline void use_preset_output_function() noexcept
 {
-  return !(lhs == rhs);
+  using std::chrono::current_zone;
+  using std::chrono::system_clock;
+  using std::chrono::zoned_time;
+
+  set_output_function([](const log_category,
+                         const log_priority priority,
+                         const str message) {
+    const zoned_time time{current_zone(), system_clock::now()};
+    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+  });
 }
 
-/// \copydoc operator!=(log_category, SDL_LogCategory)
-[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
-                                        const log_category rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
+#endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 /// \} End of group core
 
-}  // namespace cen
-
-/// \addtogroup core
-/// \{
-
-#ifndef CENTURION_NO_DEBUG_LOG_MACROS
-#ifdef NDEBUG
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...)
-
-#else
-
-/**
- * \def CENTURION_LOG_INFO
- */
-#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_WARN
- */
-#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_VERBOSE
- */
-#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_DEBUG
- */
-#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_CRITICAL
- */
-#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
-
-/**
- * \def CENTURION_LOG_ERROR
- */
-#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
-
-#endif  // NDEBUG
-#endif  // CENTURION_NO_DEBUG_LOG_MACROS
-
-/**
- * \def CENTURION_LOG_INFO
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::info`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_WARN
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::warn`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_VERBOSE
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::verbose`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_DEBUG
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::debug`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_CRITICAL
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::critical`.
- *
- * \since 5.0.0
- */
-
-/**
- * \def CENTURION_LOG_ERROR
- *
- * \note This macro can be excluded by defining `CENTURION_NO_DEBUG_LOG_MACROS`.
- *
- * \brief A debug-only macro that expands to `cen::log::error`.
- *
- * \since 5.0.0
- */
-
-/// \} End of group core
+}  // namespace cen::log
 
 #endif  // CENTURION_LOG_HEADER

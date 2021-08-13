@@ -3,6 +3,10 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -11,11 +15,17 @@
 #include <ostream>   // ostream
 #include <string>    // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/clamp.hpp"
@@ -52,6 +62,8 @@ using sound_effect_handle = basic_sound_effect<detail::handle_type>;
  * \class basic_sound_effect
  *
  * \brief Represents a sound effect.
+ *
+ * \ownerhandle `sound_effect`/`sound_effect_handle`
  *
  * \details Unlike with the music API, multiple sound effects can be played at the same
  * time, which is the main difference between the `music` and `sound_effect` APIs.
@@ -122,7 +134,7 @@ class basic_sound_effect final
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_sound_effect(const not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
+  explicit basic_sound_effect(const not_null<str> file) : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk)
     {
@@ -228,7 +240,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect is currently playing.
+   * \details This function has no effect if the sound effect is currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -248,7 +260,7 @@ class basic_sound_effect final
    *
    * \pre `ms` must be greater than zero.
    *
-   * \details This method has no effect if the sound effect isn't currently playing.
+   * \details This function has no effect if the sound effect isn't currently playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -286,8 +298,8 @@ class basic_sound_effect final
   /**
    * \brief Sets the volume of the sound effect.
    *
-   * \details This method will adjust input values outside the legal range to the closest
-   * legal value.
+   * \details This function will adjust input values outside the legal range to the
+   * closest legal value.
    *
    * \param volume the volume of the sound effect, in the range [0,
    * `sound_effect::max_volume()`].
@@ -372,7 +384,7 @@ class basic_sound_effect final
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto get_decoder(const int index) noexcept -> czstring
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> str
   {
     return Mix_GetChunkDecoder(index);
   }
@@ -389,7 +401,7 @@ class basic_sound_effect final
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto has_decoder(const czstring name) noexcept -> bool
+  [[nodiscard]] static auto has_decoder(const str name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }
@@ -492,6 +504,9 @@ class basic_sound_effect final
   return sound_effect_handle{Mix_GetChunk(channel)};
 }
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a sound effect.
  *
@@ -503,9 +518,20 @@ class basic_sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("sound_effect{{data: {}, volume: {}}}",
+                     detail::address_of(sound.get()),
+                     sound.volume());
+#else
   return "sound_effect{data: " + detail::address_of(sound.get()) +
          ", volume: " + std::to_string(sound.volume()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a sound effect.
@@ -521,6 +547,8 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound) -> std::
 {
   return stream << to_string(sound);
 }
+
+/// \} End of streaming
 
 /// \} End of group audio
 

@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -19,7 +19,7 @@ TEST(Locale, GetPreferred)
   }
   else
   {
-    std::cout << "Could not obtain preferred locale!\n";
+    std::clog << "Could not obtain preferred locale!\n";
   }
 }
 

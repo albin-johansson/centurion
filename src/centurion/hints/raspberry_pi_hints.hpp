@@ -3,24 +3,24 @@
 
 #include <SDL.h>
 
-#include "../core/czstring.hpp"
+#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
-
-/// \addtogroup configuration
-/// \{
 
 namespace cen::hint::raspberrypi {
 
+/// \addtogroup hints
+/// \{
+
 struct video_layer final : detail::int_hint<video_layer>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RPI_VIDEO_LAYER;
   }
 };
 
-}  // namespace cen::hint::raspberrypi
+/// \} End of group hints
 
-/// \} End of group configuration
+}  // namespace cen::hint::raspberrypi
 
 #endif  // CENTURION_RASPBERRY_PI_HINTS_HEADER

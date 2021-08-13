@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 
 #include "core/log.hpp"
 #include "serialization_utils.hpp"
@@ -97,8 +97,8 @@ TEST(Area, StreamOperator)
 {
   constexpr cen::iarea ia{123, 456};
   constexpr cen::farea fa{12.3f, 45.6f};
-  std::cout << "COUT: " << ia << '\n';
-  std::cout << "COUT: " << fa << '\n';
+  std::clog << ia << '\n';
+  std::clog << fa << '\n';
 }
 
 TEST(Area, Cast)

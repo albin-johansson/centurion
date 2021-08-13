@@ -9,7 +9,7 @@
 #include "../core/integers.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
-#include "mutex.hpp"
+#include "lock_status.hpp"
 
 namespace cen {
 

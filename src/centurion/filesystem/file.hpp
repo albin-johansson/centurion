@@ -13,77 +13,19 @@
 #include <optional>  // optional
 #include <string>    // string
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
+#include "../core/to_underlying.hpp"
+#include "file_mode.hpp"
+#include "file_type.hpp"
+#include "seek_mode.hpp"
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
-
-/**
- * \enum file_mode
- *
- * \brief Provides values that represent different file modes.
- *
- * \details This enum provides values that directly correspond to each of the possible SDL
- * file mode strings, such as "r" or "rb".
- *
- * \since 5.3.0
- */
-enum class file_mode
-{
-  read_existing,         ///< "r"
-  read_existing_binary,  ///< "rb"
-
-  write,         ///< "w"
-  write_binary,  ///< "wb"
-
-  append_or_create,         ///< "a"
-  append_or_create_binary,  ///< "ab"
-
-  read_write_existing,         ///< "r+"
-  read_write_existing_binary,  ///< "rb+"
-
-  read_write_replace,         ///< "w+"
-  read_write_replace_binary,  ///< "wb+"
-
-  read_append,        ///< "a+"
-  read_append_binary  ///< "ab+"
-};
-
-/**
- * \enum seek_mode
- *
- * \brief Provides values that represent various file seek modes.
- *
- * \since 5.3.0
- */
-enum class seek_mode
-{
-  from_beginning = RW_SEEK_SET,       ///< From the beginning.
-  relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
-  relative_to_end = RW_SEEK_END       ///< Relative to the end.
-};
-
-/**
- * \enum file_type
- *
- * \brief Provides values that represent different file types.
- *
- * \since 5.3.0
- */
-enum class file_type : uint
-{
-  unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
-  win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.
-  stdio = SDL_RWOPS_STDFILE,       ///< A STDIO file.
-  jni = SDL_RWOPS_JNIFILE,         ///< An Android asset file.
-  memory = SDL_RWOPS_MEMORY,       ///< A memory stream file.
-  memory_ro = SDL_RWOPS_MEMORY_RO  ///< A read-only memory stream file.
-};
 
 /**
  * \class file
@@ -131,11 +73,11 @@ class file final
    *
    * \since 5.3.0
    */
-  file(const not_null<czstring> path, const file_mode mode) noexcept
+  file(const not_null<str> path, const file_mode mode) noexcept
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
-  /// \copydoc file(not_null<czstring>, file_mode)
+  /// \copydoc file(not_null<str>, file_mode)
   file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
   {}
 
@@ -738,7 +680,7 @@ class file final
       -> std::optional<i64>
   {
     assert(m_context);
-    const auto result = SDL_RWseek(m_context.get(), offset, static_cast<int>(mode));
+    const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
     if (result != -1)
     {
       return result;
@@ -830,7 +772,7 @@ class file final
   };
   std::unique_ptr<SDL_RWops, deleter> m_context;
 
-  [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> czstring
+  [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> str
   {
     switch (mode)
     {
@@ -876,7 +818,7 @@ class file final
   }
 };
 
-/// \} End of system group
+/// \} End of group filesystem
 
 }  // namespace cen
 

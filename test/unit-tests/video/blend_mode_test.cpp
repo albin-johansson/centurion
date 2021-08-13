@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>  // clog
+
 TEST(BlendMode, EqualityOperator)
 {
   ASSERT_EQ(cen::blend_mode::none, SDL_BLENDMODE_NONE);
@@ -30,4 +32,23 @@ TEST(BlendMode, InequalityOperator)
 
   ASSERT_NE(SDL_BLENDMODE_ADD, cen::blend_mode::blend);
   ASSERT_NE(SDL_BLENDMODE_MOD, cen::blend_mode::add);
+}
+
+TEST(BlendMode, ToString)
+{
+  ASSERT_THROW(cen::to_string(static_cast<cen::blend_mode>(SDL_BLENDMODE_INVALID + 1)),
+               cen::cen_error);
+
+  ASSERT_EQ("none", cen::to_string(cen::blend_mode::none));
+  ASSERT_EQ("blend", cen::to_string(cen::blend_mode::blend));
+  ASSERT_EQ("add", cen::to_string(cen::blend_mode::add));
+  ASSERT_EQ("mod", cen::to_string(cen::blend_mode::mod));
+  ASSERT_EQ("invalid", cen::to_string(cen::blend_mode::invalid));
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+  ASSERT_EQ("mul", cen::to_string(cen::blend_mode::mul));
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+  std::clog << "Blend mode example: " << cen::blend_mode::blend << '\n';
 }

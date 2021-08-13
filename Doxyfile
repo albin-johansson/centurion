@@ -38,13 +38,13 @@ PROJECT_NAME           = Centurion
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 6.1.0
+PROJECT_NUMBER         = 6.2.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "A modern C++ library built on top of SDL2 in order to improve type-safety, memory safety and overall ease-of-use."
+PROJECT_BRIEF          = "A modern C++ wrapper library for SDL2"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -269,7 +269,8 @@ TAB_SIZE               = 2
 # commands \{ and \} for these it is advised to use the version @{ and @} or use
 # a double escape (\\{ and \\})
 
-ALIASES                =
+ALIASES                = "ownerhandle=\details This class is a part of the owner/handle API, the owner/handle versions of this class are " \
+                         "serializable=\details This type is serializable, see the associated `serialize` function.\n"
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -667,7 +668,7 @@ SORT_MEMBERS_CTORS_1ST = NO
 # appear in their defined order.
 # The default value is: NO.
 
-SORT_GROUP_NAMES       = NO
+SORT_GROUP_NAMES       = YES
 
 # If the SORT_BY_SCOPE_NAME tag is set to YES, the class list will be sorted by
 # fully-qualified names, including namespaces. If set to NO, the class list will
@@ -736,14 +737,14 @@ MAX_INITIALIZER_LINES  = 30
 # list will mention the files that were used to generate the documentation.
 # The default value is: YES.
 
-SHOW_USED_FILES        = YES
+SHOW_USED_FILES        = NO
 
 # Set the SHOW_FILES tag to NO to disable the generation of the Files page. This
 # will remove the Files entry from the Quick Index and from the Folder Tree View
 # (if specified).
 # The default value is: YES.
 
-SHOW_FILES             = YES
+SHOW_FILES             = NO
 
 # Set the SHOW_NAMESPACES tag to NO to disable the generation of the Namespaces
 # page. This will remove the Namespaces entry from the Quick Index and from the
@@ -865,7 +866,13 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = src/centurion \
-                         doxygen/main_page.md
+                         README.md \
+                         docs/primer.h \
+                         docs/owners_and_handles.h \
+                         docs/configuration.h \
+                         docs/faq.h \
+                         docs/examples.h \
+                         docs/examples
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -897,6 +904,7 @@ INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.cpp \
                          *.hpp \
                          *.ipp \
+                         *.h \
                          *.m \
                          *.markdown \
                          *.md \
@@ -1027,7 +1035,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = doxygen/main_page.md
+USE_MDFILE_AS_MAINPAGE = README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -1214,7 +1222,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = doxygen/bootstrapped/header.html
+HTML_HEADER            = doxygen/header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1224,7 +1232,7 @@ HTML_HEADER            = doxygen/bootstrapped/header.html
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            = doxygen/bootstrapped/footer.html
+HTML_FOOTER            = doxygen/footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1249,7 +1257,10 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = doxygen/bootstrapped/customdoxygen.css
+HTML_EXTRA_STYLESHEET  = doxygen/doxygen-awesome.css \
+                         doxygen/doxygen-awesome-sidebar-only.css \
+                         doxygen/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         doxygen/centurion.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1259,7 +1270,7 @@ HTML_EXTRA_STYLESHEET  = doxygen/bootstrapped/customdoxygen.css
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = doxygen/bootstrapped/doxy-boot.js
+HTML_EXTRA_FILES       = doxygen/doxygen-awesome-darkmode-toggle.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1548,7 +1559,7 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
@@ -2126,6 +2137,10 @@ DOCBOOK_PROGRAMLISTING = NO
 GENERATE_AUTOGEN_DEF   = NO
 
 #---------------------------------------------------------------------------
+# Configuration options related to Sqlite3 output
+#---------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------
 # Configuration options related to the Perl module output
 #---------------------------------------------------------------------------
 
@@ -2221,6 +2236,14 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = CENTURION___DOXYGEN \
+                         CENTURION_NODISCARD_CTOR \
+                         CENTURION_HAS_FEATURE_CPP20 \
+                         CENTURION_HAS_FEATURE_CONCEPTS \
+                         CENTURION_HAS_FEATURE_FORMAT \
+                         CENTURION_HAS_FEATURE_MEMORY_RESOURCE \
+                         CENTURION_HAS_FEATURE_LERP \
+                         CENTURION_HAS_FEATURE_SPACESHIP \
+                         CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES \
                          SDL_VERSION_ATLEAST
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this

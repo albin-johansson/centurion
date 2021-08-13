@@ -6,9 +6,9 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
+#include "../core/str.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
 
@@ -55,8 +55,8 @@ class locale final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_language(const not_null<czstring> language,
-                                  const czstring country = nullptr) const noexcept -> bool
+  [[nodiscard]] auto has_language(const not_null<str> language,
+                                  const str country = nullptr) const noexcept -> bool
   {
     assert(language);
 

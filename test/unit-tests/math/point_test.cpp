@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>        // abs, sqrt
-#include <iostream>     // cout
+#include <iostream>     // clog
 #include <type_traits>  // ...
 
 #include "core/log.hpp"
@@ -209,10 +209,10 @@ TEST(Point, ToString)
 TEST(Point, StreamOperator)
 {
   const cen::ipoint ip{123, 456};
-  std::cout << "COUT: " << ip << '\n';
+  std::clog << ip << '\n';
 
   const cen::fpoint fp{12.3f, 45.6f};
-  std::cout << "COUT: " << fp << '\n';
+  std::clog << fp << '\n';
 }
 
 TEST(Point, Serialization)

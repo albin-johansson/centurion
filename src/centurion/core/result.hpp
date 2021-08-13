@@ -122,6 +122,9 @@ inline constexpr result success{true};
 /// \since 6.0.0
 inline constexpr result failure{false};
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a string that represents a result value.
  *
@@ -139,6 +142,11 @@ inline constexpr result failure{false};
   return result ? "success" : "failure";
 }
 
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
 /**
  * \brief Prints a textual representation of a result value using a stream.
  *
@@ -153,6 +161,8 @@ inline auto operator<<(std::ostream& stream, const result result) -> std::ostrea
 {
   return stream << to_string(result);
 }
+
+/// \} End of streaming
 
 /// \} End of group core
 

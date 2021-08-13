@@ -1,12 +1,22 @@
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/cast.hpp"
 #include "../core/sfinae.hpp"
@@ -98,6 +108,8 @@ using fpoint = basic_point<float>;
  * \class basic_point
  *
  * \brief Represents a two-dimensional point.
+ *
+ * \serializable
  *
  * \details This class is designed as a wrapper for `SDL_Point` and `SDL_FPoint`. The
  * representation is specified by the type parameter.
@@ -363,23 +375,41 @@ template <typename T>
 
 /// \} End of point-related functions
 
+/// \name String conversions
+/// \{
+
 [[nodiscard]] inline auto to_string(const ipoint point) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
 [[nodiscard]] inline auto to_string(const fpoint point) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
+#else
   return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
          "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_point<T>& point) -> std::ostream&
 {
   return stream << to_string(point);
 }
+
+/// \} End of streaming
 
 /// \name Point cast specializations
 /// \{
@@ -490,26 +520,16 @@ template <typename T>
 /// \name Point comparison operators
 /// \{
 
-[[nodiscard]] constexpr auto operator==(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] constexpr auto operator==(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
-{
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
-}
-
-[[nodiscard]] constexpr auto operator!=(const ipoint lhs, const ipoint rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-[[nodiscard]] constexpr auto operator!=(const fpoint lhs, const fpoint rhs) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_point<T> lhs,
+                                        const basic_point<T> rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

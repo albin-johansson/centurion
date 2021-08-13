@@ -1,6 +1,10 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -13,11 +17,17 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -61,6 +71,8 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \class basic_renderer
  *
  * \brief Provides 2D-rendering that is potentially hardware-accelerated.
+ *
+ * \ownerhandle `renderer`/`renderer_handle`
  *
  * \details Rendering primitives such as points, rectangles, lines and circles are
  * supported. The owning version of this class, `renderer`, features an extended API
@@ -627,7 +639,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -670,7 +682,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<czstring> str,
+  [[nodiscard]] auto render_blended_wrapped_utf8(const not_null<str> str,
                                                  const font& font,
                                                  const u32 wrap) -> texture
   {
@@ -714,7 +726,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_utf8(const not_null<czstring> str,
+  [[nodiscard]] auto render_shaded_utf8(const not_null<str> str,
                                         const font& font,
                                         const color& background) -> texture
   {
@@ -756,7 +768,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -795,7 +807,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_blended_latin1(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -838,7 +850,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<czstring> str,
+  [[nodiscard]] auto render_blended_wrapped_latin1(const not_null<str> str,
                                                    const font& font,
                                                    const u32 wrap) -> texture
   {
@@ -882,7 +894,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_latin1(const not_null<czstring> str,
+  [[nodiscard]] auto render_shaded_latin1(const not_null<str> str,
                                           const font& font,
                                           const color& background) -> texture
   {
@@ -924,7 +936,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<czstring> str, const font& font)
+  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font)
       -> texture
   {
     assert(str);
@@ -2220,17 +2232,31 @@ class basic_renderer final
   }
 };
 
+/// \name String conversions
+/// \{
+
 template <typename T>
 [[nodiscard]] auto to_string(const basic_renderer<T>& renderer) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("renderer{{data: {}}}", detail::address_of(renderer.get()));
+#else
   return "renderer{data: " + detail::address_of(renderer.get()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std::ostream&
 {
   return stream << to_string(renderer);
 }
+
+/// \} End of streaming
 
 /// \} End of group video
 

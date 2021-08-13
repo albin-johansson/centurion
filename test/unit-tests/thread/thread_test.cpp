@@ -15,7 +15,7 @@ auto dummy = [](void*) noexcept -> int {
   return 0;
 };
 
-}
+}  // namespace
 
 static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
 static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
@@ -139,21 +139,31 @@ TEST(Thread, ToString)
 TEST(Thread, StreamOperator)
 {
   cen::thread thread{dummy, "myThread"};
-  std::cout << "COUT: " << cen::to_string(thread) << '\n';
+  std::clog << cen::to_string(thread) << '\n';
 }
 
-TEST(Thread, ThreadPriorityValues)
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+TEST(Thread, Init)
 {
-  ASSERT_EQ(cen::thread_priority::low, SDL_THREAD_PRIORITY_LOW);
-  ASSERT_EQ(cen::thread_priority::normal, SDL_THREAD_PRIORITY_NORMAL);
-  ASSERT_EQ(cen::thread_priority::high, SDL_THREAD_PRIORITY_HIGH);
-  ASSERT_EQ(cen::thread_priority::critical, SDL_THREAD_PRIORITY_TIME_CRITICAL);
+  {  // No arguments
+    auto thread = cen::thread::init([] {});
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(0, thread.join());
+  }
 
-  ASSERT_EQ(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::low);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_NORMAL, cen::thread_priority::normal);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_HIGH, cen::thread_priority::high);
-  ASSERT_EQ(SDL_THREAD_PRIORITY_TIME_CRITICAL, cen::thread_priority::critical);
+  {  // No arguments but returns integer
+    auto thread = cen::thread::init([] { return 42; });
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(42, thread.join());
+  }
 
-  ASSERT_NE(cen::thread_priority::high, SDL_THREAD_PRIORITY_TIME_CRITICAL);
-  ASSERT_NE(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::normal);
+  {  // With user data
+    int i = 123;
+    auto thread = cen::thread::init([](int* data) { return *data; }, &i);
+    ASSERT_TRUE(thread.joinable());
+    ASSERT_EQ(123, thread.join());
+  }
 }
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS

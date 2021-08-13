@@ -1,6 +1,10 @@
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
@@ -11,12 +15,18 @@
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
+#include "../core/str.hpp"
 #include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
@@ -24,7 +34,7 @@
 #include "../math/rect.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"
-#include "pixel_format.hpp"
+#include "pixel_format_info.hpp"
 
 namespace cen {
 
@@ -57,14 +67,14 @@ using surface_handle = basic_surface<detail::handle_type>;
  *
  * \brief Represents a non-accelerated image.
  *
+ * \ownerhandle `surface`/`surface_handle`
+ *
  * \details Surfaces are often used for icons and snapshots, or as an "intermediate"
  * representation that can be manipulated, unlike textures. There is no support
  * for directly rendering surfaces. However, surfaces can be converted to textures, which
  * in turn can be rendered.
  *
  * \note Unlike most other Centurion components, surfaces can be copied.
- *
- * \tparam T Used to determine the ownership semantics of the class.
  *
  * \since 4.0.0
  *
@@ -119,7 +129,7 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_surface(const not_null<czstring> file) : m_surface{IMG_Load(file)}
+  explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface)
     {
@@ -184,7 +194,7 @@ class basic_surface final
    * \since 5.2.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto with_format(const not_null<czstring> file,
+  [[nodiscard]] static auto with_format(const not_null<str> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat) -> basic_surface
   {
@@ -221,7 +231,7 @@ class basic_surface final
    * \since 5.3.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_bmp(const not_null<czstring> file) -> basic_surface
+  [[nodiscard]] static auto from_bmp(const not_null<str> file) -> basic_surface
   {
     assert(file);
     return basic_surface{SDL_LoadBMP(file)};
@@ -315,7 +325,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  auto save_as_bmp(const not_null<czstring> file) const noexcept -> result
+  auto save_as_bmp(const not_null<str> file) const noexcept -> result
   {
     assert(file);
     return SDL_SaveBMP(get(), file) != -1;
@@ -341,7 +351,7 @@ class basic_surface final
    *
    * \since 6.0.0
    */
-  auto save_as_png(const not_null<czstring> file) const noexcept -> result
+  auto save_as_png(const not_null<str> file) const noexcept -> result
   {
     assert(file);
     return IMG_SavePNG(get(), file) != -1;
@@ -370,8 +380,7 @@ class basic_surface final
    *
    * \since 6.0.0
    */
-  auto save_as_jpg(const not_null<czstring> file, const int quality) const noexcept
-      -> result
+  auto save_as_jpg(const not_null<str> file, const int quality) const noexcept -> result
   {
     assert(file);
     return IMG_SaveJPG(get(), file, quality) != -1;
@@ -397,7 +406,7 @@ class basic_surface final
    * \brief Attempts to lock the surface, so that the associated pixel data can
    * be modified.
    *
-   * \details This method has no effect if `must_lock()` returns `false`.
+   * \details This function has no effect if `must_lock()` returns `false`.
    *
    * \return `success` if the locking of the surface was successful or if
    * locking isn't required for modifying the surface; `failure` if something
@@ -420,7 +429,7 @@ class basic_surface final
   /**
    * \brief Unlocks the surface.
    *
-   * \details This method has no effect if `must_lock()` returns `false`.
+   * \details This function has no effect if `must_lock()` returns `false`.
    *
    * \since 4.0.0
    */
@@ -454,7 +463,7 @@ class basic_surface final
   /**
    * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * \details This method has no effect if the coordinate is out-of-bounds or if
+   * \details This function has no effect if the coordinate is out-of-bounds or if
    * something goes wrong when attempting to modify the pixel data.
    *
    * \param pixel the pixel that will be changed.
@@ -879,6 +888,9 @@ class basic_surface final
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
+/// \name String conversions
+/// \{
+
 /**
  * \brief Returns a textual representation of a surface.
  *
@@ -891,10 +903,22 @@ class basic_surface final
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
 {
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("surface{{data: {}, width: {}, height: {}}}",
+                     detail::address_of(surface.get()),
+                     surface.width(),
+                     surface.height());
+#else
   return "surface{data: " + detail::address_of(surface.get()) +
          ", width: " + std::to_string(surface.width()) +
          ", height: " + std::to_string(surface.height()) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
 }
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
 
 /**
  * \brief Prints a textual representation of a surface.
@@ -909,11 +933,12 @@ template <typename T>
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::ostream&
 {
-  stream << to_string(surface);
-  return stream;
+  return stream << to_string(surface);
 }
 
-/// \}
+/// \} End of streaming
+
+/// \} End of group video
 
 }  // namespace cen
 

@@ -11,22 +11,27 @@
 #include <optional>  // optional
 #include <vector>    // vector
 
-#include "../../core/czstring.hpp"
 #include "../../core/integers.hpp"
 #include "../../core/result.hpp"
+#include "../../core/str.hpp"
 #include "../window.hpp"
-
-/// \addtogroup video
-/// \{
 
 /**
  * \namespace cen::vk
  *
  * \brief Contains Vulkan-related components.
  *
+ * \ingroup video
+ *
  * \since 6.0.0
  */
 namespace cen::vk {
+
+/// \addtogroup video
+/// \{
+
+/// \name Vulkan functions
+/// \{
 
 /**
  * \brief Returns the address of the `vkGetInstanceProcAddr` function.
@@ -71,7 +76,7 @@ auto create_surface(basic_window<T>& window,
  *
  * \since 6.0.0
  */
-inline auto required_extensions() -> std::optional<std::vector<czstring>>
+inline auto required_extensions() -> std::optional<std::vector<str>>
 {
   uint count{};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr))
@@ -79,7 +84,7 @@ inline auto required_extensions() -> std::optional<std::vector<czstring>>
     return std::nullopt;
   }
 
-  std::vector<czstring> names(count);
+  std::vector<str> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
   {
     return std::nullopt;
@@ -114,9 +119,11 @@ template <typename T>
   return {width, height};
 }
 
-}  // namespace cen::vk
+/// \} End of Vulkan functions
 
 /// \} End of group video
+
+}  // namespace cen::vk
 
 #endif  // CENTURION_NO_VULKAN
 #endif  // CENTURION_VULKAN_HEADER

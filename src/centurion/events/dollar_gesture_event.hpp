@@ -74,6 +74,8 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \param fingers the amount of fingers used to draw the stroke.
    *
+   * \todo Centurion 7.0.0: Rename to set_finger_count.
+   *
    * \since 4.0.0
    */
   void set_fingers(const u32 fingers) noexcept
@@ -208,6 +210,9 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
   }
 };
 
+/// \name SDL event conversions
+/// \{
+
 template <>
 inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event) -> SDL_Event
 {
@@ -215,6 +220,8 @@ inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event) -> S
   e.dgesture = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 #include <gtest/gtest.h>
 
-#include <iostream>  // cout
+#include <iostream>  // clog
 #include <memory>    // unique_ptr
 #include <type_traits>
 
@@ -254,7 +254,7 @@ TEST_F(TextureTest, ToString)
 
 TEST_F(TextureTest, StreamOperator)
 {
-  std::cout << "COUT: " << *m_texture << '\n';
+  std::clog << *m_texture << '\n';
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

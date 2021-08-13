@@ -5,13 +5,13 @@
 
 #include <utility>  // make_pair
 
-#include "../core/czstring.hpp"
+#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 
 namespace cen::hint {
 
-/// \addtogroup configuration
+/// \addtogroup hints
 /// \{
 
 /**
@@ -29,7 +29,7 @@ struct render_driver final : enum_hint<render_driver>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_DRIVER;
   }
@@ -43,11 +43,31 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
       std::make_pair(value::medium, "medium"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 };
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+struct audio_include_monitors final : detail::bool_hint<audio_include_monitors>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_INCLUDE_MONITORS;
+  }
+};
+
+struct audio_device_stream_role final : detail::string_hint<audio_device_stream_role>
+{
+  [[nodiscard]] constexpr static auto name() noexcept -> str
+  {
+    return SDL_HINT_AUDIO_DEVICE_STREAM_ROLE;
+  }
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
 struct scale_quality final : enum_hint<scale_quality>
 {
@@ -56,7 +76,7 @@ struct scale_quality final : enum_hint<scale_quality>
       std::make_pair(value::linear, "linear"),
       std::make_pair(value::best, "best")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
@@ -74,7 +94,7 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
@@ -86,7 +106,7 @@ struct audio_category final : enum_hint<audio_category>
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_CATEGORY;
   }
@@ -100,7 +120,7 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
       std::make_pair(value::ignore_zero, "ignorezero"),
       std::make_pair(value::maximum, "maximum")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
@@ -114,7 +134,7 @@ struct wave_truncation final : enum_hint<wave_truncation>
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::very_strict, "verystrict")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_TRUNCATION;
   }
@@ -128,7 +148,7 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
       std::make_pair(value::ignore, "ignore"),
       std::make_pair(value::truncate, "truncate")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
@@ -140,7 +160,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
 
-  constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
@@ -148,7 +168,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
 
 struct accelerometer_as_joystick final : detail::bool_hint<accelerometer_as_joystick>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
   }
@@ -156,7 +176,7 @@ struct accelerometer_as_joystick final : detail::bool_hint<accelerometer_as_joys
 
 struct allow_top_most final : detail::bool_hint<allow_top_most>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_ALLOW_TOPMOST;
   }
@@ -164,7 +184,7 @@ struct allow_top_most final : detail::bool_hint<allow_top_most>
 
 struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
   }
@@ -172,7 +192,7 @@ struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
 
 struct double_buffer final : detail::bool_hint<double_buffer>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_DOUBLE_BUFFER;
   }
@@ -180,7 +200,7 @@ struct double_buffer final : detail::bool_hint<double_buffer>
 
 struct enable_steam_controllers final : detail::bool_hint<enable_steam_controllers>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
   }
@@ -188,7 +208,7 @@ struct enable_steam_controllers final : detail::bool_hint<enable_steam_controlle
 
 struct grab_keyboard final : detail::bool_hint<grab_keyboard>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_GRAB_KEYBOARD;
   }
@@ -196,7 +216,7 @@ struct grab_keyboard final : detail::bool_hint<grab_keyboard>
 
 struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_IDLE_TIMER_DISABLED;
   }
@@ -204,7 +224,7 @@ struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
 
 struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_IME_INTERNAL_EDITING;
   }
@@ -212,7 +232,7 @@ struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
 
 struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_NO_SIGNAL_HANDLERS;
   }
@@ -220,7 +240,7 @@ struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
 
 struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_OPENGL_ES_DRIVER;
   }
@@ -228,7 +248,7 @@ struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
 
 struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_OPENGL_SHADERS;
   }
@@ -236,7 +256,7 @@ struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
 
 struct vsync final : detail::bool_hint<vsync>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_VSYNC;
   }
@@ -244,7 +264,7 @@ struct vsync final : detail::bool_hint<vsync>
 
 struct allow_screensaver final : detail::bool_hint<allow_screensaver>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
   }
@@ -254,7 +274,7 @@ struct allow_screensaver final : detail::bool_hint<allow_screensaver>
 
 struct video_external_context final : detail::bool_hint<video_external_context>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
   }
@@ -264,7 +284,7 @@ struct video_external_context final : detail::bool_hint<video_external_context>
 
 struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
   }
@@ -272,7 +292,7 @@ struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
 
 struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
   }
@@ -281,7 +301,7 @@ struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
 struct window_frame_usable_while_cursor_hidden final
     : detail::bool_hint<window_frame_usable_while_cursor_hidden>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
   }
@@ -289,7 +309,7 @@ struct window_frame_usable_while_cursor_hidden final
 
 struct render_batching final : detail::bool_hint<render_batching>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RENDER_BATCHING;
   }
@@ -297,7 +317,7 @@ struct render_batching final : detail::bool_hint<render_batching>
 
 struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_RETURN_KEY_HIDES_IME;
   }
@@ -305,7 +325,7 @@ struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
 
 struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_TOUCH_MOUSE_EVENTS;
   }
@@ -313,7 +333,7 @@ struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
 
 struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_MOUSE_TOUCH_EVENTS;
   }
@@ -321,7 +341,7 @@ struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
 
 struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
   }
@@ -331,7 +351,7 @@ struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
 
 struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_DISPLAY_USABLE_BOUNDS;
   }
@@ -341,7 +361,7 @@ struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
 
 struct orientations final : detail::string_hint<orientations>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_ORIENTATIONS;
   }
@@ -349,7 +369,7 @@ struct orientations final : detail::string_hint<orientations>
 
 struct window_share_pixel_format final : detail::string_hint<window_share_pixel_format>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
   }
@@ -357,23 +377,23 @@ struct window_share_pixel_format final : detail::string_hint<window_share_pixel_
 
 struct event_logging final : detail::int_hint<event_logging>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_EVENT_LOGGING;
   }
 };
 
-struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
+struct thread_stack_size final : detail::uint_hint<thread_stack_size>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_THREAD_STACK_SIZE;
   }
 };
 
-struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
+struct timer_resolution final : detail::uint_hint<timer_resolution>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_TIMER_RESOLUTION;
   }
@@ -383,7 +403,7 @@ struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
 
 struct preferred_locales final : detail::string_hint<preferred_locales>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_PREFERRED_LOCALES;
   }
@@ -391,7 +411,7 @@ struct preferred_locales final : detail::string_hint<preferred_locales>
 
 struct thread_priority_policy final : detail::string_hint<thread_priority_policy>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     // This hint could be enum-based, but it isn't clear whether or not there
     // may be implementation specific identifiers other than those of the listed
@@ -403,7 +423,7 @@ struct thread_priority_policy final : detail::string_hint<thread_priority_policy
 struct treat_time_critical_as_real_time final
     : detail::bool_hint<treat_time_critical_as_real_time>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL;
   }
@@ -411,7 +431,7 @@ struct treat_time_critical_as_real_time final
 
 struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_DEVICE_APP_NAME;
   }
@@ -419,7 +439,7 @@ struct audio_device_app_name final : detail::string_hint<audio_device_app_name>
 
 struct audio_device_stream_name final : detail::string_hint<audio_device_stream_name>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> str
   {
     return SDL_HINT_AUDIO_DEVICE_STREAM_NAME;
   }
@@ -427,7 +447,7 @@ struct audio_device_stream_name final : detail::string_hint<audio_device_stream_
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-/// \} End of group configuration
+/// \} End of group hints
 
 }  // namespace cen::hint
 

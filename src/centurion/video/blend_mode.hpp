@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+#include "../core/exception.hpp"
+
 namespace cen {
 
 /// \addtogroup video
@@ -32,6 +37,78 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend mode.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_mode::blend) == "blend"`.
+ *
+ * \param mode the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
+{
+  switch (mode)
+  {
+    case blend_mode::none:
+      return "none";
+
+    case blend_mode::blend:
+      return "blend";
+
+    case blend_mode::add:
+      return "add";
+
+    case blend_mode::mod:
+      return "mod";
+
+    case blend_mode::invalid:
+      return "invalid";
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+    case blend_mode::mul:
+      return "mul";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+    default:
+      throw cen_error{"Did not recognize blend mode!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend mode enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param mode the enumerator that will be printed.
+ *
+ * \see `to_string(blend_mode)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostream&
+{
+  return stream << to_string(mode);
+}
+
+/// \} End of streaming
 
 /// \name Blend mode comparison operators
 /// \{

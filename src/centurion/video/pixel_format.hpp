@@ -3,14 +3,11 @@
 
 #include <SDL.h>
 
-#include "../core/czstring.hpp"
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
-#include "../core/not_null.hpp"
-#include "../core/owner.hpp"
-#include "../core/to_underlying.hpp"
-#include "../detail/owner_handle_api.hpp"
-#include "color.hpp"
 
 namespace cen {
 
@@ -107,261 +104,184 @@ enum class pixel_format : u32
   external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
 };
 
-template <typename B>
-class basic_pixel_format_info;
+/// \name String conversions
+/// \{
 
 /**
- * \typedef pixel_format_info
+ * \brief Returns a textual version of the supplied pixel format.
  *
- * \brief Represents an owning pixel format info instance.
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(pixel_format::rgba8888) == "rgba8888"`.
  *
- * \since 5.2.0
+ * \param format the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
  */
-using pixel_format_info = basic_pixel_format_info<detail::owning_type>;
-
-/**
- * \typedef pixel_format_info_handle
- *
- * \brief Represents a non-owning pixel format info instance.
- *
- * \since 5.2.0
- */
-using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
-
-/**
- * \class basic_pixel_format_info
- *
- * \brief Provides information about a pixel format.
- *
- * \details See `pixel_format_info` and `pixel_format_info_handle` for owning and
- * non-owning versions of this class.
- *
- * \note This class is part of the centurion owner/handle framework.
- *
- * \see pixel_format
- * \see pixel_format_info
- * \see pixel_format_info_handle
- * \see SDL_PixelFormat
- * \see SDL_PixelFormatEnum
- *
- * \since 5.2.0
- */
-template <typename B>
-class basic_pixel_format_info final
+[[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
- public:
-  /// \name Construction
-  /// \{
-
-  // clang-format off
-
-  /**
-   * \brief Creates a pixel format info instance based on an existing pointer.
-   *
-   * \note Ownership of the supplied pointer might be claimed, depending on the
-   * ownership semantics of the class.
-   *
-   * \param format a pointer to the associated pixel format.
-   *
-   * \throws cen_error if the supplied pointer is null *and* the class has owning semantics.
-   *
-   * \since 5.2.0
-   */
-  explicit basic_pixel_format_info(maybe_owner<SDL_PixelFormat*> format) noexcept(!detail::is_owning<B>())
-      : m_format{format}
+  switch (format)
   {
-    if constexpr (detail::is_owning<B>())
-    {
-      if (!m_format)
-      {
-        throw cen_error{"Null pixel format!"};
-      }
-    }
+    case pixel_format::unknown:
+      return "unknown";
+
+    case pixel_format::index1lsb:
+      return "index1lsb";
+
+    case pixel_format::index1msb:
+      return "index1msb";
+
+    case pixel_format::index4lsb:
+      return "index4lsb";
+
+    case pixel_format::index4msb:
+      return "index4msb";
+
+    case pixel_format::index8:
+      return "index8";
+
+    case pixel_format::rgb332:
+      return "rgb332";
+
+    case pixel_format::argb4444:
+      return "argb4444";
+
+    case pixel_format::rgba4444:
+      return "rgba4444";
+
+    case pixel_format::abgr4444:
+      return "abgr4444";
+
+    case pixel_format::bgra4444:
+      return "bgra4444";
+
+    case pixel_format::argb1555:
+      return "argb1555";
+
+    case pixel_format::rgba5551:
+      return "rgba5551";
+
+    case pixel_format::abgr1555:
+      return "abgr1555";
+
+    case pixel_format::bgra5551:
+      return "bgra5551";
+
+    case pixel_format::rgb565:
+      return "rgb565";
+
+    case pixel_format::bgr565:
+      return "bgr565";
+
+    case pixel_format::rgb24:
+      return "rgb24";
+
+    case pixel_format::bgr24:
+      return "bgr24";
+
+    case pixel_format::rgbx8888:
+      return "rgbx8888";
+
+    case pixel_format::bgrx8888:
+      return "bgrx8888";
+
+    case pixel_format::argb8888:
+      return "argb8888";
+
+    case pixel_format::rgba8888:
+      return "rgba8888";
+
+    case pixel_format::abgr8888:
+      return "abgr8888";
+
+    case pixel_format::bgra8888:
+      return "bgra8888";
+
+    case pixel_format::argb2101010:
+      return "argb2101010";
+
+    case pixel_format::yv12:
+      return "yv12";
+
+    case pixel_format::iyuv:
+      return "iyuv";
+
+    case pixel_format::yuy2:
+      return "yuy2";
+
+    case pixel_format::uyvy:
+      return "uyvy";
+
+    case pixel_format::yvyu:
+      return "yvyu";
+
+    case pixel_format::nv12:
+      return "nv12";
+
+    case pixel_format::nv21:
+      return "nv21";
+
+    case pixel_format::external_oes:
+      return "external_oes";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+    case pixel_format::xrgb4444:
+      return "xrgb4444";
+
+    case pixel_format::xbgr4444:
+      return "xbgr4444";
+
+    case pixel_format::xrgb1555:
+      return "xrgb1555";
+
+    case pixel_format::xbgr1555:
+      return "xbgr1555";
+
+    case pixel_format::xrgb8888:
+      return "xrgb8888";
+
+    case pixel_format::xbgr8888:
+      return "xbgr8888";
+
+#elif SDL_VERSION_ATLEAST(2, 0, 12)
+
+    case pixel_format::bgr444:  // Equal to xbgr4444
+      return "bgr444";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+    default:
+      throw cen_error{"Did not recognize pixel format mode!"};
   }
+}
 
-  // clang-format on
+/// \} End of string conversions
 
-  /**
-   * \brief Creates an owning instance based on a pixel format.
-   *
-   * \tparam BB dummy template parameter for SFINAE.
-   *
-   * \param format the associated pixel format.
-   *
-   * \throws sdl_error if the pixel format info could not be obtained.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_owner<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format format)
-      : m_format{SDL_AllocFormat(to_underlying(format))}
-  {
-    if (!m_format)
-    {
-      throw sdl_error{};
-    }
-  }
+/// \name Streaming
+/// \{
 
-  /**
-   * \brief Creates a handle based on an owning pixel format info instance.
-   *
-   * \param info the associated pixel format info instance.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_handle<BB> = 0>
-  explicit basic_pixel_format_info(const pixel_format_info& info) noexcept
-      : m_format{info.get()}
-  {}
+/**
+ * \brief Prints a textual representation of a pixel format enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param format the enumerator that will be printed.
+ *
+ * \see `to_string(pixel_format)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::ostream&
+{
+  return stream << to_string(format);
+}
 
-  /// \} End of construction
-
-  /// \name Pixel/RGB/RGBA conversions
-  /// \{
-
-  /**
-   * \brief Returns a color that corresponds to a masked pixel value.
-   *
-   * \param pixel the masked pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto pixel_to_rgb(const u32 pixel) const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    SDL_GetRGB(pixel, m_format, &red, &green, &blue);
-    return color{red, green, blue};
-  }
-
-  /**
-   * \brief Returns a color that corresponds to a masked pixel value.
-   *
-   * \param pixel the masked pixel value.
-   *
-   * \return a color that corresponds to a pixel value, according to the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto pixel_to_rgba(const u32 pixel) const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
-    SDL_GetRGBA(pixel, m_format, &red, &green, &blue, &alpha);
-    return color{red, green, blue, alpha};
-  }
-
-  /**
-   * \brief Returns a pixel color value based on the RGB values of a color.
-   *
-   * \note The alpha component is assumed to be `0xFF`, i.e. fully opaque.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> u32
-  {
-    return SDL_MapRGB(m_format, color.red(), color.green(), color.blue());
-  }
-
-  /**
-   * \brief Returns a pixel color value based on the RGBA values of a color.
-   *
-   * \param color the color that will be converted.
-   *
-   * \return a masked pixel color value, based on the pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> u32
-  {
-    return SDL_MapRGBA(m_format, color.red(), color.green(), color.blue(), color.alpha());
-  }
-
-  /// \} End of pixel/RGB/RGBA conversions
-
-  /// \name Queries
-  /// \{
-
-  /**
-   * \brief Returns the associated pixel format.
-   *
-   * \return the associated pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto format() const noexcept -> pixel_format
-  {
-    return static_cast<pixel_format>(m_format->format);
-  }
-
-  /**
-   * \brief Returns a human-readable name associated with the format.
-   *
-   * \details This function never returns a null-pointer, instead it returns
-   * "SDL_PIXELFORMAT_UNKNOWN" if the format is ill-formed.
-   *
-   * \return a human-readable name associated with the format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto name() const noexcept -> not_null<czstring>
-  {
-    return SDL_GetPixelFormatName(m_format->format);
-  }
-
-  /**
-   * \brief Returns a pointer to the associated pixel format instance.
-   *
-   * \warning Do not claim ownership of the returned pointer.
-   *
-   * \return a pointer to the internal pixel format.
-   *
-   * \since 5.2.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat*
-  {
-    return m_format.get();
-  }
-
-  /// \} End of queries
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Indicates whether or not a handle holds a non-null pointer.
-   *
-   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.2.0
-   */
-  template <typename BB = B, detail::is_handle<BB> = 0>
-  [[nodiscard]] explicit operator bool() const noexcept
-  {
-    return m_format;
-  }
-
-  /// \} End of conversions
-
- private:
-  struct deleter final
-  {
-    void operator()(SDL_PixelFormat* format) noexcept
-    {
-      SDL_FreeFormat(format);
-    }
-  };
-  detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
-};
+/// \} End of streaming
 
 /// \name Pixel format comparison operators
 /// \{

@@ -1,27 +1,43 @@
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
+// clang-format off
+#include "../compiler/features.hpp"
+// clang-format on
+
 #include <SDL.h>
 
-#include <array>     // array
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
+#if CENTURION_HAS_FEATURE_FORMAT
+
+#include <format>  // format
+
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/not_null.hpp"
 #include "../core/owner.hpp"
 #include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
+#include "../core/str.hpp"
+#include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
+#include "controller_axis.hpp"
+#include "controller_bind_type.hpp"
+#include "controller_button.hpp"
+#include "controller_type.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"
@@ -30,121 +46,6 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \enum controller_type
- *
- * \brief Represents different game controller types.
- *
- * \see `SDL_GameControllerType`
- *
- * \since 5.0.0
- */
-enum class controller_type
-{
-  unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
-  xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
-  xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
-  ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
-  ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
-  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch
-                                                                 ///< Pro controller.
-};
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \enum controller_axis
- *
- * \brief Represents different game controller axes.
- *
- * \see `SDL_GameControllerAxis`
- *
- * \since 4.0.0
- */
-enum class controller_axis
-{
-  invalid = SDL_CONTROLLER_AXIS_INVALID,
-  left_x = SDL_CONTROLLER_AXIS_LEFTX,
-  left_y = SDL_CONTROLLER_AXIS_LEFTY,
-  right_x = SDL_CONTROLLER_AXIS_RIGHTX,
-  right_y = SDL_CONTROLLER_AXIS_RIGHTY,
-  trigger_left = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-  trigger_right = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-  max = SDL_CONTROLLER_AXIS_MAX
-};
-
-/**
- * \enum controller_button
- *
- * \brief Represents different game controller buttons.
- *
- * \see `SDL_GameControllerButton`
- *
- * \since 4.0.0
- */
-enum class controller_button
-{
-  invalid = SDL_CONTROLLER_BUTTON_INVALID,
-  a = SDL_CONTROLLER_BUTTON_A,
-  b = SDL_CONTROLLER_BUTTON_B,
-  x = SDL_CONTROLLER_BUTTON_X,
-  y = SDL_CONTROLLER_BUTTON_Y,
-  back = SDL_CONTROLLER_BUTTON_BACK,
-  guide = SDL_CONTROLLER_BUTTON_GUIDE,
-  start = SDL_CONTROLLER_BUTTON_START,
-  left_stick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
-  right_stick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
-  left_shoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-  right_shoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
-  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
-  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-  /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro
-     capture button */
-  misc1 = SDL_CONTROLLER_BUTTON_MISC1,
-
-  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
-  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
-  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
-  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
-  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
-
-  max = SDL_CONTROLLER_BUTTON_MAX
-};
-
-/**
- * \enum controller_bind_type
- *
- * \brief Represents different game controller bind types.
- *
- * \see `SDL_GameControllerBindType`
- *
- * \since 5.0.0
- */
-enum class controller_bind_type
-{
-  none = SDL_CONTROLLER_BINDTYPE_NONE,
-  button = SDL_CONTROLLER_BINDTYPE_BUTTON,
-  axis = SDL_CONTROLLER_BINDTYPE_AXIS,
-  hat = SDL_CONTROLLER_BINDTYPE_HAT
-};
 
 template <typename T>
 class basic_controller;
@@ -172,6 +73,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  *
  * \brief Represents a game controller, e.g. Xbox or Playstation controllers.
  *
+ * \ownerhandle `controller`/`controller_handle`
+ *
  * \details You may need to load appropriate game controller mappings before you can begin
  * using the game controller API with certain controllers. This can be accomplished using
  * the `cen::hint::controller::config_file` hint, or the `load_mappings()` and
@@ -180,6 +83,8 @@ using controller_handle = basic_controller<detail::handle_type>;
  * \details For a community managed database file of game controller mappings, see
  * `https://github.com/gabomdq/SDL_GameControllerDB` (if the link doesn’t work for some
  * reason, you should be able to find a copy in the Centurion test resources folder).
+ *
+ * \todo Centurion 7: Move `mapping_result` out of `basic_controller`.
  *
  * \since 5.0.0
  *
@@ -357,7 +262,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto is_supported(const joystick_index index) noexcept -> bool
   {
-    return static_cast<bool>(SDL_IsGameController(index));
+    return SDL_IsGameController(index) == SDL_TRUE;
   }
 
   /**
@@ -405,6 +310,26 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Sends a packet of controller specific data.
+   *
+   * \param data the data that will be sent.
+   * \param size the size of the data.
+   *
+   * \return `success` if the data was sent successfully; `failure` if the controller
+   * or driver doesn't support effect packets.
+   *
+   * \since 6.2.0
+   */
+  auto send_effect(const void* data, const int size) -> result
+  {
+    return SDL_GameControllerSendEffect(m_controller, data, size) == 0;
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \name Button and axis functions
   /// \{
 
@@ -417,7 +342,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const not_null<czstring> str) noexcept
+  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept
       -> controller_button
   {
     assert(str);
@@ -448,7 +373,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept -> czstring
+  [[nodiscard]] static auto stringify(const controller_axis axis) noexcept -> str
   {
     return SDL_GameControllerGetStringForAxis(static_cast<SDL_GameControllerAxis>(axis));
   }
@@ -462,7 +387,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto stringify(const controller_button button) noexcept -> czstring
+  [[nodiscard]] static auto stringify(const controller_button button) noexcept -> str
   {
     return SDL_GameControllerGetStringForButton(
         static_cast<SDL_GameControllerButton>(button));
@@ -576,8 +501,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_axis(const not_null<czstring> str) noexcept
-      -> controller_axis
+  [[nodiscard]] static auto get_axis(const not_null<str> str) noexcept -> controller_axis
   {
     assert(str);
     return static_cast<controller_axis>(SDL_GameControllerGetAxisFromString(str));
@@ -800,7 +724,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto serial() const noexcept -> czstring
+  [[nodiscard]] auto serial() const noexcept -> str
   {
     return SDL_GameControllerGetSerial(m_controller);
   }
@@ -840,7 +764,7 @@ class basic_controller final
    */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
-    return static_cast<bool>(SDL_GameControllerGetAttached(m_controller));
+    return SDL_GameControllerGetAttached(m_controller) == SDL_TRUE;
   }
 
   /**
@@ -853,7 +777,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring
+  [[nodiscard]] auto name() const noexcept -> str
   {
     return SDL_GameControllerName(m_controller);
   }
@@ -988,8 +912,8 @@ class basic_controller final
                                            const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
-    touch::finger_state result;
-    u8 state;
+    touch::finger_state result{};
+    u8 state{};
 
     const auto res = SDL_GameControllerGetTouchpadFinger(m_controller,
                                                          touchpad,
@@ -1101,6 +1025,26 @@ class basic_controller final
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  /**
+   * \brief Returns the data rate of a controller sensor, i.e. the number of supported
+   * events per second.
+   *
+   * \param type the sensor type that will be queried.
+   *
+   * \return the data rate (may be zero if the data rate isn't available).
+   *
+   * \since 6.2.0
+   */
+  [[nodiscard]] auto get_sensor_data_rate(const sensor_type type) const noexcept -> float
+  {
+    return SDL_GameControllerGetSensorDataRate(m_controller,
+                                               static_cast<SDL_SensorType>(type));
+  }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
   /// \} End of sensor functions
 
   /// \name LED functions
@@ -1154,7 +1098,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto add_mapping(const not_null<czstring> mapping) noexcept -> mapping_result
+  static auto add_mapping(const not_null<str> mapping) noexcept -> mapping_result
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
@@ -1208,7 +1152,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto load_mappings(const not_null<czstring> file) noexcept -> std::optional<int>
+  static auto load_mappings(const not_null<str> file) noexcept -> std::optional<int>
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
@@ -1344,6 +1288,62 @@ class basic_controller final
   detail::pointer_manager<T, SDL_GameController, deleter> m_controller;
 };
 
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied controller mapping result.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller::mapping_result::added) == "added"`.
+ *
+ * \param result the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] inline auto to_string(const controller::mapping_result result)
+    -> std::string_view
+{
+  switch (result)
+  {
+    case controller::mapping_result::error:
+      return "error";
+
+    case controller::mapping_result::updated:
+      return "updated";
+
+    case controller::mapping_result::added:
+      return "added";
+
+    default:
+      throw cen_error{"Did not recognize controller mapping result!"};
+  }
+}
+
+/// \see to_string(controller::mapping_result)
+[[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
+    -> std::string_view
+{
+  switch (result)
+  {
+    case controller_handle::mapping_result::error:
+      return "error";
+
+    case controller_handle::mapping_result::updated:
+      return "updated";
+
+    case controller_handle::mapping_result::added:
+      return "added";
+
+    default:
+      throw cen_error{"Did not recognize controller mapping result!"};
+  }
+}
+
 /**
  * \brief Returns a textual representation of a game controller.
  *
@@ -1358,14 +1358,51 @@ template <typename T>
 {
   const auto* name = controller.name();
 
-  czstring serial{};
+  str serial{};
   if constexpr (detail::sdl_version_at_least(2, 0, 14))
   {
     serial = controller.serial();
   }
 
+#if CENTURION_HAS_FEATURE_FORMAT
+  return std::format("controller{{data: {}, name: {}, serial: {}}}",
+                     detail::address_of(controller.get()),
+                     str_or_na(name),
+                     str_or_na(serial));
+#else
   return "controller{data: " + detail::address_of(controller.get()) +
          ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+#endif  // CENTURION_HAS_FEATURE_FORMAT
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a controller mapping result enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param result the enumerator that will be printed.
+ *
+ * \see `to_string(controller::mapping_result)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller::mapping_result result)
+    -> std::ostream&
+{
+  return stream << to_string(result);
+}
+
+/// \see operator<<(std::ostream&, controller::mapping_result)
+inline auto operator<<(std::ostream& stream,
+                       const controller_handle::mapping_result result) -> std::ostream&
+{
+  return stream << to_string(result);
 }
 
 /**
@@ -1385,209 +1422,7 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
   return stream << to_string(controller);
 }
 
-/// \name Game controller comparison operators
-/// \{
-
-#if SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \brief Indicates whether or not to controller type values are the same.
- *
- * \param lhs the left-hand side controller type value.
- * \param rhs the right-hand side controller type value.
- *
- * \return `true` if the controller type values are the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_type lhs,
-                                        const SDL_GameControllerType rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_type, SDL_GameControllerType)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not to controller type values aren't the same.
- *
- * \param lhs the left-hand side controller type value.
- * \param rhs the right-hand side controller type value.
- *
- * \return `true` if the controller type values aren't the same; `false`
- * otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_type lhs,
-                                        const SDL_GameControllerType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_type, SDL_GameControllerType)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerType lhs,
-                                        const controller_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
-
-/**
- * \brief Indicates whether or not two game controller axis values are the same.
- *
- * \param lhs the left-hand-side game controller axis value.
- * \param rhs the right-hand-side game controller axis value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_axis lhs,
-                                        const SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_axis, SDL_GameControllerAxis)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two game controller axis values aren't the
- * same.
- *
- * \param lhs the left-hand-side game controller axis value.
- * \param rhs the right-hand-side game controller axis value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_axis lhs,
-                                        const SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_axis, SDL_GameControllerAxis)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerAxis lhs,
-                                        const controller_axis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two game controller button values are the
- * same.
- *
- * \param lhs the left-hand side game controller button value.
- * \param rhs the right-hand side game controller button value.
- *
- * \return `true` if the game controller button values are the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_GameControllerButton>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_button, SDL_GameControllerButton)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two game controller button values aren't the
- * same.
- *
- * \param lhs the left-hand side game controller button value.
- * \param rhs the right-hand side game controller button value.
- *
- * \return `true` if the game controller button values aren't the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_button, SDL_GameControllerButton)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerButton lhs,
-                                        const controller_button rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \brief Indicates whether or not two controller bind type values are the same.
- *
- * \param lhs the left-hand-side controller bind type value.
- * \param rhs the right-hand-side controller bind type value.
- *
- * \return `true` if the values are the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
-{
-  return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
-}
-
-/// \copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
-[[nodiscard]] constexpr auto operator==(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two controller bind type values aren't the
- * same.
- *
- * \param lhs the left-hand-side controller bind type value.
- * \param rhs the right-hand-side controller bind type value.
- *
- * \return `true` if the values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
-[[nodiscard]] constexpr auto operator!=(const SDL_GameControllerBindType lhs,
-                                        const controller_bind_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/// \} End of game controller comparison operators
+/// \} End of streaming
 
 /// \} End of group input
 

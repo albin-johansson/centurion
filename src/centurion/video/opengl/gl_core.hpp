@@ -6,13 +6,16 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <string>    // string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
 
-#include "../../core/czstring.hpp"
+#include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
 #include "../../core/result.hpp"
+#include "../../core/str.hpp"
 #include "../../core/to_underlying.hpp"
 #include "../../math/area.hpp"
 #include "../texture.hpp"
@@ -21,6 +24,9 @@
 #include "gl_context.hpp"
 
 namespace cen {
+
+/// \addtogroup video
+/// \{
 
 /**
  * \enum gl_swap_interval
@@ -38,6 +44,69 @@ enum class gl_swap_interval : int
   late_immediate = -1  ///< Allow immediate late swaps, instead of waiting for retrace.
 };
 
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied swap interval attribute.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(gl_swap_interval::synchronized) == "synchronized"`.
+ *
+ * \param interval the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval)
+    -> std::string_view
+{
+  switch (interval)
+  {
+    case gl_swap_interval::immediate:
+      return "immediate";
+
+    case gl_swap_interval::synchronized:
+      return "synchronized";
+
+    case gl_swap_interval::late_immediate:
+      return "late_immediate";
+
+    default:
+      throw cen_error{"Did not recognize swap interval!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a swap interval enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param interval the enumerator that will be printed.
+ *
+ * \see `to_string(gl_swap_interval)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
+    -> std::ostream&
+{
+  return stream << to_string(interval);
+}
+
+/// \} End of streaming
+
+/// \} End of group video
+
 }  // namespace cen
 
 /**
@@ -52,6 +121,9 @@ enum class gl_swap_interval : int
 namespace cen::gl {
 
 /// \addtogroup video
+/// \{
+
+/// \name OpenGL functions
 /// \{
 
 /**
@@ -208,8 +280,8 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto is_extension_supported(
-    const not_null<czstring> extension) noexcept -> bool
+[[nodiscard]] inline auto is_extension_supported(const not_null<str> extension) noexcept
+    -> bool
 {
   assert(extension);
   return SDL_GL_ExtensionSupported(extension) == SDL_TRUE;
@@ -265,6 +337,8 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 {
   return SDL_GL_UnbindTexture(texture.get()) == 0;
 }
+
+/// \} End of OpenGL functions
 
 /// \} End of group video
 

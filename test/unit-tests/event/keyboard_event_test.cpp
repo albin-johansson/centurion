@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "events/event.hpp"
+#include "input/keycodes.hpp"
+#include "input/scancodes.hpp"
 
 TEST(KeyboardEvent, Defaults)
 {
@@ -452,6 +454,6 @@ TEST(KeyboardEvent, AsSDLEvent)
   const cen::keyboard_event event;
   const auto sdl = cen::as_sdl_event(event);
 
-  ASSERT_EQ(sdl.key.type, static_cast<cen::u32>(event.type()));
+  ASSERT_EQ(sdl.key.type, cen::to_underlying(event.type()));
   ASSERT_EQ(sdl.key.timestamp, event.time());
 }

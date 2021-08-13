@@ -5,12 +5,12 @@
 
 #include <array>  // array
 
+#include "core/integers.hpp"
 #include "core_mocks.hpp"
 
 extern "C" {
 FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
-FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }
 
 class PlatformTest : public testing::Test
@@ -23,7 +23,6 @@ class PlatformTest : public testing::Test
 
     RESET_FAKE(SDL_GetPlatform)
     RESET_FAKE(SDL_IsTablet)
-    RESET_FAKE(SDL_OpenURL)
   }
 };
 
@@ -104,21 +103,3 @@ TEST_F(PlatformTest, IsTablet)
   const auto isTablet [[maybe_unused]] = cen::is_tablet();
   ASSERT_EQ(1, SDL_IsTablet_fake.call_count);
 }
-
-#if SDL_VERSION_ATLEAST(2, 0, 14)
-
-TEST_F(PlatformTest, OpenURL)
-{
-  std::array values{-1, 0};
-  SET_RETURN_SEQ(SDL_OpenURL, values.data(), cen::isize(values));
-
-  using namespace std::string_literals;
-  const auto url = "https://www.google.com"s;
-
-  ASSERT_FALSE(cen::open_url(url));
-  ASSERT_TRUE(cen::open_url(url));
-
-  ASSERT_EQ(2, SDL_OpenURL_fake.call_count);
-}
-
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

@@ -7,7 +7,7 @@
 
 namespace cen {
 
-/// \addtogroup system
+/// \addtogroup filesystem
 /// \{
 
 /**
@@ -29,7 +29,7 @@ namespace cen {
   return sdl_string{SDL_GetBasePath()};
 }
 
-/// \} End of group system
+/// \} End of group filesystem
 
 }  // namespace cen
 

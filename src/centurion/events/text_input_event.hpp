@@ -5,8 +5,8 @@
 
 #include <string_view>  // string_view
 
-#include "../core/czstring.hpp"
 #include "../core/integers.hpp"
+#include "../core/str.hpp"
 #include "common_event.hpp"
 
 namespace cen {
@@ -78,9 +78,12 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    */
   [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<czstring>(m_event.text)};
+    return std::string_view{static_cast<str>(m_event.text)};
   }
 };
+
+/// \name SDL event conversions
+/// \{
 
 template <>
 inline auto as_sdl_event(const common_event<SDL_TextInputEvent>& event) -> SDL_Event
@@ -89,6 +92,8 @@ inline auto as_sdl_event(const common_event<SDL_TextInputEvent>& event) -> SDL_E
   e.text = event.get();
   return e;
 }
+
+/// \} End of SDL event conversions
 
 /// \} End of group event
 

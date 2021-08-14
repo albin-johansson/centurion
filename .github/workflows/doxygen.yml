@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
       - name: Update packages
@@ -37,8 +36,8 @@ jobs:
           cd doxygen-${{env.DOXYGEN_VERSION}}
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -GNinja
-          ninja
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make
           sudo make install
 
       - name: Generate Doxygen output

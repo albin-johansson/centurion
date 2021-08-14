@@ -31,7 +31,7 @@ jobs:
       - name: Install Doxygen
         shell: bash
         run: |
-          - curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
+          - curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz --output doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
           - gunzip doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
           - tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar
           - cd doxygen-${{env.DOXYGEN_VERSION}}

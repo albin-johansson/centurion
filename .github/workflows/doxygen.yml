@@ -19,23 +19,14 @@ jobs:
         shell: bash
         run: sudo apt update
 
-      - name: Install packages
-        shell: bash
-        run: |
-          sudo apt install flex
-          sudo apt install bison
-          sudo apt install tar
-
       - name: Install Doxygen
         shell: bash
         run: |
           mkdir doxy-bin && cd doxy-bin
           wget https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
-          gunzip doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
-          tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar
+          tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
           cd doxygen-${{env.DOXYGEN_VERSION}}
-          mkdir build
-          cd build
+          mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
           make
           sudo make install

@@ -19,6 +19,8 @@ namespace cen {
  *
  * \see `SDL_LogCategory`
  *
+ * \todo Centurion 7: rename `misc` enumerator to `custom`.
+ *
  * \since 3.0.0
  */
 enum class log_category : int

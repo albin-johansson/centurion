@@ -6,6 +6,8 @@
 
 TEST(LogCategory, Values)
 {
+  ASSERT_EQ(10, cen::log_category_count());
+
   ASSERT_EQ(cen::log_category::app, SDL_LOG_CATEGORY_APPLICATION);
   ASSERT_EQ(cen::log_category::error, SDL_LOG_CATEGORY_ERROR);
   ASSERT_EQ(cen::log_category::assert, SDL_LOG_CATEGORY_ASSERT);

@@ -20,9 +20,10 @@ namespace cen {
  *
  * \brief Provides values that represent different fade playback states.
  *
- * \since 3.0.0
- *
  * \see `Mix_Fading`
+ * \see `fade_status_count()`
+ *
+ * \since 3.0.0
  */
 enum class fade_status
 {
@@ -30,6 +31,18 @@ enum class fade_status
   in = MIX_FADING_IN,    ///< Currently fading in music.
   out = MIX_FADING_OUT   ///< Currently fading out music.
 };
+
+/**
+ * \brief Returns the number of enumerators for the `fade_status` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
+{
+  return 3;
+}
 
 /// \name String conversions
 /// \{

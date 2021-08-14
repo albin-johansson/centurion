@@ -31,15 +31,15 @@ jobs:
       - name: Install Doxygen
         shell: bash
         run: |
-          - curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz --output doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
-          - gunzip doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
-          - tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar
-          - cd doxygen-${{env.DOXYGEN_VERSION}}
-          - mkdir build
-          - cd build
-          - cmake .. -DCMAKE_BUILD_TYPE=Release -GNinja
-          - ninja
-          - sudo make install
+          curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz --output doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
+          gunzip doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz
+          tar xf doxygen-${{env.DOXYGEN_VERSION}}.src.tar
+          cd doxygen-${{env.DOXYGEN_VERSION}}
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -GNinja
+          ninja
+          sudo make install
 
       - name: Generate Doxygen output
         shell: bash

@@ -19,6 +19,8 @@ namespace cen {
  *
  * \brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
+ * \see `joy_hat_position_count()`
+ *
  * \since 4.0.0
  */
 enum class joy_hat_position : u8
@@ -33,6 +35,18 @@ enum class joy_hat_position : u8
   right = SDL_HAT_RIGHT,
   right_down = SDL_HAT_RIGHTDOWN
 };
+
+/**
+ * \brief Returns the number of enumerators for the `joy_hat_position` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto joy_hat_position_count() noexcept -> int
+{
+  return 9;
+}
 
 /// \name String conversions
 /// \{

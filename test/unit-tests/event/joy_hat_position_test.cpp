@@ -7,6 +7,8 @@
 
 TEST(JoyHatPosition, Values)
 {
+  ASSERT_EQ(9, cen::joy_hat_position_count());
+
   ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left_up), SDL_HAT_LEFTUP);
   ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left), SDL_HAT_LEFT);
   ASSERT_EQ(cen::to_underlying(cen::joy_hat_position::left_down), SDL_HAT_LEFTDOWN);

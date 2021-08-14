@@ -35,7 +35,7 @@ jobs:
           gunzip doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
           tar xf doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar
           cd doxygen-${{env.DOXYGEN_VERSION}}
-          make install
+          sudo make install
 
       - name: Generate Doxygen output
         shell: bash

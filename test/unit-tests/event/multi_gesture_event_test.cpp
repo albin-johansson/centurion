@@ -4,7 +4,7 @@
 
 TEST(MultiGestureEvent, Defaults)
 {
-  cen::multi_gesture_event event;
+  const cen::multi_gesture_event event;
   ASSERT_GT(event.time(), 0u);
   ASSERT_EQ(cen::event_type::multi_gesture, event.type());
 }
@@ -13,60 +13,48 @@ TEST(MultiGestureEvent, SetTouchId)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto id = 3;
-  event.set_touch_id(id);
-
-  ASSERT_EQ(id, event.touch_id());
+  event.set_touch_id(3);
+  ASSERT_EQ(3, event.touch_id());
 }
 
 TEST(MultiGestureEvent, SetDeltaTheta)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto dTheta = 65;
-  event.set_delta_theta(dTheta);
-
-  ASSERT_EQ(dTheta, event.delta_theta());
+  event.set_delta_theta(65);
+  ASSERT_EQ(65, event.delta_theta());
 }
 
 TEST(MultiGestureEvent, SetDeltaDistance)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto dDistance = -79;
-  event.set_delta_distance(dDistance);
-
-  ASSERT_EQ(dDistance, event.delta_distance());
+  event.set_delta_distance(-79);
+  ASSERT_EQ(-79, event.delta_distance());
 }
 
 TEST(MultiGestureEvent, SetCenterX)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto centerX = 154;
-  event.set_center_x(centerX);
-
-  ASSERT_EQ(centerX, event.center_x());
+  event.set_center_x(154);
+  ASSERT_EQ(154, event.center_x());
 }
 
 TEST(MultiGestureEvent, SetCenterY)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto centerY = 867;
-  event.set_center_y(centerY);
-
-  ASSERT_EQ(centerY, event.center_y());
+  event.set_center_y(867);
+  ASSERT_EQ(867, event.center_y());
 }
 
 TEST(MultiGestureEvent, SetFingers)
 {
   cen::multi_gesture_event event;
 
-  constexpr auto fingers = 3;
-  event.set_fingers(fingers);
-
-  ASSERT_EQ(fingers, event.fingers());
+  event.set_finger_count(3);
+  ASSERT_EQ(3, event.finger_count());
 }
 
 TEST(MultiGestureEvent, TouchId)
@@ -114,13 +102,13 @@ TEST(MultiGestureEvent, CenterY)
   ASSERT_EQ(sdl.y, event.center_y());
 }
 
-TEST(MultiGestureEvent, Fingers)
+TEST(MultiGestureEvent, FingerCount)
 {
   SDL_MultiGestureEvent sdl;
   sdl.numFingers = 2;
 
   const cen::multi_gesture_event event{sdl};
-  ASSERT_EQ(sdl.numFingers, event.fingers());
+  ASSERT_EQ(sdl.numFingers, event.finger_count());
 }
 
 TEST(MultiGestureEvent, AsSDLEvent)

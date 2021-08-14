@@ -25,13 +25,12 @@ jobs:
         run: |
           sudo apt install flex
           sudo apt install bison
-          sudo apt install curl
           sudo apt install tar
 
       - name: Install Doxygen
         shell: bash
         run: |
-          curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz --output doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
+          wget https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
           gunzip doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
           tar xf doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar
           cd doxygen-${{env.DOXYGEN_VERSION}}

@@ -34,7 +34,7 @@ jobs:
           curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz --output doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
           gunzip doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar.gz
           tar xf doxygen-${{env.DOXYGEN_VERSION}}.linux.bin.tar
-          cd doxygen-${{env.DOXYGEN_VERSION}}.linux.bin
+          cd doxygen-${{env.DOXYGEN_VERSION}}
           make install
 
       - name: Generate Doxygen output

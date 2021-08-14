@@ -20,9 +20,13 @@ jobs:
         shell: bash
         run: sudo apt update
 
-      - name: Install dependencies required for building Doxygen
+      - name: Install packages
         shell: bash
-        run: sudo apt install flex bison
+        run: |
+          sudo apt install flex
+          sudo apt install bison
+          sudo apt install curl
+          sudo apt install tar
 
       - name: Install Doxygen
         shell: bash

@@ -36,7 +36,7 @@ TEST(DollarGestureEvent, SetFingers)
   constexpr auto fingers = 2;
   event.set_fingers(fingers);
 
-  ASSERT_EQ(fingers, event.fingers());
+  ASSERT_EQ(fingers, event.finger_count());
 }
 
 TEST(DollarGestureEvent, SetError)
@@ -87,13 +87,13 @@ TEST(DollarGestureEvent, GestureId)
   ASSERT_EQ(sdl.gestureId, event.gesture_id());
 }
 
-TEST(DollarGestureEvent, Fingers)
+TEST(DollarGestureEvent, FingerCount)
 {
   SDL_DollarGestureEvent sdl;
   sdl.numFingers = 3;
 
   const cen::dollar_gesture_event event{sdl};
-  ASSERT_EQ(sdl.numFingers, event.fingers());
+  ASSERT_EQ(sdl.numFingers, event.finger_count());
 }
 
 TEST(DollarGestureEvent, Error)

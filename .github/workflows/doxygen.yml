@@ -14,10 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: lukka/get-cmake@v3.18.3
+
+      - name: Update packages
+        shell: bash
+        run: sudo apt update
 
       - name: Install dependencies required for building Doxygen
         shell: bash
-        run: sudo apt install tar flex bison
+        run: sudo apt install flex bison
 
       - name: Install Doxygen
         shell: bash

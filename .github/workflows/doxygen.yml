@@ -5,15 +5,33 @@ on:
     branches:
       - main
 
+env:
+  DOXYGEN_VERSION: 1.9.1
+
 jobs:
   doxygen:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: seanmiddleditch/gha-setup-ninja@v3
+
+      - name: Install dependencies required for building Doxygen
+        shell: bash
+        run: |
+          - sudo apt install flex
+          - sudo apt install bison
+          - sudo apt install graphviz
 
       - name: Install Doxygen
         shell: bash
-        run: sudo apt install doxygen
+        run: |
+          - curl -L https://doxygen.nl/files/doxygen-${{env.DOXYGEN_VERSION}}.src.tar.gz | tar xz
+          - cd doxygen-${{env.DOXYGEN_VERSION}}
+          - mkdir build
+          - cd build
+          - cmake .. -DCMAKE_BUILD_TYPE=Release -GNinja
+          - ninja
+          - sudo make install
 
       - name: Generate Doxygen output
         shell: bash

@@ -20,9 +20,10 @@ namespace cen {
  *
  * \brief Provides values that represent different supported music types.
  *
- * \since 3.0.0
- *
  * \see `Mix_MusicType`
+ * \see `music_type_count()`
+ *
+ * \since 3.0.0
  */
 enum class music_type
 {
@@ -36,6 +37,18 @@ enum class music_type
   flac = MUS_FLAC,
   opus = MUS_OPUS
 };
+
+/**
+ * \brief Returns the number of enumerators for the `music_type` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto music_type_count() noexcept -> int
+{
+  return 9;
+}
 
 /// \name String conversions
 /// \{

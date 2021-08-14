@@ -17,10 +17,7 @@ jobs:
 
       - name: Install dependencies required for building Doxygen
         shell: bash
-        run: |
-          - sudo apt install flex
-          - sudo apt install bison
-          - sudo apt install graphviz
+        run: sudo apt install flex bison
 
       - name: Install Doxygen
         shell: bash

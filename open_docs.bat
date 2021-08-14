@@ -1,1 +1,1 @@
-firefox file:///%cd%/doxygen-out/html/annotated.html
+firefox file:///%cd%/doxygen-out/html/index.html

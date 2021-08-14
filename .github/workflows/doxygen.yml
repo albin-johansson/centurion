@@ -17,7 +17,7 @@ jobs:
 
       - name: Install dependencies required for building Doxygen
         shell: bash
-        run: sudo apt install flex bison
+        run: sudo apt install curl flex bison
 
       - name: Install Doxygen
         shell: bash

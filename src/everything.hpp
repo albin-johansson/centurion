@@ -80,6 +80,7 @@
 #include "centurion/events/controller_axis_event.hpp"
 #include "centurion/events/controller_button_event.hpp"
 #include "centurion/events/controller_device_event.hpp"
+#include "centurion/events/display_event_id.hpp"
 #include "centurion/events/dollar_gesture_event.hpp"
 #include "centurion/events/drop_event.hpp"
 #include "centurion/events/event.hpp"

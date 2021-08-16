@@ -36,6 +36,7 @@ set(SOURCE_FILES
     event/controller_button_event_test.cpp
     event/controller_device_event_test.cpp
     event/display_event_id_test.cpp
+    event/display_event_test.cpp
     event/dollar_gesture_event_test.cpp
     event/drop_event_test.cpp
     event/event_dispatcher_test.cpp

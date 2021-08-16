@@ -14,6 +14,7 @@
 #include "controller_axis_event.hpp"
 #include "controller_button_event.hpp"
 #include "controller_device_event.hpp"
+#include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
 #include "event_type.hpp"
@@ -163,7 +164,7 @@ class event final
     }
     else
     {
-      update_data(std::nullopt);
+      m_data.emplace<std::monostate>();
     }
 
     return result;
@@ -386,6 +387,7 @@ class event final
                controller_axis_event,
                controller_button_event,
                controller_device_event,
+               display_event,
                dollar_gesture_event,
                drop_event,
                joy_axis_event,
@@ -405,99 +407,106 @@ class event final
                window_event>
       m_data{};
 
-  void update_data(const std::optional<event_type> t) noexcept
+  // TODO 6.3.0: display_event, controller_sensor_event, sensor_event,
+  //  controller_touchpad_event, os_event, user_event
+  void update_data(const event_type event) noexcept
   {
-    using et = event_type;
-
-    if (t == et::quit)
+    if (event == event_type::quit)
     {
       m_data.emplace<quit_event>(m_event.quit);
     }
-    else if (t == et::audio_device_added || t == et::audio_device_removed)
+    else if (event == event_type::audio_device_added ||
+             event == event_type::audio_device_removed)
     {
       m_data.emplace<audio_device_event>(m_event.adevice);
     }
-    else if (t == et::controller_axis_motion)
+    else if (event == event_type::controller_axis_motion)
     {
       m_data.emplace<controller_axis_event>(m_event.caxis);
     }
-    else if (t == et::controller_button_down || t == et::controller_button_up)
+    else if (event == event_type::controller_button_down ||
+             event == event_type::controller_button_up)
     {
       m_data.emplace<controller_button_event>(m_event.cbutton);
     }
-    else if (t == et::controller_device_added || t == et::controller_device_removed ||
-             t == et::controller_device_remapped)
+    else if (event == event_type::controller_device_added ||
+             event == event_type::controller_device_removed ||
+             event == event_type::controller_device_remapped)
     {
       m_data.emplace<controller_device_event>(m_event.cdevice);
     }
-    else if (t == et::dollar_gesture || t == et::dollar_record)
+    else if (event == event_type::display)
+    {
+      m_data.emplace<display_event>(m_event.display);
+    }
+    else if (event == event_type::dollar_gesture || event == event_type::dollar_record)
     {
       m_data.emplace<dollar_gesture_event>(m_event.dgesture);
     }
-    else if (t == et::drop_begin || t == et::drop_complete || t == et::drop_file ||
-             t == et::drop_text)
+    else if (event == event_type::drop_begin || event == event_type::drop_complete ||
+             event == event_type::drop_file || event == event_type::drop_text)
     {
       m_data.emplace<drop_event>(m_event.drop);
     }
-    else if (t == et::joystick_axis_motion)
+    else if (event == event_type::joystick_axis_motion)
     {
       m_data.emplace<joy_axis_event>(m_event.jaxis);
     }
-    else if (t == et::joystick_ball_motion)
+    else if (event == event_type::joystick_ball_motion)
     {
       m_data.emplace<joy_ball_event>(m_event.jball);
     }
-    else if (t == et::joystick_button_up || t == et::joystick_button_down)
+    else if (event == event_type::joystick_button_up ||
+             event == event_type::joystick_button_down)
     {
       m_data.emplace<joy_button_event>(m_event.jbutton);
     }
-    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
+    else if (event == event_type::joystick_device_added ||
+             event == event_type::joystick_device_removed)
     {
       m_data.emplace<joy_device_event>(m_event.jdevice);
     }
-    else if (t == event_type::joystick_hat_motion)
+    else if (event == event_type::joystick_hat_motion)
     {
       m_data.emplace<joy_hat_event>(m_event.jhat);
     }
-    else if (t == et::key_down || t == et::key_up)
+    else if (event == event_type::key_down || event == event_type::key_up)
     {
       m_data.emplace<keyboard_event>(m_event.key);
     }
-    else if (t == et::mouse_button_up || t == et::mouse_button_down)
+    else if (event == event_type::mouse_button_up ||
+             event == event_type::mouse_button_down)
     {
       m_data.emplace<mouse_button_event>(m_event.button);
     }
-    else if (t == et::mouse_motion)
+    else if (event == event_type::mouse_motion)
     {
       m_data.emplace<mouse_motion_event>(m_event.motion);
     }
-    else if (t == et::mouse_wheel)
+    else if (event == event_type::mouse_wheel)
     {
       m_data.emplace<mouse_wheel_event>(m_event.wheel);
     }
-    else if (t == et::multi_gesture)
+    else if (event == event_type::multi_gesture)
     {
       m_data.emplace<multi_gesture_event>(m_event.mgesture);
     }
-    else if (t == et::text_editing)
+    else if (event == event_type::text_editing)
     {
       m_data.emplace<text_editing_event>(m_event.edit);
     }
-    else if (t == et::text_input)
+    else if (event == event_type::text_input)
     {
       m_data.emplace<text_input_event>(m_event.text);
     }
-    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
+    else if (event == event_type::touch_motion || event == event_type::touch_down ||
+             event == event_type::touch_up)
     {
       m_data.emplace<touch_finger_event>(m_event.tfinger);
     }
-    else if (t == et::window)
+    else if (event == event_type::window)
     {
       m_data.emplace<window_event>(m_event.window);
-    }
-    else
-    {
-      m_data.emplace<std::monostate>();
     }
   }
 };

@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "core/to_underlying.hpp"
 #include "hints/android_hints.hpp"
 #include "hints/apple_tv_hints.hpp"
 #include "hints/common_hints.hpp"
@@ -534,12 +535,11 @@ TEST_F(BasicHintTest, AddHintCallbackExFull)
 
 TEST_F(BasicHintTest, HintPriority)
 {
-  using prio = cen::hint_priority;
-  ASSERT_EQ(prio::low, static_cast<prio>(SDL_HINT_DEFAULT));
-  ASSERT_EQ(prio::normal, static_cast<prio>(SDL_HINT_NORMAL));
-  ASSERT_EQ(prio::override, static_cast<prio>(SDL_HINT_OVERRIDE));
+  ASSERT_EQ(cen::to_underlying(cen::hint_priority::low), SDL_HINT_DEFAULT);
+  ASSERT_EQ(cen::to_underlying(cen::hint_priority::normal), SDL_HINT_NORMAL);
+  ASSERT_EQ(cen::to_underlying(cen::hint_priority::override), SDL_HINT_OVERRIDE);
 
-  ASSERT_EQ(static_cast<prio>(SDL_HINT_DEFAULT), prio::low);
-  ASSERT_EQ(static_cast<prio>(SDL_HINT_NORMAL), prio::normal);
-  ASSERT_EQ(static_cast<prio>(SDL_HINT_OVERRIDE), prio::override);
+  ASSERT_EQ(SDL_HINT_DEFAULT, cen::to_underlying(cen::hint_priority::low));
+  ASSERT_EQ(SDL_HINT_NORMAL, cen::to_underlying(cen::hint_priority::normal));
+  ASSERT_EQ(SDL_HINT_OVERRIDE, cen::to_underlying(cen::hint_priority::override));
 }

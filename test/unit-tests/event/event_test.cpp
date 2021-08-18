@@ -44,7 +44,6 @@ static_assert(validate_event<cen::audio_device_event, SDL_AudioDeviceEvent>());
 static_assert(validate_event<cen::controller_axis_event, SDL_ControllerAxisEvent>());
 static_assert(validate_event<cen::controller_button_event, SDL_ControllerButtonEvent>());
 static_assert(validate_event<cen::controller_device_event, SDL_ControllerDeviceEvent>());
-static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
 static_assert(validate_event<cen::dollar_gesture_event, SDL_DollarGestureEvent>());
 static_assert(validate_event<cen::drop_event, SDL_DropEvent>());
 static_assert(validate_event<cen::joy_axis_event, SDL_JoyAxisEvent>());
@@ -62,6 +61,11 @@ static_assert(validate_event<cen::text_editing_event, SDL_TextEditingEvent>());
 static_assert(validate_event<cen::text_input_event, SDL_TextInputEvent>());
 static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
 static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
 // clang-format on
 
 TEST(Event, Update)

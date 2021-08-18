@@ -6,6 +6,8 @@
 
 #include "core/to_underlying.hpp"
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
 TEST(DisplayEventId, Values)
 {
   ASSERT_EQ(4, cen::display_event_id_count());
@@ -31,3 +33,5 @@ TEST(DisplayEventId, ToString)
 
   std::clog << "Display event ID example: " << cen::display_event_id::connected << '\n';
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)

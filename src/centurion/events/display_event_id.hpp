@@ -10,7 +10,7 @@
 
 namespace cen {
 
-#if SDL_VERSION_ATLEAST(2, 0, 12)
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 
 /// \addtogroup event
 /// \{
@@ -109,7 +109,7 @@ inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::
 
 /// \} End of group event
 
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace cen
 

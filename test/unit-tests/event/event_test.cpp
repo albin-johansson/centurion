@@ -62,9 +62,9 @@ static_assert(validate_event<cen::text_input_event, SDL_TextInputEvent>());
 static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
 static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
 
-#if SDL_VERSION_ATLEAST(2, 0, 12)
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 // clang-format on
 

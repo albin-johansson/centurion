@@ -6,7 +6,7 @@
 
 #include "core/to_underlying.hpp"
 
-#if SDL_VERSION_ATLEAST(2, 0, 12)
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 
 TEST(DisplayEventId, Values)
 {
@@ -34,4 +34,4 @@ TEST(DisplayEventId, ToString)
   std::clog << "Display event ID example: " << cen::display_event_id::connected << '\n';
 }
 
-#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

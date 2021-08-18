@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(DisplayEvent, Defaults)
 {
   const cen::display_event event;
@@ -72,3 +74,5 @@ TEST(DisplayEvent, AsSdlEvent)
   ASSERT_EQ(SDL_DISPLAYEVENT_CONNECTED, converted.display.event);
   ASSERT_EQ(5, converted.display.data1);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

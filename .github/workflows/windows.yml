@@ -38,18 +38,18 @@ jobs:
           sources_destination: .
           binaries_destination: bin
 
+      - name: Download SDL2_ttf
+        uses: albin-johansson/download-sdl2-ttf@v0.1.0
+        with:
+          version: ${{env.TTF_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
+
       - name: Download SDL2_mixer
         uses: suisei-cn/actions-download-file@v1
         id: DownloadSDL2_mixer
         with:
           url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip"
-          target: .
-
-      - name: Download SDL2_ttf
-        uses: suisei-cn/actions-download-file@v1
-        id: DownloadSDL2_ttf
-        with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip"
           target: .
 
       - name: Download SDL2_mixer runtime binaries
@@ -59,22 +59,13 @@ jobs:
           url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip"
           target: ./bin
 
-      - name: Download SDL2_ttf runtime binaries
-        uses: suisei-cn/actions-download-file@v1
-        id: download_sdl2_ttf_runtime_binaries
-        with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip"
-          target: ./bin
-
       - name: Unzip archives (sources)
         run: |
           7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
-          7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
 
       - name: Unzip archives (runtime binaries)
         run: |
           7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
-          7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -obin
 
       - name: Create build folder
         run: cmake -E make_directory ./build

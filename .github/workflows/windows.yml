@@ -21,8 +21,8 @@ jobs:
       - uses: lukka/get-cmake@v3.18.3
 
       - name: Create binaries directory
-        run: mkdir bin
         shell: cmd
+        run: mkdir bin
 
       - name: Download SDL2
         uses: albin-johansson/download-sdl2@v1
@@ -46,26 +46,11 @@ jobs:
           binaries_destination: bin
 
       - name: Download SDL2_mixer
-        uses: suisei-cn/actions-download-file@v1
-        id: DownloadSDL2_mixer
+        uses: albin-johansson/download-sdl2-mixer@v0.2.0
         with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip"
-          target: .
-
-      - name: Download SDL2_mixer runtime binaries
-        uses: suisei-cn/actions-download-file@v1
-        id: download_sdl2_mixer_runtime_binaries
-        with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip"
-          target: ./bin
-
-      - name: Unzip archives (sources)
-        run: |
-          7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
-
-      - name: Unzip archives (runtime binaries)
-        run: |
-          7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
+          version: ${{env.MIX_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
 
       - name: Create build folder
         run: cmake -E make_directory ./build
@@ -82,6 +67,6 @@ jobs:
           ninja
 
       - name: Run mocked test suite
+        shell: cmd
         working-directory: ./build/test/mocks
         run: CenturionMocks
-        shell: cmd

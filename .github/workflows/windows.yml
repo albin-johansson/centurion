@@ -25,7 +25,7 @@ jobs:
         run: mkdir bin
 
       - name: Download SDL2
-        uses: albin-johansson/download-sdl2@v1
+        uses: albin-johansson/download-sdl2@latest
         with:
           version: ${{matrix.SDL_VERSION}}
           sources_destination: .

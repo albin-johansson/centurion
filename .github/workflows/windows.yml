@@ -46,7 +46,7 @@ jobs:
           binaries_destination: bin
 
       - name: Download SDL2_mixer
-        uses: albin-johansson/download-sdl2-mixer@v0.2.0
+        uses: albin-johansson/download-sdl2-mixer@latest
         with:
           version: ${{env.MIX_VERSION}}
           sources_destination: .

@@ -54,7 +54,7 @@ enum class display_event_id
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
  * `to_string(display_event_id::connected) == "connected"`.
  *
- * \param mode the enumerator that will be converted.
+ * \param id the enumerator that will be converted.
  *
  * \return a string that mirrors the name of the enumerator.
  *

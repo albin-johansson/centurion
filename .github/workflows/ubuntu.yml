@@ -56,7 +56,7 @@ jobs:
           path: SDL2-${{matrix.SDL_VERSION}}
           key: SDL2-${{matrix.SDL_VERSION}}
 
-      - name: Install SDL2
+      - name: Build SDL2
         shell: bash
         if: steps.cache-sdl2.outputs.cache-hit != 'true'
         run: |

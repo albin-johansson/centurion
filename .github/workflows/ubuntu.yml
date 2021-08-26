@@ -3,7 +3,7 @@ name: "CI: Ubuntu"
 on: [ push, pull_request ]
 
 env:
-  SDL_LATEST: 2.0.14
+  SDL_LATEST: 2.0.16
   IMG_VERSION: 2.0.5
   MIX_VERSION: 2.0.4
   TTF_VERSION: 2.0.15

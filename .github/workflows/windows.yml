@@ -15,9 +15,9 @@ jobs:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
         CPP_VERSION: [ 17, 20 ]
     steps:
-      - uses: actions/checkout@v2
-      - uses: ilammy/msvc-dev-cmd@v1
-      - uses: seanmiddleditch/gha-setup-ninja@v3
+      - uses: actions/checkout@main
+      - uses: ilammy/msvc-dev-cmd@master
+      - uses: seanmiddleditch/gha-setup-ninja@master
       - uses: lukka/get-cmake@latest
 
       - name: Create binaries directory

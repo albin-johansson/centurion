@@ -4,7 +4,6 @@
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr

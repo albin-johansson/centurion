@@ -8,7 +8,6 @@
 // clang-format on
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>  // assert
 

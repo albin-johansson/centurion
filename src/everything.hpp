@@ -99,6 +99,7 @@
 #include "centurion/events/mouse_wheel_event.hpp"
 #include "centurion/events/multi_gesture_event.hpp"
 #include "centurion/events/quit_event.hpp"
+#include "centurion/events/sensor_event.hpp"
 #include "centurion/events/text_editing_event.hpp"
 #include "centurion/events/text_input_event.hpp"
 #include "centurion/events/touch_finger_event.hpp"

@@ -34,7 +34,9 @@ enum class event_type : u32
   app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
   app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
 
+#if SDL_VERSION_ATLEAST(2, 0, 12)
   locale_changed = SDL_LOCALECHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   display = SDL_DISPLAYEVENT,
 
@@ -66,10 +68,13 @@ enum class event_type : u32
   controller_device_added = SDL_CONTROLLERDEVICEADDED,
   controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
   controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
   controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
   controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
   controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
   controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
   touch_down = SDL_FINGERDOWN,
   touch_up = SDL_FINGERUP,

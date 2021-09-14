@@ -404,10 +404,10 @@ class event final
                text_editing_event,
                text_input_event,
                touch_finger_event,
+               sensor_event,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                display_event,
-               sensor_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
                window_event>

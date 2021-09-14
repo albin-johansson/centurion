@@ -3,6 +3,9 @@
 
 #include <SDL.h>
 
+#include <array>  // array, to_array
+
+#include "../core/integers.hpp"
 #include "common_event.hpp"
 
 namespace cen {
@@ -10,6 +13,13 @@ namespace cen {
 /// \addtogroup event
 /// \{
 
+/**
+ * \class sensor_event
+ *
+ * \brief Represents events related to updates of sensors.
+ *
+ * \since 6.3.0
+ */
 class sensor_event final : public common_event<SDL_SensorEvent>
 {
  public:
@@ -31,7 +41,31 @@ class sensor_event final : public common_event<SDL_SensorEvent>
   explicit sensor_event(const SDL_SensorEvent& event) noexcept : common_event{event}
   {}
 
-  // TODO float data[6];
+  /**
+   * \brief Returns the instance ID of the associated sensor.
+   *
+   * \return the associated sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns up to 6 values from the sensor.
+   *
+   * \return values from the sensor.
+   *
+   * \see `basic_sensor::data()`
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data() const noexcept -> std::array<float, 6>
+  {
+    return std::to_array(m_event.data);
+  }
 };
 
 template <>

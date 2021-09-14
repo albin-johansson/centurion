@@ -60,6 +60,12 @@
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler

@@ -34,7 +34,9 @@ enum class event_type : u32
   app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
   app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   locale_changed = SDL_LOCALECHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   display = SDL_DISPLAYEVENT,
 
@@ -66,10 +68,13 @@ enum class event_type : u32
   controller_device_added = SDL_CONTROLLERDEVICEADDED,
   controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
   controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
   controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
   controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
   controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
   controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   touch_down = SDL_FINGERDOWN,
   touch_up = SDL_FINGERUP,
@@ -139,8 +144,10 @@ enum class event_type : u32
     case event_type::app_did_enter_foreground:
       return "app_did_enter_foreground";
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     case event_type::locale_changed:
       return "locale_changed";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::display:
       return "display";
@@ -217,8 +224,9 @@ enum class event_type : u32
     case event_type::controller_device_remapped:
       return "controller_device_remapped";
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     case event_type::controller_touchpad_down:
-      return "controller_sensor_update";
+      return "controller_touchpad_down";
 
     case event_type::controller_touchpad_up:
       return "controller_touchpad_up";
@@ -228,6 +236,7 @@ enum class event_type : u32
 
     case event_type::controller_sensor_update:
       return "controller_sensor_update";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::touch_down:
       return "touch_down";

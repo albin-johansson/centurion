@@ -226,7 +226,7 @@ enum class event_type : u32
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
     case event_type::controller_touchpad_down:
-      return "controller_sensor_update";
+      return "controller_touchpad_down";
 
     case event_type::controller_touchpad_up:
       return "controller_touchpad_up";

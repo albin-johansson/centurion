@@ -440,10 +440,10 @@ class event final
       case event_type::app_did_enter_foreground:
         break;
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
       case event_type::locale_changed:
         break;
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
       case event_type::display:
         m_data.emplace<display_event>(m_event.display);
         break;
@@ -522,6 +522,7 @@ class event final
         m_data.emplace<controller_device_event>(m_event.cdevice);
         break;
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
       case event_type::controller_touchpad_down:
         break;
       case event_type::controller_touchpad_up:
@@ -530,6 +531,7 @@ class event final
         break;
       case event_type::controller_sensor_update:
         break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
       case event_type::touch_down:
       case event_type::touch_up:
@@ -571,6 +573,10 @@ class event final
         break;
 
       case event_type::user:
+        break;
+
+      default:
+        m_data.emplace<std::monostate>();
         break;
     }
   }

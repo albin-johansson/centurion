@@ -506,10 +506,12 @@ class event final
     {
       m_data.emplace<window_event>(m_event.window);
     }
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     else if (event == event_type::display)
     {
       m_data.emplace<display_event>(m_event.display);
     }
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   }
 };
 

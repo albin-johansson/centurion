@@ -10,6 +10,8 @@
 
 namespace cen {
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 /// \addtogroup event
 /// \{
 
@@ -132,6 +134,8 @@ inline auto as_sdl_event(const common_event<SDL_DisplayEvent>& event) -> SDL_Eve
 }
 
 /// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 }  // namespace cen
 

@@ -144,8 +144,10 @@ enum class event_type : u32
     case event_type::app_did_enter_foreground:
       return "app_did_enter_foreground";
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     case event_type::locale_changed:
       return "locale_changed";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::display:
       return "display";
@@ -222,6 +224,7 @@ enum class event_type : u32
     case event_type::controller_device_remapped:
       return "controller_device_remapped";
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
     case event_type::controller_touchpad_down:
       return "controller_sensor_update";
 
@@ -233,6 +236,7 @@ enum class event_type : u32
 
     case event_type::controller_sensor_update:
       return "controller_sensor_update";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::touch_down:
       return "touch_down";

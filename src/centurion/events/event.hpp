@@ -573,7 +573,6 @@ class event final
       case event_type::user:
         break;
     }
-#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
   }
 };
 

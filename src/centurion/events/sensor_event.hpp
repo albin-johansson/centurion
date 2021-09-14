@@ -5,6 +5,7 @@
 
 #include <array>  // array, to_array
 
+#include "../compiler/features.hpp"
 #include "../core/integers.hpp"
 #include "common_event.hpp"
 
@@ -64,7 +65,18 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    */
   [[nodiscard]] auto data() const noexcept -> std::array<float, 6>
   {
+#if CENTURION_HAS_FEATURE_TO_ARRAY
     return std::to_array(m_event.data);
+#else
+    std::array<float, 6> array{};
+
+    for (usize i = 0; i < 6; ++i)
+    {
+      array[i] = m_event.data[i];
+    }
+
+    return array;
+#endif  // CENTURION_HAS_FEATURE_TO_ARRAY
   }
 };
 

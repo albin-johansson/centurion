@@ -35,7 +35,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
   {}
 
   /**
-   * \brief Creates a sensor event based an SDL event.
+   * \brief Creates a sensor event based on an SDL event.
    *
    * \param event the event that will be copied.
    *

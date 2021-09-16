@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(ControllerTouchpadEvent, Defaults)
 {
   const cen::controller_touchpad_event event;
@@ -77,3 +79,5 @@ TEST(ControllerTouchpadEvent, SetPressure)
   event.set_pressure(5.3f);
   ASSERT_EQ(1.0f, event.pressure());
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

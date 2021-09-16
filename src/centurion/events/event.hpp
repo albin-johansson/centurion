@@ -408,7 +408,6 @@ class event final
   // TODO 6.3.0:
   //   - controller_sensor_event,
   //   - controller_touchpad_event
-  //   - user_event
   void update_data(const event_type type) noexcept
   {
     switch (type) {

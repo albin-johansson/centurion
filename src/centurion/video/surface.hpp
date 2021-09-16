@@ -891,9 +891,9 @@ template <typename T>
                      surface.width(),
                      surface.height());
 #else
-  return "surface{data: " + detail::address_of(surface.get())
-         + ", width: " + std::to_string(surface.width())
-         + ", height: " + std::to_string(surface.height()) + "}";
+  return "surface{data: " + detail::address_of(surface.get()) +
+         ", width: " + std::to_string(surface.width()) +
+         ", height: " + std::to_string(surface.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

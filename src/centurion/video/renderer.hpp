@@ -1230,8 +1230,7 @@ class basic_renderer final
                                destination.data(),
                                angle,
                                nullptr,
-                               SDL_FLIP_NONE)
-             == 0;
+                               SDL_FLIP_NONE) == 0;
     }
     else {
       return SDL_RenderCopyEx(get(),
@@ -1240,8 +1239,7 @@ class basic_renderer final
                               destination.data(),
                               angle,
                               nullptr,
-                              SDL_FLIP_NONE)
-             == 0;
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -1282,8 +1280,7 @@ class basic_renderer final
                                destination.data(),
                                angle,
                                center.data(),
-                               SDL_FLIP_NONE)
-             == 0;
+                               SDL_FLIP_NONE) == 0;
     }
     else {
       return SDL_RenderCopyEx(get(),
@@ -1292,8 +1289,7 @@ class basic_renderer final
                               destination.data(),
                               angle,
                               center.data(),
-                              SDL_FLIP_NONE)
-             == 0;
+                              SDL_FLIP_NONE) == 0;
     }
   }
 
@@ -1336,8 +1332,7 @@ class basic_renderer final
                                destination.data(),
                                angle,
                                center.data(),
-                               flip)
-             == 0;
+                               flip) == 0;
     }
     else {
       return SDL_RenderCopyEx(get(),
@@ -1346,8 +1341,7 @@ class basic_renderer final
                               destination.data(),
                               angle,
                               center.data(),
-                              flip)
-             == 0;
+                              flip) == 0;
     }
   }
 
@@ -1679,8 +1673,7 @@ class basic_renderer final
                                   color.red(),
                                   color.green(),
                                   color.blue(),
-                                  color.alpha())
-           == 0;
+                                  color.alpha()) == 0;
   }
 
   /**

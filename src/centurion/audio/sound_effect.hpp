@@ -516,8 +516,8 @@ class basic_sound_effect final
                      detail::address_of(sound.get()),
                      sound.volume());
 #else
-  return "sound_effect{data: " + detail::address_of(sound.get())
-         + ", volume: " + std::to_string(sound.volume()) + "}";
+  return "sound_effect{data: " + detail::address_of(sound.get()) +
+         ", volume: " + std::to_string(sound.volume()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

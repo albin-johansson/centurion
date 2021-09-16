@@ -37,8 +37,6 @@ BraceWrapping:
   SplitEmptyRecord: false
   SplitEmptyFunction: false
 
-BreakBeforeBinaryOperators: NonAssignment
-
 EmptyLineBeforeAccessModifier: Always
 
 NamespaceIndentation: None

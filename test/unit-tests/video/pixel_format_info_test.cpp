@@ -81,8 +81,8 @@ TEST_F(PixelFormatInfoTest, PixelToRGB)
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
 {
   constexpr auto color = cen::colors::aquamarine;
-  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u)
-                         | (color.alpha() << 0u);
+  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u) |
+                         (color.alpha() << 0u);
   ASSERT_EQ(color, m_info->pixel_to_rgba(pixel));
 }
 

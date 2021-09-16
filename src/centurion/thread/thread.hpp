@@ -416,8 +416,8 @@ class thread final
                      thread.name(),
                      thread.get_id());
 #else
-  return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name()
-         + ", id: " + std::to_string(thread.get_id()) + "}";
+  return "thread{data: " + detail::address_of(thread.get()) + ", name: " + thread.name() +
+         ", id: " + std::to_string(thread.get_id()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

@@ -323,8 +323,8 @@ class event_dispatcher final
 template <typename... E>
 [[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher) -> std::string
 {
-  return "event_dispatcher{size: " + std::to_string(dispatcher.size())
-         + ", #active: " + std::to_string(dispatcher.active_count()) + "}";
+  return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
+         ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
 /// \} End of string conversions

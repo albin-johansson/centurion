@@ -55,9 +55,9 @@ TEST(Battery, State)
 TEST(Battery, Exists)
 {
   const auto state = cen::battery::state();
-  const auto exists = state == cen::power_state::on_battery
-                      || state == cen::power_state::charged
-                      || state == cen::power_state::charging;
+  const auto exists = state == cen::power_state::on_battery ||
+                      state == cen::power_state::charged ||
+                      state == cen::power_state::charging;
   ASSERT_EQ(exists, cen::battery::exists());
 }
 

@@ -304,8 +304,8 @@ template <typename T>
                      detail::address_of(info.get()),
                      info.name());
 #else
-  return "pixel_format_info{data: " + detail::address_of(info.get()) + ", name: " + info.name()
-         + "}";
+  return "pixel_format_info{data: " + detail::address_of(info.get()) +
+         ", name: " + info.name() + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

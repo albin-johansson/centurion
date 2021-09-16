@@ -149,8 +149,8 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("vector3{{x: {}, y: {}, z: {}}}", vector.x, vector.y, vector.z);
 #else
-  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y)
-         + ", z: " + std::to_string(vector.z) + "}";
+  return "vector3{x: " + std::to_string(vector.x) + ", y: " + std::to_string(vector.y) +
+         ", z: " + std::to_string(vector.z) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

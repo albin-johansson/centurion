@@ -771,9 +771,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green())
-         + ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha())
-         + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -857,16 +857,16 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  */
 [[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
-  return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) && (lhs.blue() == rhs.blue())
-         && (lhs.alpha() == rhs.alpha());
+  return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
+         (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
 }
 
 /// \copydoc operator==(const color&, const color&)
 [[nodiscard]] constexpr auto operator==(const color& lhs, const SDL_Color& rhs) noexcept
     -> bool
 {
-  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b)
-         && (lhs.alpha() == rhs.a);
+  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) && (lhs.blue() == rhs.b) &&
+         (lhs.alpha() == rhs.a);
 }
 
 /// \copydoc operator==(const color&, const color&)

@@ -96,9 +96,8 @@ void validate_render_function(const Fake& fake, Args&&... args)
   ASSERT_EQ(src.height(), fake.arg2_val->h);
 
   const auto& dst = std::get<1>(tuple);
-  static_assert(
-      std::is_same_v<const cen::irect&,
-                     decltype(src)> || std::is_same_v<const cen::frect&, decltype(src)>);
+  static_assert(std::is_same_v<const cen::irect&, decltype(src)> ||
+                std::is_same_v<const cen::frect&, decltype(src)>);
 
   ASSERT_EQ(dst.x(), fake.arg3_val->x);
   ASSERT_EQ(dst.y(), fake.arg3_val->y);
@@ -114,10 +113,8 @@ void validate_render_function(const Fake& fake, Args&&... args)
 
   if constexpr (sizeof...(Args) >= 4) {
     const auto& center = std::get<3>(tuple);
-    static_assert(
-        std::is_same_v<
-            const cen::ipoint&,
-            decltype(center)> || std::is_same_v<const cen::fpoint&, decltype(center)>);
+    static_assert(std::is_same_v<const cen::ipoint&, decltype(center)> ||
+                  std::is_same_v<const cen::fpoint&, decltype(center)>);
 
     ASSERT_EQ(center.x(), fake.arg5_val->x);
     ASSERT_EQ(center.y(), fake.arg5_val->y);

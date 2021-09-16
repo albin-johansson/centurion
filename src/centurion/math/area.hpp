@@ -248,8 +248,8 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
-  return "area{width: " + std::to_string(area.width)
-         + ", height: " + std::to_string(area.height) + "}";
+  return "area{width: " + std::to_string(area.width) +
+         ", height: " + std::to_string(area.height) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

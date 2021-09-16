@@ -701,8 +701,8 @@ template <typename T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
                                         const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() || fst.y() >= snd.max_y()
-           || fst.max_y() <= snd.y());
+  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() || fst.y() >= snd.max_y() ||
+           fst.max_y() <= snd.y());
 }
 
 /**
@@ -725,8 +725,8 @@ template <typename T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
                                       const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() || fst.y() > snd.max_y()
-           || fst.max_y() < snd.y());
+  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() || fst.y() > snd.max_y() ||
+           fst.max_y() < snd.y());
 }
 
 /**
@@ -789,8 +789,8 @@ template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept -> bool
 {
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) && (lhs.width() == rhs.width())
-         && (lhs.height() == rhs.height());
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) && (lhs.width() == rhs.width()) &&
+         (lhs.height() == rhs.height());
 }
 
 /**
@@ -860,9 +860,9 @@ template <typename T>
                      rect.width(),
                      rect.height());
 #else
-  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y())
-         + ", width: " + std::to_string(rect.width())
-         + ", height: " + std::to_string(rect.height()) + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
+         ", width: " + std::to_string(rect.width()) +
+         ", height: " + std::to_string(rect.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

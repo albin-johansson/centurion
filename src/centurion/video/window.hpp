@@ -1367,9 +1367,9 @@ template <typename T>
                      window.width(),
                      window.height());
 #else
-  return "window{data: " + detail::address_of(window.get())
-         + ", width: " + std::to_string(window.width())
-         + ", height: " + std::to_string(window.height()) + "}";
+  return "window{data: " + detail::address_of(window.get()) +
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

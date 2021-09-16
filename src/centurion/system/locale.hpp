@@ -65,8 +65,8 @@ class locale final
         const auto& item = array[index];
 
         if (country && item.country) {
-          if (detail::czstring_eq(language, item.language)
-              && detail::czstring_eq(country, item.country)) {
+          if (detail::czstring_eq(language, item.language) &&
+              detail::czstring_eq(country, item.country)) {
             return true;
           }
         }

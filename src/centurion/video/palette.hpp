@@ -227,8 +227,8 @@ class palette final
                      detail::address_of(palette.get()),
                      palette.size());
 #else
-  return "palette{data: " + detail::address_of(palette.get())
-         + ", size: " + std::to_string(palette.size()) + "}";
+  return "palette{data: " + detail::address_of(palette.get()) +
+         ", size: " + std::to_string(palette.size()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

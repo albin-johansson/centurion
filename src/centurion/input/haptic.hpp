@@ -213,8 +213,7 @@ class basic_haptic final
   {
     return SDL_HapticRumblePlay(m_haptic,
                                 detail::clamp(strength, 0.0f, 1.0f),
-                                duration.count())
-           == 0;
+                                duration.count()) == 0;
   }
 
   /**
@@ -948,8 +947,8 @@ template <typename T>
                      detail::address_of(haptic.get()),
                      str_or_na(haptic.name()));
 #else
-  return "haptic{data: " + detail::address_of(haptic.get())
-         + ", name: " + str_or_na(haptic.name()) + "}";
+  return "haptic{data: " + detail::address_of(haptic.get()) +
+         ", name: " + str_or_na(haptic.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

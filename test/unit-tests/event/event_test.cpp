@@ -31,8 +31,7 @@ template <typename T, typename E>
 [[nodiscard]] constexpr auto validate_event() noexcept -> bool
 {
   return !std::has_virtual_destructor_v<T> && std::is_nothrow_copy_constructible_v<T> &&
-         std::is_nothrow_copy_assignable_v<T> &&
-         std::is_nothrow_move_constructible_v<T> &&
+         std::is_nothrow_copy_assignable_v<T> && std::is_nothrow_move_constructible_v<T> &&
          std::is_nothrow_move_assignable_v<T> && std::is_nothrow_constructible_v<T, E> &&
          std::is_final_v<T>;
 }

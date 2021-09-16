@@ -1103,9 +1103,9 @@ template <typename T>
                      str_or_na(joystick.name()),
                      str_or_na(joystick.serial()));
 #else
-  return "joystick{data: " + detail::address_of(joystick.get())
-         + ", id: " + std::to_string(joystick.instance_id())
-         + ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
+  return "joystick{data: " + detail::address_of(joystick.get()) +
+         ", id: " + std::to_string(joystick.instance_id()) +
+         ", name: " + str_or_na(joystick.name()) + ", serial: " + str_or_na(serial) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

@@ -577,8 +577,8 @@ inline void on_music_finished(music_finished_callback callback) noexcept
                      detail::address_of(music.get()),
                      music::volume());
 #else
-  return "music{data: " + detail::address_of(music.get())
-         + ", volume: " + std::to_string(music::volume()) + "}";
+  return "music{data: " + detail::address_of(music.get()) +
+         ", volume: " + std::to_string(music::volume()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

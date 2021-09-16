@@ -46,8 +46,7 @@ auto set_hint(const Value& value) -> result
 {
   return SDL_SetHintWithPriority(Hint::name(),
                                  Hint::to_string(value).c_str(),
-                                 static_cast<SDL_HintPriority>(priority))
-         == SDL_TRUE;
+                                 static_cast<SDL_HintPriority>(priority)) == SDL_TRUE;
 }
 
 /**

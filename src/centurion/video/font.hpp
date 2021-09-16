@@ -585,8 +585,7 @@ class font final
                          &metrics.maxX,
                          &metrics.minY,
                          &metrics.maxY,
-                         &metrics.advance)
-        != -1)
+                         &metrics.advance) != -1)
     {
       return metrics;
     }
@@ -821,8 +820,9 @@ class font final
                      font.family_name(),
                      font.size());
 #else
-  return "font{data: " + detail::address_of(font.get()) + ", name: "
-         + std::string{font.family_name()} + ", size: " + std::to_string(font.size()) + "}";
+  return "font{data: " + detail::address_of(font.get()) +
+         ", name: " + std::string{font.family_name()} +
+         ", size: " + std::to_string(font.size()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

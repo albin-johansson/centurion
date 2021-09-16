@@ -401,8 +401,8 @@ template <typename T>
                      sensor.id(),
                      str_or_na(sensor.name()));
 #else
-  return "sensor{data: " + detail::address_of(sensor.get()) + ", id: "
-         + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
+  return "sensor{data: " + detail::address_of(sensor.get()) +
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

@@ -271,8 +271,8 @@ class basic_texture final
    */
   void set_pixel(const ipoint pixel, const color& color)
   {
-    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0)
-        || (pixel.x() >= width()) || (pixel.y() >= height()))
+    if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
+        (pixel.x() >= width()) || (pixel.y() >= height()))
     {
       return;
     }
@@ -624,8 +624,10 @@ class basic_texture final
     }
     else {
       int dummyPitch;
-      return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), &dummyPitch)
-             == 0;
+      return SDL_LockTexture(m_texture,
+                             nullptr,
+                             reinterpret_cast<void**>(pixels),
+                             &dummyPitch) == 0;
     }
   }
 
@@ -661,9 +663,9 @@ template <typename T>
                      texture.width(),
                      texture.height());
 #else
-  return "texture{data: " + detail::address_of(texture.get())
-         + ", width: " + std::to_string(texture.width())
-         + ", height: " + std::to_string(texture.height()) + "}";
+  return "texture{data: " + detail::address_of(texture.get()) +
+         ", width: " + std::to_string(texture.width()) +
+         ", height: " + std::to_string(texture.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

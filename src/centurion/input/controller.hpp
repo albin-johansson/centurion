@@ -982,8 +982,7 @@ class basic_controller final
     if (SDL_GameControllerGetSensorData(m_controller,
                                         static_cast<SDL_SensorType>(type),
                                         array.data(),
-                                        isize(array))
-        != -1)
+                                        isize(array)) != -1)
     {
       return array;
     }
@@ -1032,8 +1031,8 @@ class basic_controller final
    */
   auto set_led(const color& color) noexcept -> result
   {
-    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue())
-           == 0;
+    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue()) ==
+           0;
   }
 
   /**
@@ -1328,8 +1327,8 @@ template <typename T>
                      str_or_na(name),
                      str_or_na(serial));
 #else
-  return "controller{data: " + detail::address_of(controller.get())
-         + ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
+  return "controller{data: " + detail::address_of(controller.get()) +
+         ", name: " + str_or_na(name) + ", serial: " + str_or_na(serial) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

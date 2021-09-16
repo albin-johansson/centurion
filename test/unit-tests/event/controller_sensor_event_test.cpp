@@ -4,6 +4,8 @@
 
 #include <array>  // array
 
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
 TEST(ControllerSensorEvent, Defaults)
 {
   const cen::controller_sensor_event event;
@@ -52,3 +54,5 @@ TEST(ControllerSensorEvent, AsSdlEvent)
   ASSERT_EQ(SDL_SENSOR_GYRO, sdl.csensor.sensor);
   ASSERT_EQ(21, sdl.csensor.which);
 }
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)

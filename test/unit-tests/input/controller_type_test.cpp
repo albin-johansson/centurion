@@ -49,8 +49,7 @@ TEST(ControllerType, ToString)
   ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(10)), cen::cen_error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::controller_type::unknown));
-  ASSERT_EQ("nintendo_switch_pro",
-            cen::to_string(cen::controller_type::nintendo_switch_pro));
+  ASSERT_EQ("nintendo_switch_pro", cen::to_string(cen::controller_type::nintendo_switch_pro));
   ASSERT_EQ("xbox_360", cen::to_string(cen::controller_type::xbox_360));
   ASSERT_EQ("xbox_one", cen::to_string(cen::controller_type::xbox_one));
   ASSERT_EQ("ps3", cen::to_string(cen::controller_type::ps3));

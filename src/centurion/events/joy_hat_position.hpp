@@ -65,11 +65,9 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const joy_hat_position position)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joy_hat_position position) -> std::string_view
 {
-  switch (position)
-  {
+  switch (position) {
     case joy_hat_position::left_up:
       return "left_up";
 
@@ -119,8 +117,7 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const joy_hat_position position)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const joy_hat_position position) -> std::ostream&
 {
   return stream << to_string(position);
 }

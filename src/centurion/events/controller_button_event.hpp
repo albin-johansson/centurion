@@ -148,8 +148,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cbutton = event.get();

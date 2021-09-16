@@ -121,8 +121,7 @@ enum class event_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case event_type::quit:
       return "quit";
 
@@ -331,15 +330,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -354,15 +353,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

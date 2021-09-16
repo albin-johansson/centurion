@@ -12,8 +12,7 @@ TEST(Version, CurrentVersion)
 TEST(Version, VersionAtLeast)
 {
   ASSERT_FALSE(cen::version_at_least(6, CENTURION_VERSION_MINOR + 1, 0));
-  ASSERT_FALSE(
-      cen::version_at_least(6, CENTURION_VERSION_MINOR, CENTURION_VERSION_PATCH + 1));
+  ASSERT_FALSE(cen::version_at_least(6, CENTURION_VERSION_MINOR, CENTURION_VERSION_PATCH + 1));
 
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,

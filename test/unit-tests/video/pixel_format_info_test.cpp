@@ -74,16 +74,15 @@ TEST_F(PixelFormatInfoTest, RGBAToPixel)
 TEST_F(PixelFormatInfoTest, PixelToRGB)
 {
   constexpr auto color = cen::colors::hot_pink;
-  const cen::u32 pixel =
-      (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
+  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
   ASSERT_EQ(color, m_info->pixel_to_rgb(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
 {
   constexpr auto color = cen::colors::aquamarine;
-  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) |
-                         (color.blue() << 8u) | (color.alpha() << 0u);
+  const cen::u32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u)
+                         | (color.alpha() << 0u);
   ASSERT_EQ(color, m_info->pixel_to_rgba(pixel));
 }
 

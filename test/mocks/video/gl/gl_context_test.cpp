@@ -7,8 +7,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GL_MakeCurrent, SDL_Window*, SDL_GLContext)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GL_MakeCurrent, SDL_Window*, SDL_GLContext)
 }
 
 class OpenGLContextTest : public testing::Test

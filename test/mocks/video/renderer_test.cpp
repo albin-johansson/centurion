@@ -96,34 +96,34 @@ void validate_render_function(const Fake& fake, Args&&... args)
   ASSERT_EQ(src.height(), fake.arg2_val->h);
 
   const auto& dst = std::get<1>(tuple);
-  static_assert(std::is_same_v<const cen::irect&, decltype(src)> ||
-                std::is_same_v<const cen::frect&, decltype(src)>);
+  static_assert(
+      std::is_same_v<const cen::irect&,
+                     decltype(src)> || std::is_same_v<const cen::frect&, decltype(src)>);
 
   ASSERT_EQ(dst.x(), fake.arg3_val->x);
   ASSERT_EQ(dst.y(), fake.arg3_val->y);
   ASSERT_EQ(dst.width(), fake.arg3_val->w);
   ASSERT_EQ(dst.height(), fake.arg3_val->h);
 
-  if constexpr (sizeof...(Args) >= 3)
-  {
+  if constexpr (sizeof...(Args) >= 3) {
     const auto angle = std::get<2>(tuple);
     static_assert(std::is_same_v<const double, decltype(angle)>);
 
     ASSERT_EQ(angle, fake.arg4_val);
   }
 
-  if constexpr (sizeof...(Args) >= 4)
-  {
+  if constexpr (sizeof...(Args) >= 4) {
     const auto& center = std::get<3>(tuple);
-    static_assert(std::is_same_v<const cen::ipoint&, decltype(center)> ||
-                  std::is_same_v<const cen::fpoint&, decltype(center)>);
+    static_assert(
+        std::is_same_v<
+            const cen::ipoint&,
+            decltype(center)> || std::is_same_v<const cen::fpoint&, decltype(center)>);
 
     ASSERT_EQ(center.x(), fake.arg5_val->x);
     ASSERT_EQ(center.y(), fake.arg5_val->y);
   }
 
-  if constexpr (sizeof...(Args) >= 5)
-  {
+  if constexpr (sizeof...(Args) >= 5) {
     const auto flip = std::get<4>(tuple);
     static_assert(std::is_same_v<const SDL_RendererFlip, decltype(flip)>);
 
@@ -259,8 +259,7 @@ TEST_F(RendererTest, DrawLines)
     ASSERT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(0, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0u; i < points.size(); ++i)
-    {
+    for (auto i = 0u; i < points.size(); ++i) {
       ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
       ASSERT_EQ(points.at(i).y(), SDL_RenderDrawLines_fake.arg1_val[i].y);
     }
@@ -272,8 +271,7 @@ TEST_F(RendererTest, DrawLines)
     ASSERT_EQ(1, SDL_RenderDrawLines_fake.call_count);
     ASSERT_EQ(1, SDL_RenderDrawLinesF_fake.call_count);
 
-    for (auto i = 0u; i < points.size(); ++i)
-    {
+    for (auto i = 0u; i < points.size(); ++i) {
       ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
       ASSERT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
     }
@@ -461,11 +459,9 @@ TEST_F(RendererTest, SetBlendMode)
   ASSERT_EQ(2, SDL_SetRenderDrawBlendMode_fake.call_count);
 }
 
-auto query_texture(SDL_Texture* texture, Uint32* format, int* access, int* w, int* h)
-    -> int
+auto query_texture(SDL_Texture* texture, Uint32* format, int* access, int* w, int* h) -> int
 {
-  if (access)
-  {
+  if (access) {
     *access = SDL_TEXTUREACCESS_TARGET;
   }
   return 0;

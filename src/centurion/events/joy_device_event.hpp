@@ -38,8 +38,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**

@@ -92,8 +92,7 @@ TEST(KeyModifier, ToString)
   }
 
   {  // Three modifiers
-    const auto mods =
-        cen::key_mod::left_ctrl | cen::key_mod::right_alt | cen::key_mod::num;
+    const auto mods = cen::key_mod::left_ctrl | cen::key_mod::right_alt | cen::key_mod::num;
     ASSERT_EQ("left_ctrl,right_alt,num", cen::to_string(mods));
   }
 

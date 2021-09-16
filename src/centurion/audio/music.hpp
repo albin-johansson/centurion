@@ -3,10 +3,6 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -14,6 +10,8 @@
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -87,8 +85,7 @@ class music final
    */
   explicit music(const not_null<str> file) : m_music{Mix_LoadMUS(file)}
   {
-    if (!m_music)
-    {
+    if (!m_music) {
       throw mix_error{};
     }
   }
@@ -133,12 +130,10 @@ class music final
   auto play(const int nLoops = 0) noexcept -> std::optional<int>
   {
     const auto channel = Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
-    if (channel != -1)
-    {
+    if (channel != -1) {
       return channel;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -235,8 +230,8 @@ class music final
    *
    * \since 3.0.0
    */
-  auto fade_in(const milliseconds<int> ms,
-               const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
+  auto fade_in(const milliseconds<int> ms, const int nLoops = 0) noexcept(noexcept(ms.count()))
+      -> result
   {
     assert(ms.count() > 0);
     return Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count()) == 0;
@@ -257,16 +252,13 @@ class music final
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
-      -> result
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
-    if (!is_fading())
-    {
+    if (!is_fading()) {
       return Mix_FadeOutMusic(ms.count()) != 0;
     }
-    else
-    {
+    else {
       return failure;
     }
   }
@@ -537,6 +529,7 @@ class music final
   std::unique_ptr<Mix_Music, deleter> m_music;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   music() = default;
 #endif
@@ -584,8 +577,8 @@ inline void on_music_finished(music_finished_callback callback) noexcept
                      detail::address_of(music.get()),
                      music::volume());
 #else
-  return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + std::to_string(music::volume()) + "}";
+  return "music{data: " + detail::address_of(music.get())
+         + ", volume: " + std::to_string(music::volume()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

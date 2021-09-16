@@ -60,11 +60,9 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval) -> std::string_view
 {
-  switch (interval)
-  {
+  switch (interval) {
     case gl_swap_interval::immediate:
       return "immediate";
 
@@ -96,8 +94,7 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const gl_swap_interval interval) -> std::ostream&
 {
   return stream << to_string(interval);
 }
@@ -206,12 +203,10 @@ inline auto set(const gl_attribute attr, const int value) noexcept -> result
 inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
 {
   int value{};
-  if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0)
-  {
+  if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -287,8 +282,7 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
 }
 
 /// \copydoc is_extension_supported()
-[[nodiscard]] inline auto is_extension_supported(const std::string& extension) noexcept
-    -> bool
+[[nodiscard]] inline auto is_extension_supported(const std::string& extension) noexcept -> bool
 {
   return is_extension_supported(extension.c_str());
 }
@@ -310,12 +304,10 @@ auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
 {
   float width{};
   float height{};
-  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0)
-  {
+  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0) {
     return farea{width, height};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

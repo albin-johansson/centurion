@@ -1,12 +1,10 @@
 #ifndef CENTURION_MOUSE_HEADER
 #define CENTURION_MOUSE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -308,8 +306,7 @@ class mouse final
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
 #else
-  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +
-         "}";
+  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

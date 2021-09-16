@@ -1,14 +1,11 @@
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <optional>  // optional
 
+#include "../compiler/features.hpp"
 #include "../core/exception.hpp"
 #include "../core/is_stateless_callable.hpp"
 #include "../core/log.hpp"
@@ -49,7 +46,8 @@ auto set_hint(const Value& value) -> result
 {
   return SDL_SetHintWithPriority(Hint::name(),
                                  Hint::to_string(value).c_str(),
-                                 static_cast<SDL_HintPriority>(priority)) == SDL_TRUE;
+                                 static_cast<SDL_HintPriority>(priority))
+         == SDL_TRUE;
 }
 
 /**
@@ -104,8 +102,7 @@ class hint_callback final
       : m_callback{callback}
       , m_userData{userData}
   {
-    if (!callback)
-    {
+    if (!callback) {
       throw cen_error{"Failed to create hint callback"};
     }
   }
@@ -247,9 +244,7 @@ concept is_hint_callback = is_stateless_callable<T,
  *
  * \since 6.2.0
  */
-template <typename Hint,
-          typename UserData = void,
-          is_hint_callback<Hint, UserData> Callable>
+template <typename Hint, typename UserData = void, is_hint_callback<Hint, UserData> Callable>
 auto add_hint_callback_ex(Callable fun, UserData* data = nullptr)
     -> hint_callback<Hint, UserData>
 {

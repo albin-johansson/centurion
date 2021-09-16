@@ -1,16 +1,14 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -142,10 +140,8 @@ class basic_window final
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_window)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_window) {
         throw cen_error{"Cannot create window from null pointer!"};
       }
     }
@@ -175,12 +171,10 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1)
-    {
+    if (size.width < 1) {
       throw cen_error{"Bad window width!"};
     }
-    else if (size.height < 1)
-    {
+    else if (size.height < 1) {
       throw cen_error{"Bad window height!"};
     }
 
@@ -190,8 +184,7 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     flags));
-    if (!m_window)
-    {
+    if (!m_window) {
       throw sdl_error{};
     }
   }
@@ -1180,12 +1173,10 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1376,9 +1367,9 @@ template <typename T>
                      window.width(),
                      window.height());
 #else
-  return "window{data: " + detail::address_of(window.get()) +
-         ", width: " + std::to_string(window.width()) +
-         ", height: " + std::to_string(window.height()) + "}";
+  return "window{data: " + detail::address_of(window.get())
+         + ", width: " + std::to_string(window.width())
+         + ", height: " + std::to_string(window.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

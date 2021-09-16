@@ -52,8 +52,7 @@ enum class texture_access : int
  */
 [[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
-  switch (access)
-  {
+  switch (access) {
     case texture_access::no_lock:
       return "no_lock";
 

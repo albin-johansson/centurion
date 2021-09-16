@@ -129,8 +129,7 @@ inline auto remove_expiration(const channel_index channel) noexcept -> result
  *
  * \since 6.0.0
  */
-inline auto set_group(const channel_index channel, const group_index group) noexcept
-    -> result
+inline auto set_group(const channel_index channel, const group_index group) noexcept -> result
 {
   return Mix_GroupChannel(channel, group) == 1;
 }
@@ -180,12 +179,10 @@ inline auto reset_group(const channel_index channel) noexcept -> result
     -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupAvailable(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -200,16 +197,13 @@ inline auto reset_group(const channel_index channel) noexcept -> result
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto most_recent(const group_index group)
-    -> std::optional<channel_index>
+[[nodiscard]] inline auto most_recent(const group_index group) -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupNewer(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -227,12 +221,10 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 [[nodiscard]] inline auto oldest(const group_index group) -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupOldest(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

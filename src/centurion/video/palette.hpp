@@ -1,16 +1,14 @@
 #ifndef CENTURION_PALETTE_HEADER
 #define CENTURION_PALETTE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -61,8 +59,7 @@ class palette final
    */
   explicit palette(const int nColors) : m_palette{SDL_AllocPalette(nColors)}
   {
-    if (!m_palette)
-    {
+    if (!m_palette) {
       throw sdl_error{};
     }
   }
@@ -102,12 +99,10 @@ class palette final
    */
   [[nodiscard]] auto at(const int index) const -> cen::color
   {
-    if (index >= 0 && index < size())
-    {
+    if (index >= 0 && index < size()) {
       return cen::color{m_palette->colors[index]};
     }
-    else
-    {
+    else {
       throw cen_error{"Palette index out of bounds!"};
     }
   }
@@ -232,8 +227,8 @@ class palette final
                      detail::address_of(palette.get()),
                      palette.size());
 #else
-  return "palette{data: " + detail::address_of(palette.get()) +
-         ", size: " + std::to_string(palette.size()) + "}";
+  return "palette{data: " + detail::address_of(palette.get())
+         + ", size: " + std::to_string(palette.size()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

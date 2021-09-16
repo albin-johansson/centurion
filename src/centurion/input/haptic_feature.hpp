@@ -60,8 +60,7 @@ enum class haptic_feature : uint
  */
 [[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
-  switch (feature)
-  {
+  switch (feature) {
     case haptic_feature::constant:
       return "constant";
 
@@ -132,8 +131,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_feature feature)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> std::ostream&
 {
   return stream << to_string(feature);
 }

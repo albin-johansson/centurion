@@ -39,8 +39,7 @@ enum class lock_status
  */
 [[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case lock_status::success:
       return "success";
 

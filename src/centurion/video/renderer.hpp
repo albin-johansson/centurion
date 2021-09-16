@@ -1,10 +1,6 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -16,6 +12,8 @@
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -165,8 +163,7 @@ class basic_renderer final
   explicit basic_renderer(const Window& window, const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get())
-    {
+    if (!get()) {
       throw sdl_error{};
     }
   }
@@ -236,13 +233,11 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock())
-    {
+    if (!image.lock()) {
       throw sdl_error{};
     }
 
-    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
-    {
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1) {
       throw sdl_error{};
     }
 
@@ -299,12 +294,10 @@ class basic_renderer final
   template <typename U>
   auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawRectF(get(), rect.data()) == 0;
     }
   }
@@ -323,12 +316,10 @@ class basic_renderer final
   template <typename U>
   auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderFillRectF(get(), rect.data()) == 0;
     }
   }
@@ -346,15 +337,12 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
-      -> result
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
@@ -386,22 +374,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty())
-    {
+    if (!container.empty()) {
       const auto& front = container.front();
       const auto* first = front.data();
 
-      if constexpr (std::is_same_v<value_t, int>)
-      {
+      if constexpr (std::is_same_v<value_t, int>) {
         return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
       }
-      else
-      {
+      else {
         return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
       }
     }
-    else
-    {
+    else {
       return failure;
     }
   }
@@ -420,12 +404,10 @@ class basic_renderer final
   template <typename U>
   auto draw_point(const basic_point<U>& point) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
@@ -452,25 +434,21 @@ class basic_renderer final
     const auto cx = static_cast<float>(position.x()) - 0.5f;
     const auto cy = static_cast<float>(position.y()) - 0.5f;
 
-    while (x >= y)
-    {
+    while (x >= y) {
       draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
       draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
 
-      if (x != 0)
-      {
+      if (x != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
         draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
       }
 
-      if (y != 0)
-      {
+      if (y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
       }
 
-      if (x != 0 && y != 0)
-      {
+      if (x != 0 && y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
       }
@@ -479,8 +457,7 @@ class basic_renderer final
       ++y;
       error += y;
 
-      if (error >= 0)
-      {
+      if (error >= 0) {
         --x;
         error -= x;
         error -= x;
@@ -501,8 +478,7 @@ class basic_renderer final
     const auto cx = center.x();
     const auto cy = center.y();
 
-    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
-    {
+    for (auto dy = 1.0f; dy <= radius; dy += 1.0f) {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
       draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
       draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
@@ -639,8 +615,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
@@ -650,8 +625,7 @@ class basic_renderer final
    * \see render_blended_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font) -> texture
   {
     return render_blended_utf8(str.c_str(), font);
   }
@@ -768,8 +742,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
@@ -779,8 +752,7 @@ class basic_renderer final
    * \see render_solid_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font) -> texture
   {
     return render_solid_utf8(str.c_str(), font);
   }
@@ -818,8 +790,7 @@ class basic_renderer final
    * \see render_blended_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font) -> texture
   {
     return render_blended_latin1(str.c_str(), font);
   }
@@ -936,8 +907,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
@@ -947,8 +917,7 @@ class basic_renderer final
    * \see render_solid_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font) -> texture
   {
     return render_solid_latin1(str.c_str(), font);
   }
@@ -976,8 +945,7 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -1008,10 +976,8 @@ class basic_renderer final
                                                     const font& font,
                                                     const u32 wrap) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                                         str.data(),
-                                                         get_color().get(),
-                                                         wrap));
+    return render_text(
+        TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), get_color().get(), wrap));
   }
 
   /**
@@ -1040,10 +1006,8 @@ class basic_renderer final
                                            const font& font,
                                            const color& background) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
-                                                str.data(),
-                                                get_color().get(),
-                                                background.get()));
+    return render_text(
+        TTF_RenderUNICODE_Shaded(font.get(), str.data(), get_color().get(), background.get()));
   }
 
   /**
@@ -1069,8 +1033,7 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -1087,11 +1050,9 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
-      -> int
+  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position) -> int
   {
-    if (const auto* data = cache.try_at(glyph))
-    {
+    if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -1104,8 +1065,7 @@ class basic_renderer final
 
       return x + metrics.advance;
     }
-    else
-    {
+    else {
       return position.x();
     }
   }
@@ -1139,15 +1099,12 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str)
-    {
-      if (glyph == '\n')
-      {
+    for (const unicode glyph : str) {
+      if (glyph == '\n') {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
       }
-      else
-      {
+      else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -1178,14 +1135,12 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
       -> result
   {
-    if constexpr (basic_point<P>::isFloating)
-    {
+    if constexpr (basic_point<P>::isFloating) {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
-    else
-    {
+    else {
       const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
@@ -1208,12 +1163,10 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
     }
   }
@@ -1240,13 +1193,10 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
-             0;
+    if constexpr (basic_rect<P>::isFloating) {
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
     }
   }
@@ -1273,25 +1223,25 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
                                destination.data(),
                                angle,
                                nullptr,
-                               SDL_FLIP_NONE) == 0;
+                               SDL_FLIP_NONE)
+             == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
                               destination.data(),
                               angle,
                               nullptr,
-                              SDL_FLIP_NONE) == 0;
+                              SDL_FLIP_NONE)
+             == 0;
     }
   }
 
@@ -1325,25 +1275,25 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
                                destination.data(),
                                angle,
                                center.data(),
-                               SDL_FLIP_NONE) == 0;
+                               SDL_FLIP_NONE)
+             == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
                               destination.data(),
                               angle,
                               center.data(),
-                              SDL_FLIP_NONE) == 0;
+                              SDL_FLIP_NONE)
+             == 0;
     }
   }
 
@@ -1379,25 +1329,25 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
                                destination.data(),
                                angle,
                                center.data(),
-                               flip) == 0;
+                               flip)
+             == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
                               destination.data(),
                               angle,
                               center.data(),
-                              flip) == 0;
+                              flip)
+             == 0;
     }
   }
 
@@ -1444,8 +1394,8 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept -> result
+  auto render_t(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
   {
     return render(texture, translate(destination));
   }
@@ -1622,8 +1572,7 @@ class basic_renderer final
   void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::move(font));
@@ -1646,8 +1595,7 @@ class basic_renderer final
   void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -1731,7 +1679,8 @@ class basic_renderer final
                                   color.red(),
                                   color.green(),
                                   color.blue(),
-                                  color.alpha()) == 0;
+                                  color.alpha())
+           == 0;
   }
 
   /**
@@ -1995,12 +1944,10 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area())
-    {
+    if (!rect.has_area()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return rect;
     }
   }
@@ -2136,12 +2083,10 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       return m_renderer.ptr.get();
     }
-    else
-    {
+    else {
       return m_renderer;
     }
   }
@@ -2213,8 +2158,7 @@ class basic_renderer final
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
+  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept -> basic_point<U>
   {
     using value_type = typename basic_point<U>::value_type;
 

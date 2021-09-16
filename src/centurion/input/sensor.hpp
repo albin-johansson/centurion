@@ -1,16 +1,14 @@
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -96,10 +94,8 @@ class basic_sensor final
   explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_sensor)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_sensor) {
         throw cen_error{"Null sensor pointer!"};
       }
     }
@@ -117,8 +113,7 @@ class basic_sensor final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor)
-    {
+    if (!m_sensor) {
       throw sdl_error{};
     }
   }
@@ -257,12 +252,10 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
-    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
-    {
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1) {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -299,12 +292,10 @@ class basic_sensor final
   [[nodiscard]] static auto id(const int index) noexcept -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -347,16 +338,13 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto non_portable_type(const int index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto non_portable_type(const int index) noexcept -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1)
-    {
+    if (type != -1) {
       return type;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -413,9 +401,8 @@ template <typename T>
                      sensor.id(),
                      str_or_na(sensor.name()));
 #else
-  return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
-         "}";
+  return "sensor{data: " + detail::address_of(sensor.get()) + ", id: "
+         + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

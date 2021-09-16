@@ -115,9 +115,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_utf8(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_blended_utf8(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_utf8(string, get_font()));
@@ -263,9 +261,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const not_null<str> string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
@@ -276,9 +272,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const std::string& string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_blended_latin1(id, string.c_str(), renderer);
   }
@@ -380,9 +374,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_latin1(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_solid_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
@@ -491,9 +483,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_unicode(const id_type id,
-                           const unicode_string& string,
-                           Renderer& renderer)
+  void store_solid_unicode(const id_type id, const unicode_string& string, Renderer& renderer)
   {
     store(id, renderer.render_solid_unicode(string, get_font()));
   }
@@ -546,12 +536,10 @@ class font_cache final
   [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end())
-    {
+    if (iterator != m_strings.end()) {
       return &iterator->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -577,13 +565,11 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph))
-    {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
       return;
     }
 
-    glyph_data data{create_glyph_texture(renderer, glyph),
-                    m_font.get_metrics(glyph).value()};
+    glyph_data data{create_glyph_texture(renderer, glyph), m_font.get_metrics(glyph).value()};
     m_glyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -607,8 +593,7 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch)
-    {
+    for (auto ch = begin; ch < end; ++ch) {
       add_glyph(renderer, ch);
     }
   }
@@ -734,12 +719,10 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
-    {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
       return &it->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -784,8 +767,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph)
-      -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph) -> texture
   {
     const auto color = renderer.get_color().get();
     const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
@@ -794,8 +776,7 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end())
-    {
+    if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));

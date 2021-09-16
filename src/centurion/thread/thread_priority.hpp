@@ -51,8 +51,7 @@ enum class thread_priority
  */
 [[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case thread_priority::low:
       return "low";
 
@@ -87,8 +86,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const thread_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const thread_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }

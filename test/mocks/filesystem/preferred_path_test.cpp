@@ -5,8 +5,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(char*, SDL_GetPrefPath, const char*, const char*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(char*, SDL_GetPrefPath, const char*, const char*)
 }
 
 class PreferredPathTest : public testing::Test

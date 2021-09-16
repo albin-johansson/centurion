@@ -50,8 +50,7 @@ enum class joystick_power
  */
 [[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
-  switch (power)
-  {
+  switch (power) {
     case joystick_power::unknown:
       return "unknown";
 

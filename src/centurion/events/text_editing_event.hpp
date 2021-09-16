@@ -47,8 +47,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept
-      : common_event{event}
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : common_event{event}
   {
     check_length();
   }

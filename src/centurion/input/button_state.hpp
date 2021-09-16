@@ -50,8 +50,7 @@ enum class button_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case button_state::released:
       return "released";
 

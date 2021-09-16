@@ -36,9 +36,8 @@ TEST(LogCategory, Values)
 
 TEST(LogCategory, ToString)
 {
-  ASSERT_THROW(
-      cen::to_string(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
-      cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::log_category>(SDL_LOG_CATEGORY_CUSTOM + 1)),
+               cen::cen_error);
 
   ASSERT_EQ("app", cen::to_string(cen::log_category::app));
   ASSERT_EQ("error", cen::to_string(cen::log_category::error));

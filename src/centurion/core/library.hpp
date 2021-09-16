@@ -47,11 +47,9 @@
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
+
+#include "../compiler/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -137,8 +135,8 @@ struct config final
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_MIXER
-  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
-                 MIX_INIT_MOD | MIX_INIT_OPUS};
+  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD
+                 | MIX_INIT_OPUS};
   int mixerFreq{MIX_DEFAULT_FREQUENCY};
   u16 mixerFormat{MIX_DEFAULT_FORMAT};
   int mixerChannels{MIX_DEFAULT_CHANNELS};
@@ -228,8 +226,7 @@ class library final
   {
     explicit sdl(const u32 flags)
     {
-      if (SDL_Init(flags) < 0)
-      {
+      if (SDL_Init(flags) < 0) {
         throw sdl_error{};
       }
     }
@@ -246,8 +243,7 @@ class library final
   {
     explicit sdl_ttf()
     {
-      if (TTF_Init() == -1)
-      {
+      if (TTF_Init() == -1) {
         throw ttf_error{};
       }
     }
@@ -270,13 +266,11 @@ class library final
               const int nChannels,
               const int chunkSize)
     {
-      if (!Mix_Init(flags))
-      {
+      if (!Mix_Init(flags)) {
         throw mix_error{};
       }
 
-      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
-      {
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
         throw mix_error{};
       }
     }
@@ -296,8 +290,7 @@ class library final
   {
     explicit sdl_image(const int flags)
     {
-      if (!IMG_Init(flags))
-      {
+      if (!IMG_Init(flags)) {
         throw img_error{};
       }
     }
@@ -327,28 +320,24 @@ class library final
 
   void init()
   {
-    if (m_cfg.initCore)
-    {
+    if (m_cfg.initCore) {
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
 #ifndef CENTURION_NO_SDL_IMAGE
-    if (m_cfg.initImage)
-    {
+    if (m_cfg.initImage) {
       m_img.emplace(m_cfg.imageFlags);
     }
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_TTF
-    if (m_cfg.initTTF)
-    {
+    if (m_cfg.initTTF) {
       m_ttf.emplace();
     }
 #endif  // CENTURION_NO_SDL_TTF
 
 #ifndef CENTURION_NO_SDL_MIXER
-    if (m_cfg.initMixer)
-    {
+    if (m_cfg.initMixer) {
       m_mixer.emplace(m_cfg.mixerFlags,
                       m_cfg.mixerFreq,
                       m_cfg.mixerFormat,

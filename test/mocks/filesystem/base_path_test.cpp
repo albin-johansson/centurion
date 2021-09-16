@@ -5,8 +5,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(char*, SDL_GetBasePath)
+extern "C"
+{
+  FAKE_VALUE_FUNC(char*, SDL_GetBasePath)
 }
 
 class BasePathTest : public testing::Test

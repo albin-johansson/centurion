@@ -9,8 +9,9 @@
 #include "core_mocks.hpp"
 #include "input/haptic_constant.hpp"
 
-extern "C" {
-// clang-format off
+extern "C"
+{
+  // clang-format off
 FAKE_VOID_FUNC(SDL_HapticClose, SDL_Haptic*)
 FAKE_VOID_FUNC(SDL_HapticDestroyEffect, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpen, int)
@@ -41,7 +42,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticSetAutocenter, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(int, SDL_HapticStopAll, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticEffectSupported, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
-// clang-format on
+  // clang-format on
 }
 
 class HapticTest : public testing::Test

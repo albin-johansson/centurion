@@ -8,10 +8,11 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GL_LoadLibrary, const char*)
-FAKE_VALUE_FUNC(void*, SDL_GL_GetProcAddress, const char*)
-FAKE_VOID_FUNC(SDL_GL_UnloadLibrary)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GL_LoadLibrary, const char*)
+  FAKE_VALUE_FUNC(void*, SDL_GL_GetProcAddress, const char*)
+  FAKE_VOID_FUNC(SDL_GL_UnloadLibrary)
 }
 
 class OpenGLLibraryTest : public testing::Test

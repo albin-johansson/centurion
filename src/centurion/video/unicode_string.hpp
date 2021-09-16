@@ -144,8 +144,7 @@ class unicode_string final
    */
   void pop_back()
   {
-    if (!empty())
-    {
+    if (!empty()) {
       m_data.erase(m_data.end() - 2);
     }
   }
@@ -339,17 +338,14 @@ class unicode_string final
 [[nodiscard]] inline auto operator==(const unicode_string& lhs, const unicode_string& rhs)
     -> bool
 {
-  if (lhs.size() != rhs.size())
-  {
+  if (lhs.size() != rhs.size()) {
     return false;
   }
 
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index)
-  {
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
     const auto a = lhs.at(index);
     const auto b = rhs.at(index);
-    if (a != b)
-    {
+    if (a != b) {
       return false;
     }
   }

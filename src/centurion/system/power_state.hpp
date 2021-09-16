@@ -50,8 +50,7 @@ enum class power_state
  */
 [[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case power_state::unknown:
       return "unknown";
 

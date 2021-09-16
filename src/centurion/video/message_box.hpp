@@ -1,10 +1,6 @@
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
@@ -16,6 +12,7 @@
 #include <utility>      // move
 #include <vector>       // vector
 
+#include "../compiler/features.hpp"
 #include "../core/exception.hpp"
 #include "../core/integers.hpp"
 #include "../core/to_underlying.hpp"
@@ -464,8 +461,7 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(const message_box_type type,
-                                               const button_order buttonOrder) noexcept
-      -> u32
+                                               const button_order buttonOrder) noexcept -> u32
   {
     return to_underlying(type) | to_underlying(buttonOrder);
   }
@@ -476,10 +472,11 @@ class message_box final
                    const message_box_type type,
                    const button_order buttonOrder)
   {
-    if (-1 == SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
-                                       title.c_str(),
-                                       message.c_str(),
-                                       parent))
+    if (-1
+        == SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
+                                    title.c_str(),
+                                    message.c_str(),
+                                    parent))
     {
       throw sdl_error{};
     }
@@ -504,13 +501,11 @@ class message_box final
     buttonData.reserve(8);
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
-    if (m_buttons.empty())
-    {
+    if (m_buttons.empty()) {
       add_button(0, "OK", default_button::return_key);
     }
 
-    for (const auto& button : m_buttons)
-    {
+    for (const auto& button : m_buttons) {
       buttonData.emplace_back(button.convert());
     }
 
@@ -518,17 +513,14 @@ class message_box final
     data.numbuttons = isize(buttonData);
 
     button_id button{-1};
-    if (SDL_ShowMessageBox(&data, &button) == -1)
-    {
+    if (SDL_ShowMessageBox(&data, &button) == -1) {
       throw sdl_error{};
     }
 
-    if (button != -1)
-    {
+    if (button != -1) {
       return button;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -554,8 +546,7 @@ class message_box final
 [[nodiscard]] constexpr auto to_string(const message_box::default_button button)
     -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case message_box::default_button::return_key:
       return "return_key";
 
@@ -583,8 +574,7 @@ class message_box final
  */
 [[nodiscard]] constexpr auto to_string(const message_box::color_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case message_box::color_id::background:
       return "background";
 
@@ -640,8 +630,7 @@ inline auto operator<<(std::ostream& stream, const message_box::default_button b
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const message_box::color_id id)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const message_box::color_id id) -> std::ostream&
 {
   return stream << to_string(id);
 }
@@ -662,16 +651,14 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const message_box::default_button lhs,
-                                        const SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
 
 /// \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator==(const SDL_MessageBoxButtonFlags lhs,
-                                        const message_box::default_button rhs) noexcept
-    -> bool
+                                        const message_box::default_button rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -687,16 +674,14 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const message_box::default_button lhs,
-                                        const SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxButtonFlags lhs,
-                                        const message_box::default_button rhs) noexcept
-    -> bool
+                                        const message_box::default_button rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -724,8 +709,7 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 
 /// \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator==(const message_box::color_id lhs,
-                                        const SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -748,8 +732,7 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 
 /// \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator!=(const message_box::color_id lhs,
-                                        const SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

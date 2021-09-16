@@ -401,8 +401,7 @@ TEST(Rect, Intersects)
   {  // Obviously no intersection
     const cen::frect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
     const cen::frect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
-    const cen::frect right{{rect.x() + rect.width(), rect.y()},
-                           {rect.width(), rect.height()}};
+    const cen::frect right{{rect.x() + rect.width(), rect.y()}, {rect.width(), rect.height()}};
     const cen::frect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
 
     ASSERT_FALSE(cen::intersects(left, rect));

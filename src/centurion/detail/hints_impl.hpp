@@ -60,12 +60,10 @@ struct string_hint : crtp_hint<string_hint<Hint>, str>
 {
   [[nodiscard]] static auto current_value() noexcept -> std::optional<str>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return value;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -87,12 +85,10 @@ struct int_hint : crtp_hint<int_hint<Hint>, int>
 {
   [[nodiscard]] static auto current_value() -> std::optional<int>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stoi(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -114,12 +110,10 @@ struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
 {
   [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return static_cast<uint>(std::stoul(value));
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -141,12 +135,10 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 {
   [[nodiscard]] static auto current_value() -> std::optional<float>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stof(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }

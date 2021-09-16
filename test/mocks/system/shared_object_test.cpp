@@ -4,10 +4,11 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VOID_FUNC(SDL_UnloadObject, void*)
-FAKE_VALUE_FUNC(void*, SDL_LoadObject, const char*)
-FAKE_VALUE_FUNC(void*, SDL_LoadFunction, void*, const char*)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_UnloadObject, void*)
+  FAKE_VALUE_FUNC(void*, SDL_LoadObject, const char*)
+  FAKE_VALUE_FUNC(void*, SDL_LoadFunction, void*, const char*)
 }
 
 class SharedObjectTest : public testing::Test

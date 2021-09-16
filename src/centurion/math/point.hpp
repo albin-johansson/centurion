@@ -1,16 +1,14 @@
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -357,18 +355,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -383,8 +379,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -393,8 +388,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -501,16 +495,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }

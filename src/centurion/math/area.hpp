@@ -1,13 +1,11 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -81,8 +79,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -251,8 +248,8 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("area{{width: {}, height: {}}}", area.width, area.height);
 #else
-  return "area{width: " + std::to_string(area.width) +
-         ", height: " + std::to_string(area.height) + "}";
+  return "area{width: " + std::to_string(area.width)
+         + ", height: " + std::to_string(area.height) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

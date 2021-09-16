@@ -41,8 +41,7 @@ TEST(Palette, Iteration)
     cen::palette single{1};
 
     auto count = 0;
-    for (const auto& color : single)
-    {
+    for (const auto& color : single) {
       ++count;
     }
 
@@ -53,8 +52,7 @@ TEST(Palette, Iteration)
     cen::palette palette{4};
 
     auto count = 0;
-    for (const auto& color : palette)
-    {
+    for (const auto& color : palette) {
       ++count;
     }
 

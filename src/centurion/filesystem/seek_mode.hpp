@@ -46,8 +46,7 @@ enum class seek_mode
  */
 [[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case seek_mode::from_beginning:
       return "from_beginning";
 

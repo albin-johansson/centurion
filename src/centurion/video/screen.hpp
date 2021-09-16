@@ -70,8 +70,7 @@ enum class screen_orientation : int
 [[nodiscard]] constexpr auto to_string(const screen_orientation orientation)
     -> std::string_view
 {
-  switch (orientation)
-  {
+  switch (orientation) {
     case screen_orientation::unknown:
       return "unknown";
 
@@ -128,12 +127,10 @@ inline auto operator<<(std::ostream& stream, const screen_orientation orientatio
  */
 inline void set_screen_saver_enabled(const bool enabled) noexcept
 {
-  if (enabled)
-  {
+  if (enabled) {
     SDL_EnableScreenSaver();
   }
-  else
-  {
+  else {
     SDL_DisableScreenSaver();
   }
 }
@@ -205,8 +202,7 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
-    -> screen_orientation
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept -> screen_orientation
 {
   return static_cast<screen_orientation>(SDL_GetDisplayOrientation(index));
 }
@@ -228,12 +224,10 @@ namespace cen::screen {
     -> std::optional<SDL_DisplayMode>
 {
   SDL_DisplayMode mode{};
-  if (SDL_GetDesktopDisplayMode(index, &mode) == 0)
-  {
+  if (SDL_GetDesktopDisplayMode(index, &mode) == 0) {
     return mode;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -250,12 +244,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto refresh_rate(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return mode->refresh_rate;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -277,12 +269,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto get_pixel_format(const int index = 0) noexcept
     -> std::optional<pixel_format>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return static_cast<pixel_format>(mode->format);
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -299,12 +289,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto width(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return display_mode(index)->w;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -321,12 +309,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto height(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return display_mode(index)->h;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -343,12 +329,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto size(const int index = 0) noexcept -> std::optional<iarea>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return iarea{mode->w, mode->h};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -369,12 +353,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto dpi(const int index = 0) noexcept -> std::optional<dpi_info>
 {
   dpi_info info;
-  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0)
-  {
+  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0) {
     return info;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -390,15 +372,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto vertical_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto vertical_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->vertical;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -414,15 +393,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto diagonal_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto diagonal_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->diagonal;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -438,15 +414,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto horizontal_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto horizontal_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->horizontal;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -466,12 +439,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayBounds(index, result.data()) == 0)
-  {
+  if (SDL_GetDisplayBounds(index, result.data()) == 0) {
     return result;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -489,16 +460,13 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept
-    -> std::optional<irect>
+[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0)
-  {
+  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
     return result;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

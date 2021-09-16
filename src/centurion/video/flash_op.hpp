@@ -51,8 +51,7 @@ enum class flash_op
  */
 [[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
-  switch (op)
-  {
+  switch (op) {
     case flash_op::cancel:
       return "cancel";
 

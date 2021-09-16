@@ -192,12 +192,10 @@ class enum_hint
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    if (const str hint = SDL_GetHint(Derived::name()))
-    {
+    if (const str hint = SDL_GetHint(Derived::name())) {
       return Derived::map.key_from(hint);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }

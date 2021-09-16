@@ -39,8 +39,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**

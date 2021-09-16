@@ -15,8 +15,7 @@ TEST(DisplayEventId, Values)
   ASSERT_EQ(cen::to_underlying(cen::display_event_id::none), SDL_DISPLAYEVENT_NONE);
   ASSERT_EQ(cen::to_underlying(cen::display_event_id::orientation),
             SDL_DISPLAYEVENT_ORIENTATION);
-  ASSERT_EQ(cen::to_underlying(cen::display_event_id::connected),
-            SDL_DISPLAYEVENT_CONNECTED);
+  ASSERT_EQ(cen::to_underlying(cen::display_event_id::connected), SDL_DISPLAYEVENT_CONNECTED);
   ASSERT_EQ(cen::to_underlying(cen::display_event_id::disconnected),
             SDL_DISPLAYEVENT_DISCONNECTED);
 }

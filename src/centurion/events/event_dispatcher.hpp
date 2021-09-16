@@ -165,8 +165,7 @@ class event_sink final
 template <typename... E>
 class event_dispatcher final
 {
-  static_assert((!std::is_const_v<E> && ...),
-                "Can't use \"const\" on template parameter!");
+  static_assert((!std::is_const_v<E> && ...), "Can't use \"const\" on template parameter!");
 
   static_assert((!std::is_volatile_v<E> && ...),
                 "Can't use \"volatile\" on template parameter!");
@@ -223,17 +222,14 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* event = m_event.template try_get<Event>())
-    {
-      if (auto& function = get_sink<Event>().function())
-      {
+    if (const auto* event = m_event.template try_get<Event>()) {
+      if (auto& function = get_sink<Event>().function()) {
         function(*event);
       }
 
       return true;
     }
-    else
-    {
+    else {
       return false;
     }
   }
@@ -252,8 +248,7 @@ class event_dispatcher final
    */
   void poll()
   {
-    while (m_event.poll())
-    {
+    while (m_event.poll()) {
       (check_for<E>() || ...);
     }
   }
@@ -326,11 +321,10 @@ class event_dispatcher final
 /// \{
 
 template <typename... E>
-[[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
-    -> std::string
+[[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher) -> std::string
 {
-  return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
-         ", #active: " + std::to_string(dispatcher.active_count()) + "}";
+  return "event_dispatcher{size: " + std::to_string(dispatcher.size())
+         + ", #active: " + std::to_string(dispatcher.active_count()) + "}";
 }
 
 /// \} End of string conversions

@@ -3,10 +3,6 @@
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -14,6 +10,8 @@
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -136,8 +134,7 @@ class basic_sound_effect final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const not_null<str> file) : m_chunk{Mix_LoadWAV(file)}
   {
-    if (!m_chunk)
-    {
+    if (!m_chunk) {
       throw mix_error{};
     }
   }
@@ -198,8 +195,7 @@ class basic_sound_effect final
    */
   void stop() noexcept
   {
-    if (is_playing())
-    {
+    if (is_playing()) {
       Mix_Pause(m_channel);
       m_channel = undefined_channel();
     }
@@ -249,8 +245,7 @@ class basic_sound_effect final
   void fade_in(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
-    if (!is_playing())
-    {
+    if (!is_playing()) {
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
@@ -269,8 +264,7 @@ class basic_sound_effect final
   void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT
   {
     assert(ms.count() > 0);
-    if (is_playing())
-    {
+    if (is_playing()) {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -436,12 +430,10 @@ class basic_sound_effect final
    */
   [[nodiscard]] auto channel() const noexcept -> std::optional<int>
   {
-    if (m_channel != undefined_channel())
-    {
+    if (m_channel != undefined_channel()) {
       return m_channel;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -478,6 +470,7 @@ class basic_sound_effect final
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   void set_channel(const int channel) noexcept
   {
@@ -523,8 +516,8 @@ class basic_sound_effect final
                      detail::address_of(sound.get()),
                      sound.volume());
 #else
-  return "sound_effect{data: " + detail::address_of(sound.get()) +
-         ", volume: " + std::to_string(sound.volume()) + "}";
+  return "sound_effect{data: " + detail::address_of(sound.get())
+         + ", volume: " + std::to_string(sound.volume()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

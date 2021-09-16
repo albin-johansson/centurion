@@ -50,8 +50,7 @@ enum class scale_mode
  */
 [[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case scale_mode::nearest:
       return "nearest";
 
@@ -103,15 +102,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -126,15 +125,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

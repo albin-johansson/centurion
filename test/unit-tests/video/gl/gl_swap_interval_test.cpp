@@ -20,6 +20,5 @@ TEST(GLSwapInterval, ToString)
   ASSERT_EQ("synchronized", cen::to_string(cen::gl_swap_interval::synchronized));
   ASSERT_EQ("late_immediate", cen::to_string(cen::gl_swap_interval::late_immediate));
 
-  std::clog << "OpenGL swap interval example: " << cen::gl_swap_interval::synchronized
-            << '\n';
+  std::clog << "OpenGL swap interval example: " << cen::gl_swap_interval::synchronized << '\n';
 }

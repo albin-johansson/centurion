@@ -1,11 +1,9 @@
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <cmath>  // lerp
+
+#include "../compiler/features.hpp"
 
 /// \cond FALSE
 

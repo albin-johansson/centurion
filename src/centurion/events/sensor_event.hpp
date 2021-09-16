@@ -70,8 +70,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
 #else
     std::array<float, 6> array{};
 
-    for (usize i = 0; i < 6; ++i)
-    {
+    for (usize i = 0; i < 6; ++i) {
       array[i] = m_event.data[i];
     }
 

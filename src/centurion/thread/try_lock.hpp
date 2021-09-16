@@ -1,12 +1,9 @@
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
+#include "../compiler/features.hpp"
 #include "lock_status.hpp"
 #include "mutex.hpp"
 
@@ -49,8 +46,7 @@ class try_lock final
    */
   ~try_lock() noexcept
   {
-    if (m_status == lock_status::success)
-    {
+    if (m_status == lock_status::success) {
       m_mutex->unlock();
     }
   }

@@ -8,9 +8,10 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_Vulkan_LoadLibrary, const char*)
-FAKE_VOID_FUNC(SDL_Vulkan_UnloadLibrary)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_Vulkan_LoadLibrary, const char*)
+  FAKE_VOID_FUNC(SDL_Vulkan_UnloadLibrary)
 }
 
 class VulkanLibraryTest : public testing::Test

@@ -49,8 +49,7 @@ enum class hint_priority
  */
 [[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case hint_priority::low:
       return "low";
 
@@ -82,8 +81,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const hint_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const hint_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }

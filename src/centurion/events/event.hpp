@@ -159,12 +159,10 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result)
-    {
+    if (result) {
       update_data(static_cast<event_type>(m_event.type));
     }
-    else
-    {
+    else {
       m_data.emplace<std::monostate>();
     }
 
@@ -181,12 +179,10 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty())
-    {
+    if (is_empty()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -201,14 +197,11 @@ class event final
    */
   [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
-    const auto num =
-        SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
-    if (num != -1)
-    {
+    const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -224,17 +217,14 @@ class event final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto queue_count(const event_type type) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1)
-    {
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -421,8 +411,7 @@ class event final
   //   - user_event
   void update_data(const event_type type) noexcept
   {
-    switch (type)
-    {
+    switch (type) {
       case event_type::quit:
         m_data.emplace<quit_event>(m_event.quit);
         break;

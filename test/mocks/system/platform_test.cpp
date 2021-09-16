@@ -8,14 +8,16 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
-FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
+extern "C"
+{
+  FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
 }
 
 class PlatformTest : public testing::Test
 {
  public:
+
  protected:
   void SetUp() override
   {

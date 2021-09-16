@@ -10,13 +10,13 @@
 
 using namespace cen::literals;
 
-extern "C" {
+extern "C"
+{
+  using each_sound_font = int(SDLCALL*)(const char*, void*);
 
-using each_sound_font = int(SDLCALL*)(const char*, void*);
-
-FAKE_VALUE_FUNC(int, Mix_EachSoundFont, each_sound_font, void*)
-FAKE_VALUE_FUNC(int, Mix_SetSoundFonts, const char*)
-FAKE_VALUE_FUNC(const char*, Mix_GetSoundFonts)
+  FAKE_VALUE_FUNC(int, Mix_EachSoundFont, each_sound_font, void*)
+  FAKE_VALUE_FUNC(int, Mix_SetSoundFonts, const char*)
+  FAKE_VALUE_FUNC(const char*, Mix_GetSoundFonts)
 }
 
 class MixerTest : public testing::Test

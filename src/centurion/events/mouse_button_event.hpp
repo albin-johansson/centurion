@@ -42,8 +42,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**

@@ -53,8 +53,7 @@ enum class controller_axis
  */
 [[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
-  switch (axis)
-  {
+  switch (axis) {
     case controller_axis::invalid:
       return "invalid";
 

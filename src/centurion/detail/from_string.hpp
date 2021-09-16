@@ -15,8 +15,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -26,39 +25,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

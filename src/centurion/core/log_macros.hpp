@@ -1,12 +1,9 @@
 #ifndef CENTURION_LOG_MACROS_HEADER
 #define CENTURION_LOG_MACROS_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
+#include "../compiler/features.hpp"
 #include "log.hpp"
 
 #ifndef CENTURION_NO_DEBUG_LOG_MACROS

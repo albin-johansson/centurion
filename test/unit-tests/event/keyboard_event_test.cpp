@@ -155,8 +155,7 @@ TEST(KeyboardEvent, IsOnlyAnyOfActive)
   ASSERT_FALSE(event.is_only_any_of_active(cen::key_mod::shift));
 
   ASSERT_TRUE(event.is_only_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
-  ASSERT_TRUE(
-      event.is_only_any_of_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
+  ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::left_shift | cen::key_mod::right_gui));
   ASSERT_TRUE(event.is_only_any_of_active(cen::key_mod::shift | cen::key_mod::gui));
 }
 

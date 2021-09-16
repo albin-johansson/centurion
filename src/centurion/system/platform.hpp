@@ -53,8 +53,7 @@ enum class platform_id
  */
 [[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case platform_id::unknown:
       return "unknown";
 
@@ -115,28 +114,22 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const str platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows"))
-  {
+  if (detail::czstring_eq(platform, "Windows")) {
     return platform_id::windows;
   }
-  else if (detail::czstring_eq(platform, "Mac OS X"))
-  {
+  else if (detail::czstring_eq(platform, "Mac OS X")) {
     return platform_id::mac_osx;
   }
-  else if (detail::czstring_eq(platform, "Linux"))
-  {
+  else if (detail::czstring_eq(platform, "Linux")) {
     return platform_id::linux_os;
   }
-  else if (detail::czstring_eq(platform, "iOS"))
-  {
+  else if (detail::czstring_eq(platform, "iOS")) {
     return platform_id::ios;
   }
-  else if (detail::czstring_eq(platform, "Android"))
-  {
+  else if (detail::czstring_eq(platform, "Android")) {
     return platform_id::android;
   }
-  else
-  {
+  else {
     return platform_id::unknown;
   }
 }
@@ -211,12 +204,10 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 [[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name != "Unknown")
-  {
+  if (name != "Unknown") {
     return name;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

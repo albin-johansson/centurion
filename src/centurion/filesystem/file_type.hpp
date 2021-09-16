@@ -50,8 +50,7 @@ enum class file_type : uint
  */
 [[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case file_type::unknown:
       return "unknown";
 

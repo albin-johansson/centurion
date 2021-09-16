@@ -40,8 +40,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept
-      : common_event{event}
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : common_event{event}
   {}
 
   /**

@@ -85,10 +85,8 @@ class basic_context final
   explicit basic_context(basic_window<U>& window) noexcept(!detail::is_owning<T>())
       : m_context{SDL_GL_CreateContext(window.get())}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_context)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_context) {
         throw sdl_error{};
       }
     }

@@ -6,8 +6,8 @@
 
 #include "core/log.hpp"
 
-using event_dispatcher = cen::
-    event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
+using event_dispatcher =
+    cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
 
 namespace {
 

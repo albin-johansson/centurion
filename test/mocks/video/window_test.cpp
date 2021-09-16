@@ -7,47 +7,47 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-
-FAKE_VOID_FUNC(SDL_ShowWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_MaximizeWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_MinimizeWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_RestoreWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_SetWindowBordered, SDL_Window*, SDL_bool)
-FAKE_VOID_FUNC(SDL_SetWindowResizable, SDL_Window*, SDL_bool)
-FAKE_VOID_FUNC(SDL_SetWindowGrab, SDL_Window*, SDL_bool)
-FAKE_VOID_FUNC(SDL_SetWindowIcon, SDL_Window*, SDL_Surface*)
-FAKE_VOID_FUNC(SDL_SetWindowPosition, SDL_Window*, int, int)
-FAKE_VOID_FUNC(SDL_SetWindowSize, SDL_Window*, int, int)
-FAKE_VOID_FUNC(SDL_GetWindowSize, SDL_Window*, int*, int*)
-FAKE_VOID_FUNC(SDL_SetWindowTitle, SDL_Window*, const char*)
-FAKE_VOID_FUNC(SDL_SetWindowMinimumSize, SDL_Window*, int, int)
-FAKE_VOID_FUNC(SDL_SetWindowMaximumSize, SDL_Window*, int, int)
-FAKE_VOID_FUNC(SDL_GetWindowMinimumSize, SDL_Window*, int*, int*)
-FAKE_VOID_FUNC(SDL_GetWindowMaximumSize, SDL_Window*, int*, int*)
-FAKE_VOID_FUNC(SDL_GetWindowPosition, SDL_Window*, int*, int*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GetWindowGrab, SDL_Window*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_IsScreenKeyboardShown, SDL_Window*)
-FAKE_VALUE_FUNC(Uint32, SDL_GetWindowID, SDL_Window*)
-FAKE_VALUE_FUNC(Uint32, SDL_GetWindowPixelFormat, SDL_Window*)
-FAKE_VALUE_FUNC(SDL_Surface*, SDL_GetWindowSurface, SDL_Window*)
-FAKE_VALUE_FUNC(const char*, SDL_GetWindowTitle, SDL_Window*)
-FAKE_VALUE_FUNC(int, SDL_CaptureMouse, SDL_bool)
-FAKE_VALUE_FUNC(int, SDL_UpdateWindowSurface, SDL_Window*)
-FAKE_VALUE_FUNC(int, SDL_GetWindowDisplayIndex, SDL_Window*)
-FAKE_VALUE_FUNC(int, SDL_SetWindowFullscreen, SDL_Window*, Uint32)
-FAKE_VALUE_FUNC(int, SDL_SetWindowBrightness, SDL_Window*, float)
-FAKE_VALUE_FUNC(int, SDL_SetWindowOpacity, SDL_Window*, float)
-FAKE_VALUE_FUNC(int, SDL_GetWindowOpacity, SDL_Window*, float*)
-FAKE_VALUE_FUNC(float, SDL_GetWindowBrightness, SDL_Window*)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_ShowWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_HideWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_RaiseWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_MaximizeWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_MinimizeWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_RestoreWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_SetWindowBordered, SDL_Window*, SDL_bool)
+  FAKE_VOID_FUNC(SDL_SetWindowResizable, SDL_Window*, SDL_bool)
+  FAKE_VOID_FUNC(SDL_SetWindowGrab, SDL_Window*, SDL_bool)
+  FAKE_VOID_FUNC(SDL_SetWindowIcon, SDL_Window*, SDL_Surface*)
+  FAKE_VOID_FUNC(SDL_SetWindowPosition, SDL_Window*, int, int)
+  FAKE_VOID_FUNC(SDL_SetWindowSize, SDL_Window*, int, int)
+  FAKE_VOID_FUNC(SDL_GetWindowSize, SDL_Window*, int*, int*)
+  FAKE_VOID_FUNC(SDL_SetWindowTitle, SDL_Window*, const char*)
+  FAKE_VOID_FUNC(SDL_SetWindowMinimumSize, SDL_Window*, int, int)
+  FAKE_VOID_FUNC(SDL_SetWindowMaximumSize, SDL_Window*, int, int)
+  FAKE_VOID_FUNC(SDL_GetWindowMinimumSize, SDL_Window*, int*, int*)
+  FAKE_VOID_FUNC(SDL_GetWindowMaximumSize, SDL_Window*, int*, int*)
+  FAKE_VOID_FUNC(SDL_GetWindowPosition, SDL_Window*, int*, int*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GetWindowGrab, SDL_Window*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_IsScreenKeyboardShown, SDL_Window*)
+  FAKE_VALUE_FUNC(Uint32, SDL_GetWindowID, SDL_Window*)
+  FAKE_VALUE_FUNC(Uint32, SDL_GetWindowPixelFormat, SDL_Window*)
+  FAKE_VALUE_FUNC(SDL_Surface*, SDL_GetWindowSurface, SDL_Window*)
+  FAKE_VALUE_FUNC(const char*, SDL_GetWindowTitle, SDL_Window*)
+  FAKE_VALUE_FUNC(int, SDL_CaptureMouse, SDL_bool)
+  FAKE_VALUE_FUNC(int, SDL_UpdateWindowSurface, SDL_Window*)
+  FAKE_VALUE_FUNC(int, SDL_GetWindowDisplayIndex, SDL_Window*)
+  FAKE_VALUE_FUNC(int, SDL_SetWindowFullscreen, SDL_Window*, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_SetWindowBrightness, SDL_Window*, float)
+  FAKE_VALUE_FUNC(int, SDL_SetWindowOpacity, SDL_Window*, float)
+  FAKE_VALUE_FUNC(int, SDL_GetWindowOpacity, SDL_Window*, float*)
+  FAKE_VALUE_FUNC(float, SDL_GetWindowBrightness, SDL_Window*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 
-FAKE_VOID_FUNC(SDL_SetWindowAlwaysOnTop, SDL_Window*, SDL_bool)
-FAKE_VOID_FUNC(SDL_SetWindowKeyboardGrab, SDL_Window*, SDL_bool)
-FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
+  FAKE_VOID_FUNC(SDL_SetWindowAlwaysOnTop, SDL_Window*, SDL_bool)
+  FAKE_VOID_FUNC(SDL_SetWindowKeyboardGrab, SDL_Window*, SDL_bool)
+  FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
@@ -519,8 +519,7 @@ TEST_F(WindowTest, IsMaximized)
 
 TEST_F(WindowTest, IsAlwaysOnTop)
 {
-  std::array values{cen::u32{cen::window::fullscreen},
-                    cen::u32{cen::window::always_on_top}};
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::always_on_top}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.is_always_on_top());
@@ -530,8 +529,7 @@ TEST_F(WindowTest, IsAlwaysOnTop)
 
 TEST_F(WindowTest, HasGrabbedInput)
 {
-  std::array values{cen::u32{cen::window::fullscreen},
-                    cen::u32{cen::window::input_grabbed}};
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::input_grabbed}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.has_grabbed_input());
@@ -591,8 +589,7 @@ TEST_F(WindowTest, IsPopupMenu)
 
 TEST_F(WindowTest, IsExcludedFromTaskbar)
 {
-  std::array values{cen::u32{cen::window::fullscreen},
-                    cen::u32{cen::window::skip_taskbar}};
+  std::array values{cen::u32{cen::window::fullscreen}, cen::u32{cen::window::skip_taskbar}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.is_excluded_from_taskbar());

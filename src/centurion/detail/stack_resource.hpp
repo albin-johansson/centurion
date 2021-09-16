@@ -1,10 +1,7 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
-// clang-format off
 #include "../compiler/features.hpp"
-// clang-format on
-
 #include "../core/integers.hpp"
 
 #if CENTURION_HAS_FEATURE_MEMORY_RESOURCE

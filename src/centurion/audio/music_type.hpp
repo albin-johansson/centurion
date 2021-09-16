@@ -69,8 +69,7 @@ enum class music_type
  */
 [[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case music_type::unknown:
       return "unknown";
 
@@ -140,15 +139,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -163,15 +162,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

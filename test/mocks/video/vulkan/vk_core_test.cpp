@@ -7,19 +7,16 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(void*, SDL_Vulkan_GetVkGetInstanceProcAddr)
-FAKE_VALUE_FUNC(SDL_bool,
-                SDL_Vulkan_CreateSurface,
-                SDL_Window*,
-                VkInstance,
-                VkSurfaceKHR*)
-FAKE_VOID_FUNC(SDL_Vulkan_GetDrawableSize, SDL_Window*, int*, int*)
-FAKE_VALUE_FUNC(SDL_bool,
-                SDL_Vulkan_GetInstanceExtensions,
-                SDL_Window*,
-                unsigned*,
-                const char**)
+extern "C"
+{
+  FAKE_VALUE_FUNC(void*, SDL_Vulkan_GetVkGetInstanceProcAddr)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_Vulkan_CreateSurface, SDL_Window*, VkInstance, VkSurfaceKHR*)
+  FAKE_VOID_FUNC(SDL_Vulkan_GetDrawableSize, SDL_Window*, int*, int*)
+  FAKE_VALUE_FUNC(SDL_bool,
+                  SDL_Vulkan_GetInstanceExtensions,
+                  SDL_Window*,
+                  unsigned*,
+                  const char**)
 }
 
 class VulkanCoreTest : public testing::Test

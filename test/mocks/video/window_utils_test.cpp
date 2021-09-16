@@ -5,12 +5,13 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(SDL_Window*, SDL_GetGrabbedWindow)
-FAKE_VALUE_FUNC(SDL_Window*, SDL_GetMouseFocus)
-FAKE_VALUE_FUNC(SDL_Window*, SDL_GetKeyboardFocus)
-FAKE_VALUE_FUNC(SDL_Window*, SDL_GetWindowFromID, Uint32)
-FAKE_VALUE_FUNC(SDL_Renderer*, SDL_GetRenderer, SDL_Window*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_GetGrabbedWindow)
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_GetMouseFocus)
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_GetKeyboardFocus)
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_GetWindowFromID, Uint32)
+  FAKE_VALUE_FUNC(SDL_Renderer*, SDL_GetRenderer, SDL_Window*)
 }
 
 class WindowUtilsTest : public testing::Test

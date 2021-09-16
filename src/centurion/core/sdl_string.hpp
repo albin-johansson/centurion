@@ -66,12 +66,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }

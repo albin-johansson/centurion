@@ -49,8 +49,7 @@ enum class sensor_type
  */
 [[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case sensor_type::invalid:
       return "invalid";
 

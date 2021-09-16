@@ -57,8 +57,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -123,15 +122,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -146,15 +145,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

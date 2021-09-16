@@ -10,8 +10,9 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }  // extern "C"
 
 class OpenURLTest : public testing::Test

@@ -93,12 +93,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
-    if (active)
-    {
+    if (active) {
       m_event.keysym.mod |= to_underlying(modifiers);
     }
-    else
-    {
+    else {
       m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }

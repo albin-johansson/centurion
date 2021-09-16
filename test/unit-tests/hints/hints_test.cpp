@@ -102,13 +102,12 @@ using boolean_hints = testing::Types<cen::hint::double_buffer,
                                      // Use "normal" hint here to avoid issues with commas
                                      cen::hint::x11::xvidmode>;
 
-using integer_hints =
-    testing::Types<cen::hint::event_logging,
-                   cen::hint::raspberrypi::video_layer,
-                   cen::hint::mouse::double_click_time,
-                   cen::hint::mouse::double_click_radius,
-                   cen::hint::android::apk_expansion_main_file_version,
-                   cen::hint::android::apk_expansion_patch_file_version>;
+using integer_hints = testing::Types<cen::hint::event_logging,
+                                     cen::hint::raspberrypi::video_layer,
+                                     cen::hint::mouse::double_click_time,
+                                     cen::hint::mouse::double_click_radius,
+                                     cen::hint::android::apk_expansion_main_file_version,
+                                     cen::hint::android::apk_expansion_patch_file_version>;
 
 using unsigned_hints =
     testing::Types<cen::hint::thread_stack_size, cen::hint::timer_resolution>;
@@ -123,8 +122,7 @@ void test_hint(T&& callable)
 
   callable();
 
-  if (optPrev)
-  {
+  if (optPrev) {
     cen::set_hint<Hint, cen::hint_priority::low>(*optPrev);
   }
 }
@@ -399,18 +397,15 @@ TEST_F(BasicHintTest, D3DCompiler)
 TEST_F(BasicHintTest, AddHintCallback)
 {
   using cen::hint::render_driver;
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   const auto callable =
       [](void* data, const cen::str hint, const cen::str oldVal, const cen::str newVal) {
         static bool first = true;
-        if (first)
-        {
+        if (first) {
           first = false;
         }
-        else
-        {
+        else {
           const auto ptr = reinterpret_cast<int*>(data);
 
           ASSERT_TRUE(ptr);
@@ -426,13 +421,11 @@ TEST_F(BasicHintTest, AddHintCallback)
   auto handle = cen::add_hint_callback<render_driver>(callable, &data);
   ASSERT_EQ(&data, handle.user_data());
 
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   handle.disconnect();
 
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::opengl);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::opengl);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -494,20 +487,17 @@ TEST_F(BasicHintTest, AudioDeviceStreamRole)
 TEST_F(BasicHintTest, AddHintCallbackExFull)
 {
   using cen::hint::render_driver;
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   const auto callable = [](int* ptr,
                            const cen::str name,
                            const render_driver::value oldValue,
                            const render_driver::value newValue) {
     static bool first = true;
-    if (first)
-    {
+    if (first) {
       first = false;
     }
-    else
-    {
+    else {
       ASSERT_TRUE(ptr);
       ASSERT_EQ(42, *ptr);
 
@@ -522,13 +512,11 @@ TEST_F(BasicHintTest, AddHintCallbackExFull)
   auto handle = cen::add_hint_callback_ex<render_driver>(callable, &data);
   ASSERT_EQ(&data, handle.user_data());
 
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   handle.disconnect();
 
-  cen::set_hint<render_driver, cen::hint_priority::override>(
-      render_driver::value::opengl);
+  cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::opengl);
 }
 
 #endif  // CENTURION_HAS_FEATURE_CONCEPTS

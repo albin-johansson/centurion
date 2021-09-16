@@ -129,8 +129,7 @@ TEST(EventType, ToString)
   ASSERT_EQ("controller_button_up", cen::to_string(type::controller_button_up));
   ASSERT_EQ("controller_device_added", cen::to_string(type::controller_device_added));
   ASSERT_EQ("controller_device_removed", cen::to_string(type::controller_device_removed));
-  ASSERT_EQ("controller_device_remapped",
-            cen::to_string(type::controller_device_remapped));
+  ASSERT_EQ("controller_device_remapped", cen::to_string(type::controller_device_remapped));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
   ASSERT_EQ("controller_touchpad_down", to_string(type::controller_touchpad_down));

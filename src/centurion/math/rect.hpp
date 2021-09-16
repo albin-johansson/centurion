@@ -1,15 +1,13 @@
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -672,10 +670,7 @@ class basic_rect final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto rect(const T x,
-                                  const T y,
-                                  const T width,
-                                  const T height) noexcept
+[[nodiscard]] constexpr auto rect(const T x, const T y, const T width, const T height) noexcept
     -> basic_rect<typename rect_traits<T>::value_type>
 {
   using value_type = typename rect_traits<T>::value_type;
@@ -706,8 +701,8 @@ template <typename T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
                                         const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() || fst.y() >= snd.max_y() ||
-           fst.max_y() <= snd.y());
+  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() || fst.y() >= snd.max_y()
+           || fst.max_y() <= snd.y());
 }
 
 /**
@@ -730,8 +725,8 @@ template <typename T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
                                       const basic_rect<T>& snd) noexcept -> bool
 {
-  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() || fst.y() > snd.max_y() ||
-           fst.max_y() < snd.y());
+  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() || fst.y() > snd.max_y()
+           || fst.max_y() < snd.y());
 }
 
 /**
@@ -755,16 +750,13 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea)
-  {
+  if (!fstHasArea && !sndHasArea) {
     return {};
   }
-  else if (!fstHasArea)
-  {
+  else if (!fstHasArea) {
     return snd;
   }
-  else if (!sndHasArea)
-  {
+  else if (!sndHasArea) {
     return fst;
   }
 
@@ -797,8 +789,8 @@ template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept -> bool
 {
-  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) && (lhs.width() == rhs.width()) &&
-         (lhs.height() == rhs.height());
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) && (lhs.width() == rhs.width())
+         && (lhs.height() == rhs.height());
 }
 
 /**
@@ -838,8 +830,7 @@ template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
   const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
+  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
   return irect{pos, size};
 }
 
@@ -869,9 +860,9 @@ template <typename T>
                      rect.width(),
                      rect.height());
 #else
-  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y()) +
-         ", width: " + std::to_string(rect.width()) +
-         ", height: " + std::to_string(rect.height()) + "}";
+  return "rect{x: " + std::to_string(rect.x()) + ", y: " + std::to_string(rect.y())
+         + ", width: " + std::to_string(rect.width())
+         + ", height: " + std::to_string(rect.height()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

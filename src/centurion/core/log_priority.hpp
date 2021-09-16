@@ -63,8 +63,7 @@ enum class log_priority : int
  */
 [[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case log_priority::verbose:
       return "verbose";
 

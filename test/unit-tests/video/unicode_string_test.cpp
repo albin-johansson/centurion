@@ -40,8 +40,7 @@ TEST(UnicodeString, Iteration)
   ASSERT_EQ(3, str.end() - str.begin());
 
   int count = 0;
-  for (const auto ch : str)
-  {
+  for (const auto ch : str) {
     ASSERT_NE(0, ch);
     ++count;
   }

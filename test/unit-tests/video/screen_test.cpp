@@ -108,8 +108,7 @@ TEST(Screen, GetOrientation)
 {
   {  // Default index
     const auto orientation = cen::screen::get_orientation();
-    ASSERT_EQ(SDL_GetDisplayOrientation(0),
-              static_cast<SDL_DisplayOrientation>(orientation));
+    ASSERT_EQ(SDL_GetDisplayOrientation(0), static_cast<SDL_DisplayOrientation>(orientation));
   }
 
   ASSERT_EQ(cen::screen_orientation::unknown,

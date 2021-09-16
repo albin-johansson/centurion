@@ -41,8 +41,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept
-      : common_event{event}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**

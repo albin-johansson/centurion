@@ -69,8 +69,7 @@ enum class log_category : int
  */
 [[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
-  switch (category)
-  {
+  switch (category) {
     case log_category::app:
       return "app";
 

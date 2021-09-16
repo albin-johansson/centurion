@@ -23,8 +23,7 @@ class LibraryTest : public testing::Test
 
 TEST_F(LibraryTest, NoFailureDefaultConfiguration)
 {
-  try
-  {
+  try {
     const cen::library library;
 
     ASSERT_EQ(1, SDL_Init_fake.call_count);
@@ -42,8 +41,7 @@ TEST_F(LibraryTest, NoFailureDefaultConfiguration)
     ASSERT_EQ(cfg.mixerChannels, Mix_OpenAudio_fake.arg2_val);
     ASSERT_EQ(cfg.mixerChunkSize, Mix_OpenAudio_fake.arg3_val);
   }
-  catch (...)
-  {
+  catch (...) {
     FAIL();
   }
 }

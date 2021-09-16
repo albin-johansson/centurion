@@ -7,23 +7,24 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
 }
 
 class FileTest : public testing::Test

@@ -220,10 +220,8 @@ TEST_F(ControllerTest, GetState)
   std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
   SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::button_state::released,
-            m_controller.get_state(cen::controller_button::a));
-  ASSERT_EQ(cen::button_state::pressed,
-            m_controller.get_state(cen::controller_button::a));
+  ASSERT_EQ(cen::button_state::released, m_controller.get_state(cen::controller_button::a));
+  ASSERT_EQ(cen::button_state::pressed, m_controller.get_state(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, IsPressed)
@@ -275,18 +273,14 @@ TEST_F(ControllerTest, AddMapping)
   std::array values{1, 0, -1};
   SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::added,
-            m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::controller_handle::mapping_result::added, m_controller.add_mapping("foo"));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::updated,
-            m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::controller_handle::mapping_result::updated, m_controller.add_mapping("foo"));
 
-  ASSERT_EQ(cen::controller_handle::mapping_result::error,
-            m_controller.add_mapping("foo"));
+  ASSERT_EQ(cen::controller_handle::mapping_result::error, m_controller.add_mapping("foo"));
 
   using namespace std::string_literals;
-  ASSERT_EQ(cen::controller_handle::mapping_result::error,
-            m_controller.add_mapping("foo"s));
+  ASSERT_EQ(cen::controller_handle::mapping_result::error, m_controller.add_mapping("foo"s));
 }
 
 TEST_F(ControllerTest, LoadMappings)
@@ -325,9 +319,7 @@ TEST_F(ControllerTest, MappingByIndex)
 TEST_F(ControllerTest, GetButton)
 {
   std::array values{SDL_CONTROLLER_BUTTON_INVALID, SDL_CONTROLLER_BUTTON_B};
-  SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString,
-                 values.data(),
-                 cen::isize(values));
+  SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString, values.data(), cen::isize(values));
 
   ASSERT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
   ASSERT_EQ(cen::controller_button::b, cen::controller::get_button(""));

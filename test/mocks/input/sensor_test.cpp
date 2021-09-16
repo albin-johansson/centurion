@@ -9,24 +9,25 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VOID_FUNC(SDL_SensorUpdate)
-FAKE_VOID_FUNC(SDL_LockSensors)
-FAKE_VOID_FUNC(SDL_UnlockSensors)
-FAKE_VALUE_FUNC(int, SDL_NumSensors)
-FAKE_VALUE_FUNC(int, SDL_SensorGetData, SDL_Sensor*, float*, int)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_SensorUpdate)
+  FAKE_VOID_FUNC(SDL_LockSensors)
+  FAKE_VOID_FUNC(SDL_UnlockSensors)
+  FAKE_VALUE_FUNC(int, SDL_NumSensors)
+  FAKE_VALUE_FUNC(int, SDL_SensorGetData, SDL_Sensor*, float*, int)
 
-FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetInstanceID, SDL_Sensor*)
-FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetDeviceInstanceID, int)
+  FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetInstanceID, SDL_Sensor*)
+  FAKE_VALUE_FUNC(SDL_SensorID, SDL_SensorGetDeviceInstanceID, int)
 
-FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetType, SDL_Sensor*)
-FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetDeviceType, int)
+  FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetType, SDL_Sensor*)
+  FAKE_VALUE_FUNC(SDL_SensorType, SDL_SensorGetDeviceType, int)
 
-FAKE_VALUE_FUNC(int, SDL_SensorGetNonPortableType, SDL_Sensor*)
-FAKE_VALUE_FUNC(int, SDL_SensorGetDeviceNonPortableType, int)
+  FAKE_VALUE_FUNC(int, SDL_SensorGetNonPortableType, SDL_Sensor*)
+  FAKE_VALUE_FUNC(int, SDL_SensorGetDeviceNonPortableType, int)
 
-FAKE_VALUE_FUNC(const char*, SDL_SensorGetName, SDL_Sensor*)
-FAKE_VALUE_FUNC(const char*, SDL_SensorGetDeviceName, int)
+  FAKE_VALUE_FUNC(const char*, SDL_SensorGetName, SDL_Sensor*)
+  FAKE_VALUE_FUNC(const char*, SDL_SensorGetDeviceName, int)
 }
 
 class SensorTest : public testing::Test

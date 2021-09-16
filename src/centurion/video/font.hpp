@@ -3,10 +3,6 @@
 
 #ifndef CENTURION_NO_SDL_TTF
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL_ttf.h>
 
 #include <cassert>      // assert
@@ -15,6 +11,8 @@
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -85,8 +83,7 @@ enum class font_hint : int
  */
 [[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
-  switch (hint)
-  {
+  switch (hint) {
     case font_hint::normal:
       return "normal";
 
@@ -161,14 +158,12 @@ class font final
   {
     assert(file);
 
-    if (size <= 0)
-    {
+    if (size <= 0) {
       throw cen_error{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font)
-    {
+    if (!m_font) {
       throw ttf_error{};
     }
   }
@@ -211,12 +206,10 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold)
-    {
+    if (bold) {
       add_style(TTF_STYLE_BOLD);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -230,12 +223,10 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic)
-    {
+    if (italic) {
       add_style(TTF_STYLE_ITALIC);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -249,12 +240,10 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined)
-    {
+    if (underlined) {
       add_style(TTF_STYLE_UNDERLINE);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -268,12 +257,10 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough)
-    {
+    if (strikethrough) {
       add_style(TTF_STYLE_STRIKETHROUGH);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -598,12 +585,12 @@ class font final
                          &metrics.maxX,
                          &metrics.minY,
                          &metrics.maxY,
-                         &metrics.advance) != -1)
+                         &metrics.advance)
+        != -1)
     {
       return metrics;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -629,12 +616,10 @@ class font final
     assert(str);
 
     iarea size{};
-    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1)
-    {
+    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1) {
       return size;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -649,8 +634,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_size(const std::string& str) const noexcept
-      -> std::optional<iarea>
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> std::optional<iarea>
   {
     return string_size(str.c_str());
   }
@@ -665,15 +649,12 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->width;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -688,8 +669,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_width(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_width(str.c_str());
   }
@@ -707,12 +687,10 @@ class font final
   [[nodiscard]] auto string_height(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->height;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -727,8 +705,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_height(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_height(str.c_str());
   }
@@ -844,9 +821,8 @@ class font final
                      font.family_name(),
                      font.size());
 #else
-  return "font{data: " + detail::address_of(font.get()) +
-         ", name: " + std::string{font.family_name()} +
-         ", size: " + std::to_string(font.size()) + "}";
+  return "font{data: " + detail::address_of(font.get()) + ", name: "
+         + std::string{font.family_name()} + ", size: " + std::to_string(font.size()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 

@@ -9,19 +9,19 @@
 
 using namespace cen::literals;
 
-extern "C" {
+extern "C"
+{
+  using channel_finished_callback = void(SDLCALL*)(int);
 
-using channel_finished_callback = void(SDLCALL*)(int);
-
-FAKE_VOID_FUNC(Mix_ChannelFinished, channel_finished_callback)
-FAKE_VALUE_FUNC(int, Mix_AllocateChannels, int)
-FAKE_VALUE_FUNC(int, Mix_ReserveChannels, int)
-FAKE_VALUE_FUNC(int, Mix_ExpireChannel, int, int)
-FAKE_VALUE_FUNC(int, Mix_GroupChannel, int, int)
-FAKE_VALUE_FUNC(int, Mix_GroupCount, int)
-FAKE_VALUE_FUNC(int, Mix_GroupAvailable, int)
-FAKE_VALUE_FUNC(int, Mix_GroupNewer, int)
-FAKE_VALUE_FUNC(int, Mix_GroupOldest, int)
+  FAKE_VOID_FUNC(Mix_ChannelFinished, channel_finished_callback)
+  FAKE_VALUE_FUNC(int, Mix_AllocateChannels, int)
+  FAKE_VALUE_FUNC(int, Mix_ReserveChannels, int)
+  FAKE_VALUE_FUNC(int, Mix_ExpireChannel, int, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupChannel, int, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupCount, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupAvailable, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupNewer, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupOldest, int)
 }
 
 class ChannelsTest : public testing::Test

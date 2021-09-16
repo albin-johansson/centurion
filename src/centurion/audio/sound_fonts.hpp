@@ -61,8 +61,7 @@ inline auto set_sound_fonts(const str paths) noexcept -> result
  * \since 6.0.0
  */
 template <typename T = void>
-auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
-    -> result
+auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept -> result
 {
   return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
 }

@@ -417,15 +417,10 @@ class event final
         break;
 
       case event_type::app_terminating:
-        break;
       case event_type::app_low_memory:
-        break;
       case event_type::app_will_enter_background:
-        break;
       case event_type::app_did_enter_background:
-        break;
       case event_type::app_will_enter_foreground:
-        break;
       case event_type::app_did_enter_foreground:
         break;
 
@@ -513,11 +508,8 @@ class event final
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
       case event_type::controller_touchpad_down:
-        break;
       case event_type::controller_touchpad_up:
-        break;
       case event_type::controller_touchpad_motion:
-        break;
       case event_type::controller_sensor_update:
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

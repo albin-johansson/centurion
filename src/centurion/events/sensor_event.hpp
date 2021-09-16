@@ -98,9 +98,10 @@ class sensor_event final : public common_event<SDL_SensorEvent>
 #if CENTURION_HAS_FEATURE_TO_ARRAY
     return std::to_array(m_event.data);
 #else
-    std::array<float, 6> array{};
+    data_type array{};
 
-    for (usize i = 0; i < 6; ++i) {
+    constexpr auto size = array.size();
+    for (usize i = 0; i < size; ++i) {
       array[i] = m_event.data[i];
     }
 

@@ -102,7 +102,7 @@ jobs:
 
       - name: Build SDL2_mixer
         shell: bash
-        if: steps.cache-sdl2-mixer.outputs.cache-hit != 'true'
+        # if: steps.cache-sdl2-mixer.outputs.cache-hit != 'true'
         run: |
           curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}.tar.gz | tar xz
           cd SDL2_mixer-${{env.MIX_VERSION}}

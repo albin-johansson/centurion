@@ -14,6 +14,7 @@
 #include "controller_axis_event.hpp"
 #include "controller_button_event.hpp"
 #include "controller_device_event.hpp"
+#include "controller_touchpad_event.hpp"
 #include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
@@ -400,6 +401,7 @@ class event final
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                display_event,
+               controller_touchpad_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
                window_event>
@@ -407,7 +409,6 @@ class event final
 
   // TODO 6.3.0:
   //   - controller_sensor_event,
-  //   - controller_touchpad_event
   void update_data(const event_type type) noexcept
   {
     switch (type) {
@@ -509,6 +510,9 @@ class event final
       case event_type::controller_touchpad_down:
       case event_type::controller_touchpad_up:
       case event_type::controller_touchpad_motion:
+        m_data.emplace<controller_touchpad_event>(m_event.ctouchpad);
+        break;
+
       case event_type::controller_sensor_update:
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

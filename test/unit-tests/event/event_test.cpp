@@ -65,6 +65,7 @@ static_assert(validate_event<cen::user_event, SDL_UserEvent>());
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 static_assert(validate_event<cen::display_event, SDL_DisplayEvent>());
+static_assert(validate_event<cen::controller_touchpad_event, SDL_ControllerTouchpadEvent>());
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 // clang-format on

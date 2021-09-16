@@ -3,10 +3,10 @@
 
 #include <SDL.h>
 
-#include <array>  // array, to_array
+#include <array>  // array
 
-#include "../compiler/features.hpp"
 #include "../core/integers.hpp"
+#include "../detail/array_utils.hpp"
 #include "common_event.hpp"
 
 namespace cen {
@@ -65,11 +65,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    */
   void set_data(const data_type& values) noexcept
   {
-    usize index = 0;
-    for (const auto value : values) {
-      m_event.data[index] = value;
-      ++index;
-    }
+    detail::assign(values, m_event.data);
   }
 
   /**
@@ -95,18 +91,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    */
   [[nodiscard]] auto data() const noexcept -> data_type
   {
-#if CENTURION_HAS_FEATURE_TO_ARRAY
-    return std::to_array(m_event.data);
-#else
-    data_type array{};
-
-    constexpr auto size = array.size();
-    for (usize i = 0; i < size; ++i) {
-      array[i] = m_event.data[i];
-    }
-
-    return array;
-#endif  // CENTURION_HAS_FEATURE_TO_ARRAY
+    return detail::to_array(m_event.data);
   }
 };
 

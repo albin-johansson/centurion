@@ -14,6 +14,7 @@
 #include "controller_axis_event.hpp"
 #include "controller_button_event.hpp"
 #include "controller_device_event.hpp"
+#include "controller_sensor_event.hpp"
 #include "controller_touchpad_event.hpp"
 #include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
@@ -372,43 +373,42 @@ class event final
   }
 
  private:
-  SDL_Event m_event{};
-
-  // behold, the beast!
-  std::variant<std::monostate,
-               audio_device_event,
-               controller_axis_event,
-               controller_button_event,
-               controller_device_event,
-               dollar_gesture_event,
-               drop_event,
-               joy_axis_event,
-               joy_ball_event,
-               joy_button_event,
-               joy_device_event,
-               joy_hat_event,
-               keyboard_event,
-               mouse_button_event,
-               mouse_motion_event,
-               mouse_wheel_event,
-               multi_gesture_event,
-               quit_event,
-               text_editing_event,
-               text_input_event,
-               touch_finger_event,
-               sensor_event,
-               user_event,
+  /* Behold, the beast! */
+  using data_type = std::variant<std::monostate,
+                                 audio_device_event,
+                                 controller_axis_event,
+                                 controller_button_event,
+                                 controller_device_event,
+                                 dollar_gesture_event,
+                                 drop_event,
+                                 joy_axis_event,
+                                 joy_ball_event,
+                                 joy_button_event,
+                                 joy_device_event,
+                                 joy_hat_event,
+                                 keyboard_event,
+                                 mouse_button_event,
+                                 mouse_motion_event,
+                                 mouse_wheel_event,
+                                 multi_gesture_event,
+                                 quit_event,
+                                 text_editing_event,
+                                 text_input_event,
+                                 touch_finger_event,
+                                 sensor_event,
+                                 user_event,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-               display_event,
-               controller_touchpad_event,
+                                 display_event,
+                                 controller_touchpad_event,
+                                 controller_sensor_event,
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
-               window_event>
-      m_data{};
+                                 window_event>;
 
-  // TODO 6.3.0:
-  //   - controller_sensor_event,
+  SDL_Event m_event{};
+  data_type m_data{};
+
   void update_data(const event_type type) noexcept
   {
     switch (type) {
@@ -514,6 +514,7 @@ class event final
         break;
 
       case event_type::controller_sensor_update:
+        m_data.emplace<controller_sensor_event>(m_event.csensor);
         break;
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 

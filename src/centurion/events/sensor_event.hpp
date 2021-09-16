@@ -24,6 +24,8 @@ namespace cen {
 class sensor_event final : public common_event<SDL_SensorEvent>
 {
  public:
+  using data_type = std::array<float, 6>;
+
   /**
    * \brief Creates a sensor event.
    *
@@ -41,6 +43,34 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    */
   explicit sensor_event(const SDL_SensorEvent& event) noexcept : common_event{event}
   {}
+
+  /**
+   * \brief Sets the sensor instance ID associated with the event.
+   *
+   * \param id the sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const i32 id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the sensor values associated with the event.
+   *
+   * \param values the sensor values.
+   *
+   * \since 6.3.0
+   */
+  void set_data(const data_type& values) noexcept
+  {
+    usize index = 0;
+    for (const auto value : values) {
+      m_event.data[index] = value;
+      ++index;
+    }
+  }
 
   /**
    * \brief Returns the instance ID of the associated sensor.
@@ -63,7 +93,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> std::array<float, 6>
+  [[nodiscard]] auto data() const noexcept -> data_type
   {
 #if CENTURION_HAS_FEATURE_TO_ARRAY
     return std::to_array(m_event.data);

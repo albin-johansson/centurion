@@ -55,6 +55,7 @@ set(SOURCE_FILES
     event/mouse_wheel_direction_test.cpp
     event/multi_gesture_event_test.cpp
     event/quit_event_test.cpp
+    event/sensor_event_test.cpp
     event/text_editing_event_test.cpp
     event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp

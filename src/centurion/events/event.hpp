@@ -404,10 +404,8 @@ class event final
       m_data{};
 
   // TODO 6.3.0:
-  //   - display_event
   //   - controller_sensor_event,
   //   - controller_touchpad_event
-  //   - os_event
   //   - user_event
   void update_data(const event_type type) noexcept
   {

@@ -49,12 +49,12 @@ jobs:
           /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
           sleep 3
 
-      - name: Cache SDL2
-        id: cache-sdl2
-        uses: actions/cache@main
-        with:
-          path: SDL2-${{matrix.SDL_VERSION}}
-          key: SDL2-${{matrix.SDL_VERSION}}
+      # - name: Cache SDL2
+      #   id: cache-sdl2
+      #   uses: actions/cache@main
+      #   with:
+      #     path: SDL2-${{matrix.SDL_VERSION}}
+      #     key: SDL2-${{matrix.SDL_VERSION}}
 
       - name: Build SDL2
         shell: bash

@@ -59,6 +59,7 @@ set(SOURCE_FILES
     event/text_editing_event_test.cpp
     event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp
+    event/user_event_test.cpp
     event/window_event_test.cpp
     event/window_event_id_test.cpp
 

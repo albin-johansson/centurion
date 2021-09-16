@@ -33,6 +33,7 @@
 #include "text_editing_event.hpp"
 #include "text_input_event.hpp"
 #include "touch_finger_event.hpp"
+#include "user_event.hpp"
 #include "window_event.hpp"
 
 namespace cen {
@@ -395,6 +396,7 @@ class event final
                text_input_event,
                touch_finger_event,
                sensor_event,
+               user_event,
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
                display_event,
@@ -552,6 +554,7 @@ class event final
         break;
 
       case event_type::user:
+        m_data.emplace<user_event>(m_event.user);
         break;
 
       default:

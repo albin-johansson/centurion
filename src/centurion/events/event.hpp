@@ -548,7 +548,6 @@ class event final
         break;
 
       case event_type::render_targets_reset:
-        break;
       case event_type::render_device_reset:
         break;
 

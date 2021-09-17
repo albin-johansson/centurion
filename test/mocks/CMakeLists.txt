@@ -48,6 +48,7 @@ set(SOURCE_FILES
     video/vulkan/vk_core_test.cpp
     video/vulkan/vk_library_test.cpp
 
+    video/blend_mode_test.cpp
     video/message_box_test.cpp
     video/renderer_info_test.cpp
     video/renderer_test.cpp

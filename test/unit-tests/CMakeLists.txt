@@ -130,6 +130,7 @@ set(SOURCE_FILES
     video/gl/gl_attribute_test.cpp
     video/gl/gl_swap_interval_test.cpp
 
+    video/blend_factor_test.cpp
     video/blend_mode_test.cpp
     video/button_order_test.cpp
     video/color_test.cpp

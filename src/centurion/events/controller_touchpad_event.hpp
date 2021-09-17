@@ -63,7 +63,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the touchpad index associated with the event.
    *
-   * \param id the associated touchpad index.
+   * \param index the associated touchpad index.
    *
    * \since 6.3.0
    */
@@ -75,7 +75,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the finger index on the touchpad associated with the event.
    *
-   * \param id the associated finger index.
+   * \param index the associated finger index.
    *
    * \since 6.3.0
    */
@@ -117,7 +117,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \details The supplied value is clamped within the range [0, 1].
    *
-   * \param y the normalized y-coordinate.
+   * \param pressure the normalized y-coordinate.
    *
    * \since 6.3.0
    */

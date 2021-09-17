@@ -74,8 +74,8 @@ struct blend_task final
  *
  * \since 6.3.0
  */
-[[nodiscard]] inline auto compose_blend_mode(const blend_task color,
-                                             const blend_task alpha) noexcept -> blend_mode
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
 {
   const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
                                               static_cast<SDL_BlendFactor>(color.dst),

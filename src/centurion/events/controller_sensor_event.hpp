@@ -115,7 +115,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }

@@ -18,6 +18,7 @@ namespace cen {
  *
  * \brief Represents normalized factors used when multiplying pixel components.
  *
+ * \see `blend_op`
  * \see `compose_blend_mode()`
  *
  * \since 6.3.0

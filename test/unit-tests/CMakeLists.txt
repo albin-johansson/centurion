@@ -132,6 +132,7 @@ set(SOURCE_FILES
 
     video/blend_factor_test.cpp
     video/blend_mode_test.cpp
+    video/blend_op_test.cpp
     video/button_order_test.cpp
     video/color_test.cpp
     video/cursor_test.cpp

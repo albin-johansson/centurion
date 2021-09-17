@@ -63,7 +63,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values) noexcept
+  void set_data(const data_type& values)
   {
     detail::assign(values, m_event.data);
   }
@@ -89,7 +89,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }

@@ -348,18 +348,30 @@ TEST(Color, Data)
 
 TEST(Color, AsRGB)
 {
+  ASSERT_EQ("#FF0000", cen::colors::red.as_rgb());
+  ASSERT_EQ("#00FF00", cen::colors::lime.as_rgb());
+  ASSERT_EQ("#0000FF", cen::colors::blue.as_rgb());
+
   const cen::color color{0x5B, 0xE1, 0x84};
   ASSERT_EQ("#5BE184", color.as_rgb());
 }
 
 TEST(Color, AsRGBA)
 {
+  ASSERT_EQ("#FF0000FF", cen::colors::red.as_rgba());
+  ASSERT_EQ("#00FF00FF", cen::colors::lime.as_rgba());
+  ASSERT_EQ("#0000FFFF", cen::colors::blue.as_rgba());
+
   const cen::color color{0x36, 0xCA, 0x9F, 0xDA};
   ASSERT_EQ("#36CA9FDA", color.as_rgba());
 }
 
 TEST(Color, AsARGB)
 {
+  ASSERT_EQ("#FFFF0000", cen::colors::red.as_argb());
+  ASSERT_EQ("#FF00FF00", cen::colors::lime.as_argb());
+  ASSERT_EQ("#FF0000FF", cen::colors::blue.as_argb());
+
   const cen::color color{0xF1, 0x85, 0xB3, 0xCE};
   ASSERT_EQ("#CEF185B3", color.as_argb());
 }

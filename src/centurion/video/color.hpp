@@ -597,7 +597,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -617,7 +622,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -637,7 +648,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 

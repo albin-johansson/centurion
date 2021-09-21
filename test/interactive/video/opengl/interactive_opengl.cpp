@@ -45,7 +45,7 @@ auto run() -> int
 
 }  // namespace
 
-auto main(int argc, char** argv) -> int
+auto main(int, char**) -> int
 {
   cen::library centurion;
   cen::gl_library opengl;

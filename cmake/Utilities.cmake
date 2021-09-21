@@ -53,7 +53,7 @@ function(cen_set_compiler_options target)
     target_compile_options(${target} PRIVATE
         /EHsc
         /MP
-        /W3
+        /W4
         /Zc:preprocessor # Enable conforming preprocessor
         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
         )

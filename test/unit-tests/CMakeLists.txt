@@ -175,6 +175,12 @@ endif ()
 cen_create_executable(${CENTURION_TEST_TARGET} "${SOURCE_FILES}")
 cen_set_compiler_options(${CENTURION_TEST_TARGET})
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+      /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+      )
+endif ()
+
 if (CEN_AUDIO)
   target_compile_definitions(${CENTURION_TEST_TARGET}
       PUBLIC CEN_AUDIO)

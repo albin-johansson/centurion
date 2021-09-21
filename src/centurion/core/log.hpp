@@ -386,13 +386,15 @@ inline void set_priority(const log_category category, const log_priority priorit
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper =
-      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
-        Callable tmp;
-        tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
-      };
+  const auto wrapper = [](void* /*erased*/,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
+  };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
 }
@@ -414,7 +416,7 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
   const auto wrapper =
       [](void* erased, const int category, const SDL_LogPriority priority, const str message) {

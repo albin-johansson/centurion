@@ -13,7 +13,7 @@ TEST(TextEditingEvent, SetWindowId)
 {
   cen::text_editing_event event;
 
-  constexpr auto id = 8;
+  constexpr cen::u32 id = 8;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

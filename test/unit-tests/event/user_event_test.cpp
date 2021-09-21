@@ -6,7 +6,7 @@ TEST(UserEvent, Defaults)
 {
   const cen::user_event event;
   ASSERT_EQ(0, event.code());
-  ASSERT_EQ(0, event.window_id());
+  ASSERT_EQ(0u, event.window_id());
   ASSERT_FALSE(event.data_1());
   ASSERT_FALSE(event.data_2());
 }
@@ -15,7 +15,7 @@ TEST(UserEvent, SetWindowId)
 {
   cen::user_event event;
 
-  const auto id = 123;
+  const cen::u32 id = 123;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

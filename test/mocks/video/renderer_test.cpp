@@ -131,16 +131,16 @@ void validate_render_function(const Fake& fake, Args&&... args)
 TEST_F(RendererTest, Clear)
 {
   m_renderer.clear();
-  ASSERT_EQ(1, SDL_RenderClear_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderClear_fake.call_count);
 }
 
 TEST_F(RendererTest, ClearWith)
 {
   m_renderer.clear_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
 
-  ASSERT_EQ(1, SDL_GetRenderDrawColor_fake.call_count);
-  ASSERT_EQ(2, SDL_SetRenderDrawColor_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderClear_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderClear_fake.call_count);
 
   ASSERT_EQ(0xAA, SDL_SetRenderDrawColor_fake.arg1_history[0]);
   ASSERT_EQ(0xBB, SDL_SetRenderDrawColor_fake.arg2_history[0]);
@@ -151,7 +151,7 @@ TEST_F(RendererTest, ClearWith)
 TEST_F(RendererTest, Present)
 {
   m_renderer.present();
-  ASSERT_EQ(1, SDL_RenderPresent_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderPresent_fake.call_count);
 }
 
 TEST_F(RendererTest, DrawRect)
@@ -166,8 +166,8 @@ TEST_F(RendererTest, DrawRect)
     m_renderer.draw_rect(rect);
   }
 
-  ASSERT_EQ(1, SDL_RenderDrawRect_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderDrawRectF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawRect_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawRectF_fake.call_count);
 }
 
 TEST_F(RendererTest, FillRect)
@@ -175,15 +175,15 @@ TEST_F(RendererTest, FillRect)
   {
     constexpr cen::irect rect;
     m_renderer.fill_rect(rect);
-    ASSERT_EQ(1, SDL_RenderFillRect_fake.call_count);
-    ASSERT_EQ(0, SDL_RenderFillRectF_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
+    ASSERT_EQ(0u, SDL_RenderFillRectF_fake.call_count);
   }
 
   {
     constexpr cen::frect rect;
     m_renderer.fill_rect(rect);
-    ASSERT_EQ(1, SDL_RenderFillRect_fake.call_count);
-    ASSERT_EQ(1, SDL_RenderFillRectF_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderFillRectF_fake.call_count);
   }
 }
 
@@ -195,24 +195,24 @@ TEST_F(RendererTest, DrawPoint)
   m_renderer.draw_point(ipoint);
   m_renderer.draw_point(fpoint);
 
-  ASSERT_EQ(1, SDL_RenderDrawPoint_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderDrawPointF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawPoint_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawPointF_fake.call_count);
 }
 
 TEST_F(RendererTest, Fill)
 {
   m_renderer.fill();
-  ASSERT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderFillRect_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
 }
 
 TEST_F(RendererTest, FillWith)
 {
   m_renderer.fill_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
-  ASSERT_EQ(1, SDL_GetRenderDrawColor_fake.call_count);
-  ASSERT_EQ(2, SDL_SetRenderDrawColor_fake.call_count);
-  ASSERT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderFillRect_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderFillRect_fake.call_count);
 
   ASSERT_EQ(0xAA, SDL_SetRenderDrawColor_fake.arg1_history[0]);
   ASSERT_EQ(0xBB, SDL_SetRenderDrawColor_fake.arg2_history[0]);
@@ -244,8 +244,8 @@ TEST_F(RendererTest, DrawLine)
     ASSERT_EQ(end.y(), SDL_RenderDrawLineF_fake.arg4_val);
   }
 
-  ASSERT_EQ(1, SDL_RenderDrawLine_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderDrawLineF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawLine_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderDrawLineF_fake.call_count);
 }
 
 TEST_F(RendererTest, DrawLines)
@@ -253,8 +253,8 @@ TEST_F(RendererTest, DrawLines)
   {
     std::array<cen::ipoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
     m_renderer.draw_lines(points);
-    ASSERT_EQ(1, SDL_RenderDrawLines_fake.call_count);
-    ASSERT_EQ(0, SDL_RenderDrawLinesF_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
+    ASSERT_EQ(0u, SDL_RenderDrawLinesF_fake.call_count);
 
     for (auto i = 0u; i < points.size(); ++i) {
       ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
@@ -265,8 +265,8 @@ TEST_F(RendererTest, DrawLines)
   {
     std::array<cen::fpoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
     m_renderer.draw_lines(points);
-    ASSERT_EQ(1, SDL_RenderDrawLines_fake.call_count);
-    ASSERT_EQ(1, SDL_RenderDrawLinesF_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderDrawLines_fake.call_count);
+    ASSERT_EQ(1u, SDL_RenderDrawLinesF_fake.call_count);
 
     for (auto i = 0u; i < points.size(); ++i) {
       ASSERT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
@@ -287,8 +287,8 @@ TEST_F(RendererTest, RenderWithPoint)
     m_renderer.render(m_texture, pos);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopy_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopy_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyF_fake.call_count);
 }
 
 TEST_F(RendererTest, RenderWithRectangle)
@@ -303,8 +303,8 @@ TEST_F(RendererTest, RenderWithRectangle)
     m_renderer.render(m_texture, rect);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopy_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopy_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyF_fake.call_count);
 }
 
 TEST_F(RendererTest, RenderWithSourceDestination)
@@ -325,8 +325,8 @@ TEST_F(RendererTest, RenderWithSourceDestination)
     validate_render_function(SDL_RenderCopyF_fake, src, dst);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopy_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopy_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyF_fake.call_count);
 }
 
 TEST_F(RendererTest, RenderWithSourceDestinationAngle)
@@ -349,8 +349,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngle)
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopyEx_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyExF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyEx_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyExF_fake.call_count);
 }
 
 TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
@@ -375,8 +375,8 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenter)
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopyEx_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyExF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyEx_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyExF_fake.call_count);
 }
 
 TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
@@ -403,14 +403,14 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
     validate_render_function(SDL_RenderCopyExF_fake, src, dst, angle, center, flip);
   }
 
-  ASSERT_EQ(1, SDL_RenderCopyEx_fake.call_count);
-  ASSERT_EQ(1, SDL_RenderCopyExF_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyEx_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderCopyExF_fake.call_count);
 }
 
 TEST_F(RendererTest, ResetTarget)
 {
   m_renderer.reset_target();
-  ASSERT_EQ(1, SDL_SetRenderTarget_fake.call_count);
+  ASSERT_EQ(1u, SDL_SetRenderTarget_fake.call_count);
 }
 
 TEST_F(RendererTest, SetColor)
@@ -420,7 +420,7 @@ TEST_F(RendererTest, SetColor)
 
   ASSERT_EQ(cen::failure, m_renderer.set_color(cen::colors::cyan));
   ASSERT_EQ(cen::success, m_renderer.set_color(cen::colors::cyan));
-  ASSERT_EQ(2, SDL_SetRenderDrawColor_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
 }
 
 TEST_F(RendererTest, SetClip)
@@ -431,7 +431,7 @@ TEST_F(RendererTest, SetClip)
   const auto rect = cen::rect(42, 27, 123, 321);
   ASSERT_EQ(cen::failure, m_renderer.set_clip(rect));
   ASSERT_EQ(cen::success, m_renderer.set_clip(rect));
-  ASSERT_EQ(2, SDL_RenderSetClipRect_fake.call_count);
+  ASSERT_EQ(2u, SDL_RenderSetClipRect_fake.call_count);
 }
 
 TEST_F(RendererTest, SetViewport)
@@ -442,7 +442,7 @@ TEST_F(RendererTest, SetViewport)
   const auto rect = cen::rect(12, 34, 56, 78);
   ASSERT_EQ(cen::failure, m_renderer.set_viewport(rect));
   ASSERT_EQ(cen::success, m_renderer.set_viewport(rect));
-  ASSERT_EQ(2, SDL_RenderSetViewport_fake.call_count);
+  ASSERT_EQ(2u, SDL_RenderSetViewport_fake.call_count);
 }
 
 TEST_F(RendererTest, SetBlendMode)
@@ -453,10 +453,14 @@ TEST_F(RendererTest, SetBlendMode)
   const auto rect = cen::rect(12, 34, 56, 78);
   ASSERT_EQ(cen::failure, m_renderer.set_blend_mode(cen::blend_mode::blend));
   ASSERT_EQ(cen::success, m_renderer.set_blend_mode(cen::blend_mode::blend));
-  ASSERT_EQ(2, SDL_SetRenderDrawBlendMode_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetRenderDrawBlendMode_fake.call_count);
 }
 
-auto query_texture(SDL_Texture* texture, Uint32* format, int* access, int* w, int* h) -> int
+auto query_texture(SDL_Texture* /*texture*/,
+                   Uint32* /*format*/,
+                   int* access,
+                   int* /*w*/,
+                   int* /*h*/) -> int
 {
   if (access) {
     *access = SDL_TEXTUREACCESS_TARGET;
@@ -475,13 +479,13 @@ TEST_F(RendererTest, SetTarget)
   cen::texture_handle texture{nullptr};
   ASSERT_EQ(cen::failure, m_renderer.set_target(texture));
   ASSERT_EQ(cen::success, m_renderer.set_target(texture));
-  ASSERT_EQ(2, SDL_SetRenderTarget_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetRenderTarget_fake.call_count);
 }
 
 TEST_F(RendererTest, OutputWidth)
 {
   const auto width [[maybe_unused]] = m_renderer.output_width();
-  ASSERT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
   ASSERT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
   ASSERT_EQ(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
 }
@@ -489,7 +493,7 @@ TEST_F(RendererTest, OutputWidth)
 TEST_F(RendererTest, OutputHeight)
 {
   const auto height [[maybe_unused]] = m_renderer.output_height();
-  ASSERT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);
   ASSERT_EQ(nullptr, SDL_GetRendererOutputSize_fake.arg1_val);
   ASSERT_NE(nullptr, SDL_GetRendererOutputSize_fake.arg2_val);
 }
@@ -497,11 +501,11 @@ TEST_F(RendererTest, OutputHeight)
 TEST_F(RendererTest, IsUsingIntegerLogicalScaling)
 {
   const auto scaling [[maybe_unused]] = m_renderer.is_using_integer_logical_scaling();
-  ASSERT_EQ(1, SDL_RenderGetIntegerScale_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderGetIntegerScale_fake.call_count);
 }
 
 TEST_F(RendererTest, IsClippingEnabled)
 {
   const auto isClipping [[maybe_unused]] = m_renderer.is_clipping_enabled();
-  ASSERT_EQ(1, SDL_RenderIsClipEnabled_fake.call_count);
+  ASSERT_EQ(1u, SDL_RenderIsClipEnabled_fake.call_count);
 }

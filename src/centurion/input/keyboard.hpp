@@ -229,7 +229,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_active(modifiers, SDL_GetModState());
+    return detail::is_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -251,7 +251,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_active(modifiers, SDL_GetModState());
+    return detail::is_only_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -276,7 +276,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
+    return detail::is_only_any_of_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**

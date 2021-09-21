@@ -38,7 +38,7 @@ TEST_F(BlendModeTest, ComposeBlendMode)
                                  cen::blend_op::sub};
   const auto mode = cen::compose_blend_mode(color, alpha);
 
-  ASSERT_EQ(1, SDL_ComposeCustomBlendMode_fake.call_count);
+  ASSERT_EQ(1u, SDL_ComposeCustomBlendMode_fake.call_count);
 
   ASSERT_EQ(SDL_BLENDFACTOR_SRC_COLOR, SDL_ComposeCustomBlendMode_fake.arg0_val);
   ASSERT_EQ(SDL_BLENDFACTOR_DST_COLOR, SDL_ComposeCustomBlendMode_fake.arg1_val);

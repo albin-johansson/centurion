@@ -13,7 +13,7 @@ TEST(MouseMotionEvent, SetWindowId)
 {
   cen::mouse_motion_event event;
 
-  constexpr auto id = 8;
+  constexpr cen::u32 id = 8;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());
@@ -23,7 +23,7 @@ TEST(MouseMotionEvent, SetWhich)
 {
   cen::mouse_motion_event event;
 
-  constexpr auto which = 65;
+  constexpr cen::u32 which = 65;
   event.set_which(which);
 
   ASSERT_EQ(which, event.which());
@@ -33,7 +33,7 @@ TEST(MouseMotionEvent, SetState)
 {
   cen::mouse_motion_event event;
 
-  constexpr auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
+  constexpr cen::u32 state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
   event.set_state(state);
 
   ASSERT_EQ(state, event.state());

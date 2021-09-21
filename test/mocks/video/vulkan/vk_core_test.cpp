@@ -36,7 +36,7 @@ class VulkanCoreTest : public testing::Test
 TEST_F(VulkanCoreTest, GetInstanceProcAddr)
 {
   const auto* address [[maybe_unused]] = cen::vk::get_instance_proc_addr();
-  ASSERT_EQ(1, SDL_Vulkan_GetVkGetInstanceProcAddr_fake.call_count);
+  ASSERT_EQ(1u, SDL_Vulkan_GetVkGetInstanceProcAddr_fake.call_count);
 }
 
 TEST_F(VulkanCoreTest, CreateSurface)
@@ -53,7 +53,7 @@ TEST_F(VulkanCoreTest, CreateSurface)
 
   ASSERT_EQ(cen::failure, cen::vk::create_surface(window, instance, &surface));
   ASSERT_EQ(cen::success, cen::vk::create_surface(window, instance, &surface));
-  ASSERT_EQ(2, SDL_Vulkan_CreateSurface_fake.call_count);
+  ASSERT_EQ(2u, SDL_Vulkan_CreateSurface_fake.call_count);
 }
 
 TEST_F(VulkanCoreTest, RequiredExtensions)
@@ -72,5 +72,5 @@ TEST_F(VulkanCoreTest, DrawableSize)
 
   cen::window_handle window{nullptr};
   const auto size [[maybe_unused]] = cen::vk::drawable_size(window);
-  ASSERT_EQ(1, SDL_Vulkan_GetDrawableSize_fake.call_count);
+  ASSERT_EQ(1u, SDL_Vulkan_GetDrawableSize_fake.call_count);
 }

@@ -385,8 +385,10 @@ TEST_F(RendererTest, StreamOperator)
 
 TEST_F(RendererTest, RendererFlagsEnum)
 {
-  ASSERT_EQ(SDL_RENDERER_ACCELERATED, cen::renderer::accelerated);
-  ASSERT_EQ(SDL_RENDERER_SOFTWARE, cen::renderer::software);
-  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE, cen::renderer::target_textures);
-  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, cen::renderer::vsync);
+  ASSERT_EQ(SDL_RENDERER_ACCELERATED,
+            static_cast<SDL_RendererFlags>(cen::renderer::accelerated));
+  ASSERT_EQ(SDL_RENDERER_SOFTWARE, static_cast<SDL_RendererFlags>(cen::renderer::software));
+  ASSERT_EQ(SDL_RENDERER_TARGETTEXTURE,
+            static_cast<SDL_RendererFlags>(cen::renderer::target_textures));
+  ASSERT_EQ(SDL_RENDERER_PRESENTVSYNC, static_cast<SDL_RendererFlags>(cen::renderer::vsync));
 }

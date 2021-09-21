@@ -44,14 +44,14 @@ TEST(ControllerSensorEvent, SetData)
 TEST(ControllerSensorEvent, AsSdlEvent)
 {
   cen::controller_sensor_event event;
-  event.set_time(4'895);
+  event.set_time(4'895u);
   event.set_sensor(cen::sensor_type::gyroscope);
   event.set_which(21);
 
   const auto sdl = cen::as_sdl_event(event);
-  ASSERT_EQ(4'895, sdl.csensor.timestamp);
-  ASSERT_EQ(SDL_CONTROLLERSENSORUPDATE, sdl.csensor.type);
-  ASSERT_EQ(SDL_SENSOR_GYRO, sdl.csensor.sensor);
+  ASSERT_EQ(4'895u, sdl.csensor.timestamp);
+  ASSERT_EQ(SDL_CONTROLLERSENSORUPDATE, static_cast<SDL_EventType>(sdl.csensor.type));
+  ASSERT_EQ(SDL_SENSOR_GYRO, static_cast<SDL_SensorType>(sdl.csensor.sensor));
   ASSERT_EQ(21, sdl.csensor.which);
 }
 

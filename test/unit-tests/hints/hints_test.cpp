@@ -189,7 +189,7 @@ CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(IntHintTest, HintTest, integer_hints)
 
 CENTURION_DEFINE_TYPED_TEST_FROM_CLASS(UnsignedHintTest, HintTest, unsigned_hints)
 {
-  ASSERT_EQ(42, TypeParam::from_string("42"));
+  ASSERT_EQ(42u, TypeParam::from_string("42"));
 
   test_hint<TypeParam>([] {
     ASSERT_TRUE(cen::set_hint<TypeParam>(1u));

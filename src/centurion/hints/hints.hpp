@@ -244,7 +244,7 @@ concept is_hint_callback = is_stateless_callable<T,
  * \since 6.2.0
  */
 template <typename Hint, typename UserData = void, is_hint_callback<Hint, UserData> Callable>
-auto add_hint_callback_ex(Callable fun, UserData* data = nullptr)
+auto add_hint_callback_ex([[maybe_unused]] Callable fun, UserData* data = nullptr)
     -> hint_callback<Hint, UserData>
 {
   const auto wrapper =

@@ -45,5 +45,5 @@ TEST_F(OpenGLLibraryTest, AddressOf)
   cen::gl_library library;
   const auto* address [[maybe_unused]] = library.address_of("foo");
 
-  ASSERT_EQ(1, SDL_GL_GetProcAddress_fake.call_count);
+  ASSERT_EQ(1u, SDL_GL_GetProcAddress_fake.call_count);
 }

@@ -61,7 +61,7 @@ TEST(KeyboardEvent, SetWindowId)
 {
   cen::keyboard_event event;
 
-  constexpr auto id = 79;
+  constexpr cen::u32 id = 79;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

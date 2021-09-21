@@ -33,5 +33,5 @@ TEST_F(VulkanLibraryTest, Initialization)
 
   ASSERT_THROW(cen::vk_library{}, cen::sdl_error);
   ASSERT_NO_THROW(cen::vk_library{});
-  ASSERT_EQ(2, SDL_Vulkan_LoadLibrary_fake.call_count);
+  ASSERT_EQ(2u, SDL_Vulkan_LoadLibrary_fake.call_count);
 }

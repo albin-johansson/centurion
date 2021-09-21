@@ -33,7 +33,7 @@ TEST(DollarGestureEvent, SetFingers)
 {
   cen::dollar_gesture_event event;
 
-  constexpr auto fingers = 2;
+  constexpr cen::u32 fingers = 2;
   event.set_fingers(fingers);
 
   ASSERT_EQ(fingers, event.finger_count());

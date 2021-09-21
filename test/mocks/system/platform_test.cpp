@@ -103,5 +103,5 @@ TEST_F(PlatformTest, PlatformName)
 TEST_F(PlatformTest, IsTablet)
 {
   const auto isTablet [[maybe_unused]] = cen::is_tablet();
-  ASSERT_EQ(1, SDL_IsTablet_fake.call_count);
+  ASSERT_EQ(1u, SDL_IsTablet_fake.call_count);
 }

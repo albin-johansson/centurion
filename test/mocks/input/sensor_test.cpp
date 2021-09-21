@@ -58,25 +58,25 @@ class SensorTest : public testing::Test
 TEST_F(SensorTest, ID)
 {
   const auto id [[maybe_unused]] = m_sensor.id();
-  ASSERT_EQ(1, SDL_SensorGetInstanceID_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetInstanceID_fake.call_count);
 }
 
 TEST_F(SensorTest, Name)
 {
   const auto name [[maybe_unused]] = m_sensor.name();
-  ASSERT_EQ(1, SDL_SensorGetName_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetName_fake.call_count);
 }
 
 TEST_F(SensorTest, Type)
 {
   const auto type [[maybe_unused]] = m_sensor.type();
-  ASSERT_EQ(1, SDL_SensorGetType_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetType_fake.call_count);
 }
 
 TEST_F(SensorTest, NonPortableType)
 {
   const auto type [[maybe_unused]] = m_sensor.non_portable_type();
-  ASSERT_EQ(1, SDL_SensorGetNonPortableType_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetNonPortableType_fake.call_count);
 }
 
 TEST_F(SensorTest, Data)
@@ -86,7 +86,7 @@ TEST_F(SensorTest, Data)
 
   ASSERT_FALSE(m_sensor.data<3>());
   ASSERT_TRUE(m_sensor.data<3>());
-  ASSERT_EQ(2, SDL_SensorGetData_fake.call_count);
+  ASSERT_EQ(2u, SDL_SensorGetData_fake.call_count);
 }
 
 TEST_F(SensorTest, IDFromIndex)
@@ -96,19 +96,19 @@ TEST_F(SensorTest, IDFromIndex)
 
   ASSERT_FALSE(cen::sensor::id(0));
   ASSERT_TRUE(cen::sensor::id(0));
-  ASSERT_EQ(2, SDL_SensorGetDeviceInstanceID_fake.call_count);
+  ASSERT_EQ(2u, SDL_SensorGetDeviceInstanceID_fake.call_count);
 }
 
 TEST_F(SensorTest, NameFromIndex)
 {
   const auto name [[maybe_unused]] = cen::sensor::name(0);
-  ASSERT_EQ(1, SDL_SensorGetDeviceName_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetDeviceName_fake.call_count);
 }
 
 TEST_F(SensorTest, TypeFromIndex)
 {
   const auto type [[maybe_unused]] = cen::sensor::type(0);
-  ASSERT_EQ(1, SDL_SensorGetDeviceType_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorGetDeviceType_fake.call_count);
 }
 
 TEST_F(SensorTest, NonPortableTypeFromIndex)
@@ -118,19 +118,19 @@ TEST_F(SensorTest, NonPortableTypeFromIndex)
 
   ASSERT_FALSE(cen::sensor::non_portable_type(0));
   ASSERT_TRUE(cen::sensor::non_portable_type(0));
-  ASSERT_EQ(2, SDL_SensorGetDeviceNonPortableType_fake.call_count);
+  ASSERT_EQ(2u, SDL_SensorGetDeviceNonPortableType_fake.call_count);
 }
 
 TEST_F(SensorTest, Update)
 {
   cen::sensor::update();
-  ASSERT_EQ(1, SDL_SensorUpdate_fake.call_count);
+  ASSERT_EQ(1u, SDL_SensorUpdate_fake.call_count);
 }
 
 TEST_F(SensorTest, Count)
 {
   const auto count [[maybe_unused]] = cen::sensor::count();
-  ASSERT_EQ(1, SDL_NumSensors_fake.call_count);
+  ASSERT_EQ(1u, SDL_NumSensors_fake.call_count);
 }
 
 TEST_F(SensorTest, StreamOperator)
@@ -143,13 +143,13 @@ TEST_F(SensorTest, StreamOperator)
 TEST_F(SensorTest, Lock)
 {
   cen::sensor::lock();
-  ASSERT_EQ(1, SDL_LockSensors_fake.call_count);
+  ASSERT_EQ(1u, SDL_LockSensors_fake.call_count);
 }
 
 TEST_F(SensorTest, Unlock)
 {
   cen::sensor::unlock();
-  ASSERT_EQ(1, SDL_UnlockSensors_fake.call_count);
+  ASSERT_EQ(1u, SDL_UnlockSensors_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

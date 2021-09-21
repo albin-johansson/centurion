@@ -26,10 +26,10 @@ TEST_F(LibraryTest, NoFailureDefaultConfiguration)
   try {
     const cen::library library;
 
-    ASSERT_EQ(1, SDL_Init_fake.call_count);
-    ASSERT_EQ(1, TTF_Init_fake.call_count);
-    ASSERT_EQ(1, IMG_Init_fake.call_count);
-    ASSERT_EQ(1, Mix_Init_fake.call_count);
+    ASSERT_EQ(1u, SDL_Init_fake.call_count);
+    ASSERT_EQ(1u, TTF_Init_fake.call_count);
+    ASSERT_EQ(1u, IMG_Init_fake.call_count);
+    ASSERT_EQ(1u, Mix_Init_fake.call_count);
 
     constexpr cen::config cfg;
     ASSERT_EQ(cfg.coreFlags, SDL_Init_fake.arg0_val);

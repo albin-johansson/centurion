@@ -181,6 +181,23 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
       )
 endif ()
 
+target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
+    <SDL.h>
+
+    <array>
+    <algorithm>
+    <vector>
+    <memory>
+    <string>
+    <string_view>
+    <sstream>
+    <optional>
+    <ostream>
+    <iostream>
+    <utility>
+    <type_traits>
+    )
+
 if (CEN_AUDIO)
   target_compile_definitions(${CENTURION_TEST_TARGET}
       PUBLIC CEN_AUDIO)

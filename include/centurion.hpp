@@ -5377,7 +5377,7 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -6459,13 +6459,15 @@ inline void set_priority(const log_category category, const log_priority priorit
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper =
-      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
-        Callable tmp;
-        tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
-      };
+  const auto wrapper = [](void* /*erased*/,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
+  };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
 }
@@ -6487,7 +6489,7 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
   const auto wrapper =
       [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
@@ -7131,13 +7133,15 @@ inline void set_priority(const log_category category, const log_priority priorit
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper =
-      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
-        Callable tmp;
-        tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
-      };
+  const auto wrapper = [](void* /*erased*/,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
+  };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
 }
@@ -7159,7 +7163,7 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
   const auto wrapper =
       [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
@@ -8124,7 +8128,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -9985,7 +9989,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -13577,7 +13581,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -15433,7 +15437,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -15453,7 +15462,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -15473,7 +15488,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -21624,7 +21645,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }
@@ -21771,7 +21792,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the touchpad index associated with the event.
    *
-   * \param id the associated touchpad index.
+   * \param index the associated touchpad index.
    *
    * \since 6.3.0
    */
@@ -21783,7 +21804,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the finger index on the touchpad associated with the event.
    *
-   * \param id the associated finger index.
+   * \param index the associated finger index.
    *
    * \since 6.3.0
    */
@@ -21825,7 +21846,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \details The supplied value is clamped within the range [0, 1].
    *
-   * \param y the normalized y-coordinate.
+   * \param pressure the normalized y-coordinate.
    *
    * \since 6.3.0
    */
@@ -22100,7 +22121,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    */
   void set_event_id(const display_event_id id) noexcept
   {
-    m_event.event = to_underlying(id);
+    m_event.event = static_cast<u8>(to_underlying(id));
   }
 
   /**
@@ -23571,7 +23592,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }
@@ -23662,7 +23683,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the touchpad index associated with the event.
    *
-   * \param id the associated touchpad index.
+   * \param index the associated touchpad index.
    *
    * \since 6.3.0
    */
@@ -23674,7 +23695,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
   /**
    * \brief Sets the finger index on the touchpad associated with the event.
    *
-   * \param id the associated finger index.
+   * \param index the associated finger index.
    *
    * \since 6.3.0
    */
@@ -23716,7 +23737,7 @@ class controller_touchpad_event final : public common_event<SDL_ControllerTouchp
    *
    * \details The supplied value is clamped within the range [0, 1].
    *
-   * \param y the normalized y-coordinate.
+   * \param pressure the normalized y-coordinate.
    *
    * \since 6.3.0
    */
@@ -23875,7 +23896,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    */
   void set_event_id(const display_event_id id) noexcept
   {
-    m_event.event = to_underlying(id);
+    m_event.event = static_cast<u8>(to_underlying(id));
   }
 
   /**
@@ -25366,7 +25387,7 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -28423,7 +28444,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values) noexcept
+  void set_data(const data_type& values)
   {
     detail::assign(values, m_event.data);
   }
@@ -28449,7 +28470,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }
@@ -33806,7 +33827,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values) noexcept
+  void set_data(const data_type& values)
   {
     detail::assign(values, m_event.data);
   }
@@ -33832,7 +33853,7 @@ class sensor_event final : public common_event<SDL_SensorEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const noexcept -> data_type
+  [[nodiscard]] auto data() const -> data_type
   {
     return detail::to_array(m_event.data);
   }
@@ -40377,7 +40398,7 @@ class mix_error final : public cen_error
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -41459,13 +41480,15 @@ inline void set_priority(const log_category category, const log_priority priorit
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper =
-      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
-        Callable tmp;
-        tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
-      };
+  const auto wrapper = [](void* /*erased*/,
+                          const int category,
+                          const SDL_LogPriority priority,
+                          const str message) {
+    Callable tmp;
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
+  };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
 }
@@ -41487,7 +41510,7 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
   const auto wrapper =
       [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
@@ -42042,7 +42065,7 @@ concept is_hint_callback = is_stateless_callable<T,
  * \since 6.2.0
  */
 template <typename Hint, typename UserData = void, is_hint_callback<Hint, UserData> Callable>
-auto add_hint_callback_ex(Callable fun, UserData* data = nullptr)
+auto add_hint_callback_ex([[maybe_unused]] Callable fun, UserData* data = nullptr)
     -> hint_callback<Hint, UserData>
 {
   const auto wrapper =
@@ -44653,7 +44676,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -46509,7 +46532,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -46529,7 +46557,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -46549,7 +46583,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -54212,6 +54252,8 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../math/vector3.hpp"
 
 // #include "haptic_effect.hpp"
@@ -54279,7 +54321,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    */
   void set_type(const condition_type type) noexcept
   {
-    representation().type = type;
+    representation().type = static_cast<u16>(to_underlying(type));
   }
 
   /**
@@ -57716,7 +57758,7 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -60152,7 +60194,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_active(modifiers, SDL_GetModState());
+    return detail::is_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -60174,7 +60216,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_active(modifiers, SDL_GetModState());
+    return detail::is_only_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -60199,7 +60241,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
+    return detail::is_only_any_of_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -72452,8 +72494,8 @@ class thread final
    * \since 6.2.0
    */
   template <is_stateless_callable Callable>
-  [[nodiscard]] static auto init(Callable&& task, const not_null<str> name = "thread")
-      -> thread
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
+                                 const not_null<str> name = "thread") -> thread
   {
     assert(name);
 
@@ -72493,7 +72535,7 @@ class thread final
    * \since 6.2.0
    */
   template <typename T = void, is_stateless_callable<T*> Callable>
-  [[nodiscard]] static auto init(Callable&& task,
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
                                  const not_null<str> name = "thread") -> thread
   {
@@ -73276,6 +73318,343 @@ class mix_error final : public cen_error
 
 #endif  // CENTURION_EXCEPTION_HEADER
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -73306,6 +73685,52 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
 
 /// \name String conversions
 /// \{
@@ -74886,7 +75311,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -74906,7 +75336,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -74926,7 +75362,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -75863,7 +76305,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -75883,7 +76330,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -75903,7 +76356,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -80789,6 +81248,10 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+
+// #include "blend_op.hpp"
+
 
 namespace cen {
 
@@ -80819,6 +81282,52 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
 
 /// \name String conversions
 /// \{
@@ -96220,6 +96729,343 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -96250,6 +97096,52 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
 
 /// \name String conversions
 /// \{
@@ -97278,7 +98170,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -97298,7 +98195,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -97318,7 +98221,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -117522,6 +118431,343 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -117552,6 +118798,52 @@ enum class blend_mode
 
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
+
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
 
 /// \name String conversions
 /// \{
@@ -118580,7 +119872,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -118600,7 +119897,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -118620,7 +119923,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 

@@ -6,6 +6,8 @@ project(centurion
     LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CXX_STANDARD_REQUIRED ON)
+set(CXX_EXTENSIONS OFF)
 
 include(Utilities)
 
@@ -25,16 +27,12 @@ else ()
   message("Using C++${CMAKE_CXX_STANDARD}...")
 endif ()
 
-set(CXX_STANDARD_REQUIRED ON)
-set(CXX_EXTENSIONS OFF)
-
 set(CENTURION_LIB_TARGET CenturionLibrary)
 set(CENTURION_TEST_TARGET CenturionTests)
 set(CENTURION_MOCK_TARGET CenturionMocks)
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
-option(CEN_AUDIO "Include audio components" ON)
 option(CEN_COVERAGE "Enable coverage data" OFF)
 option(CEN_TESTS "Build the Centurion tests" ON)
 option(CEN_EXAMPLES "Build the examples" ON)
@@ -52,7 +50,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-if (CEN_COVERAGE MATCHES ON)
+if (CEN_COVERAGE)
   include(CodeCoverage)
   append_coverage_compiler_flags()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")

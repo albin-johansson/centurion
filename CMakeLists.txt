@@ -37,7 +37,6 @@ unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 option(CEN_AUDIO "Include audio components" ON)
 option(CEN_COVERAGE "Enable coverage data" OFF)
 option(CEN_TESTS "Build the Centurion tests" ON)
-option(CEN_INTERACTIVE "Build the interactive tests" ON)
 option(CEN_EXAMPLES "Build the examples" ON)
 option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 

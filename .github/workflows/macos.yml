@@ -54,7 +54,7 @@ jobs:
         working-directory: ./build
         shell: bash
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_INTERACTIVE=OFF -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -GNinja
           ninja
 
       - name: Run unit tests

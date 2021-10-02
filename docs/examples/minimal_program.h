@@ -8,16 +8,5 @@
  *
  * \note The signature of the `main` function must be equivalent to `int(int, char**)`.
  *
- * \code{cpp}
- * #include <centurion.hpp>
- *
- * int main(int, char**)
- * {
- *   cen::library centurion;
- *
- *   // The core SDL library along with the extension libraries are now initialized!
- *
- *   return 0;
- * }
- * \endcode
+ * \include minimal-program/minimal_program.cpp
  */

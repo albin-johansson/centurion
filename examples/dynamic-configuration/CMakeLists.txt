@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(centurion-examples-dynamic-configuration CXX)
+
+cen_create_executable(example_dynamic_configuration dynamic_configuration.cpp)
+cen_set_compiler_options(example_dynamic_configuration)
+
+cen_include_centurion_headers(example_dynamic_configuration)
+cen_link_against_sdl(example_dynamic_configuration)
+
+if (WIN32)
+  cen_copy_runtime_binaries(example_dynamic_configuration)
+endif ()

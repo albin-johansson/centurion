@@ -172,8 +172,26 @@ if (CEN_AUDIO)
       audio/sound_effect_test.cpp)
 endif ()
 
-cen_create_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
-cen_set_compiler_options(${CENTURION_TEST_TARGET})
+add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
+add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
+
+target_include_directories(${CENTURION_TEST_TARGET}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}
+    ${CEN_SOURCE_DIR}
+
+    SYSTEM PRIVATE
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include
+    ${gmock_SOURCE_DIR}
+    ../lib/cereal
+    )
+
+target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE
+    ${CENTURION_LIB_TARGET}
+    gtest
+    )
 
 if (MSVC)
   target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
@@ -181,9 +199,12 @@ if (MSVC)
       )
 endif ()
 
+if (CEN_AUDIO)
+  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CEN_AUDIO)
+endif ()
+
 target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
     <SDL.h>
-
     <array>
     <algorithm>
     <vector>
@@ -197,30 +218,6 @@ target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
     <utility>
     <type_traits>
     )
-
-if (CEN_AUDIO)
-  target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC CEN_AUDIO)
-endif ()
-
-target_include_directories(${CENTURION_TEST_TARGET}
-    PUBLIC .
-    PUBLIC ${CEN_SOURCE_DIR}
-    SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-    SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}
-    SYSTEM PUBLIC ../lib/cereal)
-
-target_link_libraries(${CENTURION_TEST_TARGET}
-    PUBLIC ${SDL2_LIBRARY}
-    PUBLIC ${SDL2_IMAGE_LIBRARIES}
-    PUBLIC ${SDL2_MIXER_LIBRARIES}
-    PUBLIC ${SDL2_TTF_LIBRARIES}
-    PUBLIC gtest)
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 

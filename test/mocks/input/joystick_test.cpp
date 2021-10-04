@@ -459,9 +459,9 @@ TEST_F(JoystickTest, RumbleTriggers)
   ASSERT_FALSE(m_joystick.rumble_triggers(12, 34, 56_ms));
   ASSERT_TRUE(m_joystick.rumble_triggers(12, 34, 56_ms));
 
-  ASSERT_EQ(12, SDL_JoystickRumbleTriggers_fake.arg1_val);
-  ASSERT_EQ(34, SDL_JoystickRumbleTriggers_fake.arg2_val);
-  ASSERT_EQ(56, SDL_JoystickRumbleTriggers_fake.arg3_val);
+  ASSERT_EQ(12u, SDL_JoystickRumbleTriggers_fake.arg1_val);
+  ASSERT_EQ(34u, SDL_JoystickRumbleTriggers_fake.arg2_val);
+  ASSERT_EQ(56u, SDL_JoystickRumbleTriggers_fake.arg3_val);
 
   ASSERT_EQ(2u, SDL_JoystickRumbleTriggers_fake.call_count);
 }

@@ -172,7 +172,7 @@ if (CEN_AUDIO)
       audio/sound_effect_test.cpp)
 endif ()
 
-cen_create_executable(${CENTURION_TEST_TARGET} "${SOURCE_FILES}")
+cen_create_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
 cen_set_compiler_options(${CENTURION_TEST_TARGET})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")

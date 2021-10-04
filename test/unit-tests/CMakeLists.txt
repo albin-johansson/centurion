@@ -185,7 +185,7 @@ target_include_directories(${CENTURION_TEST_TARGET}
     ${gtest_SOURCE_DIR}
     ${gmock_SOURCE_DIR}/include
     ${gmock_SOURCE_DIR}
-    ../lib/cereal
+    ${CEN_LIBRARY_DIR}/cereal
     )
 
 target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE

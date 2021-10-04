@@ -73,7 +73,7 @@ endif ()
 add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)
 cen_set_compiler_options(${CENTURION_MOCK_TARGET})
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (MSVC)
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
       /wd4834  # "discarding return value of function with 'nodiscard' attribute"
       /wd4702  # "unreachable code"

@@ -71,7 +71,7 @@ if (CENTURION_MOCK_FRIENDLY_MODE)
   target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
-add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)
+add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
 
 if (MSVC)
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE

@@ -312,7 +312,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif ()
 
 if (CEN_TESTS)
-  enable_testing()
   add_subdirectory(test)
 endif ()
 

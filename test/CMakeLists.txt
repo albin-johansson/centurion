@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(centurion-test CXX)
+enable_testing()
 
 option(CEN_AUDIO "Test audio components" ON)
 

@@ -56,8 +56,8 @@ TEST_F(EventTest, FlushAll)
   cen::event::flush_all();
   ASSERT_EQ(1u, SDL_PumpEvents_fake.call_count);
   ASSERT_EQ(1u, SDL_FlushEvents_fake.call_count);
-  ASSERT_EQ(SDL_FIRSTEVENT, SDL_FlushEvents_fake.arg0_val);
-  ASSERT_EQ(SDL_LASTEVENT, SDL_FlushEvents_fake.arg1_val);
+  ASSERT_EQ(SDL_FIRSTEVENT, static_cast<SDL_EventType>(SDL_FlushEvents_fake.arg0_val));
+  ASSERT_EQ(SDL_LASTEVENT, static_cast<SDL_EventType>(SDL_FlushEvents_fake.arg1_val));
 }
 
 TEST_F(EventTest, Poll)

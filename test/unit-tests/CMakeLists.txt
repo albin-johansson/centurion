@@ -199,8 +199,7 @@ target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
     )
 
 if (CEN_AUDIO)
-  target_compile_definitions(${CENTURION_TEST_TARGET}
-      PUBLIC CEN_AUDIO)
+  target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC CEN_AUDIO)
 endif ()
 
 target_include_directories(${CENTURION_TEST_TARGET}

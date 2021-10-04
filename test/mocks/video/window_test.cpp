@@ -178,7 +178,7 @@ TEST_F(WindowTest, SetFullscreen)
 
   ASSERT_FALSE(m_window.set_fullscreen(false));
   ASSERT_EQ(2u, SDL_SetWindowFullscreen_fake.call_count);
-  ASSERT_EQ(0, SDL_SetWindowFullscreen_fake.arg1_val);
+  ASSERT_EQ(0u, SDL_SetWindowFullscreen_fake.arg1_val);
 }
 
 TEST_F(WindowTest, SetFullscreenDesktop)

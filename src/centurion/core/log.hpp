@@ -3,17 +3,19 @@
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
 
 #include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -451,7 +453,17 @@ inline void use_preset_output_function() noexcept
 
   set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 

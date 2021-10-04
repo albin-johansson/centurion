@@ -57,7 +57,7 @@ set(SOURCE_FILES
     video/window_utils_test.cpp
     )
 
-if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
+if (CENTURION_MOCK_FRIENDLY_MODE)
   list(APPEND SOURCE_FILES
       audio/music_test.cpp
       audio/sound_effect_test.cpp)

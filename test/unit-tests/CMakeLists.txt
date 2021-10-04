@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-unittests LANGUAGES CXX)
+project(centurion-test-unit-tests)
 
 set(SOURCE_FILES
     serialization_utils.hpp

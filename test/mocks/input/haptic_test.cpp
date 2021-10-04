@@ -367,7 +367,7 @@ TEST_F(HapticTest, Name)
 TEST_F(HapticTest, IsOpened)
 {
   const auto opened [[maybe_unused]] = cen::haptic::is_opened(0);
-  ASSERT_EQ(1, SDL_HapticOpened_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticOpened_fake.call_count);
 }
 
 TEST_F(HapticTest, IsJoystickHaptic)
@@ -478,10 +478,10 @@ TEST_F(HapticTest, Run)
   SET_RETURN_SEQ(SDL_HapticRunEffect, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_haptic.run(42));
-  ASSERT_EQ(1, SDL_HapticRunEffect_fake.arg2_val);
+  ASSERT_EQ(1u, SDL_HapticRunEffect_fake.arg2_val);
 
   ASSERT_TRUE(m_haptic.run(42, 7));
-  ASSERT_EQ(7, SDL_HapticRunEffect_fake.arg2_val);
+  ASSERT_EQ(7u, SDL_HapticRunEffect_fake.arg2_val);
 
   ASSERT_EQ(2u, SDL_HapticRunEffect_fake.call_count);
 }

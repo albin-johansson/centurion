@@ -60,7 +60,8 @@ set(SOURCE_FILES
 if (CENTURION_MOCK_FRIENDLY_MODE)
   list(APPEND SOURCE_FILES
       audio/music_test.cpp
-      audio/sound_effect_test.cpp)
+      audio/sound_effect_test.cpp
+      )
 endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})

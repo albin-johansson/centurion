@@ -60,9 +60,9 @@ jobs:
       - name: Run unit tests
         working-directory: ./build/test/unit-tests
         shell: bash
-        run: ./CenturionTests
+        run: ./testcenturion
 
       - name: Run mocked test suite
         working-directory: ./build/test/mocks
         shell: bash
-        run: ./CenturionMocks
+        run: ./mockcenturion

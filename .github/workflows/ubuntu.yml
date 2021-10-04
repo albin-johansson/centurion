@@ -103,12 +103,12 @@ jobs:
       - name: Run mocked test suite
         working-directory: ./build/test/mocks
         shell: bash
-        run: ./CenturionMocks
+        run: ./mockcenturion
 
       - name: Run unit tests
         working-directory: ./build/test/unit-tests
         shell: bash
-        run: ./CenturionTests
+        run: ./testcenturion
 
       - name: Capture code coverage
         if: ${{matrix.SDL_VERSION == env.SDL_LATEST && matrix.CPP_VERSION == '20' }}

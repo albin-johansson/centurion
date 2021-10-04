@@ -28,9 +28,9 @@ else ()
   message("Using C++${CMAKE_CXX_STANDARD}...")
 endif ()
 
-set(CENTURION_LIB_TARGET CenturionLibrary)
-set(CENTURION_TEST_TARGET CenturionTests)
-set(CENTURION_MOCK_TARGET CenturionMocks)
+set(CENTURION_LIB_TARGET libcenturion)
+set(CENTURION_TEST_TARGET testcenturion)
+set(CENTURION_MOCK_TARGET mockcenturion)
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 

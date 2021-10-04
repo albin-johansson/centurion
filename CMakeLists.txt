@@ -33,8 +33,6 @@ set(CENTURION_LIB_TARGET libcenturion)
 set(CENTURION_TEST_TARGET testcenturion)
 set(CENTURION_MOCK_TARGET mockcenturion)
 
-unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
-
 option(CEN_COVERAGE "Enable coverage data" OFF)
 option(CEN_TESTS "Build the Centurion tests" ON)
 option(CEN_EXAMPLES "Build the examples" ON)

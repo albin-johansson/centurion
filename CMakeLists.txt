@@ -9,6 +9,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
+include(Dependencies)
 include(Utilities)
 
 set(CEN_ROOT_DIR ${PROJECT_SOURCE_DIR})

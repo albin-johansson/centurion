@@ -65,9 +65,8 @@ endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
 
-if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
-  target_compile_definitions(${CENTURION_MOCK_TARGET}
-      PUBLIC CENTURION_MOCK_FRIENDLY_MODE)
+if (CENTURION_MOCK_FRIENDLY_MODE)
+  target_compile_definitions(${CENTURION_MOCK_TARGET} PUBLIC CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)

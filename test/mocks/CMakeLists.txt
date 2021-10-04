@@ -65,13 +65,13 @@ if (CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
+add_dependencies(${CENTURION_MOCK_TARGET} ${CENTURION_LIB_TARGET})
 
 if (CENTURION_MOCK_FRIENDLY_MODE)
-  target_compile_definitions(${CENTURION_MOCK_TARGET} PUBLIC CENTURION_MOCK_FRIENDLY_MODE)
+  target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)
-cen_set_compiler_options(${CENTURION_MOCK_TARGET})
 
 if (MSVC)
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
@@ -81,19 +81,21 @@ if (MSVC)
 endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
-    PUBLIC .
-    PUBLIC ${CEN_SOURCE_DIR}
-    SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-    SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR})
+    PRIVATE
+    ${CEN_SOURCE_DIR}  # TODO remove and fix includes
+    ${PROJECT_SOURCE_DIR}
 
-target_link_libraries(${CENTURION_MOCK_TARGET}
-    PUBLIC gtest
-    PUBLIC libFFF)
+    SYSTEM PRIVATE
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include
+    ${gmock_SOURCE_DIR}
+    )
+
+target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
+    ${CENTURION_LIB_TARGET}
+    gtest
+    libFFF
+    )
 
 add_test(NAME ${CENTURION_MOCK_TARGET} COMMAND ${CENTURION_MOCK_TARGET})

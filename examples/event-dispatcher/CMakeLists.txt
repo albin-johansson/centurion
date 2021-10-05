@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-examples-event-dispatcher CXX)
 
-cen_create_executable(example_event_dispatcher event_dispatcher.cpp)
-cen_set_compiler_options(example_event_dispatcher)
+add_executable(example_event_dispatcher event_dispatcher.cpp)
 
-cen_include_centurion_headers(example_event_dispatcher)
-cen_link_against_sdl(example_event_dispatcher)
+target_link_libraries(example_event_dispatcher PRIVATE ${CENTURION_LIB_TARGET})
 
 if (WIN32)
-  cen_copy_runtime_binaries(example_event_dispatcher)
+  copy_directory_post_build(example_event_dispatcher ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-examples-music CXX)
 
-cen_create_executable(example_music music.cpp)
-cen_set_compiler_options(example_music)
+add_executable(example_music music.cpp)
 
-cen_include_centurion_headers(example_music)
-cen_link_against_sdl(example_music)
+target_link_libraries(example_music PRIVATE ${CENTURION_LIB_TARGET})
 
 if (WIN32)
-  cen_copy_runtime_binaries(example_music)
+  copy_directory_post_build(example_music ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

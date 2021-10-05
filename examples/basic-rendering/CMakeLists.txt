@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-examples-basic-rendering CXX)
 
-cen_create_executable(example_basic_rendering basic_rendering.cpp)
-cen_set_compiler_options(example_basic_rendering)
+add_executable(example_basic_rendering basic_rendering.cpp)
 
-cen_include_centurion_headers(example_basic_rendering)
-cen_link_against_sdl(example_basic_rendering)
+target_link_libraries(example_basic_rendering PRIVATE ${CENTURION_LIB_TARGET})
 
 if (WIN32)
-  cen_copy_runtime_binaries(example_basic_rendering)
+  copy_directory_post_build(example_basic_rendering ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

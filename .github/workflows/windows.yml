@@ -63,7 +63,7 @@ jobs:
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_EXAMPLES -GNinja
           ninja
 
       - name: Run mocked test suite

@@ -22,111 +22,12 @@
  * SOFTWARE.
  */
 
+#ifndef CENTURION_CENTURION_HEADER
+#define CENTURION_CENTURION_HEADER
+
 #ifndef CENTURION_NO_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
-
-// clang-format off
-// #include "centurion/core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
-
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-#ifndef __clang__
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // __clang__
-
-/// \} End of group core
-
-#endif  // CENTURION_MACROS_HEADER
-
-// #include "centurion/compiler/features.hpp"
-#ifndef CENTURION_FEATURES_HEADER
-#define CENTURION_FEATURES_HEADER
-
-/// \addtogroup compiler
-/// \{
-
-// Do we have general C++20 support?
-#if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20 1
-#else
-#define CENTURION_HAS_FEATURE_CPP20 0
-#endif  // __cplusplus >= 202002L
-
-// C++20 nodiscard constructors
-#if nodiscard >= 201907L
-#define CENTURION_NODISCARD_CTOR [[nodiscard]]
-#else
-#define CENTURION_NODISCARD_CTOR
-#endif  // nodiscard >= 201907L
-
-#ifdef __has_include
-
-#if __has_include(<version>)
-#include <version>
-#endif  // __has_include(<version>)
-
-#ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT 1
-#else
-#define CENTURION_HAS_FEATURE_FORMAT 0
-#endif  // __cpp_lib_format
-
-#ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS 1
-#else
-#define CENTURION_HAS_FEATURE_CONCEPTS 0
-#endif  // __cpp_lib_concepts
-
-#ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
-#else
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
-#endif  // __cpp_lib_memory_resource
-
-#ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP 1
-#else
-#define CENTURION_HAS_FEATURE_LERP 0
-#endif  // __cpp_lib_interpolate
-
-#ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP 1
-#else
-#define CENTURION_HAS_FEATURE_SPACESHIP 0
-#endif  // __cpp_lib_three_way_comparison
-
-#if __cpp_lib_chrono >= 201907L
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
-#else
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
-#endif  // __cpp_lib_chrono >= 201907L
-
-#if __cpp_lib_to_array >= 201907L
-#define CENTURION_HAS_FEATURE_TO_ARRAY 1
-#else
-#define CENTURION_HAS_FEATURE_TO_ARRAY 0
-#endif  // __cpp_lib_to_array >= 201907L
-
-#endif  // __has_include
-
-/// \} End of group compiler
-
-#endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
 
 // #include "centurion/audio/channels.hpp"
 #ifndef CENTURION_CHANNELS_HEADER
@@ -3977,6 +3878,81 @@ namespace cen {
 
 #endif  // CENTURION_COMPILER_HEADER
 
+// #include "centurion/compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+/// \addtogroup compiler
+/// \{
+
+// Do we have general C++20 support?
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
+#endif  // __cplusplus >= 202002L
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
+#endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
+
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
+#endif  // __has_include
+
+/// \} End of group compiler
+
+#endif  // CENTURION_FEATURES_HEADER
+
 // #include "centurion/core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
 #define CENTURION_CAST_HEADER
@@ -5280,18 +5256,20 @@ class library final
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
 
 // #include "../compiler/features.hpp"
 
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -6524,7 +6502,17 @@ inline void use_preset_output_function() noexcept
 
   set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -6743,18 +6731,20 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
 
 // #include "../compiler/features.hpp"
 
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -7198,7 +7188,17 @@ inline void use_preset_output_function() noexcept
 
   set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -7425,6 +7425,30 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
 }  // namespace cen
 
 #endif  // CENTURION_LOG_PRIORITY_HEADER
+
+// #include "centurion/core/macros.hpp"
+#ifndef CENTURION_MACROS_HEADER
+#define CENTURION_MACROS_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+#ifndef __clang__
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // __clang__
+
+/// \} End of group core
+
+#endif  // CENTURION_MACROS_HEADER
 
 // #include "centurion/core/not_null.hpp"
 #ifndef CENTURION_NOT_NULL_HEADER
@@ -40112,18 +40136,20 @@ concept is_stateless_callable = std::default_initializable<T> && std::invocable<
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
 
 // #include "../compiler/features.hpp"
 
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -41545,7 +41571,17 @@ inline void use_preset_output_function() noexcept
 
   set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -124900,3 +124936,5 @@ template <typename T>
 }  // namespace cen
 
 #endif  // CENTURION_WINDOW_UTILS_HEADER
+
+#endif  // CENTURION_CENTURION_HEADER

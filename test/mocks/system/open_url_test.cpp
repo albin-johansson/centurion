@@ -10,8 +10,9 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }  // extern "C"
 
 class OpenURLTest : public testing::Test
@@ -36,7 +37,7 @@ TEST_F(OpenURLTest, OpenURL)
   ASSERT_FALSE(cen::open_url(url));
   ASSERT_TRUE(cen::open_url(url));
 
-  ASSERT_EQ(2, SDL_OpenURL_fake.call_count);
+  ASSERT_EQ(2u, SDL_OpenURL_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include "../core/integers.hpp"
+#include "../core/to_underlying.hpp"
 #include "../math/vector3.hpp"
 #include "haptic_effect.hpp"
 
@@ -69,7 +70,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    */
   void set_type(const condition_type type) noexcept
   {
-    representation().type = type;
+    representation().type = static_cast<u16>(to_underlying(type));
   }
 
   /**

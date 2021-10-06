@@ -9,7 +9,7 @@ TEST(CommonEvent, SetTime)
 {
   common_event event;
 
-  constexpr auto time = 8'934;
+  constexpr cen::u32 time = 8'934;
   event.set_time(time);
 
   ASSERT_EQ(time, event.time());
@@ -27,7 +27,7 @@ TEST(CommonEvent, SetType)
 
 TEST(CommonEvent, Time)
 {
-  constexpr auto time = 8'321;
+  constexpr cen::u32 time = 8'321;
 
   sdl_event sdl;
   sdl.timestamp = time;

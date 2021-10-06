@@ -1,16 +1,14 @@
 #ifndef CENTURION_RENDERER_INFO_HEADER
 #define CENTURION_RENDERER_INFO_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -261,12 +259,10 @@ template <typename T>
     -> std::optional<renderer_info>
 {
   SDL_RendererInfo info;
-  if (SDL_GetRendererInfo(renderer.get(), &info) == 0)
-  {
+  if (SDL_GetRendererInfo(renderer.get(), &info) == 0) {
     return renderer_info{info};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

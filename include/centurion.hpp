@@ -22,105 +22,12 @@
  * SOFTWARE.
  */
 
+#ifndef CENTURION_CENTURION_HEADER
+#define CENTURION_CENTURION_HEADER
+
 #ifndef CENTURION_NO_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
-
-// clang-format off
-// #include "centurion/core/macros.hpp"
-#ifndef CENTURION_MACROS_HEADER
-#define CENTURION_MACROS_HEADER
-
-#include <SDL.h>
-
-/// \addtogroup core
-/// \{
-
-#ifndef __clang__
-
-/**
- * \def CENTURION_HAS_STD_MEMORY_RESOURCE
- * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
- * \since 5.3.0
- */
-#define CENTURION_HAS_STD_MEMORY_RESOURCE
-
-#endif  // __clang__
-
-/// \} End of group core
-
-#endif  // CENTURION_MACROS_HEADER
-
-// #include "centurion/compiler/features.hpp"
-#ifndef CENTURION_FEATURES_HEADER
-#define CENTURION_FEATURES_HEADER
-
-/// \addtogroup compiler
-/// \{
-
-// Do we have general C++20 support?
-#if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20 1
-#else
-#define CENTURION_HAS_FEATURE_CPP20 0
-#endif  // __cplusplus >= 202002L
-
-// C++20 nodiscard constructors
-#if nodiscard >= 201907L
-#define CENTURION_NODISCARD_CTOR [[nodiscard]]
-#else
-#define CENTURION_NODISCARD_CTOR
-#endif  // nodiscard >= 201907L
-
-#ifdef __has_include
-
-#if __has_include(<version>)
-#include <version>
-#endif  // __has_include(<version>)
-
-#ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT 1
-#else
-#define CENTURION_HAS_FEATURE_FORMAT 0
-#endif  // __cpp_lib_format
-
-#ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS 1
-#else
-#define CENTURION_HAS_FEATURE_CONCEPTS 0
-#endif  // __cpp_lib_concepts
-
-#ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
-#else
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
-#endif  // __cpp_lib_memory_resource
-
-#ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP 1
-#else
-#define CENTURION_HAS_FEATURE_LERP 0
-#endif  // __cpp_lib_interpolate
-
-#ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP 1
-#else
-#define CENTURION_HAS_FEATURE_SPACESHIP 0
-#endif  // __cpp_lib_three_way_comparison
-
-#if __cpp_lib_chrono >= 201907L
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
-#else
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
-#endif  // __cpp_lib_chrono >= 201907L
-
-#endif  // __has_include
-
-/// \} End of group compiler
-
-#endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
 
 // #include "centurion/audio/channels.hpp"
 #ifndef CENTURION_CHANNELS_HEADER
@@ -715,8 +622,7 @@ inline auto remove_expiration(const channel_index channel) noexcept -> result
  *
  * \since 6.0.0
  */
-inline auto set_group(const channel_index channel, const group_index group) noexcept
-    -> result
+inline auto set_group(const channel_index channel, const group_index group) noexcept -> result
 {
   return Mix_GroupChannel(channel, group) == 1;
 }
@@ -766,12 +672,10 @@ inline auto reset_group(const channel_index channel) noexcept -> result
     -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupAvailable(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -786,16 +690,13 @@ inline auto reset_group(const channel_index channel) noexcept -> result
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto most_recent(const group_index group)
-    -> std::optional<channel_index>
+[[nodiscard]] inline auto most_recent(const group_index group) -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupNewer(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -813,12 +714,10 @@ inline auto reset_group(const channel_index channel) noexcept -> result
 [[nodiscard]] inline auto oldest(const group_index group) -> std::optional<channel_index>
 {
   const auto channel = Mix_GroupOldest(group);
-  if (channel != -1)
-  {
+  if (channel != -1) {
     return channel;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -1084,9 +983,10 @@ namespace cen {
  *
  * \brief Provides values that represent different fade playback states.
  *
- * \since 3.0.0
- *
  * \see `Mix_Fading`
+ * \see `fade_status_count()`
+ *
+ * \since 3.0.0
  */
 enum class fade_status
 {
@@ -1094,6 +994,18 @@ enum class fade_status
   in = MIX_FADING_IN,    ///< Currently fading in music.
   out = MIX_FADING_OUT   ///< Currently fading out music.
 };
+
+/**
+ * \brief Returns the number of enumerators for the `fade_status` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
+{
+  return 3;
+}
 
 /// \name String conversions
 /// \{
@@ -1114,8 +1026,7 @@ enum class fade_status
  */
 [[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case fade_status::none:
       return "none";
 
@@ -1167,15 +1078,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
 
 /// \copydoc operator==(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -1190,15 +1101,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -1218,7 +1129,14 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-// clang-format off
+#include <SDL_mixer.h>
+
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, to_string
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -1282,21 +1200,18 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL_mixer.h>
-
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -1337,8 +1252,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -1568,20 +1482,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -1728,9 +1639,10 @@ namespace cen {
  *
  * \brief Provides values that represent different fade playback states.
  *
- * \since 3.0.0
- *
  * \see `Mix_Fading`
+ * \see `fade_status_count()`
+ *
+ * \since 3.0.0
  */
 enum class fade_status
 {
@@ -1738,6 +1650,18 @@ enum class fade_status
   in = MIX_FADING_IN,    ///< Currently fading in music.
   out = MIX_FADING_OUT   ///< Currently fading out music.
 };
+
+/**
+ * \brief Returns the number of enumerators for the `fade_status` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
+{
+  return 3;
+}
 
 /// \name String conversions
 /// \{
@@ -1758,8 +1682,7 @@ enum class fade_status
  */
 [[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case fade_status::none:
       return "none";
 
@@ -1811,15 +1734,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
 
 /// \copydoc operator==(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -1834,15 +1757,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -1880,9 +1803,10 @@ namespace cen {
  *
  * \brief Provides values that represent different supported music types.
  *
- * \since 3.0.0
- *
  * \see `Mix_MusicType`
+ * \see `music_type_count()`
+ *
+ * \since 3.0.0
  */
 enum class music_type
 {
@@ -1896,6 +1820,18 @@ enum class music_type
   flac = MUS_FLAC,
   opus = MUS_OPUS
 };
+
+/**
+ * \brief Returns the number of enumerators for the `music_type` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto music_type_count() noexcept -> int
+{
+  return 9;
+}
 
 /// \name String conversions
 /// \{
@@ -1916,8 +1852,7 @@ enum class music_type
  */
 [[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case music_type::unknown:
       return "unknown";
 
@@ -1987,15 +1922,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -2010,15 +1945,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -2087,8 +2022,7 @@ class music final
    */
   explicit music(const not_null<str> file) : m_music{Mix_LoadMUS(file)}
   {
-    if (!m_music)
-    {
+    if (!m_music) {
       throw mix_error{};
     }
   }
@@ -2133,12 +2067,10 @@ class music final
   auto play(const int nLoops = 0) noexcept -> std::optional<int>
   {
     const auto channel = Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
-    if (channel != -1)
-    {
+    if (channel != -1) {
       return channel;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -2235,8 +2167,8 @@ class music final
    *
    * \since 3.0.0
    */
-  auto fade_in(const milliseconds<int> ms,
-               const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
+  auto fade_in(const milliseconds<int> ms, const int nLoops = 0) noexcept(noexcept(ms.count()))
+      -> result
   {
     assert(ms.count() > 0);
     return Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count()) == 0;
@@ -2257,16 +2189,13 @@ class music final
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
-      -> result
+  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
-    if (!is_fading())
-    {
+    if (!is_fading()) {
       return Mix_FadeOutMusic(ms.count()) != 0;
     }
-    else
-    {
+    else {
       return failure;
     }
   }
@@ -2537,6 +2466,7 @@ class music final
   std::unique_ptr<Mix_Music, deleter> m_music;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   music() = default;
 #endif
@@ -2641,9 +2571,10 @@ namespace cen {
  *
  * \brief Provides values that represent different supported music types.
  *
- * \since 3.0.0
- *
  * \see `Mix_MusicType`
+ * \see `music_type_count()`
+ *
+ * \since 3.0.0
  */
 enum class music_type
 {
@@ -2657,6 +2588,18 @@ enum class music_type
   flac = MUS_FLAC,
   opus = MUS_OPUS
 };
+
+/**
+ * \brief Returns the number of enumerators for the `music_type` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto music_type_count() noexcept -> int
+{
+  return 9;
+}
 
 /// \name String conversions
 /// \{
@@ -2677,8 +2620,7 @@ enum class music_type
  */
 [[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case music_type::unknown:
       return "unknown";
 
@@ -2748,15 +2690,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -2771,15 +2713,15 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const music_type lhs,
-                                        const Mix_MusicType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const music_type lhs, const Mix_MusicType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(music_type, Mix_MusicType)
-[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
-                                        const music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs, const music_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -2799,11 +2741,6 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL_mixer.h>
 
 #include <cassert>   // assert
@@ -2811,6 +2748,9 @@ inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostr
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -3189,12 +3129,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -3313,8 +3251,7 @@ class basic_sound_effect final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sound_effect(const not_null<str> file) : m_chunk{Mix_LoadWAV(file)}
   {
-    if (!m_chunk)
-    {
+    if (!m_chunk) {
       throw mix_error{};
     }
   }
@@ -3375,8 +3312,7 @@ class basic_sound_effect final
    */
   void stop() noexcept
   {
-    if (is_playing())
-    {
+    if (is_playing()) {
       Mix_Pause(m_channel);
       m_channel = undefined_channel();
     }
@@ -3426,8 +3362,7 @@ class basic_sound_effect final
   void fade_in(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
-    if (!is_playing())
-    {
+    if (!is_playing()) {
       m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
@@ -3446,8 +3381,7 @@ class basic_sound_effect final
   void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT
   {
     assert(ms.count() > 0);
-    if (is_playing())
-    {
+    if (is_playing()) {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -3613,12 +3547,10 @@ class basic_sound_effect final
    */
   [[nodiscard]] auto channel() const noexcept -> std::optional<int>
   {
-    if (m_channel != undefined_channel())
-    {
+    if (m_channel != undefined_channel()) {
       return m_channel;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -3655,6 +3587,7 @@ class basic_sound_effect final
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   void set_channel(const int channel) noexcept
   {
@@ -3800,8 +3733,7 @@ inline auto set_sound_fonts(const str paths) noexcept -> result
  * \since 6.0.0
  */
 template <typename T = void>
-auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept
-    -> result
+auto each_sound_font(sound_font_visit_callback callable, T* data = nullptr) noexcept -> result
 {
   return Mix_EachSoundFont(callable, static_cast<void*>(data)) != 0;
 }
@@ -3945,6 +3877,81 @@ namespace cen {
 }  // namespace cen
 
 #endif  // CENTURION_COMPILER_HEADER
+
+// #include "centurion/compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+/// \addtogroup compiler
+/// \{
+
+// Do we have general C++20 support?
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
+#endif  // __cplusplus >= 202002L
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
+#endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
+
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
+#endif  // __has_include
+
+/// \} End of group compiler
+
+#endif  // CENTURION_FEATURES_HEADER
 
 // #include "centurion/core/cast.hpp"
 #ifndef CENTURION_CAST_HEADER
@@ -4407,7 +4414,6 @@ namespace literals {
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -4471,13 +4477,18 @@ namespace literals {
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -4489,8 +4500,7 @@ namespace cen {
 /// \{
 
 template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
 /// \} End of group core
 
@@ -4549,12 +4559,10 @@ concept is_stateless_callable =
 #ifndef CENTURION_LIBRARY_HEADER
 #define CENTURION_LIBRARY_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -5023,8 +5031,8 @@ struct config final
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_MIXER
-  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
-                 MIX_INIT_MOD | MIX_INIT_OPUS};
+  int mixerFlags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD |
+                 MIX_INIT_OPUS};
   int mixerFreq{MIX_DEFAULT_FREQUENCY};
   u16 mixerFormat{MIX_DEFAULT_FORMAT};
   int mixerChannels{MIX_DEFAULT_CHANNELS};
@@ -5114,8 +5122,7 @@ class library final
   {
     explicit sdl(const u32 flags)
     {
-      if (SDL_Init(flags) < 0)
-      {
+      if (SDL_Init(flags) < 0) {
         throw sdl_error{};
       }
     }
@@ -5132,8 +5139,7 @@ class library final
   {
     explicit sdl_ttf()
     {
-      if (TTF_Init() == -1)
-      {
+      if (TTF_Init() == -1) {
         throw ttf_error{};
       }
     }
@@ -5156,13 +5162,11 @@ class library final
               const int nChannels,
               const int chunkSize)
     {
-      if (!Mix_Init(flags))
-      {
+      if (!Mix_Init(flags)) {
         throw mix_error{};
       }
 
-      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1)
-      {
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
         throw mix_error{};
       }
     }
@@ -5182,8 +5186,7 @@ class library final
   {
     explicit sdl_image(const int flags)
     {
-      if (!IMG_Init(flags))
-      {
+      if (!IMG_Init(flags)) {
         throw img_error{};
       }
     }
@@ -5213,28 +5216,24 @@ class library final
 
   void init()
   {
-    if (m_cfg.initCore)
-    {
+    if (m_cfg.initCore) {
       m_sdl.emplace(m_cfg.coreFlags);
     }
 
 #ifndef CENTURION_NO_SDL_IMAGE
-    if (m_cfg.initImage)
-    {
+    if (m_cfg.initImage) {
       m_img.emplace(m_cfg.imageFlags);
     }
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_TTF
-    if (m_cfg.initTTF)
-    {
+    if (m_cfg.initTTF) {
       m_ttf.emplace();
     }
 #endif  // CENTURION_NO_SDL_TTF
 
 #ifndef CENTURION_NO_SDL_MIXER
-    if (m_cfg.initMixer)
-    {
+    if (m_cfg.initMixer) {
       m_mixer.emplace(m_cfg.mixerFlags,
                       m_cfg.mixerFreq,
                       m_cfg.mixerFormat,
@@ -5255,22 +5254,22 @@ class library final
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -5278,10 +5277,8 @@ class library final
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
 
-// clang-format on
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -5293,8 +5290,7 @@ namespace cen {
 /// \{
 
 template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
 /// \} End of group core
 
@@ -5359,7 +5355,7 @@ concept is_stateless_callable =
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -5642,6 +5638,9 @@ namespace cen {
  * \brief Represents different logging categories.
  *
  * \see `SDL_LogCategory`
+ * \see `log_category_count()`
+ *
+ * \todo Centurion 7: rename `misc` enumerator to `custom`.
  *
  * \since 3.0.0
  */
@@ -5658,6 +5657,18 @@ enum class log_category : int
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/**
+ * \brief Returns the number of enumerators for the `log_category` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto log_category_count() noexcept -> int
+{
+  return 10;
+}
 
 /// \name String conversions
 /// \{
@@ -5678,8 +5689,7 @@ enum class log_category : int
  */
 [[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
-  switch (category)
-  {
+  switch (category) {
     case log_category::app:
       return "app";
 
@@ -5863,8 +5873,7 @@ enum class log_priority : int
  */
 [[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case log_priority::verbose:
       return "verbose";
 
@@ -6000,8 +6009,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -6191,9 +6199,7 @@ void warn(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const log_category category,
-             const not_null<str> fmt,
-             Args&&... args) noexcept
+void verbose(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
@@ -6267,9 +6273,7 @@ void debug(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const log_category category,
-              const not_null<str> fmt,
-              Args&&... args) noexcept
+void critical(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
@@ -6383,8 +6387,7 @@ inline void set_priority(const log_priority priority) noexcept
  *
  * \since 3.0.0
  */
-inline void set_priority(const log_category category,
-                         const log_priority priority) noexcept
+inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
   SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
@@ -6397,8 +6400,7 @@ inline void set_priority(const log_category category,
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const log_category category) noexcept
-    -> log_priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
   return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
@@ -6435,16 +6437,14 @@ inline void set_priority(const log_category category,
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper = [](void* erased,
+  const auto wrapper = [](void* /*erased*/,
                           const int category,
                           const SDL_LogPriority priority,
                           const str message) {
     Callable tmp;
-    tmp(static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
   };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
@@ -6467,18 +6467,16 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
-  const auto wrapper = [](void* erased,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const str message) {
-    Callable tmp;
-    tmp(static_cast<UserData*>(erased),
-        static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
-  };
+  const auto wrapper =
+      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
+        Callable tmp;
+        tmp(static_cast<UserData*>(erased),
+            static_cast<log_category>(category),
+            static_cast<log_priority>(priority),
+            message);
+      };
 
   SDL_LogSetOutputFunction(wrapper, data);
 }
@@ -6502,11 +6500,19 @@ inline void use_preset_output_function() noexcept
   using std::chrono::system_clock;
   using std::chrono::zoned_time;
 
-  set_output_function([](const log_category,
-                         const log_priority priority,
-                         const str message) {
+  set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -6543,6 +6549,9 @@ namespace cen {
  * \brief Represents different logging categories.
  *
  * \see `SDL_LogCategory`
+ * \see `log_category_count()`
+ *
+ * \todo Centurion 7: rename `misc` enumerator to `custom`.
  *
  * \since 3.0.0
  */
@@ -6559,6 +6568,18 @@ enum class log_category : int
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/**
+ * \brief Returns the number of enumerators for the `log_category` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto log_category_count() noexcept -> int
+{
+  return 10;
+}
 
 /// \name String conversions
 /// \{
@@ -6579,8 +6600,7 @@ enum class log_category : int
  */
 [[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
-  switch (category)
-  {
+  switch (category) {
     case log_category::app:
       return "app";
 
@@ -6701,33 +6721,30 @@ inline auto operator<<(std::ostream& stream, const log_category category) -> std
 #ifndef CENTURION_LOG_MACROS_HEADER
 #define CENTURION_LOG_MACROS_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
+
+// #include "../compiler/features.hpp"
 
 // #include "log.hpp"
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -6868,9 +6885,7 @@ void warn(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const log_category category,
-             const not_null<str> fmt,
-             Args&&... args) noexcept
+void verbose(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
@@ -6944,9 +6959,7 @@ void debug(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const log_category category,
-              const not_null<str> fmt,
-              Args&&... args) noexcept
+void critical(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
@@ -7060,8 +7073,7 @@ inline void set_priority(const log_priority priority) noexcept
  *
  * \since 3.0.0
  */
-inline void set_priority(const log_category category,
-                         const log_priority priority) noexcept
+inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
   SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
@@ -7074,8 +7086,7 @@ inline void set_priority(const log_category category,
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const log_category category) noexcept
-    -> log_priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
   return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
@@ -7112,16 +7123,14 @@ inline void set_priority(const log_category category,
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper = [](void* erased,
+  const auto wrapper = [](void* /*erased*/,
                           const int category,
                           const SDL_LogPriority priority,
                           const str message) {
     Callable tmp;
-    tmp(static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
   };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
@@ -7144,18 +7153,16 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
-  const auto wrapper = [](void* erased,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const str message) {
-    Callable tmp;
-    tmp(static_cast<UserData*>(erased),
-        static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
-  };
+  const auto wrapper =
+      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
+        Callable tmp;
+        tmp(static_cast<UserData*>(erased),
+            static_cast<log_category>(category),
+            static_cast<log_priority>(priority),
+            message);
+      };
 
   SDL_LogSetOutputFunction(wrapper, data);
 }
@@ -7179,11 +7186,19 @@ inline void use_preset_output_function() noexcept
   using std::chrono::system_clock;
   using std::chrono::zoned_time;
 
-  set_output_function([](const log_category,
-                         const log_priority priority,
-                         const str message) {
+  set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -7306,8 +7321,7 @@ enum class log_priority : int
  */
 [[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case log_priority::verbose:
       return "verbose";
 
@@ -7411,6 +7425,30 @@ inline auto operator<<(std::ostream& stream, const log_priority priority) -> std
 }  // namespace cen
 
 #endif  // CENTURION_LOG_PRIORITY_HEADER
+
+// #include "centurion/core/macros.hpp"
+#ifndef CENTURION_MACROS_HEADER
+#define CENTURION_MACROS_HEADER
+
+#include <SDL.h>
+
+/// \addtogroup core
+/// \{
+
+#ifndef __clang__
+
+/**
+ * \def CENTURION_HAS_STD_MEMORY_RESOURCE
+ * \deprecated Since 6.2.0, this is not used by the library and will be removed shortly.
+ * \since 5.3.0
+ */
+#define CENTURION_HAS_STD_MEMORY_RESOURCE
+
+#endif  // __clang__
+
+/// \} End of group core
+
+#endif  // CENTURION_MACROS_HEADER
 
 // #include "centurion/core/not_null.hpp"
 #ifndef CENTURION_NOT_NULL_HEADER
@@ -7803,12 +7841,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }
@@ -7862,8 +7898,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -8117,7 +8152,7 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -8538,20 +8573,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -8598,309 +8630,86 @@ template <typename T, typename... Args>
 
 #endif  // CENTURION_DETAIL_ANY_EQ_HEADER
 
-// #include "centurion/detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
+// #include "centurion/detail/array_utils.hpp"
+#ifndef CENTURION_DETAIL_ARRAY_UTILS_HEADER
+#define CENTURION_DETAIL_ARRAY_UTILS_HEADER
 
-#include <cassert>  // assert
+#include <array>  // array, to_array
 
-/// \cond FALSE
-namespace cen::detail {
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
 
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
-
-// #include "centurion/detail/convert_bool.hpp"
-#ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
-#define CENTURION_DETAIL_CONVERT_BOOL_HEADER
-
-#include <SDL.h>
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
- *
- * \param b the boolean value that will be converted.
- *
- * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto convert_bool(const bool b) noexcept -> SDL_bool
-{
-  return b ? SDL_TRUE : SDL_FALSE;
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CONVERT_BOOL_HEADER
-
-// #include "centurion/detail/czstring_compare.hpp"
-#ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-#define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-
-// #include "../core/str.hpp"
-#ifndef CENTURION_STR_HEADER
-#define CENTURION_STR_HEADER
-
-namespace cen {
-
-/// \addtogroup core
+/// \addtogroup compiler
 /// \{
 
-/**
- * \typedef str
- *
- * \brief Alias for a C-style string.
- *
- * \since 6.2.0
- */
-using str = const char*;
+// Do we have general C++20 support?
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
+#endif  // __cplusplus >= 202002L
 
-/**
- * \typedef czstring
- *
- * \brief Alias for a const C-style null-terminated string.
- *
- * \deprecated Since 6.2.0, use `str` instead.
- */
-using czstring [[deprecated]] = const char*;
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
 
-/**
- * \typedef zstring
- * \deprecated Since 6.2.0.
- */
-using zstring [[deprecated]] = char*;
+#ifdef __has_include
 
-/// \} End of group core
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
 
-}  // namespace cen
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
+#endif  // __cpp_lib_format
 
-#endif  // CENTURION_STR_HEADER
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
+#endif  // __cpp_lib_concepts
 
-// #include "czstring_eq.hpp"
-#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
-#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
+#endif  // __cpp_lib_memory_resource
 
-#include <cstring>  // strcmp
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
+#endif  // __cpp_lib_interpolate
 
-// #include "../core/str.hpp"
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
+#endif  // __cpp_lib_three_way_comparison
 
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
 
-/// \cond FALSE
-namespace cen::detail {
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
 
-/**
- * \brief Indicates whether or not two C-style strings are equal.
- *
- * \param lhs the left-hand side string, can safely be null.
- * \param rhs the right-hand side string, can safely be null.
- *
- * \return `true` if the strings are equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-[[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
-{
-  if (lhs && rhs)
-  {
-    return std::strcmp(lhs, rhs) == 0;
-  }
-  else
-  {
-    return false;
-  }
-}
+#endif  // __has_include
 
-}  // namespace cen::detail
-/// \endcond
+/// \} End of group compiler
 
-#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-struct czstring_compare final
-{
-  auto operator()(const str lhs, const str rhs) const noexcept -> bool
-  {
-    return detail::czstring_eq(lhs, rhs);
-  }
-};
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
-
-// #include "centurion/detail/czstring_eq.hpp"
-#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
-#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
-
-#include <cstring>  // strcmp
-
-// #include "../core/str.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-/**
- * \brief Indicates whether or not two C-style strings are equal.
- *
- * \param lhs the left-hand side string, can safely be null.
- * \param rhs the right-hand side string, can safely be null.
- *
- * \return `true` if the strings are equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-[[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
-{
-  if (lhs && rhs)
-  {
-    return std::strcmp(lhs, rhs) == 0;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
-
-// #include "centurion/detail/from_string.hpp"
-#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
-#define CENTURION_DETAIL_FROM_STRING_HEADER
-
-#include <charconv>      // from_chars
-#include <optional>      // optional
-#include <string>        // string, stof
-#include <string_view>   // string_view
-#include <system_error>  // errc
-#include <type_traits>   // is_floating_point_v
-
-// #include "../compiler/compiler.hpp"
-
-
-/// \cond FALSE
-namespace cen::detail {
-
-template <typename T>
-[[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
-{
-  T value{};
-
-  const auto begin = str.data();
-  const auto end = str.data() + str.size();
-
-  const char* mismatch = end;
-  std::errc error{};
-
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
-        value = std::stof(std::string{str});
-      }
-      catch (...)
-      {
-        return std::nullopt;
-      }
-    }
-    else
-    {
-      const auto [ptr, err] = std::from_chars(begin, end, value);
-      mismatch = ptr;
-      error = err;
-    }
-  }
-  else
-  {
-    const auto [ptr, err] = std::from_chars(begin, end, value, base);
-    mismatch = ptr;
-    error = err;
-  }
-
-  if (mismatch == end && error == std::errc{})
-  {
-    return value;
-  }
-  else
-  {
-    return std::nullopt;
-  }
-}
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
-
-// #include "centurion/detail/hints_impl.hpp"
-#ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
-#define CENTURION_DETAIL_HINTS_IMPL_HEADER
-
-#include <optional>     // optional
-#include <string>       // string, stoi, stoul, stof
-#include <type_traits>  // enable_if_t, is_same_v, is_convertible_v
+#endif  // CENTURION_FEATURES_HEADER
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -9096,6 +8905,334 @@ namespace literals {
 
 #endif  // CENTURION_INTEGERS_HEADER
 
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T, usize Size>
+constexpr void assign(const std::array<T, Size>& array, T (&out)[Size])
+{
+  usize index = 0;
+  for (auto&& value : array) {
+    out[index] = value;
+    ++index;
+  }
+}
+
+template <typename T, usize Size>
+[[nodiscard]] constexpr auto to_array(const T (&data)[Size]) -> std::array<T, Size>
+{
+#if CENTURION_HAS_FEATURE_TO_ARRAY
+  return std::to_array(data);
+#else
+  std::array<T, Size> array;  // NOLINT
+
+  for (usize i = 0; i < Size; ++i) {
+    array[i] = data[i];
+  }
+
+  return array;
+#endif  // CENTURION_HAS_FEATURE_TO_ARRAY
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_ARRAY_UTILS_HEADER
+
+// #include "centurion/detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "centurion/detail/convert_bool.hpp"
+#ifndef CENTURION_DETAIL_CONVERT_BOOL_HEADER
+#define CENTURION_DETAIL_CONVERT_BOOL_HEADER
+
+#include <SDL.h>
+
+/// \cond FALSE
+namespace cen::detail {
+
+/**
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean value.
+ *
+ * \param b the boolean value that will be converted.
+ *
+ * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto convert_bool(const bool b) noexcept -> SDL_bool
+{
+  return b ? SDL_TRUE : SDL_FALSE;
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CONVERT_BOOL_HEADER
+
+// #include "centurion/detail/czstring_compare.hpp"
+#ifndef CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+#define CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+
+// #include "../core/str.hpp"
+#ifndef CENTURION_STR_HEADER
+#define CENTURION_STR_HEADER
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/**
+ * \typedef str
+ *
+ * \brief Alias for a C-style string.
+ *
+ * \since 6.2.0
+ */
+using str = const char*;
+
+/**
+ * \typedef czstring
+ *
+ * \brief Alias for a const C-style null-terminated string.
+ *
+ * \deprecated Since 6.2.0, use `str` instead.
+ */
+using czstring [[deprecated]] = const char*;
+
+/**
+ * \typedef zstring
+ * \deprecated Since 6.2.0.
+ */
+using zstring [[deprecated]] = char*;
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_STR_HEADER
+
+// #include "czstring_eq.hpp"
+#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+#include <cstring>  // strcmp
+
+// #include "../core/str.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+/**
+ * \brief Indicates whether or not two C-style strings are equal.
+ *
+ * \param lhs the left-hand side string, can safely be null.
+ * \param rhs the right-hand side string, can safely be null.
+ *
+ * \return `true` if the strings are equal; `false` otherwise.
+ *
+ * \since 4.1.0
+ */
+[[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
+{
+  if (lhs && rhs) {
+    return std::strcmp(lhs, rhs) == 0;
+  }
+  else {
+    return false;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+struct czstring_compare final
+{
+  auto operator()(const str lhs, const str rhs) const noexcept -> bool
+  {
+    return detail::czstring_eq(lhs, rhs);
+  }
+};
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CZSTRING_COMPARE_HEADER
+
+// #include "centurion/detail/czstring_eq.hpp"
+#ifndef CENTURION_DETAIL_CZSTRING_EQ_HEADER
+#define CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+#include <cstring>  // strcmp
+
+// #include "../core/str.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+/**
+ * \brief Indicates whether or not two C-style strings are equal.
+ *
+ * \param lhs the left-hand side string, can safely be null.
+ * \param rhs the right-hand side string, can safely be null.
+ *
+ * \return `true` if the strings are equal; `false` otherwise.
+ *
+ * \since 4.1.0
+ */
+[[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
+{
+  if (lhs && rhs) {
+    return std::strcmp(lhs, rhs) == 0;
+  }
+  else {
+    return false;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CZSTRING_EQ_HEADER
+
+// #include "centurion/detail/from_string.hpp"
+#ifndef CENTURION_DETAIL_FROM_STRING_HEADER
+#define CENTURION_DETAIL_FROM_STRING_HEADER
+
+#include <charconv>      // from_chars
+#include <optional>      // optional
+#include <string>        // string, stof
+#include <string_view>   // string_view
+#include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
+
+// #include "../compiler/compiler.hpp"
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T>
+[[nodiscard]] auto from_string(const std::string_view str,
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
+{
+  T value{};
+
+  const auto begin = str.data();
+  const auto end = str.data() + str.size();
+
+  const char* mismatch = end;
+  std::errc error{};
+
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
+        value = std::stof(std::string{str});
+      }
+      catch (...) {
+        return std::nullopt;
+      }
+    }
+    else {
+      const auto [ptr, err] = std::from_chars(begin, end, value);
+      mismatch = ptr;
+      error = err;
+    }
+  }
+  else {
+    const auto [ptr, err] = std::from_chars(begin, end, value, base);
+    mismatch = ptr;
+    error = err;
+  }
+
+  if (mismatch == end && error == std::errc{}) {
+    return value;
+  }
+  else {
+    return std::nullopt;
+  }
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_FROM_STRING_HEADER
+
+// #include "centurion/detail/hints_impl.hpp"
+#ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
+#define CENTURION_DETAIL_HINTS_IMPL_HEADER
+
+#include <optional>     // optional
+#include <string>       // string, stoi, stoul, stof
+#include <type_traits>  // enable_if_t, is_same_v, is_convertible_v
+
+// #include "../core/integers.hpp"
+
 // #include "../core/str.hpp"
 
 // #include "czstring_compare.hpp"
@@ -9144,8 +9281,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -9155,39 +9291,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -9469,12 +9597,10 @@ class static_bimap final
       return pair.first == key;
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->second;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find element in static map!"};
     }
   }
@@ -9486,12 +9612,10 @@ class static_bimap final
       return predicate(pair.second, value);
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->first;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find key in static map!"};
     }
   }
@@ -9551,12 +9675,10 @@ struct string_hint : crtp_hint<string_hint<Hint>, str>
 {
   [[nodiscard]] static auto current_value() noexcept -> std::optional<str>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return value;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -9578,12 +9700,10 @@ struct int_hint : crtp_hint<int_hint<Hint>, int>
 {
   [[nodiscard]] static auto current_value() -> std::optional<int>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stoi(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -9605,12 +9725,10 @@ struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
 {
   [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return static_cast<uint>(std::stoul(value));
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -9632,12 +9750,10 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 {
   [[nodiscard]] static auto current_value() -> std::optional<float>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stof(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -9663,79 +9779,10 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-#ifndef CENTURION_FEATURES_HEADER
-#define CENTURION_FEATURES_HEADER
-
-/// \addtogroup compiler
-/// \{
-
-// Do we have general C++20 support?
-#if __cplusplus >= 202002L
-#define CENTURION_HAS_FEATURE_CPP20 1
-#else
-#define CENTURION_HAS_FEATURE_CPP20 0
-#endif  // __cplusplus >= 202002L
-
-// C++20 nodiscard constructors
-#if nodiscard >= 201907L
-#define CENTURION_NODISCARD_CTOR [[nodiscard]]
-#else
-#define CENTURION_NODISCARD_CTOR
-#endif  // nodiscard >= 201907L
-
-#ifdef __has_include
-
-#if __has_include(<version>)
-#include <version>
-#endif  // __has_include(<version>)
-
-#ifdef __cpp_lib_format
-#define CENTURION_HAS_FEATURE_FORMAT 1
-#else
-#define CENTURION_HAS_FEATURE_FORMAT 0
-#endif  // __cpp_lib_format
-
-#ifdef __cpp_lib_concepts
-#define CENTURION_HAS_FEATURE_CONCEPTS 1
-#else
-#define CENTURION_HAS_FEATURE_CONCEPTS 0
-#endif  // __cpp_lib_concepts
-
-#ifdef __cpp_lib_memory_resource
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
-#else
-#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
-#endif  // __cpp_lib_memory_resource
-
-#ifdef __cpp_lib_interpolate
-#define CENTURION_HAS_FEATURE_LERP 1
-#else
-#define CENTURION_HAS_FEATURE_LERP 0
-#endif  // __cpp_lib_interpolate
-
-#ifdef __cpp_lib_three_way_comparison
-#define CENTURION_HAS_FEATURE_SPACESHIP 1
-#else
-#define CENTURION_HAS_FEATURE_SPACESHIP 0
-#endif  // __cpp_lib_three_way_comparison
-
-#if __cpp_lib_chrono >= 201907L
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
-#else
-#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
-#endif  // __cpp_lib_chrono >= 201907L
-
-#endif  // __has_include
-
-/// \} End of group compiler
-
-#endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
-
 #include <cmath>  // lerp
+
+// #include "../compiler/features.hpp"
+
 
 /// \cond FALSE
 
@@ -9881,12 +9928,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -9968,7 +10013,7 @@ struct sdl_deleter final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -10251,10 +10296,7 @@ namespace cen::detail {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
-
-// clang-format on
 
 // #include "../core/integers.hpp"
 
@@ -10334,12 +10376,10 @@ class static_bimap final
       return pair.first == key;
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->second;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find element in static map!"};
     }
   }
@@ -10351,12 +10391,10 @@ class static_bimap final
       return predicate(pair.second, value);
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->first;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find key in static map!"};
     }
   }
@@ -10911,7 +10949,12 @@ enum class event_type : u32
   app_low_memory = SDL_APP_LOWMEMORY,
   app_will_enter_background = SDL_APP_WILLENTERBACKGROUND,
   app_did_enter_background = SDL_APP_DIDENTERBACKGROUND,
+  app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
   app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  locale_changed = SDL_LOCALECHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   display = SDL_DISPLAYEVENT,
 
@@ -10943,6 +10986,13 @@ enum class event_type : u32
   controller_device_added = SDL_CONTROLLERDEVICEADDED,
   controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
   controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
+  controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
+  controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
+  controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   touch_down = SDL_FINGERDOWN,
   touch_up = SDL_FINGERUP,
@@ -10989,8 +11039,7 @@ enum class event_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case event_type::quit:
       return "quit";
 
@@ -11006,8 +11055,16 @@ enum class event_type : u32
     case event_type::app_did_enter_background:
       return "app_did_enter_background";
 
+    case event_type::app_will_enter_foreground:
+      return "app_will_enter_foreground";
+
     case event_type::app_did_enter_foreground:
       return "app_did_enter_foreground";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::locale_changed:
+      return "locale_changed";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::display:
       return "display";
@@ -11083,6 +11140,20 @@ enum class event_type : u32
 
     case event_type::controller_device_remapped:
       return "controller_device_remapped";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::controller_touchpad_down:
+      return "controller_touchpad_down";
+
+    case event_type::controller_touchpad_up:
+      return "controller_touchpad_up";
+
+    case event_type::controller_touchpad_motion:
+      return "controller_touchpad_motion";
+
+    case event_type::controller_sensor_update:
+      return "controller_sensor_update";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::touch_down:
       return "touch_down";
@@ -11177,15 +11248,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -11200,15 +11271,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -11390,8 +11461,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -11642,7 +11712,15 @@ template <typename T>
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -11706,22 +11784,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <array>        // array
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -12182,8 +12256,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -12558,12 +12631,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }
@@ -13138,20 +13209,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -13475,12 +13543,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -13539,7 +13605,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -13822,7 +13888,18 @@ namespace cen::detail {
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod, lerp
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -13886,25 +13963,18 @@ namespace cen::detail {
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cassert>      // assert
-#include <cmath>        // round, abs, fmod, lerp
-#include <iomanip>      // setfill, setw
-#include <ios>          // uppercase, hex
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <sstream>      // stringstream
-#include <string>       // string, to_string
-#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -14675,8 +14745,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -14686,39 +14755,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -14732,7 +14793,8 @@ template <typename T>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
+#include <cmath>  // lerp
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -14796,15 +14858,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <cmath>  // lerp
 
 /// \cond FALSE
 
@@ -14868,10 +14933,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -14928,38 +14990,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -14975,19 +15031,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -15000,8 +15043,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -15019,38 +15061,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -15063,19 +15099,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -15095,8 +15118,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -15110,12 +15132,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -15137,8 +15157,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -15154,12 +15173,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -15181,8 +15198,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -15198,12 +15214,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -15447,7 +15461,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -15467,7 +15486,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -15487,7 +15512,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -15621,10 +15652,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -15706,8 +15736,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -15763,8 +15792,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -15871,8 +15899,7 @@ enum class button_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case button_state::released:
       return "released";
 
@@ -15970,8 +15997,7 @@ enum class controller_axis
  */
 [[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
-  switch (axis)
-  {
+  switch (axis) {
     case controller_axis::invalid:
       return "invalid";
 
@@ -16134,11 +16160,9 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const controller_bind_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_bind_type::none:
       return "none";
 
@@ -16173,8 +16197,7 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_bind_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_bind_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -16195,8 +16218,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
@@ -16220,8 +16242,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -16322,8 +16343,7 @@ enum class controller_button
  */
 [[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case controller_button::invalid:
       return "invalid";
 
@@ -16419,8 +16439,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_button button)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_button button) -> std::ostream&
 {
   return stream << to_string(button);
 }
@@ -16443,8 +16462,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
@@ -16469,8 +16487,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -16564,8 +16581,7 @@ enum class controller_type
  */
 [[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_type::unknown:
       return "unknown";
 
@@ -16697,17 +16713,15 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -16833,8 +16847,7 @@ enum class hat_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case hat_state::centered:
       return "centered";
 
@@ -16951,8 +16964,7 @@ enum class joystick_power
  */
 [[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
-  switch (power)
-  {
+  switch (power) {
     case joystick_power::unknown:
       return "unknown";
 
@@ -17135,8 +17147,7 @@ enum class joystick_type
  */
 [[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case joystick_type::unknown:
       return "unknown";
 
@@ -17369,8 +17380,7 @@ class basic_joystick final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick)
-    {
+    if (!m_joystick) {
       throw sdl_error{};
     }
   }
@@ -17438,8 +17448,7 @@ class basic_joystick final
    */
   auto rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -17551,16 +17560,12 @@ class basic_joystick final
                                            const int nButtons,
                                            const int nHats) noexcept -> std::optional<int>
   {
-    const auto index = SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type),
-                                                 nAxes,
-                                                 nButtons,
-                                                 nHats);
-    if (index != -1)
-    {
+    const auto index =
+        SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type), nAxes, nButtons, nHats);
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17658,12 +17663,10 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17691,12 +17694,10 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17712,12 +17713,10 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17732,12 +17731,10 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17829,16 +17826,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17871,12 +17865,10 @@ class basic_joystick final
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17895,12 +17887,10 @@ class basic_joystick final
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17920,12 +17910,10 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -17977,12 +17965,10 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18006,12 +17992,10 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
-    {
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18046,16 +18030,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept
-      -> std::optional<i16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<i16>
   {
     i16 state{};
-    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
-    {
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state)) {
       return state;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18239,12 +18220,10 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result >= 0)
-    {
+    if (result >= 0) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18336,8 +18315,7 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick))
-      {
+      if (SDL_JoystickGetAttached(joystick)) {
         SDL_JoystickClose(joystick);
       }
     }
@@ -18363,8 +18341,7 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = joystick.serial();
   }
 
@@ -18415,17 +18392,15 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -18500,8 +18475,7 @@ enum class sensor_type
  */
 [[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case sensor_type::invalid:
       return "invalid";
 
@@ -18670,10 +18644,8 @@ class basic_sensor final
   explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_sensor)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_sensor) {
         throw cen_error{"Null sensor pointer!"};
       }
     }
@@ -18691,8 +18663,7 @@ class basic_sensor final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor)
-    {
+    if (!m_sensor) {
       throw sdl_error{};
     }
   }
@@ -18831,12 +18802,10 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
-    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
-    {
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1) {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18873,12 +18842,10 @@ class basic_sensor final
   [[nodiscard]] static auto id(const int index) noexcept -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18921,16 +18888,13 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto non_portable_type(const int index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto non_portable_type(const int index) noexcept -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1)
-    {
+    if (type != -1) {
       return type;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -18988,8 +18952,7 @@ template <typename T>
                      str_or_na(sensor.name()));
 #else
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
-         "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -19166,8 +19129,7 @@ namespace touch {
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const touch_device_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const touch_device_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -19195,8 +19157,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  */
 [[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case touch_device_type::invalid:
       return "invalid";
 
@@ -19276,16 +19237,13 @@ struct finger_state final
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto get_device(const int index) noexcept
-    -> std::optional<SDL_TouchID>
+[[nodiscard]] inline auto get_device(const int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0)
-  {
+  if (device != 0) {
     return device;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -19331,12 +19289,10 @@ struct finger_state final
 [[nodiscard]] inline auto get_finger(const SDL_TouchID id, const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index))
-  {
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
     return *finger;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -19513,11 +19469,9 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_controller(const int index = 0)
-      : m_controller{SDL_GameControllerOpen(index)}
+  explicit basic_controller(const int index = 0) : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller)
-    {
+    if (!m_controller) {
       throw sdl_error{};
     }
   }
@@ -19539,12 +19493,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
-    {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -19565,12 +19517,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
-    {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -19683,8 +19633,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept -> controller_button
   {
     assert(str);
     return static_cast<controller_button>(SDL_GameControllerGetButtonFromString(str));
@@ -19699,8 +19648,7 @@ class basic_controller final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto get_button(const std::string& str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept -> controller_button
   {
     return get_button(str.c_str());
   }
@@ -19730,8 +19678,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto stringify(const controller_button button) noexcept -> str
   {
-    return SDL_GameControllerGetStringForButton(
-        static_cast<SDL_GameControllerButton>(button));
+    return SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(button));
   }
 
   /**
@@ -19749,12 +19696,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForAxis(m_controller,
                                          static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -19774,12 +19719,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForButton(m_controller,
                                            static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -19793,8 +19736,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_state(const controller_button button) const noexcept
-      -> button_state
+  [[nodiscard]] auto get_state(const controller_button button) const noexcept -> button_state
   {
     const auto state =
         SDL_GameControllerGetButton(m_controller,
@@ -19876,8 +19818,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
-    return SDL_GameControllerGetAxis(m_controller,
-                                     static_cast<SDL_GameControllerAxis>(axis));
+    return SDL_GameControllerGetAxis(m_controller, static_cast<SDL_GameControllerAxis>(axis));
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -19938,8 +19879,7 @@ class basic_controller final
    */
   auto rumble(const u16 lo,
               const u16 hi,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -20004,12 +19944,10 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20024,12 +19962,10 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20045,12 +19981,10 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20086,12 +20020,10 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20178,10 +20110,8 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i)
-    {
-      if (is_supported(i))
-      {
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
         ++amount;
       }
     }
@@ -20249,8 +20179,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto touchpad_finger_state(const int touchpad,
-                                           const int finger) const noexcept
+  [[nodiscard]] auto touchpad_finger_state(const int touchpad, const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
     touch::finger_state result{};
@@ -20265,12 +20194,10 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1)
-    {
+    if (res != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20358,8 +20285,7 @@ class basic_controller final
     {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20404,10 +20330,8 @@ class basic_controller final
    */
   auto set_led(const color& color) noexcept -> result
   {
-    return SDL_GameControllerSetLED(m_controller,
-                                    color.red(),
-                                    color.green(),
-                                    color.blue()) == 0;
+    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue()) ==
+           0;
   }
 
   /**
@@ -20443,16 +20367,13 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1)
-    {
+    if (result == 1) {
       return mapping_result::added;
     }
-    else if (result == 0)
-    {
+    else if (result == 0) {
       return mapping_result::updated;
     }
-    else
-    {
+    else {
       return mapping_result::error;
     }
   }
@@ -20497,12 +20418,10 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -20580,8 +20499,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept
-      -> sdl_string
+  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept -> sdl_string
   {
     return sdl_string{SDL_GameControllerMappingForIndex(index)};
   }
@@ -20649,8 +20567,7 @@ class basic_controller final
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller::mapping_result::error:
       return "error";
 
@@ -20669,8 +20586,7 @@ class basic_controller final
 [[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller_handle::mapping_result::error:
       return "error";
 
@@ -20700,8 +20616,7 @@ template <typename T>
   const auto* name = controller.name();
 
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = controller.serial();
   }
 
@@ -20740,8 +20655,8 @@ inline auto operator<<(std::ostream& stream, const controller::mapping_result re
 }
 
 /// \see operator<<(std::ostream&, controller::mapping_result)
-inline auto operator<<(std::ostream& stream,
-                       const controller_handle::mapping_result result) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_handle::mapping_result result)
+    -> std::ostream&
 {
   return stream << to_string(result);
 }
@@ -20757,8 +20672,7 @@ inline auto operator<<(std::ostream& stream,
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_controller<T>& controller) -> std::ostream&
 {
   return stream << to_string(controller);
 }
@@ -21059,8 +20973,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cbutton = event.get();
@@ -21161,8 +21074,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cdevice = event.get();
@@ -21176,6 +21088,1267 @@ inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
 }  // namespace cen
 
 #endif  // CENTURION_CONTROLLER_DEVICE_EVENT_HEADER
+
+// #include "centurion/events/controller_sensor_event.hpp"
+#ifndef CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+#define CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <array>  // array
+
+// #include "../core/to_underlying.hpp"
+
+// #include "../detail/array_utils.hpp"
+#ifndef CENTURION_DETAIL_ARRAY_UTILS_HEADER
+#define CENTURION_DETAIL_ARRAY_UTILS_HEADER
+
+#include <array>  // array, to_array
+
+// #include "../compiler/features.hpp"
+#ifndef CENTURION_FEATURES_HEADER
+#define CENTURION_FEATURES_HEADER
+
+/// \addtogroup compiler
+/// \{
+
+// Do we have general C++20 support?
+#if __cplusplus >= 202002L
+#define CENTURION_HAS_FEATURE_CPP20 1
+#else
+#define CENTURION_HAS_FEATURE_CPP20 0
+#endif  // __cplusplus >= 202002L
+
+// C++20 nodiscard constructors
+#if nodiscard >= 201907L
+#define CENTURION_NODISCARD_CTOR [[nodiscard]]
+#else
+#define CENTURION_NODISCARD_CTOR
+#endif  // nodiscard >= 201907L
+
+#ifdef __has_include
+
+#if __has_include(<version>)
+#include <version>
+#endif  // __has_include(<version>)
+
+#ifdef __cpp_lib_format
+#define CENTURION_HAS_FEATURE_FORMAT 1
+#else
+#define CENTURION_HAS_FEATURE_FORMAT 0
+#endif  // __cpp_lib_format
+
+#ifdef __cpp_lib_concepts
+#define CENTURION_HAS_FEATURE_CONCEPTS 1
+#else
+#define CENTURION_HAS_FEATURE_CONCEPTS 0
+#endif  // __cpp_lib_concepts
+
+#ifdef __cpp_lib_memory_resource
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 1
+#else
+#define CENTURION_HAS_FEATURE_MEMORY_RESOURCE 0
+#endif  // __cpp_lib_memory_resource
+
+#ifdef __cpp_lib_interpolate
+#define CENTURION_HAS_FEATURE_LERP 1
+#else
+#define CENTURION_HAS_FEATURE_LERP 0
+#endif  // __cpp_lib_interpolate
+
+#ifdef __cpp_lib_three_way_comparison
+#define CENTURION_HAS_FEATURE_SPACESHIP 1
+#else
+#define CENTURION_HAS_FEATURE_SPACESHIP 0
+#endif  // __cpp_lib_three_way_comparison
+
+#if __cpp_lib_chrono >= 201907L
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 1
+#else
+#define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
+#endif  // __cpp_lib_chrono >= 201907L
+
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
+#endif  // __has_include
+
+/// \} End of group compiler
+
+#endif  // CENTURION_FEATURES_HEADER
+
+// #include "../core/integers.hpp"
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
+
+#include <SDL.h>
+
+#include <cstddef>  // size_t
+
+namespace cen {
+
+/// \addtogroup core
+/// \{
+
+/// \name Integer aliases
+/// \{
+
+using usize = std::size_t;
+
+/// Alias for an unsigned integer.
+using uint = unsigned int;
+
+/// Alias for the type used for integer literal operators.
+using ulonglong = unsigned long long;
+
+/// Alias for a 64-bit unsigned integer.
+using u64 = Uint64;
+
+/// Alias for a 32-bit unsigned integer.
+using u32 = Uint32;
+
+/// Alias for a 16-bit unsigned integer.
+using u16 = Uint16;
+
+/// Alias for an 8-bit unsigned integer.
+using u8 = Uint8;
+
+/// Alias for a 64-bit signed integer.
+using i64 = Sint64;
+
+/// Alias for a 32-bit signed integer.
+using i32 = Sint32;
+
+/// Alias for a 16-bit signed integer.
+using i16 = Sint16;
+
+/// Alias for an 8-bit signed integer.
+using i8 = Sint8;
+
+/// \} End of integer aliases
+
+// clang-format off
+
+/**
+ * \brief Obtains the size of a container as an `int`.
+ *
+ * \tparam T a "container" that provides a `size()` member function.
+ *
+ * \param container the container to query the size of.
+ *
+ * \return the size of the container as an `int` value.
+ *
+ * \since 5.3.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
+    -> int
+{
+  return static_cast<int>(container.size());
+}
+
+// clang-format on
+
+namespace literals {
+
+/**
+ * \brief Creates an 8-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
+{
+  return static_cast<u8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
+{
+  return static_cast<u16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
+{
+  return static_cast<u32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit unsigned integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit unsigned integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
+{
+  return static_cast<u64>(value);
+}
+
+/**
+ * \brief Creates an 8-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return an 8-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
+{
+  return static_cast<i8>(value);
+}
+
+/**
+ * \brief Creates a 16-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 16-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
+{
+  return static_cast<i16>(value);
+}
+
+/**
+ * \brief Creates a 32-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 32-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
+{
+  return static_cast<i32>(value);
+}
+
+/**
+ * \brief Creates a 64-bit signed integer.
+ *
+ * \param value the value that will be converted.
+ *
+ * \return a 64-bit signed integer.
+ *
+ * \since 5.3.0
+ */
+[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
+{
+  return static_cast<i64>(value);
+}
+
+}  // namespace literals
+
+/// \} End of group core
+
+}  // namespace cen
+
+#endif  // CENTURION_INTEGERS_HEADER
+
+
+/// \cond FALSE
+namespace cen::detail {
+
+template <typename T, usize Size>
+constexpr void assign(const std::array<T, Size>& array, T (&out)[Size])
+{
+  usize index = 0;
+  for (auto&& value : array) {
+    out[index] = value;
+    ++index;
+  }
+}
+
+template <typename T, usize Size>
+[[nodiscard]] constexpr auto to_array(const T (&data)[Size]) -> std::array<T, Size>
+{
+#if CENTURION_HAS_FEATURE_TO_ARRAY
+  return std::to_array(data);
+#else
+  std::array<T, Size> array;  // NOLINT
+
+  for (usize i = 0; i < Size; ++i) {
+    array[i] = data[i];
+  }
+
+  return array;
+#endif  // CENTURION_HAS_FEATURE_TO_ARRAY
+}
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_ARRAY_UTILS_HEADER
+
+// #include "../input/sensor_type.hpp"
+#ifndef CENTURION_SENSOR_TYPE_HEADER
+#define CENTURION_SENSOR_TYPE_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup input
+/// \{
+
+/**
+ * \enum sensor_type
+ *
+ * \brief Provides values that represent different sensor types.
+ *
+ * \see SDL_SensorType
+ *
+ * \since 5.2.0
+ */
+enum class sensor_type
+{
+  invalid = SDL_SENSOR_INVALID,      ///< Invalid sensor
+  unknown = SDL_SENSOR_UNKNOWN,      ///< Unknown sensor
+  accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer
+  gyroscope = SDL_SENSOR_GYRO        ///< Gyroscope
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied sensor type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(sensor_type::gyroscope) == "gyroscope"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
+{
+  switch (type) {
+    case sensor_type::invalid:
+      return "invalid";
+
+    case sensor_type::unknown:
+      return "unknown";
+
+    case sensor_type::accelerometer:
+      return "accelerometer";
+
+    case sensor_type::gyroscope:
+      return "gyroscope";
+
+    default:
+      throw cen_error{"Did not recognize sensor type!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a sensor type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(sensor_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+/// \} End of streaming
+
+/// \name Sensor type comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two sensor types values are equal.
+ *
+ * \param lhs the left-hand side sensor type.
+ * \param rhs the right-hand side sensor type.
+ *
+ * \return `true` if the two sensor types are equal; `false` otherwise.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] constexpr auto operator==(const sensor_type lhs,
+                                        const SDL_SensorType rhs) noexcept -> bool
+{
+  return static_cast<SDL_SensorType>(lhs) == rhs;
+}
+
+/// \copydoc operator==(const sensor_type, const SDL_SensorType)
+[[nodiscard]] constexpr auto operator==(const SDL_SensorType lhs,
+                                        const sensor_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two sensor types values aren't equal.
+ *
+ * \param lhs the left-hand side sensor type.
+ * \param rhs the right-hand side sensor type.
+ *
+ * \return `true` if the two sensor types aren't equal; `false` otherwise.
+ *
+ * \since 5.2.0
+ */
+[[nodiscard]] constexpr auto operator!=(const sensor_type lhs,
+                                        const SDL_SensorType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(const sensor_type, const SDL_SensorType)
+[[nodiscard]] constexpr auto operator!=(const SDL_SensorType lhs,
+                                        const sensor_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of sensor type comparison operators
+
+/// \} End of group input
+
+}  // namespace cen
+
+#endif  // CENTURION_SENSOR_TYPE_HEADER
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_sensor_event
+ *
+ * \brief Represents events associated with controller sensor updates.
+ *
+ * \since 6.3.0
+ */
+class controller_sensor_event final : public common_event<SDL_ControllerSensorEvent>
+{
+ public:
+  using data_type = std::array<float, 3>;
+
+  /**
+   * \brief Creates a controller sensor event.
+   *
+   * \since 6.3.0
+   */
+  controller_sensor_event() noexcept : common_event{event_type::controller_sensor_update}
+  {}
+
+  /**
+   * \brief Creates a controller sensor event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit controller_sensor_event(const SDL_ControllerSensorEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param id the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the associated sensor type.
+   *
+   * \param sensor the type of the associated sensor.
+   *
+   * \since 6.3.0
+   */
+  void set_sensor(const sensor_type sensor) noexcept
+  {
+    m_event.sensor = to_underlying(sensor);
+  }
+
+  /**
+   * \brief Sets the sensor values associated with the event.
+   *
+   * \param values the sensor values.
+   *
+   * \since 6.3.0
+   */
+  void set_data(const data_type& values)
+  {
+    detail::assign(values, m_event.data);
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the type of the associated sensor.
+   *
+   * \return the associated sensor type.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto sensor() const noexcept -> sensor_type
+  {
+    return static_cast<sensor_type>(m_event.sensor);
+  }
+
+  /**
+   * \brief Returns up to 3 values from the sensor.
+   *
+   * \return values from the sensor.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data() const -> data_type
+  {
+    return detail::to_array(m_event.data);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerSensorEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.csensor = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+
+// #include "centurion/events/controller_touchpad_event.hpp"
+#ifndef CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+#define CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
+#ifndef CENTURION_DETAIL_CLAMP_HEADER
+#define CENTURION_DETAIL_CLAMP_HEADER
+
+#include <cassert>  // assert
+
+/// \cond FALSE
+namespace cen::detail {
+
+// clang-format off
+
+/**
+ * \brief Clamps a value to be within the range [min, max].
+ *
+ * \pre `min` must be less than or equal to `max`.
+ *
+ * \note The standard library provides `std::clamp`, but it isn't mandated to be
+ * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
+ * function exists.
+ *
+ * \tparam T the type of the values.
+ *
+ * \param value the value that will be clamped.
+ * \param min the minimum value (inclusive).
+ * \param max the maximum value (inclusive).
+ *
+ * \return the clamped value.
+ *
+ * \since 5.1.0
+ */
+template <typename T>
+[[nodiscard]] constexpr auto clamp(const T& value,
+                                   const T& min,
+                                   const T& max)
+    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
+{
+  assert(min <= max);
+  if (value < min)
+  {
+    return min;
+  }
+  else if (value > max)
+  {
+    return max;
+  }
+  else
+  {
+    return value;
+  }
+}
+
+// clang-format on
+
+}  // namespace cen::detail
+/// \endcond
+
+#endif  // CENTURION_DETAIL_CLAMP_HEADER
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_touchpad_event
+ *
+ * \brief Represents events associated with controller touchpads.
+ *
+ * \since 6.3.0
+ */
+class controller_touchpad_event final : public common_event<SDL_ControllerTouchpadEvent>
+{
+ public:
+  /**
+   * \brief Creates a controller touchpad event with `controller_touchpad_down` as the specific
+   * type.
+   *
+   * \see `event_type::controller_touchpad_down`
+   * \see `event_type::controller_touchpad_up`
+   * \see `event_type::controller_touchpad_motion`
+   *
+   * \since 6.3.0
+   */
+  controller_touchpad_event() noexcept : common_event{event_type::controller_touchpad_down}
+  {}
+
+  /**
+   * \brief Creates a controller touchpad event based an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit controller_touchpad_event(const SDL_ControllerTouchpadEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param id the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the touchpad index associated with the event.
+   *
+   * \param index the associated touchpad index.
+   *
+   * \since 6.3.0
+   */
+  void set_touchpad_index(const i32 index) noexcept
+  {
+    m_event.touchpad = index;
+  }
+
+  /**
+   * \brief Sets the finger index on the touchpad associated with the event.
+   *
+   * \param index the associated finger index.
+   *
+   * \since 6.3.0
+   */
+  void set_finger_index(const i32 index) noexcept
+  {
+    m_event.finger = index;
+  }
+
+  /**
+   * \brief Sets the associated x-coordinate.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param x the normalized x-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_x(const float x) noexcept
+  {
+    m_event.x = detail::clamp(x, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the associated y-coordinate.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param y the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_y(const float y) noexcept
+  {
+    m_event.y = detail::clamp(y, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the associated pressure.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param pressure the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_pressure(const float pressure) noexcept
+  {
+    m_event.pressure = detail::clamp(pressure, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the touchpad index associated with the event.
+   *
+   * \return the associated touchpad index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto touchpad_index() const noexcept -> i32
+  {
+    return m_event.touchpad;
+  }
+
+  /**
+   * \brief Returns the finger index associated with the event.
+   *
+   * \return the associated finger index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto finger_index() const noexcept -> i32
+  {
+    return m_event.finger;
+  }
+
+  /**
+   * \brief Returns the associated x-coordinate.
+   *
+   * \return the normalized x-coordinate.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the associated y-coordinate.
+   *
+   * \return the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the associated pressure.
+   *
+   * \return the normalized pressure.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto pressure() const noexcept -> float
+  {
+    return m_event.pressure;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerTouchpadEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.ctouchpad = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+
+// #include "centurion/events/display_event.hpp"
+#ifndef CENTURION_DISPLAY_EVENT_HEADER
+#define CENTURION_DISPLAY_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
+
+// #include "common_event.hpp"
+
+// #include "display_event_id.hpp"
+#ifndef CENTURION_DISPLAY_EVENT_ID_HEADER
+#define CENTURION_DISPLAY_EVENT_ID_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \enum display_event_id
+ *
+ * \brief Represents the different variants of `display_event` events.
+ *
+ * \see `display_event_id_count()`
+ * \see `display_event`
+ *
+ * \since 6.3.0
+ */
+enum class display_event_id
+{
+  none = SDL_DISPLAYEVENT_NONE,                  ///< Unused.
+  orientation = SDL_DISPLAYEVENT_ORIENTATION,    ///< Display orientation changed.
+  connected = SDL_DISPLAYEVENT_CONNECTED,        ///< A display was added.
+  disconnected = SDL_DISPLAYEVENT_DISCONNECTED,  ///< A display was removed.
+};
+
+/**
+ * \brief Returns the number of enumerators for the `display_event_id` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto display_event_id_count() noexcept -> int
+{
+  return 4;
+}
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied display event ID.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(display_event_id::connected) == "connected"`.
+ *
+ * \param id the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const display_event_id id) -> std::string_view
+{
+  switch (id) {
+    case display_event_id::none:
+      return "none";
+
+    case display_event_id::orientation:
+      return "orientation";
+
+    case display_event_id::connected:
+      return "connected";
+
+    case display_event_id::disconnected:
+      return "disconnected";
+
+    default:
+      throw cen_error{"Did not recognize display event ID!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a display event ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(display_event_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
+
+/// \} End of streaming
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_DISPLAY_EVENT_ID_HEADER
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class display_event
+ *
+ * \brief Represents events related to displays.
+ *
+ * \see `SDL_DisplayEvent`
+ *
+ * \since 6.3.0
+ */
+class display_event final : public common_event<SDL_DisplayEvent>
+{
+ public:
+  /**
+   * \brief Creates a display event.
+   *
+   * \since 6.3.0
+   */
+  display_event() noexcept : common_event{event_type::display}
+  {}
+
+  /**
+   * \brief Creates a display event based an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit display_event(const SDL_DisplayEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the associated display event ID.
+   *
+   * \param id the associated display event subtype.
+   *
+   * \since 6.3.0
+   */
+  void set_event_id(const display_event_id id) noexcept
+  {
+    m_event.event = static_cast<u8>(to_underlying(id));
+  }
+
+  /**
+   * \brief Sets the associated display index.
+   *
+   * \param index the associated display index.
+   *
+   * \since 6.3.0
+   */
+  void set_index(const u32 index) noexcept
+  {
+    m_event.display = index;
+  }
+
+  /**
+   * \brief Sets event type specific data.
+   *
+   * \param data the associated data value.
+   *
+   * \see `display_event_id`
+   *
+   * \since 6.3.0
+   */
+  void set_data_1(const i32 data) noexcept
+  {
+    m_event.data1 = data;
+  }
+
+  /**
+   * \brief Returns the associated display event ID.
+   *
+   * \return the associated display event subtype.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto event_id() const noexcept -> display_event_id
+  {
+    return static_cast<display_event_id>(m_event.event);
+  }
+
+  /**
+   * \brief Returns the index of the associated display.
+   *
+   * \return the associated display index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto index() const noexcept -> u32
+  {
+    return m_event.display;
+  }
+
+  /**
+   * \brief Returns subtype specific data.
+   *
+   * \details The returned value is the display orientation if the type of the event is
+   * equivalent to `display_event_id::orientation`.
+   *
+   * \return subtype specific data.
+   *
+   * \see `screen_orientation`
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_1() const noexcept -> i32
+  {
+    return m_event.data1;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_DisplayEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.display = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_DISPLAY_EVENT_HEADER
+
+// #include "centurion/events/display_event_id.hpp"
+#ifndef CENTURION_DISPLAY_EVENT_ID_HEADER
+#define CENTURION_DISPLAY_EVENT_ID_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \enum display_event_id
+ *
+ * \brief Represents the different variants of `display_event` events.
+ *
+ * \see `display_event_id_count()`
+ * \see `display_event`
+ *
+ * \since 6.3.0
+ */
+enum class display_event_id
+{
+  none = SDL_DISPLAYEVENT_NONE,                  ///< Unused.
+  orientation = SDL_DISPLAYEVENT_ORIENTATION,    ///< Display orientation changed.
+  connected = SDL_DISPLAYEVENT_CONNECTED,        ///< A display was added.
+  disconnected = SDL_DISPLAYEVENT_DISCONNECTED,  ///< A display was removed.
+};
+
+/**
+ * \brief Returns the number of enumerators for the `display_event_id` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto display_event_id_count() noexcept -> int
+{
+  return 4;
+}
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied display event ID.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(display_event_id::connected) == "connected"`.
+ *
+ * \param id the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const display_event_id id) -> std::string_view
+{
+  switch (id) {
+    case display_event_id::none:
+      return "none";
+
+    case display_event_id::orientation:
+      return "orientation";
+
+    case display_event_id::connected:
+      return "connected";
+
+    case display_event_id::disconnected:
+      return "disconnected";
+
+    default:
+      throw cen_error{"Did not recognize display event ID!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a display event ID enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param id the enumerator that will be printed.
+ *
+ * \see `to_string(display_event_id)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const display_event_id id) -> std::ostream&
+{
+  return stream << to_string(id);
+}
+
+/// \} End of streaming
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_DISPLAY_EVENT_ID_HEADER
 
 // #include "centurion/events/dollar_gesture_event.hpp"
 #ifndef CENTURION_DOLLAR_GESTURE_HEADER
@@ -21338,20 +22511,6 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
   }
 
   /**
-   * \brief Returns the amount of fingers used to draw the stroke.
-   *
-   * \return the amount of fingers used to draw the stroke.
-   *
-   * \deprecated Since 6.1.0, use `finger_count()` instead.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard, deprecated]] auto fingers() const noexcept -> u32
-  {
-    return finger_count();
-  }
-
-  /**
    * \brief Returns the difference between the gesture template and the
    * performed gesture.
    *
@@ -21467,8 +22626,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
   }
@@ -21514,8 +22672,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
     m_event.file = file;
@@ -21832,8 +22989,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -22222,8 +23378,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerButtonEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cbutton = event.get();
@@ -22324,8 +23479,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
 /// \{
 
 template <>
-inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
-    -> SDL_Event
+inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event) -> SDL_Event
 {
   SDL_Event e;
   e.cdevice = event.get();
@@ -22339,6 +23493,519 @@ inline auto as_sdl_event(const common_event<SDL_ControllerDeviceEvent>& event)
 }  // namespace cen
 
 #endif  // CENTURION_CONTROLLER_DEVICE_EVENT_HEADER
+
+// #include "controller_sensor_event.hpp"
+#ifndef CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+#define CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <array>  // array
+
+// #include "../core/to_underlying.hpp"
+
+// #include "../detail/array_utils.hpp"
+
+// #include "../input/sensor_type.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_sensor_event
+ *
+ * \brief Represents events associated with controller sensor updates.
+ *
+ * \since 6.3.0
+ */
+class controller_sensor_event final : public common_event<SDL_ControllerSensorEvent>
+{
+ public:
+  using data_type = std::array<float, 3>;
+
+  /**
+   * \brief Creates a controller sensor event.
+   *
+   * \since 6.3.0
+   */
+  controller_sensor_event() noexcept : common_event{event_type::controller_sensor_update}
+  {}
+
+  /**
+   * \brief Creates a controller sensor event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit controller_sensor_event(const SDL_ControllerSensorEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param id the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the associated sensor type.
+   *
+   * \param sensor the type of the associated sensor.
+   *
+   * \since 6.3.0
+   */
+  void set_sensor(const sensor_type sensor) noexcept
+  {
+    m_event.sensor = to_underlying(sensor);
+  }
+
+  /**
+   * \brief Sets the sensor values associated with the event.
+   *
+   * \param values the sensor values.
+   *
+   * \since 6.3.0
+   */
+  void set_data(const data_type& values)
+  {
+    detail::assign(values, m_event.data);
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the type of the associated sensor.
+   *
+   * \return the associated sensor type.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto sensor() const noexcept -> sensor_type
+  {
+    return static_cast<sensor_type>(m_event.sensor);
+  }
+
+  /**
+   * \brief Returns up to 3 values from the sensor.
+   *
+   * \return values from the sensor.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data() const -> data_type
+  {
+    return detail::to_array(m_event.data);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerSensorEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.csensor = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_SENSOR_EVENT_HEADER
+
+// #include "controller_touchpad_event.hpp"
+#ifndef CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+#define CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "../detail/clamp.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class controller_touchpad_event
+ *
+ * \brief Represents events associated with controller touchpads.
+ *
+ * \since 6.3.0
+ */
+class controller_touchpad_event final : public common_event<SDL_ControllerTouchpadEvent>
+{
+ public:
+  /**
+   * \brief Creates a controller touchpad event with `controller_touchpad_down` as the specific
+   * type.
+   *
+   * \see `event_type::controller_touchpad_down`
+   * \see `event_type::controller_touchpad_up`
+   * \see `event_type::controller_touchpad_motion`
+   *
+   * \since 6.3.0
+   */
+  controller_touchpad_event() noexcept : common_event{event_type::controller_touchpad_down}
+  {}
+
+  /**
+   * \brief Creates a controller touchpad event based an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit controller_touchpad_event(const SDL_ControllerTouchpadEvent& event) noexcept
+      : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the joystick instance ID associated with the event.
+   *
+   * \param id the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the touchpad index associated with the event.
+   *
+   * \param index the associated touchpad index.
+   *
+   * \since 6.3.0
+   */
+  void set_touchpad_index(const i32 index) noexcept
+  {
+    m_event.touchpad = index;
+  }
+
+  /**
+   * \brief Sets the finger index on the touchpad associated with the event.
+   *
+   * \param index the associated finger index.
+   *
+   * \since 6.3.0
+   */
+  void set_finger_index(const i32 index) noexcept
+  {
+    m_event.finger = index;
+  }
+
+  /**
+   * \brief Sets the associated x-coordinate.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param x the normalized x-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_x(const float x) noexcept
+  {
+    m_event.x = detail::clamp(x, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the associated y-coordinate.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param y the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_y(const float y) noexcept
+  {
+    m_event.y = detail::clamp(y, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Sets the associated pressure.
+   *
+   * \details The supplied value is clamped within the range [0, 1].
+   *
+   * \param pressure the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  void set_pressure(const float pressure) noexcept
+  {
+    m_event.pressure = detail::clamp(pressure, 0.0f, 1.0f);
+  }
+
+  /**
+   * \brief Returns the joystick instance ID associated with the event.
+   *
+   * \return the associated joystick instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns the touchpad index associated with the event.
+   *
+   * \return the associated touchpad index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto touchpad_index() const noexcept -> i32
+  {
+    return m_event.touchpad;
+  }
+
+  /**
+   * \brief Returns the finger index associated with the event.
+   *
+   * \return the associated finger index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto finger_index() const noexcept -> i32
+  {
+    return m_event.finger;
+  }
+
+  /**
+   * \brief Returns the associated x-coordinate.
+   *
+   * \return the normalized x-coordinate.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
+
+  /**
+   * \brief Returns the associated y-coordinate.
+   *
+   * \return the normalized y-coordinate.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
+
+  /**
+   * \brief Returns the associated pressure.
+   *
+   * \return the normalized pressure.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto pressure() const noexcept -> float
+  {
+    return m_event.pressure;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_ControllerTouchpadEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.ctouchpad = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_CONTROLLER_TOUCHPAD_EVENT_HEADER
+
+// #include "display_event.hpp"
+#ifndef CENTURION_DISPLAY_EVENT_HEADER
+#define CENTURION_DISPLAY_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "../core/to_underlying.hpp"
+
+// #include "common_event.hpp"
+
+// #include "display_event_id.hpp"
+
+
+namespace cen {
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class display_event
+ *
+ * \brief Represents events related to displays.
+ *
+ * \see `SDL_DisplayEvent`
+ *
+ * \since 6.3.0
+ */
+class display_event final : public common_event<SDL_DisplayEvent>
+{
+ public:
+  /**
+   * \brief Creates a display event.
+   *
+   * \since 6.3.0
+   */
+  display_event() noexcept : common_event{event_type::display}
+  {}
+
+  /**
+   * \brief Creates a display event based an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit display_event(const SDL_DisplayEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the associated display event ID.
+   *
+   * \param id the associated display event subtype.
+   *
+   * \since 6.3.0
+   */
+  void set_event_id(const display_event_id id) noexcept
+  {
+    m_event.event = static_cast<u8>(to_underlying(id));
+  }
+
+  /**
+   * \brief Sets the associated display index.
+   *
+   * \param index the associated display index.
+   *
+   * \since 6.3.0
+   */
+  void set_index(const u32 index) noexcept
+  {
+    m_event.display = index;
+  }
+
+  /**
+   * \brief Sets event type specific data.
+   *
+   * \param data the associated data value.
+   *
+   * \see `display_event_id`
+   *
+   * \since 6.3.0
+   */
+  void set_data_1(const i32 data) noexcept
+  {
+    m_event.data1 = data;
+  }
+
+  /**
+   * \brief Returns the associated display event ID.
+   *
+   * \return the associated display event subtype.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto event_id() const noexcept -> display_event_id
+  {
+    return static_cast<display_event_id>(m_event.event);
+  }
+
+  /**
+   * \brief Returns the index of the associated display.
+   *
+   * \return the associated display index.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto index() const noexcept -> u32
+  {
+    return m_event.display;
+  }
+
+  /**
+   * \brief Returns subtype specific data.
+   *
+   * \details The returned value is the display orientation if the type of the event is
+   * equivalent to `display_event_id::orientation`.
+   *
+   * \return subtype specific data.
+   *
+   * \see `screen_orientation`
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_1() const noexcept -> i32
+  {
+    return m_event.data1;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_DisplayEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.display = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+}  // namespace cen
+
+#endif  // CENTURION_DISPLAY_EVENT_HEADER
 
 // #include "dollar_gesture_event.hpp"
 #ifndef CENTURION_DOLLAR_GESTURE_HEADER
@@ -22501,20 +24168,6 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
   }
 
   /**
-   * \brief Returns the amount of fingers used to draw the stroke.
-   *
-   * \return the amount of fingers used to draw the stroke.
-   *
-   * \deprecated Since 6.1.0, use `finger_count()` instead.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard, deprecated]] auto fingers() const noexcept -> u32
-  {
-    return finger_count();
-  }
-
-  /**
    * \brief Returns the difference between the gesture template and the
    * performed gesture.
    *
@@ -22630,8 +24283,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
   }
@@ -22677,8 +24329,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
     m_event.file = file;
@@ -23141,8 +24792,7 @@ enum class button_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case button_state::released:
       return "released";
 
@@ -23219,8 +24869,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept
-      : common_event{event}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -23384,8 +25033,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -23473,6 +25121,8 @@ namespace cen {
  *
  * \brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
+ * \see `joy_hat_position_count()`
+ *
  * \since 4.0.0
  */
 enum class joy_hat_position : u8
@@ -23487,6 +25137,18 @@ enum class joy_hat_position : u8
   right = SDL_HAT_RIGHT,
   right_down = SDL_HAT_RIGHTDOWN
 };
+
+/**
+ * \brief Returns the number of enumerators for the `joy_hat_position` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto joy_hat_position_count() noexcept -> int
+{
+  return 9;
+}
 
 /// \name String conversions
 /// \{
@@ -23505,11 +25167,9 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const joy_hat_position position)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const joy_hat_position position) -> std::string_view
 {
-  switch (position)
-  {
+  switch (position) {
     case joy_hat_position::left_up:
       return "left_up";
 
@@ -23559,8 +25219,7 @@ enum class joy_hat_position : u8
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const joy_hat_position position)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const joy_hat_position position) -> std::ostream&
 {
   return stream << to_string(position);
 }
@@ -23694,16 +25353,14 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -23754,7 +25411,7 @@ inline auto as_sdl_event(const common_event<SDL_JoyHatEvent>& event) -> SDL_Even
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -24536,8 +26193,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
@@ -24552,8 +26208,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
@@ -24588,8 +26243,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] inline auto to_string(const key_mod mods) -> std::string
 {
-  if (mods == key_mod::none)
-  {
+  if (mods == key_mod::none) {
     return "none";
   }
 
@@ -24597,10 +26251,8 @@ inline void set_modifiers(const key_mod mods) noexcept
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const key_mod mod, const str name) mutable {
-    if (mask & to_underlying(mod))
-    {
-      if (count != 0)
-      {
+    if (mask & to_underlying(mod)) {
+      if (count != 0) {
         stream << ',';
       }
 
@@ -24658,15 +26310,13 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers,
-                                    const u16 currentMask) noexcept -> bool
+[[nodiscard]] inline auto is_active(const key_mod modifiers, const u16 currentMask) noexcept
+    -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
-  else
-  {
+  else {
     return currentMask & to_underlying(modifiers);
   }
 }
@@ -24674,20 +26324,17 @@ namespace detail {
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
                                          const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
   const auto mask = to_underlying(modifiers);
   const auto hits = currentMask & mask;
 
-  if (hits != mask)
-  {
+  if (hits != mask) {
     return false;  // The specified modifiers were a combo that wasn't fully active
   }
-  else
-  {
+  else {
     const auto others = currentMask & ~hits;
     return hits && !others;
   }
@@ -24696,8 +26343,7 @@ namespace detail {
 [[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
                                                 const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
@@ -24720,16 +26366,14 @@ namespace detail {
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -24795,8 +26439,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
-      : m_code{scancode}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode}
   {}
 
   /**
@@ -24824,8 +26467,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const not_null<str> name) noexcept
-      : m_code{SDL_GetScancodeFromName(name)}
+  explicit scan_code(const not_null<str> name) noexcept : m_code{SDL_GetScancodeFromName(name)}
   {}
 
   /**
@@ -25100,8 +26742,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -25116,8 +26758,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -25214,12 +26856,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
-    if (active)
-    {
+    if (active) {
       m_event.keysym.mod |= to_underlying(modifiers);
     }
-    else
-    {
+    else {
       m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
@@ -25344,109 +26984,6 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
     return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
-  }
-
-  /**
-   * \brief Indicates whether or not the specified modifier are active.
-   *
-   * \note Multiple key modifiers can be active at the same time.
-   *
-   * \param modifier the key modifiers that will be checked.
-   *
-   * \return `true` if any of the specified modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
-      -> bool
-  {
-    return is_active(modifier);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the SHIFT modifiers are active.
-   *
-   * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::shift)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the CTRL modifiers are active.
-   *
-   * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::ctrl)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the ALT modifiers are active.
-   *
-   * \return `true` if any of the ALT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::alt)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the GUI modifiers are active.
-   *
-   * \return `true` if any of the GUI modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::gui)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
-  }
-
-  /**
-   * \brief Indicates whether or not the CAPS modifier is active.
-   *
-   * \return `true` if the CAPS modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::caps)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
-  {
-    return is_active(key_mod::caps);
-  }
-
-  /**
-   * \brief Indicates whether or not the NUM modifier is active.
-   *
-   * \return `true` if the NUM modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::num)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
-  {
-    return is_active(key_mod::num);
   }
 
   /**
@@ -25645,8 +27182,7 @@ enum class mouse_button : u8
  */
 [[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case mouse_button::left:
       return "left";
 
@@ -25732,8 +27268,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -25996,8 +27531,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -26251,6 +27785,7 @@ namespace cen {
  * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
+ * \see `mouse_wheel_direction_count()`
  *
  * \since 4.0.0
  */
@@ -26259,6 +27794,18 @@ enum class mouse_wheel_direction : u32
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
+
+/**
+ * \brief Returns the number of enumerators for the `mouse_wheel_direction` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto mouse_wheel_direction_count() noexcept -> int
+{
+  return 2;
+}
 
 /// \name String conversions
 /// \{
@@ -26277,11 +27824,9 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
-  switch (dir)
-  {
+  switch (dir) {
     case mouse_wheel_direction::normal:
       return "normal";
 
@@ -26310,8 +27855,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) -> std::ostream&
 {
   return stream << to_string(dir);
 }
@@ -26332,8 +27876,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
@@ -26357,8 +27900,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -26411,8 +27953,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -26696,21 +28237,6 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 
   /**
-   * \brief Sets the number of fingers that was used in the gesture associated
-   * with the event.
-   *
-   * \param nFingers the number of fingers that was used in the gesture.
-   *
-   * \deprecated Since 6.1.0, use `set_finger_count()` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated]] void set_fingers(const u16 nFingers) noexcept
-  {
-    set_finger_count(nFingers);
-  }
-
-  /**
    * \brief Returns the touch device ID associated with the event.
    *
    * \return the touch device ID associated with the event.
@@ -26786,23 +28312,6 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   [[nodiscard]] auto finger_count() const noexcept -> u16
   {
     return m_event.numFingers;
-  }
-
-  /**
-   * \brief Returns the amount of fingers used in the gesture associated with
-   * the event.
-   *
-   * \return the amount of fingers used in the gesture associated with the
-   * event.
-   *
-   * \deprecated Since 6.1.0, use `finger_count()` instead. Note, this function
-   * incorrectly returns a `float`, and will be removed shortly.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard, deprecated]] auto fingers() const noexcept -> float
-  {
-    return finger_count();
   }
 };
 
@@ -26890,6 +28399,121 @@ inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
 
 #endif  // CENTURION_QUIT_EVENT_HEADER
 
+// #include "sensor_event.hpp"
+#ifndef CENTURION_SENSOR_EVENT_HEADER
+#define CENTURION_SENSOR_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <array>  // array
+
+// #include "../core/integers.hpp"
+
+// #include "../detail/array_utils.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class sensor_event
+ *
+ * \brief Represents events related to updates of sensors.
+ *
+ * \since 6.3.0
+ */
+class sensor_event final : public common_event<SDL_SensorEvent>
+{
+ public:
+  using data_type = std::array<float, 6>;
+
+  /**
+   * \brief Creates a sensor event.
+   *
+   * \since 6.3.0
+   */
+  sensor_event() noexcept : common_event{event_type::sensor_update}
+  {}
+
+  /**
+   * \brief Creates a sensor event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit sensor_event(const SDL_SensorEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the sensor instance ID associated with the event.
+   *
+   * \param id the sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const i32 id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the sensor values associated with the event.
+   *
+   * \param values the sensor values.
+   *
+   * \since 6.3.0
+   */
+  void set_data(const data_type& values)
+  {
+    detail::assign(values, m_event.data);
+  }
+
+  /**
+   * \brief Returns the instance ID of the associated sensor.
+   *
+   * \return the associated sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns up to 6 values from the sensor.
+   *
+   * \return values from the sensor.
+   *
+   * \see `basic_sensor::data()`
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data() const -> data_type
+  {
+    return detail::to_array(m_event.data);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_SensorEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.sensor = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_SENSOR_EVENT_HEADER
+
 // #include "text_editing_event.hpp"
 #ifndef CENTURION_TEXT_EDITING_EVENT_HEADER
 #define CENTURION_TEXT_EDITING_EVENT_HEADER
@@ -26940,62 +28564,6 @@ using zstring [[deprecated]] = char*;
 #endif  // CENTURION_STR_HEADER
 
 // #include "../detail/clamp.hpp"
-#ifndef CENTURION_DETAIL_CLAMP_HEADER
-#define CENTURION_DETAIL_CLAMP_HEADER
-
-#include <cassert>  // assert
-
-/// \cond FALSE
-namespace cen::detail {
-
-// clang-format off
-
-/**
- * \brief Clamps a value to be within the range [min, max].
- *
- * \pre `min` must be less than or equal to `max`.
- *
- * \note The standard library provides `std::clamp`, but it isn't mandated to be
- * `noexcept` (although MSVC does mark it as `noexcept`), which is the reason this
- * function exists.
- *
- * \tparam T the type of the values.
- *
- * \param value the value that will be clamped.
- * \param min the minimum value (inclusive).
- * \param max the maximum value (inclusive).
- *
- * \return the clamped value.
- *
- * \since 5.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto clamp(const T& value,
-                                   const T& min,
-                                   const T& max)
-    noexcept(noexcept(value < min) && noexcept(value > max)) -> T
-{
-  assert(min <= max);
-  if (value < min)
-  {
-    return min;
-  }
-  else if (value > max)
-  {
-    return max;
-  }
-  else
-  {
-    return value;
-  }
-}
-
-// clang-format on
-
-}  // namespace cen::detail
-/// \endcond
-
-#endif  // CENTURION_DETAIL_CLAMP_HEADER
 
 // #include "common_event.hpp"
 
@@ -27037,8 +28605,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept
-      : common_event{event}
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : common_event{event}
   {
     check_length();
   }
@@ -27205,8 +28772,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept
-      : common_event{event}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -27311,8 +28877,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept
-      : common_event{event}
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -27565,6 +29130,170 @@ inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL
 
 #endif  // CENTURION_TOUCH_FINGER_EVENT_HEADER
 
+// #include "user_event.hpp"
+#ifndef CENTURION_USER_EVENT_HEADER
+#define CENTURION_USER_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class user_event
+ *
+ * \brief Represents a custom user event.
+ *
+ * \since 6.3.0
+ */
+class user_event final : public common_event<SDL_UserEvent>
+{
+ public:
+  /**
+   * \brief Creates a user event.
+   *
+   * \details Note that the event will be created using `event_type::user`, but you can use any
+   * event type value in the range [`event_type::user`, SDL_LASTEVENT - 1].
+   *
+   * \since 6.3.0
+   */
+  user_event() noexcept : common_event{event_type::user}
+  {}
+
+  /**
+   * \brief Creates a user event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit user_event(const SDL_UserEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the ID of the associated window.
+   *
+   * \since 6.3.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the user-defined event code associated with the event.
+   *
+   * \param code the custom event code.
+   *
+   * \since 6.3.0
+   */
+  void set_code(const i32 code) noexcept
+  {
+    m_event.code = code;
+  }
+
+  /**
+   * \brief Sets an opaque data pointer to some user data.
+   *
+   * \param data the user data, can safely be null.
+   *
+   * \since 6.3.0
+   */
+  void set_data_1(void* data) noexcept
+  {
+    m_event.data1 = data;
+  }
+
+  /// \copydoc set_data_1()
+  void set_data_2(void* data) noexcept
+  {
+    m_event.data2 = data;
+  }
+
+  /**
+   * \brief Returns the ID of the window associated with the event.
+   *
+   * \return the associated window ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the user-defined event code associated with the event.
+   *
+   * \return the associated event code.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto code() const noexcept -> i32
+  {
+    return m_event.code;
+  }
+
+  /**
+   * \brief Returns a pointer to the first user data slot.
+   *
+   * \return a pointer to the user data, might be null.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_1() noexcept -> void*
+  {
+    return m_event.data1;
+  }
+
+  /// \copydoc data_1()
+  [[nodiscard]] auto data_1() const noexcept -> const void*
+  {
+    return m_event.data1;
+  }
+
+  /**
+   * \brief Returns a pointer to the second user data slot.
+   *
+   * \return a pointer to the user data, might be null.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_2() noexcept -> void*
+  {
+    return m_event.data2;
+  }
+
+  /// \copydoc data_2()
+  [[nodiscard]] auto data_2() const noexcept -> const void*
+  {
+    return m_event.data2;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_UserEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.user = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_USER_EVENT_HEADER
+
 // #include "window_event.hpp"
 #ifndef CENTURION_WINDOW_EVENT_HEADER
 #define CENTURION_WINDOW_EVENT_HEADER
@@ -27660,8 +29389,7 @@ enum class window_event_id
  */
 [[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case window_event_id::none:
       return "none";
 
@@ -28037,13 +29765,11 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result)
-    {
+    if (result) {
       update_data(static_cast<event_type>(m_event.type));
     }
-    else
-    {
-      update_data(std::nullopt);
+    else {
+      m_data.emplace<std::monostate>();
     }
 
     return result;
@@ -28059,12 +29785,10 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty())
-    {
+    if (is_empty()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -28079,14 +29803,11 @@ class event final
    */
   [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
-    const auto num =
-        SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
-    if (num != -1)
-    {
+    const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -28102,17 +29823,14 @@ class event final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto queue_count(const event_type type) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1)
-    {
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -28258,126 +29976,196 @@ class event final
   }
 
  private:
+  /* Behold, the beast! */
+  using data_type = std::variant<std::monostate,
+                                 audio_device_event,
+                                 controller_axis_event,
+                                 controller_button_event,
+                                 controller_device_event,
+                                 dollar_gesture_event,
+                                 drop_event,
+                                 joy_axis_event,
+                                 joy_ball_event,
+                                 joy_button_event,
+                                 joy_device_event,
+                                 joy_hat_event,
+                                 keyboard_event,
+                                 mouse_button_event,
+                                 mouse_motion_event,
+                                 mouse_wheel_event,
+                                 multi_gesture_event,
+                                 quit_event,
+                                 text_editing_event,
+                                 text_input_event,
+                                 touch_finger_event,
+                                 sensor_event,
+                                 user_event,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+                                 display_event,
+                                 controller_touchpad_event,
+                                 controller_sensor_event,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+                                 window_event>;
+
   SDL_Event m_event{};
+  data_type m_data{};
 
-  // behold, the beast!
-  std::variant<std::monostate,
-               audio_device_event,
-               controller_axis_event,
-               controller_button_event,
-               controller_device_event,
-               dollar_gesture_event,
-               drop_event,
-               joy_axis_event,
-               joy_ball_event,
-               joy_button_event,
-               joy_device_event,
-               joy_hat_event,
-               keyboard_event,
-               mouse_button_event,
-               mouse_motion_event,
-               mouse_wheel_event,
-               multi_gesture_event,
-               quit_event,
-               text_editing_event,
-               text_input_event,
-               touch_finger_event,
-               window_event>
-      m_data{};
-
-  void update_data(const std::optional<event_type> t) noexcept
+  void update_data(const event_type type) noexcept
   {
-    using et = event_type;
+    switch (type) {
+      case event_type::quit:
+        m_data.emplace<quit_event>(m_event.quit);
+        break;
 
-    if (t == et::quit)
-    {
-      m_data.emplace<quit_event>(m_event.quit);
-    }
-    else if (t == et::audio_device_added || t == et::audio_device_removed)
-    {
-      m_data.emplace<audio_device_event>(m_event.adevice);
-    }
-    else if (t == et::controller_axis_motion)
-    {
-      m_data.emplace<controller_axis_event>(m_event.caxis);
-    }
-    else if (t == et::controller_button_down || t == et::controller_button_up)
-    {
-      m_data.emplace<controller_button_event>(m_event.cbutton);
-    }
-    else if (t == et::controller_device_added || t == et::controller_device_removed ||
-             t == et::controller_device_remapped)
-    {
-      m_data.emplace<controller_device_event>(m_event.cdevice);
-    }
-    else if (t == et::dollar_gesture || t == et::dollar_record)
-    {
-      m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-    }
-    else if (t == et::drop_begin || t == et::drop_complete || t == et::drop_file ||
-             t == et::drop_text)
-    {
-      m_data.emplace<drop_event>(m_event.drop);
-    }
-    else if (t == et::joystick_axis_motion)
-    {
-      m_data.emplace<joy_axis_event>(m_event.jaxis);
-    }
-    else if (t == et::joystick_ball_motion)
-    {
-      m_data.emplace<joy_ball_event>(m_event.jball);
-    }
-    else if (t == et::joystick_button_up || t == et::joystick_button_down)
-    {
-      m_data.emplace<joy_button_event>(m_event.jbutton);
-    }
-    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
-    {
-      m_data.emplace<joy_device_event>(m_event.jdevice);
-    }
-    else if (t == event_type::joystick_hat_motion)
-    {
-      m_data.emplace<joy_hat_event>(m_event.jhat);
-    }
-    else if (t == et::key_down || t == et::key_up)
-    {
-      m_data.emplace<keyboard_event>(m_event.key);
-    }
-    else if (t == et::mouse_button_up || t == et::mouse_button_down)
-    {
-      m_data.emplace<mouse_button_event>(m_event.button);
-    }
-    else if (t == et::mouse_motion)
-    {
-      m_data.emplace<mouse_motion_event>(m_event.motion);
-    }
-    else if (t == et::mouse_wheel)
-    {
-      m_data.emplace<mouse_wheel_event>(m_event.wheel);
-    }
-    else if (t == et::multi_gesture)
-    {
-      m_data.emplace<multi_gesture_event>(m_event.mgesture);
-    }
-    else if (t == et::text_editing)
-    {
-      m_data.emplace<text_editing_event>(m_event.edit);
-    }
-    else if (t == et::text_input)
-    {
-      m_data.emplace<text_input_event>(m_event.text);
-    }
-    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
-    {
-      m_data.emplace<touch_finger_event>(m_event.tfinger);
-    }
-    else if (t == et::window)
-    {
-      m_data.emplace<window_event>(m_event.window);
-    }
-    else
-    {
-      m_data.emplace<std::monostate>();
+      case event_type::app_terminating:
+      case event_type::app_low_memory:
+      case event_type::app_will_enter_background:
+      case event_type::app_did_enter_background:
+      case event_type::app_will_enter_foreground:
+      case event_type::app_did_enter_foreground:
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::locale_changed:
+        break;
+
+      case event_type::display:
+        m_data.emplace<display_event>(m_event.display);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::window:
+        m_data.emplace<window_event>(m_event.window);
+        break;
+
+      case event_type::system:
+        break;
+
+      case event_type::key_down:
+      case event_type::key_up:
+        m_data.emplace<keyboard_event>(m_event.key);
+        break;
+
+      case event_type::text_editing:
+        m_data.emplace<text_editing_event>(m_event.edit);
+        break;
+
+      case event_type::text_input:
+        m_data.emplace<text_input_event>(m_event.text);
+        break;
+
+      case event_type::keymap_changed:
+        break;
+
+      case event_type::mouse_motion:
+        m_data.emplace<mouse_motion_event>(m_event.motion);
+        break;
+
+      case event_type::mouse_button_down:
+      case event_type::mouse_button_up:
+        m_data.emplace<mouse_button_event>(m_event.button);
+        break;
+
+      case event_type::mouse_wheel:
+        m_data.emplace<mouse_wheel_event>(m_event.wheel);
+        break;
+
+      case event_type::joystick_axis_motion:
+        m_data.emplace<joy_axis_event>(m_event.jaxis);
+        break;
+
+      case event_type::joystick_ball_motion:
+        m_data.emplace<joy_ball_event>(m_event.jball);
+        break;
+
+      case event_type::joystick_hat_motion:
+        m_data.emplace<joy_hat_event>(m_event.jhat);
+        break;
+
+      case event_type::joystick_button_down:
+      case event_type::joystick_button_up:
+        m_data.emplace<joy_button_event>(m_event.jbutton);
+        break;
+
+      case event_type::joystick_device_added:
+      case event_type::joystick_device_removed:
+        m_data.emplace<joy_device_event>(m_event.jdevice);
+        break;
+
+      case event_type::controller_axis_motion:
+        m_data.emplace<controller_axis_event>(m_event.caxis);
+        break;
+
+      case event_type::controller_button_down:
+      case event_type::controller_button_up:
+        m_data.emplace<controller_button_event>(m_event.cbutton);
+        break;
+
+      case event_type::controller_device_added:
+      case event_type::controller_device_removed:
+      case event_type::controller_device_remapped:
+        m_data.emplace<controller_device_event>(m_event.cdevice);
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::controller_touchpad_down:
+      case event_type::controller_touchpad_up:
+      case event_type::controller_touchpad_motion:
+        m_data.emplace<controller_touchpad_event>(m_event.ctouchpad);
+        break;
+
+      case event_type::controller_sensor_update:
+        m_data.emplace<controller_sensor_event>(m_event.csensor);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::touch_down:
+      case event_type::touch_up:
+      case event_type::touch_motion:
+        m_data.emplace<touch_finger_event>(m_event.tfinger);
+        break;
+
+      case event_type::dollar_gesture:
+      case event_type::dollar_record:
+        m_data.emplace<dollar_gesture_event>(m_event.dgesture);
+        break;
+
+      case event_type::multi_gesture:
+        m_data.emplace<multi_gesture_event>(m_event.mgesture);
+        break;
+
+      case event_type::clipboard_update:
+        break;
+
+      case event_type::drop_file:
+      case event_type::drop_text:
+      case event_type::drop_begin:
+      case event_type::drop_complete:
+        m_data.emplace<drop_event>(m_event.drop);
+        break;
+
+      case event_type::audio_device_added:
+      case event_type::audio_device_removed:
+        m_data.emplace<audio_device_event>(m_event.adevice);
+        break;
+
+      case event_type::sensor_update:
+        m_data.emplace<sensor_event>(m_event.sensor);
+        break;
+
+      case event_type::render_targets_reset:
+      case event_type::render_device_reset:
+        break;
+
+      case event_type::user:
+        m_data.emplace<user_event>(m_event.user);
+        break;
+
+      default:
+        m_data.emplace<std::monostate>();
+        break;
     }
   }
 };
@@ -28409,198 +30197,6 @@ class event final
 #include <utility>      // index_sequence, index_sequence_for
 
 // #include "../core/integers.hpp"
-#ifndef CENTURION_INTEGERS_HEADER
-#define CENTURION_INTEGERS_HEADER
-
-#include <SDL.h>
-
-#include <cstddef>  // size_t
-
-namespace cen {
-
-/// \addtogroup core
-/// \{
-
-/// \name Integer aliases
-/// \{
-
-using usize = std::size_t;
-
-/// Alias for an unsigned integer.
-using uint = unsigned int;
-
-/// Alias for the type used for integer literal operators.
-using ulonglong = unsigned long long;
-
-/// Alias for a 64-bit unsigned integer.
-using u64 = Uint64;
-
-/// Alias for a 32-bit unsigned integer.
-using u32 = Uint32;
-
-/// Alias for a 16-bit unsigned integer.
-using u16 = Uint16;
-
-/// Alias for an 8-bit unsigned integer.
-using u8 = Uint8;
-
-/// Alias for a 64-bit signed integer.
-using i64 = Sint64;
-
-/// Alias for a 32-bit signed integer.
-using i32 = Sint32;
-
-/// Alias for a 16-bit signed integer.
-using i16 = Sint16;
-
-/// Alias for an 8-bit signed integer.
-using i8 = Sint8;
-
-/// \} End of integer aliases
-
-// clang-format off
-
-/**
- * \brief Obtains the size of a container as an `int`.
- *
- * \tparam T a "container" that provides a `size()` member function.
- *
- * \param container the container to query the size of.
- *
- * \return the size of the container as an `int` value.
- *
- * \since 5.3.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto isize(const T& container) noexcept(noexcept(container.size()))
-    -> int
-{
-  return static_cast<int>(container.size());
-}
-
-// clang-format on
-
-namespace literals {
-
-/**
- * \brief Creates an 8-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u8(const ulonglong value) noexcept -> u8
-{
-  return static_cast<u8>(value);
-}
-
-/**
- * \brief Creates a 16-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u16(const ulonglong value) noexcept -> u16
-{
-  return static_cast<u16>(value);
-}
-
-/**
- * \brief Creates a 32-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u32(const ulonglong value) noexcept -> u32
-{
-  return static_cast<u32>(value);
-}
-
-/**
- * \brief Creates a 64-bit unsigned integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit unsigned integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_u64(const ulonglong value) noexcept -> u64
-{
-  return static_cast<u64>(value);
-}
-
-/**
- * \brief Creates an 8-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return an 8-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i8(const ulonglong value) noexcept -> i8
-{
-  return static_cast<i8>(value);
-}
-
-/**
- * \brief Creates a 16-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 16-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i16(const ulonglong value) noexcept -> i16
-{
-  return static_cast<i16>(value);
-}
-
-/**
- * \brief Creates a 32-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 32-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i32(const ulonglong value) noexcept -> i32
-{
-  return static_cast<i32>(value);
-}
-
-/**
- * \brief Creates a 64-bit signed integer.
- *
- * \param value the value that will be converted.
- *
- * \return a 64-bit signed integer.
- *
- * \since 5.3.0
- */
-[[nodiscard]] constexpr auto operator""_i64(const ulonglong value) noexcept -> i64
-{
-  return static_cast<i64>(value);
-}
-
-}  // namespace literals
-
-/// \} End of group core
-
-}  // namespace cen
-
-#endif  // CENTURION_INTEGERS_HEADER
 
 
 /// \cond FALSE
@@ -28654,6 +30250,12 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 // #include "controller_device_event.hpp"
 
+// #include "controller_sensor_event.hpp"
+
+// #include "controller_touchpad_event.hpp"
+
+// #include "display_event.hpp"
+
 // #include "dollar_gesture_event.hpp"
 
 // #include "drop_event.hpp"
@@ -28682,11 +30284,15 @@ inline constexpr int tuple_type_index_v = tuple_type_index<Target, T...>::value;
 
 // #include "quit_event.hpp"
 
+// #include "sensor_event.hpp"
+
 // #include "text_editing_event.hpp"
 
 // #include "text_input_event.hpp"
 
 // #include "touch_finger_event.hpp"
+
+// #include "user_event.hpp"
 
 // #include "window_event.hpp"
 
@@ -28815,13 +30421,11 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result)
-    {
+    if (result) {
       update_data(static_cast<event_type>(m_event.type));
     }
-    else
-    {
-      update_data(std::nullopt);
+    else {
+      m_data.emplace<std::monostate>();
     }
 
     return result;
@@ -28837,12 +30441,10 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty())
-    {
+    if (is_empty()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -28857,14 +30459,11 @@ class event final
    */
   [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
-    const auto num =
-        SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
-    if (num != -1)
-    {
+    const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -28880,17 +30479,14 @@ class event final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto queue_count(const event_type type) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1)
-    {
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -29036,126 +30632,196 @@ class event final
   }
 
  private:
+  /* Behold, the beast! */
+  using data_type = std::variant<std::monostate,
+                                 audio_device_event,
+                                 controller_axis_event,
+                                 controller_button_event,
+                                 controller_device_event,
+                                 dollar_gesture_event,
+                                 drop_event,
+                                 joy_axis_event,
+                                 joy_ball_event,
+                                 joy_button_event,
+                                 joy_device_event,
+                                 joy_hat_event,
+                                 keyboard_event,
+                                 mouse_button_event,
+                                 mouse_motion_event,
+                                 mouse_wheel_event,
+                                 multi_gesture_event,
+                                 quit_event,
+                                 text_editing_event,
+                                 text_input_event,
+                                 touch_finger_event,
+                                 sensor_event,
+                                 user_event,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+                                 display_event,
+                                 controller_touchpad_event,
+                                 controller_sensor_event,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+                                 window_event>;
+
   SDL_Event m_event{};
+  data_type m_data{};
 
-  // behold, the beast!
-  std::variant<std::monostate,
-               audio_device_event,
-               controller_axis_event,
-               controller_button_event,
-               controller_device_event,
-               dollar_gesture_event,
-               drop_event,
-               joy_axis_event,
-               joy_ball_event,
-               joy_button_event,
-               joy_device_event,
-               joy_hat_event,
-               keyboard_event,
-               mouse_button_event,
-               mouse_motion_event,
-               mouse_wheel_event,
-               multi_gesture_event,
-               quit_event,
-               text_editing_event,
-               text_input_event,
-               touch_finger_event,
-               window_event>
-      m_data{};
-
-  void update_data(const std::optional<event_type> t) noexcept
+  void update_data(const event_type type) noexcept
   {
-    using et = event_type;
+    switch (type) {
+      case event_type::quit:
+        m_data.emplace<quit_event>(m_event.quit);
+        break;
 
-    if (t == et::quit)
-    {
-      m_data.emplace<quit_event>(m_event.quit);
-    }
-    else if (t == et::audio_device_added || t == et::audio_device_removed)
-    {
-      m_data.emplace<audio_device_event>(m_event.adevice);
-    }
-    else if (t == et::controller_axis_motion)
-    {
-      m_data.emplace<controller_axis_event>(m_event.caxis);
-    }
-    else if (t == et::controller_button_down || t == et::controller_button_up)
-    {
-      m_data.emplace<controller_button_event>(m_event.cbutton);
-    }
-    else if (t == et::controller_device_added || t == et::controller_device_removed ||
-             t == et::controller_device_remapped)
-    {
-      m_data.emplace<controller_device_event>(m_event.cdevice);
-    }
-    else if (t == et::dollar_gesture || t == et::dollar_record)
-    {
-      m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-    }
-    else if (t == et::drop_begin || t == et::drop_complete || t == et::drop_file ||
-             t == et::drop_text)
-    {
-      m_data.emplace<drop_event>(m_event.drop);
-    }
-    else if (t == et::joystick_axis_motion)
-    {
-      m_data.emplace<joy_axis_event>(m_event.jaxis);
-    }
-    else if (t == et::joystick_ball_motion)
-    {
-      m_data.emplace<joy_ball_event>(m_event.jball);
-    }
-    else if (t == et::joystick_button_up || t == et::joystick_button_down)
-    {
-      m_data.emplace<joy_button_event>(m_event.jbutton);
-    }
-    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
-    {
-      m_data.emplace<joy_device_event>(m_event.jdevice);
-    }
-    else if (t == event_type::joystick_hat_motion)
-    {
-      m_data.emplace<joy_hat_event>(m_event.jhat);
-    }
-    else if (t == et::key_down || t == et::key_up)
-    {
-      m_data.emplace<keyboard_event>(m_event.key);
-    }
-    else if (t == et::mouse_button_up || t == et::mouse_button_down)
-    {
-      m_data.emplace<mouse_button_event>(m_event.button);
-    }
-    else if (t == et::mouse_motion)
-    {
-      m_data.emplace<mouse_motion_event>(m_event.motion);
-    }
-    else if (t == et::mouse_wheel)
-    {
-      m_data.emplace<mouse_wheel_event>(m_event.wheel);
-    }
-    else if (t == et::multi_gesture)
-    {
-      m_data.emplace<multi_gesture_event>(m_event.mgesture);
-    }
-    else if (t == et::text_editing)
-    {
-      m_data.emplace<text_editing_event>(m_event.edit);
-    }
-    else if (t == et::text_input)
-    {
-      m_data.emplace<text_input_event>(m_event.text);
-    }
-    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
-    {
-      m_data.emplace<touch_finger_event>(m_event.tfinger);
-    }
-    else if (t == et::window)
-    {
-      m_data.emplace<window_event>(m_event.window);
-    }
-    else
-    {
-      m_data.emplace<std::monostate>();
+      case event_type::app_terminating:
+      case event_type::app_low_memory:
+      case event_type::app_will_enter_background:
+      case event_type::app_did_enter_background:
+      case event_type::app_will_enter_foreground:
+      case event_type::app_did_enter_foreground:
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::locale_changed:
+        break;
+
+      case event_type::display:
+        m_data.emplace<display_event>(m_event.display);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::window:
+        m_data.emplace<window_event>(m_event.window);
+        break;
+
+      case event_type::system:
+        break;
+
+      case event_type::key_down:
+      case event_type::key_up:
+        m_data.emplace<keyboard_event>(m_event.key);
+        break;
+
+      case event_type::text_editing:
+        m_data.emplace<text_editing_event>(m_event.edit);
+        break;
+
+      case event_type::text_input:
+        m_data.emplace<text_input_event>(m_event.text);
+        break;
+
+      case event_type::keymap_changed:
+        break;
+
+      case event_type::mouse_motion:
+        m_data.emplace<mouse_motion_event>(m_event.motion);
+        break;
+
+      case event_type::mouse_button_down:
+      case event_type::mouse_button_up:
+        m_data.emplace<mouse_button_event>(m_event.button);
+        break;
+
+      case event_type::mouse_wheel:
+        m_data.emplace<mouse_wheel_event>(m_event.wheel);
+        break;
+
+      case event_type::joystick_axis_motion:
+        m_data.emplace<joy_axis_event>(m_event.jaxis);
+        break;
+
+      case event_type::joystick_ball_motion:
+        m_data.emplace<joy_ball_event>(m_event.jball);
+        break;
+
+      case event_type::joystick_hat_motion:
+        m_data.emplace<joy_hat_event>(m_event.jhat);
+        break;
+
+      case event_type::joystick_button_down:
+      case event_type::joystick_button_up:
+        m_data.emplace<joy_button_event>(m_event.jbutton);
+        break;
+
+      case event_type::joystick_device_added:
+      case event_type::joystick_device_removed:
+        m_data.emplace<joy_device_event>(m_event.jdevice);
+        break;
+
+      case event_type::controller_axis_motion:
+        m_data.emplace<controller_axis_event>(m_event.caxis);
+        break;
+
+      case event_type::controller_button_down:
+      case event_type::controller_button_up:
+        m_data.emplace<controller_button_event>(m_event.cbutton);
+        break;
+
+      case event_type::controller_device_added:
+      case event_type::controller_device_removed:
+      case event_type::controller_device_remapped:
+        m_data.emplace<controller_device_event>(m_event.cdevice);
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::controller_touchpad_down:
+      case event_type::controller_touchpad_up:
+      case event_type::controller_touchpad_motion:
+        m_data.emplace<controller_touchpad_event>(m_event.ctouchpad);
+        break;
+
+      case event_type::controller_sensor_update:
+        m_data.emplace<controller_sensor_event>(m_event.csensor);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::touch_down:
+      case event_type::touch_up:
+      case event_type::touch_motion:
+        m_data.emplace<touch_finger_event>(m_event.tfinger);
+        break;
+
+      case event_type::dollar_gesture:
+      case event_type::dollar_record:
+        m_data.emplace<dollar_gesture_event>(m_event.dgesture);
+        break;
+
+      case event_type::multi_gesture:
+        m_data.emplace<multi_gesture_event>(m_event.mgesture);
+        break;
+
+      case event_type::clipboard_update:
+        break;
+
+      case event_type::drop_file:
+      case event_type::drop_text:
+      case event_type::drop_begin:
+      case event_type::drop_complete:
+        m_data.emplace<drop_event>(m_event.drop);
+        break;
+
+      case event_type::audio_device_added:
+      case event_type::audio_device_removed:
+        m_data.emplace<audio_device_event>(m_event.adevice);
+        break;
+
+      case event_type::sensor_update:
+        m_data.emplace<sensor_event>(m_event.sensor);
+        break;
+
+      case event_type::render_targets_reset:
+      case event_type::render_device_reset:
+        break;
+
+      case event_type::user:
+        m_data.emplace<user_event>(m_event.user);
+        break;
+
+      default:
+        m_data.emplace<std::monostate>();
+        break;
     }
   }
 };
@@ -29319,8 +30985,7 @@ class event_sink final
 template <typename... E>
 class event_dispatcher final
 {
-  static_assert((!std::is_const_v<E> && ...),
-                "Can't use \"const\" on template parameter!");
+  static_assert((!std::is_const_v<E> && ...), "Can't use \"const\" on template parameter!");
 
   static_assert((!std::is_volatile_v<E> && ...),
                 "Can't use \"volatile\" on template parameter!");
@@ -29377,17 +31042,14 @@ class event_dispatcher final
   template <typename Event>
   auto check_for() -> bool
   {
-    if (const auto* event = m_event.template try_get<Event>())
-    {
-      if (auto& function = get_sink<Event>().function())
-      {
+    if (const auto* event = m_event.template try_get<Event>()) {
+      if (auto& function = get_sink<Event>().function()) {
         function(*event);
       }
 
       return true;
     }
-    else
-    {
+    else {
       return false;
     }
   }
@@ -29406,8 +31068,7 @@ class event_dispatcher final
    */
   void poll()
   {
-    while (m_event.poll())
-    {
+    while (m_event.poll()) {
       (check_for<E>() || ...);
     }
   }
@@ -29480,8 +31141,7 @@ class event_dispatcher final
 /// \{
 
 template <typename... E>
-[[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher)
-    -> std::string
+[[nodiscard]] inline auto to_string(const event_dispatcher<E...>& dispatcher) -> std::string
 {
   return "event_dispatcher{size: " + std::to_string(dispatcher.size()) +
          ", #active: " + std::to_string(dispatcher.active_count()) + "}";
@@ -29543,7 +31203,12 @@ enum class event_type : u32
   app_low_memory = SDL_APP_LOWMEMORY,
   app_will_enter_background = SDL_APP_WILLENTERBACKGROUND,
   app_did_enter_background = SDL_APP_DIDENTERBACKGROUND,
+  app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
   app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  locale_changed = SDL_LOCALECHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   display = SDL_DISPLAYEVENT,
 
@@ -29575,6 +31240,13 @@ enum class event_type : u32
   controller_device_added = SDL_CONTROLLERDEVICEADDED,
   controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
   controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
+  controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
+  controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
+  controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   touch_down = SDL_FINGERDOWN,
   touch_up = SDL_FINGERUP,
@@ -29621,8 +31293,7 @@ enum class event_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case event_type::quit:
       return "quit";
 
@@ -29638,8 +31309,16 @@ enum class event_type : u32
     case event_type::app_did_enter_background:
       return "app_did_enter_background";
 
+    case event_type::app_will_enter_foreground:
+      return "app_will_enter_foreground";
+
     case event_type::app_did_enter_foreground:
       return "app_did_enter_foreground";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::locale_changed:
+      return "locale_changed";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::display:
       return "display";
@@ -29715,6 +31394,20 @@ enum class event_type : u32
 
     case event_type::controller_device_remapped:
       return "controller_device_remapped";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::controller_touchpad_down:
+      return "controller_touchpad_down";
+
+    case event_type::controller_touchpad_up:
+      return "controller_touchpad_up";
+
+    case event_type::controller_touchpad_motion:
+      return "controller_touchpad_motion";
+
+    case event_type::controller_sensor_update:
+      return "controller_sensor_update";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::touch_down:
       return "touch_down";
@@ -29809,15 +31502,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -29832,15 +31525,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -30208,8 +31901,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept
-      : common_event{event}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -30373,8 +32065,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
-      : common_event{event}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -30648,12 +32339,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
-    if (active)
-    {
+    if (active) {
       m_event.keysym.mod |= to_underlying(modifiers);
     }
-    else
-    {
+    else {
       m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
@@ -30778,109 +32467,6 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
     return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
-  }
-
-  /**
-   * \brief Indicates whether or not the specified modifier are active.
-   *
-   * \note Multiple key modifiers can be active at the same time.
-   *
-   * \param modifier the key modifiers that will be checked.
-   *
-   * \return `true` if any of the specified modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
-      -> bool
-  {
-    return is_active(modifier);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the SHIFT modifiers are active.
-   *
-   * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::shift)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the CTRL modifiers are active.
-   *
-   * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::ctrl)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the ALT modifiers are active.
-   *
-   * \return `true` if any of the ALT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::alt)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the GUI modifiers are active.
-   *
-   * \return `true` if any of the GUI modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::gui)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
-  }
-
-  /**
-   * \brief Indicates whether or not the CAPS modifier is active.
-   *
-   * \return `true` if the CAPS modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::caps)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
-  {
-    return is_active(key_mod::caps);
-  }
-
-  /**
-   * \brief Indicates whether or not the NUM modifier is active.
-   *
-   * \return `true` if the NUM modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::num)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
-  {
-    return is_active(key_mod::num);
   }
 
   /**
@@ -31063,8 +32649,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -31327,8 +32912,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -31570,6 +33154,7 @@ namespace cen {
  * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
+ * \see `mouse_wheel_direction_count()`
  *
  * \since 4.0.0
  */
@@ -31578,6 +33163,18 @@ enum class mouse_wheel_direction : u32
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
+
+/**
+ * \brief Returns the number of enumerators for the `mouse_wheel_direction` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto mouse_wheel_direction_count() noexcept -> int
+{
+  return 2;
+}
 
 /// \name String conversions
 /// \{
@@ -31596,11 +33193,9 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
-  switch (dir)
-  {
+  switch (dir) {
     case mouse_wheel_direction::normal:
       return "normal";
 
@@ -31629,8 +33224,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) -> std::ostream&
 {
   return stream << to_string(dir);
 }
@@ -31651,8 +33245,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
@@ -31676,8 +33269,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -31744,8 +33336,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -32029,21 +33620,6 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   }
 
   /**
-   * \brief Sets the number of fingers that was used in the gesture associated
-   * with the event.
-   *
-   * \param nFingers the number of fingers that was used in the gesture.
-   *
-   * \deprecated Since 6.1.0, use `set_finger_count()` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated]] void set_fingers(const u16 nFingers) noexcept
-  {
-    set_finger_count(nFingers);
-  }
-
-  /**
    * \brief Returns the touch device ID associated with the event.
    *
    * \return the touch device ID associated with the event.
@@ -32119,23 +33695,6 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
   [[nodiscard]] auto finger_count() const noexcept -> u16
   {
     return m_event.numFingers;
-  }
-
-  /**
-   * \brief Returns the amount of fingers used in the gesture associated with
-   * the event.
-   *
-   * \return the amount of fingers used in the gesture associated with the
-   * event.
-   *
-   * \deprecated Since 6.1.0, use `finger_count()` instead. Note, this function
-   * incorrectly returns a `float`, and will be removed shortly.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard, deprecated]] auto fingers() const noexcept -> float
-  {
-    return finger_count();
   }
 };
 
@@ -32223,6 +33782,121 @@ inline auto as_sdl_event(const common_event<SDL_QuitEvent>& event) -> SDL_Event
 
 #endif  // CENTURION_QUIT_EVENT_HEADER
 
+// #include "centurion/events/sensor_event.hpp"
+#ifndef CENTURION_SENSOR_EVENT_HEADER
+#define CENTURION_SENSOR_EVENT_HEADER
+
+#include <SDL.h>
+
+#include <array>  // array
+
+// #include "../core/integers.hpp"
+
+// #include "../detail/array_utils.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class sensor_event
+ *
+ * \brief Represents events related to updates of sensors.
+ *
+ * \since 6.3.0
+ */
+class sensor_event final : public common_event<SDL_SensorEvent>
+{
+ public:
+  using data_type = std::array<float, 6>;
+
+  /**
+   * \brief Creates a sensor event.
+   *
+   * \since 6.3.0
+   */
+  sensor_event() noexcept : common_event{event_type::sensor_update}
+  {}
+
+  /**
+   * \brief Creates a sensor event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit sensor_event(const SDL_SensorEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the sensor instance ID associated with the event.
+   *
+   * \param id the sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  void set_which(const i32 id) noexcept
+  {
+    m_event.which = id;
+  }
+
+  /**
+   * \brief Sets the sensor values associated with the event.
+   *
+   * \param values the sensor values.
+   *
+   * \since 6.3.0
+   */
+  void set_data(const data_type& values)
+  {
+    detail::assign(values, m_event.data);
+  }
+
+  /**
+   * \brief Returns the instance ID of the associated sensor.
+   *
+   * \return the associated sensor instance ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
+
+  /**
+   * \brief Returns up to 6 values from the sensor.
+   *
+   * \return values from the sensor.
+   *
+   * \see `basic_sensor::data()`
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data() const -> data_type
+  {
+    return detail::to_array(m_event.data);
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_SensorEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.sensor = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_SENSOR_EVENT_HEADER
+
 // #include "centurion/events/text_editing_event.hpp"
 #ifndef CENTURION_TEXT_EDITING_EVENT_HEADER
 #define CENTURION_TEXT_EDITING_EVENT_HEADER
@@ -32277,8 +33951,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept
-      : common_event{event}
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept : common_event{event}
   {
     check_length();
   }
@@ -32445,8 +34118,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept
-      : common_event{event}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -32551,8 +34223,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept
-      : common_event{event}
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept : common_event{event}
   {}
 
   /**
@@ -32805,6 +34476,170 @@ inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL
 
 #endif  // CENTURION_TOUCH_FINGER_EVENT_HEADER
 
+// #include "centurion/events/user_event.hpp"
+#ifndef CENTURION_USER_EVENT_HEADER
+#define CENTURION_USER_EVENT_HEADER
+
+#include <SDL.h>
+
+// #include "../core/integers.hpp"
+
+// #include "common_event.hpp"
+
+
+namespace cen {
+
+/// \addtogroup event
+/// \{
+
+/**
+ * \class user_event
+ *
+ * \brief Represents a custom user event.
+ *
+ * \since 6.3.0
+ */
+class user_event final : public common_event<SDL_UserEvent>
+{
+ public:
+  /**
+   * \brief Creates a user event.
+   *
+   * \details Note that the event will be created using `event_type::user`, but you can use any
+   * event type value in the range [`event_type::user`, SDL_LASTEVENT - 1].
+   *
+   * \since 6.3.0
+   */
+  user_event() noexcept : common_event{event_type::user}
+  {}
+
+  /**
+   * \brief Creates a user event based on an SDL event.
+   *
+   * \param event the event that will be copied.
+   *
+   * \since 6.3.0
+   */
+  explicit user_event(const SDL_UserEvent& event) noexcept : common_event{event}
+  {}
+
+  /**
+   * \brief Sets the window ID associated with the event.
+   *
+   * \param id the ID of the associated window.
+   *
+   * \since 6.3.0
+   */
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
+
+  /**
+   * \brief Sets the user-defined event code associated with the event.
+   *
+   * \param code the custom event code.
+   *
+   * \since 6.3.0
+   */
+  void set_code(const i32 code) noexcept
+  {
+    m_event.code = code;
+  }
+
+  /**
+   * \brief Sets an opaque data pointer to some user data.
+   *
+   * \param data the user data, can safely be null.
+   *
+   * \since 6.3.0
+   */
+  void set_data_1(void* data) noexcept
+  {
+    m_event.data1 = data;
+  }
+
+  /// \copydoc set_data_1()
+  void set_data_2(void* data) noexcept
+  {
+    m_event.data2 = data;
+  }
+
+  /**
+   * \brief Returns the ID of the window associated with the event.
+   *
+   * \return the associated window ID.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
+
+  /**
+   * \brief Returns the user-defined event code associated with the event.
+   *
+   * \return the associated event code.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto code() const noexcept -> i32
+  {
+    return m_event.code;
+  }
+
+  /**
+   * \brief Returns a pointer to the first user data slot.
+   *
+   * \return a pointer to the user data, might be null.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_1() noexcept -> void*
+  {
+    return m_event.data1;
+  }
+
+  /// \copydoc data_1()
+  [[nodiscard]] auto data_1() const noexcept -> const void*
+  {
+    return m_event.data1;
+  }
+
+  /**
+   * \brief Returns a pointer to the second user data slot.
+   *
+   * \return a pointer to the user data, might be null.
+   *
+   * \since 6.3.0
+   */
+  [[nodiscard]] auto data_2() noexcept -> void*
+  {
+    return m_event.data2;
+  }
+
+  /// \copydoc data_2()
+  [[nodiscard]] auto data_2() const noexcept -> const void*
+  {
+    return m_event.data2;
+  }
+};
+
+template <>
+inline auto as_sdl_event(const common_event<SDL_UserEvent>& event) -> SDL_Event
+{
+  SDL_Event e;
+  e.user = event.get();
+  return e;
+}
+
+/// \} End of group event
+
+}  // namespace cen
+
+#endif  // CENTURION_USER_EVENT_HEADER
+
 // #include "centurion/events/window_event.hpp"
 #ifndef CENTURION_WINDOW_EVENT_HEADER
 #define CENTURION_WINDOW_EVENT_HEADER
@@ -33014,8 +34849,7 @@ enum class window_event_id
  */
 [[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case window_event_id::none:
       return "none";
 
@@ -33223,8 +35057,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -33363,12 +35196,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }
@@ -34163,8 +35994,7 @@ enum class file_mode
  */
 [[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case file_mode::read_existing:
       return "read_existing";
 
@@ -34291,8 +36121,7 @@ enum class file_type : uint
  */
 [[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case file_type::unknown:
       return "unknown";
 
@@ -34396,8 +36225,7 @@ enum class seek_mode
  */
 [[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case seek_mode::from_beginning:
       return "from_beginning";
 
@@ -35102,12 +36930,10 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -35149,12 +36975,10 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWsize(m_context.get());
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -35195,8 +37019,7 @@ class file final
 
   [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> str
   {
-    switch (mode)
-    {
+    switch (mode) {
       default:
         assert(false);
 
@@ -35310,8 +37133,7 @@ enum class file_mode
  */
 [[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case file_mode::read_existing:
       return "read_existing";
 
@@ -35438,8 +37260,7 @@ enum class file_type : uint
  */
 [[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case file_type::unknown:
       return "unknown";
 
@@ -35623,8 +37444,7 @@ enum class seek_mode
  */
 [[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case seek_mode::from_beginning:
       return "from_beginning";
 
@@ -35985,12 +37805,10 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
 {
-  if (lhs && rhs)
-  {
+  if (lhs && rhs) {
     return std::strcmp(lhs, rhs) == 0;
   }
-  else
-  {
+  else {
     return false;
   }
 }
@@ -36169,8 +37987,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -36180,39 +37997,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -36494,12 +38303,10 @@ class static_bimap final
       return pair.first == key;
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->second;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find element in static map!"};
     }
   }
@@ -36511,12 +38318,10 @@ class static_bimap final
       return predicate(pair.second, value);
     });
 
-    if (it != data.end())
-    {
+    if (it != data.end()) {
       return it->first;
     }
-    else
-    {
+    else {
       throw cen_error{"Failed to find key in static map!"};
     }
   }
@@ -36576,12 +38381,10 @@ struct string_hint : crtp_hint<string_hint<Hint>, str>
 {
   [[nodiscard]] static auto current_value() noexcept -> std::optional<str>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return value;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -36603,12 +38406,10 @@ struct int_hint : crtp_hint<int_hint<Hint>, int>
 {
   [[nodiscard]] static auto current_value() -> std::optional<int>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stoi(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -36630,12 +38431,10 @@ struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
 {
   [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return static_cast<uint>(std::stoul(value));
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -36657,12 +38456,10 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 {
   [[nodiscard]] static auto current_value() -> std::optional<float>
   {
-    if (const str value = SDL_GetHint(Hint::name()))
-    {
+    if (const str value = SDL_GetHint(Hint::name())) {
       return std::stof(value);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -36986,12 +38783,10 @@ class enum_hint
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    if (const str hint = SDL_GetHint(Derived::name()))
-    {
+    if (const str hint = SDL_GetHint(Derived::name())) {
       return Derived::map.key_from(hint);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -37803,12 +39598,10 @@ class enum_hint
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    if (const str hint = SDL_GetHint(Derived::name()))
-    {
+    if (const str hint = SDL_GetHint(Derived::name())) {
       return Derived::map.key_from(hint);
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -38108,8 +39901,7 @@ enum class hint_priority
  */
 [[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case hint_priority::low:
       return "low";
 
@@ -38141,8 +39933,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const hint_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const hint_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }
@@ -38159,7 +39950,10 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #ifndef CENTURION_HINTS_HEADER
 #define CENTURION_HINTS_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <optional>  // optional
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -38223,17 +40017,17 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
-
-#include <SDL.h>
-
-#include <optional>  // optional
 
 // #include "../core/exception.hpp"
 
@@ -38241,7 +40035,6 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -38305,13 +40098,18 @@ inline auto operator<<(std::ostream& stream, const hint_priority priority)
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -38323,8 +40121,7 @@ namespace cen {
 /// \{
 
 template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
 /// \} End of group core
 
@@ -38337,22 +40134,22 @@ concept is_stateless_callable =
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -38360,10 +40157,8 @@ concept is_stateless_callable =
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
 
-// clang-format on
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -38375,8 +40170,7 @@ namespace cen {
 /// \{
 
 template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
 /// \} End of group core
 
@@ -38630,7 +40424,7 @@ class mix_error final : public cen_error
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -38913,6 +40707,9 @@ namespace cen {
  * \brief Represents different logging categories.
  *
  * \see `SDL_LogCategory`
+ * \see `log_category_count()`
+ *
+ * \todo Centurion 7: rename `misc` enumerator to `custom`.
  *
  * \since 3.0.0
  */
@@ -38929,6 +40726,18 @@ enum class log_category : int
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/**
+ * \brief Returns the number of enumerators for the `log_category` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto log_category_count() noexcept -> int
+{
+  return 10;
+}
 
 /// \name String conversions
 /// \{
@@ -38949,8 +40758,7 @@ enum class log_category : int
  */
 [[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
-  switch (category)
-  {
+  switch (category) {
     case log_category::app:
       return "app";
 
@@ -39134,8 +40942,7 @@ enum class log_priority : int
  */
 [[nodiscard]] constexpr auto to_string(const log_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case log_priority::verbose:
       return "verbose";
 
@@ -39271,8 +41078,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -39462,9 +41268,7 @@ void warn(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const log_category category,
-             const not_null<str> fmt,
-             Args&&... args) noexcept
+void verbose(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
@@ -39538,9 +41342,7 @@ void debug(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const log_category category,
-              const not_null<str> fmt,
-              Args&&... args) noexcept
+void critical(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
@@ -39654,8 +41456,7 @@ inline void set_priority(const log_priority priority) noexcept
  *
  * \since 3.0.0
  */
-inline void set_priority(const log_category category,
-                         const log_priority priority) noexcept
+inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
   SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
@@ -39668,8 +41469,7 @@ inline void set_priority(const log_category category,
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const log_category category) noexcept
-    -> log_priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
   return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
@@ -39706,16 +41506,14 @@ inline void set_priority(const log_category category,
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper = [](void* erased,
+  const auto wrapper = [](void* /*erased*/,
                           const int category,
                           const SDL_LogPriority priority,
                           const str message) {
     Callable tmp;
-    tmp(static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
   };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
@@ -39738,18 +41536,16 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
-  const auto wrapper = [](void* erased,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const str message) {
-    Callable tmp;
-    tmp(static_cast<UserData*>(erased),
-        static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
-  };
+  const auto wrapper =
+      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
+        Callable tmp;
+        tmp(static_cast<UserData*>(erased),
+            static_cast<log_category>(category),
+            static_cast<log_priority>(priority),
+            message);
+      };
 
   SDL_LogSetOutputFunction(wrapper, data);
 }
@@ -39773,11 +41569,19 @@ inline void use_preset_output_function() noexcept
   using std::chrono::system_clock;
   using std::chrono::zoned_time;
 
-  set_output_function([](const log_category,
-                         const log_priority priority,
-                         const str message) {
+  set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 
@@ -40021,8 +41825,7 @@ enum class hint_priority
  */
 [[nodiscard]] constexpr auto to_string(const hint_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case hint_priority::low:
       return "low";
 
@@ -40054,8 +41857,7 @@ enum class hint_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const hint_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const hint_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }
@@ -40156,8 +41958,7 @@ class hint_callback final
       : m_callback{callback}
       , m_userData{userData}
   {
-    if (!callback)
-    {
+    if (!callback) {
       throw cen_error{"Failed to create hint callback"};
     }
   }
@@ -40299,10 +42100,8 @@ concept is_hint_callback = is_stateless_callable<T,
  *
  * \since 6.2.0
  */
-template <typename Hint,
-          typename UserData = void,
-          is_hint_callback<Hint, UserData> Callable>
-auto add_hint_callback_ex(Callable fun, UserData* data = nullptr)
+template <typename Hint, typename UserData = void, is_hint_callback<Hint, UserData> Callable>
+auto add_hint_callback_ex([[maybe_unused]] Callable fun, UserData* data = nullptr)
     -> hint_callback<Hint, UserData>
 {
   const auto wrapper =
@@ -40509,8 +42308,7 @@ struct background_app final : detail::bool_hint<background_app>
   }
 };
 
-struct ctrl_click_emulate_right_click final
-    : detail::bool_hint<ctrl_click_emulate_right_click>
+struct ctrl_click_emulate_right_click final : detail::bool_hint<ctrl_click_emulate_right_click>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> str
   {
@@ -41394,8 +43192,7 @@ enum class button_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case button_state::released:
       return "released";
 
@@ -41440,7 +43237,15 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <array>        // array
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string
+#include <string_view>  // string_view
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -41504,22 +43309,18 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <array>        // array
-#include <cassert>      // assert
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <string>       // string
-#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -41562,8 +43363,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -41938,12 +43738,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }
@@ -42518,20 +44316,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -42855,12 +44650,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -42919,7 +44712,7 @@ class pointer_manager final
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -43202,7 +44995,18 @@ namespace cen::detail {
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod, lerp
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -43266,25 +45070,18 @@ namespace cen::detail {
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cassert>      // assert
-#include <cmath>        // round, abs, fmod, lerp
-#include <iomanip>      // setfill, setw
-#include <ios>          // uppercase, hex
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <sstream>      // stringstream
-#include <string>       // string, to_string
-#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -44055,8 +45852,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -44066,39 +45862,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -44112,7 +45900,8 @@ template <typename T>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
+#include <cmath>  // lerp
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -44176,15 +45965,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <cmath>  // lerp
 
 /// \cond FALSE
 
@@ -44248,10 +46040,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -44308,38 +46097,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -44355,19 +46138,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -44380,8 +46150,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -44399,38 +46168,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -44443,19 +46206,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -44475,8 +46225,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -44490,12 +46239,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -44517,8 +46264,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -44534,12 +46280,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -44561,8 +46305,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -44578,12 +46321,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -44827,7 +46568,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -44847,7 +46593,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -44867,7 +46619,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -45001,10 +46759,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -45086,8 +46843,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -45143,8 +46899,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -45251,8 +47006,7 @@ enum class button_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const button_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case button_state::released:
       return "released";
 
@@ -45350,8 +47104,7 @@ enum class controller_axis
  */
 [[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
-  switch (axis)
-  {
+  switch (axis) {
     case controller_axis::invalid:
       return "invalid";
 
@@ -45514,11 +47267,9 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const controller_bind_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_bind_type::none:
       return "none";
 
@@ -45553,8 +47304,7 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_bind_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_bind_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -45575,8 +47325,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
@@ -45600,8 +47349,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -45702,8 +47450,7 @@ enum class controller_button
  */
 [[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case controller_button::invalid:
       return "invalid";
 
@@ -45799,8 +47546,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_button button)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_button button) -> std::ostream&
 {
   return stream << to_string(button);
 }
@@ -45823,8 +47569,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
@@ -45849,8 +47594,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -45944,8 +47688,7 @@ enum class controller_type
  */
 [[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_type::unknown:
       return "unknown";
 
@@ -46077,17 +47820,15 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -46213,8 +47954,7 @@ enum class hat_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case hat_state::centered:
       return "centered";
 
@@ -46331,8 +48071,7 @@ enum class joystick_power
  */
 [[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
-  switch (power)
-  {
+  switch (power) {
     case joystick_power::unknown:
       return "unknown";
 
@@ -46515,8 +48254,7 @@ enum class joystick_type
  */
 [[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case joystick_type::unknown:
       return "unknown";
 
@@ -46749,8 +48487,7 @@ class basic_joystick final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick)
-    {
+    if (!m_joystick) {
       throw sdl_error{};
     }
   }
@@ -46818,8 +48555,7 @@ class basic_joystick final
    */
   auto rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -46931,16 +48667,12 @@ class basic_joystick final
                                            const int nButtons,
                                            const int nHats) noexcept -> std::optional<int>
   {
-    const auto index = SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type),
-                                                 nAxes,
-                                                 nButtons,
-                                                 nHats);
-    if (index != -1)
-    {
+    const auto index =
+        SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type), nAxes, nButtons, nHats);
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47038,12 +48770,10 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47071,12 +48801,10 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47092,12 +48820,10 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47112,12 +48838,10 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47209,16 +48933,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47251,12 +48972,10 @@ class basic_joystick final
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47275,12 +48994,10 @@ class basic_joystick final
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47300,12 +49017,10 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47357,12 +49072,10 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47386,12 +49099,10 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
-    {
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47426,16 +49137,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept
-      -> std::optional<i16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<i16>
   {
     i16 state{};
-    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
-    {
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state)) {
       return state;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47619,12 +49327,10 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result >= 0)
-    {
+    if (result >= 0) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -47716,8 +49422,7 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick))
-      {
+      if (SDL_JoystickGetAttached(joystick)) {
         SDL_JoystickClose(joystick);
       }
     }
@@ -47743,8 +49448,7 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = joystick.serial();
   }
 
@@ -47795,17 +49499,15 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -47880,8 +49582,7 @@ enum class sensor_type
  */
 [[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case sensor_type::invalid:
       return "invalid";
 
@@ -48050,10 +49751,8 @@ class basic_sensor final
   explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_sensor)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_sensor) {
         throw cen_error{"Null sensor pointer!"};
       }
     }
@@ -48071,8 +49770,7 @@ class basic_sensor final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor)
-    {
+    if (!m_sensor) {
       throw sdl_error{};
     }
   }
@@ -48211,12 +49909,10 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
-    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
-    {
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1) {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -48253,12 +49949,10 @@ class basic_sensor final
   [[nodiscard]] static auto id(const int index) noexcept -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -48301,16 +49995,13 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto non_portable_type(const int index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto non_portable_type(const int index) noexcept -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1)
-    {
+    if (type != -1) {
       return type;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -48368,8 +50059,7 @@ template <typename T>
                      str_or_na(sensor.name()));
 #else
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
-         "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -48546,8 +50236,7 @@ namespace touch {
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const touch_device_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const touch_device_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -48575,8 +50264,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  */
 [[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case touch_device_type::invalid:
       return "invalid";
 
@@ -48656,16 +50344,13 @@ struct finger_state final
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto get_device(const int index) noexcept
-    -> std::optional<SDL_TouchID>
+[[nodiscard]] inline auto get_device(const int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0)
-  {
+  if (device != 0) {
     return device;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -48711,12 +50396,10 @@ struct finger_state final
 [[nodiscard]] inline auto get_finger(const SDL_TouchID id, const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index))
-  {
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
     return *finger;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -48893,11 +50576,9 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_controller(const int index = 0)
-      : m_controller{SDL_GameControllerOpen(index)}
+  explicit basic_controller(const int index = 0) : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller)
-    {
+    if (!m_controller) {
       throw sdl_error{};
     }
   }
@@ -48919,12 +50600,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
-    {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -48945,12 +50624,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
-    {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -49063,8 +50740,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept -> controller_button
   {
     assert(str);
     return static_cast<controller_button>(SDL_GameControllerGetButtonFromString(str));
@@ -49079,8 +50755,7 @@ class basic_controller final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto get_button(const std::string& str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept -> controller_button
   {
     return get_button(str.c_str());
   }
@@ -49110,8 +50785,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto stringify(const controller_button button) noexcept -> str
   {
-    return SDL_GameControllerGetStringForButton(
-        static_cast<SDL_GameControllerButton>(button));
+    return SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(button));
   }
 
   /**
@@ -49129,12 +50803,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForAxis(m_controller,
                                          static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49154,12 +50826,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForButton(m_controller,
                                            static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49173,8 +50843,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_state(const controller_button button) const noexcept
-      -> button_state
+  [[nodiscard]] auto get_state(const controller_button button) const noexcept -> button_state
   {
     const auto state =
         SDL_GameControllerGetButton(m_controller,
@@ -49256,8 +50925,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
-    return SDL_GameControllerGetAxis(m_controller,
-                                     static_cast<SDL_GameControllerAxis>(axis));
+    return SDL_GameControllerGetAxis(m_controller, static_cast<SDL_GameControllerAxis>(axis));
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -49318,8 +50986,7 @@ class basic_controller final
    */
   auto rumble(const u16 lo,
               const u16 hi,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -49384,12 +51051,10 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49404,12 +51069,10 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49425,12 +51088,10 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49466,12 +51127,10 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49558,10 +51217,8 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i)
-    {
-      if (is_supported(i))
-      {
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
         ++amount;
       }
     }
@@ -49629,8 +51286,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto touchpad_finger_state(const int touchpad,
-                                           const int finger) const noexcept
+  [[nodiscard]] auto touchpad_finger_state(const int touchpad, const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
     touch::finger_state result{};
@@ -49645,12 +51301,10 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1)
-    {
+    if (res != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49738,8 +51392,7 @@ class basic_controller final
     {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49784,10 +51437,8 @@ class basic_controller final
    */
   auto set_led(const color& color) noexcept -> result
   {
-    return SDL_GameControllerSetLED(m_controller,
-                                    color.red(),
-                                    color.green(),
-                                    color.blue()) == 0;
+    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue()) ==
+           0;
   }
 
   /**
@@ -49823,16 +51474,13 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1)
-    {
+    if (result == 1) {
       return mapping_result::added;
     }
-    else if (result == 0)
-    {
+    else if (result == 0) {
       return mapping_result::updated;
     }
-    else
-    {
+    else {
       return mapping_result::error;
     }
   }
@@ -49877,12 +51525,10 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -49960,8 +51606,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept
-      -> sdl_string
+  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept -> sdl_string
   {
     return sdl_string{SDL_GameControllerMappingForIndex(index)};
   }
@@ -50029,8 +51674,7 @@ class basic_controller final
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller::mapping_result::error:
       return "error";
 
@@ -50049,8 +51693,7 @@ class basic_controller final
 [[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller_handle::mapping_result::error:
       return "error";
 
@@ -50080,8 +51723,7 @@ template <typename T>
   const auto* name = controller.name();
 
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = controller.serial();
   }
 
@@ -50120,8 +51762,8 @@ inline auto operator<<(std::ostream& stream, const controller::mapping_result re
 }
 
 /// \see operator<<(std::ostream&, controller::mapping_result)
-inline auto operator<<(std::ostream& stream,
-                       const controller_handle::mapping_result result) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_handle::mapping_result result)
+    -> std::ostream&
 {
   return stream << to_string(result);
 }
@@ -50137,8 +51779,7 @@ inline auto operator<<(std::ostream& stream,
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_controller<T>& controller) -> std::ostream&
 {
   return stream << to_string(controller);
 }
@@ -50208,8 +51849,7 @@ enum class controller_axis
  */
 [[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
 {
-  switch (axis)
-  {
+  switch (axis) {
     case controller_axis::invalid:
       return "invalid";
 
@@ -50395,8 +52035,7 @@ enum class controller_type
  */
 [[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_type::unknown:
       return "unknown";
 
@@ -50528,17 +52167,15 @@ inline auto operator<<(std::ostream& stream, const controller_type type) -> std:
 #ifndef CENTURION_HAPTIC_HEADER
 #define CENTURION_HAPTIC_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -50628,7 +52265,9 @@ template <typename T>
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
-// clang-format off
+#include <ostream>  // ostream
+#include <string>   // string, to_string
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -50692,16 +52331,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <ostream>  // ostream
-#include <string>   // string, to_string
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -50797,8 +52438,8 @@ void serialize(Archive& archive, vector3<T>& vector)
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
 }
@@ -50816,8 +52457,8 @@ template <typename T>
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -50956,11 +52597,9 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case haptic_direction_type::polar:
       return "polar";
 
@@ -50992,8 +52631,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_direction_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_direction_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -51606,8 +53244,7 @@ enum class haptic_feature : uint
  */
 [[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
-  switch (feature)
-  {
+  switch (feature) {
     case haptic_feature::constant:
       return "constant";
 
@@ -51678,8 +53315,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_feature feature)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> std::ostream&
 {
   return stream << to_string(feature);
 }
@@ -51757,10 +53393,8 @@ class basic_haptic final
   explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<T>())
       : m_haptic{haptic}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_haptic)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_haptic) {
         throw cen_error{"Null haptic pointer!"};
       }
     }
@@ -51780,8 +53414,7 @@ class basic_haptic final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
-    if (!m_haptic)
-    {
+    if (!m_haptic) {
       throw sdl_error{};
     }
   }
@@ -51811,15 +53444,12 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick)
-      -> basic_haptic
+  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick) -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
-    {
+    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
       return basic_haptic{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -51838,12 +53468,10 @@ class basic_haptic final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromMouse())
-    {
+    if (auto* ptr = SDL_HapticOpenFromMouse()) {
       return basic_haptic{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -51961,12 +53589,10 @@ class basic_haptic final
   {
     auto internal = effect.get();
     const auto id = SDL_HapticNewEffect(m_haptic, &internal);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -52388,12 +54014,10 @@ class basic_haptic final
   [[nodiscard]] auto index() const noexcept -> std::optional<int>
   {
     const auto res = SDL_HapticIndex(m_haptic);
-    if (res != -1)
-    {
+    if (res != -1) {
       return res;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -52408,12 +54032,10 @@ class basic_haptic final
    */
   [[nodiscard]] auto name() const noexcept -> str
   {
-    if (const auto i = index())
-    {
+    if (const auto i = index()) {
       return SDL_HapticName(*i);
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -52432,12 +54054,10 @@ class basic_haptic final
   [[nodiscard]] auto effect_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffects(m_haptic);
-    if (capacity != -1)
-    {
+    if (capacity != -1) {
       return capacity;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -52455,12 +54075,10 @@ class basic_haptic final
   [[nodiscard]] auto concurrent_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffectsPlaying(m_haptic);
-    if (capacity != -1)
-    {
+    if (capacity != -1) {
       return capacity;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -52670,6 +54288,8 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 // #include "../core/integers.hpp"
 
+// #include "../core/to_underlying.hpp"
+
 // #include "../math/vector3.hpp"
 
 // #include "haptic_effect.hpp"
@@ -52737,7 +54357,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    */
   void set_type(const condition_type type) noexcept
   {
-    representation().type = type;
+    representation().type = static_cast<u16>(to_underlying(type));
   }
 
   /**
@@ -53382,11 +55002,9 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case haptic_direction_type::polar:
       return "polar";
 
@@ -53418,8 +55036,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_direction_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_direction_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -53933,8 +55550,7 @@ enum class haptic_feature : uint
  */
 [[nodiscard]] constexpr auto to_string(const haptic_feature feature) -> std::string_view
 {
-  switch (feature)
-  {
+  switch (feature) {
     case haptic_feature::constant:
       return "constant";
 
@@ -54005,8 +55621,7 @@ enum class haptic_feature : uint
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_feature feature)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> std::ostream&
 {
   return stream << to_string(feature);
 }
@@ -54522,8 +56137,7 @@ enum class hat_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case hat_state::centered:
       return "centered";
 
@@ -54590,17 +56204,15 @@ inline auto operator<<(std::ostream& stream, const hat_state state) -> std::ostr
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -54740,8 +56352,7 @@ class basic_joystick final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick)
-    {
+    if (!m_joystick) {
       throw sdl_error{};
     }
   }
@@ -54809,8 +56420,7 @@ class basic_joystick final
    */
   auto rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -54922,16 +56532,12 @@ class basic_joystick final
                                            const int nButtons,
                                            const int nHats) noexcept -> std::optional<int>
   {
-    const auto index = SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type),
-                                                 nAxes,
-                                                 nButtons,
-                                                 nHats);
-    if (index != -1)
-    {
+    const auto index =
+        SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type), nAxes, nButtons, nHats);
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55029,12 +56635,10 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55062,12 +56666,10 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55083,12 +56685,10 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55103,12 +56703,10 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55200,16 +56798,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55242,12 +56837,10 @@ class basic_joystick final
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55266,12 +56859,10 @@ class basic_joystick final
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55291,12 +56882,10 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55348,12 +56937,10 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55377,12 +56964,10 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
-    {
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55417,16 +57002,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept
-      -> std::optional<i16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<i16>
   {
     i16 state{};
-    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
-    {
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state)) {
       return state;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55610,12 +57192,10 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result >= 0)
-    {
+    if (result >= 0) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -55707,8 +57287,7 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick))
-      {
+      if (SDL_JoystickGetAttached(joystick)) {
         SDL_JoystickClose(joystick);
       }
     }
@@ -55734,8 +57313,7 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = joystick.serial();
   }
 
@@ -55836,8 +57414,7 @@ enum class joystick_power
  */
 [[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
 {
-  switch (power)
-  {
+  switch (power) {
     case joystick_power::unknown:
       return "unknown";
 
@@ -56020,8 +57597,7 @@ enum class joystick_type
  */
 [[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case joystick_type::unknown:
       return "unknown";
 
@@ -56160,16 +57736,14 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -56220,7 +57794,7 @@ inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::o
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH
@@ -57002,8 +58576,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
@@ -57018,8 +58591,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
@@ -57054,8 +58626,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] inline auto to_string(const key_mod mods) -> std::string
 {
-  if (mods == key_mod::none)
-  {
+  if (mods == key_mod::none) {
     return "none";
   }
 
@@ -57063,10 +58634,8 @@ inline void set_modifiers(const key_mod mods) noexcept
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const key_mod mod, const str name) mutable {
-    if (mask & to_underlying(mod))
-    {
-      if (count != 0)
-      {
+    if (mask & to_underlying(mod)) {
+      if (count != 0) {
         stream << ',';
       }
 
@@ -57124,15 +58693,13 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers,
-                                    const u16 currentMask) noexcept -> bool
+[[nodiscard]] inline auto is_active(const key_mod modifiers, const u16 currentMask) noexcept
+    -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
-  else
-  {
+  else {
     return currentMask & to_underlying(modifiers);
   }
 }
@@ -57140,20 +58707,17 @@ namespace detail {
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
                                          const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
   const auto mask = to_underlying(modifiers);
   const auto hits = currentMask & mask;
 
-  if (hits != mask)
-  {
+  if (hits != mask) {
     return false;  // The specified modifiers were a combo that wasn't fully active
   }
-  else
-  {
+  else {
     const auto others = currentMask & ~hits;
     return hits && !others;
   }
@@ -57162,8 +58726,7 @@ namespace detail {
 [[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
                                                 const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
@@ -57186,17 +58749,15 @@ namespace detail {
 #ifndef CENTURION_KEYBOARD_HEADER
 #define CENTURION_KEYBOARD_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <algorithm>  // copy
 #include <array>      // array
 #include <ostream>    // ostream
 #include <string>     // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -57343,16 +58904,14 @@ namespace cen {
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -57885,8 +59444,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
@@ -57901,8 +59459,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
@@ -57937,8 +59494,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] inline auto to_string(const key_mod mods) -> std::string
 {
-  if (mods == key_mod::none)
-  {
+  if (mods == key_mod::none) {
     return "none";
   }
 
@@ -57946,10 +59502,8 @@ inline void set_modifiers(const key_mod mods) noexcept
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const key_mod mod, const str name) mutable {
-    if (mask & to_underlying(mod))
-    {
-      if (count != 0)
-      {
+    if (mask & to_underlying(mod)) {
+      if (count != 0) {
         stream << ',';
       }
 
@@ -58007,15 +59561,13 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers,
-                                    const u16 currentMask) noexcept -> bool
+[[nodiscard]] inline auto is_active(const key_mod modifiers, const u16 currentMask) noexcept
+    -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
-  else
-  {
+  else {
     return currentMask & to_underlying(modifiers);
   }
 }
@@ -58023,20 +59575,17 @@ namespace detail {
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
                                          const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
   const auto mask = to_underlying(modifiers);
   const auto hits = currentMask & mask;
 
-  if (hits != mask)
-  {
+  if (hits != mask) {
     return false;  // The specified modifiers were a combo that wasn't fully active
   }
-  else
-  {
+  else {
     const auto others = currentMask & ~hits;
     return hits && !others;
   }
@@ -58045,8 +59594,7 @@ namespace detail {
 [[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
                                                 const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
@@ -58069,16 +59617,14 @@ namespace detail {
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -58144,8 +59690,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
-      : m_code{scancode}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode}
   {}
 
   /**
@@ -58173,8 +59718,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const not_null<str> name) noexcept
-      : m_code{SDL_GetScancodeFromName(name)}
+  explicit scan_code(const not_null<str> name) noexcept : m_code{SDL_GetScancodeFromName(name)}
   {}
 
   /**
@@ -58449,8 +59993,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -58465,8 +60009,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -58535,8 +60079,7 @@ class keyboard final
    */
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
-    return check_state(code,
-                       [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
+    return check_state(code, [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
   }
 
   /**
@@ -58645,8 +60188,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc())
-      -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc()) -> bool
   {
     return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc()) {
       return !m_states[sc] && m_previous[sc];
@@ -58688,7 +60230,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_active(modifiers, SDL_GetModState());
+    return detail::is_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -58710,7 +60252,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_active(modifiers, SDL_GetModState());
+    return detail::is_only_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -58733,10 +60275,9 @@ class keyboard final
    *
    * \since 6.2.0
    */
-  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept
-      -> bool
+  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
+    return detail::is_only_any_of_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -58761,12 +60302,10 @@ class keyboard final
       noexcept(noexcept(predicate(code.get()))) -> bool
   {
     const auto sc = code.get();
-    if (sc >= 0 && sc < m_nKeys)
-    {
+    if (sc >= 0 && sc < m_nKeys) {
       return predicate(sc);
     }
-    else
-    {
+    else {
       return false;
     }
   }
@@ -59372,13 +60911,11 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 #ifndef CENTURION_MOUSE_HEADER
 #define CENTURION_MOUSE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -59394,14 +60931,12 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -59509,8 +61044,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -59718,17 +61252,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -59765,8 +61297,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -60111,18 +61642,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -60137,8 +61666,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -60147,8 +61675,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -60255,16 +61782,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -60585,8 +62110,7 @@ class mouse final
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("mouse{{x: {}, y: {}}}", mouse.x(), mouse.y());
 #else
-  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) +
-         "}";
+  return "mouse{x: " + std::to_string(mouse.x()) + ", y: " + std::to_string(mouse.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -60621,16 +62145,14 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -60696,8 +62218,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
-      : m_code{scancode}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode}
   {}
 
   /**
@@ -60725,8 +62246,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const not_null<str> name) noexcept
-      : m_code{SDL_GetScancodeFromName(name)}
+  explicit scan_code(const not_null<str> name) noexcept : m_code{SDL_GetScancodeFromName(name)}
   {}
 
   /**
@@ -61001,8 +62521,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -61017,8 +62537,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -61568,17 +63088,15 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 #ifndef CENTURION_SENSOR_HEADER
 #define CENTURION_SENSOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <array>     // array
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -61672,10 +63190,8 @@ class basic_sensor final
   explicit basic_sensor(maybe_owner<SDL_Sensor*> sensor) noexcept(!detail::is_owning<T>())
       : m_sensor{sensor}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_sensor)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_sensor) {
         throw cen_error{"Null sensor pointer!"};
       }
     }
@@ -61693,8 +63209,7 @@ class basic_sensor final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
-    if (!m_sensor)
-    {
+    if (!m_sensor) {
       throw sdl_error{};
     }
   }
@@ -61833,12 +63348,10 @@ class basic_sensor final
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};
-    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1)
-    {
+    if (SDL_SensorGetData(m_sensor, array.data(), isize(array)) != -1) {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -61875,12 +63388,10 @@ class basic_sensor final
   [[nodiscard]] static auto id(const int index) noexcept -> std::optional<sensor_id>
   {
     const auto id = SDL_SensorGetDeviceInstanceID(index);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -61923,16 +63434,13 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto non_portable_type(const int index) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto non_portable_type(const int index) noexcept -> std::optional<int>
   {
     const auto type = SDL_SensorGetDeviceNonPortableType(index);
-    if (type != -1)
-    {
+    if (type != -1) {
       return type;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -61990,8 +63498,7 @@ template <typename T>
                      str_or_na(sensor.name()));
 #else
   return "sensor{data: " + detail::address_of(sensor.get()) +
-         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) +
-         "}";
+         ", id: " + std::to_string(sensor.id()) + ", name: " + str_or_na(sensor.name()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -62089,8 +63596,7 @@ enum class sensor_type
  */
 [[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case sensor_type::invalid:
       return "invalid";
 
@@ -62257,16 +63763,13 @@ struct finger_state final
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto get_device(const int index) noexcept
-    -> std::optional<SDL_TouchID>
+[[nodiscard]] inline auto get_device(const int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0)
-  {
+  if (device != 0) {
     return device;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -62312,12 +63815,10 @@ struct finger_state final
 [[nodiscard]] inline auto get_finger(const SDL_TouchID id, const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index))
-  {
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
     return *finger;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -62483,8 +63984,7 @@ namespace touch {
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const touch_device_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const touch_device_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -62512,8 +64012,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  */
 [[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case touch_device_type::invalid:
       return "invalid";
 
@@ -62543,7 +64042,10 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -62607,17 +64109,18 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <ostream>      // ostream
-#include <string>       // string, to_string
-#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -62725,8 +64228,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -62934,17 +64436,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -62981,8 +64481,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -63327,18 +64826,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -63353,8 +64850,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -63363,8 +64859,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -63471,16 +64966,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -63515,16 +65008,14 @@ template <typename T>
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -63576,14 +65067,12 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -63658,8 +65147,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -63867,17 +65355,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -64226,18 +65712,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -64252,8 +65736,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -64262,8 +65745,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -64370,16 +65852,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -65059,10 +66539,7 @@ class basic_rect final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto rect(const T x,
-                                  const T y,
-                                  const T width,
-                                  const T height) noexcept
+[[nodiscard]] constexpr auto rect(const T x, const T y, const T width, const T height) noexcept
     -> basic_rect<typename rect_traits<T>::value_type>
 {
   using value_type = typename rect_traits<T>::value_type;
@@ -65142,16 +66619,13 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea)
-  {
+  if (!fstHasArea && !sndHasArea) {
     return {};
   }
-  else if (!fstHasArea)
-  {
+  else if (!fstHasArea) {
     return snd;
   }
-  else if (!sndHasArea)
-  {
+  else if (!sndHasArea) {
     return fst;
   }
 
@@ -65225,8 +66699,7 @@ template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
   const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
+  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
   return irect{pos, size};
 }
 
@@ -65296,13 +66769,11 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -65398,8 +66869,8 @@ void serialize(Archive& archive, vector3<T>& vector)
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
 }
@@ -65417,8 +66888,8 @@ template <typename T>
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -66099,8 +67570,7 @@ enum class power_state
  */
 [[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case power_state::unknown:
       return "unknown";
 
@@ -66232,12 +67702,10 @@ namespace cen::battery {
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft != -1)
-  {
+  if (secondsLeft != -1) {
     return seconds<int>{secondsLeft};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -66252,12 +67720,10 @@ namespace cen::battery {
  */
 [[nodiscard]] inline auto minutes_left() -> std::optional<minutes<int>>
 {
-  if (const auto secondsLeft = seconds_left())
-  {
+  if (const auto secondsLeft = seconds_left()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -66274,12 +67740,10 @@ namespace cen::battery {
 {
   int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1)
-  {
+  if (percentageLeft != -1) {
     return percentageLeft;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -66729,8 +68193,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -67064,12 +68527,10 @@ class sdl_string final
    */
   [[nodiscard]] auto copy() const -> std::string
   {
-    if (m_str)
-    {
+    if (m_str) {
       return std::string{get()};
     }
-    else
-    {
+    else {
       return std::string{};
     }
   }
@@ -67282,8 +68743,7 @@ namespace cen::counter {
 template <typename T>
 [[nodiscard]] auto now_in_seconds() noexcept(noexcept(seconds<T>{})) -> seconds<T>
 {
-  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) /
-                    static_cast<T>(frequency())};
+  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) / static_cast<T>(frequency())};
 }
 
 /**
@@ -67765,12 +69225,10 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto czstring_eq(const str lhs, const str rhs) noexcept -> bool
 {
-  if (lhs && rhs)
-  {
+  if (lhs && rhs) {
     return std::strcmp(lhs, rhs) == 0;
   }
-  else
-  {
+  else {
     return false;
   }
 }
@@ -67852,24 +69310,18 @@ class locale final
   {
     assert(language);
 
-    if (const auto* array = m_locales.get())
-    {
-      for (auto index = 0u; array[index].language; ++index)
-      {
+    if (const auto* array = m_locales.get()) {
+      for (auto index = 0u; array[index].language; ++index) {
         const auto& item = array[index];
 
-        if (country && item.country)
-        {
+        if (country && item.country) {
           if (detail::czstring_eq(language, item.language) &&
-              detail::czstring_eq(country, item.country))
-          {
+              detail::czstring_eq(country, item.country)) {
             return true;
           }
         }
-        else
-        {
-          if (detail::czstring_eq(language, item.language))
-          {
+        else {
+          if (detail::czstring_eq(language, item.language)) {
             return true;
           }
         }
@@ -67890,10 +69342,8 @@ class locale final
   {
     usize result{0};
 
-    if (const auto* array = m_locales.get())
-    {
-      for (auto index = 0u; array[index].language; ++index)
-      {
+    if (const auto* array = m_locales.get()) {
+      for (auto index = 0u; array[index].language; ++index) {
         ++result;
       }
     }
@@ -68052,8 +69502,7 @@ enum class platform_id
  */
 [[nodiscard]] inline auto to_string(const platform_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case platform_id::unknown:
       return "unknown";
 
@@ -68114,28 +69563,22 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const str platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows"))
-  {
+  if (detail::czstring_eq(platform, "Windows")) {
     return platform_id::windows;
   }
-  else if (detail::czstring_eq(platform, "Mac OS X"))
-  {
+  else if (detail::czstring_eq(platform, "Mac OS X")) {
     return platform_id::mac_osx;
   }
-  else if (detail::czstring_eq(platform, "Linux"))
-  {
+  else if (detail::czstring_eq(platform, "Linux")) {
     return platform_id::linux_os;
   }
-  else if (detail::czstring_eq(platform, "iOS"))
-  {
+  else if (detail::czstring_eq(platform, "iOS")) {
     return platform_id::ios;
   }
-  else if (detail::czstring_eq(platform, "Android"))
-  {
+  else if (detail::czstring_eq(platform, "Android")) {
     return platform_id::android;
   }
-  else
-  {
+  else {
     return platform_id::unknown;
   }
 }
@@ -68210,12 +69653,10 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 [[nodiscard]] inline auto platform_name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name != "Unknown")
-  {
+  if (name != "Unknown") {
     return name;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -68375,8 +69816,7 @@ enum class power_state
  */
 [[nodiscard]] constexpr auto to_string(const power_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case power_state::unknown:
       return "unknown";
 
@@ -68576,8 +70016,7 @@ class shared_object final
    */
   explicit shared_object(const not_null<str> object) : m_object{SDL_LoadObject(object)}
   {
-    if (!m_object)
-    {
+    if (!m_object) {
       throw sdl_error{};
     }
   }
@@ -68644,6 +70083,7 @@ class shared_object final
   std::unique_ptr<void, deleter> m_object;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   shared_object() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -69591,8 +71031,7 @@ enum class lock_status
  */
 [[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case lock_status::success:
       return "success";
 
@@ -69682,8 +71121,7 @@ class mutex final
    */
   mutex() : m_mutex{SDL_CreateMutex()}
   {
-    if (!m_mutex)
-    {
+    if (!m_mutex) {
       throw sdl_error{};
     }
   }
@@ -69747,6 +71185,7 @@ class mutex final
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   explicit mutex(int){};
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -69762,7 +71201,8 @@ class mutex final
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -69826,15 +71266,17 @@ class mutex final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
-
-#include <SDL.h>
 
 // #include "../core/exception.hpp"
 
@@ -69870,8 +71312,7 @@ class scoped_lock final
    */
   CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
-    if (!mutex.lock())
-    {
+    if (!mutex.lock()) {
       throw sdl_error{};
     }
   }
@@ -69918,8 +71359,7 @@ class condition final
  public:
   condition() : m_cond{SDL_CreateCond()}
   {
-    if (!m_cond)
-    {
+    if (!m_cond) {
       throw sdl_error{};
     }
   }
@@ -70048,8 +71488,7 @@ enum class lock_status
  */
 [[nodiscard]] constexpr auto to_string(const lock_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case lock_status::success:
       return "success";
 
@@ -70139,8 +71578,7 @@ class mutex final
    */
   mutex() : m_mutex{SDL_CreateMutex()}
   {
-    if (!m_mutex)
-    {
+    if (!m_mutex) {
       throw sdl_error{};
     }
   }
@@ -70204,6 +71642,7 @@ class mutex final
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   explicit mutex(int){};
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -70219,12 +71658,9 @@ class mutex final
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
+
+// #include "../compiler/features.hpp"
 
 // #include "../core/exception.hpp"
 
@@ -70260,8 +71696,7 @@ class scoped_lock final
    */
   CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
-    if (!mutex.lock())
-    {
+    if (!mutex.lock()) {
       throw sdl_error{};
     }
   }
@@ -70335,8 +71770,7 @@ class semaphore final
    */
   explicit semaphore(const u32 tokens) : m_semaphore{SDL_CreateSemaphore(tokens)}
   {
-    if (!m_semaphore)
-    {
+    if (!m_semaphore) {
       throw sdl_error{};
     }
   }
@@ -70428,17 +71862,15 @@ class semaphore final
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // invoke_result_t, declval
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -70460,7 +71892,6 @@ class semaphore final
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -70524,13 +71955,18 @@ class semaphore final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -70542,8 +71978,7 @@ namespace cen {
 /// \{
 
 template <typename T, typename... Args>
-concept is_stateless_callable =
-    std::default_initializable<T> && std::invocable<T, Args...>;
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
 
 /// \} End of group core
 
@@ -70583,8 +72018,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -70814,20 +72248,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -70892,8 +72323,7 @@ enum class thread_priority
  */
 [[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case thread_priority::low:
       return "low";
 
@@ -70928,8 +72358,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const thread_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const thread_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }
@@ -71059,8 +72488,7 @@ class thread final
                                            void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
-    if (!m_thread)
-    {
+    if (!m_thread) {
       throw sdl_error{};
     }
   }
@@ -71076,8 +72504,7 @@ class thread final
    */
   ~thread() noexcept
   {
-    if (joinable())
-    {
+    if (joinable()) {
       join();
     }
   }
@@ -71103,8 +72530,8 @@ class thread final
    * \since 6.2.0
    */
   template <is_stateless_callable Callable>
-  [[nodiscard]] static auto init(Callable&& task, const not_null<str> name = "thread")
-      -> thread
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
+                                 const not_null<str> name = "thread") -> thread
   {
     assert(name);
 
@@ -71112,12 +72539,10 @@ class thread final
 
     const auto wrapper = [](void* /*data*/) noexcept(isNoexcept) -> int {
       Callable callable;
-      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
-      {
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>) {
         return callable();
       }
-      else
-      {
+      else {
         callable();
         return 0;
       }
@@ -71146,7 +72571,7 @@ class thread final
    * \since 6.2.0
    */
   template <typename T = void, is_stateless_callable<T*> Callable>
-  [[nodiscard]] static auto init(Callable&& task,
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
                                  const not_null<str> name = "thread") -> thread
   {
@@ -71158,12 +72583,10 @@ class thread final
       auto* ptr = static_cast<T*>(erased);
 
       Callable callable;
-      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>)
-      {
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>) {
         return callable(ptr);
       }
-      else
-      {
+      else {
         callable(ptr);
         return 0;
       }
@@ -71220,8 +72643,7 @@ class thread final
    */
   void detach() noexcept
   {
-    if (m_joined || m_detached)
-    {
+    if (m_joined || m_detached) {
       return;
     }
 
@@ -71243,8 +72665,7 @@ class thread final
    */
   auto join() noexcept -> int
   {
-    if (m_joined || m_detached)
-    {
+    if (m_joined || m_detached) {
       return 0;
     }
 
@@ -71475,8 +72896,7 @@ enum class thread_priority
  */
 [[nodiscard]] constexpr auto to_string(const thread_priority priority) -> std::string_view
 {
-  switch (priority)
-  {
+  switch (priority) {
     case thread_priority::low:
       return "low";
 
@@ -71511,8 +72931,7 @@ enum class thread_priority
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const thread_priority priority)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const thread_priority priority) -> std::ostream&
 {
   return stream << to_string(priority);
 }
@@ -71580,12 +72999,9 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority)
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
+
+// #include "../compiler/features.hpp"
 
 // #include "lock_status.hpp"
 
@@ -71631,8 +73047,7 @@ class try_lock final
    */
   ~try_lock() noexcept
   {
-    if (m_status == lock_status::success)
-    {
+    if (m_status == lock_status::success) {
       m_mutex->unlock();
     }
   }
@@ -71939,6 +73354,343 @@ class mix_error final : public cen_error
 
 #endif  // CENTURION_EXCEPTION_HEADER
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -71970,6 +73722,52 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
+
 /// \name String conversions
 /// \{
 
@@ -71989,8 +73787,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -72055,15 +73852,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -72078,15 +73875,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -72349,8 +74146,7 @@ enum class button_order : u32
  */
 [[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
-  switch (order)
-  {
+  switch (order) {
     case button_order::left_to_right:
       return "left_to_right";
 
@@ -72396,7 +74192,18 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>      // assert
+#include <cmath>        // round, abs, fmod, lerp
+#include <iomanip>      // setfill, setw
+#include <ios>          // uppercase, hex
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <sstream>      // stringstream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -72460,25 +74267,18 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cassert>      // assert
-#include <cmath>        // round, abs, fmod, lerp
-#include <iomanip>      // setfill, setw
-#include <ios>          // uppercase, hex
-#include <optional>     // optional
-#include <ostream>      // ostream
-#include <sstream>      // stringstream
-#include <string>       // string, to_string
-#include <string_view>  // string_view
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -72831,8 +74631,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -72842,39 +74641,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -72888,7 +74679,8 @@ template <typename T>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
+#include <cmath>  // lerp
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -72952,15 +74744,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <cmath>  // lerp
 
 /// \cond FALSE
 
@@ -73024,10 +74819,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -73084,38 +74876,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -73131,19 +74917,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -73156,8 +74929,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -73175,38 +74947,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -73219,19 +74985,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -73251,8 +75004,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -73266,12 +75018,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -73293,8 +75043,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -73310,12 +75059,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -73337,8 +75084,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -73354,12 +75100,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -73603,7 +75347,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -73623,7 +75372,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -73643,7 +75398,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -73777,10 +75538,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -73862,8 +75622,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -73919,8 +75678,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -73980,11 +75738,6 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -73996,6 +75749,9 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -74057,10 +75813,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -74117,38 +75870,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -74164,19 +75911,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -74189,8 +75923,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -74208,38 +75941,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -74252,19 +75979,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -74284,8 +75998,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -74299,12 +76012,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -74326,8 +76037,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -74343,12 +76053,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -74370,8 +76078,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -74387,12 +76094,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -74636,7 +76341,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -74656,7 +76366,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -74676,7 +76392,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -74810,10 +76532,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -74895,8 +76616,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -74952,8 +76672,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -76387,12 +78106,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -76410,7 +78127,13 @@ class pointer_manager final
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cmath>        // sqrt, abs, round
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -76474,20 +78197,18 @@ class pointer_manager final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cmath>        // sqrt, abs, round
-#include <ostream>      // ostream
-#include <string>       // string, to_string
-#include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -76557,8 +78278,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -76903,18 +78623,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -76929,8 +78647,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -76939,8 +78656,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -77047,16 +78763,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -77091,12 +78805,10 @@ template <typename T>
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -77147,8 +78859,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -77491,20 +79202,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -77520,14 +79228,12 @@ namespace cen::detail {
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -77602,8 +79308,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -77811,16 +79516,14 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -77872,14 +79575,12 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -77954,8 +79655,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -78163,17 +79863,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -78522,18 +80220,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -78548,8 +80244,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -78558,8 +80253,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -78666,16 +80360,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -79355,10 +81047,7 @@ class basic_rect final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto rect(const T x,
-                                  const T y,
-                                  const T width,
-                                  const T height) noexcept
+[[nodiscard]] constexpr auto rect(const T x, const T y, const T width, const T height) noexcept
     -> basic_rect<typename rect_traits<T>::value_type>
 {
   using value_type = typename rect_traits<T>::value_type;
@@ -79438,16 +81127,13 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea)
-  {
+  if (!fstHasArea && !sndHasArea) {
     return {};
   }
-  else if (!fstHasArea)
-  {
+  else if (!fstHasArea) {
     return snd;
   }
-  else if (!sndHasArea)
-  {
+  else if (!sndHasArea) {
     return fst;
   }
 
@@ -79521,8 +81207,7 @@ template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
   const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
+  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
   return irect{pos, size};
 }
 
@@ -79599,6 +81284,10 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+
+// #include "blend_op.hpp"
+
 
 namespace cen {
 
@@ -79630,6 +81319,52 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
+
 /// \name String conversions
 /// \{
 
@@ -79649,8 +81384,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -79715,15 +81449,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -79738,15 +81472,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -79765,15 +81499,13 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
 #define CENTURION_PIXEL_FORMAT_INFO_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -79927,8 +81659,7 @@ enum class pixel_format : u32
  */
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
-  switch (format)
-  {
+  switch (format) {
     case pixel_format::unknown:
       return "unknown";
 
@@ -80236,8 +81967,7 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
-    if (!m_format)
-    {
+    if (!m_format) {
       throw sdl_error{};
     }
   }
@@ -80448,8 +82178,7 @@ template <typename T>
  * \since 6.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }
@@ -80558,8 +82287,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw img_error{};
     }
   }
@@ -80601,8 +82329,7 @@ class basic_surface final
                                                  0,
                                                  to_underlying(pixelFormat))}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw sdl_error{};
     }
   }
@@ -80682,12 +82409,10 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     }
-    else
-    {
+    else {
       m_surface = other.get();
     }
   }
@@ -80715,14 +82440,11 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
-    if (this != &other)
-    {
-      if constexpr (detail::is_owning<T>())
-      {
+    if (this != &other) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       }
-      else
-      {
+      else {
         m_surface = other.get();
       }
     }
@@ -80843,12 +82565,10 @@ class basic_surface final
    */
   auto lock() noexcept -> result
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       return SDL_LockSurface(m_surface) == 0;
     }
-    else
-    {
+    else {
       return true;
     }
   }
@@ -80862,8 +82582,7 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -80900,16 +82619,14 @@ class basic_surface final
    */
   void set_pixel(const ipoint pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock())
-    {
+    if (!in_bounds(pixel) || !lock()) {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -81036,14 +82753,12 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
-    {
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
       basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -81283,8 +82998,7 @@ class basic_surface final
    */
   [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
-             point.y() >= height());
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
   }
 
   /**
@@ -81299,17 +83013,16 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface))
-    {
+    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
       return copy;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   basic_surface() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -81445,8 +83158,7 @@ enum class system_cursor
  */
 [[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
-  switch (cursor)
-  {
+  switch (cursor) {
     case system_cursor::arrow:
       return "arrow";
 
@@ -81629,8 +83341,7 @@ class basic_cursor final
   explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
-    if (!m_cursor)
-    {
+    if (!m_cursor) {
       throw sdl_error{};
     }
   }
@@ -81650,8 +83361,7 @@ class basic_cursor final
   basic_cursor(const surface& surface, const ipoint hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
-    if (!m_cursor)
-    {
+    if (!m_cursor) {
       throw sdl_error{};
     }
   }
@@ -81902,8 +83612,7 @@ enum class flash_op
  */
 [[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
-  switch (op)
-  {
+  switch (op) {
     case flash_op::cancel:
       return "cancel";
 
@@ -81956,11 +83665,6 @@ inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
 
 #ifndef CENTURION_NO_SDL_TTF
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL_ttf.h>
 
 #include <cassert>      // assert
@@ -81969,6 +83673,9 @@ inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -82137,8 +83844,7 @@ class unicode_string final
    */
   void pop_back()
   {
-    if (!empty())
-    {
+    if (!empty()) {
       m_data.erase(m_data.end() - 2);
     }
   }
@@ -82332,17 +84038,14 @@ class unicode_string final
 [[nodiscard]] inline auto operator==(const unicode_string& lhs, const unicode_string& rhs)
     -> bool
 {
-  if (lhs.size() != rhs.size())
-  {
+  if (lhs.size() != rhs.size()) {
     return false;
   }
 
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index)
-  {
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
     const auto a = lhs.at(index);
     const auto b = rhs.at(index);
-    if (a != b)
-    {
+    if (a != b) {
       return false;
     }
   }
@@ -82462,8 +84165,7 @@ enum class font_hint : int
  */
 [[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
-  switch (hint)
-  {
+  switch (hint) {
     case font_hint::normal:
       return "normal";
 
@@ -82538,14 +84240,12 @@ class font final
   {
     assert(file);
 
-    if (size <= 0)
-    {
+    if (size <= 0) {
       throw cen_error{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font)
-    {
+    if (!m_font) {
       throw ttf_error{};
     }
   }
@@ -82588,12 +84288,10 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold)
-    {
+    if (bold) {
       add_style(TTF_STYLE_BOLD);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -82607,12 +84305,10 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic)
-    {
+    if (italic) {
       add_style(TTF_STYLE_ITALIC);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -82626,12 +84322,10 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined)
-    {
+    if (underlined) {
       add_style(TTF_STYLE_UNDERLINE);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -82645,12 +84339,10 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough)
-    {
+    if (strikethrough) {
       add_style(TTF_STYLE_STRIKETHROUGH);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -82979,8 +84671,7 @@ class font final
     {
       return metrics;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83006,12 +84697,10 @@ class font final
     assert(str);
 
     iarea size{};
-    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1)
-    {
+    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1) {
       return size;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83026,8 +84715,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_size(const std::string& str) const noexcept
-      -> std::optional<iarea>
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> std::optional<iarea>
   {
     return string_size(str.c_str());
   }
@@ -83042,15 +84730,12 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->width;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83065,8 +84750,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_width(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_width(str.c_str());
   }
@@ -83084,12 +84768,10 @@ class font final
   [[nodiscard]] auto string_height(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->height;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83104,8 +84786,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_height(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_height(str.c_str());
   }
@@ -83278,11 +84959,6 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 
 #ifndef CENTURION_NO_SDL_TTF
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL_ttf.h>
 
 #include <cassert>      // assert
@@ -83291,6 +84967,9 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -83368,8 +85047,7 @@ enum class font_hint : int
  */
 [[nodiscard]] constexpr auto to_string(const font_hint hint) -> std::string_view
 {
-  switch (hint)
-  {
+  switch (hint) {
     case font_hint::normal:
       return "normal";
 
@@ -83444,14 +85122,12 @@ class font final
   {
     assert(file);
 
-    if (size <= 0)
-    {
+    if (size <= 0) {
       throw cen_error{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
-    if (!m_font)
-    {
+    if (!m_font) {
       throw ttf_error{};
     }
   }
@@ -83494,12 +85170,10 @@ class font final
    */
   void set_bold(const bool bold) noexcept
   {
-    if (bold)
-    {
+    if (bold) {
       add_style(TTF_STYLE_BOLD);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_BOLD);
     }
   }
@@ -83513,12 +85187,10 @@ class font final
    */
   void set_italic(const bool italic) noexcept
   {
-    if (italic)
-    {
+    if (italic) {
       add_style(TTF_STYLE_ITALIC);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_ITALIC);
     }
   }
@@ -83532,12 +85204,10 @@ class font final
    */
   void set_underlined(const bool underlined) noexcept
   {
-    if (underlined)
-    {
+    if (underlined) {
       add_style(TTF_STYLE_UNDERLINE);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_UNDERLINE);
     }
   }
@@ -83551,12 +85221,10 @@ class font final
    */
   void set_strikethrough(const bool strikethrough) noexcept
   {
-    if (strikethrough)
-    {
+    if (strikethrough) {
       add_style(TTF_STYLE_STRIKETHROUGH);
     }
-    else
-    {
+    else {
       remove_style(TTF_STYLE_STRIKETHROUGH);
     }
   }
@@ -83885,8 +85553,7 @@ class font final
     {
       return metrics;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83912,12 +85579,10 @@ class font final
     assert(str);
 
     iarea size{};
-    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1)
-    {
+    if (TTF_SizeText(m_font.get(), str, &size.width, &size.height) != -1) {
       return size;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83932,8 +85597,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_size(const std::string& str) const noexcept
-      -> std::optional<iarea>
+  [[nodiscard]] auto string_size(const std::string& str) const noexcept -> std::optional<iarea>
   {
     return string_size(str.c_str());
   }
@@ -83948,15 +85612,12 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const not_null<str> str) const noexcept -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->width;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -83971,8 +85632,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_width(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_width(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_width(str.c_str());
   }
@@ -83990,12 +85650,10 @@ class font final
   [[nodiscard]] auto string_height(const not_null<str> str) const noexcept
       -> std::optional<int>
   {
-    if (const auto size = string_size(str))
-    {
+    if (const auto size = string_size(str)) {
       return size->height;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -84010,8 +85668,7 @@ class font final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto string_height(const std::string& str) const noexcept
-      -> std::optional<int>
+  [[nodiscard]] auto string_height(const std::string& str) const noexcept -> std::optional<int>
   {
     return string_height(str.c_str());
   }
@@ -84167,12 +85824,10 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -84268,8 +85923,7 @@ enum class scale_mode
  */
 [[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case scale_mode::nearest:
       return "nearest";
 
@@ -84321,15 +85975,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -84344,15 +85998,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -84425,8 +86079,7 @@ enum class texture_access : int
  */
 [[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
-  switch (access)
-  {
+  switch (access) {
     case texture_access::no_lock:
       return "no_lock";
 
@@ -84609,8 +86262,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<str> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw img_error{};
     }
   }
@@ -84650,8 +86302,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -84681,8 +86332,7 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -84719,8 +86369,7 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels))
-    {
+    if (!texture.lock(&pixels)) {
       throw sdl_error{};
     }
 
@@ -84771,16 +86420,14 @@ class basic_texture final
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch))
-    {
+    if (!lock(&pixels, &pitch)) {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -85113,15 +86760,10 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
   {
-    if (pitch)
-    {
-      return SDL_LockTexture(m_texture,
-                             nullptr,
-                             reinterpret_cast<void**>(pixels),
-                             pitch) == 0;
+    if (pitch) {
+      return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;
     }
-    else
-    {
+    else {
       int dummyPitch;
       return SDL_LockTexture(m_texture,
                              nullptr,
@@ -85297,9 +86939,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_utf8(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_blended_utf8(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_utf8(string, get_font()));
@@ -85445,9 +87085,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const not_null<str> string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
@@ -85458,9 +87096,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const std::string& string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_blended_latin1(id, string.c_str(), renderer);
   }
@@ -85562,9 +87198,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_latin1(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_solid_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
@@ -85673,9 +87307,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_unicode(const id_type id,
-                           const unicode_string& string,
-                           Renderer& renderer)
+  void store_solid_unicode(const id_type id, const unicode_string& string, Renderer& renderer)
   {
     store(id, renderer.render_solid_unicode(string, get_font()));
   }
@@ -85728,12 +87360,10 @@ class font_cache final
   [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end())
-    {
+    if (iterator != m_strings.end()) {
       return &iterator->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -85759,13 +87389,11 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph))
-    {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
       return;
     }
 
-    glyph_data data{create_glyph_texture(renderer, glyph),
-                    m_font.get_metrics(glyph).value()};
+    glyph_data data{create_glyph_texture(renderer, glyph), m_font.get_metrics(glyph).value()};
     m_glyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -85789,8 +87417,7 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch)
-    {
+    for (auto ch = begin; ch < end; ++ch) {
       add_glyph(renderer, ch);
     }
   }
@@ -85916,12 +87543,10 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
-    {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
       return &it->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -85966,8 +87591,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph)
-      -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph) -> texture
   {
     const auto color = renderer.get_color().get();
     const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
@@ -85976,8 +87600,7 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end())
-    {
+    if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));
@@ -86043,12 +87666,10 @@ namespace cen {
     -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info{};
-  if (SDL_GetRenderDriverInfo(index, &info) == 0)
-  {
+  if (SDL_GetRenderDriverInfo(index, &info) == 0) {
     return info;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -86063,11 +87684,6 @@ namespace cen {
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <algorithm>    // max, any_of
@@ -86079,6 +87695,8 @@ namespace cen {
 #include <utility>      // move
 #include <vector>       // vector
 
+// #include "../compiler/features.hpp"
+
 // #include "../core/exception.hpp"
 
 // #include "../core/integers.hpp"
@@ -86089,10 +87707,7 @@ namespace cen {
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
-// clang-format off
 // #include "../compiler/features.hpp"
-
-// clang-format on
 
 // #include "../core/integers.hpp"
 #ifndef CENTURION_INTEGERS_HEADER
@@ -86376,8 +87991,7 @@ enum class button_order : u32
  */
 [[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
-  switch (order)
-  {
+  switch (order) {
     case button_order::left_to_right:
       return "left_to_right";
 
@@ -87543,8 +89157,7 @@ enum class message_box_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case message_box_type::error:
       return "error";
 
@@ -87593,17 +89206,15 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -87734,8 +89345,7 @@ enum class flash_op
  */
 [[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
-  switch (op)
-  {
+  switch (op) {
     case flash_op::cancel:
       return "cancel";
 
@@ -87894,10 +89504,8 @@ class basic_window final
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_window)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_window) {
         throw cen_error{"Cannot create window from null pointer!"};
       }
     }
@@ -87927,12 +89535,10 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1)
-    {
+    if (size.width < 1) {
       throw cen_error{"Bad window width!"};
     }
-    else if (size.height < 1)
-    {
+    else if (size.height < 1) {
       throw cen_error{"Bad window height!"};
     }
 
@@ -87942,8 +89548,7 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     flags));
-    if (!m_window)
-    {
+    if (!m_window) {
       throw sdl_error{};
     }
   }
@@ -88932,12 +90537,10 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -89602,8 +91205,7 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(const message_box_type type,
-                                               const button_order buttonOrder) noexcept
-      -> u32
+                                               const button_order buttonOrder) noexcept -> u32
   {
     return to_underlying(type) | to_underlying(buttonOrder);
   }
@@ -89642,13 +91244,11 @@ class message_box final
     buttonData.reserve(8);
 #endif  // CENTURION_HAS_STD_MEMORY_RESOURCE
 
-    if (m_buttons.empty())
-    {
+    if (m_buttons.empty()) {
       add_button(0, "OK", default_button::return_key);
     }
 
-    for (const auto& button : m_buttons)
-    {
+    for (const auto& button : m_buttons) {
       buttonData.emplace_back(button.convert());
     }
 
@@ -89656,17 +91256,14 @@ class message_box final
     data.numbuttons = isize(buttonData);
 
     button_id button{-1};
-    if (SDL_ShowMessageBox(&data, &button) == -1)
-    {
+    if (SDL_ShowMessageBox(&data, &button) == -1) {
       throw sdl_error{};
     }
 
-    if (button != -1)
-    {
+    if (button != -1) {
       return button;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -89692,8 +91289,7 @@ class message_box final
 [[nodiscard]] constexpr auto to_string(const message_box::default_button button)
     -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case message_box::default_button::return_key:
       return "return_key";
 
@@ -89721,8 +91317,7 @@ class message_box final
  */
 [[nodiscard]] constexpr auto to_string(const message_box::color_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case message_box::color_id::background:
       return "background";
 
@@ -89778,8 +91373,7 @@ inline auto operator<<(std::ostream& stream, const message_box::default_button b
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const message_box::color_id id)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const message_box::color_id id) -> std::ostream&
 {
   return stream << to_string(id);
 }
@@ -89800,16 +91394,14 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator==(const message_box::default_button lhs,
-                                        const SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
 
 /// \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator==(const SDL_MessageBoxButtonFlags lhs,
-                                        const message_box::default_button rhs) noexcept
-    -> bool
+                                        const message_box::default_button rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -89825,16 +91417,14 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
  * \since 3.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const message_box::default_button lhs,
-                                        const SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
 [[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxButtonFlags lhs,
-                                        const message_box::default_button rhs) noexcept
-    -> bool
+                                        const message_box::default_button rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -89862,8 +91452,7 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 
 /// \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator==(const message_box::color_id lhs,
-                                        const SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -89886,8 +91475,7 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id)
 
 /// \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
 [[nodiscard]] constexpr auto operator!=(const message_box::color_id lhs,
-                                        const SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+                                        const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -89954,8 +91542,7 @@ enum class message_box_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case message_box_type::error:
       return "error";
 
@@ -90007,7 +91594,6 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <ostream>      // ostream
 #include <string_view>  // string_view
@@ -90307,8 +91893,7 @@ enum class gl_attribute
  */
 [[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
-  switch (attr)
-  {
+  switch (attr) {
     case gl_attribute::red_size:
       return "red_size";
 
@@ -90433,7 +92018,6 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
@@ -90471,8 +92055,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -91002,12 +92585,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -91025,7 +92606,13 @@ class pointer_manager final
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, to_string
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -91089,20 +92676,18 @@ class pointer_manager final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -91563,8 +93148,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -92004,20 +93588,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -92445,12 +94026,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -92468,7 +94047,10 @@ class pointer_manager final
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -92532,17 +94114,18 @@ class pointer_manager final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <ostream>      // ostream
-#include <string>       // string, to_string
-#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -92650,8 +94233,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -92859,16 +94441,14 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -92905,8 +94485,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -92954,14 +94533,12 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -93036,8 +94613,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -93245,17 +94821,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -93604,18 +95178,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -93630,8 +95202,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -93640,8 +95211,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -93748,16 +95318,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -94437,10 +96005,7 @@ class basic_rect final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto rect(const T x,
-                                  const T y,
-                                  const T width,
-                                  const T height) noexcept
+[[nodiscard]] constexpr auto rect(const T x, const T y, const T width, const T height) noexcept
     -> basic_rect<typename rect_traits<T>::value_type>
 {
   using value_type = typename rect_traits<T>::value_type;
@@ -94520,16 +96085,13 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea)
-  {
+  if (!fstHasArea && !sndHasArea) {
     return {};
   }
-  else if (!fstHasArea)
-  {
+  else if (!fstHasArea) {
     return snd;
   }
-  else if (!sndHasArea)
-  {
+  else if (!sndHasArea) {
     return fst;
   }
 
@@ -94603,8 +96165,7 @@ template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
   const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
+  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
   return irect{pos, size};
 }
 
@@ -94725,8 +96286,7 @@ enum class flash_op
  */
 [[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
-  switch (op)
-  {
+  switch (op) {
     case flash_op::cancel:
       return "cancel";
 
@@ -94901,8 +96461,7 @@ enum class pixel_format : u32
  */
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
-  switch (format)
-  {
+  switch (format) {
     case pixel_format::unknown:
       return "unknown";
 
@@ -95122,12 +96681,10 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -95208,6 +96765,343 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -95239,6 +97133,52 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
+
 /// \name String conversions
 /// \{
 
@@ -95258,8 +97198,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -95324,15 +97263,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -95347,15 +97286,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -95372,11 +97311,6 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -95388,6 +97322,9 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -95553,8 +97490,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -95564,39 +97500,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -95610,7 +97538,8 @@ template <typename T>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
+#include <cmath>  // lerp
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -95674,15 +97603,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <cmath>  // lerp
 
 /// \cond FALSE
 
@@ -95746,10 +97678,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -95806,38 +97735,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -95853,19 +97776,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -95878,8 +97788,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -95897,38 +97806,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -95941,19 +97844,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -95973,8 +97863,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -95988,12 +97877,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -96015,8 +97902,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -96032,12 +97918,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -96059,8 +97943,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -96076,12 +97959,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -96325,7 +98206,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -96345,7 +98231,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -96365,7 +98257,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -96499,10 +98397,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -96584,8 +98481,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -96641,8 +98537,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -96698,15 +98593,13 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
 #define CENTURION_PIXEL_FORMAT_INFO_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -96826,8 +98719,7 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
-    if (!m_format)
-    {
+    if (!m_format) {
       throw sdl_error{};
     }
   }
@@ -97038,8 +98930,7 @@ template <typename T>
  * \since 6.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }
@@ -97148,8 +99039,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw img_error{};
     }
   }
@@ -97191,8 +99081,7 @@ class basic_surface final
                                                  0,
                                                  to_underlying(pixelFormat))}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw sdl_error{};
     }
   }
@@ -97272,12 +99161,10 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     }
-    else
-    {
+    else {
       m_surface = other.get();
     }
   }
@@ -97305,14 +99192,11 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
-    if (this != &other)
-    {
-      if constexpr (detail::is_owning<T>())
-      {
+    if (this != &other) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       }
-      else
-      {
+      else {
         m_surface = other.get();
       }
     }
@@ -97433,12 +99317,10 @@ class basic_surface final
    */
   auto lock() noexcept -> result
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       return SDL_LockSurface(m_surface) == 0;
     }
-    else
-    {
+    else {
       return true;
     }
   }
@@ -97452,8 +99334,7 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -97490,16 +99371,14 @@ class basic_surface final
    */
   void set_pixel(const ipoint pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock())
-    {
+    if (!in_bounds(pixel) || !lock()) {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -97626,14 +99505,12 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
-    {
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
       basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -97873,8 +99750,7 @@ class basic_surface final
    */
   [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
-             point.y() >= height());
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
   }
 
   /**
@@ -97889,17 +99765,16 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface))
-    {
+    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
       return copy;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   basic_surface() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -98069,10 +99944,8 @@ class basic_window final
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_window)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_window) {
         throw cen_error{"Cannot create window from null pointer!"};
       }
     }
@@ -98102,12 +99975,10 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1)
-    {
+    if (size.width < 1) {
       throw cen_error{"Bad window width!"};
     }
-    else if (size.height < 1)
-    {
+    else if (size.height < 1) {
       throw cen_error{"Bad window height!"};
     }
 
@@ -98117,8 +99988,7 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     flags));
-    if (!m_window)
-    {
+    if (!m_window) {
       throw sdl_error{};
     }
   }
@@ -99107,12 +100977,10 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -99410,10 +101278,8 @@ class basic_context final
   explicit basic_context(basic_window<U>& window) noexcept(!detail::is_owning<T>())
       : m_context{SDL_GL_CreateContext(window.get())}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_context)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_context) {
         throw sdl_error{};
       }
     }
@@ -99492,7 +101358,6 @@ using gl_context_handle = gl::context_handle;
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>      // assert
 #include <optional>     // optional
@@ -99608,7 +101473,10 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -99672,17 +101540,18 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <ostream>      // ostream
-#include <string>       // string, to_string
-#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -99790,8 +101659,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -99999,12 +101867,10 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -100042,17 +101908,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -100401,18 +102265,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -100427,8 +102289,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -100437,8 +102298,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -100545,16 +102405,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -100645,8 +102503,7 @@ enum class scale_mode
  */
 [[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case scale_mode::nearest:
       return "nearest";
 
@@ -100698,15 +102555,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -100721,15 +102578,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -100802,8 +102659,7 @@ enum class texture_access : int
  */
 [[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
-  switch (access)
-  {
+  switch (access) {
     case texture_access::no_lock:
       return "no_lock";
 
@@ -100986,8 +102842,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<str> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw img_error{};
     }
   }
@@ -101027,8 +102882,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -101058,8 +102912,7 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -101096,8 +102949,7 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels))
-    {
+    if (!texture.lock(&pixels)) {
       throw sdl_error{};
     }
 
@@ -101148,16 +103000,14 @@ class basic_texture final
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch))
-    {
+    if (!lock(&pixels, &pitch)) {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -101490,15 +103340,10 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
   {
-    if (pitch)
-    {
-      return SDL_LockTexture(m_texture,
-                             nullptr,
-                             reinterpret_cast<void**>(pixels),
-                             pitch) == 0;
+    if (pitch) {
+      return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;
     }
-    else
-    {
+    else {
       int dummyPitch;
       return SDL_LockTexture(m_texture,
                              nullptr,
@@ -101582,7 +103427,6 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <ostream>      // ostream
 #include <string_view>  // string_view
@@ -101656,8 +103500,7 @@ enum class gl_attribute
  */
 [[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
-  switch (attr)
-  {
+  switch (attr) {
     case gl_attribute::red_size:
       return "red_size";
 
@@ -101782,7 +103625,6 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
@@ -101869,10 +103711,8 @@ class basic_context final
   explicit basic_context(basic_window<U>& window) noexcept(!detail::is_owning<T>())
       : m_context{SDL_GL_CreateContext(window.get())}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_context)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_context) {
         throw sdl_error{};
       }
     }
@@ -101983,11 +103823,9 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const gl_swap_interval interval) -> std::string_view
 {
-  switch (interval)
-  {
+  switch (interval) {
     case gl_swap_interval::immediate:
       return "immediate";
 
@@ -102019,8 +103857,7 @@ enum class gl_swap_interval : int
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const gl_swap_interval interval)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const gl_swap_interval interval) -> std::ostream&
 {
   return stream << to_string(interval);
 }
@@ -102129,12 +103966,10 @@ inline auto set(const gl_attribute attr, const int value) noexcept -> result
 inline auto get(const gl_attribute attr) noexcept -> std::optional<int>
 {
   int value{};
-  if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0)
-  {
+  if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(attr), &value) == 0) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -102210,8 +104045,7 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
 }
 
 /// \copydoc is_extension_supported()
-[[nodiscard]] inline auto is_extension_supported(const std::string& extension) noexcept
-    -> bool
+[[nodiscard]] inline auto is_extension_supported(const std::string& extension) noexcept -> bool
 {
   return is_extension_supported(extension.c_str());
 }
@@ -102233,12 +104067,10 @@ auto bind(basic_texture<T>& texture) noexcept -> std::optional<farea>
 {
   float width{};
   float height{};
-  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0)
-  {
+  if (SDL_GL_BindTexture(texture.get(), &width, &height) == 0) {
     return farea{width, height};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -102275,7 +104107,10 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 
 #ifndef CENTURION_NO_OPENGL
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>  // assert
+
 // #include "../../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -102339,18 +104174,17 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
-
-#include <SDL.h>
-#include <SDL_opengl.h>
-
-#include <cassert>  // assert
 
 // #include "../../core/exception.hpp"
 
@@ -102386,8 +104220,7 @@ class gl_library final
    */
   CENTURION_NODISCARD_CTOR explicit gl_library(const str path = nullptr)
   {
-    if (SDL_GL_LoadLibrary(path) == -1)
-    {
+    if (SDL_GL_LoadLibrary(path) == -1) {
       throw sdl_error{};
     }
   }
@@ -102443,17 +104276,15 @@ class gl_library final
 #ifndef CENTURION_PALETTE_HEADER
 #define CENTURION_PALETTE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -102509,8 +104340,7 @@ class palette final
    */
   explicit palette(const int nColors) : m_palette{SDL_AllocPalette(nColors)}
   {
-    if (!m_palette)
-    {
+    if (!m_palette) {
       throw sdl_error{};
     }
   }
@@ -102550,12 +104380,10 @@ class palette final
    */
   [[nodiscard]] auto at(const int index) const -> cen::color
   {
-    if (index >= 0 && index < size())
-    {
+    if (index >= 0 && index < size()) {
       return cen::color{m_palette->colors[index]};
     }
-    else
-    {
+    else {
       throw cen_error{"Palette index out of bounds!"};
     }
   }
@@ -102841,8 +104669,7 @@ enum class pixel_format : u32
  */
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
-  switch (format)
-  {
+  switch (format) {
     case pixel_format::unknown:
       return "unknown";
 
@@ -103062,15 +104889,13 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
 #define CENTURION_PIXEL_FORMAT_INFO_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -103190,8 +105015,7 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
-    if (!m_format)
-    {
+    if (!m_format) {
       throw sdl_error{};
     }
   }
@@ -103402,8 +105226,7 @@ template <typename T>
  * \since 6.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }
@@ -103420,11 +105243,6 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -103436,6 +105254,9 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -103593,9 +105414,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_utf8(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_blended_utf8(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_utf8(string, get_font()));
@@ -103741,9 +105560,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const not_null<str> string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
@@ -103754,9 +105571,7 @@ class font_cache final
    * \since 5.3.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id,
-                            const std::string& string,
-                            Renderer& renderer)
+  void store_blended_latin1(const id_type id, const std::string& string, Renderer& renderer)
   {
     store_blended_latin1(id, string.c_str(), renderer);
   }
@@ -103858,9 +105673,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_latin1(const id_type id,
-                          const not_null<str> string,
-                          Renderer& renderer)
+  void store_solid_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));
@@ -103969,9 +105782,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_unicode(const id_type id,
-                           const unicode_string& string,
-                           Renderer& renderer)
+  void store_solid_unicode(const id_type id, const unicode_string& string, Renderer& renderer)
   {
     store(id, renderer.render_solid_unicode(string, get_font()));
   }
@@ -104024,12 +105835,10 @@ class font_cache final
   [[nodiscard]] auto try_get_stored(const id_type id) const noexcept -> const texture*
   {
     const auto iterator = m_strings.find(id);
-    if (iterator != m_strings.end())
-    {
+    if (iterator != m_strings.end()) {
       return &iterator->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -104055,13 +105864,11 @@ class font_cache final
   template <typename Renderer>
   void add_glyph(Renderer& renderer, const unicode glyph)
   {
-    if (has(glyph) || !m_font.is_glyph_provided(glyph))
-    {
+    if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
       return;
     }
 
-    glyph_data data{create_glyph_texture(renderer, glyph),
-                    m_font.get_metrics(glyph).value()};
+    glyph_data data{create_glyph_texture(renderer, glyph), m_font.get_metrics(glyph).value()};
     m_glyphs.try_emplace(glyph, std::move(data));
   }
 
@@ -104085,8 +105892,7 @@ class font_cache final
   template <typename Renderer>
   void add_range(Renderer& renderer, const unicode begin, const unicode end)
   {
-    for (auto ch = begin; ch < end; ++ch)
-    {
+    for (auto ch = begin; ch < end; ++ch) {
       add_glyph(renderer, ch);
     }
   }
@@ -104212,12 +106018,10 @@ class font_cache final
    */
   [[nodiscard]] auto try_at(const unicode glyph) const -> const glyph_data*
   {
-    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end())
-    {
+    if (const auto it = m_glyphs.find(glyph); it != m_glyphs.end()) {
       return &it->second;
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -104262,8 +106066,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph)
-      -> texture
+  [[nodiscard]] auto create_glyph_texture(Renderer& renderer, const unicode glyph) -> texture
   {
     const auto color = renderer.get_color().get();
     const surface src{TTF_RenderGlyph_Blended(m_font.get(), glyph, color)};
@@ -104272,8 +106075,7 @@ class font_cache final
 
   void store(const id_type id, texture&& texture)
   {
-    if (const auto it = m_strings.find(id); it != m_strings.end())
-    {
+    if (const auto it = m_strings.find(id); it != m_strings.end()) {
       m_strings.erase(it);
     }
     m_strings.try_emplace(id, std::move(texture));
@@ -104417,8 +106219,7 @@ class basic_renderer final
   explicit basic_renderer(const Window& window, const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get())
-    {
+    if (!get()) {
       throw sdl_error{};
     }
   }
@@ -104488,13 +106289,11 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock())
-    {
+    if (!image.lock()) {
       throw sdl_error{};
     }
 
-    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
-    {
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1) {
       throw sdl_error{};
     }
 
@@ -104551,12 +106350,10 @@ class basic_renderer final
   template <typename U>
   auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawRectF(get(), rect.data()) == 0;
     }
   }
@@ -104575,12 +106372,10 @@ class basic_renderer final
   template <typename U>
   auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderFillRectF(get(), rect.data()) == 0;
     }
   }
@@ -104598,15 +106393,12 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
-      -> result
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
@@ -104638,22 +106430,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty())
-    {
+    if (!container.empty()) {
       const auto& front = container.front();
       const auto* first = front.data();
 
-      if constexpr (std::is_same_v<value_t, int>)
-      {
+      if constexpr (std::is_same_v<value_t, int>) {
         return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
       }
-      else
-      {
+      else {
         return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
       }
     }
-    else
-    {
+    else {
       return failure;
     }
   }
@@ -104672,12 +106460,10 @@ class basic_renderer final
   template <typename U>
   auto draw_point(const basic_point<U>& point) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
@@ -104704,25 +106490,21 @@ class basic_renderer final
     const auto cx = static_cast<float>(position.x()) - 0.5f;
     const auto cy = static_cast<float>(position.y()) - 0.5f;
 
-    while (x >= y)
-    {
+    while (x >= y) {
       draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
       draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
 
-      if (x != 0)
-      {
+      if (x != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
         draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
       }
 
-      if (y != 0)
-      {
+      if (y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
       }
 
-      if (x != 0 && y != 0)
-      {
+      if (x != 0 && y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
       }
@@ -104731,8 +106513,7 @@ class basic_renderer final
       ++y;
       error += y;
 
-      if (error >= 0)
-      {
+      if (error >= 0) {
         --x;
         error -= x;
         error -= x;
@@ -104753,8 +106534,7 @@ class basic_renderer final
     const auto cx = center.x();
     const auto cy = center.y();
 
-    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
-    {
+    for (auto dy = 1.0f; dy <= radius; dy += 1.0f) {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
       draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
       draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
@@ -104891,8 +106671,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
@@ -104902,8 +106681,7 @@ class basic_renderer final
    * \see render_blended_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font) -> texture
   {
     return render_blended_utf8(str.c_str(), font);
   }
@@ -105020,8 +106798,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
@@ -105031,8 +106808,7 @@ class basic_renderer final
    * \see render_solid_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font) -> texture
   {
     return render_solid_utf8(str.c_str(), font);
   }
@@ -105070,8 +106846,7 @@ class basic_renderer final
    * \see render_blended_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font) -> texture
   {
     return render_blended_latin1(str.c_str(), font);
   }
@@ -105188,8 +106963,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
@@ -105199,8 +106973,7 @@ class basic_renderer final
    * \see render_solid_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font) -> texture
   {
     return render_solid_latin1(str.c_str(), font);
   }
@@ -105228,8 +107001,7 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -105260,10 +107032,8 @@ class basic_renderer final
                                                     const font& font,
                                                     const u32 wrap) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                                         str.data(),
-                                                         get_color().get(),
-                                                         wrap));
+    return render_text(
+        TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), get_color().get(), wrap));
   }
 
   /**
@@ -105292,10 +107062,8 @@ class basic_renderer final
                                            const font& font,
                                            const color& background) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
-                                                str.data(),
-                                                get_color().get(),
-                                                background.get()));
+    return render_text(
+        TTF_RenderUNICODE_Shaded(font.get(), str.data(), get_color().get(), background.get()));
   }
 
   /**
@@ -105321,8 +107089,7 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -105339,11 +107106,9 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
-      -> int
+  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position) -> int
   {
-    if (const auto* data = cache.try_at(glyph))
-    {
+    if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -105356,8 +107121,7 @@ class basic_renderer final
 
       return x + metrics.advance;
     }
-    else
-    {
+    else {
       return position.x();
     }
   }
@@ -105391,15 +107155,12 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str)
-    {
-      if (glyph == '\n')
-      {
+    for (const unicode glyph : str) {
+      if (glyph == '\n') {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
       }
-      else
-      {
+      else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -105430,14 +107191,12 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
       -> result
   {
-    if constexpr (basic_point<P>::isFloating)
-    {
+    if constexpr (basic_point<P>::isFloating) {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
-    else
-    {
+    else {
       const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
@@ -105460,12 +107219,10 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
     }
   }
@@ -105492,13 +107249,10 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
-             0;
+    if constexpr (basic_rect<P>::isFloating) {
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
     }
   }
@@ -105525,8 +107279,7 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -105535,8 +107288,7 @@ class basic_renderer final
                                nullptr,
                                SDL_FLIP_NONE) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -105577,8 +107329,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -105587,8 +107338,7 @@ class basic_renderer final
                                center.data(),
                                SDL_FLIP_NONE) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -105631,8 +107381,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -105641,8 +107390,7 @@ class basic_renderer final
                                center.data(),
                                flip) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -105696,8 +107444,8 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept -> result
+  auto render_t(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
   {
     return render(texture, translate(destination));
   }
@@ -105874,8 +107622,7 @@ class basic_renderer final
   void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::move(font));
@@ -105898,8 +107645,7 @@ class basic_renderer final
   void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -106247,12 +107993,10 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area())
-    {
+    if (!rect.has_area()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return rect;
     }
   }
@@ -106388,12 +108132,10 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       return m_renderer.ptr.get();
     }
-    else
-    {
+    else {
       return m_renderer;
     }
   }
@@ -106465,8 +108207,7 @@ class basic_renderer final
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
+  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept -> basic_point<U>
   {
     using value_type = typename basic_point<U>::value_type;
 
@@ -106520,17 +108261,15 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 #ifndef CENTURION_RENDERER_INFO_HEADER
 #define CENTURION_RENDERER_INFO_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -106613,11 +108352,6 @@ namespace cen {
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>        // assert
@@ -106629,6 +108363,9 @@ namespace cen {
 #include <type_traits>    // conditional_t
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -106795,8 +108532,7 @@ class basic_renderer final
   explicit basic_renderer(const Window& window, const u32 flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    if (!get())
-    {
+    if (!get()) {
       throw sdl_error{};
     }
   }
@@ -106866,13 +108602,11 @@ class basic_renderer final
   {
     surface image{output_size(), format};
 
-    if (!image.lock())
-    {
+    if (!image.lock()) {
       throw sdl_error{};
     }
 
-    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1)
-    {
+    if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1) {
       throw sdl_error{};
     }
 
@@ -106929,12 +108663,10 @@ class basic_renderer final
   template <typename U>
   auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawRectF(get(), rect.data()) == 0;
     }
   }
@@ -106953,12 +108685,10 @@ class basic_renderer final
   template <typename U>
   auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral)
-    {
+    if constexpr (basic_rect<U>::isIntegral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderFillRectF(get(), rect.data()) == 0;
     }
   }
@@ -106976,15 +108706,12 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename U>
-  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept
-      -> result
+  auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawLineF(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
   }
@@ -107016,22 +108743,18 @@ class basic_renderer final
     using point_t = typename Container::value_type;  // a point of int or float
     using value_t = typename point_t::value_type;    // either int or float
 
-    if (!container.empty())
-    {
+    if (!container.empty()) {
       const auto& front = container.front();
       const auto* first = front.data();
 
-      if constexpr (std::is_same_v<value_t, int>)
-      {
+      if constexpr (std::is_same_v<value_t, int>) {
         return SDL_RenderDrawLines(get(), first, isize(container)) == 0;
       }
-      else
-      {
+      else {
         return SDL_RenderDrawLinesF(get(), first, isize(container)) == 0;
       }
     }
-    else
-    {
+    else {
       return failure;
     }
   }
@@ -107050,12 +108773,10 @@ class basic_renderer final
   template <typename U>
   auto draw_point(const basic_point<U>& point) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral)
-    {
+    if constexpr (basic_point<U>::isIntegral) {
       return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderDrawPointF(get(), point.x(), point.y()) == 0;
     }
   }
@@ -107082,25 +108803,21 @@ class basic_renderer final
     const auto cx = static_cast<float>(position.x()) - 0.5f;
     const auto cy = static_cast<float>(position.y()) - 0.5f;
 
-    while (x >= y)
-    {
+    while (x >= y) {
       draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy + y)});
       draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy + x)});
 
-      if (x != 0)
-      {
+      if (x != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy + y)});
         draw_point<value_t>({static_cast<value_t>(cx + y), static_cast<value_t>(cy - x)});
       }
 
-      if (y != 0)
-      {
+      if (y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx + x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy + x)});
       }
 
-      if (x != 0 && y != 0)
-      {
+      if (x != 0 && y != 0) {
         draw_point<value_t>({static_cast<value_t>(cx - x), static_cast<value_t>(cy - y)});
         draw_point<value_t>({static_cast<value_t>(cx - y), static_cast<value_t>(cy - x)});
       }
@@ -107109,8 +108826,7 @@ class basic_renderer final
       ++y;
       error += y;
 
-      if (error >= 0)
-      {
+      if (error >= 0) {
         --x;
         error -= x;
         error -= x;
@@ -107131,8 +108847,7 @@ class basic_renderer final
     const auto cx = center.x();
     const auto cy = center.y();
 
-    for (auto dy = 1.0f; dy <= radius; dy += 1.0f)
-    {
+    for (auto dy = 1.0f; dy <= radius; dy += 1.0f) {
       const auto dx = std::floor(std::sqrt((2.0f * radius * dy) - (dy * dy)));
       draw_line<float>({cx - dx, cy + dy - radius}, {cx + dx, cy + dy - radius});
       draw_line<float>({cx - dx, cy - dy + radius}, {cx + dx, cy - dy + radius});
@@ -107269,8 +108984,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Blended(font.get(), str, get_color().get()));
@@ -107280,8 +108994,7 @@ class basic_renderer final
    * \see render_blended_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(const std::string& str, const font& font) -> texture
   {
     return render_blended_utf8(str.c_str(), font);
   }
@@ -107398,8 +109111,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderUTF8_Solid(font.get(), str, get_color().get()));
@@ -107409,8 +109121,7 @@ class basic_renderer final
    * \see render_solid_utf8()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_utf8(const std::string& str, const font& font) -> texture
   {
     return render_solid_utf8(str.c_str(), font);
   }
@@ -107448,8 +109159,7 @@ class basic_renderer final
    * \see render_blended_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_latin1(const std::string& str, const font& font) -> texture
   {
     return render_blended_latin1(str.c_str(), font);
   }
@@ -107566,8 +109276,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const not_null<str> str, const font& font) -> texture
   {
     assert(str);
     return render_text(TTF_RenderText_Solid(font.get(), str, get_color().get()));
@@ -107577,8 +109286,7 @@ class basic_renderer final
    * \see render_solid_latin1()
    * \since 5.3.0
    */
-  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(const std::string& str, const font& font) -> texture
   {
     return render_solid_latin1(str.c_str(), font);
   }
@@ -107606,8 +109314,7 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Blended(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -107638,10 +109345,8 @@ class basic_renderer final
                                                     const font& font,
                                                     const u32 wrap) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Blended_Wrapped(font.get(),
-                                                         str.data(),
-                                                         get_color().get(),
-                                                         wrap));
+    return render_text(
+        TTF_RenderUNICODE_Blended_Wrapped(font.get(), str.data(), get_color().get(), wrap));
   }
 
   /**
@@ -107670,10 +109375,8 @@ class basic_renderer final
                                            const font& font,
                                            const color& background) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Shaded(font.get(),
-                                                str.data(),
-                                                get_color().get(),
-                                                background.get()));
+    return render_text(
+        TTF_RenderUNICODE_Shaded(font.get(), str.data(), get_color().get(), background.get()));
   }
 
   /**
@@ -107699,8 +109402,7 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_unicode(const unicode_string& str, const font& font)
       -> texture
   {
-    return render_text(
-        TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
+    return render_text(TTF_RenderUNICODE_Solid(font.get(), str.data(), get_color().get()));
   }
 
   /**
@@ -107717,11 +109419,9 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position)
-      -> int
+  auto render_glyph(const font_cache& cache, const unicode glyph, const ipoint position) -> int
   {
-    if (const auto* data = cache.try_at(glyph))
-    {
+    if (const auto* data = cache.try_at(glyph)) {
       const auto& [texture, metrics] = *data;
 
       const auto outline = cache.get_font().outline();
@@ -107734,8 +109434,7 @@ class basic_renderer final
 
       return x + metrics.advance;
     }
-    else
-    {
+    else {
       return position.x();
     }
   }
@@ -107769,15 +109468,12 @@ class basic_renderer final
     const auto originalX = position.x();
     const auto lineSkip = font.line_skip();
 
-    for (const unicode glyph : str)
-    {
-      if (glyph == '\n')
-      {
+    for (const unicode glyph : str) {
+      if (glyph == '\n') {
         position.set_x(originalX);
         position.set_y(position.y() + lineSkip);
       }
-      else
-      {
+      else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
@@ -107808,14 +109504,12 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
       -> result
   {
-    if constexpr (basic_point<P>::isFloating)
-    {
+    if constexpr (basic_point<P>::isFloating) {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
     }
-    else
-    {
+    else {
       const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
       return SDL_RenderCopy(get(), texture.get(), nullptr, &dst) == 0;
     }
@@ -107838,12 +109532,10 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), nullptr, destination.data()) == 0;
     }
   }
@@ -107870,13 +109562,10 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
-      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) ==
-             0;
+    if constexpr (basic_rect<P>::isFloating) {
+      return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopy(get(), texture.get(), source.data(), destination.data()) == 0;
     }
   }
@@ -107903,8 +109592,7 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating)
-    {
+    if constexpr (basic_rect<P>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -107913,8 +109601,7 @@ class basic_renderer final
                                nullptr,
                                SDL_FLIP_NONE) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -107955,8 +109642,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -107965,8 +109651,7 @@ class basic_renderer final
                                center.data(),
                                SDL_FLIP_NONE) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -108009,8 +109694,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating)
-    {
+    if constexpr (basic_rect<R>::isFloating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -108019,8 +109703,7 @@ class basic_renderer final
                                center.data(),
                                flip) == 0;
     }
-    else
-    {
+    else {
       return SDL_RenderCopyEx(get(),
                               texture.get(),
                               source.data(),
@@ -108074,8 +109757,8 @@ class basic_renderer final
    * \since 4.0.0
    */
   template <typename P, typename U, typename TT = T, detail::is_owner<TT> = 0>
-  auto render_t(const basic_texture<U>& texture,
-                const basic_rect<P>& destination) noexcept -> result
+  auto render_t(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
+      -> result
   {
     return render(texture, translate(destination));
   }
@@ -108252,8 +109935,7 @@ class basic_renderer final
   void add_font(const usize id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::move(font));
@@ -108276,8 +109958,7 @@ class basic_renderer final
   void emplace_font(const usize id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
-    if (const auto it = fonts.find(id); it != fonts.end())
-    {
+    if (const auto it = fonts.find(id); it != fonts.end()) {
       fonts.erase(it);
     }
     fonts.try_emplace(id, std::forward<Args>(args)...);
@@ -108625,12 +110306,10 @@ class basic_renderer final
   {
     irect rect{};
     SDL_RenderGetClipRect(get(), rect.data());
-    if (!rect.has_area())
-    {
+    if (!rect.has_area()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return rect;
     }
   }
@@ -108766,12 +110445,10 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       return m_renderer.ptr.get();
     }
-    else
-    {
+    else {
       return m_renderer;
     }
   }
@@ -108843,8 +110520,7 @@ class basic_renderer final
   }
 
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U>
+  [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept -> basic_point<U>
   {
     using value_type = typename basic_point<U>::value_type;
 
@@ -109130,12 +110806,10 @@ template <typename T>
     -> std::optional<renderer_info>
 {
   SDL_RendererInfo info;
-  if (SDL_GetRendererInfo(renderer.get(), &info) == 0)
-  {
+  if (SDL_GetRendererInfo(renderer.get(), &info) == 0) {
     return renderer_info{info};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109200,8 +110874,7 @@ enum class scale_mode
  */
 [[nodiscard]] constexpr auto to_string(const scale_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case scale_mode::nearest:
       return "nearest";
 
@@ -109253,15 +110926,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -109276,15 +110949,15 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scale_mode lhs,
-                                        const SDL_ScaleMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scale_mode lhs, const SDL_ScaleMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(scale_mode, SDL_ScaleMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs,
-                                        const scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_ScaleMode lhs, const scale_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -109377,8 +111050,7 @@ enum class screen_orientation : int
 [[nodiscard]] constexpr auto to_string(const screen_orientation orientation)
     -> std::string_view
 {
-  switch (orientation)
-  {
+  switch (orientation) {
     case screen_orientation::unknown:
       return "unknown";
 
@@ -109435,12 +111107,10 @@ inline auto operator<<(std::ostream& stream, const screen_orientation orientatio
  */
 inline void set_screen_saver_enabled(const bool enabled) noexcept
 {
-  if (enabled)
-  {
+  if (enabled) {
     SDL_EnableScreenSaver();
   }
-  else
-  {
+  else {
     SDL_DisableScreenSaver();
   }
 }
@@ -109512,8 +111182,7 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept
-    -> screen_orientation
+[[nodiscard]] inline auto get_orientation(const int index = 0) noexcept -> screen_orientation
 {
   return static_cast<screen_orientation>(SDL_GetDisplayOrientation(index));
 }
@@ -109535,12 +111204,10 @@ namespace cen::screen {
     -> std::optional<SDL_DisplayMode>
 {
   SDL_DisplayMode mode{};
-  if (SDL_GetDesktopDisplayMode(index, &mode) == 0)
-  {
+  if (SDL_GetDesktopDisplayMode(index, &mode) == 0) {
     return mode;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109557,12 +111224,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto refresh_rate(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return mode->refresh_rate;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109584,12 +111249,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto get_pixel_format(const int index = 0) noexcept
     -> std::optional<pixel_format>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return static_cast<pixel_format>(mode->format);
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109606,12 +111269,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto width(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return display_mode(index)->w;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109628,12 +111289,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto height(const int index = 0) noexcept -> std::optional<int>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return display_mode(index)->h;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109650,12 +111309,10 @@ namespace cen::screen {
  */
 [[nodiscard]] inline auto size(const int index = 0) noexcept -> std::optional<iarea>
 {
-  if (const auto mode = display_mode(index))
-  {
+  if (const auto mode = display_mode(index)) {
     return iarea{mode->w, mode->h};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109676,12 +111333,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto dpi(const int index = 0) noexcept -> std::optional<dpi_info>
 {
   dpi_info info;
-  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0)
-  {
+  if (SDL_GetDisplayDPI(index, &info.diagonal, &info.horizontal, &info.vertical) == 0) {
     return info;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109697,15 +111352,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto vertical_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto vertical_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->vertical;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109721,15 +111373,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto diagonal_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto diagonal_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->diagonal;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109745,15 +111394,12 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto horizontal_dpi(const int index = 0) noexcept
-    -> std::optional<float>
+[[nodiscard]] inline auto horizontal_dpi(const int index = 0) noexcept -> std::optional<float>
 {
-  if (const auto info = dpi(index))
-  {
+  if (const auto info = dpi(index)) {
     return info->horizontal;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109773,12 +111419,10 @@ namespace cen::screen {
 [[nodiscard]] inline auto bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayBounds(index, result.data()) == 0)
-  {
+  if (SDL_GetDisplayBounds(index, result.data()) == 0) {
     return result;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109796,16 +111440,13 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept
-    -> std::optional<irect>
+[[nodiscard]] inline auto usable_bounds(const int index = 0) noexcept -> std::optional<irect>
 {
   irect result;
-  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0)
-  {
+  if (SDL_GetDisplayUsableBounds(index, result.data()) == 0) {
     return result;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -109821,12 +111462,10 @@ namespace cen::screen {
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -109966,8 +111605,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw img_error{};
     }
   }
@@ -110009,8 +111647,7 @@ class basic_surface final
                                                  0,
                                                  to_underlying(pixelFormat))}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw sdl_error{};
     }
   }
@@ -110090,12 +111727,10 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     }
-    else
-    {
+    else {
       m_surface = other.get();
     }
   }
@@ -110123,14 +111758,11 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
-    if (this != &other)
-    {
-      if constexpr (detail::is_owning<T>())
-      {
+    if (this != &other) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       }
-      else
-      {
+      else {
         m_surface = other.get();
       }
     }
@@ -110251,12 +111883,10 @@ class basic_surface final
    */
   auto lock() noexcept -> result
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       return SDL_LockSurface(m_surface) == 0;
     }
-    else
-    {
+    else {
       return true;
     }
   }
@@ -110270,8 +111900,7 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -110308,16 +111937,14 @@ class basic_surface final
    */
   void set_pixel(const ipoint pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock())
-    {
+    if (!in_bounds(pixel) || !lock()) {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -110444,14 +112071,12 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
-    {
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
       basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -110691,8 +112316,7 @@ class basic_surface final
    */
   [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
-             point.y() >= height());
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
   }
 
   /**
@@ -110707,17 +112331,16 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface))
-    {
+    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
       return copy;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   basic_surface() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -110853,8 +112476,7 @@ enum class system_cursor
  */
 [[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
-  switch (cursor)
-  {
+  switch (cursor) {
     case system_cursor::arrow:
       return "arrow";
 
@@ -110982,12 +112604,10 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -111121,8 +112741,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<str> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw img_error{};
     }
   }
@@ -111162,8 +112781,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -111193,8 +112811,7 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -111231,8 +112848,7 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels))
-    {
+    if (!texture.lock(&pixels)) {
       throw sdl_error{};
     }
 
@@ -111283,16 +112899,14 @@ class basic_texture final
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch))
-    {
+    if (!lock(&pixels, &pitch)) {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -111625,15 +113239,10 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
   {
-    if (pitch)
-    {
-      return SDL_LockTexture(m_texture,
-                             nullptr,
-                             reinterpret_cast<void**>(pixels),
-                             pitch) == 0;
+    if (pitch) {
+      return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;
     }
-    else
-    {
+    else {
       int dummyPitch;
       return SDL_LockTexture(m_texture,
                              nullptr,
@@ -111764,8 +113373,7 @@ enum class texture_access : int
  */
 [[nodiscard]] constexpr auto to_string(const texture_access access) -> std::string_view
 {
-  switch (access)
-  {
+  switch (access) {
     case texture_access::no_lock:
       return "no_lock";
 
@@ -112011,8 +113619,7 @@ class unicode_string final
    */
   void pop_back()
   {
-    if (!empty())
-    {
+    if (!empty()) {
       m_data.erase(m_data.end() - 2);
     }
   }
@@ -112206,17 +113813,14 @@ class unicode_string final
 [[nodiscard]] inline auto operator==(const unicode_string& lhs, const unicode_string& rhs)
     -> bool
 {
-  if (lhs.size() != rhs.size())
-  {
+  if (lhs.size() != rhs.size()) {
     return false;
   }
 
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index)
-  {
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
     const auto a = lhs.at(index);
     const auto b = rhs.at(index);
-    if (a != b)
-    {
+    if (a != b) {
       return false;
     }
   }
@@ -112704,7 +114308,13 @@ using zstring [[deprecated]] = char*;
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-// clang-format off
+#include <SDL.h>
+
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string, to_string
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -112768,20 +114378,18 @@ using zstring [[deprecated]] = char*;
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <SDL.h>
-
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -113242,8 +114850,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -113683,20 +115290,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }
@@ -114124,12 +115728,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }
@@ -114147,7 +115749,10 @@ class pointer_manager final
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -114211,17 +115816,18 @@ class pointer_manager final
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <ostream>      // ostream
-#include <string>       // string, to_string
-#include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -114329,8 +115935,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -114538,16 +116143,14 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -114584,8 +116187,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 
@@ -114633,14 +116235,12 @@ template <typename T>
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -114715,8 +116315,7 @@ struct basic_area final
 
 #if CENTURION_HAS_FEATURE_SPACESHIP
 
-  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept
-      -> bool = default;
+  [[nodiscard]] constexpr auto operator==(const basic_area&) const noexcept -> bool = default;
 
 #endif  // CENTURION_HAS_FEATURE_SPACESHIP
 };
@@ -114924,17 +116523,15 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cmath>        // sqrt, abs, round
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // conditional_t, is_integral_v, is_floating_point_v, ...
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -115283,18 +116880,16 @@ template <typename T, enable_if_number_t<T> = 0>
  * \since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept
-    -> typename point_traits<T>::value_type
+[[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral)
-  {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);
     return static_cast<int>(std::round(dist));
   }
-  else
-  {
+  else {
     return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
   }
 }
@@ -115309,8 +116904,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("ipoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "ipoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -115319,8 +116913,7 @@ template <typename T>
 #if CENTURION_HAS_FEATURE_FORMAT
   return std::format("fpoint{{x: {}, y: {}}}", point.x(), point.y());
 #else
-  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) +
-         "}";
+  return "fpoint{x: " + std::to_string(point.x()) + ", y: " + std::to_string(point.y()) + "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -115427,16 +117020,14 @@ template <>
 
 template <typename T>
 [[nodiscard]] constexpr auto operator+(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto operator-(const basic_point<T>& lhs,
-                                       const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+                                       const basic_point<T>& rhs) noexcept -> basic_point<T>
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
@@ -116116,10 +117707,7 @@ class basic_rect final
  * \since 6.0.0
  */
 template <typename T, enable_if_number_t<T> = 0>
-[[nodiscard]] constexpr auto rect(const T x,
-                                  const T y,
-                                  const T width,
-                                  const T height) noexcept
+[[nodiscard]] constexpr auto rect(const T x, const T y, const T width, const T height) noexcept
     -> basic_rect<typename rect_traits<T>::value_type>
 {
   using value_type = typename rect_traits<T>::value_type;
@@ -116199,16 +117787,13 @@ template <typename T>
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
 
-  if (!fstHasArea && !sndHasArea)
-  {
+  if (!fstHasArea && !sndHasArea) {
     return {};
   }
-  else if (!fstHasArea)
-  {
+  else if (!fstHasArea) {
     return snd;
   }
-  else if (!sndHasArea)
-  {
+  else if (!sndHasArea) {
     return fst;
   }
 
@@ -116282,8 +117867,7 @@ template <>
 [[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
 {
   const irect::point_type pos{static_cast<int>(from.x()), static_cast<int>(from.y())};
-  const irect::area_type size{static_cast<int>(from.width()),
-                              static_cast<int>(from.height())};
+  const irect::area_type size{static_cast<int>(from.width()), static_cast<int>(from.height())};
   return irect{pos, size};
 }
 
@@ -116404,8 +117988,7 @@ enum class flash_op
  */
 [[nodiscard]] constexpr auto to_string(const flash_op op) -> std::string_view
 {
-  switch (op)
-  {
+  switch (op) {
     case flash_op::cancel:
       return "cancel";
 
@@ -116580,8 +118163,7 @@ enum class pixel_format : u32
  */
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
-  switch (format)
-  {
+  switch (format) {
     case pixel_format::unknown:
       return "unknown";
 
@@ -116801,12 +118383,10 @@ inline auto operator<<(std::ostream& stream, const pixel_format format) -> std::
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
-// clang-format off
+#include <SDL.h>
+
 // #include "../compiler/features.hpp"
 
-// clang-format on
-
-#include <SDL.h>
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -116887,6 +118467,343 @@ template <typename Enum, std::enable_if_t<std::is_enum_v<Enum>, int> = 0>
 
 // #include "../core/exception.hpp"
 
+// #include "blend_factor.hpp"
+#ifndef CENTURION_BLEND_FACTOR_HEADER
+#define CENTURION_BLEND_FACTOR_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_factor
+ *
+ * \brief Represents normalized factors used when multiplying pixel components.
+ *
+ * \see `blend_op`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_factor
+{
+  zero = SDL_BLENDFACTOR_ZERO,
+  one = SDL_BLENDFACTOR_ONE,
+
+  src_color = SDL_BLENDFACTOR_SRC_COLOR,
+  one_minus_src_color = SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+
+  src_alpha = SDL_BLENDFACTOR_SRC_ALPHA,
+  one_minus_src_alpha = SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+
+  dst_color = SDL_BLENDFACTOR_DST_COLOR,
+  one_minus_dst_color = SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR,
+
+  dst_alpha = SDL_BLENDFACTOR_DST_ALPHA,
+  one_minus_dst_alpha = SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend factor.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_factor::zero) == "zero"`.
+ *
+ * \param factor the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_factor factor) -> std::string_view
+{
+  switch (factor) {
+    case blend_factor::zero:
+      return "zero";
+
+    case blend_factor::one:
+      return "one";
+
+    case blend_factor::src_color:
+      return "src_color";
+
+    case blend_factor::one_minus_src_color:
+      return "one_minus_src_color";
+
+    case blend_factor::src_alpha:
+      return "src_alpha";
+
+    case blend_factor::one_minus_src_alpha:
+      return "one_minus_src_alpha";
+
+    case blend_factor::dst_color:
+      return "dst_color";
+
+    case blend_factor::one_minus_dst_color:
+      return "one_minus_dst_color";
+
+    case blend_factor::dst_alpha:
+      return "dst_alpha";
+
+    case blend_factor::one_minus_dst_alpha:
+      return "one_minus_dst_alpha";
+
+    default:
+      throw cen_error{"Did not recognize blend factor!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend factor enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param factor the enumerator that will be printed.
+ *
+ * \see `to_string(blend_factor)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::ostream&
+{
+  return stream << to_string(factor);
+}
+
+/// \} End of streaming
+
+/// \name Blend factor comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend factor values are the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendFactor>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend factor values aren't the same;
+ *
+ * \param lhs the left-hand side blend factor value.
+ * \param rhs the right-hand side blend factor value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_factor lhs,
+                                        const SDL_BlendFactor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_factor, SDL_BlendFactor)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendFactor lhs,
+                                        const blend_factor rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend factor comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_FACTOR_HEADER
+
+// #include "blend_op.hpp"
+#ifndef CENTURION_BLEND_OP_HEADER
+#define CENTURION_BLEND_OP_HEADER
+
+#include <SDL.h>
+
+#include <ostream>      // ostream
+#include <string_view>  // string_view
+
+// #include "../core/exception.hpp"
+
+
+namespace cen {
+
+/// \addtogroup video
+/// \{
+
+/**
+ * \enum blend_op
+ *
+ * \brief Represents different strategies used when combining pixel components.
+ *
+ * \see `blend_factor`
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+enum class blend_op
+{
+  add = SDL_BLENDOPERATION_ADD,
+  sub = SDL_BLENDOPERATION_SUBTRACT,
+  reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,
+  min = SDL_BLENDOPERATION_MINIMUM,
+  max = SDL_BLENDOPERATION_MAXIMUM
+};
+
+/// \name String conversions
+/// \{
+
+/**
+ * \brief Returns a textual version of the supplied blend operation.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(blend_op::add) == "add"`.
+ *
+ * \param op the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto to_string(const blend_op op) -> std::string_view
+{
+  switch (op) {
+    case blend_op::add:
+      return "add";
+
+    case blend_op::sub:
+      return "sub";
+
+    case blend_op::reverse_sub:
+      return "reverse_sub";
+
+    case blend_op::min:
+      return "min";
+
+    case blend_op::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize blend operation!"};
+  }
+}
+
+/// \} End of string conversions
+
+/// \name Streaming
+/// \{
+
+/**
+ * \brief Prints a textual representation of a blend operation enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param op the enumerator that will be printed.
+ *
+ * \see `to_string(blend_op)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.3.0
+ */
+inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
+{
+  return stream << to_string(op);
+}
+
+/// \} End of streaming
+
+/// \name Blend operation comparison operators
+/// \{
+
+/**
+ * \brief Indicates whether or not two blend operation values are the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values are the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator==(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return static_cast<SDL_BlendOperation>(lhs) == rhs;
+}
+
+/// \copydoc operator==(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator==(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two blend operation values aren't the same;
+ *
+ * \param lhs the left-hand side blend operation value.
+ * \param rhs the right-hand side blend operation value.
+ *
+ * \return `true` if the values aren't the same; `false` otherwise.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto operator!=(const blend_op lhs,
+                                        const SDL_BlendOperation rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \copydoc operator!=(blend_op, SDL_BlendOperation)
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendOperation lhs,
+                                        const blend_op rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// \} End of blend operation comparison operators
+
+/// \} End of group video
+
+}  // namespace cen
+
+#endif  // CENTURION_BLEND_OP_HEADER
 
 namespace cen {
 
@@ -116918,6 +118835,52 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
+
 /// \name String conversions
 /// \{
 
@@ -116937,8 +118900,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -117003,15 +118965,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -117026,15 +118988,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -117051,11 +119013,6 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -117067,6 +119024,9 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -117232,8 +119192,7 @@ namespace cen::detail {
 
 template <typename T>
 [[nodiscard]] auto from_string(const std::string_view str,
-                               const int base = 10) noexcept(on_msvc())
-    -> std::optional<T>
+                               const int base = 10) noexcept(on_msvc()) -> std::optional<T>
 {
   T value{};
 
@@ -117243,39 +119202,31 @@ template <typename T>
   const char* mismatch = end;
   std::errc error{};
 
-  if constexpr (std::is_floating_point_v<T>)
-  {
-    if constexpr (on_gcc() || on_clang())
-    {
-      try
-      {
+  if constexpr (std::is_floating_point_v<T>) {
+    if constexpr (on_gcc() || on_clang()) {
+      try {
         value = std::stof(std::string{str});
       }
-      catch (...)
-      {
+      catch (...) {
         return std::nullopt;
       }
     }
-    else
-    {
+    else {
       const auto [ptr, err] = std::from_chars(begin, end, value);
       mismatch = ptr;
       error = err;
     }
   }
-  else
-  {
+  else {
     const auto [ptr, err] = std::from_chars(begin, end, value, base);
     mismatch = ptr;
     error = err;
   }
 
-  if (mismatch == end && error == std::errc{})
-  {
+  if (mismatch == end && error == std::errc{}) {
     return value;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -117289,7 +119240,8 @@ template <typename T>
 #ifndef CENTURION_DETAIL_LERP_HEADER
 #define CENTURION_DETAIL_LERP_HEADER
 
-// clang-format off
+#include <cmath>  // lerp
+
 // #include "../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -117353,15 +119305,18 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
 
-// clang-format on
-
-#include <cmath>  // lerp
 
 /// \cond FALSE
 
@@ -117425,10 +119380,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -117485,38 +119437,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -117532,19 +119478,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -117557,8 +119490,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -117576,38 +119508,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -117620,19 +119546,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -117652,8 +119565,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -117667,12 +119579,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -117694,8 +119604,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -117711,12 +119620,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -117738,8 +119645,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -117755,12 +119661,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -118004,7 +119908,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -118024,7 +119933,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -118044,7 +119959,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -118178,10 +120099,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -118263,8 +120183,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -118320,8 +120239,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -118377,15 +120295,13 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 #ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
 #define CENTURION_PIXEL_FORMAT_INFO_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -118505,8 +120421,7 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
-    if (!m_format)
-    {
+    if (!m_format) {
       throw sdl_error{};
     }
   }
@@ -118717,8 +120632,7 @@ template <typename T>
  * \since 6.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }
@@ -118827,8 +120741,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw img_error{};
     }
   }
@@ -118870,8 +120783,7 @@ class basic_surface final
                                                  0,
                                                  to_underlying(pixelFormat))}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw sdl_error{};
     }
   }
@@ -118951,12 +120863,10 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     }
-    else
-    {
+    else {
       m_surface = other.get();
     }
   }
@@ -118984,14 +120894,11 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
-    if (this != &other)
-    {
-      if constexpr (detail::is_owning<T>())
-      {
+    if (this != &other) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       }
-      else
-      {
+      else {
         m_surface = other.get();
       }
     }
@@ -119112,12 +121019,10 @@ class basic_surface final
    */
   auto lock() noexcept -> result
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       return SDL_LockSurface(m_surface) == 0;
     }
-    else
-    {
+    else {
       return true;
     }
   }
@@ -119131,8 +121036,7 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -119169,16 +121073,14 @@ class basic_surface final
    */
   void set_pixel(const ipoint pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock())
-    {
+    if (!in_bounds(pixel) || !lock()) {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -119305,14 +121207,12 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
-    {
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
       basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -119552,8 +121452,7 @@ class basic_surface final
    */
   [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
-             point.y() >= height());
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
   }
 
   /**
@@ -119568,17 +121467,16 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface))
-    {
+    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
       return copy;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   basic_surface() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
@@ -119748,10 +121646,8 @@ class basic_window final
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_window)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_window) {
         throw cen_error{"Cannot create window from null pointer!"};
       }
     }
@@ -119781,12 +121677,10 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1)
-    {
+    if (size.width < 1) {
       throw cen_error{"Bad window width!"};
     }
-    else if (size.height < 1)
-    {
+    else if (size.height < 1) {
       throw cen_error{"Bad window height!"};
     }
 
@@ -119796,8 +121690,7 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     flags));
-    if (!m_window)
-    {
+    if (!m_window) {
       throw sdl_error{};
     }
   }
@@ -120786,12 +122679,10 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -121081,14 +122972,12 @@ auto create_surface(basic_window<T>& window,
 inline auto required_extensions() -> std::optional<std::vector<str>>
 {
   uint count{};
-  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr))
-  {
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
     return std::nullopt;
   }
 
   std::vector<str> names(count);
-  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
-  {
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data())) {
     return std::nullopt;
   }
 
@@ -121136,7 +123025,9 @@ template <typename T>
 
 #ifndef CENTURION_NO_VULKAN
 
-// clang-format off
+#include <SDL.h>
+#include <SDL_vulkan.h>
+
 // #include "../../compiler/features.hpp"
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
@@ -121200,16 +123091,17 @@ template <typename T>
 #define CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES 0
 #endif  // __cpp_lib_chrono >= 201907L
 
+#if __cpp_lib_to_array >= 201907L
+#define CENTURION_HAS_FEATURE_TO_ARRAY 1
+#else
+#define CENTURION_HAS_FEATURE_TO_ARRAY 0
+#endif  // __cpp_lib_to_array >= 201907L
+
 #endif  // __has_include
 
 /// \} End of group compiler
 
 #endif  // CENTURION_FEATURES_HEADER
-
-// clang-format on
-
-#include <SDL.h>
-#include <SDL_vulkan.h>
 
 // #include "../../core/exception.hpp"
 #ifndef CENTURION_EXCEPTION_HEADER
@@ -121465,8 +123357,7 @@ class vk_library final
    */
   CENTURION_NODISCARD_CTOR explicit vk_library(const str path = nullptr)
   {
-    if (SDL_Vulkan_LoadLibrary(path) == -1)
-    {
+    if (SDL_Vulkan_LoadLibrary(path) == -1) {
       throw sdl_error{};
     }
   }
@@ -121494,17 +123385,15 @@ class vk_library final
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-// clang-format off
-// #include "../compiler/features.hpp"
-
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+// #include "../compiler/features.hpp"
+
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -121652,10 +123541,8 @@ class basic_window final
   explicit basic_window(maybe_owner<SDL_Window*> window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_window)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_window) {
         throw cen_error{"Cannot create window from null pointer!"};
       }
     }
@@ -121685,12 +123572,10 @@ class basic_window final
   {
     assert(title);
 
-    if (size.width < 1)
-    {
+    if (size.width < 1) {
       throw cen_error{"Bad window width!"};
     }
-    else if (size.height < 1)
-    {
+    else if (size.height < 1) {
       throw cen_error{"Bad window height!"};
     }
 
@@ -121700,8 +123585,7 @@ class basic_window final
                                     size.width,
                                     size.height,
                                     flags));
-    if (!m_window)
-    {
+    if (!m_window) {
       throw sdl_error{};
     }
   }
@@ -122690,12 +124574,10 @@ class basic_window final
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_GetWindowDisplayIndex(m_window);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -123038,9 +124920,9 @@ template <typename T>
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto make_window_and_renderer(
-    const iarea size = window::default_size(),
-    const u32 flags = window::default_flags()) -> std::pair<window, renderer>
+[[nodiscard]] inline auto make_window_and_renderer(const iarea size = window::default_size(),
+                                                   const u32 flags = window::default_flags())
+    -> std::pair<window, renderer>
 {
   cen::window window{"Centurion window", size, flags};
   cen::renderer renderer{window};
@@ -123054,3 +124936,5 @@ template <typename T>
 }  // namespace cen
 
 #endif  // CENTURION_WINDOW_UTILS_HEADER
+
+#endif  // CENTURION_CENTURION_HEADER

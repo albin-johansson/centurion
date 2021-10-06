@@ -39,12 +39,10 @@ namespace cen::battery {
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
-  if (secondsLeft != -1)
-  {
+  if (secondsLeft != -1) {
     return seconds<int>{secondsLeft};
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -59,12 +57,10 @@ namespace cen::battery {
  */
 [[nodiscard]] inline auto minutes_left() -> std::optional<minutes<int>>
 {
-  if (const auto secondsLeft = seconds_left())
-  {
+  if (const auto secondsLeft = seconds_left()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -81,12 +77,10 @@ namespace cen::battery {
 {
   int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
-  if (percentageLeft != -1)
-  {
+  if (percentageLeft != -1) {
     return percentageLeft;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

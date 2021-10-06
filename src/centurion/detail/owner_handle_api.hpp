@@ -84,12 +84,10 @@ class pointer_manager final
 
   [[nodiscard]] auto get() const noexcept -> Type*
   {
-    if constexpr (B::value)
-    {
+    if constexpr (B::value) {
       return m_ptr.get();
     }
-    else
-    {
+    else {
       return m_ptr;
     }
   }

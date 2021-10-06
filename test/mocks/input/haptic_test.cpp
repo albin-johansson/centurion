@@ -9,8 +9,9 @@
 #include "core_mocks.hpp"
 #include "input/haptic_constant.hpp"
 
-extern "C" {
-// clang-format off
+extern "C"
+{
+  // clang-format off
 FAKE_VOID_FUNC(SDL_HapticClose, SDL_Haptic*)
 FAKE_VOID_FUNC(SDL_HapticDestroyEffect, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(SDL_Haptic*, SDL_HapticOpen, int)
@@ -41,7 +42,7 @@ FAKE_VALUE_FUNC(int, SDL_HapticSetAutocenter, SDL_Haptic*, int)
 FAKE_VALUE_FUNC(int, SDL_HapticStopAll, SDL_Haptic*)
 FAKE_VALUE_FUNC(int, SDL_HapticEffectSupported, SDL_Haptic*, SDL_HapticEffect*)
 FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
-// clang-format on
+  // clang-format on
 }
 
 class HapticTest : public testing::Test
@@ -91,7 +92,7 @@ using namespace cen::literals;
 TEST_F(HapticTest, IndexConstructor)
 {
   ASSERT_THROW(cen::haptic{}, cen::sdl_error);
-  ASSERT_EQ(1, SDL_HapticOpen_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticOpen_fake.call_count);
 }
 
 TEST_F(HapticTest, PointerConstructor)
@@ -107,13 +108,13 @@ TEST_F(HapticTest, FromJoystick)
 {
   cen::joystick_handle handle{nullptr};
   ASSERT_THROW(cen::haptic::from_joystick(handle), cen::sdl_error);
-  ASSERT_EQ(1, SDL_HapticOpenFromJoystick_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticOpenFromJoystick_fake.call_count);
 }
 
 TEST_F(HapticTest, FromMouse)
 {
   ASSERT_THROW(cen::haptic::from_mouse(), cen::sdl_error);
-  ASSERT_EQ(1, SDL_HapticOpenFromMouse_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticOpenFromMouse_fake.call_count);
 }
 
 TEST_F(HapticTest, InitRumble)
@@ -124,7 +125,7 @@ TEST_F(HapticTest, InitRumble)
   ASSERT_FALSE(m_haptic.init_rumble());
   ASSERT_TRUE(m_haptic.init_rumble());
 
-  ASSERT_EQ(2, SDL_HapticRumbleInit_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticRumbleInit_fake.call_count);
 }
 
 TEST_F(HapticTest, PlayRumble)
@@ -136,8 +137,8 @@ TEST_F(HapticTest, PlayRumble)
   ASSERT_TRUE(m_haptic.play_rumble(0.5f, 100_ms));
 
   ASSERT_EQ(0.5f, SDL_HapticRumblePlay_fake.arg1_val);
-  ASSERT_EQ(100, SDL_HapticRumblePlay_fake.arg2_val);
-  ASSERT_EQ(2, SDL_HapticRumblePlay_fake.call_count);
+  ASSERT_EQ(100u, SDL_HapticRumblePlay_fake.arg2_val);
+  ASSERT_EQ(2u, SDL_HapticRumblePlay_fake.call_count);
 }
 
 TEST_F(HapticTest, StopRumble)
@@ -148,7 +149,7 @@ TEST_F(HapticTest, StopRumble)
   ASSERT_FALSE(m_haptic.stop_rumble());
   ASSERT_TRUE(m_haptic.stop_rumble());
 
-  ASSERT_EQ(2, SDL_HapticRumbleStop_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticRumbleStop_fake.call_count);
 }
 
 TEST_F(HapticTest, IsRumbleSupported)
@@ -159,7 +160,7 @@ TEST_F(HapticTest, IsRumbleSupported)
   ASSERT_FALSE(m_haptic.is_rumble_supported());
   ASSERT_FALSE(m_haptic.is_rumble_supported());
   ASSERT_TRUE(m_haptic.is_rumble_supported());
-  ASSERT_EQ(3, SDL_HapticRumbleSupported_fake.call_count);
+  ASSERT_EQ(3u, SDL_HapticRumbleSupported_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureConstant)
@@ -170,7 +171,7 @@ TEST_F(HapticTest, HasFeatureConstant)
   ASSERT_FALSE(m_haptic.has_feature_constant());
   ASSERT_TRUE(m_haptic.has_feature_constant());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureSine)
@@ -181,7 +182,7 @@ TEST_F(HapticTest, HasFeatureSine)
   ASSERT_FALSE(m_haptic.has_feature_sine());
   ASSERT_TRUE(m_haptic.has_feature_sine());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureLeftRight)
@@ -192,7 +193,7 @@ TEST_F(HapticTest, HasFeatureLeftRight)
   ASSERT_FALSE(m_haptic.has_feature_left_right());
   ASSERT_TRUE(m_haptic.has_feature_left_right());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureTriangle)
@@ -203,7 +204,7 @@ TEST_F(HapticTest, HasFeatureTriangle)
   ASSERT_FALSE(m_haptic.has_feature_triangle());
   ASSERT_TRUE(m_haptic.has_feature_triangle());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureSawtoothUp)
@@ -214,7 +215,7 @@ TEST_F(HapticTest, HasFeatureSawtoothUp)
   ASSERT_FALSE(m_haptic.has_feature_sawtooth_up());
   ASSERT_TRUE(m_haptic.has_feature_sawtooth_up());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureSawtoothDown)
@@ -225,7 +226,7 @@ TEST_F(HapticTest, HasFeatureSawtoothDown)
   ASSERT_FALSE(m_haptic.has_feature_sawtooth_down());
   ASSERT_TRUE(m_haptic.has_feature_sawtooth_down());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureRamp)
@@ -236,7 +237,7 @@ TEST_F(HapticTest, HasFeatureRamp)
   ASSERT_FALSE(m_haptic.has_feature_ramp());
   ASSERT_TRUE(m_haptic.has_feature_ramp());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureSpring)
@@ -247,7 +248,7 @@ TEST_F(HapticTest, HasFeatureSpring)
   ASSERT_FALSE(m_haptic.has_feature_spring());
   ASSERT_TRUE(m_haptic.has_feature_spring());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureDamper)
@@ -258,7 +259,7 @@ TEST_F(HapticTest, HasFeatureDamper)
   ASSERT_FALSE(m_haptic.has_feature_damper());
   ASSERT_TRUE(m_haptic.has_feature_damper());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureInertia)
@@ -269,7 +270,7 @@ TEST_F(HapticTest, HasFeatureInertia)
   ASSERT_FALSE(m_haptic.has_feature_inertia());
   ASSERT_TRUE(m_haptic.has_feature_inertia());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureFriction)
@@ -280,7 +281,7 @@ TEST_F(HapticTest, HasFeatureFriction)
   ASSERT_FALSE(m_haptic.has_feature_friction());
   ASSERT_TRUE(m_haptic.has_feature_friction());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureGain)
@@ -291,7 +292,7 @@ TEST_F(HapticTest, HasFeatureGain)
   ASSERT_FALSE(m_haptic.has_feature_gain());
   ASSERT_TRUE(m_haptic.has_feature_gain());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureAutocenter)
@@ -302,7 +303,7 @@ TEST_F(HapticTest, HasFeatureAutocenter)
   ASSERT_FALSE(m_haptic.has_feature_autocenter());
   ASSERT_TRUE(m_haptic.has_feature_autocenter());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureStatus)
@@ -313,7 +314,7 @@ TEST_F(HapticTest, HasFeatureStatus)
   ASSERT_FALSE(m_haptic.has_feature_status());
   ASSERT_TRUE(m_haptic.has_feature_status());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeaturePause)
@@ -324,7 +325,7 @@ TEST_F(HapticTest, HasFeaturePause)
   ASSERT_FALSE(m_haptic.has_feature_pause());
   ASSERT_TRUE(m_haptic.has_feature_pause());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, HasFeatureCustom)
@@ -335,7 +336,7 @@ TEST_F(HapticTest, HasFeatureCustom)
   ASSERT_FALSE(m_haptic.has_feature_custom());
   ASSERT_TRUE(m_haptic.has_feature_custom());
 
-  ASSERT_EQ(2, SDL_HapticQuery_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticQuery_fake.call_count);
 }
 
 TEST_F(HapticTest, Index)
@@ -346,7 +347,7 @@ TEST_F(HapticTest, Index)
   ASSERT_FALSE(m_haptic.index());
   ASSERT_EQ(1, m_haptic.index());
 
-  ASSERT_EQ(2, SDL_HapticIndex_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticIndex_fake.call_count);
 }
 
 TEST_F(HapticTest, Name)
@@ -355,18 +356,18 @@ TEST_F(HapticTest, Name)
   SET_RETURN_SEQ(SDL_HapticIndex, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_haptic.name());
-  ASSERT_EQ(0, SDL_HapticName_fake.call_count);
-  ASSERT_EQ(1, SDL_HapticIndex_fake.call_count);
+  ASSERT_EQ(0u, SDL_HapticName_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticIndex_fake.call_count);
 
   const auto name [[maybe_unused]] = m_haptic.name();
-  ASSERT_EQ(1, SDL_HapticName_fake.call_count);
-  ASSERT_EQ(2, SDL_HapticIndex_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticName_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticIndex_fake.call_count);
 }
 
 TEST_F(HapticTest, IsOpened)
 {
   const auto opened [[maybe_unused]] = cen::haptic::is_opened(0);
-  ASSERT_EQ(1, SDL_HapticOpened_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticOpened_fake.call_count);
 }
 
 TEST_F(HapticTest, IsJoystickHaptic)
@@ -380,7 +381,7 @@ TEST_F(HapticTest, IsJoystickHaptic)
   ASSERT_FALSE(cen::haptic::is_joystick_haptic(joystick));
   ASSERT_TRUE(cen::haptic::is_joystick_haptic(joystick));
 
-  ASSERT_EQ(3, SDL_JoystickIsHaptic_fake.call_count);
+  ASSERT_EQ(3u, SDL_JoystickIsHaptic_fake.call_count);
 }
 
 TEST_F(HapticTest, EffectCapacity)
@@ -391,7 +392,7 @@ TEST_F(HapticTest, EffectCapacity)
   ASSERT_FALSE(m_haptic.effect_capacity());
   ASSERT_EQ(7, m_haptic.effect_capacity());
 
-  ASSERT_EQ(2, SDL_HapticNumEffects_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticNumEffects_fake.call_count);
 }
 
 TEST_F(HapticTest, ConcurrentCapacity)
@@ -402,25 +403,25 @@ TEST_F(HapticTest, ConcurrentCapacity)
   ASSERT_FALSE(m_haptic.concurrent_capacity());
   ASSERT_EQ(4, m_haptic.concurrent_capacity());
 
-  ASSERT_EQ(2, SDL_HapticNumEffectsPlaying_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticNumEffectsPlaying_fake.call_count);
 }
 
 TEST_F(HapticTest, AxisCount)
 {
   const auto count [[maybe_unused]] = m_haptic.axis_count();
-  ASSERT_EQ(1, SDL_HapticNumAxes_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticNumAxes_fake.call_count);
 }
 
 TEST_F(HapticTest, Count)
 {
   const auto count [[maybe_unused]] = cen::haptic::count();
-  ASSERT_EQ(1, SDL_NumHaptics_fake.call_count);
+  ASSERT_EQ(1u, SDL_NumHaptics_fake.call_count);
 }
 
 TEST_F(HapticTest, IsMouseHaptic)
 {
   const auto isHaptic [[maybe_unused]] = cen::haptic::is_mouse_haptic();
-  ASSERT_EQ(1, SDL_MouseIsHaptic_fake.call_count);
+  ASSERT_EQ(1u, SDL_MouseIsHaptic_fake.call_count);
 }
 
 TEST_F(HapticTest, Pause)
@@ -434,7 +435,7 @@ TEST_F(HapticTest, Pause)
 
   ASSERT_FALSE(m_haptic.pause());
   ASSERT_TRUE(m_haptic.pause());
-  ASSERT_EQ(2, SDL_HapticPause_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticPause_fake.call_count);
 }
 
 TEST_F(HapticTest, Unpause)
@@ -444,7 +445,7 @@ TEST_F(HapticTest, Unpause)
 
   ASSERT_FALSE(m_haptic.unpause());
   ASSERT_TRUE(m_haptic.unpause());
-  ASSERT_EQ(2, SDL_HapticUnpause_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticUnpause_fake.call_count);
 }
 
 TEST_F(HapticTest, Upload)
@@ -456,7 +457,7 @@ TEST_F(HapticTest, Upload)
   ASSERT_FALSE(m_haptic.upload(effect));
   ASSERT_EQ(7, m_haptic.upload(effect));
 
-  ASSERT_EQ(2, SDL_HapticNewEffect_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticNewEffect_fake.call_count);
 }
 
 TEST_F(HapticTest, Update)
@@ -468,7 +469,7 @@ TEST_F(HapticTest, Update)
   ASSERT_FALSE(m_haptic.update(42, effect));
   ASSERT_TRUE(m_haptic.update(42, effect));
 
-  ASSERT_EQ(2, SDL_HapticUpdateEffect_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticUpdateEffect_fake.call_count);
 }
 
 TEST_F(HapticTest, Run)
@@ -477,12 +478,12 @@ TEST_F(HapticTest, Run)
   SET_RETURN_SEQ(SDL_HapticRunEffect, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_haptic.run(42));
-  ASSERT_EQ(1, SDL_HapticRunEffect_fake.arg2_val);
+  ASSERT_EQ(1u, SDL_HapticRunEffect_fake.arg2_val);
 
   ASSERT_TRUE(m_haptic.run(42, 7));
-  ASSERT_EQ(7, SDL_HapticRunEffect_fake.arg2_val);
+  ASSERT_EQ(7u, SDL_HapticRunEffect_fake.arg2_val);
 
-  ASSERT_EQ(2, SDL_HapticRunEffect_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticRunEffect_fake.call_count);
 }
 
 TEST_F(HapticTest, Stop)
@@ -493,7 +494,7 @@ TEST_F(HapticTest, Stop)
   ASSERT_FALSE(m_haptic.stop(42));
   ASSERT_TRUE(m_haptic.stop(42));
 
-  ASSERT_EQ(2, SDL_HapticStopEffect_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticStopEffect_fake.call_count);
 }
 
 TEST_F(HapticTest, StopAll)
@@ -504,13 +505,13 @@ TEST_F(HapticTest, StopAll)
   ASSERT_FALSE(m_haptic.stop_all());
   ASSERT_TRUE(m_haptic.stop_all());
 
-  ASSERT_EQ(2, SDL_HapticStopAll_fake.call_count);
+  ASSERT_EQ(2u, SDL_HapticStopAll_fake.call_count);
 }
 
 TEST_F(HapticTest, Destroy)
 {
   m_haptic.destroy(12);
-  ASSERT_EQ(1, SDL_HapticDestroyEffect_fake.call_count);
+  ASSERT_EQ(1u, SDL_HapticDestroyEffect_fake.call_count);
   ASSERT_EQ(12, SDL_HapticDestroyEffect_fake.arg1_val);
 }
 
@@ -530,7 +531,7 @@ TEST_F(HapticTest, SetGain)
   ASSERT_NO_FATAL_FAILURE(m_haptic.set_gain(0));
   ASSERT_NO_FATAL_FAILURE(m_haptic.set_gain(100));
 
-  ASSERT_EQ(4, SDL_HapticSetGain_fake.call_count);
+  ASSERT_EQ(4u, SDL_HapticSetGain_fake.call_count);
 }
 
 TEST_F(HapticTest, SetAutocenter)
@@ -549,7 +550,7 @@ TEST_F(HapticTest, SetAutocenter)
   ASSERT_NO_FATAL_FAILURE(m_haptic.set_autocenter(0));
   ASSERT_NO_FATAL_FAILURE(m_haptic.set_autocenter(100));
 
-  ASSERT_EQ(4, SDL_HapticSetAutocenter_fake.call_count);
+  ASSERT_EQ(4u, SDL_HapticSetAutocenter_fake.call_count);
 }
 
 TEST_F(HapticTest, IsSupported)
@@ -562,7 +563,7 @@ TEST_F(HapticTest, IsSupported)
   ASSERT_FALSE(m_haptic.is_supported(effect));
   ASSERT_TRUE(m_haptic.is_supported(effect));
 
-  ASSERT_EQ(3, SDL_HapticEffectSupported_fake.call_count);
+  ASSERT_EQ(3u, SDL_HapticEffectSupported_fake.call_count);
 }
 
 TEST_F(HapticTest, IsPlaying)
@@ -578,7 +579,7 @@ TEST_F(HapticTest, IsPlaying)
   ASSERT_FALSE(m_haptic.is_playing(0));
   ASSERT_TRUE(m_haptic.is_playing(0));
 
-  ASSERT_EQ(3, SDL_HapticGetEffectStatus_fake.call_count);
+  ASSERT_EQ(3u, SDL_HapticGetEffectStatus_fake.call_count);
 }
 
 TEST_F(HapticTest, StreamOperator)

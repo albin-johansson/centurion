@@ -3,15 +3,11 @@
 
 #ifndef CENTURION_NO_OPENGL
 
-// clang-format off
-#include "../../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <cassert>  // assert
 
+#include "../../compiler/features.hpp"
 #include "../../core/exception.hpp"
 #include "../../core/not_null.hpp"
 #include "../../core/str.hpp"
@@ -43,8 +39,7 @@ class gl_library final
    */
   CENTURION_NODISCARD_CTOR explicit gl_library(const str path = nullptr)
   {
-    if (SDL_GL_LoadLibrary(path) == -1)
-    {
+    if (SDL_GL_LoadLibrary(path) == -1) {
       throw sdl_error{};
     }
   }

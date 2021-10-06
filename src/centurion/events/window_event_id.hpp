@@ -83,8 +83,7 @@ enum class window_event_id
  */
 [[nodiscard]] constexpr auto to_string(const window_event_id id) -> std::string_view
 {
-  switch (id)
-  {
+  switch (id) {
     case window_event_id::none:
       return "none";
 

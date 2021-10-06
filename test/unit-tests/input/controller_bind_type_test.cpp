@@ -29,6 +29,5 @@ TEST(ControllerBindType, ToString)
   ASSERT_EQ("axis", cen::to_string(cen::controller_bind_type::axis));
   ASSERT_EQ("hat", cen::to_string(cen::controller_bind_type::hat));
 
-  std::clog << "Controller bind type example: " << cen::controller_bind_type::button
-            << '\n';
+  std::clog << "Controller bind type example: " << cen::controller_bind_type::button << '\n';
 }

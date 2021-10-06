@@ -27,8 +27,7 @@ struct background_app final : detail::bool_hint<background_app>
   }
 };
 
-struct ctrl_click_emulate_right_click final
-    : detail::bool_hint<ctrl_click_emulate_right_click>
+struct ctrl_click_emulate_right_click final : detail::bool_hint<ctrl_click_emulate_right_click>
 {
   [[nodiscard]] constexpr static auto name() noexcept -> str
   {

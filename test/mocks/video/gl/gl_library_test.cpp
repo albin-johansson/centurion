@@ -8,10 +8,11 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GL_LoadLibrary, const char*)
-FAKE_VALUE_FUNC(void*, SDL_GL_GetProcAddress, const char*)
-FAKE_VOID_FUNC(SDL_GL_UnloadLibrary)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GL_LoadLibrary, const char*)
+  FAKE_VALUE_FUNC(void*, SDL_GL_GetProcAddress, const char*)
+  FAKE_VOID_FUNC(SDL_GL_UnloadLibrary)
 }
 
 class OpenGLLibraryTest : public testing::Test
@@ -44,5 +45,5 @@ TEST_F(OpenGLLibraryTest, AddressOf)
   cen::gl_library library;
   const auto* address [[maybe_unused]] = library.address_of("foo");
 
-  ASSERT_EQ(1, SDL_GL_GetProcAddress_fake.call_count);
+  ASSERT_EQ(1u, SDL_GL_GetProcAddress_fake.call_count);
 }

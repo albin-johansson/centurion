@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-mocks LANGUAGES CXX)
+project(centurion-test-mocks CXX)
 
 set(SOURCE_FILES
     core_mocks.hpp
@@ -48,6 +48,7 @@ set(SOURCE_FILES
     video/vulkan/vk_core_test.cpp
     video/vulkan/vk_library_test.cpp
 
+    video/blend_mode_test.cpp
     video/message_box_test.cpp
     video/renderer_info_test.cpp
     video/renderer_test.cpp
@@ -56,36 +57,45 @@ set(SOURCE_FILES
     video/window_utils_test.cpp
     )
 
-if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
+if (CENTURION_MOCK_FRIENDLY_MODE)
   list(APPEND SOURCE_FILES
       audio/music_test.cpp
-      audio/sound_effect_test.cpp)
+      audio/sound_effect_test.cpp
+      )
 endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
+add_dependencies(${CENTURION_MOCK_TARGET} ${CENTURION_LIB_TARGET})
 
-if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
-  target_compile_definitions(${CENTURION_MOCK_TARGET}
-      PUBLIC CENTURION_MOCK_FRIENDLY_MODE)
+if (CENTURION_MOCK_FRIENDLY_MODE)
+  target_compile_definitions(${CENTURION_MOCK_TARGET} PRIVATE CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
-add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)
-cen_set_compiler_options(${CENTURION_MOCK_TARGET})
+add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
+
+if (MSVC)
+  target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
+      /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+      /wd4702  # "unreachable code"
+      )
+endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
-    PUBLIC .
-    PUBLIC ${CEN_SOURCE_DIR}
-    SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-    SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR})
+    PRIVATE
+    ${CEN_SOURCE_DIR}  # TODO remove and fix includes
+    ${PROJECT_SOURCE_DIR}
 
-target_link_libraries(${CENTURION_MOCK_TARGET}
-    PUBLIC gtest
-    PUBLIC libFFF)
+    SYSTEM PRIVATE
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include
+    ${gmock_SOURCE_DIR}
+    )
+
+target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
+    ${CENTURION_LIB_TARGET}
+    gtest
+    libFFF
+    )
 
 add_test(NAME ${CENTURION_MOCK_TARGET} COMMAND ${CENTURION_MOCK_TARGET})

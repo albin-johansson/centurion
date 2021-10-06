@@ -23,20 +23,17 @@ namespace cen::detail {
  */
 [[nodiscard]] inline auto address_of(const void* ptr) -> std::string
 {
-  if (ptr)
-  {
+  if (ptr) {
     std::stringstream stream;
 
-    if constexpr (on_msvc())
-    {
+    if constexpr (on_msvc()) {
       stream << "0x";  // Only MSVC seems to omit this, add it for consistency
     }
 
     stream << ptr;
     return stream.str();
   }
-  else
-  {
+  else {
     return std::string{};
   }
 }

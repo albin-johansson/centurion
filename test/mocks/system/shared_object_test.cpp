@@ -4,10 +4,11 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VOID_FUNC(SDL_UnloadObject, void*)
-FAKE_VALUE_FUNC(void*, SDL_LoadObject, const char*)
-FAKE_VALUE_FUNC(void*, SDL_LoadFunction, void*, const char*)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_UnloadObject, void*)
+  FAKE_VALUE_FUNC(void*, SDL_LoadObject, const char*)
+  FAKE_VALUE_FUNC(void*, SDL_LoadFunction, void*, const char*)
 }
 
 class SharedObjectTest : public testing::Test
@@ -31,6 +32,6 @@ TEST_F(SharedObjectTest, LoadFunction)
 
   auto* ptr [[maybe_unused]] = m_object.load_function<void(int, float)>(name);
 
-  ASSERT_EQ(1, SDL_LoadFunction_fake.call_count);
+  ASSERT_EQ(1u, SDL_LoadFunction_fake.call_count);
   ASSERT_EQ(name, SDL_LoadFunction_fake.arg1_val);
 }

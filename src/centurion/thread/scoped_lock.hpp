@@ -1,12 +1,9 @@
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
+#include "../compiler/features.hpp"
 #include "../core/exception.hpp"
 #include "mutex.hpp"
 
@@ -39,8 +36,7 @@ class scoped_lock final
    */
   CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
-    if (!mutex.lock())
-    {
+    if (!mutex.lock()) {
       throw sdl_error{};
     }
   }

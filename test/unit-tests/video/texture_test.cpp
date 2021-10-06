@@ -179,8 +179,7 @@ TEST_F(TextureTest, IsStreaming)
   ASSERT_FALSE(m_texture->is_streaming());
 
   const auto format = m_window->get_pixel_format();
-  const cen::texture streamingTexture =
-      cen::texture::streaming(*m_renderer, m_path, format);
+  const cen::texture streamingTexture = cen::texture::streaming(*m_renderer, m_path, format);
   ASSERT_TRUE(streamingTexture.is_streaming());
 }
 

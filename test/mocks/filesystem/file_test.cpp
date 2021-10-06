@@ -7,23 +7,24 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
-FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_RWclose, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPNG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isICO, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isJPG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isBMP, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isGIF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isSVG, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isWEBP, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isTIF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPNM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isPCX, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isLBM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isCUR, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXCF, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXPM, SDL_RWops*)
+  FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
 }
 
 class FileTest : public testing::Test
@@ -61,7 +62,7 @@ TEST_F(FileTest, IsPNG)
 
   ASSERT_FALSE(m_file.is_png());
   ASSERT_TRUE(m_file.is_png());
-  ASSERT_EQ(2, IMG_isPNG_fake.call_count);
+  ASSERT_EQ(2u, IMG_isPNG_fake.call_count);
 }
 
 TEST_F(FileTest, IsICO)
@@ -71,7 +72,7 @@ TEST_F(FileTest, IsICO)
 
   ASSERT_FALSE(m_file.is_ico());
   ASSERT_TRUE(m_file.is_ico());
-  ASSERT_EQ(2, IMG_isICO_fake.call_count);
+  ASSERT_EQ(2u, IMG_isICO_fake.call_count);
 }
 
 TEST_F(FileTest, IsJPG)
@@ -81,7 +82,7 @@ TEST_F(FileTest, IsJPG)
 
   ASSERT_FALSE(m_file.is_jpg());
   ASSERT_TRUE(m_file.is_jpg());
-  ASSERT_EQ(2, IMG_isJPG_fake.call_count);
+  ASSERT_EQ(2u, IMG_isJPG_fake.call_count);
 }
 
 TEST_F(FileTest, IsBMP)
@@ -91,7 +92,7 @@ TEST_F(FileTest, IsBMP)
 
   ASSERT_FALSE(m_file.is_bmp());
   ASSERT_TRUE(m_file.is_bmp());
-  ASSERT_EQ(2, IMG_isBMP_fake.call_count);
+  ASSERT_EQ(2u, IMG_isBMP_fake.call_count);
 }
 
 TEST_F(FileTest, IsGIF)
@@ -101,7 +102,7 @@ TEST_F(FileTest, IsGIF)
 
   ASSERT_FALSE(m_file.is_gif());
   ASSERT_TRUE(m_file.is_gif());
-  ASSERT_EQ(2, IMG_isGIF_fake.call_count);
+  ASSERT_EQ(2u, IMG_isGIF_fake.call_count);
 }
 
 TEST_F(FileTest, IsSVG)
@@ -111,7 +112,7 @@ TEST_F(FileTest, IsSVG)
 
   ASSERT_FALSE(m_file.is_svg());
   ASSERT_TRUE(m_file.is_svg());
-  ASSERT_EQ(2, IMG_isSVG_fake.call_count);
+  ASSERT_EQ(2u, IMG_isSVG_fake.call_count);
 }
 
 TEST_F(FileTest, IsWEBP)
@@ -121,7 +122,7 @@ TEST_F(FileTest, IsWEBP)
 
   ASSERT_FALSE(m_file.is_webp());
   ASSERT_TRUE(m_file.is_webp());
-  ASSERT_EQ(2, IMG_isWEBP_fake.call_count);
+  ASSERT_EQ(2u, IMG_isWEBP_fake.call_count);
 }
 
 TEST_F(FileTest, IsTIF)
@@ -131,7 +132,7 @@ TEST_F(FileTest, IsTIF)
 
   ASSERT_FALSE(m_file.is_tif());
   ASSERT_TRUE(m_file.is_tif());
-  ASSERT_EQ(2, IMG_isTIF_fake.call_count);
+  ASSERT_EQ(2u, IMG_isTIF_fake.call_count);
 }
 
 TEST_F(FileTest, IsPNM)
@@ -141,7 +142,7 @@ TEST_F(FileTest, IsPNM)
 
   ASSERT_FALSE(m_file.is_pnm());
   ASSERT_TRUE(m_file.is_pnm());
-  ASSERT_EQ(2, IMG_isPNM_fake.call_count);
+  ASSERT_EQ(2u, IMG_isPNM_fake.call_count);
 }
 
 TEST_F(FileTest, IsPCX)
@@ -151,7 +152,7 @@ TEST_F(FileTest, IsPCX)
 
   ASSERT_FALSE(m_file.is_pcx());
   ASSERT_TRUE(m_file.is_pcx());
-  ASSERT_EQ(2, IMG_isPCX_fake.call_count);
+  ASSERT_EQ(2u, IMG_isPCX_fake.call_count);
 }
 
 TEST_F(FileTest, IsLBM)
@@ -161,7 +162,7 @@ TEST_F(FileTest, IsLBM)
 
   ASSERT_FALSE(m_file.is_lbm());
   ASSERT_TRUE(m_file.is_lbm());
-  ASSERT_EQ(2, IMG_isLBM_fake.call_count);
+  ASSERT_EQ(2u, IMG_isLBM_fake.call_count);
 }
 
 TEST_F(FileTest, IsCUR)
@@ -171,7 +172,7 @@ TEST_F(FileTest, IsCUR)
 
   ASSERT_FALSE(m_file.is_cur());
   ASSERT_TRUE(m_file.is_cur());
-  ASSERT_EQ(2, IMG_isCUR_fake.call_count);
+  ASSERT_EQ(2u, IMG_isCUR_fake.call_count);
 }
 
 TEST_F(FileTest, IsXCF)
@@ -181,7 +182,7 @@ TEST_F(FileTest, IsXCF)
 
   ASSERT_FALSE(m_file.is_xcf());
   ASSERT_TRUE(m_file.is_xcf());
-  ASSERT_EQ(2, IMG_isXCF_fake.call_count);
+  ASSERT_EQ(2u, IMG_isXCF_fake.call_count);
 }
 
 TEST_F(FileTest, IsXPM)
@@ -191,7 +192,7 @@ TEST_F(FileTest, IsXPM)
 
   ASSERT_FALSE(m_file.is_xpm());
   ASSERT_TRUE(m_file.is_xpm());
-  ASSERT_EQ(2, IMG_isXPM_fake.call_count);
+  ASSERT_EQ(2u, IMG_isXPM_fake.call_count);
 }
 
 TEST_F(FileTest, IsXV)
@@ -201,5 +202,5 @@ TEST_F(FileTest, IsXV)
 
   ASSERT_FALSE(m_file.is_xv());
   ASSERT_TRUE(m_file.is_xv());
-  ASSERT_EQ(2, IMG_isXV_fake.call_count);
+  ASSERT_EQ(2u, IMG_isXV_fake.call_count);
 }

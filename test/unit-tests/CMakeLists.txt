@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(centurion-test-unittests LANGUAGES CXX)
+project(centurion-test-unit-tests)
 
 set(SOURCE_FILES
     serialization_utils.hpp
@@ -35,6 +35,10 @@ set(SOURCE_FILES
     event/controller_axis_event_test.cpp
     event/controller_button_event_test.cpp
     event/controller_device_event_test.cpp
+    event/controller_sensor_event_test.cpp
+    event/controller_touchpad_event_test.cpp
+    event/display_event_id_test.cpp
+    event/display_event_test.cpp
     event/dollar_gesture_event_test.cpp
     event/drop_event_test.cpp
     event/event_dispatcher_test.cpp
@@ -53,9 +57,11 @@ set(SOURCE_FILES
     event/mouse_wheel_direction_test.cpp
     event/multi_gesture_event_test.cpp
     event/quit_event_test.cpp
+    event/sensor_event_test.cpp
     event/text_editing_event_test.cpp
     event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp
+    event/user_event_test.cpp
     event/window_event_test.cpp
     event/window_event_id_test.cpp
 
@@ -124,7 +130,9 @@ set(SOURCE_FILES
     video/gl/gl_attribute_test.cpp
     video/gl/gl_swap_interval_test.cpp
 
+    video/blend_factor_test.cpp
     video/blend_mode_test.cpp
+    video/blend_op_test.cpp
     video/button_order_test.cpp
     video/color_test.cpp
     video/cursor_test.cpp
@@ -164,33 +172,52 @@ if (CEN_AUDIO)
       audio/sound_effect_test.cpp)
 endif ()
 
-cen_create_executable(${CENTURION_TEST_TARGET} "${SOURCE_FILES}")
-cen_set_compiler_options(${CENTURION_TEST_TARGET})
-
-if (CEN_AUDIO)
-  target_compile_definitions(${CENTURION_TEST_TARGET}
-      PUBLIC CEN_AUDIO)
-endif ()
+add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
+add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
-    PUBLIC .
-    PUBLIC ${CEN_SOURCE_DIR}
-    SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-    SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gtest_SOURCE_DIR}
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}/include
-    SYSTEM PUBLIC ${gmock_SOURCE_DIR}
-    SYSTEM PUBLIC ../lib/cereal)
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}
+    ${CEN_SOURCE_DIR}
 
-target_link_libraries(${CENTURION_TEST_TARGET}
-    PUBLIC ${SDL2_LIBRARY}
-    PUBLIC ${SDL2_IMAGE_LIBRARIES}
-    PUBLIC ${SDL2_MIXER_LIBRARIES}
-    PUBLIC ${SDL2_TTF_LIBRARIES}
-    PUBLIC gtest)
+    SYSTEM PRIVATE
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${gmock_SOURCE_DIR}/include
+    ${gmock_SOURCE_DIR}
+    ${CEN_LIBRARY_DIR}/cereal
+    )
+
+target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE
+    ${CENTURION_LIB_TARGET}
+    gtest
+    )
+
+if (MSVC)
+  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+      /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+      )
+endif ()
+
+if (CEN_AUDIO)
+  target_compile_definitions(${CENTURION_TEST_TARGET} PRIVATE CEN_AUDIO)
+endif ()
+
+target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
+    <SDL.h>
+    <array>
+    <algorithm>
+    <vector>
+    <memory>
+    <string>
+    <string_view>
+    <sstream>
+    <optional>
+    <ostream>
+    <iostream>
+    <utility>
+    <type_traits>
+    )
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
@@ -199,5 +226,5 @@ copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
-  cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})
+  copy_directory_post_build(${CENTURION_TEST_TARGET} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

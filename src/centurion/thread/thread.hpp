@@ -1,16 +1,14 @@
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
 #include <ostream>      // ostream
 #include <string>       // string, to_string
 #include <type_traits>  // invoke_result_t, declval
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
@@ -99,8 +97,7 @@ class thread final
                                            void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
-    if (!m_thread)
-    {
+    if (!m_thread) {
       throw sdl_error{};
     }
   }
@@ -116,8 +113,7 @@ class thread final
    */
   ~thread() noexcept
   {
-    if (joinable())
-    {
+    if (joinable()) {
       join();
     }
   }
@@ -143,8 +139,8 @@ class thread final
    * \since 6.2.0
    */
   template <is_stateless_callable Callable>
-  [[nodiscard]] static auto init(Callable&& task, const not_null<str> name = "thread")
-      -> thread
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
+                                 const not_null<str> name = "thread") -> thread
   {
     assert(name);
 
@@ -152,12 +148,10 @@ class thread final
 
     const auto wrapper = [](void* /*data*/) noexcept(isNoexcept) -> int {
       Callable callable;
-      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>)
-      {
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable>, int>) {
         return callable();
       }
-      else
-      {
+      else {
         callable();
         return 0;
       }
@@ -186,7 +180,7 @@ class thread final
    * \since 6.2.0
    */
   template <typename T = void, is_stateless_callable<T*> Callable>
-  [[nodiscard]] static auto init(Callable&& task,
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
                                  const not_null<str> name = "thread") -> thread
   {
@@ -198,12 +192,10 @@ class thread final
       auto* ptr = static_cast<T*>(erased);
 
       Callable callable;
-      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>)
-      {
+      if constexpr (std::convertible_to<std::invoke_result_t<Callable, T*>, int>) {
         return callable(ptr);
       }
-      else
-      {
+      else {
         callable(ptr);
         return 0;
       }
@@ -260,8 +252,7 @@ class thread final
    */
   void detach() noexcept
   {
-    if (m_joined || m_detached)
-    {
+    if (m_joined || m_detached) {
       return;
     }
 
@@ -283,8 +274,7 @@ class thread final
    */
   auto join() noexcept -> int
   {
-    if (m_joined || m_detached)
-    {
+    if (m_joined || m_detached) {
       return 0;
     }
 

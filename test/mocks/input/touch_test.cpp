@@ -33,14 +33,14 @@ class TouchTest : public testing::Test
 TEST_F(TouchTest, DeviceCount)
 {
   const auto count [[maybe_unused]] = cen::touch::device_count();
-  ASSERT_EQ(1, SDL_GetNumTouchDevices_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetNumTouchDevices_fake.call_count);
 }
 
 TEST_F(TouchTest, GetDevice)
 {
   SDL_GetTouchDevice_fake.return_val = 3;
   ASSERT_EQ(3, cen::touch::get_device(7));
-  ASSERT_EQ(1, SDL_GetTouchDevice_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetTouchDevice_fake.call_count);
   ASSERT_EQ(7, SDL_GetTouchDevice_fake.arg0_val);
 
   SDL_GetTouchDevice_fake.return_val = 0;
@@ -50,19 +50,19 @@ TEST_F(TouchTest, GetDevice)
 TEST_F(TouchTest, TypeOf)
 {
   const auto type [[maybe_unused]] = cen::touch::type_of(0);
-  ASSERT_EQ(1, SDL_GetTouchDeviceType_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetTouchDeviceType_fake.call_count);
 }
 
 TEST_F(TouchTest, FingerCount)
 {
   const auto count [[maybe_unused]] = cen::touch::finger_count(0);
-  ASSERT_EQ(1, SDL_GetNumTouchFingers_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetNumTouchFingers_fake.call_count);
 }
 
 TEST_F(TouchTest, GetFinger)
 {
   ASSERT_FALSE(cen::touch::get_finger(4, 2).has_value());
-  ASSERT_EQ(1, SDL_GetTouchFinger_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetTouchFinger_fake.call_count);
   ASSERT_EQ(4, SDL_GetTouchFinger_fake.arg0_val);
   ASSERT_EQ(2, SDL_GetTouchFinger_fake.arg1_val);
 

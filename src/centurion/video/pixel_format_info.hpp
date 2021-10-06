@@ -1,14 +1,12 @@
 #ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
 #define CENTURION_PIXEL_FORMAT_INFO_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -118,8 +116,7 @@ class basic_pixel_format_info final
   explicit basic_pixel_format_info(const pixel_format format)
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
-    if (!m_format)
-    {
+    if (!m_format) {
       throw sdl_error{};
     }
   }
@@ -330,8 +327,7 @@ template <typename T>
  * \since 6.2.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) -> std::ostream&
 {
   return stream << to_string(info);
 }

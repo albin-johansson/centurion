@@ -1,7 +1,7 @@
 /**
- * \page page-custom-configuration Custom Configuration
+ * \page page-custom-configuration Dynamic Configuration
  *
- * This example demonstrates how to tell Centurion how the SDL libraries should be
+ * This example demonstrates how to dynamically tell Centurion how the SDL libraries should be
  * initialized. The example will show how to initialize SDL without any audio support, but
  * the basic principles are the same no matter what you want to disable.
  *
@@ -14,21 +14,5 @@
  * them at compile-time by defining any of the `CENTURION_NO_SDL_IMAGE`,
  * `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF` macros.
  *
- * \code{cpp}
- * #include <centurion.hpp>
- *
- * int main(int, char**)
- * {
- *   cen::config cfg;  // Assumes the standard configuration values by default
- *
- *   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;  // No core audio support
- *   cfg.initMixer = false;                                  // Don't initialize SDL_mixer
- *
- *   cen::library centurion{cfg};
- *
- *   // Initialized SDL with no audio support along with SDL_image and SDL_ttf
- *
- *   return 0;
- * }
- * \endcode
+ * \include dynamic-configuration/dynamic_configuration.cpp
  */

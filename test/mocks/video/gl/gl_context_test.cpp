@@ -7,8 +7,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GL_MakeCurrent, SDL_Window*, SDL_GLContext)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GL_MakeCurrent, SDL_Window*, SDL_GLContext)
 }
 
 class OpenGLContextTest : public testing::Test
@@ -41,5 +42,5 @@ TEST_F(OpenGLContextTest, MakeCurrent)
   cen::window_handle window{nullptr};
   ASSERT_EQ(cen::failure, m_context.make_current(window));
   ASSERT_EQ(cen::success, m_context.make_current(window));
-  ASSERT_EQ(2, SDL_GL_MakeCurrent_fake.call_count);
+  ASSERT_EQ(2u, SDL_GL_MakeCurrent_fake.call_count);
 }

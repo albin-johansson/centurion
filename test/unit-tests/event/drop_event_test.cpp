@@ -35,7 +35,7 @@ TEST(DropEvent, SetWindowId)
 {
   cen::drop_event event;
 
-  constexpr auto id = 84;
+  constexpr cen::u32 id = 84;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

@@ -62,16 +62,13 @@ struct finger_state final
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline auto get_device(const int index) noexcept
-    -> std::optional<SDL_TouchID>
+[[nodiscard]] inline auto get_device(const int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
-  if (device != 0)
-  {
+  if (device != 0) {
     return device;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }
@@ -117,12 +114,10 @@ struct finger_state final
 [[nodiscard]] inline auto get_finger(const SDL_TouchID id, const int index) noexcept
     -> std::optional<SDL_Finger>
 {
-  if (const auto* finger = SDL_GetTouchFinger(id, index))
-  {
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
     return *finger;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

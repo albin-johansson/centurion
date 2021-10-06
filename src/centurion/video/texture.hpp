@@ -1,11 +1,9 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
+
+#include "../compiler/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -123,8 +121,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const not_null<str> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw img_error{};
     }
   }
@@ -164,8 +161,7 @@ class basic_texture final
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -195,8 +191,7 @@ class basic_texture final
                                     size.width,
                                     size.height)}
   {
-    if (!m_texture)
-    {
+    if (!m_texture) {
       throw sdl_error{};
     }
   }
@@ -233,8 +228,7 @@ class basic_texture final
     texture.set_blend_mode(blendMode);
 
     u32* pixels{};
-    if (!texture.lock(&pixels))
-    {
+    if (!texture.lock(&pixels)) {
       throw sdl_error{};
     }
 
@@ -285,16 +279,14 @@ class basic_texture final
 
     u32* pixels{};
     int pitch{};
-    if (!lock(&pixels, &pitch))
-    {
+    if (!lock(&pixels, &pitch)) {
       return;
     }
 
     const int nPixels = (pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const pixel_format_info info{format()};
       pixels[index] = info.rgba_to_pixel(color);
     }
@@ -627,15 +619,10 @@ class basic_texture final
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> result
   {
-    if (pitch)
-    {
-      return SDL_LockTexture(m_texture,
-                             nullptr,
-                             reinterpret_cast<void**>(pixels),
-                             pitch) == 0;
+    if (pitch) {
+      return SDL_LockTexture(m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch) == 0;
     }
-    else
-    {
+    else {
       int dummyPitch;
       return SDL_LockTexture(m_texture,
                              nullptr,

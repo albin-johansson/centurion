@@ -21,7 +21,7 @@ TEST(AudioDeviceEvent, SetWhich)
 {
   cen::audio_device_event event;
 
-  const auto which = 7;
+  const cen::u32 which = 7;
   event.set_which(which);
 
   ASSERT_EQ(which, event.which());

@@ -45,11 +45,9 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const haptic_direction_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const haptic_direction_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case haptic_direction_type::polar:
       return "polar";
 
@@ -81,8 +79,7 @@ enum class haptic_direction_type : u8
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const haptic_direction_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const haptic_direction_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }

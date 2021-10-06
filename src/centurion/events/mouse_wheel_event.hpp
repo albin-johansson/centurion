@@ -40,8 +40,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept
-      : common_event{event}
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept : common_event{event}
   {}
 
   /**

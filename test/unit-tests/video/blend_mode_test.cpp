@@ -36,7 +36,7 @@ TEST(BlendMode, InequalityOperator)
 
 TEST(BlendMode, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::blend_mode>(SDL_BLENDMODE_INVALID + 1)),
+  ASSERT_THROW(cen::to_string(static_cast<cen::blend_mode>(SDL_BLENDMODE_INVALID - 1)),
                cen::cen_error);
 
   ASSERT_EQ("none", cen::to_string(cen::blend_mode::none));
@@ -46,7 +46,6 @@ TEST(BlendMode, ToString)
   ASSERT_EQ("invalid", cen::to_string(cen::blend_mode::invalid));
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-
   ASSERT_EQ("mul", cen::to_string(cen::blend_mode::mul));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 

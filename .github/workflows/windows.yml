@@ -15,66 +15,42 @@ jobs:
         SDL_VERSION: [ 2.0.10, 2.0.12, 2.0.14, 2.0.16 ]
         CPP_VERSION: [ 17, 20 ]
     steps:
-      - uses: actions/checkout@v2
-      - uses: ilammy/msvc-dev-cmd@v1
-      - uses: seanmiddleditch/gha-setup-ninja@v3
-      - uses: lukka/get-cmake@v3.18.3
+      - uses: actions/checkout@main
+      - uses: ilammy/msvc-dev-cmd@master
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: lukka/get-cmake@latest
 
       - name: Create binaries directory
-        run: mkdir bin
         shell: cmd
+        run: mkdir bin
 
       - name: Download SDL2
-        uses: albin-johansson/download-sdl2@v1
+        uses: albin-johansson/download-sdl2@latest
         with:
           version: ${{matrix.SDL_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
       - name: Download SDL2_image
-        uses: albin-johansson/download-sdl2-image@v1
+        uses: albin-johansson/download-sdl2-image@latest
         with:
           version: ${{env.IMG_VERSION}}
           sources_destination: .
           binaries_destination: bin
 
-      - name: Download SDL2_mixer
-        uses: suisei-cn/actions-download-file@v1
-        id: DownloadSDL2_mixer
-        with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip"
-          target: .
-
       - name: Download SDL2_ttf
-        uses: suisei-cn/actions-download-file@v1
-        id: DownloadSDL2_ttf
+        uses: albin-johansson/download-sdl2-ttf@latest
         with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip"
-          target: .
+          version: ${{env.TTF_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
 
-      - name: Download SDL2_mixer runtime binaries
-        uses: suisei-cn/actions-download-file@v1
-        id: download_sdl2_mixer_runtime_binaries
+      - name: Download SDL2_mixer
+        uses: albin-johansson/download-sdl2-mixer@latest
         with:
-          url: "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip"
-          target: ./bin
-
-      - name: Download SDL2_ttf runtime binaries
-        uses: suisei-cn/actions-download-file@v1
-        id: download_sdl2_ttf_runtime_binaries
-        with:
-          url: "https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip"
-          target: ./bin
-
-      - name: Unzip archives (sources)
-        run: |
-          7z x -y SDL2_mixer-devel-${{env.MIX_VERSION}}-VC.zip
-          7z x -y SDL2_ttf-devel-${{env.TTF_VERSION}}-VC.zip
-
-      - name: Unzip archives (runtime binaries)
-        run: |
-          7z e -y ./bin/SDL2_mixer-${{env.MIX_VERSION}}-win32-x64.zip -obin
-          7z e -y ./bin/SDL2_ttf-${{env.TTF_VERSION}}-win32-x64.zip -obin
+          version: ${{env.MIX_VERSION}}
+          sources_destination: .
+          binaries_destination: bin
 
       - name: Create build folder
         run: cmake -E make_directory ./build
@@ -87,10 +63,10 @@ jobs:
           SDL2MIXERDIR: ${{github.workspace}}/SDL2_mixer-${{env.MIX_VERSION}}
           SDL2TTFDIR: ${{github.workspace}}/SDL2_ttf-${{env.TTF_VERSION}}
         run: |
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -DCEN_INTERACTIVE=OFF -GNinja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=${{matrix.CPP_VERSION}} -GNinja
           ninja
 
       - name: Run mocked test suite
-        working-directory: ./build/test/mocks
-        run: CenturionMocks
         shell: cmd
+        working-directory: ./build/test/mocks
+        run: mockcenturion

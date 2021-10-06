@@ -1,16 +1,14 @@
 #ifndef CENTURION_HAPTIC_HEADER
 #define CENTURION_HAPTIC_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -96,10 +94,8 @@ class basic_haptic final
   explicit basic_haptic(maybe_owner<SDL_Haptic*> haptic) noexcept(!detail::is_owning<T>())
       : m_haptic{haptic}
   {
-    if constexpr (detail::is_owning<T>())
-    {
-      if (!m_haptic)
-      {
+    if constexpr (detail::is_owning<T>()) {
+      if (!m_haptic) {
         throw cen_error{"Null haptic pointer!"};
       }
     }
@@ -119,8 +115,7 @@ class basic_haptic final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
-    if (!m_haptic)
-    {
+    if (!m_haptic) {
       throw sdl_error{};
     }
   }
@@ -150,15 +145,12 @@ class basic_haptic final
    * \since 5.2.0
    */
   template <typename U, typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick)
-      -> basic_haptic
+  [[nodiscard]] static auto from_joystick(const basic_joystick<U>& joystick) -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get()))
-    {
+    if (auto* ptr = SDL_HapticOpenFromJoystick(joystick.get())) {
       return basic_haptic{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -177,12 +169,10 @@ class basic_haptic final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_mouse() -> basic_haptic
   {
-    if (auto* ptr = SDL_HapticOpenFromMouse())
-    {
+    if (auto* ptr = SDL_HapticOpenFromMouse()) {
       return basic_haptic{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -300,12 +290,10 @@ class basic_haptic final
   {
     auto internal = effect.get();
     const auto id = SDL_HapticNewEffect(m_haptic, &internal);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -727,12 +715,10 @@ class basic_haptic final
   [[nodiscard]] auto index() const noexcept -> std::optional<int>
   {
     const auto res = SDL_HapticIndex(m_haptic);
-    if (res != -1)
-    {
+    if (res != -1) {
       return res;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -747,12 +733,10 @@ class basic_haptic final
    */
   [[nodiscard]] auto name() const noexcept -> str
   {
-    if (const auto i = index())
-    {
+    if (const auto i = index()) {
       return SDL_HapticName(*i);
     }
-    else
-    {
+    else {
       return nullptr;
     }
   }
@@ -771,12 +755,10 @@ class basic_haptic final
   [[nodiscard]] auto effect_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffects(m_haptic);
-    if (capacity != -1)
-    {
+    if (capacity != -1) {
       return capacity;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -794,12 +776,10 @@ class basic_haptic final
   [[nodiscard]] auto concurrent_capacity() const noexcept -> std::optional<int>
   {
     const auto capacity = SDL_HapticNumEffectsPlaying(m_haptic);
-    if (capacity != -1)
-    {
+    if (capacity != -1) {
       return capacity;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }

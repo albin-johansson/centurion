@@ -1,11 +1,9 @@
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
+
+#include "../compiler/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>
@@ -131,8 +129,7 @@ class basic_surface final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw img_error{};
     }
   }
@@ -174,8 +171,7 @@ class basic_surface final
                                                  0,
                                                  to_underlying(pixelFormat))}
   {
-    if (!m_surface)
-    {
+    if (!m_surface) {
       throw sdl_error{};
     }
   }
@@ -255,12 +251,10 @@ class basic_surface final
    */
   basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (detail::is_owning<T>())
-    {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     }
-    else
-    {
+    else {
       m_surface = other.get();
     }
   }
@@ -288,14 +282,11 @@ class basic_surface final
   auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
-    if (this != &other)
-    {
-      if constexpr (detail::is_owning<T>())
-      {
+    if (this != &other) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       }
-      else
-      {
+      else {
         m_surface = other.get();
       }
     }
@@ -416,12 +407,10 @@ class basic_surface final
    */
   auto lock() noexcept -> result
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       return SDL_LockSurface(m_surface) == 0;
     }
-    else
-    {
+    else {
       return true;
     }
   }
@@ -435,8 +424,7 @@ class basic_surface final
    */
   void unlock() noexcept
   {
-    if (must_lock())
-    {
+    if (must_lock()) {
       SDL_UnlockSurface(m_surface);
     }
   }
@@ -473,16 +461,14 @@ class basic_surface final
    */
   void set_pixel(const ipoint pixel, const color& color) noexcept
   {
-    if (!in_bounds(pixel) || !lock())
-    {
+    if (!in_bounds(pixel) || !lock()) {
       return;
     }
 
     const int nPixels = (m_surface->pitch / 4) * height();
     const int index = (pixel.y() * width()) + pixel.x();
 
-    if ((index >= 0) && (index < nPixels))
-    {
+    if ((index >= 0) && (index < nPixels)) {
       const auto info = format_info();
       auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
       pixels[index] = info.rgba_to_pixel(color);
@@ -609,14 +595,12 @@ class basic_surface final
    */
   [[nodiscard]] auto convert(const pixel_format format) const -> basic_surface
   {
-    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0))
-    {
+    if (auto* converted = SDL_ConvertSurfaceFormat(m_surface, to_underlying(format), 0)) {
       basic_surface result{converted};
       result.set_blend_mode(get_blend_mode());
       return result;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -856,8 +840,7 @@ class basic_surface final
    */
   [[nodiscard]] auto in_bounds(const ipoint point) const noexcept -> bool
   {
-    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
-             point.y() >= height());
+    return !(point.x() < 0 || point.y() < 0 || point.x() >= width() || point.y() >= height());
   }
 
   /**
@@ -872,17 +855,16 @@ class basic_surface final
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
-    if (auto* copy = SDL_DuplicateSurface(m_surface))
-    {
+    if (auto* copy = SDL_DuplicateSurface(m_surface)) {
       return copy;
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   basic_surface() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE

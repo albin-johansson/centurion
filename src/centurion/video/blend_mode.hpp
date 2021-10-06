@@ -7,6 +7,8 @@
 #include <string_view>  // string_view
 
 #include "../core/exception.hpp"
+#include "blend_factor.hpp"
+#include "blend_op.hpp"
 
 namespace cen {
 
@@ -38,6 +40,52 @@ enum class blend_mode
   invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
+/**
+ * \struct blend_task
+ *
+ * \brief Describes how a pair of blend mode factors will be combined.
+ *
+ * \see `compose_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+struct blend_task final
+{
+  blend_factor src;  ///< The blend factor applied to the source pixels.
+  blend_factor dst;  ///< The blend factor applied to the destination pixels.
+  blend_op op;       ///< The operation used to combine the source and destination pixels.
+};
+
+/**
+ * \brief Composes a custom blend mode.
+ *
+ * \param color the blend task descriptor used for RGB components.
+ * \param alpha the blend task descriptor used for alpha components.
+ *
+ * \return the composed blend mode.
+ *
+ * \see `blend_task`
+ * \see `blend_factor`
+ * \see `blend_op`
+ *
+ * \see `SDL_ComposeCustomBlendMode()`
+ * \see `basic_renderer::set_blend_mode()`
+ * \see `basic_texture::set_blend_mode()`
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] inline auto compose_blend_mode(const blend_task& color,
+                                             const blend_task& alpha) noexcept -> blend_mode
+{
+  const auto res = SDL_ComposeCustomBlendMode(static_cast<SDL_BlendFactor>(color.src),
+                                              static_cast<SDL_BlendFactor>(color.dst),
+                                              static_cast<SDL_BlendOperation>(color.op),
+                                              static_cast<SDL_BlendFactor>(alpha.src),
+                                              static_cast<SDL_BlendFactor>(alpha.dst),
+                                              static_cast<SDL_BlendOperation>(alpha.op));
+  return static_cast<blend_mode>(res);
+}
+
 /// \name String conversions
 /// \{
 
@@ -57,8 +105,7 @@ enum class blend_mode
  */
 [[nodiscard]] constexpr auto to_string(const blend_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case blend_mode::none:
       return "none";
 
@@ -123,15 +170,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
 }
 
 /// \copydoc operator==(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -146,15 +193,15 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const blend_mode lhs,
-                                        const SDL_BlendMode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const blend_mode lhs, const SDL_BlendMode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(blend_mode, SDL_BlendMode)
-[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs,
-                                        const blend_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_BlendMode lhs, const blend_mode rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

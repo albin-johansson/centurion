@@ -61,15 +61,13 @@ TEST(PixelFormat, Values)
 
     ASSERT_EQ(cen::pixel_format::argb2101010, SDL_PIXELFORMAT_ARGB2101010);
 
-    if constexpr (cen::cpu::is_big_endian())
-    {
+    if constexpr (cen::cpu::is_big_endian()) {
       ASSERT_EQ(cen::pixel_format::rgba32, SDL_PIXELFORMAT_RGBA8888);
       ASSERT_EQ(cen::pixel_format::argb32, SDL_PIXELFORMAT_ARGB8888);
       ASSERT_EQ(cen::pixel_format::bgra32, SDL_PIXELFORMAT_BGRA8888);
       ASSERT_EQ(cen::pixel_format::abgr32, SDL_PIXELFORMAT_ABGR8888);
     }
-    else
-    {
+    else {
       ASSERT_EQ(cen::pixel_format::rgba32, SDL_PIXELFORMAT_ABGR8888);
       ASSERT_EQ(cen::pixel_format::argb32, SDL_PIXELFORMAT_BGRA8888);
       ASSERT_EQ(cen::pixel_format::bgra32, SDL_PIXELFORMAT_ARGB8888);
@@ -139,15 +137,13 @@ TEST(PixelFormat, Values)
 
     ASSERT_EQ(SDL_PIXELFORMAT_ARGB2101010, cen::pixel_format::argb2101010);
 
-    if constexpr (cen::cpu::is_big_endian())
-    {
+    if constexpr (cen::cpu::is_big_endian()) {
       ASSERT_EQ(SDL_PIXELFORMAT_RGBA8888, cen::pixel_format::rgba32);
       ASSERT_EQ(SDL_PIXELFORMAT_ARGB8888, cen::pixel_format::argb32);
       ASSERT_EQ(SDL_PIXELFORMAT_BGRA8888, cen::pixel_format::bgra32);
       ASSERT_EQ(SDL_PIXELFORMAT_ABGR8888, cen::pixel_format::abgr32);
     }
-    else
-    {
+    else {
       ASSERT_EQ(SDL_PIXELFORMAT_ABGR8888, cen::pixel_format::rgba32);
       ASSERT_EQ(SDL_PIXELFORMAT_BGRA8888, cen::pixel_format::argb32);
       ASSERT_EQ(SDL_PIXELFORMAT_ARGB8888, cen::pixel_format::bgra32);
@@ -170,8 +166,7 @@ TEST(PixelFormat, Values)
 
 TEST(PixelFormat, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::pixel_format>(0xFFFFFFFF)),
-               cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::pixel_format>(0xFFFFFFFF)), cen::cen_error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::pixel_format::unknown));
   ASSERT_EQ("index1lsb", cen::to_string(cen::pixel_format::index1lsb));

@@ -53,8 +53,7 @@ enum class hat_state : u8
  */
 [[nodiscard]] constexpr auto to_string(const hat_state state) -> std::string_view
 {
-  switch (state)
-  {
+  switch (state) {
     case hat_state::centered:
       return "centered";
 

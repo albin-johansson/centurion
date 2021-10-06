@@ -6,6 +6,8 @@
 
 TEST(MusicType, Values)
 {
+  ASSERT_EQ(9, cen::music_type_count());
+
   ASSERT_EQ(cen::music_type::unknown, MUS_NONE);
   ASSERT_EQ(cen::music_type::mp3, MUS_MP3);
   ASSERT_EQ(cen::music_type::wav, MUS_WAV);

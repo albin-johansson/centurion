@@ -122,8 +122,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator|(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) | to_underlying(b));
 }
@@ -138,8 +137,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  *
  * \since 6.1.0
  */
-[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept
-    -> key_mod
+[[nodiscard]] constexpr auto operator&(const key_mod a, const key_mod b) noexcept -> key_mod
 {
   return static_cast<key_mod>(to_underlying(a) & to_underlying(b));
 }
@@ -174,8 +172,7 @@ inline void set_modifiers(const key_mod mods) noexcept
  */
 [[nodiscard]] inline auto to_string(const key_mod mods) -> std::string
 {
-  if (mods == key_mod::none)
-  {
+  if (mods == key_mod::none) {
     return "none";
   }
 
@@ -183,10 +180,8 @@ inline void set_modifiers(const key_mod mods) noexcept
   std::stringstream stream;
 
   auto check = [&stream, mask, count = 0](const key_mod mod, const str name) mutable {
-    if (mask & to_underlying(mod))
-    {
-      if (count != 0)
-      {
+    if (mask & to_underlying(mod)) {
+      if (count != 0) {
         stream << ',';
       }
 
@@ -244,15 +239,13 @@ inline auto operator<<(std::ostream& stream, const key_mod mods) -> std::ostream
 
 namespace detail {
 
-[[nodiscard]] inline auto is_active(const key_mod modifiers,
-                                    const u16 currentMask) noexcept -> bool
+[[nodiscard]] inline auto is_active(const key_mod modifiers, const u16 currentMask) noexcept
+    -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
-  else
-  {
+  else {
     return currentMask & to_underlying(modifiers);
   }
 }
@@ -260,20 +253,17 @@ namespace detail {
 [[nodiscard]] inline auto is_only_active(const key_mod modifiers,
                                          const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 
   const auto mask = to_underlying(modifiers);
   const auto hits = currentMask & mask;
 
-  if (hits != mask)
-  {
+  if (hits != mask) {
     return false;  // The specified modifiers were a combo that wasn't fully active
   }
-  else
-  {
+  else {
     const auto others = currentMask & ~hits;
     return hits && !others;
   }
@@ -282,8 +272,7 @@ namespace detail {
 [[nodiscard]] inline auto is_only_any_of_active(const key_mod modifiers,
                                                 const u16 currentMask) noexcept -> bool
 {
-  if (modifiers == key_mod::none)
-  {
+  if (modifiers == key_mod::none) {
     return !currentMask;
   }
 

@@ -5,8 +5,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(char*, SDL_GetBasePath)
+extern "C"
+{
+  FAKE_VALUE_FUNC(char*, SDL_GetBasePath)
 }
 
 class BasePathTest : public testing::Test
@@ -22,5 +23,5 @@ class BasePathTest : public testing::Test
 TEST_F(BasePathTest, FunctionCall)
 {
   const auto path [[maybe_unused]] = cen::base_path();
-  ASSERT_EQ(1, SDL_GetBasePath_fake.call_count);
+  ASSERT_EQ(1u, SDL_GetBasePath_fake.call_count);
 }

@@ -61,8 +61,7 @@ enum class file_mode
  */
 [[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
 {
-  switch (mode)
-  {
+  switch (mode) {
     case file_mode::read_existing:
       return "read_existing";
 

@@ -39,24 +39,14 @@ TEST(Palette, Iteration)
 {
   {
     cen::palette single{1};
-
-    auto count = 0;
-    for (const auto& color : single)
-    {
-      ++count;
-    }
+    const auto count = single.end() - single.begin();
 
     ASSERT_EQ(1, count);
   }
 
   {
     cen::palette palette{4};
-
-    auto count = 0;
-    for (const auto& color : palette)
-    {
-      ++count;
-    }
+    const auto count = palette.end() - palette.begin();
 
     ASSERT_EQ(4, count);
   }

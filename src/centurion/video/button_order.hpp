@@ -53,8 +53,7 @@ enum class button_order : u32
  */
 [[nodiscard]] constexpr auto to_string(const button_order order) -> std::string_view
 {
-  switch (order)
-  {
+  switch (order) {
     case button_order::left_to_right:
       return "left_to_right";
 

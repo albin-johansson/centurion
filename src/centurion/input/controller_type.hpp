@@ -70,8 +70,7 @@ enum class controller_type
  */
 [[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_type::unknown:
       return "unknown";
 

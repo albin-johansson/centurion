@@ -2,7 +2,7 @@
   "project": "centurion",
   "target": "include/centurion.hpp",
   "sources": [
-    "src/everything.hpp"
+    "src/centurion.hpp"
   ],
   "include_paths": [
     "src"

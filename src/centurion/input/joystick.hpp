@@ -1,16 +1,14 @@
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>   // assert
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -133,8 +131,7 @@ class basic_joystick final
   template <typename TT = T, detail::is_owner<TT> = 0>
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
-    if (!m_joystick)
-    {
+    if (!m_joystick) {
       throw sdl_error{};
     }
   }
@@ -202,8 +199,7 @@ class basic_joystick final
    */
   auto rumble(const u16 lowFreq,
               const u16 highFreq,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count()) == 0;
   }
@@ -315,16 +311,12 @@ class basic_joystick final
                                            const int nButtons,
                                            const int nHats) noexcept -> std::optional<int>
   {
-    const auto index = SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type),
-                                                 nAxes,
-                                                 nButtons,
-                                                 nHats);
-    if (index != -1)
-    {
+    const auto index =
+        SDL_JoystickAttachVirtual(static_cast<SDL_JoystickType>(type), nAxes, nButtons, nHats);
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -422,12 +414,10 @@ class basic_joystick final
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -455,12 +445,10 @@ class basic_joystick final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetVendor(m_joystick);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -476,12 +464,10 @@ class basic_joystick final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetProduct(m_joystick);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -496,12 +482,10 @@ class basic_joystick final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetProductVersion(m_joystick);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -593,16 +577,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-    if (index != -1)
-    {
+    if (index != -1) {
       return index;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -635,12 +616,10 @@ class basic_joystick final
   [[nodiscard]] static auto vendor(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-    if (vendor != 0)
-    {
+    if (vendor != 0) {
       return vendor;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -659,12 +638,10 @@ class basic_joystick final
   [[nodiscard]] static auto product(const int deviceIndex) noexcept -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-    if (product != 0)
-    {
+    if (product != 0) {
       return product;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -684,12 +661,10 @@ class basic_joystick final
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-    if (version != 0)
-    {
+    if (version != 0) {
       return version;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -741,12 +716,10 @@ class basic_joystick final
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-    if (id != -1)
-    {
+    if (id != -1) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -770,12 +743,10 @@ class basic_joystick final
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
-    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0)
-    {
+    if (SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy) == 0) {
       return change;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -810,16 +781,13 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept
-      -> std::optional<i16>
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept -> std::optional<i16>
   {
     i16 state{};
-    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state))
-    {
+    if (SDL_JoystickGetAxisInitialState(m_joystick, axis, &state)) {
       return state;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1003,12 +971,10 @@ class basic_joystick final
   [[nodiscard]] static auto count() noexcept -> std::optional<int>
   {
     const auto result = SDL_NumJoysticks();
-    if (result >= 0)
-    {
+    if (result >= 0) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1100,8 +1066,7 @@ class basic_joystick final
   {
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      if (SDL_JoystickGetAttached(joystick))
-      {
+      if (SDL_JoystickGetAttached(joystick)) {
         SDL_JoystickClose(joystick);
       }
     }
@@ -1127,8 +1092,7 @@ template <typename T>
 [[nodiscard]] auto to_string(const basic_joystick<T>& joystick) -> std::string
 {
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = joystick.serial();
   }
 

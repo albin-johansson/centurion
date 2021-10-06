@@ -1,10 +1,6 @@
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <array>        // array
@@ -13,6 +9,8 @@
 #include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -172,11 +170,9 @@ class basic_controller final
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_controller(const int index = 0)
-      : m_controller{SDL_GameControllerOpen(index)}
+  explicit basic_controller(const int index = 0) : m_controller{SDL_GameControllerOpen(index)}
   {
-    if (!m_controller)
-    {
+    if (!m_controller) {
       throw sdl_error{};
     }
   }
@@ -198,12 +194,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_joystick(const SDL_JoystickID id) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromInstanceID(id))
-    {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -224,12 +218,10 @@ class basic_controller final
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto from_index(const player_index index) -> basic_controller
   {
-    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index))
-    {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
       return basic_controller{ptr};
     }
-    else
-    {
+    else {
       throw sdl_error{};
     }
   }
@@ -342,8 +334,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const not_null<str> str) noexcept -> controller_button
   {
     assert(str);
     return static_cast<controller_button>(SDL_GameControllerGetButtonFromString(str));
@@ -358,8 +349,7 @@ class basic_controller final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto get_button(const std::string& str) noexcept
-      -> controller_button
+  [[nodiscard]] static auto get_button(const std::string& str) noexcept -> controller_button
   {
     return get_button(str.c_str());
   }
@@ -389,8 +379,7 @@ class basic_controller final
    */
   [[nodiscard]] static auto stringify(const controller_button button) noexcept -> str
   {
-    return SDL_GameControllerGetStringForButton(
-        static_cast<SDL_GameControllerButton>(button));
+    return SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(button));
   }
 
   /**
@@ -408,12 +397,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForAxis(m_controller,
                                          static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -433,12 +420,10 @@ class basic_controller final
     const auto result =
         SDL_GameControllerGetBindForButton(m_controller,
                                            static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE)
-    {
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -452,8 +437,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_state(const controller_button button) const noexcept
-      -> button_state
+  [[nodiscard]] auto get_state(const controller_button button) const noexcept -> button_state
   {
     const auto state =
         SDL_GameControllerGetButton(m_controller,
@@ -535,8 +519,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
-    return SDL_GameControllerGetAxis(m_controller,
-                                     static_cast<SDL_GameControllerAxis>(axis));
+    return SDL_GameControllerGetAxis(m_controller, static_cast<SDL_GameControllerAxis>(axis));
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -597,8 +580,7 @@ class basic_controller final
    */
   auto rumble(const u16 lo,
               const u16 hi,
-              const milliseconds<u32> duration) noexcept(noexcept(duration.count()))
-      -> result
+              const milliseconds<u32> duration) noexcept(noexcept(duration.count())) -> result
   {
     return SDL_GameControllerRumble(m_controller, lo, hi, duration.count()) == 0;
   }
@@ -663,12 +645,10 @@ class basic_controller final
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -683,12 +663,10 @@ class basic_controller final
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -704,12 +682,10 @@ class basic_controller final
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProductVersion(m_controller);
-    if (id != 0)
-    {
+    if (id != 0) {
       return id;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -745,12 +721,10 @@ class basic_controller final
   [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(m_controller);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -837,10 +811,8 @@ class basic_controller final
     const auto joysticks = SDL_NumJoysticks();
 
     auto amount = 0;
-    for (auto i = 0; i < joysticks; ++i)
-    {
-      if (is_supported(i))
-      {
+    for (auto i = 0; i < joysticks; ++i) {
+      if (is_supported(i)) {
         ++amount;
       }
     }
@@ -908,8 +880,7 @@ class basic_controller final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto touchpad_finger_state(const int touchpad,
-                                           const int finger) const noexcept
+  [[nodiscard]] auto touchpad_finger_state(const int touchpad, const int finger) const noexcept
       -> std::optional<touch::finger_state>
   {
     touch::finger_state result{};
@@ -924,12 +895,10 @@ class basic_controller final
                                                          &result.pressure);
     result.state = static_cast<button_state>(state);
 
-    if (res != -1)
-    {
+    if (res != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1017,8 +986,7 @@ class basic_controller final
     {
       return array;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1063,10 +1031,8 @@ class basic_controller final
    */
   auto set_led(const color& color) noexcept -> result
   {
-    return SDL_GameControllerSetLED(m_controller,
-                                    color.red(),
-                                    color.green(),
-                                    color.blue()) == 0;
+    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue()) ==
+           0;
   }
 
   /**
@@ -1102,16 +1068,13 @@ class basic_controller final
   {
     assert(mapping);
     const auto result = SDL_GameControllerAddMapping(mapping);
-    if (result == 1)
-    {
+    if (result == 1) {
       return mapping_result::added;
     }
-    else if (result == 0)
-    {
+    else if (result == 0) {
       return mapping_result::updated;
     }
-    else
-    {
+    else {
       return mapping_result::error;
     }
   }
@@ -1156,12 +1119,10 @@ class basic_controller final
   {
     assert(file);
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -1239,8 +1200,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept
-      -> sdl_string
+  [[nodiscard]] static auto mapping_by_index(const mapping_index index) noexcept -> sdl_string
   {
     return sdl_string{SDL_GameControllerMappingForIndex(index)};
   }
@@ -1308,8 +1268,7 @@ class basic_controller final
 [[nodiscard]] inline auto to_string(const controller::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller::mapping_result::error:
       return "error";
 
@@ -1328,8 +1287,7 @@ class basic_controller final
 [[nodiscard]] constexpr auto to_string(const controller_handle::mapping_result result)
     -> std::string_view
 {
-  switch (result)
-  {
+  switch (result) {
     case controller_handle::mapping_result::error:
       return "error";
 
@@ -1359,8 +1317,7 @@ template <typename T>
   const auto* name = controller.name();
 
   str serial{};
-  if constexpr (detail::sdl_version_at_least(2, 0, 14))
-  {
+  if constexpr (detail::sdl_version_at_least(2, 0, 14)) {
     serial = controller.serial();
   }
 
@@ -1399,8 +1356,8 @@ inline auto operator<<(std::ostream& stream, const controller::mapping_result re
 }
 
 /// \see operator<<(std::ostream&, controller::mapping_result)
-inline auto operator<<(std::ostream& stream,
-                       const controller_handle::mapping_result result) -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_handle::mapping_result result)
+    -> std::ostream&
 {
   return stream << to_string(result);
 }
@@ -1416,8 +1373,7 @@ inline auto operator<<(std::ostream& stream,
  * \since 5.0.0
  */
 template <typename T>
-auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
-    -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_controller<T>& controller) -> std::ostream&
 {
   return stream << to_string(controller);
 }

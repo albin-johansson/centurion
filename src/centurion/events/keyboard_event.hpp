@@ -93,12 +93,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    */
   void set_modifier(const key_mod modifiers, const bool active) noexcept
   {
-    if (active)
-    {
+    if (active) {
       m_event.keysym.mod |= to_underlying(modifiers);
     }
-    else
-    {
+    else {
       m_event.keysym.mod &= ~to_underlying(modifiers);
     }
   }
@@ -223,109 +221,6 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
   [[nodiscard]] auto is_only_any_of_active(const key_mod modifiers) const noexcept -> bool
   {
     return detail::is_only_any_of_active(modifiers, m_event.keysym.mod);
-  }
-
-  /**
-   * \brief Indicates whether or not the specified modifier are active.
-   *
-   * \note Multiple key modifiers can be active at the same time.
-   *
-   * \param modifier the key modifiers that will be checked.
-   *
-   * \return `true` if any of the specified modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0. Use `is_active(key_mod)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto modifier_active(const key_mod modifier) const noexcept
-      -> bool
-  {
-    return is_active(modifier);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the SHIFT modifiers are active.
-   *
-   * \return `true` if any of the SHIFT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::shift)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto shift_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_shift) || is_active(key_mod::right_shift);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the CTRL modifiers are active.
-   *
-   * \return `true` if any of the CTRL modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::ctrl)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto ctrl_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_ctrl) || is_active(key_mod::right_ctrl);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the ALT modifiers are active.
-   *
-   * \return `true` if any of the ALT modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::alt)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto alt_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_alt) || is_active(key_mod::right_alt);
-  }
-
-  /**
-   * \brief Indicates whether or not any of the GUI modifiers are active.
-   *
-   * \return `true` if any of the GUI modifiers are active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::gui)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto gui_active() const noexcept -> bool
-  {
-    return is_active(key_mod::left_gui) || is_active(key_mod::right_gui);
-  }
-
-  /**
-   * \brief Indicates whether or not the CAPS modifier is active.
-   *
-   * \return `true` if the CAPS modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::caps)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto caps_active() const noexcept -> bool
-  {
-    return is_active(key_mod::caps);
-  }
-
-  /**
-   * \brief Indicates whether or not the NUM modifier is active.
-   *
-   * \return `true` if the NUM modifier is active; `false` otherwise.
-   *
-   * \deprecated Since 6.1.0, use `is_active(key_mod::num)` instead.
-   *
-   * \since 4.0.0
-   */
-  [[deprecated, nodiscard]] auto num_active() const noexcept -> bool
-  {
-    return is_active(key_mod::num);
   }
 
   /**

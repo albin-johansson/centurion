@@ -20,9 +20,10 @@ namespace cen {
  *
  * \brief Provides values that represent different fade playback states.
  *
- * \since 3.0.0
- *
  * \see `Mix_Fading`
+ * \see `fade_status_count()`
+ *
+ * \since 3.0.0
  */
 enum class fade_status
 {
@@ -30,6 +31,18 @@ enum class fade_status
   in = MIX_FADING_IN,    ///< Currently fading in music.
   out = MIX_FADING_OUT   ///< Currently fading out music.
 };
+
+/**
+ * \brief Returns the number of enumerators for the `fade_status` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
+{
+  return 3;
+}
 
 /// \name String conversions
 /// \{
@@ -50,8 +63,7 @@ enum class fade_status
  */
 [[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
 {
-  switch (status)
-  {
+  switch (status) {
     case fade_status::none:
       return "none";
 
@@ -103,15 +115,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
 
 /// \copydoc operator==(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -126,15 +138,15 @@ inline auto operator<<(std::ostream& stream, const fade_status status) -> std::o
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
-                                        const Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const fade_status lhs, const Mix_Fading rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(fade_status, Mix_Fading)
-[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
-                                        const fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs, const fade_status rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

@@ -110,9 +110,9 @@ template <typename T>
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto make_window_and_renderer(
-    const iarea size = window::default_size(),
-    const u32 flags = window::default_flags()) -> std::pair<window, renderer>
+[[nodiscard]] inline auto make_window_and_renderer(const iarea size = window::default_size(),
+                                                   const u32 flags = window::default_flags())
+    -> std::pair<window, renderer>
 {
   cen::window window{"Centurion window", size, flags};
   cen::renderer renderer{window};

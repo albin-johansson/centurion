@@ -116,8 +116,7 @@ namespace touch {
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const touch_device_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const touch_device_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -145,8 +144,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type)
  */
 [[nodiscard]] constexpr auto to_string(const touch_device_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case touch_device_type::invalid:
       return "invalid";
 

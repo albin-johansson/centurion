@@ -49,8 +49,7 @@ enum class mouse_button : u8
  */
 [[nodiscard]] constexpr auto to_string(const mouse_button button) -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case mouse_button::left:
       return "left";
 

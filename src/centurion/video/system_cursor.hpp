@@ -70,8 +70,7 @@ enum class system_cursor
  */
 [[nodiscard]] constexpr auto to_string(const system_cursor cursor) -> std::string_view
 {
-  switch (cursor)
-  {
+  switch (cursor) {
     case system_cursor::arrow:
       return "arrow";
 

@@ -32,10 +32,8 @@ CENTURION_DEFINE_TYPED_TEST(HapticCommonTest, all_effects)
   ASSERT_EQ(cen::haptic_infinity, effect.representation().length);
 }
 
-using direction_effects = testing::Types<cen::haptic_constant,
-                                         cen::haptic_periodic,
-                                         cen::haptic_ramp,
-                                         cen::haptic_custom>;
+using direction_effects = testing::
+    Types<cen::haptic_constant, cen::haptic_periodic, cen::haptic_ramp, cen::haptic_custom>;
 
 CENTURION_DEFINE_TYPED_TEST(HapticDirectionTest, direction_effects)
 {
@@ -62,10 +60,8 @@ CENTURION_DEFINE_TYPED_TEST(HapticDelayTest, delay_effects)
   ASSERT_EQ(278_ms, effect.delay());
 }
 
-using envelope_effects = testing::Types<cen::haptic_constant,
-                                        cen::haptic_periodic,
-                                        cen::haptic_ramp,
-                                        cen::haptic_custom>;
+using envelope_effects = testing::
+    Types<cen::haptic_constant, cen::haptic_periodic, cen::haptic_ramp, cen::haptic_custom>;
 
 CENTURION_DEFINE_TYPED_TEST(HapticEnvelopeTest, envelope_effects)
 {

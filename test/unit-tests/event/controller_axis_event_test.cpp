@@ -59,7 +59,7 @@ TEST(ControllerAxisEvent, Which)
 TEST(ControllerAxisEvent, Axis)
 {
   SDL_ControllerAxisEvent sdl;
-  sdl.axis = SDL_CONTROLLER_AXIS_INVALID;
+  sdl.axis = static_cast<cen::u8>(SDL_CONTROLLER_AXIS_INVALID);
 
   cen::controller_axis_event event{sdl};
   ASSERT_EQ(sdl.axis, static_cast<cen::u8>(event.axis()));

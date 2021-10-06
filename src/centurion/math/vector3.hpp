@@ -1,12 +1,10 @@
 #ifndef CENTURION_VECTOR3_HEADER
 #define CENTURION_VECTOR3_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <ostream>  // ostream
 #include <string>   // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -102,8 +100,8 @@ void serialize(Archive& archive, vector3<T>& vector)
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
 }
@@ -121,8 +119,8 @@ template <typename T>
  * \since 5.2.0
  */
 template <typename T>
-[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs,
-                                        const vector3<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const vector3<T>& lhs, const vector3<T>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

@@ -40,8 +40,7 @@ TEST(UnicodeString, Iteration)
   ASSERT_EQ(3, str.end() - str.begin());
 
   int count = 0;
-  for (const auto ch : str)
-  {
+  for (const auto ch : str) {
     ASSERT_NE(0, ch);
     ++count;
   }
@@ -113,12 +112,12 @@ TEST(UnicodeString, At)
 {
   cen::unicode_string str;
 
-  ASSERT_NO_THROW(str.at(0));  // null-terminator
-  ASSERT_ANY_THROW(str.at(-1));
-  ASSERT_ANY_THROW(str.at(1));
+  ASSERT_NO_THROW(str.at(0u));  // null-terminator
+  ASSERT_ANY_THROW(str.at(123u));
+  ASSERT_ANY_THROW(str.at(1u));
 
   str += 'T'_uni;
-  ASSERT_EQ('T'_uni, str.at(0));
+  ASSERT_EQ('T'_uni, str.at(0u));
 }
 
 TEST(UnicodeString, Data)

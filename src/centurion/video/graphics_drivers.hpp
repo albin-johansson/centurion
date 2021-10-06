@@ -50,12 +50,10 @@ namespace cen {
     -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info{};
-  if (SDL_GetRenderDriverInfo(index, &info) == 0)
-  {
+  if (SDL_GetRenderDriverInfo(index, &info) == 0) {
     return info;
   }
-  else
-  {
+  else {
     return std::nullopt;
   }
 }

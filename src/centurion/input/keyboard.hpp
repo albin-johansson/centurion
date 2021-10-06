@@ -1,16 +1,14 @@
 #ifndef CENTURION_KEYBOARD_HEADER
 #define CENTURION_KEYBOARD_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <algorithm>  // copy
 #include <array>      // array
 #include <ostream>    // ostream
 #include <string>     // string, to_string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -80,8 +78,7 @@ class keyboard final
    */
   [[nodiscard]] auto is_pressed(const scan_code& code) const noexcept -> bool
   {
-    return check_state(code,
-                       [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
+    return check_state(code, [this](const SDL_Scancode sc) noexcept { return m_states[sc]; });
   }
 
   /**
@@ -190,8 +187,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc())
-      -> bool
+  [[nodiscard]] auto just_released(const scan_code& code) const noexcept(on_msvc()) -> bool
   {
     return check_state(code, [this](const SDL_Scancode sc) noexcept(on_msvc()) {
       return !m_states[sc] && m_previous[sc];
@@ -233,7 +229,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_active(modifiers, SDL_GetModState());
+    return detail::is_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -255,7 +251,7 @@ class keyboard final
    */
   [[nodiscard]] static auto is_only_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_active(modifiers, SDL_GetModState());
+    return detail::is_only_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -278,10 +274,9 @@ class keyboard final
    *
    * \since 6.2.0
    */
-  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept
-      -> bool
+  [[nodiscard]] static auto is_only_any_of_active(const key_mod modifiers) noexcept -> bool
   {
-    return detail::is_only_any_of_active(modifiers, SDL_GetModState());
+    return detail::is_only_any_of_active(modifiers, static_cast<u16>(SDL_GetModState()));
   }
 
   /**
@@ -306,12 +301,10 @@ class keyboard final
       noexcept(noexcept(predicate(code.get()))) -> bool
   {
     const auto sc = code.get();
-    if (sc >= 0 && sc < m_nKeys)
-    {
+    if (sc >= 0 && sc < m_nKeys) {
       return predicate(sc);
     }
-    else
-    {
+    else {
       return false;
     }
   }

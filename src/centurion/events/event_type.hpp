@@ -31,7 +31,12 @@ enum class event_type : u32
   app_low_memory = SDL_APP_LOWMEMORY,
   app_will_enter_background = SDL_APP_WILLENTERBACKGROUND,
   app_did_enter_background = SDL_APP_DIDENTERBACKGROUND,
+  app_will_enter_foreground = SDL_APP_WILLENTERFOREGROUND,
   app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  locale_changed = SDL_LOCALECHANGED,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   display = SDL_DISPLAYEVENT,
 
@@ -63,6 +68,13 @@ enum class event_type : u32
   controller_device_added = SDL_CONTROLLERDEVICEADDED,
   controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
   controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+  controller_touchpad_down = SDL_CONTROLLERTOUCHPADDOWN,
+  controller_touchpad_up = SDL_CONTROLLERTOUCHPADUP,
+  controller_touchpad_motion = SDL_CONTROLLERTOUCHPADMOTION,
+  controller_sensor_update = SDL_CONTROLLERSENSORUPDATE,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
   touch_down = SDL_FINGERDOWN,
   touch_up = SDL_FINGERUP,
@@ -109,8 +121,7 @@ enum class event_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const event_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case event_type::quit:
       return "quit";
 
@@ -126,8 +137,16 @@ enum class event_type : u32
     case event_type::app_did_enter_background:
       return "app_did_enter_background";
 
+    case event_type::app_will_enter_foreground:
+      return "app_will_enter_foreground";
+
     case event_type::app_did_enter_foreground:
       return "app_did_enter_foreground";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::locale_changed:
+      return "locale_changed";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::display:
       return "display";
@@ -203,6 +222,20 @@ enum class event_type : u32
 
     case event_type::controller_device_remapped:
       return "controller_device_remapped";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    case event_type::controller_touchpad_down:
+      return "controller_touchpad_down";
+
+    case event_type::controller_touchpad_up:
+      return "controller_touchpad_up";
+
+    case event_type::controller_touchpad_motion:
+      return "controller_touchpad_motion";
+
+    case event_type::controller_sensor_update:
+      return "controller_sensor_update";
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
     case event_type::touch_down:
       return "touch_down";
@@ -297,15 +330,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator==(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
 /// \copydoc operator==(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -320,15 +353,15 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
  *
  * \since 3.1.0
  */
-[[nodiscard]] constexpr auto operator!=(const event_type lhs,
-                                        const SDL_EventType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const event_type lhs, const SDL_EventType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /// \copydoc operator!=(const event_type, const SDL_EventType)
-[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs,
-                                        const event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_EventType lhs, const event_type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

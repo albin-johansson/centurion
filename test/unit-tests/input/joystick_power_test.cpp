@@ -28,9 +28,8 @@ TEST(JoystickPower, Values)
 
 TEST(JoystickPower, ToString)
 {
-  ASSERT_THROW(
-      cen::to_string(static_cast<cen::joystick_power>(SDL_JOYSTICK_POWER_MAX + 1)),
-      cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::joystick_power>(SDL_JOYSTICK_POWER_MAX + 1)),
+               cen::cen_error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::joystick_power::unknown));
   ASSERT_EQ("empty", cen::to_string(cen::joystick_power::empty));

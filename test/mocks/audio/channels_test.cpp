@@ -9,19 +9,19 @@
 
 using namespace cen::literals;
 
-extern "C" {
+extern "C"
+{
+  using channel_finished_callback = void(SDLCALL*)(int);
 
-using channel_finished_callback = void(SDLCALL*)(int);
-
-FAKE_VOID_FUNC(Mix_ChannelFinished, channel_finished_callback)
-FAKE_VALUE_FUNC(int, Mix_AllocateChannels, int)
-FAKE_VALUE_FUNC(int, Mix_ReserveChannels, int)
-FAKE_VALUE_FUNC(int, Mix_ExpireChannel, int, int)
-FAKE_VALUE_FUNC(int, Mix_GroupChannel, int, int)
-FAKE_VALUE_FUNC(int, Mix_GroupCount, int)
-FAKE_VALUE_FUNC(int, Mix_GroupAvailable, int)
-FAKE_VALUE_FUNC(int, Mix_GroupNewer, int)
-FAKE_VALUE_FUNC(int, Mix_GroupOldest, int)
+  FAKE_VOID_FUNC(Mix_ChannelFinished, channel_finished_callback)
+  FAKE_VALUE_FUNC(int, Mix_AllocateChannels, int)
+  FAKE_VALUE_FUNC(int, Mix_ReserveChannels, int)
+  FAKE_VALUE_FUNC(int, Mix_ExpireChannel, int, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupChannel, int, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupCount, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupAvailable, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupNewer, int)
+  FAKE_VALUE_FUNC(int, Mix_GroupOldest, int)
 }
 
 class ChannelsTest : public testing::Test
@@ -45,21 +45,21 @@ class ChannelsTest : public testing::Test
 
 TEST_F(ChannelsTest, OnFinished)
 {
-  cen::channels::on_finished([](cen::channel_index channel) noexcept {});
+  cen::channels::on_finished([](cen::channel_index) noexcept {});
 
-  ASSERT_EQ(1, Mix_ChannelFinished_fake.call_count);
+  ASSERT_EQ(1u, Mix_ChannelFinished_fake.call_count);
 }
 
 TEST_F(ChannelsTest, Allocate)
 {
   cen::channels::allocate(42);
-  ASSERT_EQ(1, Mix_AllocateChannels_fake.call_count);
+  ASSERT_EQ(1u, Mix_AllocateChannels_fake.call_count);
 }
 
 TEST_F(ChannelsTest, Reserve)
 {
   cen::channels::reserve(42);
-  ASSERT_EQ(1, Mix_ReserveChannels_fake.call_count);
+  ASSERT_EQ(1u, Mix_ReserveChannels_fake.call_count);
 }
 
 TEST_F(ChannelsTest, Expire)
@@ -69,7 +69,7 @@ TEST_F(ChannelsTest, Expire)
 
   ASSERT_EQ(cen::failure, cen::channels::expire(7, 25_ms));
   ASSERT_EQ(cen::success, cen::channels::expire(7, 25_ms));
-  ASSERT_EQ(2, Mix_ExpireChannel_fake.call_count);
+  ASSERT_EQ(2u, Mix_ExpireChannel_fake.call_count);
 }
 
 TEST_F(ChannelsTest, RemoveExpiration)
@@ -80,7 +80,7 @@ TEST_F(ChannelsTest, RemoveExpiration)
   ASSERT_EQ(cen::failure, cen::channels::remove_expiration(7));
   ASSERT_EQ(cen::success, cen::channels::remove_expiration(7));
   ASSERT_EQ(-1, Mix_ExpireChannel_fake.arg1_val);
-  ASSERT_EQ(2, Mix_ExpireChannel_fake.call_count);
+  ASSERT_EQ(2u, Mix_ExpireChannel_fake.call_count);
 }
 
 TEST_F(ChannelsTest, SetGroup)
@@ -90,7 +90,7 @@ TEST_F(ChannelsTest, SetGroup)
 
   ASSERT_EQ(cen::failure, cen::channels::set_group(7, 42));
   ASSERT_EQ(cen::success, cen::channels::set_group(7, 42));
-  ASSERT_EQ(2, Mix_GroupChannel_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupChannel_fake.call_count);
 }
 
 TEST_F(ChannelsTest, ResetGroup)
@@ -101,7 +101,7 @@ TEST_F(ChannelsTest, ResetGroup)
   ASSERT_EQ(cen::failure, cen::channels::reset_group(7));
   ASSERT_EQ(cen::success, cen::channels::reset_group(7));
   ASSERT_EQ(-1, Mix_GroupChannel_fake.arg1_val);
-  ASSERT_EQ(2, Mix_GroupChannel_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupChannel_fake.call_count);
 }
 
 TEST_F(ChannelsTest, GroupCount)
@@ -111,7 +111,7 @@ TEST_F(ChannelsTest, GroupCount)
 
   const auto count [[maybe_unused]] = cen::channels::group_count(123);
   ASSERT_EQ(123, Mix_GroupCount_fake.arg0_val);
-  ASSERT_EQ(2, Mix_GroupCount_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupCount_fake.call_count);
 }
 
 TEST_F(ChannelsTest, FirstAvailable)
@@ -121,7 +121,7 @@ TEST_F(ChannelsTest, FirstAvailable)
 
   ASSERT_FALSE(cen::channels::first_available(42));
   ASSERT_TRUE(cen::channels::first_available(42));
-  ASSERT_EQ(2, Mix_GroupAvailable_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupAvailable_fake.call_count);
 }
 
 TEST_F(ChannelsTest, MostRecent)
@@ -131,7 +131,7 @@ TEST_F(ChannelsTest, MostRecent)
 
   ASSERT_FALSE(cen::channels::most_recent(42));
   ASSERT_TRUE(cen::channels::most_recent(42));
-  ASSERT_EQ(2, Mix_GroupNewer_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupNewer_fake.call_count);
 }
 
 TEST_F(ChannelsTest, Oldest)
@@ -141,5 +141,5 @@ TEST_F(ChannelsTest, Oldest)
 
   ASSERT_FALSE(cen::channels::oldest(42));
   ASSERT_TRUE(cen::channels::oldest(42));
-  ASSERT_EQ(2, Mix_GroupOldest_fake.call_count);
+  ASSERT_EQ(2u, Mix_GroupOldest_fake.call_count);
 }

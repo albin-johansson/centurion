@@ -77,8 +77,7 @@ enum class controller_button
  */
 [[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
 {
-  switch (button)
-  {
+  switch (button) {
     case controller_button::invalid:
       return "invalid";
 
@@ -174,8 +173,7 @@ enum class controller_button
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_button button)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_button button) -> std::ostream&
 {
   return stream << to_string(button);
 }
@@ -198,8 +196,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
@@ -224,8 +221,7 @@ inline auto operator<<(std::ostream& stream, const controller_button button)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_button lhs,
-                                        const SDL_GameControllerButton rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerButton rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

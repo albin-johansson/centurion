@@ -7,15 +7,16 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-// clang-format off
+extern "C"
+{
+  // clang-format off
 FAKE_VALUE_FUNC(SDL_Surface*, SDL_ConvertSurfaceFormat, SDL_Surface*, Uint32, Uint32)
 FAKE_VALUE_FUNC(int, SDL_GetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode*)
 FAKE_VALUE_FUNC(int, SDL_SetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode)
 FAKE_VALUE_FUNC(int, SDL_SetSurfaceRLE, SDL_Surface*, int)
 FAKE_VALUE_FUNC(SDL_bool, SDL_HasSurfaceRLE, SDL_Surface*)
 FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
-// clang-format on
+  // clang-format on
 }
 
 class SurfaceTest : public testing::Test
@@ -39,14 +40,14 @@ class SurfaceTest : public testing::Test
 TEST_F(SurfaceTest, Convert)
 {
   ASSERT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::sdl_error);
-  ASSERT_EQ(1, SDL_ConvertSurfaceFormat_fake.call_count);
+  ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 
 TEST_F(SurfaceTest, Copy)
 {
   cen::surface dst;
   ASSERT_THROW(dst = m_surface, cen::sdl_error);
-  ASSERT_EQ(1, SDL_DuplicateSurface_fake.call_count);
+  ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
 
 TEST_F(SurfaceTest, SetRLEHint)
@@ -57,7 +58,7 @@ TEST_F(SurfaceTest, SetRLEHint)
   ASSERT_FALSE(m_surface.set_rle_hint(true));
   ASSERT_TRUE(m_surface.set_rle_hint(true));
 
-  ASSERT_EQ(2, SDL_SetSurfaceRLE_fake.call_count);
+  ASSERT_EQ(2u, SDL_SetSurfaceRLE_fake.call_count);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
@@ -70,7 +71,7 @@ TEST_F(SurfaceTest, IsRLEEnabled)
   ASSERT_FALSE(m_surface.is_rle_enabled());
   ASSERT_TRUE(m_surface.is_rle_enabled());
 
-  ASSERT_EQ(2, SDL_HasSurfaceRLE_fake.call_count);
+  ASSERT_EQ(2u, SDL_HasSurfaceRLE_fake.call_count);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

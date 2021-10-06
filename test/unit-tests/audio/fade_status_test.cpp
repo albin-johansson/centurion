@@ -6,6 +6,8 @@
 
 TEST(FadeStatus, Values)
 {
+  ASSERT_EQ(3, cen::fade_status_count());
+
   ASSERT_EQ(cen::fade_status::none, MIX_NO_FADING);
   ASSERT_EQ(cen::fade_status::in, MIX_FADING_IN);
   ASSERT_EQ(cen::fade_status::out, MIX_FADING_OUT);

@@ -1,10 +1,6 @@
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>      // assert
@@ -16,6 +12,8 @@
 #include <sstream>      // stringstream
 #include <string>       // string, to_string
 #include <string_view>  // string_view
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -71,10 +69,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr color(const u8 red,
-                  const u8 green,
-                  const u8 blue,
-                  const u8 alpha = max()) noexcept
+  constexpr color(const u8 red, const u8 green, const u8 blue, const u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
@@ -131,38 +126,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp <= 1)
-    {
+    if (0 <= hp && hp <= 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 < hp && hp <= 2)
-    {
+    else if (1 < hp && hp <= 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 < hp && hp <= 3)
-    {
+    else if (2 < hp && hp <= 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 < hp && hp <= 4)
-    {
+    else if (3 < hp && hp <= 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 < hp && hp <= 5)
-    {
+    else if (4 < hp && hp <= 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 < hp && hp <= 6)
-    {
+    else if (5 < hp && hp <= 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -178,19 +167,6 @@ class color final
   }
 
   /**
-   * \copydoc from_hsv()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsv(const double hue,
-                                                 const double saturation,
-                                                 const double value) -> color
-  {
-    return from_hsv(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(value));
-  }
-
-  /**
    * \brief Creates a color from HSL-encoded values.
    *
    * \note The values will be clamped to be within their respective ranges.
@@ -203,8 +179,7 @@ class color final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness)
-      -> color
+  [[nodiscard]] static auto from_hsl(float hue, float saturation, float lightness) -> color
   {
     hue = detail::clamp(hue, 0.0f, 360.0f);
     saturation = detail::clamp(saturation, 0.0f, 100.0f);
@@ -222,38 +197,32 @@ class color final
     float green{};
     float blue{};
 
-    if (0 <= hp && hp < 1)
-    {
+    if (0 <= hp && hp < 1) {
       red = chroma;
       green = x;
       blue = 0;
     }
-    else if (1 <= hp && hp < 2)
-    {
+    else if (1 <= hp && hp < 2) {
       red = x;
       green = chroma;
       blue = 0;
     }
-    else if (2 <= hp && hp < 3)
-    {
+    else if (2 <= hp && hp < 3) {
       red = 0;
       green = chroma;
       blue = x;
     }
-    else if (3 <= hp && hp < 4)
-    {
+    else if (3 <= hp && hp < 4) {
       red = 0;
       green = x;
       blue = chroma;
     }
-    else if (4 <= hp && hp < 5)
-    {
+    else if (4 <= hp && hp < 5) {
       red = x;
       green = 0;
       blue = chroma;
     }
-    else if (5 <= hp && hp < 6)
-    {
+    else if (5 <= hp && hp < 6) {
       red = chroma;
       green = 0;
       blue = x;
@@ -266,19 +235,6 @@ class color final
     const auto b = static_cast<u8>(std::round((blue + m) * 255.0f));
 
     return color{r, g, b};
-  }
-
-  /**
-   * \copydoc from_hsl()
-   * \deprecated Since 6.1.0, use the `float` overload instead.
-   */
-  [[nodiscard, deprecated]] static auto from_hsl(const double hue,
-                                                 const double saturation,
-                                                 const double lightness) -> color
-  {
-    return from_hsl(static_cast<float>(hue),
-                    static_cast<float>(saturation),
-                    static_cast<float>(lightness));
   }
 
   /**
@@ -298,8 +254,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgb(const std::string_view rgb) -> std::optional<color>
   {
-    if (rgb.length() != 7 || rgb.at(0) != '#')
-    {
+    if (rgb.length() != 7 || rgb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -313,12 +268,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (red && green && blue)
-    {
+    if (red && green && blue) {
       return cen::color{*red, *green, *blue};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -340,8 +293,7 @@ class color final
    */
   [[nodiscard]] static auto from_rgba(const std::string_view rgba) -> std::optional<color>
   {
-    if (rgba.length() != 9 || rgba.at(0) != '#')
-    {
+    if (rgba.length() != 9 || rgba.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -357,12 +309,10 @@ class color final
     const auto blue = detail::from_string<u8>(bb, 16);
     const auto alpha = detail::from_string<u8>(aa, 16);
 
-    if (red && green && blue && alpha)
-    {
+    if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -384,8 +334,7 @@ class color final
    */
   [[nodiscard]] static auto from_argb(const std::string_view argb) -> std::optional<color>
   {
-    if (argb.length() != 9 || argb.at(0) != '#')
-    {
+    if (argb.length() != 9 || argb.at(0) != '#') {
       return std::nullopt;
     }
 
@@ -401,12 +350,10 @@ class color final
     const auto green = detail::from_string<u8>(gg, 16);
     const auto blue = detail::from_string<u8>(bb, 16);
 
-    if (alpha && red && green && blue)
-    {
+    if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -650,7 +597,12 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -670,7 +622,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.r << +m_color.g << +m_color.b << +m_color.a;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+    stream << std::setw(2) << +m_color.a;
+
     return stream.str();
   }
 
@@ -690,7 +648,13 @@ class color final
   {
     std::stringstream stream;
     stream << std::setfill('0') << std::hex << std::uppercase;
-    stream << '#' << std::setw(2) << +m_color.a << +m_color.r << +m_color.g << +m_color.b;
+
+    stream << '#';
+    stream << std::setw(2) << +m_color.a;
+    stream << std::setw(2) << +m_color.r;
+    stream << std::setw(2) << +m_color.g;
+    stream << std::setw(2) << +m_color.b;
+
     return stream.str();
   }
 
@@ -824,10 +788,9 @@ class color final
                      +color.blue(),
                      +color.alpha());
 #else
-  return "color{r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "}";
+  return "color{r: " + std::to_string(color.red()) + ", g: " + std::to_string(color.green()) +
+         ", b: " + std::to_string(color.blue()) + ", a: " + std::to_string(color.alpha()) +
+         "}";
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 }
 
@@ -909,8 +872,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs, const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -966,8 +928,7 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs, const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

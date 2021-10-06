@@ -47,11 +47,9 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const controller_bind_type type)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case controller_bind_type::none:
       return "none";
 
@@ -86,8 +84,7 @@ enum class controller_bind_type
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const controller_bind_type type)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const controller_bind_type type) -> std::ostream&
 {
   return stream << to_string(type);
 }
@@ -108,8 +105,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator==(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
@@ -133,8 +129,7 @@ inline auto operator<<(std::ostream& stream, const controller_bind_type type)
  * \since 5.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const controller_bind_type lhs,
-                                        const SDL_GameControllerBindType rhs) noexcept
-    -> bool
+                                        const SDL_GameControllerBindType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

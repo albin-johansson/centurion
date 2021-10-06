@@ -23,14 +23,13 @@ class LibraryTest : public testing::Test
 
 TEST_F(LibraryTest, NoFailureDefaultConfiguration)
 {
-  try
-  {
+  try {
     const cen::library library;
 
-    ASSERT_EQ(1, SDL_Init_fake.call_count);
-    ASSERT_EQ(1, TTF_Init_fake.call_count);
-    ASSERT_EQ(1, IMG_Init_fake.call_count);
-    ASSERT_EQ(1, Mix_Init_fake.call_count);
+    ASSERT_EQ(1u, SDL_Init_fake.call_count);
+    ASSERT_EQ(1u, TTF_Init_fake.call_count);
+    ASSERT_EQ(1u, IMG_Init_fake.call_count);
+    ASSERT_EQ(1u, Mix_Init_fake.call_count);
 
     constexpr cen::config cfg;
     ASSERT_EQ(cfg.coreFlags, SDL_Init_fake.arg0_val);
@@ -42,8 +41,7 @@ TEST_F(LibraryTest, NoFailureDefaultConfiguration)
     ASSERT_EQ(cfg.mixerChannels, Mix_OpenAudio_fake.arg2_val);
     ASSERT_EQ(cfg.mixerChunkSize, Mix_OpenAudio_fake.arg3_val);
   }
-  catch (...)
-  {
+  catch (...) {
     FAIL();
   }
 }

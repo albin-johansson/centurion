@@ -58,8 +58,7 @@ namespace cen::counter {
 template <typename T>
 [[nodiscard]] auto now_in_seconds() noexcept(noexcept(seconds<T>{})) -> seconds<T>
 {
-  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) /
-                    static_cast<T>(frequency())};
+  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) / static_cast<T>(frequency())};
 }
 
 /**

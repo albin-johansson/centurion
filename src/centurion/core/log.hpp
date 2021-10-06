@@ -1,21 +1,21 @@
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <chrono>    // zoned_time, current_zone, system_clock
-#include <iostream>  // clog
-#include <string>    // string
-#include <utility>   // forward
+#include <array>        // array
+#include <cassert>      // assert
+#include <chrono>       // zoned_time, current_zone, system_clock
+#include <iostream>     // clog
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // forward
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
-#include <format>  // format
+#include <format>  // format_to_n
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
@@ -150,9 +150,7 @@ void warn(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const log_category category,
-             const not_null<str> fmt,
-             Args&&... args) noexcept
+void verbose(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
@@ -226,9 +224,7 @@ void debug(const not_null<str> fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(const log_category category,
-              const not_null<str> fmt,
-              Args&&... args) noexcept
+void critical(const log_category category, const not_null<str> fmt, Args&&... args) noexcept
 {
   log::msg(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
@@ -342,8 +338,7 @@ inline void set_priority(const log_priority priority) noexcept
  *
  * \since 3.0.0
  */
-inline void set_priority(const log_category category,
-                         const log_priority priority) noexcept
+inline void set_priority(const log_category category, const log_priority priority) noexcept
 {
   SDL_LogSetPriority(to_underlying(category), static_cast<SDL_LogPriority>(priority));
 }
@@ -356,8 +351,7 @@ inline void set_priority(const log_category category,
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto get_priority(const log_category category) noexcept
-    -> log_priority
+[[nodiscard]] inline auto get_priority(const log_category category) noexcept -> log_priority
 {
   return static_cast<log_priority>(SDL_LogGetPriority(to_underlying(category)));
 }
@@ -394,16 +388,14 @@ inline void set_priority(const log_category category,
  * \since 6.2.0
  */
 template <is_stateless_callable<log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
-  const auto wrapper = [](void* erased,
+  const auto wrapper = [](void* /*erased*/,
                           const int category,
                           const SDL_LogPriority priority,
                           const str message) {
     Callable tmp;
-    tmp(static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
+    tmp(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
   };
 
   SDL_LogSetOutputFunction(wrapper, nullptr);
@@ -426,18 +418,16 @@ inline void set_output_function(Callable callable) noexcept
  */
 template <typename UserData,
           is_stateless_callable<UserData*, log_category, log_priority, str> Callable>
-inline void set_output_function(Callable callable, UserData* data) noexcept
+inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
-  const auto wrapper = [](void* erased,
-                          const int category,
-                          const SDL_LogPriority priority,
-                          const str message) {
-    Callable tmp;
-    tmp(static_cast<UserData*>(erased),
-        static_cast<log_category>(category),
-        static_cast<log_priority>(priority),
-        message);
-  };
+  const auto wrapper =
+      [](void* erased, const int category, const SDL_LogPriority priority, const str message) {
+        Callable tmp;
+        tmp(static_cast<UserData*>(erased),
+            static_cast<log_category>(category),
+            static_cast<log_priority>(priority),
+            message);
+      };
 
   SDL_LogSetOutputFunction(wrapper, data);
 }
@@ -461,11 +451,19 @@ inline void use_preset_output_function() noexcept
   using std::chrono::system_clock;
   using std::chrono::zoned_time;
 
-  set_output_function([](const log_category,
-                         const log_priority priority,
-                         const str message) {
+  set_output_function([](const log_category, const log_priority priority, const str message) {
     const zoned_time time{current_zone(), system_clock::now()};
-    std::clog << std::format("LOG {:%T} [{}] > {}\n", time, to_string(priority), message);
+
+    std::array<char, 512> buffer;  // NOLINT
+    const auto result = std::format_to_n(buffer.data(),
+                                         buffer.size() - 1,
+                                         "LOG {:%T} [{}] > {}\n",
+                                         time,
+                                         to_string(priority),
+                                         message);
+    *result.out = '\0';
+
+    std::clog << std::string_view{buffer.data(), result.out};
   });
 }
 

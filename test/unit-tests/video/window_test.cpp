@@ -103,30 +103,34 @@ TEST_F(WindowTest, StreamOperator)
 
 TEST_F(WindowTest, WindowFlagsEnum)
 {
-  ASSERT_EQ(SDL_WINDOW_FULLSCREEN, cen::window::fullscreen);
-  ASSERT_EQ(SDL_WINDOW_OPENGL, cen::window::opengl);
-  ASSERT_EQ(SDL_WINDOW_SHOWN, cen::window::shown);
-  ASSERT_EQ(SDL_WINDOW_HIDDEN, cen::window::hidden);
-  ASSERT_EQ(SDL_WINDOW_BORDERLESS, cen::window::borderless);
-  ASSERT_EQ(SDL_WINDOW_RESIZABLE, cen::window::resizable);
-  ASSERT_EQ(SDL_WINDOW_MINIMIZED, cen::window::minimized);
-  ASSERT_EQ(SDL_WINDOW_MAXIMIZED, cen::window::maximized);
-  ASSERT_EQ(SDL_WINDOW_INPUT_GRABBED, cen::window::input_grabbed);
-  ASSERT_EQ(SDL_WINDOW_INPUT_FOCUS, cen::window::input_focus);
-  ASSERT_EQ(SDL_WINDOW_MOUSE_FOCUS, cen::window::mouse_focus);
-  ASSERT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP, cen::window::fullscreen_desktop);
-  ASSERT_EQ(SDL_WINDOW_FOREIGN, cen::window::foreign);
-  ASSERT_EQ(SDL_WINDOW_ALLOW_HIGHDPI, cen::window::high_dpi);
-  ASSERT_EQ(SDL_WINDOW_MOUSE_CAPTURE, cen::window::mouse_capture);
-  ASSERT_EQ(SDL_WINDOW_ALWAYS_ON_TOP, cen::window::always_on_top);
-  ASSERT_EQ(SDL_WINDOW_SKIP_TASKBAR, cen::window::skip_taskbar);
-  ASSERT_EQ(SDL_WINDOW_UTILITY, cen::window::utility);
-  ASSERT_EQ(SDL_WINDOW_TOOLTIP, cen::window::tooltip);
-  ASSERT_EQ(SDL_WINDOW_POPUP_MENU, cen::window::popup_menu);
-  ASSERT_EQ(SDL_WINDOW_VULKAN, cen::window::vulkan);
+  ASSERT_EQ(SDL_WINDOW_FULLSCREEN, static_cast<SDL_WindowFlags>(cen::window::fullscreen));
+  ASSERT_EQ(SDL_WINDOW_OPENGL, static_cast<SDL_WindowFlags>(cen::window::opengl));
+  ASSERT_EQ(SDL_WINDOW_SHOWN, static_cast<SDL_WindowFlags>(cen::window::shown));
+  ASSERT_EQ(SDL_WINDOW_HIDDEN, static_cast<SDL_WindowFlags>(cen::window::hidden));
+  ASSERT_EQ(SDL_WINDOW_BORDERLESS, static_cast<SDL_WindowFlags>(cen::window::borderless));
+  ASSERT_EQ(SDL_WINDOW_RESIZABLE, static_cast<SDL_WindowFlags>(cen::window::resizable));
+  ASSERT_EQ(SDL_WINDOW_MINIMIZED, static_cast<SDL_WindowFlags>(cen::window::minimized));
+  ASSERT_EQ(SDL_WINDOW_MAXIMIZED, static_cast<SDL_WindowFlags>(cen::window::maximized));
+  ASSERT_EQ(SDL_WINDOW_INPUT_GRABBED,
+            static_cast<SDL_WindowFlags>(cen::window::input_grabbed));
+  ASSERT_EQ(SDL_WINDOW_INPUT_FOCUS, static_cast<SDL_WindowFlags>(cen::window::input_focus));
+  ASSERT_EQ(SDL_WINDOW_MOUSE_FOCUS, static_cast<SDL_WindowFlags>(cen::window::mouse_focus));
+  ASSERT_EQ(SDL_WINDOW_FULLSCREEN_DESKTOP,
+            static_cast<SDL_WindowFlags>(cen::window::fullscreen_desktop));
+  ASSERT_EQ(SDL_WINDOW_FOREIGN, static_cast<SDL_WindowFlags>(cen::window::foreign));
+  ASSERT_EQ(SDL_WINDOW_ALLOW_HIGHDPI, static_cast<SDL_WindowFlags>(cen::window::high_dpi));
+  ASSERT_EQ(SDL_WINDOW_MOUSE_CAPTURE,
+            static_cast<SDL_WindowFlags>(cen::window::mouse_capture));
+  ASSERT_EQ(SDL_WINDOW_ALWAYS_ON_TOP,
+            static_cast<SDL_WindowFlags>(cen::window::always_on_top));
+  ASSERT_EQ(SDL_WINDOW_SKIP_TASKBAR, static_cast<SDL_WindowFlags>(cen::window::skip_taskbar));
+  ASSERT_EQ(SDL_WINDOW_UTILITY, static_cast<SDL_WindowFlags>(cen::window::utility));
+  ASSERT_EQ(SDL_WINDOW_TOOLTIP, static_cast<SDL_WindowFlags>(cen::window::tooltip));
+  ASSERT_EQ(SDL_WINDOW_POPUP_MENU, static_cast<SDL_WindowFlags>(cen::window::popup_menu));
+  ASSERT_EQ(SDL_WINDOW_VULKAN, static_cast<SDL_WindowFlags>(cen::window::vulkan));
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(SDL_WINDOW_METAL, cen::window::metal);
+  ASSERT_EQ(SDL_WINDOW_METAL, static_cast<SDL_WindowFlags>(cen::window::metal));
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 }
 

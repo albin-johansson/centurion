@@ -8,8 +8,9 @@
 
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GetRendererInfo, SDL_Renderer*, SDL_RendererInfo*)
 }
 
 namespace {
@@ -25,8 +26,7 @@ inline constexpr Uint32 texture_format_2 = SDL_PIXELFORMAT_RGB444;
 
 inline auto get_renderer_info(SDL_Renderer*, SDL_RendererInfo* info) -> int
 {
-  if (info)
-  {
+  if (info) {
     info->name = name;
     info->flags = flags;
 

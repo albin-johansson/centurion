@@ -49,8 +49,7 @@ enum class message_box_type : u32
  */
 [[nodiscard]] constexpr auto to_string(const message_box_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case message_box_type::error:
       return "error";
 

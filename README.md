@@ -62,9 +62,10 @@ of `CENTURION_NO_SDL_IMAGE`, `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF`,
 
 ## Installation
 
-The library is simply distributed as a single header file, located in the `include` folder. Download
-the `centurion.hpp` header and include it in your project, and it's ready to be used! You will of
-course also need to install SDL2.
+The library is distributed in two flavours, either as a _single_ amalgamated `centurion.hpp` header
+(located in the `include` folder), or simply as all the headers provided in the `src` folder. Just
+download the headers include them in your project, and the library it's ready to be used! You will
+of course also need to install SDL2.
 
 ## Documentation
 

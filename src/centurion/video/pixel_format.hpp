@@ -123,8 +123,7 @@ enum class pixel_format : u32
  */
 [[nodiscard]] constexpr auto to_string(const pixel_format format) -> std::string_view
 {
-  switch (format)
-  {
+  switch (format) {
     case pixel_format::unknown:
       return "unknown";
 

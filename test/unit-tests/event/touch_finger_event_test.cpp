@@ -35,7 +35,7 @@ TEST(TouchFingerEvent, SetWindowId)
 {
   cen::touch_finger_event event;
 
-  constexpr auto id = 32;
+  constexpr cen::u32 id = 32;
   event.set_window_id(id);
 
   ASSERT_EQ(id, event.window_id());

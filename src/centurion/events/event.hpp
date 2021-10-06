@@ -14,6 +14,9 @@
 #include "controller_axis_event.hpp"
 #include "controller_button_event.hpp"
 #include "controller_device_event.hpp"
+#include "controller_sensor_event.hpp"
+#include "controller_touchpad_event.hpp"
+#include "display_event.hpp"
 #include "dollar_gesture_event.hpp"
 #include "drop_event.hpp"
 #include "event_type.hpp"
@@ -28,9 +31,11 @@
 #include "mouse_wheel_event.hpp"
 #include "multi_gesture_event.hpp"
 #include "quit_event.hpp"
+#include "sensor_event.hpp"
 #include "text_editing_event.hpp"
 #include "text_input_event.hpp"
 #include "touch_finger_event.hpp"
+#include "user_event.hpp"
 #include "window_event.hpp"
 
 namespace cen {
@@ -157,13 +162,11 @@ class event final
   {
     const bool result = SDL_PollEvent(&m_event);
 
-    if (result)
-    {
+    if (result) {
       update_data(static_cast<event_type>(m_event.type));
     }
-    else
-    {
-      update_data(std::nullopt);
+    else {
+      m_data.emplace<std::monostate>();
     }
 
     return result;
@@ -179,12 +182,10 @@ class event final
    */
   [[nodiscard]] auto type() const noexcept -> std::optional<event_type>
   {
-    if (is_empty())
-    {
+    if (is_empty()) {
       return std::nullopt;
     }
-    else
-    {
+    else {
       return static_cast<event_type>(m_event.type);
     }
   }
@@ -199,14 +200,11 @@ class event final
    */
   [[nodiscard]] static auto queue_count() noexcept -> std::optional<int>
   {
-    const auto num =
-        SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
-    if (num != -1)
-    {
+    const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -222,17 +220,14 @@ class event final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] static auto queue_count(const event_type type) noexcept
-      -> std::optional<int>
+  [[nodiscard]] static auto queue_count(const event_type type) noexcept -> std::optional<int>
   {
     const auto id = to_underlying(type);
     const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
-    if (num != -1)
-    {
+    if (num != -1) {
       return num;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -378,126 +373,196 @@ class event final
   }
 
  private:
+  /* Behold, the beast! */
+  using data_type = std::variant<std::monostate,
+                                 audio_device_event,
+                                 controller_axis_event,
+                                 controller_button_event,
+                                 controller_device_event,
+                                 dollar_gesture_event,
+                                 drop_event,
+                                 joy_axis_event,
+                                 joy_ball_event,
+                                 joy_button_event,
+                                 joy_device_event,
+                                 joy_hat_event,
+                                 keyboard_event,
+                                 mouse_button_event,
+                                 mouse_motion_event,
+                                 mouse_wheel_event,
+                                 multi_gesture_event,
+                                 quit_event,
+                                 text_editing_event,
+                                 text_input_event,
+                                 touch_finger_event,
+                                 sensor_event,
+                                 user_event,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+                                 display_event,
+                                 controller_touchpad_event,
+                                 controller_sensor_event,
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+                                 window_event>;
+
   SDL_Event m_event{};
+  data_type m_data{};
 
-  // behold, the beast!
-  std::variant<std::monostate,
-               audio_device_event,
-               controller_axis_event,
-               controller_button_event,
-               controller_device_event,
-               dollar_gesture_event,
-               drop_event,
-               joy_axis_event,
-               joy_ball_event,
-               joy_button_event,
-               joy_device_event,
-               joy_hat_event,
-               keyboard_event,
-               mouse_button_event,
-               mouse_motion_event,
-               mouse_wheel_event,
-               multi_gesture_event,
-               quit_event,
-               text_editing_event,
-               text_input_event,
-               touch_finger_event,
-               window_event>
-      m_data{};
-
-  void update_data(const std::optional<event_type> t) noexcept
+  void update_data(const event_type type) noexcept
   {
-    using et = event_type;
+    switch (type) {
+      case event_type::quit:
+        m_data.emplace<quit_event>(m_event.quit);
+        break;
 
-    if (t == et::quit)
-    {
-      m_data.emplace<quit_event>(m_event.quit);
-    }
-    else if (t == et::audio_device_added || t == et::audio_device_removed)
-    {
-      m_data.emplace<audio_device_event>(m_event.adevice);
-    }
-    else if (t == et::controller_axis_motion)
-    {
-      m_data.emplace<controller_axis_event>(m_event.caxis);
-    }
-    else if (t == et::controller_button_down || t == et::controller_button_up)
-    {
-      m_data.emplace<controller_button_event>(m_event.cbutton);
-    }
-    else if (t == et::controller_device_added || t == et::controller_device_removed ||
-             t == et::controller_device_remapped)
-    {
-      m_data.emplace<controller_device_event>(m_event.cdevice);
-    }
-    else if (t == et::dollar_gesture || t == et::dollar_record)
-    {
-      m_data.emplace<dollar_gesture_event>(m_event.dgesture);
-    }
-    else if (t == et::drop_begin || t == et::drop_complete || t == et::drop_file ||
-             t == et::drop_text)
-    {
-      m_data.emplace<drop_event>(m_event.drop);
-    }
-    else if (t == et::joystick_axis_motion)
-    {
-      m_data.emplace<joy_axis_event>(m_event.jaxis);
-    }
-    else if (t == et::joystick_ball_motion)
-    {
-      m_data.emplace<joy_ball_event>(m_event.jball);
-    }
-    else if (t == et::joystick_button_up || t == et::joystick_button_down)
-    {
-      m_data.emplace<joy_button_event>(m_event.jbutton);
-    }
-    else if (t == et::joystick_device_added || t == et::joystick_device_removed)
-    {
-      m_data.emplace<joy_device_event>(m_event.jdevice);
-    }
-    else if (t == event_type::joystick_hat_motion)
-    {
-      m_data.emplace<joy_hat_event>(m_event.jhat);
-    }
-    else if (t == et::key_down || t == et::key_up)
-    {
-      m_data.emplace<keyboard_event>(m_event.key);
-    }
-    else if (t == et::mouse_button_up || t == et::mouse_button_down)
-    {
-      m_data.emplace<mouse_button_event>(m_event.button);
-    }
-    else if (t == et::mouse_motion)
-    {
-      m_data.emplace<mouse_motion_event>(m_event.motion);
-    }
-    else if (t == et::mouse_wheel)
-    {
-      m_data.emplace<mouse_wheel_event>(m_event.wheel);
-    }
-    else if (t == et::multi_gesture)
-    {
-      m_data.emplace<multi_gesture_event>(m_event.mgesture);
-    }
-    else if (t == et::text_editing)
-    {
-      m_data.emplace<text_editing_event>(m_event.edit);
-    }
-    else if (t == et::text_input)
-    {
-      m_data.emplace<text_input_event>(m_event.text);
-    }
-    else if (t == et::touch_motion || t == et::touch_down || t == et::touch_up)
-    {
-      m_data.emplace<touch_finger_event>(m_event.tfinger);
-    }
-    else if (t == et::window)
-    {
-      m_data.emplace<window_event>(m_event.window);
-    }
-    else
-    {
-      m_data.emplace<std::monostate>();
+      case event_type::app_terminating:
+      case event_type::app_low_memory:
+      case event_type::app_will_enter_background:
+      case event_type::app_did_enter_background:
+      case event_type::app_will_enter_foreground:
+      case event_type::app_did_enter_foreground:
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::locale_changed:
+        break;
+
+      case event_type::display:
+        m_data.emplace<display_event>(m_event.display);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::window:
+        m_data.emplace<window_event>(m_event.window);
+        break;
+
+      case event_type::system:
+        break;
+
+      case event_type::key_down:
+      case event_type::key_up:
+        m_data.emplace<keyboard_event>(m_event.key);
+        break;
+
+      case event_type::text_editing:
+        m_data.emplace<text_editing_event>(m_event.edit);
+        break;
+
+      case event_type::text_input:
+        m_data.emplace<text_input_event>(m_event.text);
+        break;
+
+      case event_type::keymap_changed:
+        break;
+
+      case event_type::mouse_motion:
+        m_data.emplace<mouse_motion_event>(m_event.motion);
+        break;
+
+      case event_type::mouse_button_down:
+      case event_type::mouse_button_up:
+        m_data.emplace<mouse_button_event>(m_event.button);
+        break;
+
+      case event_type::mouse_wheel:
+        m_data.emplace<mouse_wheel_event>(m_event.wheel);
+        break;
+
+      case event_type::joystick_axis_motion:
+        m_data.emplace<joy_axis_event>(m_event.jaxis);
+        break;
+
+      case event_type::joystick_ball_motion:
+        m_data.emplace<joy_ball_event>(m_event.jball);
+        break;
+
+      case event_type::joystick_hat_motion:
+        m_data.emplace<joy_hat_event>(m_event.jhat);
+        break;
+
+      case event_type::joystick_button_down:
+      case event_type::joystick_button_up:
+        m_data.emplace<joy_button_event>(m_event.jbutton);
+        break;
+
+      case event_type::joystick_device_added:
+      case event_type::joystick_device_removed:
+        m_data.emplace<joy_device_event>(m_event.jdevice);
+        break;
+
+      case event_type::controller_axis_motion:
+        m_data.emplace<controller_axis_event>(m_event.caxis);
+        break;
+
+      case event_type::controller_button_down:
+      case event_type::controller_button_up:
+        m_data.emplace<controller_button_event>(m_event.cbutton);
+        break;
+
+      case event_type::controller_device_added:
+      case event_type::controller_device_removed:
+      case event_type::controller_device_remapped:
+        m_data.emplace<controller_device_event>(m_event.cdevice);
+        break;
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+      case event_type::controller_touchpad_down:
+      case event_type::controller_touchpad_up:
+      case event_type::controller_touchpad_motion:
+        m_data.emplace<controller_touchpad_event>(m_event.ctouchpad);
+        break;
+
+      case event_type::controller_sensor_update:
+        m_data.emplace<controller_sensor_event>(m_event.csensor);
+        break;
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+      case event_type::touch_down:
+      case event_type::touch_up:
+      case event_type::touch_motion:
+        m_data.emplace<touch_finger_event>(m_event.tfinger);
+        break;
+
+      case event_type::dollar_gesture:
+      case event_type::dollar_record:
+        m_data.emplace<dollar_gesture_event>(m_event.dgesture);
+        break;
+
+      case event_type::multi_gesture:
+        m_data.emplace<multi_gesture_event>(m_event.mgesture);
+        break;
+
+      case event_type::clipboard_update:
+        break;
+
+      case event_type::drop_file:
+      case event_type::drop_text:
+      case event_type::drop_begin:
+      case event_type::drop_complete:
+        m_data.emplace<drop_event>(m_event.drop);
+        break;
+
+      case event_type::audio_device_added:
+      case event_type::audio_device_removed:
+        m_data.emplace<audio_device_event>(m_event.adevice);
+        break;
+
+      case event_type::sensor_update:
+        m_data.emplace<sensor_event>(m_event.sensor);
+        break;
+
+      case event_type::render_targets_reset:
+      case event_type::render_device_reset:
+        break;
+
+      case event_type::user:
+        m_data.emplace<user_event>(m_event.user);
+        break;
+
+      default:
+        m_data.emplace<std::monostate>();
+        break;
     }
   }
 };

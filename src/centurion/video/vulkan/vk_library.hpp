@@ -3,13 +3,10 @@
 
 #ifndef CENTURION_NO_VULKAN
 
-// clang-format off
-#include "../../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 #include <SDL_vulkan.h>
 
+#include "../../compiler/features.hpp"
 #include "../../core/exception.hpp"
 #include "../../core/str.hpp"
 
@@ -36,8 +33,7 @@ class vk_library final
    */
   CENTURION_NODISCARD_CTOR explicit vk_library(const str path = nullptr)
   {
-    if (SDL_Vulkan_LoadLibrary(path) == -1)
-    {
+    if (SDL_Vulkan_LoadLibrary(path) == -1) {
       throw sdl_error{};
     }
   }

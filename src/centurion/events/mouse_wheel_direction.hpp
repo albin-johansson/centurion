@@ -20,6 +20,7 @@ namespace cen {
  * \brief Represents mouse wheel directions.
  *
  * \see `SDL_MouseWheelDirection`
+ * \see `mouse_wheel_direction_count()`
  *
  * \since 4.0.0
  */
@@ -28,6 +29,18 @@ enum class mouse_wheel_direction : u32
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
+
+/**
+ * \brief Returns the number of enumerators for the `mouse_wheel_direction` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto mouse_wheel_direction_count() noexcept -> int
+{
+  return 2;
+}
 
 /// \name String conversions
 /// \{
@@ -46,11 +59,9 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir)
-    -> std::string_view
+[[nodiscard]] constexpr auto to_string(const mouse_wheel_direction dir) -> std::string_view
 {
-  switch (dir)
-  {
+  switch (dir) {
     case mouse_wheel_direction::normal:
       return "normal";
 
@@ -79,8 +90,7 @@ enum class mouse_wheel_direction : u32
  *
  * \since 6.2.0
  */
-inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
-    -> std::ostream&
+inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) -> std::ostream&
 {
   return stream << to_string(dir);
 }
@@ -101,8 +111,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator==(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
@@ -126,8 +135,7 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir)
  * \since 4.0.0
  */
 [[nodiscard]] constexpr auto operator!=(const mouse_wheel_direction lhs,
-                                        const SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+                                        const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

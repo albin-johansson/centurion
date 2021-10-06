@@ -79,14 +79,12 @@ auto create_surface(basic_window<T>& window,
 inline auto required_extensions() -> std::optional<std::vector<str>>
 {
   uint count{};
-  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr))
-  {
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
     return std::nullopt;
   }
 
   std::vector<str> names(count);
-  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data()))
-  {
+  if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data())) {
     return std::nullopt;
   }
 

@@ -18,6 +18,9 @@ namespace cen {
  * \brief Represents different logging categories.
  *
  * \see `SDL_LogCategory`
+ * \see `log_category_count()`
+ *
+ * \todo Centurion 7: rename `misc` enumerator to `custom`.
  *
  * \since 3.0.0
  */
@@ -34,6 +37,18 @@ enum class log_category : int
   test = SDL_LOG_CATEGORY_TEST,
   misc = SDL_LOG_CATEGORY_CUSTOM
 };
+
+/**
+ * \brief Returns the number of enumerators for the `log_category` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto log_category_count() noexcept -> int
+{
+  return 10;
+}
 
 /// \name String conversions
 /// \{
@@ -54,8 +69,7 @@ enum class log_category : int
  */
 [[nodiscard]] constexpr auto to_string(const log_category category) -> std::string_view
 {
-  switch (category)
-  {
+  switch (category) {
     case log_category::app:
       return "app";
 

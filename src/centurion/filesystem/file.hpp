@@ -681,12 +681,10 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -728,12 +726,10 @@ class file final
   {
     assert(m_context);
     const auto result = SDL_RWsize(m_context.get());
-    if (result != -1)
-    {
+    if (result != -1) {
       return result;
     }
-    else
-    {
+    else {
       return std::nullopt;
     }
   }
@@ -774,8 +770,7 @@ class file final
 
   [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> str
   {
-    switch (mode)
-    {
+    switch (mode) {
       default:
         assert(false);
 

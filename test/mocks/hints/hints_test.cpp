@@ -33,7 +33,7 @@ class HintsTest : public testing::Test
 TEST_F(HintsTest, ClearHints)
 {
   cen::clear_hints();
-  ASSERT_EQ(1, SDL_ClearHints_fake.call_count);
+  ASSERT_EQ(1u, SDL_ClearHints_fake.call_count);
 }
 
 TEST_F(HintsTest, SetHint)
@@ -41,7 +41,7 @@ TEST_F(HintsTest, SetHint)
   using cen::hint::render_driver;
   const auto res = cen::set_hint<render_driver>(render_driver::value::opengl);
 
-  ASSERT_EQ(1, SDL_SetHintWithPriority_fake.call_count);
+  ASSERT_EQ(1u, SDL_SetHintWithPriority_fake.call_count);
   ASSERT_STREQ(render_driver::name(), SDL_SetHintWithPriority_fake.arg0_val);
 }
 
@@ -51,7 +51,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::allow_screensaver;
     const auto res = cen::get_hint<allow_screensaver>();
 
-    ASSERT_EQ(1, SDL_GetHintBoolean_fake.call_count);
+    ASSERT_EQ(1u, SDL_GetHintBoolean_fake.call_count);
     ASSERT_STREQ(allow_screensaver::name(), SDL_GetHintBoolean_fake.arg0_val);
   }
 
@@ -59,7 +59,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::render_driver;
     const auto res = cen::get_hint<render_driver>();
 
-    ASSERT_EQ(1, SDL_GetHint_fake.call_count);
+    ASSERT_EQ(1u, SDL_GetHint_fake.call_count);
     ASSERT_STREQ(render_driver::name(), SDL_GetHint_fake.arg0_val);
   }
 
@@ -67,7 +67,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::event_logging;
     const auto res = cen::get_hint<event_logging>();
 
-    ASSERT_EQ(2, SDL_GetHint_fake.call_count);
+    ASSERT_EQ(2u, SDL_GetHint_fake.call_count);
     ASSERT_STREQ(event_logging::name(), SDL_GetHint_fake.arg0_val);
   }
 
@@ -75,7 +75,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::thread_stack_size;
     const auto res = cen::get_hint<thread_stack_size>();
 
-    ASSERT_EQ(3, SDL_GetHint_fake.call_count);
+    ASSERT_EQ(3u, SDL_GetHint_fake.call_count);
     ASSERT_STREQ(thread_stack_size::name(), SDL_GetHint_fake.arg0_val);
   }
 
@@ -83,7 +83,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::mouse::normal_speed_scale;
     const auto res = cen::get_hint<normal_speed_scale>();
 
-    ASSERT_EQ(4, SDL_GetHint_fake.call_count);
+    ASSERT_EQ(4u, SDL_GetHint_fake.call_count);
     ASSERT_STREQ(normal_speed_scale::name(), SDL_GetHint_fake.arg0_val);
   }
 
@@ -91,7 +91,7 @@ TEST_F(HintsTest, GetHint)
     using cen::hint::orientations;
     const auto res = cen::get_hint<orientations>();
 
-    ASSERT_EQ(5, SDL_GetHint_fake.call_count);
+    ASSERT_EQ(5u, SDL_GetHint_fake.call_count);
     ASSERT_STREQ(orientations::name(), SDL_GetHint_fake.arg0_val);
   }
 }

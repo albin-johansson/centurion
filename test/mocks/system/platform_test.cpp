@@ -8,14 +8,16 @@
 #include "core/integers.hpp"
 #include "core_mocks.hpp"
 
-extern "C" {
-FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
-FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
+extern "C"
+{
+  FAKE_VALUE_FUNC(const char*, SDL_GetPlatform)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
 }
 
 class PlatformTest : public testing::Test
 {
  public:
+
  protected:
   void SetUp() override
   {
@@ -101,5 +103,5 @@ TEST_F(PlatformTest, PlatformName)
 TEST_F(PlatformTest, IsTablet)
 {
   const auto isTablet [[maybe_unused]] = cen::is_tablet();
-  ASSERT_EQ(1, SDL_IsTablet_fake.call_count);
+  ASSERT_EQ(1u, SDL_IsTablet_fake.call_count);
 }

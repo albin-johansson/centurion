@@ -53,8 +53,7 @@ enum class joystick_type
  */
 [[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
 {
-  switch (type)
-  {
+  switch (type) {
     case joystick_type::unknown:
       return "unknown";
 

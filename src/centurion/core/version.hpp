@@ -36,7 +36,7 @@
  *
  * \since 6.0.0
  */
-#define CENTURION_VERSION_MINOR 2
+#define CENTURION_VERSION_MINOR 3
 
 /**
  * \def CENTURION_VERSION_PATCH

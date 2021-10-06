@@ -1,15 +1,13 @@
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 
-// clang-format off
-#include "../compiler/features.hpp"
-// clang-format on
-
 #include <SDL.h>
 
 #include <cassert>  // assert
 #include <ostream>  // ostream
 #include <string>   // string
+
+#include "../compiler/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -72,8 +70,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept
-      : m_code{scancode}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode}
   {}
 
   /**
@@ -101,8 +98,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const not_null<str> name) noexcept
-      : m_code{SDL_GetScancodeFromName(name)}
+  explicit scan_code(const not_null<str> name) noexcept : m_code{SDL_GetScancodeFromName(name)}
   {}
 
   /**
@@ -377,8 +373,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -393,8 +389,8 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
  *
  * \since 5.0.0
  */
-[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
-                                        const scan_code& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs, const scan_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

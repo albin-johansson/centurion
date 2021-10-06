@@ -38,8 +38,7 @@ class shared_object final
    */
   explicit shared_object(const not_null<str> object) : m_object{SDL_LoadObject(object)}
   {
-    if (!m_object)
-    {
+    if (!m_object) {
       throw sdl_error{};
     }
   }
@@ -106,6 +105,7 @@ class shared_object final
   std::unique_ptr<void, deleter> m_object;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   shared_object() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE

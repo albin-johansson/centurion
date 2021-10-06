@@ -4,7 +4,6 @@
 #ifndef CENTURION_NO_OPENGL
 
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <ostream>      // ostream
 #include <string_view>  // string_view
@@ -77,8 +76,7 @@ enum class gl_attribute
  */
 [[nodiscard]] constexpr auto to_string(const gl_attribute attr) -> std::string_view
 {
-  switch (attr)
-  {
+  switch (attr) {
     case gl_attribute::red_size:
       return "red_size";
 

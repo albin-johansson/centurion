@@ -51,8 +51,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   ~drop_event() noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
   }
@@ -98,8 +97,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    */
   void set_file(char* file) noexcept
   {
-    if (m_event.file && m_willFreeFile)
-    {
+    if (m_event.file && m_willFreeFile) {
       SDL_free(m_event.file);
     }
     m_event.file = file;

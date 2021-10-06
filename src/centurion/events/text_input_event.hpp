@@ -41,8 +41,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept
-      : common_event{event}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event}
   {}
 
   /**

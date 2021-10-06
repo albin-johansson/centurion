@@ -24,8 +24,7 @@ using enable_if_pointer_v = std::enable_if_t<std::is_pointer_v<T>, int>;
 
 /// Enables a template if T is convertible to any of the specified types.
 template <typename T, typename... Args>
-using enable_if_convertible_t =
-    std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
+using enable_if_convertible_t = std::enable_if_t<(std::is_convertible_v<T, Args> || ...), int>;
 
 /// \} End of group core
 

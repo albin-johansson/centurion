@@ -26,6 +26,16 @@ static_assert(std::is_nothrow_move_assignable_v<cen::irect>);
 static_assert(std::is_nothrow_destructible_v<cen::frect>);
 static_assert(std::is_nothrow_destructible_v<cen::irect>);
 
+TEST(Rect, ConstexprConstruction)
+{
+  constexpr cen::frect rect{1, 2, 3, 4};
+  static_assert(rect.x() == 1);
+  static_assert(rect.y() == 2);
+  static_assert(rect.width() == 3);
+  static_assert(rect.height() == 4);
+  static_assert(rect.has_area());
+}
+
 TEST(Rect, DefaultConstructor)
 {
   const cen::frect rect;

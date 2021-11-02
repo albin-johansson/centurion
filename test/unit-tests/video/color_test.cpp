@@ -348,6 +348,7 @@ TEST(Color, Data)
 
 TEST(Color, AsRGB)
 {
+  ASSERT_EQ("#000000", cen::colors::black.as_rgb());
   ASSERT_EQ("#FF0000", cen::colors::red.as_rgb());
   ASSERT_EQ("#00FF00", cen::colors::lime.as_rgb());
   ASSERT_EQ("#0000FF", cen::colors::blue.as_rgb());
@@ -358,6 +359,7 @@ TEST(Color, AsRGB)
 
 TEST(Color, AsRGBA)
 {
+  ASSERT_EQ("#000000FF", cen::colors::black.as_rgba());
   ASSERT_EQ("#FF0000FF", cen::colors::red.as_rgba());
   ASSERT_EQ("#00FF00FF", cen::colors::lime.as_rgba());
   ASSERT_EQ("#0000FFFF", cen::colors::blue.as_rgba());
@@ -368,6 +370,7 @@ TEST(Color, AsRGBA)
 
 TEST(Color, AsARGB)
 {
+  ASSERT_EQ("#FF000000", cen::colors::black.as_argb());
   ASSERT_EQ("#FFFF0000", cen::colors::red.as_argb());
   ASSERT_EQ("#FF00FF00", cen::colors::lime.as_argb());
   ASSERT_EQ("#FF0000FF", cen::colors::blue.as_argb());

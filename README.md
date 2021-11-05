@@ -53,12 +53,12 @@ The following table shows the supported versions of SDL2 and its extension libra
 SDL library is mandatory. The extension libraries can be disabled at compile-time, by defining any
 of `CENTURION_NO_SDL_IMAGE`, `CENTURION_NO_SDL_MIXER` or `CENTURION_NO_SDL_TTF`, respectively.
 
-| Dependency            | Source                                                                          | Supported versions             |
-| --------------------- | ------------------------------------------------------------------------------- | ------------------------------ |
-| SDL2                  | [www.libsdl.org](https://www.libsdl.org/download-2.0.php)                       | 2.0.10, 2.0.12, 2.0.14, 2.0.16 |
-| SDL2_image (Optional) | [www.libsdl.org/projects/SDL_image](https://www.libsdl.org/projects/SDL_image/) | 2.0.5                          |
-| SDL2_mixer (Optional) | [www.libsdl.org/projects/SDL_mixer](https://www.libsdl.org/projects/SDL_mixer/) | 2.0.4                          |
-| SDL2_ttf   (Optional) | [www.libsdl.org/projects/SDL_ttf](https://www.libsdl.org/projects/SDL_ttf/)     | 2.0.4                          |
+| Dependency            | Source                                                                          | Supported versions |
+| --------------------- | ------------------------------------------------------------------------------- | ------------------ |
+| SDL2                  | [www.libsdl.org](https://www.libsdl.org/download-2.0.php)                       | 2.0.10 ... 2.0.18  |
+| SDL2_image (Optional) | [www.libsdl.org/projects/SDL_image](https://www.libsdl.org/projects/SDL_image/) | 2.0.5              |
+| SDL2_mixer (Optional) | [www.libsdl.org/projects/SDL_mixer](https://www.libsdl.org/projects/SDL_mixer/) | 2.0.4              |
+| SDL2_ttf   (Optional) | [www.libsdl.org/projects/SDL_ttf](https://www.libsdl.org/projects/SDL_ttf/)     | 2.0.4              |
 
 ## Installation
 

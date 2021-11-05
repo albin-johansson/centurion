@@ -9,6 +9,8 @@
  * \namespace cen::counter
  *
  * \brief Provides timing utilities.
+ * 
+ * \todo Centurion 7: remove the `cen::counter` namespace.
  *
  * \since 5.0.0
  */

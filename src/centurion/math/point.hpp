@@ -39,42 +39,31 @@ template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class point_traits final
 {
  public:
-  /**
-   * \var isIntegral
-   *
-   * \brief Indicates whether or not the point is based on an integral type.
-   *
-   * \since 5.0.0
-   */
-  inline constexpr static bool isIntegral = std::is_integral_v<T>;
+  /// \brief Indicates whether or not the point has integral components.
+  /// \deprecated Since 6.4.0, use `integral` instead.
+  /// \since 5.0.0
+  inline constexpr static bool isIntegral [[deprecated]] = std::is_integral_v<T>;
 
-  /**
-   * \var isFloating
-   *
-   * \brief Indicates whether or not the point is based on a floating-point
-   * type.
-   *
-   * \since 5.0.0
-   */
-  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
+  /// \brief Indicates whether or not the point has floating-point components.
+  /// \deprecated Since 6.4.0, use `floating` instead.
+  /// \since 5.0.0
+  inline constexpr static bool isFloating [[deprecated]] = std::is_floating_point_v<T>;
 
-  /**
-   * \typedef value_type
-   *
-   * \brief The actual representation type, i.e. `int` or `float`.
-   *
-   * \since 5.0.0
-   */
-  using value_type = std::conditional_t<isIntegral, int, float>;
+  /// \brief Indicates whether or not the point has integral components.
+  /// \since 6.4.0
+  inline constexpr static bool integral = std::is_integral_v<T>;
 
-  /**
-   * \typedef point_type
-   *
-   * \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
-   *
-   * \since 5.0.0
-   */
-  using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
+  /// \brief Indicates whether or not the point has floating-point components.
+  /// \since 6.4.0
+  inline constexpr static bool floating = std::is_floating_point_v<T>;
+
+  /// \brief The actual representation type, i.e. `int` or `float`.
+  /// \since 5.0.0
+  using value_type = std::conditional_t<integral, int, float>;
+
+  /// \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
+  /// \since 5.0.0
+  using point_type = std::conditional_t<integral, SDL_Point, SDL_FPoint>;
 };
 
 template <typename T>
@@ -83,7 +72,7 @@ class basic_point;
 /**
  * \typedef ipoint
  *
- * \brief Alias for an `int`-based point.
+ * \brief Alias for an integral point.
  *
  * \details This type corresponds to `SDL_Point`.
  *
@@ -94,7 +83,7 @@ using ipoint = basic_point<int>;
 /**
  * \typedef fpoint
  *
- * \brief Alias for a `float`-based point.
+ * \brief Alias for a floating-point point.
  *
  * \details This type corresponds to `SDL_FPoint`.
  *
@@ -129,10 +118,16 @@ class basic_point final
 {
  public:
   /// \copydoc point_traits::isIntegral
-  inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
+  inline constexpr static bool isIntegral [[deprecated]] = point_traits<T>::isIntegral;
 
   /// \copydoc point_traits::isFloating
-  inline constexpr static bool isFloating = point_traits<T>::isFloating;
+  inline constexpr static bool isFloating [[deprecated]] = point_traits<T>::isFloating;
+
+  /// \copydoc point_traits::integral
+  inline constexpr static bool integral = point_traits<T>::integral;
+
+  /// \copydoc point_traits::floating
+  inline constexpr static bool floating = point_traits<T>::floating;
 
   /// \copydoc point_traits::value_type
   using value_type = typename point_traits<T>::value_type;
@@ -358,7 +353,7 @@ template <typename T>
 [[nodiscard]] auto distance(const basic_point<T> from, const basic_point<T> to) noexcept ->
     typename point_traits<T>::value_type
 {
-  if constexpr (basic_point<T>::isIntegral) {
+  if constexpr (basic_point<T>::integral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);

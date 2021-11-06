@@ -294,7 +294,7 @@ class basic_renderer final
   template <typename U>
   auto draw_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::integral) {
       return SDL_RenderDrawRect(get(), rect.data()) == 0;
     }
     else {
@@ -316,7 +316,7 @@ class basic_renderer final
   template <typename U>
   auto fill_rect(const basic_rect<U>& rect) noexcept -> result
   {
-    if constexpr (basic_rect<U>::isIntegral) {
+    if constexpr (basic_rect<U>::integral) {
       return SDL_RenderFillRect(get(), rect.data()) == 0;
     }
     else {
@@ -339,7 +339,7 @@ class basic_renderer final
   template <typename U>
   auto draw_line(const basic_point<U>& start, const basic_point<U>& end) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral) {
+    if constexpr (basic_point<U>::integral) {
       return SDL_RenderDrawLine(get(), start.x(), start.y(), end.x(), end.y()) == 0;
     }
     else {
@@ -404,7 +404,7 @@ class basic_renderer final
   template <typename U>
   auto draw_point(const basic_point<U>& point) noexcept -> result
   {
-    if constexpr (basic_point<U>::isIntegral) {
+    if constexpr (basic_point<U>::integral) {
       return SDL_RenderDrawPoint(get(), point.x(), point.y()) == 0;
     }
     else {
@@ -1135,7 +1135,7 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_point<P>& position) noexcept
       -> result
   {
-    if constexpr (basic_point<P>::isFloating) {
+    if constexpr (basic_point<P>::floating) {
       const auto size = cast<cen::farea>(texture.size());
       const SDL_FRect dst{position.x(), position.y(), size.width, size.height};
       return SDL_RenderCopyF(get(), texture.get(), nullptr, &dst) == 0;
@@ -1163,7 +1163,7 @@ class basic_renderer final
   auto render(const basic_texture<U>& texture, const basic_rect<P>& destination) noexcept
       -> result
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), nullptr, destination.data()) == 0;
     }
     else {
@@ -1193,7 +1193,7 @@ class basic_renderer final
               const irect& source,
               const basic_rect<P>& destination) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyF(get(), texture.get(), source.data(), destination.data()) == 0;
     }
     else {
@@ -1223,7 +1223,7 @@ class basic_renderer final
               const basic_rect<P>& destination,
               const double angle) noexcept -> result
   {
-    if constexpr (basic_rect<P>::isFloating) {
+    if constexpr (basic_rect<P>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -1273,7 +1273,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),
@@ -1325,7 +1325,7 @@ class basic_renderer final
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<R>::isFloating) {
+    if constexpr (basic_rect<R>::floating) {
       return SDL_RenderCopyExF(get(),
                                texture.get(),
                                source.data(),

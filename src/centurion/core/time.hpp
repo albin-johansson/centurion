@@ -54,6 +54,16 @@ using nanoseconds = std::chrono::duration<T, std::nano>;
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
 
+using u32_s = seconds<u32>;
+using u32_ms = milliseconds<u32>;
+using u32_us = microseconds<u32>;
+using u32_ns = nanoseconds<u32>;
+
+using u64_s = seconds<u64>;
+using u64_ms = milliseconds<u64>;
+using u64_us = microseconds<u64>;
+using u64_ns = nanoseconds<u64>;
+
 /// \} End of time (std::chrono) aliases
 
 namespace literals {

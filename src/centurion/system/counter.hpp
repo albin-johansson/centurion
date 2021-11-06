@@ -68,13 +68,30 @@ template <typename T>
  *
  * \return the amount of milliseconds since the library was initialized.
  *
+ * \deprecated Since 6.4.0, use `ticks64()` instead.
+ *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto ticks() noexcept(noexcept(milliseconds<u32>{u32{}}))
-    -> milliseconds<u32>
+[[nodiscard, deprecated]] inline auto ticks() noexcept(noexcept(u32_ms{u32{}})) -> u32_ms
 {
-  return milliseconds<u32>{SDL_GetTicks()};
+  return u32_ms{SDL_GetTicks()};
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+/**
+ * \brief Returns the amount of milliseconds since the library was initialized.
+ *
+ * \return the amount of milliseconds since the library was initialized.
+ *
+ * \since 6.4.0
+ */
+[[nodiscard]] inline auto ticks64() noexcept(noexcept(u64_ms{u64{}})) -> u64_ms
+{
+  return u64_ms{SDL_GetTicks64()};
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)
 
 /// \} End of counter functions
 

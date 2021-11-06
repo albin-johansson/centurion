@@ -64,11 +64,12 @@ namespace cen {
 class music final
 {
  public:
-  /**
-   * \brief A constant that indicates that the music should be looped indefinitely.
-   *
-   * \since 5.1.0
-   */
+  /// \brief The milliseconds type used in the music API.
+  /// \since 6.4.0
+  using ms_type = milliseconds<int>;
+
+  /// \brief A constant that indicates that the music should be looped indefinitely.
+  /// \since 5.1.0
   inline constexpr static int forever = -1;
 
   /// \name Construction
@@ -230,8 +231,7 @@ class music final
    *
    * \since 3.0.0
    */
-  auto fade_in(const milliseconds<int> ms, const int nLoops = 0) noexcept(noexcept(ms.count()))
-      -> result
+  auto fade_in(const ms_type ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
     return Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count()) == 0;
@@ -252,7 +252,7 @@ class music final
    *
    * \since 3.0.0
    */
-  static auto fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count())) -> result
+  static auto fade_out(const ms_type ms) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
     if (!is_fading()) {
@@ -529,10 +529,9 @@ class music final
   std::unique_ptr<Mix_Music, deleter> m_music;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
-
  public:
   music() = default;
-#endif
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /// \name Callbacks

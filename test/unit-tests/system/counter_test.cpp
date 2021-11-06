@@ -19,5 +19,16 @@ TEST(Counter, NowInSeconds)
 
 TEST(Counter, Ticks)
 {
-  ASSERT_NO_THROW(cen::counter::ticks());
+  using namespace cen::literals::legacy;
+  ASSERT_GT(cen::counter::ticks(), 0_ms);
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+
+TEST(Counter, Ticks64)
+{
+  using namespace cen::literals;
+  ASSERT_GT(cen::counter::ticks64(), 0_ms);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 18)

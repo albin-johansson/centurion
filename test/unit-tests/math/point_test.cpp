@@ -23,6 +23,12 @@ static_assert(std::is_nothrow_copy_assignable_v<cen::fpoint>);
 static_assert(std::is_nothrow_move_constructible_v<cen::fpoint>);
 static_assert(std::is_nothrow_move_assignable_v<cen::fpoint>);
 
+static_assert(cen::fpoint::floating);
+static_assert(!cen::ipoint::floating);
+
+static_assert(cen::ipoint::integral);
+static_assert(!cen::fpoint::integral);
+
 TEST(Point, Point)
 {
   // clang-format off

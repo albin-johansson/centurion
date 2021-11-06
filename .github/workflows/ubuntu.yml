@@ -60,7 +60,7 @@ jobs:
           curl -L https://www.libsdl.org/release/SDL2-${{matrix.SDL_VERSION}}.tar.gz | tar xz
           cd SDL2-${{matrix.SDL_VERSION}}
           ./configure
-          make
+          make -j 8
 
       - name: Install SDL2
         shell: bash

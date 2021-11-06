@@ -47,13 +47,15 @@ template <typename T, enable_if_convertible_t<T, int, float> = 0>
 class rect_traits final
 {
  public:
-  inline constexpr static bool isIntegral = std::is_integral_v<T>;
-  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
+  inline constexpr static bool integral = std::is_integral_v<T>;
+  inline constexpr static bool floating = std::is_floating_point_v<T>;
+  inline constexpr static bool isIntegral [[deprecated]] = integral;
+  inline constexpr static bool isFloating [[deprecated]] = floating;
 
-  using value_type = std::conditional_t<isIntegral, int, float>;
-  using point_type = std::conditional_t<isIntegral, ipoint, fpoint>;
-  using area_type = std::conditional_t<isIntegral, iarea, farea>;
-  using rect_type = std::conditional_t<isIntegral, SDL_Rect, SDL_FRect>;
+  using value_type = std::conditional_t<integral, int, float>;
+  using point_type = std::conditional_t<integral, ipoint, fpoint>;
+  using area_type = std::conditional_t<integral, iarea, farea>;
+  using rect_type = std::conditional_t<integral, SDL_Rect, SDL_FRect>;
 };
 
 template <typename T>
@@ -99,65 +101,49 @@ template <typename T>
 class basic_rect final
 {
  public:
-  /**
-   * \brief Indicates whether or not the rectangle is based on an integral type.
-   *
-   * \since 5.0.0
-   */
-  inline constexpr static bool isIntegral = rect_traits<T>::isIntegral;
+  /// \brief Indicates whether or not the rectangle is based on an integral type.
+  /// \deprecated Since 6.4.0, use `integral` instead.
+  /// \since 5.0.0
+  inline constexpr static bool isIntegral [[deprecated]] = rect_traits<T>::isIntegral;
 
-  /**
-   * \brief Indicates whether or not the rectangle is based on a floating-point
-   * type.
-   *
-   * \since 5.0.0
-   */
-  inline constexpr static bool isFloating = rect_traits<T>::isFloating;
+  /// \brief Indicates whether or not the rectangle is based on a floating-point type.
+  /// \deprecated Since 6.4.0, use `floating` instead.
+  /// \since 5.0.0
+  inline constexpr static bool isFloating [[deprecated]] = rect_traits<T>::isFloating;
 
-  /**
-   * \typedef value_type
-   *
-   * \brief The representation type, i.e. `int` or `float`.
-   *
-   * \since 5.0.0
-   */
+  /// \brief Indicates whether or not the rectangle uses integral components.
+  /// \since 6.4.0
+  inline constexpr static bool integral = rect_traits<T>::integral;
+
+  /// \brief Indicates whether or not the rectangle uses floating-point components.
+  /// \since 6.4.0
+  inline constexpr static bool floating = rect_traits<T>::floating;
+
+  /// \typedef value_type
+  /// \brief The representation type, i.e. `int` or `float`.
+  /// \since 5.0.0
   using value_type = typename rect_traits<T>::value_type;
 
-  /**
-   * \typedef point_type
-   *
-   * \brief The point type used, i.e. `ipoint` or `fpoint`.
-   *
-   * \since 5.0.0
-   */
+  /// \typedef point_type
+  /// \brief The point type used, i.e. `ipoint` or `fpoint`.
+  /// \since 5.0.0
   using point_type = typename rect_traits<T>::point_type;
 
-  /**
-   * \typedef area_type
-   *
-   * \brief The area type used, i.e. `iarea` or `farea`.
-   *
-   * \since 5.0.0
-   */
+  /// \typedef area_type
+  /// \brief The area type used, i.e. `iarea` or `farea`.
+  /// \since 5.0.0
   using area_type = typename rect_traits<T>::area_type;
 
-  /**
-   * \typedef rect_type
-   *
-   * \brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
-   *
-   * \since 5.0.0
-   */
+  /// \typedef rect_type
+  /// \brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
+  /// \since 5.0.0
   using rect_type = typename rect_traits<T>::rect_type;
 
   /// \name Construction
   /// \{
 
-  /**
-   * \brief Creates a rectangle with the components (0, 0, 0, 0).
-   *
-   * \since 4.0.0
-   */
+  /// \brief Creates a rectangle with the components (0, 0, 0, 0).
+  /// \since 4.0.0
   constexpr basic_rect() noexcept = default;
 
   /**

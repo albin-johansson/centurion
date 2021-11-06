@@ -83,11 +83,12 @@ template <typename T>
 class basic_sound_effect final
 {
  public:
-  /**
-   * \brief Indicates that an audio snippet should be looped indefinitely.
-   *
-   * \since 5.1.0
-   */
+  /// \brief The milliseconds type used in the sound effect API.
+  /// \since 6.4.0
+  using ms_type = milliseconds<int>;
+
+  /// \brief Indicates that an audio snippet should be looped indefinitely.
+  /// \since 5.1.0
   inline constexpr static int forever = -1;
 
   /// \name Construction
@@ -242,7 +243,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms) noexcept(noexcept(ms.count()))
+  void fade_in(const ms_type ms) noexcept(noexcept(ms.count()))
   {
     assert(ms.count() > 0);
     if (!is_playing()) {
@@ -261,7 +262,7 @@ class basic_sound_effect final
    *
    * \since 3.0.0
    */
-  void fade_out(const milliseconds<int> ms) noexcept(noexcept(ms.count()))  // NOLINT
+  void fade_out(const ms_type ms) noexcept(noexcept(ms.count()))  // NOLINT
   {
     assert(ms.count() > 0);
     if (is_playing()) {

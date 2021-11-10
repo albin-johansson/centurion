@@ -17,6 +17,8 @@ TEST(Version, VersionAtLeast)
   ASSERT_TRUE(cen::version_at_least(CENTURION_VERSION_MAJOR,
                                     CENTURION_VERSION_MINOR,
                                     CENTURION_VERSION_PATCH));
+  ASSERT_TRUE(cen::version_at_least(6, 3, 0));
+  ASSERT_TRUE(cen::version_at_least(6, 2, 0));
   ASSERT_TRUE(cen::version_at_least(6, 1, 0));
   ASSERT_TRUE(cen::version_at_least(6, 0, 1));
   ASSERT_TRUE(cen::version_at_least(6, 0, 0));

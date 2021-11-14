@@ -263,8 +263,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
 
     src/centurion/video/vulkan/vk_core.hpp
     src/centurion/video/vulkan/vk_library.hpp
-
-    src/everything.hpp
     )
 
 target_include_directories(${CENTURION_LIB_TARGET}

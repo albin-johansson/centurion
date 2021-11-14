@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/colors.hpp"
 
 TEST(Palette, Constructor)
@@ -70,7 +70,7 @@ TEST(Palette, Size)
 TEST(Palette, ToString)
 {
   const cen::palette palette{7};
-  cen::log::put(cen::to_string(palette));
+  cen::log_info_raw(cen::to_string(palette));
 }
 
 TEST(Palette, StreamOperator)

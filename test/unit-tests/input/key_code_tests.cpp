@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "input/key_code.hpp"
 #include "input/keycodes.hpp"
 #include "serialization_utils.hpp"
@@ -232,7 +232,7 @@ TEST(KeyCode, InequalityOperator)
 
 TEST(KeyCode, ToString)
 {
-  cen::log::put(cen::to_string(cen::keycodes::a));
+  cen::log_info_raw(cen::to_string(cen::keycodes::a));
 }
 
 TEST(KeyCode, StreamOperator)

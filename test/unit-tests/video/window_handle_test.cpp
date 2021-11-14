@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/window.hpp"
 
 TEST(WindowHandle, PointerConstructor)
@@ -34,7 +34,7 @@ TEST(WindowHandle, ToString)
   cen::window window;
   cen::window_handle handle{window};
 
-  cen::log::put(cen::to_string(handle));
+  cen::log_info_raw(cen::to_string(handle));
 }
 
 TEST(WindowHandle, StreamOperator)

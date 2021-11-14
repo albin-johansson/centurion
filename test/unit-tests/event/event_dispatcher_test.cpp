@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 
 using event_dispatcher =
     cen::event_dispatcher<cen::quit_event, cen::controller_button_event, cen::window_event>;
@@ -116,7 +116,7 @@ TEST(EventDispatcher, Size)
 TEST(EventDispatcher, ToString)
 {
   event_dispatcher dispatcher;
-  cen::log::put(cen::to_string(dispatcher));
+  cen::log_info_raw(cen::to_string(dispatcher));
 }
 
 TEST(EventDispatcher, StreamOperator)

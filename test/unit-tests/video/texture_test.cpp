@@ -8,7 +8,7 @@
 #include <type_traits>
 
 #include "core/exception.hpp"
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/colors.hpp"
 #include "video/renderer.hpp"
 #include "video/window.hpp"
@@ -248,7 +248,7 @@ TEST_F(TextureTest, Get)
 
 TEST_F(TextureTest, ToString)
 {
-  cen::log::put(cen::to_string(*m_texture));
+  cen::log_info_raw(cen::to_string(*m_texture));
 }
 
 TEST_F(TextureTest, StreamOperator)

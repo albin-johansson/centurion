@@ -5,7 +5,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 
 namespace {
 
@@ -133,7 +133,7 @@ TEST(Thread, CurrentId)
 TEST(Thread, ToString)
 {
   cen::thread thread{dummy, "myThread"};
-  cen::log::put(cen::to_string(thread));
+  cen::log_info_raw(cen::to_string(thread));
 }
 
 TEST(Thread, StreamOperator)

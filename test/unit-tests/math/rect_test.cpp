@@ -5,7 +5,7 @@
 #include <iostream>     // clog
 #include <type_traits>  // ...
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::frect>);
@@ -529,7 +529,7 @@ TEST(Rect, Collides)
 TEST(Rect, ToString)
 {
   const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-  cen::log::put(cen::to_string(rect));
+  cen::log_info_raw(cen::to_string(rect));
 }
 
 TEST(Rect, StreamOperator)

@@ -9,7 +9,7 @@
 #include <utility>  // move
 
 #include "core/exception.hpp"
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/colors.hpp"
 #include "video/window.hpp"
 
@@ -247,7 +247,7 @@ TEST_F(SurfaceTest, ConvertToPointer)
 
 TEST_F(SurfaceTest, ToString)
 {
-  cen::log::put(cen::to_string(*m_surface));
+  cen::log_info_raw(cen::to_string(*m_surface));
 }
 
 TEST_F(SurfaceTest, StreamOperator)

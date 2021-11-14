@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "serialization_utils.hpp"
 
 using float3 = cen::vector3<float>;
@@ -46,7 +46,7 @@ TEST(Vector3, StreamOperator)
 TEST(Vector3, ToString)
 {
   const float3 vec{12.3f, 45.6f};
-  cen::log::put(cen::to_string(vec));
+  cen::log_info_raw(cen::to_string(vec));
 }
 
 TEST(Vector3, EqualityOperator)

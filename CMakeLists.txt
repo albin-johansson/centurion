@@ -73,14 +73,10 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/core/integers.hpp
     src/centurion/core/is_stateless_callable.hpp
     src/centurion/core/library.hpp
-    src/centurion/core/log.hpp
-    src/centurion/core/log_category.hpp
-    src/centurion/core/log_macros.hpp
-    src/centurion/core/log_priority.hpp
+    src/centurion/core/logging.hpp
     src/centurion/core/not_null.hpp
     src/centurion/core/owner.hpp
     src/centurion/core/result.hpp
-    src/centurion/core/sdl_log_category_workaround.hpp
     src/centurion/core/sdl_string.hpp
     src/centurion/core/sfinae.hpp
     src/centurion/core/str.hpp

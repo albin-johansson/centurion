@@ -6,7 +6,7 @@
 #include <memory>    // unique_ptr
 #include <type_traits>
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 
 static_assert(std::is_final_v<cen::music>);
 
@@ -246,7 +246,7 @@ TEST_F(MusicTest, Type)
 
 TEST_F(MusicTest, ToString)
 {
-  cen::log::put(cen::to_string(*m_music));
+  cen::log_info_raw(cen::to_string(*m_music));
 }
 
 TEST_F(MusicTest, StreamOperator)

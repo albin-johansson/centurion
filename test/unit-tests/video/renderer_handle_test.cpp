@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/renderer.hpp"
 #include "video/window.hpp"
 
@@ -55,5 +55,5 @@ TEST_F(RendererHandleTest, ToStringAndStreamOperator)
   const cen::renderer_handle handle{*m_renderer};
 
   std::clog << handle << '\n';
-  cen::log::put(cen::to_string(handle));
+  cen::log_info_raw(cen::to_string(handle));
 }

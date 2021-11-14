@@ -4,7 +4,7 @@
 
 #include <iostream>  // clog
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "serialization_utils.hpp"
 
 TEST(Area, DefaultConstruction)
@@ -89,8 +89,8 @@ TEST(Area, ToString)
   constexpr cen::iarea ia{123, 456};
   constexpr cen::farea fa{78.9f, 23.4f};
 
-  cen::log::put(cen::to_string(ia));
-  cen::log::put(cen::to_string(fa));
+  cen::log_info_raw(cen::to_string(ia));
+  cen::log_info_raw(cen::to_string(fa));
 }
 
 TEST(Area, StreamOperator)

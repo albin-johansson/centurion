@@ -6,7 +6,7 @@
 #include <iostream>     // clog
 #include <type_traits>  // ...
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "serialization_utils.hpp"
 
 static_assert(std::is_nothrow_default_constructible_v<cen::ipoint>);
@@ -206,10 +206,10 @@ TEST(Point, Data)
 TEST(Point, ToString)
 {
   const cen::ipoint ip{123, 456};
-  cen::log::put(cen::to_string(ip));
+  cen::log_info_raw(cen::to_string(ip));
 
   const cen::fpoint fp{12.3f, 45.6f};
-  cen::log::put(cen::to_string(fp));
+  cen::log_info_raw(cen::to_string(fp));
 }
 
 TEST(Point, StreamOperator)

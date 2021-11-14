@@ -6,7 +6,7 @@
 #include <type_traits>  // is_nothrow_X...
 #include <utility>      // move
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "serialization_utils.hpp"
 #include "video/colors.hpp"
 
@@ -423,7 +423,7 @@ TEST(Color, ConversionToSDLColorPointer)
 TEST(Color, ToString)
 {
   constexpr cen::color color{0x12, 0xFA, 0xCC, 0xAD};
-  cen::log::put(cen::to_string(color));
+  cen::log_info_raw(cen::to_string(color));
 }
 
 TEST(Color, StreamOperator)

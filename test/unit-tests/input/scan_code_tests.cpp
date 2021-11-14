@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "input/scan_code.hpp"
 #include "input/scancodes.hpp"
 #include "serialization_utils.hpp"
@@ -199,7 +199,7 @@ TEST(ScanCode, InequalityOperator)
 
 TEST(ScanCode, ToString)
 {
-  cen::log::put(cen::to_string(cen::scancodes::x));
+  cen::log_info_raw(cen::to_string(cen::scancodes::x));
 }
 
 TEST(ScanCode, StreamOperator)

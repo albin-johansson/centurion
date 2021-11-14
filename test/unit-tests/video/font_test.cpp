@@ -6,7 +6,7 @@
 #include <type_traits>
 
 #include "core/library.hpp"
-#include "core/log.hpp"
+#include "core/logging.hpp"
 
 using namespace std::string_literals;
 
@@ -295,7 +295,7 @@ TEST(Font, ConversionToPointer)
 TEST(Font, ToString)
 {
   const cen::font font{typeWriterPath, 12};
-  cen::log::put(cen::to_string(font));
+  cen::log_info_raw(cen::to_string(font));
 }
 
 TEST(Font, StreamOperator)

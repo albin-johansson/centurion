@@ -7,7 +7,7 @@
 #include <type_traits>
 
 #include "core/exception.hpp"
-#include "core/log.hpp"
+#include "core/logging.hpp"
 
 static_assert(std::is_final_v<cen::sound_effect>);
 static_assert(!std::is_default_constructible_v<cen::sound_effect>);
@@ -146,7 +146,7 @@ TEST_F(SoundEffect, Volume)
 
 TEST_F(SoundEffect, ToString)
 {
-  cen::log::put(cen::to_string(*m_sound));
+  cen::log_info_raw(cen::to_string(*m_sound));
 }
 
 TEST_F(SoundEffect, StreamOperator)

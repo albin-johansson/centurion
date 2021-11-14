@@ -6,7 +6,7 @@
 #include <memory>    // unique_ptr
 
 #include "core/exception.hpp"
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "math/rect.hpp"
 #include "video/colors.hpp"
 #include "video/font.hpp"
@@ -375,7 +375,7 @@ TEST_F(RendererTest, Capture)
 
 TEST_F(RendererTest, ToString)
 {
-  cen::log::put(cen::to_string(*m_renderer));
+  cen::log_info_raw(cen::to_string(*m_renderer));
 }
 
 TEST_F(RendererTest, StreamOperator)

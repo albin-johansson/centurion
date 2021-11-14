@@ -5,7 +5,7 @@
 #include <iostream>  // clog
 #include <memory>    // unique_ptr
 
-#include "core/log.hpp"
+#include "core/logging.hpp"
 #include "video/screen.hpp"
 #include "video/window_utils.hpp"
 
@@ -93,7 +93,7 @@ TEST_F(WindowTest, PointerConversion)
 
 TEST_F(WindowTest, ToString)
 {
-  cen::log::put(cen::to_string(*m_window));
+  cen::log_info_raw(cen::to_string(*m_window));
 }
 
 TEST_F(WindowTest, StreamOperator)

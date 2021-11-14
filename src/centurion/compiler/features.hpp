@@ -66,6 +66,12 @@
 #define CENTURION_HAS_FEATURE_TO_ARRAY 0
 #endif  // __cpp_lib_to_array >= 201907L
 
+#if __cpp_lib_to_chars >= 201611L
+#define CENTURION_HAS_FEATURE_CHARCONV 1
+#else
+#define CENTURION_HAS_FEATURE_CHARCONV 0
+#endif  // __cpp_lib_to_chars >= 201611L
+
 #endif  // __has_include
 
 /// \} End of group compiler

@@ -1,6 +1,6 @@
-#include "detail/max.hpp"
-
 #include <gtest/gtest.h>
+
+#include "detail/stdlib.hpp"
 
 TEST(Max, Correctness)
 {

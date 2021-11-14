@@ -1,6 +1,6 @@
-#include "detail/min.hpp"
-
 #include <gtest/gtest.h>
+
+#include "detail/stdlib.hpp"
 
 TEST(Min, Correctness)
 {

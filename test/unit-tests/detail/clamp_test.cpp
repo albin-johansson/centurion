@@ -1,6 +1,6 @@
-#include "detail/clamp.hpp"
-
 #include <gtest/gtest.h>
+
+#include "detail/stdlib.hpp"
 
 TEST(Clamp, Correctness)
 {

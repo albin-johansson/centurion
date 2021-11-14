@@ -7,7 +7,7 @@
 
 #include "../core/common.hpp"
 #include "../core/time.hpp"
-#include "../detail/max.hpp"
+#include "../detail/stdlib.hpp"
 #include "haptic_effect.hpp"
 
 namespace cen {

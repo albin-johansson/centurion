@@ -22,7 +22,7 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../detail/address_of.hpp"
+#include "../detail/stdlib.hpp"
 #include "../math/area.hpp"
 #include "unicode_string.hpp"
 

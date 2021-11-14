@@ -16,8 +16,7 @@
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/common.hpp"
-#include "../detail/max.hpp"
-#include "../detail/min.hpp"
+#include "../detail/stdlib.hpp"
 #include "area.hpp"
 #include "point.hpp"
 

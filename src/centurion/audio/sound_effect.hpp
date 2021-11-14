@@ -23,10 +23,8 @@
 #include "../core/exception.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
-#include "../detail/address_of.hpp"
-#include "../detail/clamp.hpp"
-#include "../detail/max.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
 
 namespace cen {
 

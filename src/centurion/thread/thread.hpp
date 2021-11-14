@@ -27,7 +27,7 @@
 #include "../core/is_stateless_callable.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
-#include "../detail/address_of.hpp"
+#include "../detail/stdlib.hpp"
 #include "thread_priority.hpp"
 
 namespace cen {

@@ -14,6 +14,7 @@ namespace cen {
 /// \brief Alias for a C-style string.
 /// \since 6.2.0
 using str = const char*;
+using cstr = const char*;
 
 /// \name Integer aliases
 /// \{

@@ -1,6 +1,7 @@
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
+#include <cstdlib>      // atof
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // enable_if_t, is_same_v, is_convertible_v
@@ -8,8 +9,8 @@
 #include "../core/common.hpp"
 #include "czstring_compare.hpp"
 #include "czstring_eq.hpp"
-#include "from_string.hpp"
 #include "static_bimap.hpp"
+#include "stdlib.hpp"
 
 /// \cond FALSE
 
@@ -94,7 +95,7 @@ struct int_hint : crtp_hint<int_hint<Hint>, int>
 
   [[nodiscard]] static auto from_string(const str value) -> int
   {
-    return detail::from_string<int>(value).value();
+    return detail::stoi(value).value();
   }
 
   [[nodiscard]] static auto to_string(const int value) -> std::string
@@ -119,7 +120,7 @@ struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
 
   [[nodiscard]] static auto from_string(const str value) -> uint
   {
-    return detail::from_string<uint>(value).value();
+    return detail::stoi<uint>(value).value();
   }
 
   [[nodiscard]] static auto to_string(const uint value) -> std::string
@@ -144,7 +145,7 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
 
   [[nodiscard]] static auto from_string(const str value) -> float
   {
-    return detail::from_string<float>(value).value();
+    return std::atof(value);
   }
 
   [[nodiscard]] static auto to_string(const float value) -> std::string

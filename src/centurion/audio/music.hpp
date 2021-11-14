@@ -23,10 +23,8 @@
 #include "../core/exception.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
-#include "../detail/address_of.hpp"
 #include "../detail/any_eq.hpp"
-#include "../detail/clamp.hpp"
-#include "../detail/max.hpp"
+#include "../detail/stdlib.hpp"
 #include "fade_status.hpp"
 #include "music_type.hpp"
 

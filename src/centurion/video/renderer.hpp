@@ -23,9 +23,9 @@
 
 #include "../core/common.hpp"
 #include "../core/result.hpp"
-#include "../detail/address_of.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
 #include "../math/rect.hpp"
 #include "blend_mode.hpp"
 #include "color.hpp"

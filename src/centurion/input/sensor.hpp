@@ -18,8 +18,8 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
+#include "../detail/stdlib.hpp"
 #include "sensor_type.hpp"
 
 namespace cen {

@@ -1,8 +1,8 @@
-#include "detail/address_of.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "detail/stdlib.hpp"
 
 TEST(AddressOf, Correctness)
 {

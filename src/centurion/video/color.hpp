@@ -24,9 +24,7 @@
 #include "../compiler/compiler.hpp"
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../detail/clamp.hpp"
-#include "../detail/from_string.hpp"
-#include "../detail/lerp.hpp"
+#include "../detail/stdlib.hpp"
 
 namespace cen {
 
@@ -264,9 +262,9 @@ class color final
     const auto gg = noHash.substr(2, 2);
     const auto bb = noHash.substr(4, 2);
 
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto red = detail::stoi<u8>(rr, 16);
+    const auto green = detail::stoi<u8>(gg, 16);
+    const auto blue = detail::stoi<u8>(bb, 16);
 
     if (red && green && blue) {
       return cen::color{*red, *green, *blue};
@@ -304,10 +302,10 @@ class color final
     const auto bb = noHash.substr(4, 2);
     const auto aa = noHash.substr(6, 2);
 
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
-    const auto alpha = detail::from_string<u8>(aa, 16);
+    const auto red = detail::stoi<u8>(rr, 16);
+    const auto green = detail::stoi<u8>(gg, 16);
+    const auto blue = detail::stoi<u8>(bb, 16);
+    const auto alpha = detail::stoi<u8>(aa, 16);
 
     if (red && green && blue && alpha) {
       return cen::color{*red, *green, *blue, *alpha};
@@ -345,10 +343,10 @@ class color final
     const auto gg = noHash.substr(4, 2);
     const auto bb = noHash.substr(6, 2);
 
-    const auto alpha = detail::from_string<u8>(aa, 16);
-    const auto red = detail::from_string<u8>(rr, 16);
-    const auto green = detail::from_string<u8>(gg, 16);
-    const auto blue = detail::from_string<u8>(bb, 16);
+    const auto alpha = detail::stoi<u8>(aa, 16);
+    const auto red = detail::stoi<u8>(rr, 16);
+    const auto green = detail::stoi<u8>(gg, 16);
+    const auto blue = detail::stoi<u8>(bb, 16);
 
     if (alpha && red && green && blue) {
       return cen::color{*red, *green, *blue, *alpha};

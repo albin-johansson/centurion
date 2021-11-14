@@ -79,18 +79,12 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/core/time.hpp
     src/centurion/core/version.hpp
 
-    src/centurion/detail/address_of.hpp
     src/centurion/detail/any_eq.hpp
     src/centurion/detail/array_utils.hpp
-    src/centurion/detail/clamp.hpp
     src/centurion/detail/convert_bool.hpp
     src/centurion/detail/czstring_compare.hpp
     src/centurion/detail/czstring_eq.hpp
-    src/centurion/detail/from_string.hpp
     src/centurion/detail/hints_impl.hpp
-    src/centurion/detail/lerp.hpp
-    src/centurion/detail/max.hpp
-    src/centurion/detail/min.hpp
     src/centurion/detail/owner_handle_api.hpp
     src/centurion/detail/sdl_deleter.hpp
     src/centurion/detail/sdl_version_at_least.hpp

@@ -17,7 +17,7 @@ auto dummy = [](void*) noexcept -> int {
 
 }  // namespace
 
-static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
+static_assert(std::is_same_v<cen::thread_id, SDL_threadID>);
 static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
 
 static_assert(!std::is_copy_constructible_v<cen::thread>);

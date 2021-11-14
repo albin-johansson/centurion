@@ -66,17 +66,6 @@ class thread final
    */
   using task_type = SDL_ThreadFunction;
 
-  /**
-   * \typedef id
-   *
-   * \brief The type used for thread identifiers.
-   *
-   * \deprecated Since 6.2.0, use `thread_id` instead.
-   *
-   * \since 5.0.0
-   */
-  using id [[deprecated]] = SDL_threadID;
-
   /// \name Construction/Destruction
   /// \{
 

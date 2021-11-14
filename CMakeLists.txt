@@ -77,7 +77,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/core/log_category.hpp
     src/centurion/core/log_macros.hpp
     src/centurion/core/log_priority.hpp
-    src/centurion/core/macros.hpp
     src/centurion/core/not_null.hpp
     src/centurion/core/owner.hpp
     src/centurion/core/result.hpp

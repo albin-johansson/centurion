@@ -46,7 +46,6 @@
 #include "centurion/core/log_category.hpp"
 #include "centurion/core/log_macros.hpp"
 #include "centurion/core/log_priority.hpp"
-#include "centurion/core/macros.hpp"
 #include "centurion/core/not_null.hpp"
 #include "centurion/core/owner.hpp"
 #include "centurion/core/result.hpp"

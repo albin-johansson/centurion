@@ -75,7 +75,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/core/logging.hpp
     src/centurion/core/result.hpp
     src/centurion/core/sdl_string.hpp
-    src/centurion/core/sfinae.hpp
     src/centurion/core/time.hpp
     src/centurion/core/version.hpp
 
@@ -83,7 +82,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/detail/array_utils.hpp
     src/centurion/detail/convert_bool.hpp
     src/centurion/detail/czstring_compare.hpp
-    src/centurion/detail/czstring_eq.hpp
     src/centurion/detail/hints_impl.hpp
     src/centurion/detail/owner_handle_api.hpp
     src/centurion/detail/sdl_deleter.hpp

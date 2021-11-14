@@ -4,7 +4,7 @@
 #include <cassert>       // assert
 #include <charconv>      // from_chars
 #include <cmath>         // lerp
-#include <cstring>       // strlen
+#include <cstring>       // strcmp, strlen
 #include <optional>      // optional, nullopt
 #include <sstream>       // stringstream
 #include <string>        // string
@@ -80,6 +80,16 @@ template <typename T = int>
   }
   else {
     return std::nullopt;
+  }
+}
+
+[[nodiscard]] inline auto cmp(const cstr a, const cstr b) noexcept -> bool
+{
+  if (a && b) {
+    return std::strcmp(a, b) == 0;
+  }
+  else {
+    return false;
   }
 }
 

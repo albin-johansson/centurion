@@ -10,7 +10,7 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../detail/czstring_eq.hpp"
+#include "../detail/stdlib.hpp"
 
 namespace cen {
 
@@ -114,19 +114,19 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
   const str platform = SDL_GetPlatform();
-  if (detail::czstring_eq(platform, "Windows")) {
+  if (detail::cmp(platform, "Windows")) {
     return platform_id::windows;
   }
-  else if (detail::czstring_eq(platform, "Mac OS X")) {
+  else if (detail::cmp(platform, "Mac OS X")) {
     return platform_id::mac_osx;
   }
-  else if (detail::czstring_eq(platform, "Linux")) {
+  else if (detail::cmp(platform, "Linux")) {
     return platform_id::linux_os;
   }
-  else if (detail::czstring_eq(platform, "iOS")) {
+  else if (detail::cmp(platform, "iOS")) {
     return platform_id::ios;
   }
-  else if (detail::czstring_eq(platform, "Android")) {
+  else if (detail::cmp(platform, "Android")) {
     return platform_id::android;
   }
   else {

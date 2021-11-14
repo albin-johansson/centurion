@@ -1,26 +1,24 @@
-#include "detail/czstring_eq.hpp"
-
 #include <gtest/gtest.h>
 
-using cen::detail::czstring_eq;
+#include "detail/stdlib.hpp"
 
-TEST(CZStringEq, Correctness)
+TEST(StringCmp, StringCmp)
 {
-  ASSERT_NO_THROW(czstring_eq(nullptr, ""));
-  ASSERT_NO_THROW(czstring_eq("", nullptr));
-  ASSERT_NO_THROW(czstring_eq(nullptr, nullptr));
+  ASSERT_NO_THROW(cen::detail::cmp(nullptr, ""));
+  ASSERT_NO_THROW(cen::detail::cmp("", nullptr));
+  ASSERT_NO_THROW(cen::detail::cmp(nullptr, nullptr));
 
-  ASSERT_FALSE(czstring_eq(nullptr, nullptr));
-  ASSERT_FALSE(czstring_eq(nullptr, ""));
-  ASSERT_FALSE(czstring_eq("", nullptr));
+  ASSERT_FALSE(cen::detail::cmp(nullptr, nullptr));
+  ASSERT_FALSE(cen::detail::cmp(nullptr, ""));
+  ASSERT_FALSE(cen::detail::cmp("", nullptr));
 
-  ASSERT_TRUE(czstring_eq("", ""));
+  ASSERT_TRUE(cen::detail::cmp("", ""));
 
-  ASSERT_FALSE(czstring_eq("abc", "ABC"));
-  ASSERT_FALSE(czstring_eq("ABC", "abc"));
+  ASSERT_FALSE(cen::detail::cmp("abc", "ABC"));
+  ASSERT_FALSE(cen::detail::cmp("ABC", "abc"));
 
-  ASSERT_FALSE(czstring_eq("abc", "abcd"));
-  ASSERT_FALSE(czstring_eq("abcd", "abc"));
+  ASSERT_FALSE(cen::detail::cmp("abc", "abcd"));
+  ASSERT_FALSE(cen::detail::cmp("abcd", "abc"));
 
-  ASSERT_TRUE(czstring_eq("foo", "foo"));
+  ASSERT_TRUE(cen::detail::cmp("foo", "foo"));
 }

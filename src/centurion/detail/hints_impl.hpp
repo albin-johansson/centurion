@@ -8,7 +8,6 @@
 
 #include "../core/common.hpp"
 #include "czstring_compare.hpp"
-#include "czstring_eq.hpp"
 #include "static_bimap.hpp"
 #include "stdlib.hpp"
 
@@ -45,7 +44,7 @@ struct bool_hint : crtp_hint<bool_hint<Hint>, bool>
 
   [[nodiscard]] static auto from_string(const str str) noexcept -> bool
   {
-    return czstring_eq(str, "1") ? true : false;
+    return cmp(str, "1") ? true : false;
   }
 
   [[nodiscard]] static auto to_string(const bool value) -> std::string

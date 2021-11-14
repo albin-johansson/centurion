@@ -7,8 +7,8 @@
 #include <memory>   // unique_ptr
 
 #include "../core/common.hpp"
-#include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
+#include "../detail/stdlib.hpp"
 
 namespace cen {
 
@@ -63,13 +63,12 @@ class locale final
         const auto& item = array[index];
 
         if (country && item.country) {
-          if (detail::czstring_eq(language, item.language) &&
-              detail::czstring_eq(country, item.country)) {
+          if (detail::cmp(language, item.language) && detail::cmp(country, item.country)) {
             return true;
           }
         }
         else {
-          if (detail::czstring_eq(language, item.language)) {
+          if (detail::cmp(language, item.language)) {
             return true;
           }
         }

@@ -3,7 +3,7 @@
 
 #include <cstring>  // strcmp
 
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

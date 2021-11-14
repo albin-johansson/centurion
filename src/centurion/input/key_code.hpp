@@ -15,8 +15,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/not_null.hpp"
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "../core/version.hpp"
 
 namespace cen {

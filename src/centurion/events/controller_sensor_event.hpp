@@ -5,7 +5,7 @@
 
 #include <array>  // array
 
-#include "../core/to_underlying.hpp"
+#include "../core/common.hpp"
 #include "../detail/array_utils.hpp"
 #include "../input/sensor_type.hpp"
 #include "common_event.hpp"

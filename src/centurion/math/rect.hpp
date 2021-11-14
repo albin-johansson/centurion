@@ -15,8 +15,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/cast.hpp"
-#include "../core/sfinae.hpp"
+#include "../core/common.hpp"
 #include "../detail/max.hpp"
 #include "../detail/min.hpp"
 #include "area.hpp"

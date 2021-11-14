@@ -8,8 +8,8 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/str.hpp"
 #include "../detail/czstring_eq.hpp"
 
 namespace cen {

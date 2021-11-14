@@ -13,7 +13,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/cast.hpp"
+#include "../core/common.hpp"
 
 namespace cen {
 

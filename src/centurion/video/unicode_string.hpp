@@ -7,7 +7,7 @@
 #include <vector>            // vector
 
 #include "../compiler/compiler.hpp"
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 
 namespace cen {
 

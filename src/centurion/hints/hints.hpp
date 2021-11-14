@@ -6,11 +6,11 @@
 #include <optional>  // optional
 
 #include "../compiler/features.hpp"
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
 #include "../core/is_stateless_callable.hpp"
 #include "../core/logging.hpp"
 #include "../core/result.hpp"
-#include "../core/str.hpp"
 #include "../detail/hints_impl.hpp"
 #include "hint_priority.hpp"
 

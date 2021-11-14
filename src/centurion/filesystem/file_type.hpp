@@ -6,8 +6,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
 
 namespace cen {
 

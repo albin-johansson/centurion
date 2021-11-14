@@ -13,9 +13,8 @@
 #include <vector>       // vector
 
 #include "../compiler/features.hpp"
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
-#include "../core/to_underlying.hpp"
 #include "../detail/stack_resource.hpp"
 #include "button_order.hpp"
 #include "color.hpp"

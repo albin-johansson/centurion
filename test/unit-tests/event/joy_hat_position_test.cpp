@@ -2,7 +2,7 @@
 
 #include <iostream>  // clog
 
-#include "core/to_underlying.hpp"
+#include "core/common.hpp"
 #include "events/event.hpp"
 
 TEST(JoyHatPosition, Values)

@@ -5,7 +5,7 @@
 
 #include <cassert>  // assert
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "../core/time.hpp"
 #include "../detail/max.hpp"
 #include "haptic_effect.hpp"

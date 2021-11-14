@@ -20,10 +20,8 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/not_null.hpp"
-#include "../core/str.hpp"
-#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../math/area.hpp"
 #include "unicode_string.hpp"

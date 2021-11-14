@@ -16,8 +16,8 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
 #include "../core/result.hpp"
 #include "../detail/address_of.hpp"
 #include "color.hpp"

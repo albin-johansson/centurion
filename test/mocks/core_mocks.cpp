@@ -2,7 +2,7 @@
 
 #include <array>  // array
 
-#include "core/integers.hpp"
+#include "core/common.hpp"
 
 // clang-format off
 extern "C" {

@@ -11,11 +11,9 @@
 #include <string>       // string
 #include <string_view>  // string_view
 
+#include "../../core/common.hpp"
 #include "../../core/exception.hpp"
-#include "../../core/not_null.hpp"
 #include "../../core/result.hpp"
-#include "../../core/str.hpp"
-#include "../../core/to_underlying.hpp"
 #include "../../math/area.hpp"
 #include "../texture.hpp"
 #include "../window.hpp"

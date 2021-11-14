@@ -22,8 +22,8 @@
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../compiler/compiler.hpp"
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
 #include "../detail/clamp.hpp"
 #include "../detail/from_string.hpp"
 #include "../detail/lerp.hpp"

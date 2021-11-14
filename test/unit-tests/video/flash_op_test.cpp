@@ -4,7 +4,7 @@
 
 #include <iostream>  // cout
 
-#include "core/to_underlying.hpp"
+#include "core/common.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
 

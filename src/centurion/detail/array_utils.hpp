@@ -4,7 +4,7 @@
 #include <array>  // array, to_array
 
 #include "../compiler/features.hpp"
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-#include "core/to_underlying.hpp"
+#include "core/common.hpp"
 #include "video/colors.hpp"
 
 static_assert(std::is_final_v<cen::message_box>);

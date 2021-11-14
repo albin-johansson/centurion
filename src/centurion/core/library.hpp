@@ -66,8 +66,8 @@
 #include <cassert>   // assert
 #include <optional>  // optional
 
+#include "common.hpp"
 #include "exception.hpp"
-#include "integers.hpp"
 
 /**
  * \namespace cen

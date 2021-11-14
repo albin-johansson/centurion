@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "haptic_effect.hpp"
 
 namespace cen {

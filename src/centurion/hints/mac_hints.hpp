@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "../detail/hints_impl.hpp"
 
 namespace cen::hint::mac {

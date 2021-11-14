@@ -5,7 +5,7 @@
 
 #include <array>  // array
 
-#include "core/integers.hpp"
+#include "core/common.hpp"
 #include "core_mocks.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)

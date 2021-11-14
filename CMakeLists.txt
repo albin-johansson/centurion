@@ -68,21 +68,15 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
     src/centurion/compiler/compiler.hpp
     src/centurion/compiler/features.hpp
 
-    src/centurion/core/cast.hpp
+    src/centurion/core/common.hpp
     src/centurion/core/exception.hpp
-    src/centurion/core/integers.hpp
     src/centurion/core/is_stateless_callable.hpp
     src/centurion/core/library.hpp
     src/centurion/core/logging.hpp
-    src/centurion/core/not_null.hpp
-    src/centurion/core/owner.hpp
     src/centurion/core/result.hpp
     src/centurion/core/sdl_string.hpp
     src/centurion/core/sfinae.hpp
-    src/centurion/core/str.hpp
-    src/centurion/core/str_or_na.hpp
     src/centurion/core/time.hpp
-    src/centurion/core/to_underlying.hpp
     src/centurion/core/version.hpp
 
     src/centurion/detail/address_of.hpp

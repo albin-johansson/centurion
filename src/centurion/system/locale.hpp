@@ -6,9 +6,7 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 
-#include "../core/integers.hpp"
-#include "../core/not_null.hpp"
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "../detail/czstring_eq.hpp"
 #include "../detail/sdl_deleter.hpp"
 

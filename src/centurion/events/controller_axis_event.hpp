@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "../input/controller.hpp"
 #include "common_event.hpp"
 

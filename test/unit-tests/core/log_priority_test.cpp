@@ -2,8 +2,8 @@
 
 #include <iostream>  // clog
 
+#include "core/common.hpp"
 #include "core/logging.hpp"
-#include "core/to_underlying.hpp"
 
 TEST(LogPriority, Values)
 {

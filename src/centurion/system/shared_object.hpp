@@ -7,9 +7,8 @@
 #include <memory>   // unique_ptr
 #include <string>   // string
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/not_null.hpp"
-#include "../core/str.hpp"
 
 namespace cen {
 

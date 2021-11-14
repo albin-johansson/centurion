@@ -8,8 +8,8 @@
 #include <cassert>  // assert
 #include <memory>   // unique_ptr
 
+#include "../../core/common.hpp"
 #include "../../core/exception.hpp"
-#include "../../core/owner.hpp"
 #include "../../core/result.hpp"
 #include "../../detail/owner_handle_api.hpp"
 #include "../window.hpp"

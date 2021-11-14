@@ -16,15 +16,10 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
-#include "../core/not_null.hpp"
-#include "../core/owner.hpp"
 #include "../core/result.hpp"
-#include "../core/str.hpp"
-#include "../core/str_or_na.hpp"
 #include "../core/time.hpp"
-#include "../core/to_underlying.hpp"
 #include "../detail/address_of.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/sdl_version_at_least.hpp"

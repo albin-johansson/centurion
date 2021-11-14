@@ -7,8 +7,8 @@
 #include <utility>   // move
 #include <variant>   // variant, holds_alternative, monostate, get, get_if
 
+#include "../core/common.hpp"
 #include "../core/result.hpp"
-#include "../core/to_underlying.hpp"
 #include "audio_device_event.hpp"
 #include "common_event.hpp"
 #include "controller_axis_event.hpp"

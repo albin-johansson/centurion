@@ -20,11 +20,9 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
+#include "common.hpp"
 #include "exception.hpp"
 #include "is_stateless_callable.hpp"
-#include "not_null.hpp"
-#include "str.hpp"
-#include "to_underlying.hpp"
 #include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)

@@ -12,7 +12,7 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "../detail/max.hpp"
 #include "../math/area.hpp"
 #include "../math/point.hpp"

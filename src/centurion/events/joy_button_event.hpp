@@ -3,8 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/integers.hpp"
-#include "../core/to_underlying.hpp"
+#include "../core/common.hpp"
 #include "../input/button_state.hpp"
 #include "common_event.hpp"
 

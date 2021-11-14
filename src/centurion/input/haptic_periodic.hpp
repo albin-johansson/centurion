@@ -3,9 +3,8 @@
 
 #include <SDL.h>
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "../core/time.hpp"
-#include "../core/to_underlying.hpp"
 #include "haptic_effect.hpp"
 
 namespace cen {

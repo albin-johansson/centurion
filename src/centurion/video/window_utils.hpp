@@ -5,7 +5,7 @@
 
 #include <utility>  // pair, make_pair, move
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "../math/area.hpp"
 #include "renderer.hpp"
 #include "window.hpp"

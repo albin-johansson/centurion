@@ -11,9 +11,8 @@
 #include <optional>  // optional
 #include <vector>    // vector
 
-#include "../../core/integers.hpp"
+#include "../../core/common.hpp"
 #include "../../core/result.hpp"
-#include "../../core/str.hpp"
 #include "../window.hpp"
 
 /**

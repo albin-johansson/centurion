@@ -5,7 +5,7 @@
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

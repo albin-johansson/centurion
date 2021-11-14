@@ -6,7 +6,7 @@
 #include <chrono>  // duration
 #include <ratio>   // milli, micro, nano
 
-#include "integers.hpp"
+#include "common.hpp"
 
 namespace cen {
 

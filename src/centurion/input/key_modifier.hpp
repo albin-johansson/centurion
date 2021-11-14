@@ -7,9 +7,7 @@
 #include <sstream>  // stringstream
 #include <string>   // string
 
-#include "../core/integers.hpp"
-#include "../core/str.hpp"
-#include "../core/to_underlying.hpp"
+#include "../core/common.hpp"
 
 namespace cen {
 

@@ -7,8 +7,8 @@
 #include <SDL_vulkan.h>
 
 #include "../../compiler/features.hpp"
+#include "../../core/common.hpp"
 #include "../../core/exception.hpp"
-#include "../../core/str.hpp"
 
 namespace cen {
 

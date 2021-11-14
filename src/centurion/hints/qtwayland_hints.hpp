@@ -5,7 +5,7 @@
 
 #include <utility>  // make_pair
 
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "../detail/hints_impl.hpp"
 #include "enum_hint.hpp"
 

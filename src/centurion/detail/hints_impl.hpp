@@ -5,8 +5,7 @@
 #include <string>       // string, stoi, stoul, stof
 #include <type_traits>  // enable_if_t, is_same_v, is_convertible_v
 
-#include "../core/integers.hpp"
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "czstring_compare.hpp"
 #include "czstring_eq.hpp"
 #include "from_string.hpp"

@@ -5,7 +5,7 @@
 
 #include <optional>  // optional
 
-#include "../core/integers.hpp"
+#include "../core/common.hpp"
 #include "button_state.hpp"
 #include "touch_device_type.hpp"
 

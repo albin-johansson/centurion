@@ -3,8 +3,7 @@
 
 #include <SDL.h>
 
-#include "../core/integers.hpp"
-#include "../core/to_underlying.hpp"
+#include "../core/common.hpp"
 #include "../input/mouse_button.hpp"
 #include "common_event.hpp"
 

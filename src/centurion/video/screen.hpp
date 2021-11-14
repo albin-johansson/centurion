@@ -7,8 +7,8 @@
 #include <ostream>      // ostream
 #include <string_view>  // string_view
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/str.hpp"
 #include "../math/area.hpp"
 #include "../math/rect.hpp"
 #include "pixel_format.hpp"

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "core/common.hpp"
 #include "core/logging.hpp"
-#include "core/to_underlying.hpp"
 
 TEST(Log, SetPriorityAllCategories)
 {

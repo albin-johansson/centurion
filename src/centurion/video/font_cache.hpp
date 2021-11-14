@@ -10,8 +10,7 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward
 
-#include "../core/not_null.hpp"
-#include "../core/str.hpp"
+#include "../core/common.hpp"
 #include "font.hpp"
 #include "surface.hpp"
 #include "texture.hpp"

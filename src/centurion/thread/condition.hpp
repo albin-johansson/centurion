@@ -5,8 +5,8 @@
 
 #include <memory>  // unique_ptr
 
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/integers.hpp"
 #include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "lock_status.hpp"

@@ -853,11 +853,9 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \return a color obtained by blending the two supplied colors.
  *
- * \todo Default the bias to 0.5 when the `double` overload has been removed.
- *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias) -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias = 0.5f) -> color
 {
   assert(bias >= 0);
   assert(bias <= 1.0f);
@@ -868,15 +866,6 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
   const auto alpha = detail::lerp(a.alpha_norm(), b.alpha_norm(), bias);
 
   return color::from_norm(red, green, blue, alpha);
-}
-
-/// \copydoc blend()
-/// \deprecated Since 6.2.0, use the overload using a `float` bias parameter instead.
-[[nodiscard, deprecated]] inline auto blend(const color& a,
-                                            const color& b,
-                                            const double bias = 0.5) -> color
-{
-  return blend(a, b, static_cast<float>(bias));
 }
 
 /// \name Color comparison operators

@@ -2,12 +2,12 @@
 
 #include <gtest/gtest.h>
 
-TEST(RAM, AmountMB)
+TEST(RAM, MemoryMB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM(), cen::ram::amount_mb());
+  ASSERT_EQ(SDL_GetSystemRAM(), cen::memory_mb());
 }
 
-TEST(RAM, AmountGB)
+TEST(RAM, MemoryGB)
 {
-  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram::amount_gb());
+  ASSERT_EQ(SDL_GetSystemRAM() / 1'000, cen::memory_gb());
 }

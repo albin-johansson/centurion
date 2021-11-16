@@ -2,21 +2,21 @@
 
 #include <gtest/gtest.h>
 
-TEST(Clipboard, HasText)
+TEST(Clipboard, HasClipboardText)
 {
-  ASSERT_TRUE(cen::clipboard::set_text(""));
-  ASSERT_FALSE(cen::clipboard::has_text());
+  ASSERT_TRUE(cen::set_clipboard_text(""));
+  ASSERT_FALSE(cen::has_clipboard_text());
 
-  ASSERT_TRUE(cen::clipboard::set_text("foobar"));
-  ASSERT_TRUE(cen::clipboard::has_text());
+  ASSERT_TRUE(cen::set_clipboard_text("foobar"));
+  ASSERT_TRUE(cen::has_clipboard_text());
 }
 
-TEST(Clipboard, SetText)
+TEST(Clipboard, SetClipboardText)
 {
-  ASSERT_TRUE(cen::clipboard::set_text("foo"));
-  ASSERT_EQ(cen::clipboard::get_text(), "foo");
+  ASSERT_TRUE(cen::set_clipboard_text("foo"));
+  ASSERT_EQ(cen::get_clipboard_text(), "foo");
 
   using namespace std::string_literals;
-  ASSERT_TRUE(cen::clipboard::set_text("bar"s));
-  ASSERT_EQ(cen::clipboard::get_text(), "bar");
+  ASSERT_TRUE(cen::set_clipboard_text("bar"s));
+  ASSERT_EQ(cen::get_clipboard_text(), "bar");
 }

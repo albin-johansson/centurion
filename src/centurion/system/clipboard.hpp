@@ -10,16 +10,7 @@
 #include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 
-/**
- * \namespace cen::clipboard
- *
- * \brief Provides functions related to managing the clipboard.
- *
- * \ingroup system
- *
- * \since 5.0.0
- */
-namespace cen::clipboard {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -28,28 +19,27 @@ namespace cen::clipboard {
 /// \{
 
 /**
- * \brief Indicates whether or not there is a clipboard exists and that it contains
- * non-empty text.
+ * \brief Indicates whether or not the clipboard exists and that it contains non-empty text.
  *
- * \return `true` if there is a clipboard that contains non-empty text; `false` otherwise.
+ * \return `true` if there is clipboard text; `false` otherwise.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto has_text() noexcept -> bool
+[[nodiscard]] inline auto has_clipboard_text() noexcept -> bool
 {
   return SDL_HasClipboardText();
 }
 
 /**
- * \brief Returns the current text in the clipboard.
+ * \brief Returns the current clipboard text.
  *
- * \note If the clipboard cannot be obtained, this function returns the empty string.
+ * \details If the clipboard cannot be obtained, this function returns the empty string.
  *
- * \return the current clipboard text.
+ * \return the clipboard text.
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto get_text() -> std::string
+[[nodiscard]] inline auto get_clipboard_text() -> std::string
 {
   const sdl_string text{SDL_GetClipboardText()};
   return text.copy();
@@ -62,11 +52,11 @@ namespace cen::clipboard {
  *
  * \param text the text that will be stored in the clipboard.
  *
- * \return `true` if the clipboard text was successfully set; `false` otherwise.
+ * \return `success` if the clipboard text was successfully set; `failure` otherwise.
  *
  * \since 5.0.0
  */
-inline auto set_text(const not_null<str> text) noexcept -> bool
+inline auto set_clipboard_text(const not_null<str> text) noexcept -> result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
@@ -81,15 +71,15 @@ inline auto set_text(const not_null<str> text) noexcept -> bool
  *
  * \since 5.3.0
  */
-inline auto set_text(const std::string& text) noexcept -> result
+inline auto set_clipboard_text(const std::string& text) noexcept -> result
 {
-  return set_text(text.c_str());
+  return set_clipboard_text(text.c_str());
 }
 
 /// \} End of clipboard functions
 
 /// \} End of group system
 
-}  // namespace cen::clipboard
+}  // namespace cen
 
 #endif  // CENTURION_CLIPBOARD_HEADER

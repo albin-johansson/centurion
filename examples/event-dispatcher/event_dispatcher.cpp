@@ -10,7 +10,7 @@ using event_dispatcher = cen::event_dispatcher<cen::quit_event,
 
 void on_mouse_button_event(const cen::mouse_button_event& event)
 {
-  cen::log::info("mouse_button_event");
+  cen::log_info("mouse_button_event");
 }
 
 class Game final
@@ -24,7 +24,7 @@ class Game final
 
     // Lambda handler
     m_dispatcher.bind<cen::keyboard_event>().to(
-        [](const cen::keyboard_event& event) { cen::log::info("keyboard_event"); });
+        [](const cen::keyboard_event& event) { cen::log_info("keyboard_event"); });
 
     // Free function handler
     m_dispatcher.bind<cen::mouse_button_event>().to<&on_mouse_button_event>();
@@ -53,14 +53,14 @@ class Game final
   // Invoked for each quit event
   void on_quit_event(const cen::quit_event& event)
   {
-    cen::log::info("quit_event");
+    cen::log_info("quit_event");
     m_running = false;
   }
 
   // Invoked for each window event
   void on_window_event(const cen::window_event& event)
   {
-    cen::log::info("window_event");
+    cen::log_info("window_event");
   }
 };
 

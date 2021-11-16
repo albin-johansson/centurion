@@ -59,9 +59,9 @@ set(SOURCE_FILES
 
 if (CENTURION_MOCK_FRIENDLY_MODE)
   list(APPEND SOURCE_FILES
-      audio/music_test.cpp
-      audio/sound_effect_test.cpp
-      )
+       audio/music_test.cpp
+       audio/sound_effect_test.cpp
+       )
 endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
@@ -75,27 +75,27 @@ add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
 
 if (MSVC)
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
-      /wd4834  # "discarding return value of function with 'nodiscard' attribute"
-      /wd4702  # "unreachable code"
-      )
+                         /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+                         /wd4702  # "unreachable code"
+                         )
 endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
-    PRIVATE
-    ${CEN_SOURCE_DIR}  # TODO remove and fix includes
-    ${PROJECT_SOURCE_DIR}
+                           PRIVATE
+                           ${CEN_SOURCE_DIR}  # TODO remove and fix includes
+                           ${PROJECT_SOURCE_DIR}
 
-    SYSTEM PRIVATE
-    ${gtest_SOURCE_DIR}/include
-    ${gtest_SOURCE_DIR}
-    ${gmock_SOURCE_DIR}/include
-    ${gmock_SOURCE_DIR}
-    )
+                           SYSTEM PRIVATE
+                           ${gtest_SOURCE_DIR}/include
+                           ${gtest_SOURCE_DIR}
+                           ${gmock_SOURCE_DIR}/include
+                           ${gmock_SOURCE_DIR}
+                           )
 
 target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
-    ${CENTURION_LIB_TARGET}
-    gtest
-    libFFF
-    )
+                      ${CENTURION_LIB_TARGET}
+                      gtest
+                      libFFF
+                      )
 
 add_test(NAME ${CENTURION_MOCK_TARGET} COMMAND ${CENTURION_MOCK_TARGET})

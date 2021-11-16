@@ -167,37 +167,42 @@ set(SOURCE_FILES
 
 if (CEN_AUDIO)
   list(APPEND SOURCE_FILES
-      audio/fade_status_test.cpp
-      audio/music_test.cpp
-      audio/music_type_test.cpp
-      audio/sound_effect_test.cpp)
+       audio/fade_status_test.cpp
+       audio/music_test.cpp
+       audio/music_type_test.cpp
+       audio/sound_effect_test.cpp)
 endif ()
 
 add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})
 add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}
-    ${CEN_SOURCE_DIR}
+                           PRIVATE
+                           ${PROJECT_SOURCE_DIR}
+                           ${CEN_SOURCE_DIR}
 
-    SYSTEM PRIVATE
-    ${gtest_SOURCE_DIR}/include
-    ${gtest_SOURCE_DIR}
-    ${gmock_SOURCE_DIR}/include
-    ${gmock_SOURCE_DIR}
-    ${CEN_LIBRARY_DIR}/cereal
-    )
+                           SYSTEM PRIVATE
+                           ${gtest_SOURCE_DIR}/include
+                           ${gtest_SOURCE_DIR}
+                           ${gmock_SOURCE_DIR}/include
+                           ${gmock_SOURCE_DIR}
+                           ${CEN_LIBRARY_DIR}/cereal
+                           )
 
 target_link_libraries(${CENTURION_TEST_TARGET} PRIVATE
-    ${CENTURION_LIB_TARGET}
-    gtest
-    )
+                      ${CENTURION_LIB_TARGET}
+                      gtest
+                      )
 
-if (MSVC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-      /wd4834  # "discarding return value of function with 'nodiscard' attribute"
-      )
+                         /wd4834  # "discarding return value of function with 'nodiscard' attribute"
+                         )
+
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+                         -Wno-unused-result
+                         )
 endif ()
 
 if (CEN_AUDIO)
@@ -205,26 +210,26 @@ if (CEN_AUDIO)
 endif ()
 
 target_precompile_headers(${CENTURION_TEST_TARGET} PRIVATE
-    <SDL.h>
-    <array>
-    <algorithm>
-    <vector>
-    <memory>
-    <string>
-    <string_view>
-    <sstream>
-    <optional>
-    <ostream>
-    <iostream>
-    <utility>
-    <type_traits>
-    )
+                          <SDL.h>
+                          <array>
+                          <algorithm>
+                          <vector>
+                          <memory>
+                          <string>
+                          <string_view>
+                          <sstream>
+                          <optional>
+                          <ostream>
+                          <iostream>
+                          <utility>
+                          <type_traits>
+                          )
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 copy_directory_post_build(${CENTURION_TEST_TARGET}
-    ${CEN_RESOURCES_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/resources)
+                          ${CEN_RESOURCES_DIR}
+                          ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
   copy_directory_post_build(${CENTURION_TEST_TARGET} ${CEN_BINARIES_DIR} ${CMAKE_CURRENT_BINARY_DIR})

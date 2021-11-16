@@ -5,16 +5,7 @@
 
 #include "../core/time.hpp"
 
-/**
- * \namespace cen::counter
- *
- * \brief Provides timing utilities.
- * 
- * \todo Centurion 7: remove the `cen::counter` namespace.
- *
- * \since 5.0.0
- */
-namespace cen::counter {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -97,6 +88,6 @@ template <typename T>
 
 /// \} End of group system
 
-}  // namespace cen::counter
+}  // namespace cen
 
 #endif  // CENTURION_TIMER_HEADER

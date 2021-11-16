@@ -4,23 +4,23 @@
 
 TEST(Counter, Frequency)
 {
-  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::counter::frequency());
+  ASSERT_EQ(SDL_GetPerformanceFrequency(), cen::frequency());
 }
 
 TEST(Counter, Now)
 {
-  ASSERT_NO_THROW(cen::counter::now());
+  ASSERT_NO_THROW(cen::now());
 }
 
 TEST(Counter, NowInSeconds)
 {
-  ASSERT_NO_THROW(cen::counter::now_in_seconds<double>());
+  ASSERT_NO_THROW(cen::now_in_seconds<double>());
 }
 
 TEST(Counter, Ticks)
 {
   using namespace cen::literals::legacy;
-  ASSERT_GT(cen::counter::ticks(), 0_ms);
+  ASSERT_GT(cen::ticks(), 0_ms);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 18)
@@ -28,7 +28,7 @@ TEST(Counter, Ticks)
 TEST(Counter, Ticks64)
 {
   using namespace cen::literals;
-  ASSERT_GT(cen::counter::ticks64(), 0_ms);
+  ASSERT_GT(cen::ticks64(), 0_ms);
 }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 18)

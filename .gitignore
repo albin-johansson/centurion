@@ -38,13 +38,22 @@
 *.user
 *.filters
 
-# Custom stuff
+# macOS Desktop Services Store files
+.DS_Store
+
+# Affinity Designer files
 *.afdesign
+
+# JetBrains IDE files
 .idea
+
+# Visual Studio and VSCode files
 .vs
 .vscode
-.clangd
+
+# Build folders
 build
-bin
 cmake-build-*
+
+# Doxygen output folder
 doxygen-out

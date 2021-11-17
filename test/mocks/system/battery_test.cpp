@@ -53,91 +53,90 @@ TEST_F(BatteryTest, SecondsLeft)
   ASSERT_EQ(seconds, cen::battery::seconds_left());
 }
 
-TEST_F(BatteryTest, MinutesLeft)
+TEST_F(BatteryTest, BatteryMinutes)
 {
   signature_t functions[] = {power_delegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds),
-            cen::battery::minutes_left());
+  ASSERT_EQ(std::chrono::duration_cast<cen::minutes<int>>(seconds), cen::battery_minutes());
 }
 
-TEST_F(BatteryTest, Percentage)
+TEST_F(BatteryTest, BatteryPercentage)
 {
   signature_t functions[] = {power_delegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(percentage, cen::battery::percentage());
+  ASSERT_EQ(percentage, cen::battery_percentage());
 }
 
-TEST_F(BatteryTest, Exists)
+TEST_F(BatteryTest, BatteryExists)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::battery::exists());
+  ASSERT_FALSE(cen::battery_exists());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::battery::exists());
+  ASSERT_FALSE(cen::battery_exists());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_TRUE(cen::battery::exists());
+  ASSERT_TRUE(cen::battery_exists());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_TRUE(cen::battery::exists());
+  ASSERT_TRUE(cen::battery_exists());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_TRUE(cen::battery::exists());
+  ASSERT_TRUE(cen::battery_exists());
 }
 
-TEST_F(BatteryTest, IsCharging)
+TEST_F(BatteryTest, BatteryCharging)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_TRUE(cen::battery::is_charging());
+  ASSERT_TRUE(cen::battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::battery::is_charging());
+  ASSERT_FALSE(cen::battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::battery::is_charging());
+  ASSERT_FALSE(cen::battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_FALSE(cen::battery::is_charging());
+  ASSERT_FALSE(cen::battery_charging());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_FALSE(cen::battery::is_charging());
+  ASSERT_FALSE(cen::battery_charging());
 }
 
-TEST_F(BatteryTest, IsCharged)
+TEST_F(BatteryTest, BatteryCharged)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_TRUE(cen::battery::is_charged());
+  ASSERT_TRUE(cen::battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::battery::is_charged());
+  ASSERT_FALSE(cen::battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::battery::is_charged());
+  ASSERT_FALSE(cen::battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_FALSE(cen::battery::is_charged());
+  ASSERT_FALSE(cen::battery_charged());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_FALSE(cen::battery::is_charged());
+  ASSERT_FALSE(cen::battery_charged());
 }
 
-TEST_F(BatteryTest, IsAvailable)
+TEST_F(BatteryTest, BatteryAvailable)
 {
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_ON_BATTERY;
-  ASSERT_TRUE(cen::battery::is_available());
+  ASSERT_TRUE(cen::battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGED;
-  ASSERT_TRUE(cen::battery::is_available());
+  ASSERT_TRUE(cen::battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_CHARGING;
-  ASSERT_TRUE(cen::battery::is_available());
+  ASSERT_TRUE(cen::battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_UNKNOWN;
-  ASSERT_FALSE(cen::battery::is_available());
+  ASSERT_FALSE(cen::battery_available());
 
   SDL_GetPowerInfo_fake.return_val = SDL_POWERSTATE_NO_BATTERY;
-  ASSERT_FALSE(cen::battery::is_available());
+  ASSERT_FALSE(cen::battery_available());
 }

@@ -7,19 +7,9 @@
 #include <optional>  // optional
 
 #include "../core/time.hpp"
-#include "../detail/any_eq.hpp"
 #include "power_state.hpp"
 
-/**
- * \namespace cen::battery
- *
- * \brief Contains utilities related to the battery of the system.
- *
- * \ingroup system
- *
- * \since 5.0.0
- */
-namespace cen::battery {
+namespace cen {
 
 /// \addtogroup system
 /// \{
@@ -35,7 +25,7 @@ namespace cen::battery {
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto seconds_left() -> std::optional<seconds<int>>
+[[nodiscard]] inline auto battery_seconds() -> std::optional<seconds<int>>
 {
   int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -55,7 +45,7 @@ namespace cen::battery {
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto minutes_left() -> std::optional<minutes<int>>
+[[nodiscard]] inline auto battery_minutes() -> std::optional<minutes<int>>
 {
   if (const auto secondsLeft = seconds_left()) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
@@ -73,9 +63,9 @@ namespace cen::battery {
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto percentage() noexcept -> std::optional<int>
+[[nodiscard]] inline auto battery_percentage() noexcept -> std::optional<int>
 {
-  int percentageLeft{-1};
+  int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
   if (percentageLeft != -1) {
     return percentageLeft;
@@ -92,7 +82,7 @@ namespace cen::battery {
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline auto state() noexcept -> power_state
+[[nodiscard]] inline auto query_battery() noexcept -> power_state
 {
   return static_cast<power_state>(SDL_GetPowerInfo(nullptr, nullptr));
 }
@@ -107,12 +97,11 @@ namespace cen::battery {
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline auto exists() noexcept -> bool
+[[nodiscard]] inline auto battery_exists() noexcept -> bool
 {
-  return detail::any_eq(state(),
-                        power_state::on_battery,
-                        power_state::charged,
-                        power_state::charging);
+  const auto state = query_battery();
+  return state == power_state::on_battery || state == power_state::charged ||
+         state == power_state::charging;
 }
 
 /**
@@ -125,9 +114,9 @@ namespace cen::battery {
  *
  * \since 5.1.0
  */
-[[nodiscard]] inline auto is_charging() noexcept -> bool
+[[nodiscard]] inline auto battery_charging() noexcept -> bool
 {
-  return state() == power_state::charging;
+  return query_battery() == power_state::charging;
 }
 
 /**
@@ -140,9 +129,9 @@ namespace cen::battery {
  *
  * \since 5.1.0
  */
-[[nodiscard]] inline auto is_charged() noexcept -> bool
+[[nodiscard]] inline auto battery_charged() noexcept -> bool
 {
-  return state() == power_state::charged;
+  return query_battery() == power_state::charged;
 }
 
 /**
@@ -155,15 +144,16 @@ namespace cen::battery {
  *
  * \since 5.1.0
  */
-[[nodiscard]] inline auto is_available() noexcept -> bool
+[[nodiscard]] inline auto battery_available() noexcept -> bool
 {
-  return !detail::any_eq(state(), power_state::no_battery, power_state::unknown);
+  const auto state = query_battery();
+  return state != power_state::no_battery && state != power_state::unknown;
 }
 
 /// \} End of battery functions
 
 /// \} End of group system
 
-}  // namespace cen::battery
+}  // namespace cen
 
 #endif  // CENTURION_BATTERY_HEADER

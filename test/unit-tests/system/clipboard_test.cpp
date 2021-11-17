@@ -1,6 +1,6 @@
-#include "system/clipboard.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system/system.hpp"
 
 TEST(Clipboard, HasClipboardText)
 {

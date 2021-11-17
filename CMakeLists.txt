@@ -193,7 +193,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
 
                src/centurion/system/battery.hpp
                src/centurion/system/byte_order.hpp
-               src/centurion/system/clipboard.hpp
                src/centurion/system/cpu.hpp
                src/centurion/system/locale.hpp
                src/centurion/system/open_url.hpp

@@ -1,5 +1,5 @@
-#ifndef CENTURION_RAM_HEADER
-#define CENTURION_RAM_HEADER
+#ifndef CENTURION_SYSTEM_SYSTEM_HPP_
+#define CENTURION_SYSTEM_SYSTEM_HPP_
 
 #include <SDL.h>
 
@@ -41,4 +41,4 @@ namespace cen {
 
 }  // namespace cen
 
-#endif  // CENTURION_RAM_HEADER
+#endif  // CENTURION_SYSTEM_SYSTEM_HPP_

@@ -200,7 +200,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/system/open_url.hpp
                src/centurion/system/platform.hpp
                src/centurion/system/power_state.hpp
-               src/centurion/system/ram.hpp
                src/centurion/system/shared_object.hpp
 
                src/centurion/thread/condition.hpp

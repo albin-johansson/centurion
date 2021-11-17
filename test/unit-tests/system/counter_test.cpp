@@ -1,6 +1,6 @@
-#include "system/counter.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system/system.hpp"
 
 TEST(Counter, Frequency)
 {

@@ -191,13 +191,11 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/math/rect.hpp
                src/centurion/math/vector3.hpp
 
-               src/centurion/system/battery.hpp
                src/centurion/system/byte_order.hpp
                src/centurion/system/cpu.hpp
                src/centurion/system/locale.hpp
                src/centurion/system/open_url.hpp
                src/centurion/system/platform.hpp
-               src/centurion/system/power_state.hpp
                src/centurion/system/shared_object.hpp
 
                src/centurion/thread/condition.hpp

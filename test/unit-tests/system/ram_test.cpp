@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "system/memory.hpp"
+#include "system/system.hpp"
 
 TEST(RAM, MemoryMB)
 {

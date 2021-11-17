@@ -1,11 +1,10 @@
-#include "system/battery.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
 #include "core_mocks.hpp"
+#include "system/system.hpp"
 
 extern "C"
 {
@@ -50,7 +49,7 @@ TEST_F(BatteryTest, SecondsLeft)
   signature_t functions[] = {power_delegate};
   SET_CUSTOM_FAKE_SEQ(SDL_GetPowerInfo, functions, 1);
 
-  ASSERT_EQ(seconds, cen::battery::seconds_left());
+  ASSERT_EQ(seconds, cen::battery_seconds());
 }
 
 TEST_F(BatteryTest, BatteryMinutes)

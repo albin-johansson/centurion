@@ -1,6 +1,6 @@
-#include "system/battery.hpp"
-
 #include <gtest/gtest.h>
+
+#include "system/system.hpp"
 
 TEST(Battery, BatteryPercentage)
 {
@@ -19,21 +19,21 @@ TEST(Battery, BatteryPercentage)
 
 TEST(Battery, BatterySeconds)
 {
-  ASSERT_NO_THROW(cen::battery::seconds_left());
+  ASSERT_NO_THROW(cen::battery_seconds());
 
   int actual = -1;
   SDL_GetPowerInfo(&actual, nullptr);
 
-  if (const auto secs = cen::battery::seconds_left()) {
+  if (const auto secs = cen::battery_seconds()) {
     ASSERT_EQ(cen::seconds<int>{actual}, secs.value());
   }
 }
 
 TEST(Battery, BatteryMinutes)
 {
-  ASSERT_NO_THROW(cen::battery::minutes_left());
+  ASSERT_NO_THROW(cen::battery_minutes());
 
-  if (const auto minutes = cen::battery::minutes_left()) {
+  if (const auto minutes = cen::battery_minutes()) {
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 

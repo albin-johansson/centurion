@@ -20,7 +20,6 @@
 #include "../core/exception.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
-#include "sensor_type.hpp"
 
 namespace cen {
 
@@ -28,38 +27,36 @@ namespace cen {
 /// \{
 
 /**
- * \typedef sensor_id
+ * \brief Provides values that represent different sensor types.
  *
- * \brief Used for unique sensor instance identifiers.
+ * \see SDL_SensorType
  *
  * \since 5.2.0
  */
+enum class sensor_type
+{
+  invalid = SDL_SENSOR_INVALID,      ///< Invalid sensor
+  unknown = SDL_SENSOR_UNKNOWN,      ///< Unknown sensor
+  accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer
+  gyroscope = SDL_SENSOR_GYRO        ///< Gyroscope
+};
+
+/// \brief Used for unique sensor instance identifiers.
+/// \since 5.2.0
 using sensor_id = SDL_SensorID;
 
 template <typename T>
 class basic_sensor;
 
-/**
- * \typedef sensor
- *
- * \brief Represents an owning sensor device.
- *
- * \since 5.2.0
- */
+/// \brief Represents an owning sensor device.
+/// \since 5.2.0
 using sensor = basic_sensor<detail::owning_type>;
 
-/**
- * \typedef sensor_handle
- *
- * \brief Represents a non-owning sensor device.
- *
- * \since 5.2.0
- */
+/// \brief Represents a non-owning sensor device.
+/// \since 5.2.0
 using sensor_handle = basic_sensor<detail::handle_type>;
 
 /**
- * \class basic_sensor
- *
  * \brief Represents a sensor device.
  *
  * \ownerhandle `sensor`/`sensor_handle`
@@ -381,6 +378,40 @@ class basic_sensor final
 /// \{
 
 /**
+ * \brief Returns a textual version of the supplied sensor type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(sensor_type::gyroscope) == "gyroscope"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const sensor_type type) -> std::string_view
+{
+  switch (type) {
+    case sensor_type::invalid:
+      return "invalid";
+
+    case sensor_type::unknown:
+      return "unknown";
+
+    case sensor_type::accelerometer:
+      return "accelerometer";
+
+    case sensor_type::gyroscope:
+      return "gyroscope";
+
+    default:
+      throw cen_error{"Did not recognize sensor type!"};
+  }
+}
+
+/**
  * \brief Returns a textual representation of a sensor instance.
  *
  * \param sensor the sensor that will be converted.
@@ -407,6 +438,23 @@ template <typename T>
 
 /// \name Streaming
 /// \{
+
+/**
+ * \brief Prints a textual representation of a sensor type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(sensor_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const sensor_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
 
 /**
  * \brief Prints a textual representation of a sensor instance using a stream.

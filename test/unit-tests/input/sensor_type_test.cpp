@@ -1,23 +1,16 @@
-#include "input/sensor_type.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
+#include "core/common.hpp"
+#include "input/sensor.hpp"
+
 TEST(SensorType, Values)
 {
-  ASSERT_EQ(SDL_SENSOR_INVALID, cen::sensor_type::invalid);
-  ASSERT_EQ(SDL_SENSOR_UNKNOWN, cen::sensor_type::unknown);
-  ASSERT_EQ(SDL_SENSOR_ACCEL, cen::sensor_type::accelerometer);
-  ASSERT_EQ(SDL_SENSOR_GYRO, cen::sensor_type::gyroscope);
-
-  ASSERT_EQ(cen::sensor_type::invalid, SDL_SENSOR_INVALID);
-  ASSERT_EQ(cen::sensor_type::unknown, SDL_SENSOR_UNKNOWN);
-  ASSERT_EQ(cen::sensor_type::accelerometer, SDL_SENSOR_ACCEL);
-  ASSERT_EQ(cen::sensor_type::gyroscope, SDL_SENSOR_GYRO);
-
-  ASSERT_NE(SDL_SENSOR_INVALID, cen::sensor_type::accelerometer);
-  ASSERT_NE(cen::sensor_type::gyroscope, SDL_SENSOR_ACCEL);
+  ASSERT_EQ(cen::to_underlying(cen::sensor_type::invalid), SDL_SENSOR_INVALID);
+  ASSERT_EQ(cen::to_underlying(cen::sensor_type::unknown), SDL_SENSOR_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(cen::sensor_type::accelerometer), SDL_SENSOR_ACCEL);
+  ASSERT_EQ(cen::to_underlying(cen::sensor_type::gyroscope), SDL_SENSOR_GYRO);
 }
 
 TEST(SensorType, ToString)

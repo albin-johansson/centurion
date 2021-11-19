@@ -24,7 +24,6 @@
 #include "input/scan_code.hpp"
 #include "input/scancodes.hpp"
 #include "input/sensor.hpp"
-#include "input/sensor_type.hpp"
 #include "input/touch.hpp"
 #include "input/touch_device_type.hpp"
 

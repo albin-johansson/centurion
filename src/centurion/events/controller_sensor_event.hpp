@@ -7,7 +7,7 @@
 
 #include "../core/common.hpp"
 #include "../detail/array_utils.hpp"
-#include "../input/sensor_type.hpp"
+#include "../input/sensor.hpp"
 #include "common_event.hpp"
 
 namespace cen {

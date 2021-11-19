@@ -15,9 +15,9 @@ if ("${CMAKE_CXX_STANDARD}" STREQUAL "")
   set(CMAKE_CXX_STANDARD 17)
 endif ()
 
-message("[centurion]: using C++${CMAKE_CXX_STANDARD}")
-message("[centurion]: using C++ compiler ${CMAKE_CXX_COMPILER}")
-message("[centurion]: compiler identifier is ${CMAKE_CXX_COMPILER_ID}")
+message("[centurion]: using C++ standard... ${CMAKE_CXX_STANDARD}")
+message("[centurion]: compiler is... ${CMAKE_CXX_COMPILER}")
+message("[centurion]: compiler identifier is... ${CMAKE_CXX_COMPILER_ID}")
 
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)

@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

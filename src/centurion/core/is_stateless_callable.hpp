@@ -1,7 +1,7 @@
 #ifndef CENTURION_IS_STATELESS_CALLABLE_HEADER
 #define CENTURION_IS_STATELESS_CALLABLE_HEADER
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 

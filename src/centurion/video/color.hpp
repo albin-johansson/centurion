@@ -13,7 +13,7 @@
 #include <string>       // string, to_string
 #include <string_view>  // string_view
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

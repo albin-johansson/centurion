@@ -35,8 +35,6 @@
 #include "centurion/audio/music_type.hpp"
 #include "centurion/audio/sound_effect.hpp"
 #include "centurion/audio/sound_fonts.hpp"
-#include "centurion/compiler/compiler.hpp"
-#include "centurion/compiler/features.hpp"
 #include "centurion/core/common.hpp"
 #include "centurion/core/exception.hpp"
 #include "centurion/core/is_stateless_callable.hpp"

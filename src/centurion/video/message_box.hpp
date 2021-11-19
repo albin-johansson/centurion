@@ -12,7 +12,7 @@
 #include <utility>      // move
 #include <vector>       // vector
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
 #include "../detail/stack_resource.hpp"

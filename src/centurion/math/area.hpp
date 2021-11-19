@@ -5,7 +5,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // is_integral_v, is_floating_point_v, is_same_v
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

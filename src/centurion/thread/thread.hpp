@@ -8,7 +8,7 @@
 #include <string>       // string, to_string
 #include <type_traits>  // invoke_result_t, declval
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 

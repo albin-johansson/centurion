@@ -1,7 +1,7 @@
 #ifndef CENTURION_FEATURES_HEADER
 #define CENTURION_FEATURES_HEADER
 
-/// \addtogroup compiler
+/// \addtogroup core
 /// \{
 
 // Do we have general C++20 support?
@@ -74,6 +74,6 @@
 
 #endif  // __has_include
 
-/// \} End of group compiler
+/// \} End of group core
 
 #endif  // CENTURION_FEATURES_HEADER

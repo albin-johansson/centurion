@@ -7,7 +7,7 @@
 
 #include <cassert>  // assert
 
-#include "../../compiler/features.hpp"
+#include "../../core/features.hpp"
 #include "../../core/common.hpp"
 #include "../../core/exception.hpp"
 

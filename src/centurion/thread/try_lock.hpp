@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 #include "lock_status.hpp"
 #include "mutex.hpp"
 

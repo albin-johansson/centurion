@@ -7,7 +7,7 @@
 #include <ostream>  // ostream
 #include <string>   // string
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

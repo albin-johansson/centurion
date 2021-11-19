@@ -3,7 +3,7 @@
 
 #include <array>  // array, to_array
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 #include "../core/common.hpp"
 
 /// \cond FALSE

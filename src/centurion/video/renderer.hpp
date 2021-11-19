@@ -13,7 +13,7 @@
 #include <unordered_map>  // unordered_map
 #include <utility>        // move, forward, pair
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 

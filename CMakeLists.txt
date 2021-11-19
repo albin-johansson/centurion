@@ -67,11 +67,10 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio/sound_effect.hpp
                src/centurion/audio/sound_fonts.hpp
 
-               src/centurion/compiler/compiler.hpp
-               src/centurion/compiler/features.hpp
-
                src/centurion/core/common.hpp
+               src/centurion/core/compiler.hpp
                src/centurion/core/exception.hpp
+               src/centurion/core/features.hpp
                src/centurion/core/is_stateless_callable.hpp
                src/centurion/core/library.hpp
                src/centurion/core/logging.hpp

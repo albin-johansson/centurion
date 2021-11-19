@@ -8,10 +8,9 @@ set(SOURCE_FILES
     typed_test_macros.hpp
     test_main.cpp
 
-    compiler/compiler_test.cpp
-    compiler/features_test.cpp
-
+    core/compiler_test.cpp
     core/exception_test.cpp
+    core/features_test.cpp
     core/log_category_test.cpp
     core/log_priority_test.cpp
     core/log_test.cpp

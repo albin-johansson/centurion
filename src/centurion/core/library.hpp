@@ -34,10 +34,6 @@
 /// \defgroup system System
 /// \brief Contains various utilities related to system resources.
 
-/// \defgroup compiler Compiler
-/// \brief Provides `constexpr` utilities for querying the current compiler.
-/// \note There is no guarantee that the compiler checks are mutually exclusive.
-
 /// \defgroup math Math
 /// \brief Contains basic mathematical components, used throughout the library.
 
@@ -49,7 +45,7 @@
 
 #include <SDL.h>
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 
 #ifndef CENTURION_NO_SDL_IMAGE
 #include <SDL_image.h>

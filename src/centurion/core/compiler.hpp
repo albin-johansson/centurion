@@ -5,7 +5,7 @@
 
 namespace cen {
 
-/// \addtogroup compiler
+/// \addtogroup core
 /// \{
 
 /**
@@ -124,7 +124,7 @@ namespace cen {
 #endif  // __INTEL_COMPILER
 }
 
-/// \} End of compiler group
+/// \} End of group core
 
 }  // namespace cen
 

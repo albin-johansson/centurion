@@ -1,7 +1,7 @@
 #ifndef CENTURION_DETAIL_STACK_RESOURCE_HEADER
 #define CENTURION_DETAIL_STACK_RESOURCE_HEADER
 
-#include "../compiler/features.hpp"
+#include "../core/features.hpp"
 #include "../core/common.hpp"
 
 #if CENTURION_HAS_FEATURE_MEMORY_RESOURCE

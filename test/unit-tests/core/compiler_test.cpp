@@ -8,7 +8,7 @@ TEST(Compiler, IsDebugBuild)
   ASSERT_FALSE(cen::is_debug_build());
 #else
   ASSERT_TRUE(cen::is_debug_build());
-#endif
+#endif // NDEBUG
 }
 
 TEST(Compiler, IsReleaseBuild)
@@ -17,7 +17,7 @@ TEST(Compiler, IsReleaseBuild)
   ASSERT_TRUE(cen::is_release_build());
 #else
   ASSERT_FALSE(cen::is_release_build());
-#endif
+#endif // NDEBUG
 }
 
 TEST(Compiler, OnMSVC)
@@ -26,7 +26,7 @@ TEST(Compiler, OnMSVC)
   ASSERT_TRUE(cen::on_msvc());
 #else
   ASSERT_FALSE(cen::on_msvc());
-#endif
+#endif // _MSC_VER
 }
 
 TEST(Compiler, OnClang)
@@ -35,7 +35,7 @@ TEST(Compiler, OnClang)
   ASSERT_TRUE(cen::on_clang());
 #else
   ASSERT_FALSE(cen::on_clang());
-#endif
+#endif // __clang__
 }
 
 TEST(Compiler, OnGCC)
@@ -44,5 +44,5 @@ TEST(Compiler, OnGCC)
   ASSERT_TRUE(cen::on_gcc());
 #else
   ASSERT_FALSE(cen::on_gcc());
-#endif
+#endif // __GNUC__
 }

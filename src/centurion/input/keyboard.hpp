@@ -16,8 +16,8 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../compiler/compiler.hpp"
 #include "../core/common.hpp"
+#include "../core/compiler.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"

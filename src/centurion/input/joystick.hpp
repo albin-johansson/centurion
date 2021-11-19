@@ -3,10 +3,11 @@
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <optional>     // optional
+#include <ostream>      // ostream
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
 #include "../core/features.hpp"
 
@@ -26,13 +27,46 @@
 #include "../video/color.hpp"
 #include "button_state.hpp"
 #include "hat_state.hpp"
-#include "joystick_power.hpp"
-#include "joystick_type.hpp"
 
 namespace cen {
 
 /// \addtogroup input
 /// \{
+
+/**
+ * \brief Provides values that represent different types of "joysticks".
+ *
+ * \since 4.2.0
+ */
+enum class joystick_type
+{
+  unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
+  game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+  wheel = SDL_JOYSTICK_TYPE_WHEEL,
+  arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
+  flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+  dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
+  guitar = SDL_JOYSTICK_TYPE_GUITAR,
+  drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
+  arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
+  throttle = SDL_JOYSTICK_TYPE_THROTTLE
+};
+
+/**
+ * \brief Represents different power states of a joystick.
+ *
+ * \since 4.2.0
+ */
+enum class joystick_power
+{
+  unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+  empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+  low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+  medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+  full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+  wired = SDL_JOYSTICK_POWER_WIRED,      ///< No need to worry about power.
+  max = SDL_JOYSTICK_POWER_MAX
+};
 
 /**
  * \struct ball_axis_change
@@ -1073,6 +1107,101 @@ class basic_joystick final
 /// \{
 
 /**
+ * \brief Returns a textual version of the supplied joystick type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(joystick_type::guitar) == "guitar"`.
+ *
+ * \param type the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const joystick_type type) -> std::string_view
+{
+  switch (type) {
+    case joystick_type::unknown:
+      return "unknown";
+
+    case joystick_type::game_controller:
+      return "game_controller";
+
+    case joystick_type::wheel:
+      return "wheel";
+
+    case joystick_type::arcade_stick:
+      return "arcade_stick";
+
+    case joystick_type::flight_stick:
+      return "flight_stick";
+
+    case joystick_type::dance_pad:
+      return "dance_pad";
+
+    case joystick_type::guitar:
+      return "guitar";
+
+    case joystick_type::drum_kit:
+      return "drum_kit";
+
+    case joystick_type::arcade_pad:
+      return "arcade_pad";
+
+    case joystick_type::throttle:
+      return "throttle";
+
+    default:
+      throw cen_error{"Did not recognize joystick type!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied joystick power.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(joystick_power::medium) == "medium"`.
+ *
+ * \param power the enumerator that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const joystick_power power) -> std::string_view
+{
+  switch (power) {
+    case joystick_power::unknown:
+      return "unknown";
+
+    case joystick_power::empty:
+      return "empty";
+
+    case joystick_power::low:
+      return "low";
+
+    case joystick_power::medium:
+      return "medium";
+
+    case joystick_power::full:
+      return "full";
+
+    case joystick_power::wired:
+      return "wired";
+
+    case joystick_power::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize joystick power!"};
+  }
+}
+
+/**
  * \brief Returns a textual representation of a joystick.
  *
  * \tparam T the ownership semantics tag for the joystick.
@@ -1108,6 +1237,40 @@ template <typename T>
 
 /// \name Streaming
 /// \{
+
+/**
+ * \brief Prints a textual representation of a joystick type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the enumerator that will be printed.
+ *
+ * \see `to_string(joystick_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const joystick_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+/**
+ * \brief Prints a textual representation of a joystick power enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param power the enumerator that will be printed.
+ *
+ * \see `to_string(joystick_power)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const joystick_power power) -> std::ostream&
+{
+  return stream << to_string(power);
+}
 
 /**
  * \brief Prints a joystick using a stream.

@@ -166,8 +166,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/input/haptic_ramp.hpp
                src/centurion/input/hat_state.hpp
                src/centurion/input/joystick.hpp
-               src/centurion/input/joystick_power.hpp
-               src/centurion/input/joystick_type.hpp
                src/centurion/input/key_code.hpp
                src/centurion/input/key_modifier.hpp
                src/centurion/input/keyboard.hpp

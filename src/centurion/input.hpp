@@ -16,8 +16,6 @@
 #include "input/haptic_ramp.hpp"
 #include "input/hat_state.hpp"
 #include "input/joystick.hpp"
-#include "input/joystick_power.hpp"
-#include "input/joystick_type.hpp"
 #include "input/key_code.hpp"
 #include "input/key_modifier.hpp"
 #include "input/keyboard.hpp"

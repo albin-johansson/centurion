@@ -12,9 +12,9 @@
 #include <system_error>  // errc
 #include <type_traits>   // is_integral_v
 
-#include "../compiler/compiler.hpp"
-#include "../core/features.hpp"
 #include "../core/common.hpp"
+#include "../core/compiler.hpp"
+#include "../core/features.hpp"
 
 /// \cond FALSE
 

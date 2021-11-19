@@ -21,8 +21,8 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../compiler/compiler.hpp"
 #include "../core/common.hpp"
+#include "../core/compiler.hpp"
 #include "../core/exception.hpp"
 #include "../detail/stdlib.hpp"
 

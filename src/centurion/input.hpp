@@ -14,7 +14,6 @@
 #include "input/haptic_left_right.hpp"
 #include "input/haptic_periodic.hpp"
 #include "input/haptic_ramp.hpp"
-#include "input/hat_state.hpp"
 #include "input/joystick.hpp"
 #include "input/key_code.hpp"
 #include "input/key_modifier.hpp"

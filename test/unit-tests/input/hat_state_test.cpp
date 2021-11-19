@@ -1,10 +1,9 @@
-#include "input/hat_state.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "input/joystick.hpp"
 
 TEST(HatState, Values)
 {

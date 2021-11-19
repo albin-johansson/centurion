@@ -3,8 +3,6 @@
 
 #include "input/button_state.hpp"
 #include "input/controller.hpp"
-#include "input/controller_axis.hpp"
-#include "input/controller_type.hpp"
 #include "input/haptic.hpp"
 #include "input/haptic_condition.hpp"
 #include "input/haptic_constant.hpp"

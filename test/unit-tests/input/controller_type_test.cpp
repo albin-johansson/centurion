@@ -1,8 +1,9 @@
-#include "input/controller_type.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "core/common.hpp"
+#include "input/controller.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -10,38 +11,23 @@ TEST(ControllerType, Values)
 {
   using type = cen::controller_type;
 
-  ASSERT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
-  ASSERT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
-  ASSERT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
-  ASSERT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
-  ASSERT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
-  ASSERT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
+  ASSERT_EQ(cen::to_underlying(type::unknown), SDL_CONTROLLER_TYPE_UNKNOWN);
+  ASSERT_EQ(cen::to_underlying(type::xbox_360), SDL_CONTROLLER_TYPE_XBOX360);
+  ASSERT_EQ(cen::to_underlying(type::xbox_one), SDL_CONTROLLER_TYPE_XBOXONE);
+  ASSERT_EQ(cen::to_underlying(type::ps3), SDL_CONTROLLER_TYPE_PS3);
+  ASSERT_EQ(cen::to_underlying(type::ps4), SDL_CONTROLLER_TYPE_PS4);
+  ASSERT_EQ(cen::to_underlying(type::nintendo_switch_pro),
+            SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
-  ASSERT_EQ(type::ps5, SDL_CONTROLLER_TYPE_PS5);
-  ASSERT_EQ(type::virt, SDL_CONTROLLER_TYPE_VIRTUAL);
-
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_PS5, type::ps5);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_VIRTUAL, type::virt);
+  ASSERT_EQ(cen::to_underlying(type::ps5), SDL_CONTROLLER_TYPE_PS5);
+  ASSERT_EQ(cen::to_underlying(type::virt), SDL_CONTROLLER_TYPE_VIRTUAL);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-  ASSERT_EQ(type::amazon_luna, SDL_CONTROLLER_TYPE_AMAZON_LUNA);
-  ASSERT_EQ(type::google_stadia, SDL_CONTROLLER_TYPE_GOOGLE_STADIA);
-
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_AMAZON_LUNA, type::amazon_luna);
-  ASSERT_EQ(SDL_CONTROLLER_TYPE_GOOGLE_STADIA, type::google_stadia);
+  ASSERT_EQ(cen::to_underlying(type::amazon_luna), SDL_CONTROLLER_TYPE_AMAZON_LUNA);
+  ASSERT_EQ(cen::to_underlying(type::google_stadia), SDL_CONTROLLER_TYPE_GOOGLE_STADIA);
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
-
-  ASSERT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-  ASSERT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
 }
 
 TEST(ControllerType, ToString)

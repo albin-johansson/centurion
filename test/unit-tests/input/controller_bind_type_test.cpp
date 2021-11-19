@@ -1,23 +1,17 @@
-#include "input/controller_bind_type.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
+#include "core/common.hpp"
+#include "input/controller.hpp"
+
 TEST(ControllerBindType, Values)
 {
-  ASSERT_EQ(cen::controller_bind_type::axis, SDL_CONTROLLER_BINDTYPE_AXIS);
-  ASSERT_EQ(cen::controller_bind_type::button, SDL_CONTROLLER_BINDTYPE_BUTTON);
-  ASSERT_EQ(cen::controller_bind_type::none, SDL_CONTROLLER_BINDTYPE_NONE);
-  ASSERT_EQ(cen::controller_bind_type::hat, SDL_CONTROLLER_BINDTYPE_HAT);
-
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, cen::controller_bind_type::axis);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, cen::controller_bind_type::button);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, cen::controller_bind_type::none);
-  ASSERT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, cen::controller_bind_type::hat);
-
-  ASSERT_NE(cen::controller_bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
-  ASSERT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, cen::controller_bind_type::none);
+  ASSERT_EQ(cen::to_underlying(cen::controller_bind_type::axis), SDL_CONTROLLER_BINDTYPE_AXIS);
+  ASSERT_EQ(cen::to_underlying(cen::controller_bind_type::button),
+            SDL_CONTROLLER_BINDTYPE_BUTTON);
+  ASSERT_EQ(cen::to_underlying(cen::controller_bind_type::none), SDL_CONTROLLER_BINDTYPE_NONE);
+  ASSERT_EQ(cen::to_underlying(cen::controller_bind_type::hat), SDL_CONTROLLER_BINDTYPE_HAT);
 }
 
 TEST(ControllerBindType, ToString)

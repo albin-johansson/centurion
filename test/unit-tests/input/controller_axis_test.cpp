@@ -1,33 +1,22 @@
-#include "input/controller_axis.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "core/common.hpp"
+#include "input/controller.hpp"
 
 using axis = cen::controller_axis;
 
 TEST(ControllerAxis, Values)
 {
-  ASSERT_EQ(axis::invalid, SDL_CONTROLLER_AXIS_INVALID);
-  ASSERT_EQ(axis::left_x, SDL_CONTROLLER_AXIS_LEFTX);
-  ASSERT_EQ(axis::left_y, SDL_CONTROLLER_AXIS_LEFTY);
-  ASSERT_EQ(axis::right_x, SDL_CONTROLLER_AXIS_RIGHTX);
-  ASSERT_EQ(axis::right_y, SDL_CONTROLLER_AXIS_RIGHTY);
-  ASSERT_EQ(axis::trigger_left, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  ASSERT_EQ(axis::trigger_right, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  ASSERT_EQ(axis::max, SDL_CONTROLLER_AXIS_MAX);
-
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_INVALID, axis::invalid);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTX, axis::left_x);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_LEFTY, axis::left_y);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, axis::right_x);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, axis::right_y);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::trigger_left);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, axis::trigger_right);
-  ASSERT_EQ(SDL_CONTROLLER_AXIS_MAX, axis::max);
-
-  ASSERT_NE(axis::left_x, SDL_CONTROLLER_AXIS_MAX);
-  ASSERT_NE(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::right_x);
+  ASSERT_EQ(cen::to_underlying(axis::invalid), SDL_CONTROLLER_AXIS_INVALID);
+  ASSERT_EQ(cen::to_underlying(axis::left_x), SDL_CONTROLLER_AXIS_LEFTX);
+  ASSERT_EQ(cen::to_underlying(axis::left_y), SDL_CONTROLLER_AXIS_LEFTY);
+  ASSERT_EQ(cen::to_underlying(axis::right_x), SDL_CONTROLLER_AXIS_RIGHTX);
+  ASSERT_EQ(cen::to_underlying(axis::right_y), SDL_CONTROLLER_AXIS_RIGHTY);
+  ASSERT_EQ(cen::to_underlying(axis::trigger_left), SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  ASSERT_EQ(cen::to_underlying(axis::trigger_right), SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  ASSERT_EQ(cen::to_underlying(axis::max), SDL_CONTROLLER_AXIS_MAX);
 }
 
 TEST(ControllerAxis, ToString)

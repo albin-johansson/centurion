@@ -28,10 +28,6 @@
 #include "../detail/stdlib.hpp"
 #include "../video/color.hpp"
 #include "button_state.hpp"
-#include "controller_axis.hpp"
-#include "controller_bind_type.hpp"
-#include "controller_button.hpp"
-#include "controller_type.hpp"
 #include "joystick.hpp"
 #include "sensor.hpp"
 #include "touch.hpp"
@@ -40,6 +36,121 @@ namespace cen {
 
 /// \addtogroup input
 /// \{
+
+/**
+ * \brief Represents different game controller buttons.
+ *
+ * \see `SDL_GameControllerButton`
+ *
+ * \since 4.0.0
+ */
+enum class controller_button
+{
+  invalid = SDL_CONTROLLER_BUTTON_INVALID,
+  a = SDL_CONTROLLER_BUTTON_A,
+  b = SDL_CONTROLLER_BUTTON_B,
+  x = SDL_CONTROLLER_BUTTON_X,
+  y = SDL_CONTROLLER_BUTTON_Y,
+  back = SDL_CONTROLLER_BUTTON_BACK,
+  guide = SDL_CONTROLLER_BUTTON_GUIDE,
+  start = SDL_CONTROLLER_BUTTON_START,
+  left_stick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
+  right_stick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+  left_shoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+  right_shoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
+  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  // clang-format off
+  misc1 = SDL_CONTROLLER_BUTTON_MISC1, ///< Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button
+  // clang-format on
+
+  paddle1 = SDL_CONTROLLER_BUTTON_PADDLE1,    ///< Xbox Elite paddle P1
+  paddle2 = SDL_CONTROLLER_BUTTON_PADDLE2,    ///< Xbox Elite paddle P3
+  paddle3 = SDL_CONTROLLER_BUTTON_PADDLE3,    ///< Xbox Elite paddle P2
+  paddle4 = SDL_CONTROLLER_BUTTON_PADDLE4,    ///< Xbox Elite paddle P4
+  touchpad = SDL_CONTROLLER_BUTTON_TOUCHPAD,  ///< PS4/PS5 touchpad button
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+  max = SDL_CONTROLLER_BUTTON_MAX
+};
+
+/**
+ * \brief Represents different game controller axes.
+ *
+ * \see `SDL_GameControllerAxis`
+ *
+ * \since 4.0.0
+ */
+enum class controller_axis
+{
+  invalid = SDL_CONTROLLER_AXIS_INVALID,
+  left_x = SDL_CONTROLLER_AXIS_LEFTX,
+  left_y = SDL_CONTROLLER_AXIS_LEFTY,
+  right_x = SDL_CONTROLLER_AXIS_RIGHTX,
+  right_y = SDL_CONTROLLER_AXIS_RIGHTY,
+  trigger_left = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+  trigger_right = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+  max = SDL_CONTROLLER_AXIS_MAX
+};
+
+/**
+ * \brief Represents different game controller bind types.
+ *
+ * \see `SDL_GameControllerBindType`
+ *
+ * \since 5.0.0
+ */
+enum class controller_bind_type
+{
+  none = SDL_CONTROLLER_BINDTYPE_NONE,
+  button = SDL_CONTROLLER_BINDTYPE_BUTTON,
+  axis = SDL_CONTROLLER_BINDTYPE_AXIS,
+  hat = SDL_CONTROLLER_BINDTYPE_HAT
+};
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
+ * \brief Represents different game controller types.
+ *
+ * \see `SDL_GameControllerType`
+ *
+ * \since 5.0.0
+ */
+enum class controller_type
+{
+  // clang-format off
+  unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
+  xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
+  xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
+  ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
+  ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+  ps5 = SDL_CONTROLLER_TYPE_PS5,       ///< A PS5 controller.
+  virt = SDL_CONTROLLER_TYPE_VIRTUAL,  ///< A virtual controller.
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+  amazon_luna = SDL_CONTROLLER_TYPE_AMAZON_LUNA,     ///< An Amazon Luna controller.
+  google_stadia = SDL_CONTROLLER_TYPE_GOOGLE_STADIA, ///< A Google Stadia controller.
+
+#endif // SDL_VERSION_ATLEAST(2, 0, 16)
+
+  nintendo_switch_pro = SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro controller.
+  // clang-format on
+};
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 template <typename T>
 class basic_controller;
@@ -1248,6 +1359,245 @@ class basic_controller final
 /// \{
 
 /**
+ * \brief Returns a textual version of the supplied controller button.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller_button::start) == "start"`.
+ *
+ * \param button the controller button that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const controller_button button) -> std::string_view
+{
+  switch (button) {
+    case controller_button::invalid:
+      return "invalid";
+
+    case controller_button::a:
+      return "a";
+
+    case controller_button::b:
+      return "b";
+
+    case controller_button::x:
+      return "x";
+
+    case controller_button::y:
+      return "y";
+
+    case controller_button::back:
+      return "back";
+
+    case controller_button::guide:
+      return "guide";
+
+    case controller_button::start:
+      return "start";
+
+    case controller_button::left_stick:
+      return "left_stick";
+
+    case controller_button::right_stick:
+      return "right_stick";
+
+    case controller_button::left_shoulder:
+      return "left_shoulder";
+
+    case controller_button::right_shoulder:
+      return "right_shoulder";
+
+    case controller_button::dpad_up:
+      return "dpad_up";
+
+    case controller_button::dpad_down:
+      return "dpad_down";
+
+    case controller_button::dpad_left:
+      return "dpad_left";
+
+    case controller_button::dpad_right:
+      return "dpad_right";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+    case controller_button::misc1:
+      return "misc1";
+
+    case controller_button::paddle1:
+      return "paddle1";
+
+    case controller_button::paddle2:
+      return "paddle2";
+
+    case controller_button::paddle3:
+      return "paddle3";
+
+    case controller_button::paddle4:
+      return "paddle4";
+
+    case controller_button::touchpad:
+      return "touchpad";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+    case controller_button::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize controller button!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied controller axis.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller_axis::right_x) == "right_x"`.
+ *
+ * \param axis the controller axis that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const controller_axis axis) -> std::string_view
+{
+  switch (axis) {
+    case controller_axis::invalid:
+      return "invalid";
+
+    case controller_axis::left_x:
+      return "left_x";
+
+    case controller_axis::left_y:
+      return "left_y";
+
+    case controller_axis::right_x:
+      return "right_x";
+
+    case controller_axis::right_y:
+      return "right_y";
+
+    case controller_axis::trigger_left:
+      return "trigger_left";
+
+    case controller_axis::trigger_right:
+      return "trigger_right";
+
+    case controller_axis::max:
+      return "max";
+
+    default:
+      throw cen_error{"Did not recognize controller axis!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied controller bind type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller_bind_type::button) == "button"`.
+ *
+ * \param type the controller bind type that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const controller_bind_type type) -> std::string_view
+{
+  switch (type) {
+    case controller_bind_type::none:
+      return "none";
+
+    case controller_bind_type::button:
+      return "button";
+
+    case controller_bind_type::axis:
+      return "axis";
+
+    case controller_bind_type::hat:
+      return "hat";
+
+    default:
+      throw cen_error{"Did not recognzie controller bind type!"};
+  }
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
+ * \brief Returns a textual version of the supplied controller type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(controller_type::ps4) == "ps4"`.
+ *
+ * \param type the controller type that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const controller_type type) -> std::string_view
+{
+  switch (type) {
+    case controller_type::unknown:
+      return "unknown";
+
+    case controller_type::nintendo_switch_pro:
+      return "nintendo_switch_pro";
+
+    case controller_type::xbox_360:
+      return "xbox_360";
+
+    case controller_type::xbox_one:
+      return "xbox_one";
+
+    case controller_type::ps3:
+      return "ps3";
+
+    case controller_type::ps4:
+      return "ps4";
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+
+    case controller_type::ps5:
+      return "ps5";
+
+    case controller_type::virt:
+      return "virt";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 14)
+
+#if SDL_VERSION_ATLEAST(2, 0, 16)
+
+    case controller_type::amazon_luna:
+      return "amazon_luna";
+
+    case controller_type::google_stadia:
+      return "google_stadia";
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+
+    default:
+      throw cen_error{"Did not recognize controller type!"};
+  }
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
  * \brief Returns a textual version of the supplied controller mapping result.
  *
  * \details This function returns a string that mirrors the name of the enumerator, e.g.
@@ -1332,6 +1682,78 @@ template <typename T>
 
 /// \name Streaming
 /// \{
+
+/**
+ * \brief Prints a textual representation of a controller button enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param button the controller button that will be printed.
+ *
+ * \see `to_string(controller_button)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller_button button) -> std::ostream&
+{
+  return stream << to_string(button);
+}
+
+/**
+ * \brief Prints a textual representation of a controller axis enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param axis the controller axis that will be printed.
+ *
+ * \see `to_string(controller_axis)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller_axis axis) -> std::ostream&
+{
+  return stream << to_string(axis);
+}
+
+/**
+ * \brief Prints a textual representation of a controller bind type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the controller bind type that will be printed.
+ *
+ * \see `to_string(controller_bind_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller_bind_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+
+/**
+ * \brief Prints a textual representation of a controller type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the controller type that will be printed.
+ *
+ * \see `to_string(controller_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const controller_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
 /**
  * \brief Prints a textual representation of a controller mapping result enumerator.

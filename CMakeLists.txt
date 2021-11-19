@@ -154,10 +154,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
 
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp
-               src/centurion/input/controller_axis.hpp
-               src/centurion/input/controller_bind_type.hpp
-               src/centurion/input/controller_button.hpp
-               src/centurion/input/controller_type.hpp
                src/centurion/input/haptic.hpp
                src/centurion/input/haptic_condition.hpp
                src/centurion/input/haptic_constant.hpp

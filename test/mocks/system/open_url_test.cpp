@@ -1,5 +1,3 @@
-#include "system/open_url.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -7,6 +5,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
+#include "system/system.hpp"
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 

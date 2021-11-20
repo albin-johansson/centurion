@@ -1,6 +1,6 @@
-#include "filesystem/preferred_path.hpp"
-
 #include <gtest/gtest.h>
+
+#include "filesystem/paths.hpp"
 
 TEST(PreferredPath, NoExceptions)
 {

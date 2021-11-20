@@ -1,9 +1,8 @@
-#include "filesystem/preferred_path.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include "core_mocks.hpp"
+#include "filesystem/paths.hpp"
 
 extern "C"
 {

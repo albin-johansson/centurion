@@ -1,6 +1,6 @@
-#include "filesystem/base_path.hpp"
-
 #include <gtest/gtest.h>
+
+#include "filesystem/paths.hpp"
 
 TEST(BasePath, NoExceptions)
 {

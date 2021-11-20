@@ -125,9 +125,8 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/events/window_event.hpp
                src/centurion/events/window_event_id.hpp
 
-               src/centurion/filesystem/base_path.hpp
                src/centurion/filesystem/file.hpp
-               src/centurion/filesystem/preferred_path.hpp
+               src/centurion/filesystem/paths.hpp
 
                src/centurion/hints/android_hints.hpp
                src/centurion/hints/apple_tv_hints.hpp

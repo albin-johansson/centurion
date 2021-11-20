@@ -1,5 +1,5 @@
-#ifndef CENTURION_FILE_HEADER
-#define CENTURION_FILE_HEADER
+#ifndef CENTURION_FILESYSTEM_FILE_HPP_
+#define CENTURION_FILESYSTEM_FILE_HPP_
 
 #include <SDL.h>
 
@@ -1057,4 +1057,4 @@ inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostre
 
 }  // namespace cen
 
-#endif  // CENTURION_FILE_HEADER
+#endif  // CENTURION_FILESYSTEM_FILE_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_VECTOR3_HEADER
-#define CENTURION_VECTOR3_HEADER
+#ifndef CENTURION_MATH_VECTOR3_HPP_
+#define CENTURION_MATH_VECTOR3_HPP_
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
@@ -183,4 +183,4 @@ auto operator<<(std::ostream& stream, const vector3<T>& vector) -> std::ostream&
 
 }  // namespace cen
 
-#endif  // CENTURION_VECTOR3_HEADER
+#endif  // CENTURION_MATH_VECTOR3_HPP_

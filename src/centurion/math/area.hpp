@@ -1,5 +1,5 @@
-#ifndef CENTURION_AREA_HEADER
-#define CENTURION_AREA_HEADER
+#ifndef CENTURION_MATH_AREA_HPP_
+#define CENTURION_MATH_AREA_HPP_
 
 #include <ostream>      // ostream
 #include <string>       // string, to_string
@@ -282,4 +282,4 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area) -> std::ostream
 
 }  // namespace cen
 
-#endif  // CENTURION_AREA_HEADER
+#endif  // CENTURION_MATH_AREA_HPP_

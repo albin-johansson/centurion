@@ -1,5 +1,5 @@
-#ifndef CENTURION_RECTANGLE_HEADER
-#define CENTURION_RECTANGLE_HEADER
+#ifndef CENTURION_MATH_RECT_HPP_
+#define CENTURION_MATH_RECT_HPP_
 
 #include <SDL.h>
 
@@ -879,4 +879,4 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect) -> std::ostream
 
 }  // namespace cen
 
-#endif  // CENTURION_RECTANGLE_HEADER
+#endif  // CENTURION_MATH_RECT_HPP_

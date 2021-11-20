@@ -1,5 +1,5 @@
-#ifndef CENTURION_POINT_HEADER
-#define CENTURION_POINT_HEADER
+#ifndef CENTURION_MATH_POINT_HPP_
+#define CENTURION_MATH_POINT_HPP_
 
 #include <SDL.h>
 
@@ -526,4 +526,4 @@ template <typename T>
 
 }  // namespace cen
 
-#endif  // CENTURION_POINT_HEADER
+#endif  // CENTURION_MATH_POINT_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_CPU_HEADER
-#define CENTURION_CPU_HEADER
+#ifndef CENTURION_SYSTEM_CPU_HPP_
+#define CENTURION_SYSTEM_CPU_HPP_
 
 #include <SDL.h>
 
@@ -378,4 +378,4 @@ namespace cen::cpu {
 
 }  // namespace cen::cpu
 
-#endif  // CENTURION_CPU_HEADER
+#endif  // CENTURION_SYSTEM_CPU_HPP_

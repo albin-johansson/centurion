@@ -1,5 +1,5 @@
-#ifndef CENTURION_BYTE_ORDER_HEADER
-#define CENTURION_BYTE_ORDER_HEADER
+#ifndef CENTURION_SYSTEM_BYTE_ORDER_HPP_
+#define CENTURION_SYSTEM_BYTE_ORDER_HPP_
 
 #include <SDL.h>
 
@@ -125,4 +125,4 @@ namespace cen {
 
 }  // namespace cen
 
-#endif  // CENTURION_BYTE_ORDER_HEADER
+#endif  // CENTURION_SYSTEM_BYTE_ORDER_HPP_

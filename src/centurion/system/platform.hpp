@@ -1,5 +1,5 @@
-#ifndef CENTURION_PLATFORM_HEADER
-#define CENTURION_PLATFORM_HEADER
+#ifndef CENTURION_SYSTEM_PLATFORM_HPP_
+#define CENTURION_SYSTEM_PLATFORM_HPP_
 
 #include <SDL.h>
 
@@ -312,4 +312,4 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
 
 }  // namespace cen
 
-#endif  // CENTURION_PLATFORM_HEADER
+#endif  // CENTURION_SYSTEM_PLATFORM_HPP_

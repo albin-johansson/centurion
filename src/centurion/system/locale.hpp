@@ -1,5 +1,5 @@
-#ifndef CENTURION_LOCALE_HEADER
-#define CENTURION_LOCALE_HEADER
+#ifndef CENTURION_SYSTEM_LOCALE_HPP_
+#define CENTURION_SYSTEM_LOCALE_HPP_
 
 #include <SDL.h>
 
@@ -127,4 +127,4 @@ class locale final
 
 }  // namespace cen
 
-#endif  // CENTURION_LOCALE_HEADER
+#endif  // CENTURION_SYSTEM_LOCALE_HPP_

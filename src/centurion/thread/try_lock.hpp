@@ -1,5 +1,5 @@
-#ifndef CENTURION_TRY_LOCK_HEADER
-#define CENTURION_TRY_LOCK_HEADER
+#ifndef CENTURION_THREAD_TRY_LOCK_HPP_
+#define CENTURION_THREAD_TRY_LOCK_HPP_
 
 #include <SDL.h>
 
@@ -114,4 +114,4 @@ class try_lock final
 
 }  // namespace cen
 
-#endif  // CENTURION_TRY_LOCK_HEADER
+#endif  // CENTURION_THREAD_TRY_LOCK_HPP_

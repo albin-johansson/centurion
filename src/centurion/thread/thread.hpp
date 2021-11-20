@@ -1,5 +1,5 @@
-#ifndef CENTURION_THREAD_HEADER
-#define CENTURION_THREAD_HEADER
+#ifndef CENTURION_THREAD_THREAD_HPP_
+#define CENTURION_THREAD_THREAD_HPP_
 
 #include <SDL.h>
 
@@ -434,4 +434,4 @@ inline auto operator<<(std::ostream& stream, const thread& thread) -> std::ostre
 
 }  // namespace cen
 
-#endif  // CENTURION_THREAD_HEADER
+#endif  // CENTURION_THREAD_THREAD_HPP_

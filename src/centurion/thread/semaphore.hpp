@@ -1,5 +1,5 @@
-#ifndef CENTURION_SEMAPHORE_HEADER
-#define CENTURION_SEMAPHORE_HEADER
+#ifndef CENTURION_THREAD_SEMAPHORE_HPP_
+#define CENTURION_THREAD_SEMAPHORE_HPP_
 
 #include <SDL.h>
 
@@ -122,4 +122,4 @@ class semaphore final
 
 }  // namespace cen
 
-#endif  // CENTURION_SEMAPHORE_HEADER
+#endif  // CENTURION_THREAD_SEMAPHORE_HPP_

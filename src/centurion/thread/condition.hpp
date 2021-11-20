@@ -1,5 +1,5 @@
-#ifndef CENTURION_CONDITION_HEADER
-#define CENTURION_CONDITION_HEADER
+#ifndef CENTURION_THREAD_CONDITION_HPP_
+#define CENTURION_THREAD_CONDITION_HPP_
 
 #include <SDL.h>
 
@@ -113,4 +113,4 @@ class condition final
 
 }  // namespace cen
 
-#endif  // CENTURION_CONDITION_HEADER
+#endif  // CENTURION_THREAD_CONDITION_HPP_

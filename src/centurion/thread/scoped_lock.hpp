@@ -1,5 +1,5 @@
-#ifndef CENTURION_SCOPED_LOCK_HEADER
-#define CENTURION_SCOPED_LOCK_HEADER
+#ifndef CENTURION_THREAD_SCOPED_LOCK_HPP_
+#define CENTURION_THREAD_SCOPED_LOCK_HPP_
 
 #include <SDL.h>
 
@@ -63,4 +63,4 @@ class scoped_lock final
 
 }  // namespace cen
 
-#endif  // CENTURION_SCOPED_LOCK_HEADER
+#endif  // CENTURION_THREAD_SCOPED_LOCK_HPP_

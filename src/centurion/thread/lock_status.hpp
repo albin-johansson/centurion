@@ -1,5 +1,5 @@
-#ifndef CENTURION_LOCK_STATUS_HEADER
-#define CENTURION_LOCK_STATUS_HEADER
+#ifndef CENTURION_THREAD_LOCK_STATUS_HPP_
+#define CENTURION_THREAD_LOCK_STATUS_HPP_
 
 #include <SDL.h>
 
@@ -82,4 +82,4 @@ inline auto operator<<(std::ostream& stream, const lock_status status) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_LOCK_STATUS_HEADER
+#endif  // CENTURION_THREAD_LOCK_STATUS_HPP_

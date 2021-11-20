@@ -1,5 +1,5 @@
-#ifndef CENTURION_MUTEX_HEADER
-#define CENTURION_MUTEX_HEADER
+#ifndef CENTURION_THREAD_MUTEX_HPP_
+#define CENTURION_THREAD_MUTEX_HPP_
 
 #include <SDL.h>
 
@@ -113,4 +113,4 @@ class mutex final
 
 }  // namespace cen
 
-#endif  // CENTURION_MUTEX_HEADER
+#endif  // CENTURION_THREAD_MUTEX_HPP_

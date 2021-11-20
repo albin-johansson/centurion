@@ -1,5 +1,5 @@
-#ifndef CENTURION_THREAD_PRIORITY_HEADER
-#define CENTURION_THREAD_PRIORITY_HEADER
+#ifndef CENTURION_THREAD_THREAD_PRIORITY_HPP_
+#define CENTURION_THREAD_THREAD_PRIORITY_HPP_
 
 #include <SDL.h>
 
@@ -148,4 +148,4 @@ inline auto operator<<(std::ostream& stream, const thread_priority priority) -> 
 
 }  // namespace cen
 
-#endif  // CENTURION_THREAD_PRIORITY_HEADER
+#endif  // CENTURION_THREAD_THREAD_PRIORITY_HPP_

@@ -7,7 +7,6 @@
 #include <SDL_mixer.h>
 
 #include "../core/common.hpp"
-#include "../core/result.hpp"
 
 namespace cen {
 

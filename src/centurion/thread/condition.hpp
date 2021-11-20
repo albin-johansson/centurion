@@ -7,7 +7,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "lock_status.hpp"
 #include "mutex.hpp"

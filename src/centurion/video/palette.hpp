@@ -18,7 +18,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/result.hpp"
 #include "../detail/stdlib.hpp"
 #include "color.hpp"
 

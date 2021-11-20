@@ -21,7 +21,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/result.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"
 #include "../math/area.hpp"

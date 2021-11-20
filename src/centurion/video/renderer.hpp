@@ -22,7 +22,6 @@
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/common.hpp"
-#include "../core/result.hpp"
 #include "../detail/convert_bool.hpp"
 #include "../detail/owner_handle_api.hpp"
 #include "../detail/stdlib.hpp"

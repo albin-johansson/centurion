@@ -1,8 +1,8 @@
-#include "core/result.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "core/common.hpp"
 
 TEST(Result, Values)
 {

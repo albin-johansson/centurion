@@ -20,7 +20,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/result.hpp"
 #include "../core/sdl_string.hpp"
 #include "../core/time.hpp"
 #include "../detail/owner_handle_api.hpp"

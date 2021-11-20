@@ -13,7 +13,6 @@
 
 #include "../../core/common.hpp"
 #include "../../core/exception.hpp"
-#include "../../core/result.hpp"
 #include "../../math/area.hpp"
 #include "../texture.hpp"
 #include "../window.hpp"

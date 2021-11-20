@@ -21,7 +21,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/result.hpp"
 #include "../core/time.hpp"
 #include "../detail/any_eq.hpp"
 #include "../detail/stdlib.hpp"

@@ -12,7 +12,6 @@
 #include <vector>    // vector
 
 #include "../../core/common.hpp"
-#include "../../core/result.hpp"
 #include "../window.hpp"
 
 /**

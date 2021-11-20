@@ -8,7 +8,7 @@
 
 #include <optional>  // optional
 
-#include "../core/result.hpp"
+#include "../core/common.hpp"
 #include "../core/time.hpp"
 
 namespace cen {

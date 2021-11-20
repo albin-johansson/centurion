@@ -14,7 +14,6 @@
 #include <string>    // string
 
 #include "../core/common.hpp"
-#include "../core/result.hpp"
 #include "file_mode.hpp"
 #include "file_type.hpp"
 #include "seek_mode.hpp"

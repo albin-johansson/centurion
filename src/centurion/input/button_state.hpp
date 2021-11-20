@@ -1,5 +1,5 @@
-#ifndef CENTURION_BUTTON_STATE_HEADER
-#define CENTURION_BUTTON_STATE_HEADER
+#ifndef CENTURION_INPUT_BUTTON_STATE_HPP_
+#define CENTURION_INPUT_BUTTON_STATE_HPP_
 
 #include <SDL.h>
 
@@ -90,4 +90,4 @@ inline auto operator<<(std::ostream& stream, const button_state state) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_BUTTON_STATE_HEADER
+#endif  // CENTURION_INPUT_BUTTON_STATE_HPP_

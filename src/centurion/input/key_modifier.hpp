@@ -1,5 +1,5 @@
-#ifndef CENTURION_KEY_MODIFIER_HEADER
-#define CENTURION_KEY_MODIFIER_HEADER
+#ifndef CENTURION_INPUT_KEY_MODIFIER_HPP_
+#define CENTURION_INPUT_KEY_MODIFIER_HPP_
 
 #include <SDL.h>
 
@@ -288,4 +288,4 @@ namespace detail {
 
 }  // namespace cen
 
-#endif  // CENTURION_KEY_MODIFIER_HEADER
+#endif  // CENTURION_INPUT_KEY_MODIFIER_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_CONDITION_HEADER
-#define CENTURION_HAPTIC_CONDITION_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_CONDITION_HPP_
+#define CENTURION_INPUT_HAPTIC_CONDITION_HPP_
 
 #include <SDL.h>
 
@@ -263,4 +263,4 @@ class haptic_condition final : public haptic_effect<haptic_condition>
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_CONDITION_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_CONDITION_HPP_

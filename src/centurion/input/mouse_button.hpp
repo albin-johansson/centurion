@@ -1,5 +1,5 @@
-#ifndef CENTURION_MOUSE_BUTTON_HEADER
-#define CENTURION_MOUSE_BUTTON_HEADER
+#ifndef CENTURION_INPUT_MOUSE_BUTTON_HPP_
+#define CENTURION_INPUT_MOUSE_BUTTON_HPP_
 
 #include <SDL.h>
 
@@ -98,4 +98,4 @@ inline auto operator<<(std::ostream& stream, const mouse_button button) -> std::
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_BUTTON_HEADER
+#endif  // CENTURION_INPUT_MOUSE_BUTTON_HPP_

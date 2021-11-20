@@ -1,5 +1,5 @@
-#ifndef CENTURION_GAME_CONTROLLER_HEADER
-#define CENTURION_GAME_CONTROLLER_HEADER
+#ifndef CENTURION_INPUT_GAME_CONTROLLER_HPP_
+#define CENTURION_INPUT_GAME_CONTROLLER_HPP_
 
 #include <SDL.h>
 
@@ -1801,4 +1801,4 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller) -> 
 
 }  // namespace cen
 
-#endif  // CENTURION_GAME_CONTROLLER_HEADER
+#endif  // CENTURION_GAME_CONTROLLER_HPP_

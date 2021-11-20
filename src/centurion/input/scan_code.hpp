@@ -1,5 +1,5 @@
-#ifndef CENTURION_SCAN_CODE_HEADER
-#define CENTURION_SCAN_CODE_HEADER
+#ifndef CENTURION_INPUT_SCAN_CODE_HPP_
+#define CENTURION_INPUT_SCAN_CODE_HPP_
 
 #include <SDL.h>
 
@@ -400,4 +400,4 @@ inline auto operator<<(std::ostream& stream, const scan_code& scanCode) -> std::
 
 }  // namespace cen
 
-#endif  // CENTURION_SCAN_CODE_HEADER
+#endif  // CENTURION_INPUT_SCAN_CODE_HPP_

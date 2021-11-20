@@ -1,5 +1,5 @@
-#ifndef CENTURION_SCANCODES_HEADER
-#define CENTURION_SCANCODES_HEADER
+#ifndef CENTURION_INPUT_SCANCODES_HPP_
+#define CENTURION_INPUT_SCANCODES_HPP_
 
 #include <SDL.h>
 
@@ -528,4 +528,4 @@ inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 }  // namespace cen
 
-#endif  // CENTURION_SCANCODES_HEADER
+#endif  // CENTURION_INPUT_SCANCODES_HPP_

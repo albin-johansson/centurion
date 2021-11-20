@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_PERIODIC_HEADER
-#define CENTURION_HAPTIC_PERIODIC_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_PERIODIC_HPP_
+#define CENTURION_INPUT_HAPTIC_PERIODIC_HPP_
 
 #include <SDL.h>
 
@@ -193,4 +193,4 @@ class haptic_periodic final : public haptic_effect<haptic_periodic>
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_PERIODIC_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_PERIODIC_HPP_

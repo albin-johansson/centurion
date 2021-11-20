@@ -1,5 +1,5 @@
-#ifndef CENTURION_JOYSTICK_HEADER
-#define CENTURION_JOYSTICK_HEADER
+#ifndef CENTURION_INPUT_JOYSTICK_HPP_
+#define CENTURION_INPUT_JOYSTICK_HPP_
 
 #include <SDL.h>
 
@@ -1378,4 +1378,4 @@ auto operator<<(std::ostream& stream, const basic_joystick<T>& joystick) -> std:
 
 }  // namespace cen
 
-#endif  // CENTURION_JOYSTICK_HEADER
+#endif  // CENTURION_JOYSTICK_HPP_

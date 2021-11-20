@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_HEADER
-#define CENTURION_HAPTIC_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_HPP_
+#define CENTURION_INPUT_HAPTIC_HPP_
 
 #include <SDL.h>
 
@@ -973,4 +973,4 @@ auto operator<<(std::ostream& stream, const basic_haptic<T>& haptic) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_HPP_

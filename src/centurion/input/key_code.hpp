@@ -1,5 +1,5 @@
-#ifndef CENTURION_KEY_CODE_HEADER
-#define CENTURION_KEY_CODE_HEADER
+#ifndef CENTURION_INPUT_KEY_CODE_HPP_
+#define CENTURION_INPUT_KEY_CODE_HPP_
 
 #include <SDL.h>
 
@@ -407,4 +407,4 @@ inline auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::os
 
 }  // namespace cen
 
-#endif  // CENTURION_KEY_CODE_HEADER
+#endif  // CENTURION_INPUT_KEY_CODE_HPP_

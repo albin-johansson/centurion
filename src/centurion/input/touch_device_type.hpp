@@ -1,5 +1,5 @@
-#ifndef CENTURION_TOUCH_DEVICE_TYPE_HEADER
-#define CENTURION_TOUCH_DEVICE_TYPE_HEADER
+#ifndef CENTURION_INPUT_TOUCH_DEVICE_TYPE_HPP_
+#define CENTURION_INPUT_TOUCH_DEVICE_TYPE_HPP_
 
 #include <SDL.h>
 
@@ -168,4 +168,4 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
 
 }  // namespace cen
 
-#endif  // CENTURION_TOUCH_DEVICE_TYPE_HEADER
+#endif  // CENTURION_INPUT_TOUCH_DEVICE_TYPE_HPP_

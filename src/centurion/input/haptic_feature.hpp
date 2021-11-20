@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_FEATURE_HEADER
-#define CENTURION_HAPTIC_FEATURE_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_FEATURE_HPP_
+#define CENTURION_INPUT_HAPTIC_FEATURE_HPP_
 
 #include <SDL.h>
 
@@ -142,4 +142,4 @@ inline auto operator<<(std::ostream& stream, const haptic_feature feature) -> st
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_FEATURE_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_FEATURE_HPP_

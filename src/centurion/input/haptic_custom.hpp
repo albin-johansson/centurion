@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_CUSTOM_HEADER
-#define CENTURION_HAPTIC_CUSTOM_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_CUSTOM_HPP_
+#define CENTURION_INPUT_HAPTIC_CUSTOM_HPP_
 
 #include <SDL.h>
 
@@ -175,4 +175,4 @@ class haptic_custom final : public haptic_effect<haptic_custom>
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_CUSTOM_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_CUSTOM_HPP_

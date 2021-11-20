@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_LEFT_RIGHT_HEADER
-#define CENTURION_HAPTIC_LEFT_RIGHT_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_LEFT_RIGHT_HPP_
+#define CENTURION_INPUT_HAPTIC_LEFT_RIGHT_HPP_
 
 #include <SDL.h>
 
@@ -116,4 +116,4 @@ class haptic_left_right final : public haptic_effect<haptic_left_right>
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_LEFT_RIGHT_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_LEFT_RIGHT_HPP_

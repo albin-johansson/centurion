@@ -1,5 +1,5 @@
-#ifndef CENTURION_KEYCODES_HEADER
-#define CENTURION_KEYCODES_HEADER
+#ifndef CENTURION_INPUT_KEYCODES_HPP_
+#define CENTURION_INPUT_KEYCODES_HPP_
 
 #include <SDL.h>
 
@@ -528,4 +528,4 @@ inline constexpr key_code right_gui{SDLK_RGUI};
 
 }  // namespace cen
 
-#endif  // CENTURION_KEYCODES_HEADER
+#endif  // CENTURION_KEYCODES_HPP_

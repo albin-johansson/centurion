@@ -1,5 +1,5 @@
-#ifndef CENTURION_SENSOR_HEADER
-#define CENTURION_SENSOR_HEADER
+#ifndef CENTURION_INPUT_SENSOR_HPP_
+#define CENTURION_INPUT_SENSOR_HPP_
 
 #include <SDL.h>
 
@@ -490,4 +490,4 @@ auto operator<<(std::ostream& stream, const basic_sensor<T>& sensor) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_SENSOR_HEADER
+#endif  // CENTURION_INPUT_SENSOR_HPP_

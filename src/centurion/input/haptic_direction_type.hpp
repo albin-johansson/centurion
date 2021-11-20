@@ -1,5 +1,5 @@
-#ifndef CENTURION_HAPTIC_DIRECTION_TYPE_HEADER
-#define CENTURION_HAPTIC_DIRECTION_TYPE_HEADER
+#ifndef CENTURION_INPUT_HAPTIC_DIRECTION_TYPE_HPP_
+#define CENTURION_INPUT_HAPTIC_DIRECTION_TYPE_HPP_
 
 #include <SDL.h>
 
@@ -90,4 +90,4 @@ inline auto operator<<(std::ostream& stream, const haptic_direction_type type) -
 
 }  // namespace cen
 
-#endif  // CENTURION_HAPTIC_DIRECTION_TYPE_HEADER
+#endif  // CENTURION_INPUT_HAPTIC_DIRECTION_TYPE_HPP_

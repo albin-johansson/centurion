@@ -1,5 +1,5 @@
-#ifndef CENTURION_TOUCH_HEADER
-#define CENTURION_TOUCH_HEADER
+#ifndef CENTURION_INPUT_TOUCH_HPP_
+#define CENTURION_INPUT_TOUCH_HPP_
 
 #include <SDL.h>
 
@@ -162,4 +162,4 @@ using touch_finger_state = touch::finger_state;
 
 }  // namespace cen
 
-#endif  // CENTURION_TOUCH_HEADER
+#endif  // CENTURION_INPUT_TOUCH_HPP_

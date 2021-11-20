@@ -1,5 +1,5 @@
-#ifndef CENTURION_MOUSE_HEADER
-#define CENTURION_MOUSE_HEADER
+#ifndef CENTURION_INPUT_MOUSE_HPP_
+#define CENTURION_INPUT_MOUSE_HPP_
 
 #include <ostream>  // ostream
 #include <string>   // string, to_string
@@ -336,4 +336,4 @@ inline auto operator<<(std::ostream& stream, const mouse& mouse) -> std::ostream
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_HEADER
+#endif  // CENTURION_INPUT_MOUSE_HPP_

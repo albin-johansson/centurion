@@ -1,5 +1,5 @@
-#ifndef CENTURION_SDL_STRING_HEADER
-#define CENTURION_SDL_STRING_HEADER
+#ifndef CENTURION_CORE_SDL_STRING_HPP_
+#define CENTURION_CORE_SDL_STRING_HPP_
 
 #include <SDL.h>
 
@@ -93,4 +93,4 @@ class sdl_string final
 
 }  // namespace cen
 
-#endif  // CENTURION_SDL_STRING_HEADER
+#endif  // CENTURION_CORE_SDL_STRING_HPP_

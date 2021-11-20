@@ -1,5 +1,5 @@
-#ifndef CENTURION_COMPILER_HEADER
-#define CENTURION_COMPILER_HEADER
+#ifndef CENTURION_CORE_COMPILER_HPP_
+#define CENTURION_CORE_COMPILER_HPP_
 
 #include <SDL.h>
 
@@ -128,4 +128,4 @@ namespace cen {
 
 }  // namespace cen
 
-#endif  // CENTURION_COMPILER_HEADER
+#endif  // CENTURION_CORE_COMPILER_HPP_

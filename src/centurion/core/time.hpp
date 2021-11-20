@@ -1,5 +1,5 @@
-#ifndef CENTURION_TIME_HEADER
-#define CENTURION_TIME_HEADER
+#ifndef CENTURION_CORE_TIME_HPP_
+#define CENTURION_CORE_TIME_HPP_
 
 #include <SDL.h>
 
@@ -112,4 +112,4 @@ namespace legacy {
 
 }  // namespace cen
 
-#endif  // CENTURION_TIME_HEADER
+#endif  // CENTURION_CORE_TIME_HPP_

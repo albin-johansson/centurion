@@ -1,5 +1,5 @@
-#ifndef CENTURION_VERSION_HEADER
-#define CENTURION_VERSION_HEADER
+#ifndef CENTURION_CORE_VERSION_HPP_
+#define CENTURION_CORE_VERSION_HPP_
 
 #include <SDL.h>
 
@@ -297,4 +297,4 @@ using SDL_KeyCode = decltype(SDLK_UNKNOWN);
 
 /// \} End of group core
 
-#endif  // CENTURION_VERSION_HEADER
+#endif  // CENTURION_CORE_VERSION_HPP_

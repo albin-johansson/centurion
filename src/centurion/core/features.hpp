@@ -1,5 +1,5 @@
-#ifndef CENTURION_FEATURES_HEADER
-#define CENTURION_FEATURES_HEADER
+#ifndef CENTURION_CORE_FEATURES_HPP_
+#define CENTURION_CORE_FEATURES_HPP_
 
 /// \addtogroup core
 /// \{
@@ -76,4 +76,4 @@
 
 /// \} End of group core
 
-#endif  // CENTURION_FEATURES_HEADER
+#endif  // CENTURION_CORE_FEATURES_HPP_

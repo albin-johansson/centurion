@@ -1,5 +1,5 @@
-#ifndef CENTURION_CORE_DEF_HPP_
-#define CENTURION_CORE_DEF_HPP_
+#ifndef CENTURION_CORE_COMMON_HPP_
+#define CENTURION_CORE_COMMON_HPP_
 
 #include <SDL.h>
 
@@ -448,4 +448,4 @@ namespace literals {
 }  // namespace literals
 }  // namespace cen
 
-#endif  // CENTURION_CORE_DEF_HPP_
+#endif  // CENTURION_CORE_COMMON_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_EXCEPTION_HEADER
-#define CENTURION_EXCEPTION_HEADER
+#ifndef CENTURION_CORE_EXCEPTION_HPP_
+#define CENTURION_CORE_EXCEPTION_HPP_
 
 #include <SDL.h>
 
@@ -185,4 +185,4 @@ class mix_error final : public cen_error
 
 }  // namespace cen
 
-#endif  // CENTURION_EXCEPTION_HEADER
+#endif  // CENTURION_CORE_EXCEPTION_HPP_

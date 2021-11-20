@@ -40,8 +40,8 @@
 /// \defgroup audio Audio
 /// \brief Contains the audio API, for playing as sound effects and music.
 
-#ifndef CENTURION_LIBRARY_HEADER
-#define CENTURION_LIBRARY_HEADER
+#ifndef CENTURION_CORE_LIBRARY_HPP_
+#define CENTURION_CORE_LIBRARY_HPP_
 
 #include <SDL.h>
 
@@ -348,4 +348,4 @@ class library final
 
 }  // namespace cen
 
-#endif  // CENTURION_LIBRARY_HEADER
+#endif  // CENTURION_CORE_LIBRARY_HPP_

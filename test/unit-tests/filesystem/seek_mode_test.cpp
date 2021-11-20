@@ -1,10 +1,9 @@
-#include "filesystem/seek_mode.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "filesystem/file.hpp"
 
 TEST(SeekMode, Values)
 {

@@ -128,7 +128,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/filesystem/base_path.hpp
                src/centurion/filesystem/file.hpp
                src/centurion/filesystem/preferred_path.hpp
-               src/centurion/filesystem/seek_mode.hpp
 
                src/centurion/hints/android_hints.hpp
                src/centurion/hints/apple_tv_hints.hpp

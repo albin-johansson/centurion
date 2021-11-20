@@ -10,17 +10,16 @@
 
 using ms = cen::milliseconds<int>;
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(Mix_FreeChunk, Mix_Chunk*)
-FAKE_VOID_FUNC(Mix_Pause, int)
-FAKE_VALUE_FUNC(int, Mix_PlayChannelTimed, int, Mix_Chunk*, int, int)
-FAKE_VALUE_FUNC(int, Mix_FadeInChannelTimed, int, Mix_Chunk*, int, int, int)
-FAKE_VALUE_FUNC(int, Mix_FadeOutChannel, int, int)
-FAKE_VALUE_FUNC(int, Mix_Playing, int)
-FAKE_VALUE_FUNC(int, Mix_VolumeChunk, Mix_Chunk*, int)
+extern "C"
+{
+  FAKE_VOID_FUNC(Mix_FreeChunk, Mix_Chunk*)
+  FAKE_VOID_FUNC(Mix_Pause, int)
+  FAKE_VALUE_FUNC(int, Mix_PlayChannelTimed, int, Mix_Chunk*, int, int)
+  FAKE_VALUE_FUNC(int, Mix_FadeInChannelTimed, int, Mix_Chunk*, int, int, int)
+  FAKE_VALUE_FUNC(int, Mix_FadeOutChannel, int, int)
+  FAKE_VALUE_FUNC(int, Mix_Playing, int)
+  FAKE_VALUE_FUNC(int, Mix_VolumeChunk, Mix_Chunk*, int)
 }
-// clang-format on
 
 class SoundEffectTest : public testing::Test
 {

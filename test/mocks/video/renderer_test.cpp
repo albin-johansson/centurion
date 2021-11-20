@@ -9,36 +9,61 @@
 
 #include "core_mocks.hpp"
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_RenderPresent, SDL_Renderer*)
-FAKE_VALUE_FUNC(int, SDL_RenderClear, SDL_Renderer*)
-FAKE_VALUE_FUNC(int, SDL_SetRenderDrawColor, SDL_Renderer*, Uint8, Uint8, Uint8, Uint8)
-FAKE_VALUE_FUNC(int, SDL_GetRenderDrawColor, SDL_Renderer*, Uint8*, Uint8*, Uint8*, Uint8*)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawRect, SDL_Renderer*, const SDL_Rect*)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawPoint, SDL_Renderer*, int, int)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawPointF, SDL_Renderer*, float, float)
-FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
-FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawLines, SDL_Renderer*, const SDL_Point*, int)
-FAKE_VALUE_FUNC(int, SDL_RenderDrawLinesF, SDL_Renderer*, const SDL_FPoint*, int)
-FAKE_VALUE_FUNC(int, SDL_RenderCopy, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_Rect*)
-FAKE_VALUE_FUNC(int, SDL_RenderCopyF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*)
-FAKE_VALUE_FUNC(int, SDL_RenderCopyEx, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_Rect*, double, const SDL_Point*, SDL_RendererFlip)
-FAKE_VALUE_FUNC(int, SDL_RenderCopyExF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*, double, const SDL_FPoint*, SDL_RendererFlip)
-FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
-FAKE_VALUE_FUNC(int, SDL_SetRenderTarget, SDL_Renderer*, SDL_Texture*)
-FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
-FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
-FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
-FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_RenderPresent, SDL_Renderer*)
+  FAKE_VALUE_FUNC(int, SDL_RenderClear, SDL_Renderer*)
+  FAKE_VALUE_FUNC(int, SDL_SetRenderDrawColor, SDL_Renderer*, Uint8, Uint8, Uint8, Uint8)
+  FAKE_VALUE_FUNC(int, SDL_GetRenderDrawColor, SDL_Renderer*, Uint8*, Uint8*, Uint8*, Uint8*)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawRect, SDL_Renderer*, const SDL_Rect*)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawPoint, SDL_Renderer*, int, int)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawPointF, SDL_Renderer*, float, float)
+  FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
+  FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawLines, SDL_Renderer*, const SDL_Point*, int)
+  FAKE_VALUE_FUNC(int, SDL_RenderDrawLinesF, SDL_Renderer*, const SDL_FPoint*, int)
+  FAKE_VALUE_FUNC(int,
+                  SDL_RenderCopy,
+                  SDL_Renderer*,
+                  SDL_Texture*,
+                  const SDL_Rect*,
+                  const SDL_Rect*)
+  FAKE_VALUE_FUNC(int,
+                  SDL_RenderCopyF,
+                  SDL_Renderer*,
+                  SDL_Texture*,
+                  const SDL_Rect*,
+                  const SDL_FRect*)
+  FAKE_VALUE_FUNC(int,
+                  SDL_RenderCopyEx,
+                  SDL_Renderer*,
+                  SDL_Texture*,
+                  const SDL_Rect*,
+                  const SDL_Rect*,
+                  double,
+                  const SDL_Point*,
+                  SDL_RendererFlip)
+  FAKE_VALUE_FUNC(int,
+                  SDL_RenderCopyExF,
+                  SDL_Renderer*,
+                  SDL_Texture*,
+                  const SDL_Rect*,
+                  const SDL_FRect*,
+                  double,
+                  const SDL_FPoint*,
+                  SDL_RendererFlip)
+  FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
+  FAKE_VALUE_FUNC(int, SDL_SetRenderTarget, SDL_Renderer*, SDL_Texture*)
+  FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
+  FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
+  FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
+  FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_RenderGetIntegerScale, SDL_Renderer*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
 }
-// clang-format on
 
 class RendererTest : public testing::Test
 {

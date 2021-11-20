@@ -5,15 +5,14 @@
 
 #include "core_mocks.hpp"
 
-// clang-format off
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_GetNumTouchDevices)
-FAKE_VALUE_FUNC(SDL_TouchID, SDL_GetTouchDevice, int)
-FAKE_VALUE_FUNC(SDL_TouchDeviceType, SDL_GetTouchDeviceType, SDL_TouchID)
-FAKE_VALUE_FUNC(int, SDL_GetNumTouchFingers, SDL_TouchID)
-FAKE_VALUE_FUNC(SDL_Finger*, SDL_GetTouchFinger, SDL_TouchID, int)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_GetNumTouchDevices)
+  FAKE_VALUE_FUNC(SDL_TouchID, SDL_GetTouchDevice, int)
+  FAKE_VALUE_FUNC(SDL_TouchDeviceType, SDL_GetTouchDeviceType, SDL_TouchID)
+  FAKE_VALUE_FUNC(int, SDL_GetNumTouchFingers, SDL_TouchID)
+  FAKE_VALUE_FUNC(SDL_Finger*, SDL_GetTouchFinger, SDL_TouchID, int)
 }
-// clang-format on
 
 class TouchTest : public testing::Test
 {

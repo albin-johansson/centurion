@@ -7,14 +7,17 @@
 #include "hints/common_hints.hpp"
 #include "hints/mouse_hints.hpp"
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_ClearHints)
-FAKE_VALUE_FUNC(SDL_bool, SDL_SetHintWithPriority, const char*, const char*, SDL_HintPriority)
-FAKE_VALUE_FUNC(const char*, SDL_GetHint, const char*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GetHintBoolean, const char*, SDL_bool)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_ClearHints)
+  FAKE_VALUE_FUNC(SDL_bool,
+                  SDL_SetHintWithPriority,
+                  const char*,
+                  const char*,
+                  SDL_HintPriority)
+  FAKE_VALUE_FUNC(const char*, SDL_GetHint, const char*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GetHintBoolean, const char*, SDL_bool)
 }
-// clang-format on
 
 class HintsTest : public testing::Test
 {

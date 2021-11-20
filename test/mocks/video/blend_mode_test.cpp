@@ -15,7 +15,7 @@ extern "C"
                   SDL_BlendFactor,
                   SDL_BlendFactor,
                   SDL_BlendOperation);
-}  // extern "C"
+}
 
 class BlendModeTest : public testing::Test
 {

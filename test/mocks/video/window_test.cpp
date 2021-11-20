@@ -50,8 +50,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_FlashWindow, SDL_Window*, SDL_FlashOperation)
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
-
-}  // extern "C"
+}
 
 class WindowTest : public testing::Test
 {

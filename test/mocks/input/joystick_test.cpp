@@ -11,65 +11,63 @@
 
 using namespace cen::literals;
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_JoystickUpdate)
-FAKE_VOID_FUNC(SDL_LockJoysticks)
-FAKE_VOID_FUNC(SDL_UnlockJoysticks)
-FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_JoystickUpdate)
+  FAKE_VOID_FUNC(SDL_LockJoysticks)
+  FAKE_VOID_FUNC(SDL_UnlockJoysticks)
+  FAKE_VOID_FUNC(SDL_JoystickSetPlayerIndex, SDL_Joystick*, int)
 
-FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
-FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_JoystickRumble, SDL_Joystick*, Uint16, Uint16, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_JoystickRumbleTriggers, SDL_Joystick*, Uint16, Uint16, Uint32)
 
-FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
-FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
+  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromInstanceID, SDL_JoystickID)
+  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_JoystickFromPlayerIndex, int)
 
-FAKE_VALUE_FUNC(int, SDL_JoystickGetPlayerIndex, SDL_Joystick*)
-FAKE_VALUE_FUNC(int, SDL_JoystickGetDevicePlayerIndex, int)
+  FAKE_VALUE_FUNC(int, SDL_JoystickGetPlayerIndex, SDL_Joystick*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickGetDevicePlayerIndex, int)
 
-FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetType, SDL_Joystick*)
-FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetDeviceType, int)
+  FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetType, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_JoystickType, SDL_JoystickGetDeviceType, int)
 
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetVendor, SDL_Joystick*)
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceVendor, int)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetVendor, SDL_Joystick*)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceVendor, int)
 
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProduct, SDL_Joystick*)
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProduct, int)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProduct, SDL_Joystick*)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProduct, int)
 
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProductVersion, SDL_Joystick*)
-FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProductVersion, int)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetProductVersion, SDL_Joystick*)
+  FAKE_VALUE_FUNC(Uint16, SDL_JoystickGetDeviceProductVersion, int)
 
-FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickInstanceID, SDL_Joystick*)
-FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickGetDeviceInstanceID, int)
+  FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickInstanceID, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_JoystickID, SDL_JoystickGetDeviceInstanceID, int)
 
-FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUID, SDL_Joystick*)
-FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetDeviceGUID, int)
+  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUID, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetDeviceGUID, int)
 
-FAKE_VALUE_FUNC(int, SDL_NumJoysticks)
-FAKE_VALUE_FUNC(int, SDL_JoystickGetBall, SDL_Joystick*, int, int*, int*)
-FAKE_VALUE_FUNC(int, SDL_JoystickSetLED, SDL_Joystick*, Uint8, Uint8, Uint8)
-FAKE_VALUE_FUNC(int, SDL_JoystickNumHats, SDL_Joystick*)
-FAKE_VALUE_FUNC(int, SDL_JoystickNumAxes, SDL_Joystick*)
-FAKE_VALUE_FUNC(int, SDL_JoystickNumBalls, SDL_Joystick*)
-FAKE_VALUE_FUNC(int, SDL_JoystickNumButtons, SDL_Joystick*)
-FAKE_VALUE_FUNC(Sint16, SDL_JoystickGetAxis, SDL_Joystick*, int)
-FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetButton, SDL_Joystick*, int)
-FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetHat, SDL_Joystick*, int)
-FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAxisInitialState, SDL_Joystick*, int, Sint16*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAttached, SDL_Joystick*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
-FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
-FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
-FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
-FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
-FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
+  FAKE_VALUE_FUNC(int, SDL_NumJoysticks)
+  FAKE_VALUE_FUNC(int, SDL_JoystickGetBall, SDL_Joystick*, int, int*, int*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickSetLED, SDL_Joystick*, Uint8, Uint8, Uint8)
+  FAKE_VALUE_FUNC(int, SDL_JoystickNumHats, SDL_Joystick*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickNumAxes, SDL_Joystick*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickNumBalls, SDL_Joystick*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickNumButtons, SDL_Joystick*)
+  FAKE_VALUE_FUNC(Sint16, SDL_JoystickGetAxis, SDL_Joystick*, int)
+  FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetButton, SDL_Joystick*, int)
+  FAKE_VALUE_FUNC(Uint8, SDL_JoystickGetHat, SDL_Joystick*, int)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAxisInitialState, SDL_Joystick*, int, Sint16*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickGetAttached, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_JoystickHasLED, SDL_Joystick*)
+  FAKE_VALUE_FUNC(SDL_JoystickPowerLevel, SDL_JoystickCurrentPowerLevel, SDL_Joystick*)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickName, SDL_Joystick*)
+  FAKE_VALUE_FUNC(const char*, SDL_JoystickGetSerial, SDL_Joystick*)
+  FAKE_VALUE_FUNC(int, SDL_JoystickEventState, int)
+  FAKE_VALUE_FUNC(SDL_JoystickGUID, SDL_JoystickGetGUIDFromString, const char*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
-#endif // SDL_VERSION_ATLEAST(2, 0, 16)
-
-}  // extern "C"
-// clang-format on
+  FAKE_VALUE_FUNC(int, SDL_JoystickSendEffect, SDL_Joystick*, const void*, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+}
 
 using namespace cen::literals;
 

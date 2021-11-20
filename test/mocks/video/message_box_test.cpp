@@ -5,12 +5,11 @@
 
 #include "core_mocks.hpp"
 
-// clang-format off
-extern "C" {
-FAKE_VALUE_FUNC(int, SDL_ShowSimpleMessageBox, Uint32, const char*, const char*, SDL_Window*)
-FAKE_VALUE_FUNC(int, SDL_ShowMessageBox, const SDL_MessageBoxData*, int*)
+extern "C"
+{
+  FAKE_VALUE_FUNC(int, SDL_ShowSimpleMessageBox, Uint32, const char*, const char*, SDL_Window*)
+  FAKE_VALUE_FUNC(int, SDL_ShowMessageBox, const SDL_MessageBoxData*, int*)
 }
-// clang-format on
 
 class MessageBoxTest : public testing::Test
 {

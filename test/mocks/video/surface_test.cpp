@@ -9,14 +9,12 @@
 
 extern "C"
 {
-  // clang-format off
-FAKE_VALUE_FUNC(SDL_Surface*, SDL_ConvertSurfaceFormat, SDL_Surface*, Uint32, Uint32)
-FAKE_VALUE_FUNC(int, SDL_GetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode*)
-FAKE_VALUE_FUNC(int, SDL_SetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode)
-FAKE_VALUE_FUNC(int, SDL_SetSurfaceRLE, SDL_Surface*, int)
-FAKE_VALUE_FUNC(SDL_bool, SDL_HasSurfaceRLE, SDL_Surface*)
-FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
-  // clang-format on
+  FAKE_VALUE_FUNC(SDL_Surface*, SDL_ConvertSurfaceFormat, SDL_Surface*, Uint32, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_GetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode*)
+  FAKE_VALUE_FUNC(int, SDL_SetSurfaceBlendMode, SDL_Surface*, SDL_BlendMode)
+  FAKE_VALUE_FUNC(int, SDL_SetSurfaceRLE, SDL_Surface*, int)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_HasSurfaceRLE, SDL_Surface*)
+  FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
 }
 
 class SurfaceTest : public testing::Test

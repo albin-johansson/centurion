@@ -12,72 +12,116 @@
 
 using namespace cen::literals;
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_GameControllerUpdate)
-FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_GameControllerUpdate)
+  FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
 
-FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
-FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
-FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
-FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
+  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
+  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
+  FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
+  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetSerial, SDL_GameController*)
 
-FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
-FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
-FAKE_VALUE_FUNC(int, SDL_GameControllerRumbleTriggers, SDL_GameController*, Uint16, Uint16, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
+  FAKE_VALUE_FUNC(int,
+                  SDL_GameControllerRumbleTriggers,
+                  SDL_GameController*,
+                  Uint16,
+                  Uint16,
+                  Uint32)
 
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
-FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
-FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
-#endif // SDL_VERSION_ATLEAST(2, 0, 12)
+  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
+  FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
-FAKE_VALUE_FUNC(Uint8, SDL_GameControllerGetButton, SDL_GameController*, SDL_GameControllerButton)
-FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
+  FAKE_VALUE_FUNC(Uint8,
+                  SDL_GameControllerGetButton,
+                  SDL_GameController*,
+                  SDL_GameControllerButton)
+  FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
-FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
-FAKE_VALUE_FUNC(Sint16, SDL_GameControllerGetAxis, SDL_GameController*, SDL_GameControllerAxis)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasAxis, SDL_GameController*, SDL_GameControllerAxis)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasButton, SDL_GameController*, SDL_GameControllerButton)
+  FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
+  FAKE_VALUE_FUNC(Sint16,
+                  SDL_GameControllerGetAxis,
+                  SDL_GameController*,
+                  SDL_GameControllerAxis)
+  FAKE_VALUE_FUNC(SDL_bool,
+                  SDL_GameControllerHasAxis,
+                  SDL_GameController*,
+                  SDL_GameControllerAxis)
+  FAKE_VALUE_FUNC(SDL_bool,
+                  SDL_GameControllerHasButton,
+                  SDL_GameController*,
+                  SDL_GameControllerButton)
 
-FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
+  FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 
-FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
-FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameControllerButton)
+  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
+  FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameControllerButton)
 
-FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForAxis, SDL_GameController*, SDL_GameControllerAxis)
-FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForButton, SDL_GameController*, SDL_GameControllerButton)
+  FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
+                  SDL_GameControllerGetBindForAxis,
+                  SDL_GameController*,
+                  SDL_GameControllerAxis)
+  FAKE_VALUE_FUNC(SDL_GameControllerButtonBind,
+                  SDL_GameControllerGetBindForButton,
+                  SDL_GameController*,
+                  SDL_GameControllerButton)
 
-FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
-FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpads, SDL_GameController*)
-FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpadFingers, SDL_GameController*, int)
-FAKE_VALUE_FUNC(int, SDL_GameControllerGetTouchpadFinger, SDL_GameController*, int, int, Uint8*, float*, float*, float*)
+  FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpads, SDL_GameController*)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerGetNumTouchpadFingers, SDL_GameController*, int)
+  FAKE_VALUE_FUNC(int,
+                  SDL_GameControllerGetTouchpadFinger,
+                  SDL_GameController*,
+                  int,
+                  int,
+                  Uint8*,
+                  float*,
+                  float*,
+                  float*)
 
-FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
-FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
 
-FAKE_VALUE_FUNC(char*, SDL_GameControllerMapping, SDL_GameController*)
-FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
-FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
-FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
+  FAKE_VALUE_FUNC(char*, SDL_GameControllerMapping, SDL_GameController*)
+  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
+  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
+  FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
 
-FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
-FAKE_VALUE_FUNC(int, SDL_GameControllerSetSensorEnabled, SDL_GameController*, SDL_SensorType, SDL_bool)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasSensor, SDL_GameController*, SDL_SensorType)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerIsSensorEnabled, SDL_GameController*, SDL_SensorType)
-FAKE_VALUE_FUNC(int, SDL_GameControllerGetSensorData, SDL_GameController*, SDL_SensorType, float*, int)
-FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
+  FAKE_VALUE_FUNC(int,
+                  SDL_GameControllerSetSensorEnabled,
+                  SDL_GameController*,
+                  SDL_SensorType,
+                  SDL_bool)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasSensor, SDL_GameController*, SDL_SensorType)
+  FAKE_VALUE_FUNC(SDL_bool,
+                  SDL_GameControllerIsSensorEnabled,
+                  SDL_GameController*,
+                  SDL_SensorType)
+  FAKE_VALUE_FUNC(int,
+                  SDL_GameControllerGetSensorData,
+                  SDL_GameController*,
+                  SDL_SensorType,
+                  float*,
+                  int)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerSetLED, SDL_GameController*, Uint8, Uint8, Uint8)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerHasLED, SDL_GameController*)
 
 #if SDL_VERSION_ATLEAST(2, 0, 16)
-FAKE_VALUE_FUNC(float, SDL_GameControllerGetSensorDataRate, SDL_GameController*, SDL_SensorType)
-FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
-#endif // SDL_VERSION_ATLEAST(2, 0, 16)
-
-} // extern "C"
-// clang-format on
+  FAKE_VALUE_FUNC(float,
+                  SDL_GameControllerGetSensorDataRate,
+                  SDL_GameController*,
+                  SDL_SensorType)
+  FAKE_VALUE_FUNC(int, SDL_GameControllerSendEffect, SDL_GameController*, const void*, int)
+#endif  // SDL_VERSION_ATLEAST(2, 0, 16)
+}
 
 class ControllerTest : public testing::Test
 {

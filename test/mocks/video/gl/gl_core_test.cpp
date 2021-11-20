@@ -10,23 +10,22 @@
 
 using namespace std::string_literals;
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_GL_SwapWindow, SDL_Window*)
-FAKE_VOID_FUNC(SDL_GL_GetDrawableSize, SDL_Window*, int*, int*)
-FAKE_VOID_FUNC(SDL_GL_ResetAttributes)
-FAKE_VOID_FUNC(SDL_GL_DeleteContext, void*)
-FAKE_VALUE_FUNC(int, SDL_GL_SetSwapInterval, int)
-FAKE_VALUE_FUNC(int, SDL_GL_GetSwapInterval)
-FAKE_VALUE_FUNC(int, SDL_GL_SetAttribute, SDL_GLattr, int)
-FAKE_VALUE_FUNC(int, SDL_GL_GetAttribute, SDL_GLattr, int*)
-FAKE_VALUE_FUNC(SDL_Window*, SDL_GL_GetCurrentWindow)
-FAKE_VALUE_FUNC(void*, SDL_GL_GetCurrentContext)
-FAKE_VALUE_FUNC(SDL_bool, SDL_GL_ExtensionSupported, const char*)
-FAKE_VALUE_FUNC(int, SDL_GL_BindTexture, SDL_Texture*, float*, float*)
-FAKE_VALUE_FUNC(int, SDL_GL_UnbindTexture, SDL_Texture*)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_GL_SwapWindow, SDL_Window*)
+  FAKE_VOID_FUNC(SDL_GL_GetDrawableSize, SDL_Window*, int*, int*)
+  FAKE_VOID_FUNC(SDL_GL_ResetAttributes)
+  FAKE_VOID_FUNC(SDL_GL_DeleteContext, void*)
+  FAKE_VALUE_FUNC(int, SDL_GL_SetSwapInterval, int)
+  FAKE_VALUE_FUNC(int, SDL_GL_GetSwapInterval)
+  FAKE_VALUE_FUNC(int, SDL_GL_SetAttribute, SDL_GLattr, int)
+  FAKE_VALUE_FUNC(int, SDL_GL_GetAttribute, SDL_GLattr, int*)
+  FAKE_VALUE_FUNC(SDL_Window*, SDL_GL_GetCurrentWindow)
+  FAKE_VALUE_FUNC(void*, SDL_GL_GetCurrentContext)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_GL_ExtensionSupported, const char*)
+  FAKE_VALUE_FUNC(int, SDL_GL_BindTexture, SDL_Texture*, float*, float*)
+  FAKE_VALUE_FUNC(int, SDL_GL_UnbindTexture, SDL_Texture*)
 }
-// clang-format on
 
 class OpenGLTest : public testing::Test
 {

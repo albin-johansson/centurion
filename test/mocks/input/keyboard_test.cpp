@@ -5,12 +5,11 @@
 
 #include <array>  // array
 
-// clang-format off
-extern "C" {
-FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
-FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
+extern "C"
+{
+  FAKE_VALUE_FUNC(const Uint8*, SDL_GetKeyboardState, int*)
+  FAKE_VALUE_FUNC(SDL_bool, SDL_HasScreenKeyboardSupport)
 }
-// clang-format on
 
 TEST(Keyboard, Constructor)
 {

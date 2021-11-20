@@ -5,15 +5,14 @@
 
 #include "core_mocks.hpp"
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(SDL_PumpEvents)
-FAKE_VOID_FUNC(SDL_FlushEvents, Uint32, Uint32)
-FAKE_VALUE_FUNC(int, SDL_PushEvent, SDL_Event*)
-FAKE_VALUE_FUNC(int, SDL_PollEvent, SDL_Event*)
-FAKE_VALUE_FUNC(int, SDL_PeepEvents, SDL_Event*, int, SDL_eventaction, Uint32, Uint32)
+extern "C"
+{
+  FAKE_VOID_FUNC(SDL_PumpEvents)
+  FAKE_VOID_FUNC(SDL_FlushEvents, Uint32, Uint32)
+  FAKE_VALUE_FUNC(int, SDL_PushEvent, SDL_Event*)
+  FAKE_VALUE_FUNC(int, SDL_PollEvent, SDL_Event*)
+  FAKE_VALUE_FUNC(int, SDL_PeepEvents, SDL_Event*, int, SDL_eventaction, Uint32, Uint32)
 }
-// clang-format on
 
 class EventTest : public testing::Test
 {

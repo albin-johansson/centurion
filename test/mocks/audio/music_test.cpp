@@ -12,30 +12,29 @@ using music_finished_callback = void(SDLCALL*)(void);
 using hook_music_callback = void(SDLCALL*)(void*, Uint8*, int);
 using ms = cen::milliseconds<int>;
 
-// clang-format off
-extern "C" {
-FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
-FAKE_VOID_FUNC(Mix_ResumeMusic)
-FAKE_VOID_FUNC(Mix_PauseMusic)
-FAKE_VOID_FUNC(Mix_RewindMusic)
-FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
-FAKE_VOID_FUNC(Mix_HookMusic, hook_music_callback, void*)
-FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
-FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
-FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
-FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
-FAKE_VALUE_FUNC(int, Mix_HaltMusic)
-FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
-FAKE_VALUE_FUNC(int, Mix_PausedMusic)
-FAKE_VALUE_FUNC(void*, Mix_GetMusicHookData)
-FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
-FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
-FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
-FAKE_VALUE_FUNC(int, Mix_SetMusicPosition, double)
-FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
-FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
+extern "C"
+{
+  FAKE_VOID_FUNC(Mix_FreeMusic, Mix_Music*)
+  FAKE_VOID_FUNC(Mix_ResumeMusic)
+  FAKE_VOID_FUNC(Mix_PauseMusic)
+  FAKE_VOID_FUNC(Mix_RewindMusic)
+  FAKE_VOID_FUNC(Mix_HookMusicFinished, music_finished_callback)
+  FAKE_VOID_FUNC(Mix_HookMusic, hook_music_callback, void*)
+  FAKE_VALUE_FUNC(int, Mix_PlayMusic, Mix_Music*, int)
+  FAKE_VALUE_FUNC(int, Mix_FadeInMusic, Mix_Music*, int, int)
+  FAKE_VALUE_FUNC(int, Mix_FadeOutMusic, int)
+  FAKE_VALUE_FUNC(int, Mix_VolumeMusic, int)
+  FAKE_VALUE_FUNC(int, Mix_HaltMusic)
+  FAKE_VALUE_FUNC(int, Mix_PlayingMusic)
+  FAKE_VALUE_FUNC(int, Mix_PausedMusic)
+  FAKE_VALUE_FUNC(void*, Mix_GetMusicHookData)
+  FAKE_VALUE_FUNC(const char*, Mix_GetMusicDecoder, int)
+  FAKE_VALUE_FUNC(SDL_bool, Mix_HasMusicDecoder, const char*)
+  FAKE_VALUE_FUNC(int, Mix_GetNumMusicDecoders)
+  FAKE_VALUE_FUNC(int, Mix_SetMusicPosition, double)
+  FAKE_VALUE_FUNC(Mix_Fading, Mix_FadingMusic)
+  FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
 }
-// clang-format on
 
 class MusicTest : public testing::Test
 {

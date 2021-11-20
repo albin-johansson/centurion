@@ -1,5 +1,5 @@
-#ifndef CENTURION_FONT_HEADER
-#define CENTURION_FONT_HEADER
+#ifndef CENTURION_VIDEO_FONT_HPP_
+#define CENTURION_VIDEO_FONT_HPP_
 
 #ifndef CENTURION_NO_SDL_TTF
 
@@ -851,4 +851,4 @@ inline auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 }  // namespace cen
 
 #endif  // CENTURION_NO_SDL_TTF
-#endif  // CENTURION_FONT_HEADER
+#endif  // CENTURION_VIDEO_FONT_HPP_

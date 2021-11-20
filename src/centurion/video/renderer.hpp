@@ -1,5 +1,5 @@
-#ifndef CENTURION_RENDERER_HEADER
-#define CENTURION_RENDERER_HEADER
+#ifndef CENTURION_VIDEO_RENDERER_HPP_
+#define CENTURION_VIDEO_RENDERER_HPP_
 
 #include <SDL.h>
 
@@ -2195,4 +2195,4 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer) -> std:
 
 }  // namespace cen
 
-#endif  // CENTURION_RENDERER_HEADER
+#endif  // CENTURION_RENDERER_HPP_

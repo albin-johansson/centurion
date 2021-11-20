@@ -1,5 +1,5 @@
-#ifndef CENTURION_SCREEN_HEADER
-#define CENTURION_SCREEN_HEADER
+#ifndef CENTURION_VIDEO_SCREEN_HPP_
+#define CENTURION_VIDEO_SCREEN_HPP_
 
 #include <SDL.h>
 
@@ -477,4 +477,4 @@ namespace cen::screen {
 
 /// \} End of group video
 
-#endif  // CENTURION_SCREEN_HEADER
+#endif  // CENTURION_VIDEO_SCREEN_HPP_

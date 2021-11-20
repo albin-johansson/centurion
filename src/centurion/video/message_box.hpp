@@ -1,5 +1,5 @@
-#ifndef CENTURION_MESSAGE_BOX_HEADER
-#define CENTURION_MESSAGE_BOX_HEADER
+#ifndef CENTURION_VIDEO_MESSAGE_BOX_HPP_
+#define CENTURION_VIDEO_MESSAGE_BOX_HPP_
 
 #include <SDL.h>
 
@@ -741,4 +741,4 @@ inline auto operator<<(std::ostream& stream, const message_box::color_id id) -> 
 
 }  // namespace cen
 
-#endif  // CENTURION_MESSAGE_BOX_HEADER
+#endif  // CENTURION_VIDEO_MESSAGE_BOX_HPP_

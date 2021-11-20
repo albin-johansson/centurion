@@ -1,5 +1,5 @@
-#ifndef CENTURION_UNICODE_STRING_HEADER
-#define CENTURION_UNICODE_STRING_HEADER
+#ifndef CENTURION_VIDEO_UNICODE_STRING_HPP_
+#define CENTURION_VIDEO_UNICODE_STRING_HPP_
 
 #include <cassert>           // assert
 #include <initializer_list>  // initializer_list
@@ -407,4 +407,4 @@ constexpr auto operator""_uni(const ulonglong i) noexcept -> unicode
 
 }  // namespace cen
 
-#endif  // CENTURION_UNICODE_STRING_HEADER
+#endif  // CENTURION_VIDEO_UNICODE_STRING_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_COLORS_HEADER
-#define CENTURION_COLORS_HEADER
+#ifndef CENTURION_VIDEO_COLORS_HPP_
+#define CENTURION_VIDEO_COLORS_HPP_
 
 #include "color.hpp"
 
@@ -1062,4 +1062,4 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 }  // namespace cen::colors
 
-#endif  // CENTURION_COLORS_HEADER
+#endif  // CENTURION_VIDEO_COLORS_HPP_

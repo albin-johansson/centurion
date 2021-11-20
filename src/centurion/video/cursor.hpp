@@ -1,5 +1,5 @@
-#ifndef CENTURION_CURSOR_HEADER
-#define CENTURION_CURSOR_HEADER
+#ifndef CENTURION_VIDEO_CURSOR_HPP_
+#define CENTURION_VIDEO_CURSOR_HPP_
 
 #include <SDL.h>
 
@@ -281,4 +281,4 @@ class basic_cursor final
 
 }  // namespace cen
 
-#endif  // CENTURION_CURSOR_HEADER
+#endif  // CENTURION_VIDEO_CURSOR_HPP_

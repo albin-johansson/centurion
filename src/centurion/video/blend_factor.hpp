@@ -1,5 +1,5 @@
-#ifndef CENTURION_BLEND_FACTOR_HEADER
-#define CENTURION_BLEND_FACTOR_HEADER
+#ifndef CENTURION_VIDEO_BLEND_FACTOR_HPP_
+#define CENTURION_VIDEO_BLEND_FACTOR_HPP_
 
 #include <SDL.h>
 
@@ -175,4 +175,4 @@ inline auto operator<<(std::ostream& stream, const blend_factor factor) -> std::
 
 }  // namespace cen
 
-#endif  // CENTURION_BLEND_FACTOR_HEADER
+#endif  // CENTURION_VIDEO_BLEND_FACTOR_HPP_

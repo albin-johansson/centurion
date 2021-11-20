@@ -1,5 +1,5 @@
-#ifndef CENTURION_PALETTE_HEADER
-#define CENTURION_PALETTE_HEADER
+#ifndef CENTURION_VIDEO_PALETTE_HPP_
+#define CENTURION_VIDEO_PALETTE_HPP_
 
 #include <SDL.h>
 
@@ -257,4 +257,4 @@ inline auto operator<<(std::ostream& stream, const palette& palette) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_PALETTE_HEADER
+#endif  // CENTURION_VIDEO_PALETTE_HPP_

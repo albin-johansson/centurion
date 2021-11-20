@@ -1,5 +1,5 @@
-#ifndef CENTURION_TEXTURE_HEADER
-#define CENTURION_TEXTURE_HEADER
+#ifndef CENTURION_VIDEO_TEXTURE_HPP_
+#define CENTURION_VIDEO_TEXTURE_HPP_
 
 #include <SDL.h>
 
@@ -692,4 +692,4 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_TEXTURE_HEADER
+#endif  // CENTURION_VIDEO_TEXTURE_HPP_

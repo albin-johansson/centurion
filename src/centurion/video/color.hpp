@@ -1,5 +1,5 @@
-#ifndef CENTURION_COLOR_HEADER
-#define CENTURION_COLOR_HEADER
+#ifndef CENTURION_VIDEO_COLOR_HPP_
+#define CENTURION_VIDEO_COLOR_HPP_
 
 #include <SDL.h>
 
@@ -985,4 +985,4 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
 
 }  // namespace cen
 
-#endif  // CENTURION_COLOR_HEADER
+#endif  // CENTURION_VIDEO_COLOR_HPP_

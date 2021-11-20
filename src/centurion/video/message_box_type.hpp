@@ -1,5 +1,5 @@
-#ifndef CENTURION_MESSAGE_BOX_TYPE_HEADER
-#define CENTURION_MESSAGE_BOX_TYPE_HEADER
+#ifndef CENTURION_VIDEO_MESSAGE_BOX_TYPE_HPP_
+#define CENTURION_VIDEO_MESSAGE_BOX_TYPE_HPP_
 
 #include <SDL.h>
 
@@ -92,4 +92,4 @@ inline auto operator<<(std::ostream& stream, const message_box_type type) -> std
 
 }  // namespace cen
 
-#endif  // CENTURION_MESSAGE_BOX_TYPE_HEADER
+#endif  // CENTURION_VIDEO_MESSAGE_BOX_TYPE_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_GL_CONTEXT_HEADER
-#define CENTURION_GL_CONTEXT_HEADER
+#ifndef CENTURION_VIDEO_OPENGL_GL_CONTEXT_HPP_
+#define CENTURION_VIDEO_OPENGL_GL_CONTEXT_HPP_
 
 #ifndef CENTURION_NO_OPENGL
 
@@ -155,4 +155,4 @@ using gl_context_handle = gl::context_handle;
 }  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
-#endif  // CENTURION_GL_CONTEXT_HEADER
+#endif  // CENTURION_VIDEO_OPENGL_GL_CONTEXT_HPP_

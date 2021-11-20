@@ -1,5 +1,5 @@
-#ifndef CENTURION_SURFACE_HEADER
-#define CENTURION_SURFACE_HEADER
+#ifndef CENTURION_VIDEO_SURFACE_HPP_
+#define CENTURION_VIDEO_SURFACE_HPP_
 
 #include <SDL.h>
 
@@ -919,4 +919,4 @@ auto operator<<(std::ostream& stream, const basic_surface<T>& surface) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_SURFACE_HEADER
+#endif  // CENTURION_VIDEO_SURFACE_HPP_

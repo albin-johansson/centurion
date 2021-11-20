@@ -1,5 +1,5 @@
-#ifndef CENTURION_GL_CORE_HEADER
-#define CENTURION_GL_CORE_HEADER
+#ifndef CENTURION_VIDEO_OPENGL_GL_CORE_HPP_
+#define CENTURION_VIDEO_OPENGL_GL_CORE_HPP_
 
 #ifndef CENTURION_NO_OPENGL
 
@@ -333,4 +333,4 @@ auto unbind(basic_texture<T>& texture) noexcept -> result
 }  // namespace cen::gl
 
 #endif  // CENTURION_NO_OPENGL
-#endif  // CENTURION_GL_CORE_HEADER
+#endif  // CENTURION_VIDEO_OPENGL_GL_CORE_HPP_

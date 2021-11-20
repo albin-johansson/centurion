@@ -1,5 +1,5 @@
-#ifndef CENTURION_SCALE_MODE_HEADER
-#define CENTURION_SCALE_MODE_HEADER
+#ifndef CENTURION_VIDEO_SCALE_MODE_HPP_
+#define CENTURION_VIDEO_SCALE_MODE_HPP_
 
 #include <SDL.h>
 
@@ -146,4 +146,4 @@ inline auto operator<<(std::ostream& stream, const scale_mode mode) -> std::ostr
 
 }  // namespace cen
 
-#endif  // CENTURION_SCALE_MODE_HEADER
+#endif  // CENTURION_VIDEO_SCALE_MODE_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_SYSTEM_CURSOR_HEADER
-#define CENTURION_SYSTEM_CURSOR_HEADER
+#ifndef CENTURION_VIDEO_SYSTEM_CURSOR_HPP_
+#define CENTURION_VIDEO_SYSTEM_CURSOR_HPP_
 
 #include <SDL.h>
 
@@ -192,4 +192,4 @@ inline auto operator<<(std::ostream& stream, const system_cursor cursor) -> std:
 
 }  // namespace cen
 
-#endif  // CENTURION_SYSTEM_CURSOR_HEADER
+#endif  // CENTURION_VIDEO_SYSTEM_CURSOR_HPP_

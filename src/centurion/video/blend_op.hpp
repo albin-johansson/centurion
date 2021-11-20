@@ -1,5 +1,5 @@
-#ifndef CENTURION_BLEND_OP_HEADER
-#define CENTURION_BLEND_OP_HEADER
+#ifndef CENTURION_VIDEO_BLEND_OP_HPP_
+#define CENTURION_VIDEO_BLEND_OP_HPP_
 
 #include <SDL.h>
 
@@ -151,4 +151,4 @@ inline auto operator<<(std::ostream& stream, const blend_op op) -> std::ostream&
 
 }  // namespace cen
 
-#endif  // CENTURION_BLEND_OP_HEADER
+#endif  // CENTURION_VIDEO_BLEND_OP_HPP_

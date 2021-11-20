@@ -1,5 +1,5 @@
-#ifndef CENTURION_FLASH_OP_HEADER
-#define CENTURION_FLASH_OP_HEADER
+#ifndef CENTURION_VIDEO_FLASH_OP_HPP_
+#define CENTURION_VIDEO_FLASH_OP_HPP_
 
 #include <SDL.h>
 
@@ -96,4 +96,4 @@ inline auto operator<<(std::ostream& stream, const flash_op op) -> std::ostream&
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
-#endif  // CENTURION_FLASH_OP_HEADER
+#endif  // CENTURION_VIDEO_FLASH_OP_HPP_

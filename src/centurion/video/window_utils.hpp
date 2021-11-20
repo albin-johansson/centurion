@@ -1,5 +1,5 @@
-#ifndef CENTURION_WINDOW_UTILS_HEADER
-#define CENTURION_WINDOW_UTILS_HEADER
+#ifndef CENTURION_VIDEO_WINDOW_UTILS_HPP_
+#define CENTURION_VIDEO_WINDOW_UTILS_HPP_
 
 #include <SDL.h>
 
@@ -125,4 +125,4 @@ template <typename T>
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_UTILS_HEADER
+#endif  // CENTURION_VIDEO_WINDOW_UTILS_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_BUTTON_ORDER_HEADER
-#define CENTURION_BUTTON_ORDER_HEADER
+#ifndef CENTURION_VIDEO_BUTTON_ORDER_HPP_
+#define CENTURION_VIDEO_BUTTON_ORDER_HPP_
 
 #include <SDL.h>
 
@@ -93,4 +93,4 @@ inline auto operator<<(std::ostream& stream, const button_order order) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_BUTTON_ORDER_HEADER
+#endif  // CENTURION_VIDEO_BUTTON_ORDER_HPP_

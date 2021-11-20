@@ -1,5 +1,5 @@
-#ifndef CENTURION_GL_ATTRIBUTE_HEADER
-#define CENTURION_GL_ATTRIBUTE_HEADER
+#ifndef CENTURION_VIDEO_OPENGL_GL_ATTRIBUTE_HPP_
+#define CENTURION_VIDEO_OPENGL_GL_ATTRIBUTE_HPP_
 
 #ifndef CENTURION_NO_OPENGL
 
@@ -192,4 +192,4 @@ inline auto operator<<(std::ostream& stream, const gl_attribute attr) -> std::os
 }  // namespace cen
 
 #endif  // CENTURION_NO_OPENGL
-#endif  // CENTURION_GL_ATTRIBUTE_HEADER
+#endif  // CENTURION_VIDEO_OPENGL_GL_ATTRIBUTE_HPP_

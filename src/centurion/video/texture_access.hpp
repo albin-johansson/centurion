@@ -1,5 +1,5 @@
-#ifndef CENTURION_TEXTURE_ACCESS_HEADER
-#define CENTURION_TEXTURE_ACCESS_HEADER
+#ifndef CENTURION_VIDEO_TEXTURE_ACCESS_HPP_
+#define CENTURION_VIDEO_TEXTURE_ACCESS_HPP_
 
 #include <SDL.h>
 
@@ -147,4 +147,4 @@ inline auto operator<<(std::ostream& stream, const texture_access access) -> std
 
 }  // namespace cen
 
-#endif  // CENTURION_TEXTURE_ACCESS_HEADER
+#endif  // CENTURION_VIDEO_TEXTURE_ACCESS_HPP_

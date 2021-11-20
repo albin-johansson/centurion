@@ -1,5 +1,5 @@
-#ifndef CENTURION_PIXEL_FORMAT_INFO_HEADER
-#define CENTURION_PIXEL_FORMAT_INFO_HEADER
+#ifndef CENTURION_VIDEO_PIXEL_FORMAT_INFO_HPP_
+#define CENTURION_VIDEO_PIXEL_FORMAT_INFO_HPP_
 
 #include <SDL.h>
 
@@ -334,4 +334,4 @@ auto operator<<(std::ostream& stream, const basic_pixel_format_info<T>& info) ->
 
 }  // namespace cen
 
-#endif  // CENTURION_PIXEL_FORMAT_INFO_HEADER
+#endif  // CENTURION_PIXEL_FORMAT_INFO_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_WINDOW_HEADER
-#define CENTURION_WINDOW_HEADER
+#ifndef CENTURION_VIDEO_WINDOW_HPP_
+#define CENTURION_VIDEO_WINDOW_HPP_
 
 #include <SDL.h>
 
@@ -1394,4 +1394,4 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window) -> std::ost
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_HEADER
+#endif  // CENTURION_VIDEO_WINDOW_HPP_

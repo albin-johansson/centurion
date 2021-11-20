@@ -1,5 +1,5 @@
-#ifndef CENTURION_BLEND_MODE_HEADER
-#define CENTURION_BLEND_MODE_HEADER
+#ifndef CENTURION_VIDEO_BLEND_MODE_HPP_
+#define CENTURION_VIDEO_BLEND_MODE_HPP_
 
 #include <SDL.h>
 
@@ -212,4 +212,4 @@ inline auto operator<<(std::ostream& stream, const blend_mode mode) -> std::ostr
 
 }  // namespace cen
 
-#endif  // CENTURION_BLEND_MODE_HEADER
+#endif  // CENTURION_VIDEO_BLEND_MODE_HPP_

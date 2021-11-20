@@ -73,11 +73,27 @@ endif ()
 
 add_header_only_lib(libFFF ${CEN_LIBRARY_DIR}/fff ${CEN_LIBRARY_DIR}/fff/fff.h)
 
-if (MSVC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
+                         /EHsc
+                         /MP
+                         /W4
+                         /Zc:preprocessor # Enable conforming preprocessor
+                         /Zc:__cplusplus  # Force MSVC to use __cplusplus macro with correct value
                          /wd4834  # "discarding return value of function with 'nodiscard' attribute"
                          /wd4702  # "unreachable code"
                          )
+
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  target_compile_options(${CENTURION_MOCK_TARGET} PRIVATE
+                         -Wall
+                         -Wextra
+                         -Wpedantic
+                         -Wconversion
+                         )
+
+else ()
+  message("[centurion::mocks]: could not determine compiler options")
 endif ()
 
 target_include_directories(${CENTURION_MOCK_TARGET}
@@ -86,6 +102,10 @@ target_include_directories(${CENTURION_MOCK_TARGET}
                            ${PROJECT_SOURCE_DIR}
 
                            SYSTEM PRIVATE
+                           ${SDL2_INCLUDE_DIR}
+                           ${SDL2_IMAGE_INCLUDE_DIRS}
+                           ${SDL2_TTF_INCLUDE_DIRS}
+                           ${SDL2_MIXER_INCLUDE_DIRS}
                            ${gtest_SOURCE_DIR}/include
                            ${gtest_SOURCE_DIR}
                            ${gmock_SOURCE_DIR}/include
@@ -93,7 +113,6 @@ target_include_directories(${CENTURION_MOCK_TARGET}
                            )
 
 target_link_libraries(${CENTURION_MOCK_TARGET} PRIVATE
-                      ${CENTURION_LIB_TARGET}
                       gtest
                       libFFF
                       )

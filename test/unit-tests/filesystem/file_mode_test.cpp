@@ -1,8 +1,8 @@
-#include "filesystem/file_mode.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "filesystem/file.hpp"
 
 TEST(FileMode, ToString)
 {

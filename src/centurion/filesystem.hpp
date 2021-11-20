@@ -3,8 +3,6 @@
 
 #include "filesystem/base_path.hpp"
 #include "filesystem/file.hpp"
-#include "filesystem/file_mode.hpp"
-#include "filesystem/file_type.hpp"
 #include "filesystem/preferred_path.hpp"
 #include "filesystem/seek_mode.hpp"
 

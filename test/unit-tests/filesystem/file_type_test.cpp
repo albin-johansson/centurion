@@ -1,10 +1,9 @@
-#include "filesystem/file_type.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
 
 #include "core/common.hpp"
+#include "filesystem/file.hpp"
 
 TEST(FileType, Values)
 {

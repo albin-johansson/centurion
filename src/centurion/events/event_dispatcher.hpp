@@ -1,5 +1,5 @@
-#ifndef CENTURION_EVENT_DISPATCHER_HEADER
-#define CENTURION_EVENT_DISPATCHER_HEADER
+#ifndef CENTURION_EVENTS_EVENT_DISPATCHER_HPP_
+#define CENTURION_EVENTS_EVENT_DISPATCHER_HPP_
 
 #include <array>        // array
 #include <functional>   // function, bind

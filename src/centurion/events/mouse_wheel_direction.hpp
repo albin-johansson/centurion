@@ -1,5 +1,5 @@
-#ifndef CENTURION_MOUSE_WHEEL_DIRECTION_HEADER
-#define CENTURION_MOUSE_WHEEL_DIRECTION_HEADER
+#ifndef CENTURION_EVENTS_MOUSE_WHEEL_DIRECTION_HPP_
+#define CENTURION_EVENTS_MOUSE_WHEEL_DIRECTION_HPP_
 
 #include <SDL.h>
 
@@ -153,4 +153,4 @@ inline auto operator<<(std::ostream& stream, const mouse_wheel_direction dir) ->
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_WHEEL_DIRECTION_HEADER
+#endif  // CENTURION_EVENTS_MOUSE_WHEEL_DIRECTION_HPP_

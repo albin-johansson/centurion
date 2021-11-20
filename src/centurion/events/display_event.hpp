@@ -1,5 +1,5 @@
-#ifndef CENTURION_DISPLAY_EVENT_HEADER
-#define CENTURION_DISPLAY_EVENT_HEADER
+#ifndef CENTURION_EVENTS_DISPLAY_EVENT_HPP_
+#define CENTURION_EVENTS_DISPLAY_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -138,4 +138,4 @@ inline auto as_sdl_event(const common_event<SDL_DisplayEvent>& event) -> SDL_Eve
 
 }  // namespace cen
 
-#endif  // CENTURION_DISPLAY_EVENT_HEADER
+#endif  // CENTURION_EVENTS_DISPLAY_EVENT_HPP_

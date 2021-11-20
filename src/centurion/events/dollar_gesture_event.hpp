@@ -1,5 +1,5 @@
-#ifndef CENTURION_DOLLAR_GESTURE_HEADER
-#define CENTURION_DOLLAR_GESTURE_HEADER
+#ifndef CENTURION_EVENTS_DOLLAR_GESTURE_HPP_
+#define CENTURION_EVENTS_DOLLAR_GESTURE_HPP_
 
 #include <SDL.h>
 
@@ -213,4 +213,4 @@ inline auto as_sdl_event(const common_event<SDL_DollarGestureEvent>& event) -> S
 
 }  // namespace cen
 
-#endif  // CENTURION_DOLLAR_GESTURE_HEADER
+#endif  // CENTURION_EVENTS_DOLLAR_GESTURE_HPP_

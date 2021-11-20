@@ -1,5 +1,5 @@
-#ifndef CENTURION_EVENT_HEADER
-#define CENTURION_EVENT_HEADER
+#ifndef CENTURION_EVENTS_EVENT_HPP_
+#define CENTURION_EVENTS_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -570,4 +570,4 @@ class event final
 
 }  // namespace cen
 
-#endif  // CENTURION_EVENT_HEADER
+#endif  // CENTURION_EVENT_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_JOY_BUTTON_EVENT_HEADER
-#define CENTURION_JOY_BUTTON_EVENT_HEADER
+#ifndef CENTURION_EVENTS_JOY_BUTTON_EVENT_HPP_
+#define CENTURION_EVENTS_JOY_BUTTON_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -159,4 +159,4 @@ inline auto as_sdl_event(const common_event<SDL_JoyButtonEvent>& event) -> SDL_E
 
 }  // namespace cen
 
-#endif  // CENTURION_JOY_BUTTON_EVENT_HEADER
+#endif  // CENTURION_EVENTS_JOY_BUTTON_EVENT_HPP_

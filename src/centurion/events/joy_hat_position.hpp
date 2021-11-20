@@ -1,5 +1,5 @@
-#ifndef CENTURION_JOY_HAT_POSITION_HEADER
-#define CENTURION_JOY_HAT_POSITION_HEADER
+#ifndef CENTURION_EVENTS_JOY_HAT_POSITION_HPP_
+#define CENTURION_EVENTS_JOY_HAT_POSITION_HPP_
 
 #include <SDL.h>
 
@@ -128,4 +128,4 @@ inline auto operator<<(std::ostream& stream, const joy_hat_position position) ->
 
 }  // namespace cen
 
-#endif  // CENTURION_JOY_HAT_POSITION_HEADER
+#endif  // CENTURION_EVENTS_JOY_HAT_POSITION_HPP_

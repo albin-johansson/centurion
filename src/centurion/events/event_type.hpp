@@ -1,5 +1,5 @@
-#ifndef CENTURION_EVENT_TYPE_HEADER
-#define CENTURION_EVENT_TYPE_HEADER
+#ifndef CENTURION_EVENTS_EVENT_TYPE_HPP_
+#define CENTURION_EVENTS_EVENT_TYPE_HPP_
 
 #include <SDL.h>
 
@@ -372,4 +372,4 @@ inline auto operator<<(std::ostream& stream, const event_type type) -> std::ostr
 
 }  // namespace cen
 
-#endif  // CENTURION_EVENT_TYPE_HEADER
+#endif  // CENTURION_EVENTS_EVENT_TYPE_HPP_

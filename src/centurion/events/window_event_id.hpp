@@ -1,5 +1,5 @@
-#ifndef CENTURION_WINDOW_EVENT_ID_HEADER
-#define CENTURION_WINDOW_EVENT_ID_HEADER
+#ifndef CENTURION_EVENTS_WINDOW_EVENT_ID_HPP_
+#define CENTURION_EVENTS_WINDOW_EVENT_ID_HPP_
 
 #include <SDL.h>
 
@@ -220,4 +220,4 @@ inline auto operator<<(std::ostream& stream, const window_event_id id) -> std::o
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_EVENT_ID_HEADER
+#endif  // CENTURION_EVENTS_WINDOW_EVENT_ID_HPP_

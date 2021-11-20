@@ -1,5 +1,5 @@
-#ifndef CENTURION_MOUSE_MOTION_EVENT_HEADER
-#define CENTURION_MOUSE_MOTION_EVENT_HEADER
+#ifndef CENTURION_EVENTS_MOUSE_MOTION_EVENT_HPP_
+#define CENTURION_EVENTS_MOUSE_MOTION_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -254,4 +254,4 @@ inline auto as_sdl_event(const common_event<SDL_MouseMotionEvent>& event) -> SDL
 
 }  // namespace cen
 
-#endif  // CENTURION_MOUSE_MOTION_EVENT_HEADER
+#endif  // CENTURION_EVENTS_MOUSE_MOTION_EVENT_HPP_

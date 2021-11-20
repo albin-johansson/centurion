@@ -1,5 +1,5 @@
-#ifndef CENTURION_WINDOW_EVENT_HEADER
-#define CENTURION_WINDOW_EVENT_HEADER
+#ifndef CENTURION_EVENTS_WINDOW_EVENT_HPP_
+#define CENTURION_EVENTS_WINDOW_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -115,4 +115,4 @@ inline auto as_sdl_event(const common_event<SDL_WindowEvent>& event) -> SDL_Even
 
 }  // namespace cen
 
-#endif  // CENTURION_WINDOW_EVENT_HEADER
+#endif  // CENTURION_EVENTS_WINDOW_EVENT_HPP_

@@ -1,5 +1,5 @@
-#ifndef CENTURION_TOUCH_FINGER_EVENT_HEADER
-#define CENTURION_TOUCH_FINGER_EVENT_HEADER
+#ifndef CENTURION_EVENTS_TOUCH_FINGER_EVENT_HPP_
+#define CENTURION_EVENTS_TOUCH_FINGER_EVENT_HPP_
 
 #include <SDL.h>
 
@@ -291,4 +291,4 @@ inline auto as_sdl_event(const common_event<SDL_TouchFingerEvent>& event) -> SDL
 
 }  // namespace cen
 
-#endif  // CENTURION_TOUCH_FINGER_EVENT_HEADER
+#endif  // CENTURION_EVENTS_TOUCH_FINGER_EVENT_HPP_

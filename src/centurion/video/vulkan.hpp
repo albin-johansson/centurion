@@ -1,5 +1,5 @@
-#ifndef CENTURION_VIDEO_VULKAN_CORE_HPP_
-#define CENTURION_VIDEO_VULKAN_CORE_HPP_
+#ifndef CENTURION_VIDEO_VULKAN_HPP_
+#define CENTURION_VIDEO_VULKAN_HPP_
 
 #ifndef CENTURION_NO_VULKAN
 
@@ -7,28 +7,57 @@
 #include <SDL_vulkan.h>
 
 #include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
+#include <optional>  // optional, nullopt
 #include <vector>    // vector
 
-#include "../../core/common.hpp"
-#include "../window.hpp"
+#include "../core/common.hpp"
+#include "../core/exception.hpp"
+#include "../core/features.hpp"
+#include "../math/area.hpp"
+#include "window.hpp"
 
-/**
- * \namespace cen::vk
- *
- * \brief Contains Vulkan-related components.
- *
- * \ingroup video
- *
- * \since 6.0.0
- */
-namespace cen::vk {
+namespace cen {
 
 /// \addtogroup video
 /// \{
 
-/// \name Vulkan functions
+/**
+ * \class vk_library
+ *
+ * \brief Responsible for loading and unloading a Vulkan library.
+ *
+ * \since 6.0.0
+ */
+class vk_library final
+{
+ public:
+  /**
+   * \brief Loads a Vulkan library.
+   *
+   * \param path optional file path to a Vulkan library; a null path indicates that the
+   * default library will be used.
+   */
+  CENTURION_NODISCARD_CTOR explicit vk_library(const cstr path = nullptr)
+  {
+    if (SDL_Vulkan_LoadLibrary(path) == -1) {
+      throw sdl_error{};
+    }
+  }
+
+  ~vk_library() noexcept
+  {
+    SDL_Vulkan_UnloadLibrary();
+  }
+
+  CENTURION_DISABLE_COPY(vk_library)
+  CENTURION_DISABLE_MOVE(vk_library)
+};
+
+/// \} End of group video
+
+namespace vk {
+
+/// \addtogroup video
 /// \{
 
 /**
@@ -74,14 +103,14 @@ auto create_surface(basic_window<T>& window,
  *
  * \since 6.0.0
  */
-inline auto required_extensions() -> std::optional<std::vector<str>>
+inline auto required_extensions() -> std::optional<std::vector<cstr>>
 {
   uint count{};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
     return std::nullopt;
   }
 
-  std::vector<str> names(count);
+  std::vector<cstr> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data())) {
     return std::nullopt;
   }
@@ -109,17 +138,15 @@ template <typename T>
 
   int width{};
   int height{};
-
   SDL_Vulkan_GetDrawableSize(window.get(), &width, &height);
 
   return {width, height};
 }
 
-/// \} End of Vulkan functions
-
 /// \} End of group video
 
-}  // namespace cen::vk
+}  // namespace vk
+}  // namespace cen
 
 #endif  // CENTURION_NO_VULKAN
-#endif  // CENTURION_VIDEO_VULKAN_CORE_HPP_
+#endif  // CENTURION_VIDEO_VULKAN_HPP_

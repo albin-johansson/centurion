@@ -27,8 +27,7 @@
 #include "video/texture.hpp"
 #include "video/texture_access.hpp"
 #include "video/unicode_string.hpp"
-#include "video/vulkan/vk_core.hpp"
-#include "video/vulkan/vk_library.hpp"
+#include "video/vulkan.hpp"
 #include "video/window.hpp"
 #include "video/window_utils.hpp"
 

@@ -1,5 +1,3 @@
-#include "video/vulkan/vk_library.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -7,6 +5,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
+#include "video/vulkan.hpp"
 
 extern "C"
 {

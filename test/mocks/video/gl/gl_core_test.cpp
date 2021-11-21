@@ -1,5 +1,3 @@
-#include "video/opengl/gl_core.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -7,6 +5,7 @@
 #include <string>  // string
 
 #include "core_mocks.hpp"
+#include "video/opengl.hpp"
 
 using namespace std::string_literals;
 

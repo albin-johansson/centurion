@@ -1,5 +1,3 @@
-#include "video/opengl/gl_library.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
@@ -7,6 +5,7 @@
 
 #include "core/common.hpp"
 #include "core_mocks.hpp"
+#include "video/opengl.hpp"
 
 extern "C"
 {

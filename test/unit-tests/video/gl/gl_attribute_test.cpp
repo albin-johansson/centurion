@@ -3,7 +3,7 @@
 #include <iostream>  // clog
 
 #include "core/common.hpp"
-#include "video/opengl/gl_core.hpp"
+#include "video/opengl.hpp"
 
 TEST(GLAttribute, Values)
 {

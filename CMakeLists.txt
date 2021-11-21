@@ -205,6 +205,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/graphics_drivers.hpp
                src/centurion/video/message_box.hpp
                src/centurion/video/message_box_type.hpp
+               src/centurion/video/opengl.hpp
                src/centurion/video/palette.hpp
                src/centurion/video/pixel_format.hpp
                src/centurion/video/pixel_format_info.hpp
@@ -219,11 +220,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/video/unicode_string.hpp
                src/centurion/video/window.hpp
                src/centurion/video/window_utils.hpp
-
-               src/centurion/video/opengl/gl_attribute.hpp
-               src/centurion/video/opengl/gl_context.hpp
-               src/centurion/video/opengl/gl_core.hpp
-               src/centurion/video/opengl/gl_library.hpp
 
                src/centurion/video/vulkan/vk_core.hpp
                src/centurion/video/vulkan/vk_library.hpp

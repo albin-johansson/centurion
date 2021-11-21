@@ -1,11 +1,10 @@
-#include "video/opengl/gl_context.hpp"
-
 #include <fff.h>
 #include <gtest/gtest.h>
 
 #include <array>  // array
 
 #include "core_mocks.hpp"
+#include "video/opengl.hpp"
 
 extern "C"
 {
@@ -22,13 +21,13 @@ class OpenGLContextTest : public testing::Test
     RESET_FAKE(SDL_GL_MakeCurrent)
   }
 
-  cen::gl::context_handle m_context{nullptr};
+  cen::gl_context_handle m_context{nullptr};
 };
 
 TEST_F(OpenGLContextTest, Construction)
 {
-  ASSERT_THROW(cen::gl::context{nullptr}, cen::cen_error);
-  ASSERT_NO_THROW(cen::gl::context_handle{nullptr});
+  ASSERT_THROW(cen::gl_context{nullptr}, cen::cen_error);
+  ASSERT_NO_THROW(cen::gl_context_handle{nullptr});
 }
 
 TEST_F(OpenGLContextTest, MakeCurrent)

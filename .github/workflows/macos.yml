@@ -2,9 +2,6 @@ name: "CI: macOS"
 
 on: [ push, pull_request ]
 
-env:
-  MIX_VERSION: 2.0.4
-
 jobs:
   macos-test:
     runs-on: macos-latest
@@ -16,35 +13,17 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v3
       - uses: lukka/get-cmake@v3.18.3
 
-      - name: Install mpg123
-        shell: bash
-        run: brew install mpg123
-
-      - name: Install OpenGL
+      - name: Install GLFW
         shell: bash
         run: brew install glfw
 
       - name: Install SDL2
         shell: bash
-        run: brew install SDL2
-
-      - name: Install SDL2_image
-        shell: bash
-        run: brew install SDL2_image
-
-      # Due to some unfortunate default options in the brew formula, we install SDL2_mixer manually
-      - name: Install SDL2_mixer
-        shell: bash
         run: |
-          curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${{env.MIX_VERSION}}.tar.gz | tar xz
-          cd SDL2_mixer-${{env.MIX_VERSION}}
-          ./configure
-          make
-          make install
-
-      - name: Install SDL2_ttf
-        shell: bash
-        run: brew install SDL2_ttf
+          brew install sdl2
+          brew install sdl2_image
+          brew install sdl2_mixer
+          brew install sdl2_ttf
 
       - name: Make build directory
         shell: bash

@@ -490,7 +490,7 @@ TEST_F(BasicHintTest, AddHintCallbackExFull)
   cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   const auto callable = [](int* ptr,
-                           const cen::str name,
+                           const cen::cstr name,
                            const render_driver::value oldValue,
                            const render_driver::value newValue) {
     static bool first = true;

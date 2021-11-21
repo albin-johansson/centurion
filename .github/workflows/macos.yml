@@ -10,8 +10,14 @@ jobs:
         CPP_VERSION: [ 17, 20 ]
     steps:
       - uses: actions/checkout@v2
-      - uses: seanmiddleditch/gha-setup-ninja@v3
-      - uses: lukka/get-cmake@v3.18.3
+
+      - name: Install CMake
+        shell: bash
+        run: brew install cmake
+
+      - name: Install Ninja
+        shell: bash
+        run: brew install ninja
 
       - name: Install GLFW
         shell: bash

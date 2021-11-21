@@ -51,7 +51,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-[[nodiscard]] inline auto preferred_path(const not_null<str> org, const not_null<str> app)
+[[nodiscard]] inline auto preferred_path(const not_null<cstr> org, const not_null<cstr> app)
     -> sdl_string
 {
   /* Looking at the SDL source code, it actually seems fine to supply a null

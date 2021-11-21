@@ -252,7 +252,7 @@ TEST_F(ControllerTest, IsConnected)
 
 TEST_F(ControllerTest, Name)
 {
-  std::array<cen::str, 2> values{nullptr, "foobar"};
+  std::array<cen::cstr, 2> values{nullptr, "foobar"};
   SET_RETURN_SEQ(SDL_GameControllerName, values.data(), cen::isize(values));
 
   ASSERT_EQ(nullptr, m_controller.name());

@@ -315,7 +315,7 @@ template <typename T>
  *
  * \since 5.0.0
  */
-inline auto set_clipboard_text(const not_null<str> text) noexcept -> result
+inline auto set_clipboard_text(const not_null<cstr> text) noexcept -> result
 {
   assert(text);
   return SDL_SetClipboardText(text) == 0;
@@ -355,7 +355,7 @@ inline auto set_clipboard_text(const std::string& text) noexcept -> result
  *
  * \since 5.2.0
  */
-inline auto open_url(const not_null<str> url) noexcept -> result
+inline auto open_url(const not_null<cstr> url) noexcept -> result
 {
   assert(url);
   return SDL_OpenURL(url) == 0;

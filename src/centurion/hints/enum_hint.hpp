@@ -192,7 +192,7 @@ class enum_hint
 
   [[nodiscard]] static auto current_value() noexcept -> std::optional<value_type>
   {
-    if (const str hint = SDL_GetHint(Derived::name())) {
+    if (const cstr hint = SDL_GetHint(Derived::name())) {
       return Derived::map.key_from(hint);
     }
     else {
@@ -200,7 +200,7 @@ class enum_hint
     }
   }
 
-  [[nodiscard]] static auto from_string(const str value) -> value_type
+  [[nodiscard]] static auto from_string(const cstr value) -> value_type
   {
     return Derived::map.key_from(value);
   }

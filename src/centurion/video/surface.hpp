@@ -122,7 +122,7 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_surface(const not_null<str> file) : m_surface{IMG_Load(file)}
+  explicit basic_surface(const not_null<cstr> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
       throw img_error{};
@@ -185,7 +185,7 @@ class basic_surface final
    * \since 5.2.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto with_format(const not_null<str> file,
+  [[nodiscard]] static auto with_format(const not_null<cstr> file,
                                         const blend_mode blendMode,
                                         const pixel_format pixelFormat) -> basic_surface
   {
@@ -222,7 +222,7 @@ class basic_surface final
    * \since 5.3.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto from_bmp(const not_null<str> file) -> basic_surface
+  [[nodiscard]] static auto from_bmp(const not_null<cstr> file) -> basic_surface
   {
     assert(file);
     return basic_surface{SDL_LoadBMP(file)};
@@ -311,7 +311,7 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  auto save_as_bmp(const not_null<str> file) const noexcept -> result
+  auto save_as_bmp(const not_null<cstr> file) const noexcept -> result
   {
     assert(file);
     return SDL_SaveBMP(get(), file) != -1;
@@ -337,7 +337,7 @@ class basic_surface final
    *
    * \since 6.0.0
    */
-  auto save_as_png(const not_null<str> file) const noexcept -> result
+  auto save_as_png(const not_null<cstr> file) const noexcept -> result
   {
     assert(file);
     return IMG_SavePNG(get(), file) != -1;
@@ -366,7 +366,7 @@ class basic_surface final
    *
    * \since 6.0.0
    */
-  auto save_as_jpg(const not_null<str> file, const int quality) const noexcept -> result
+  auto save_as_jpg(const not_null<cstr> file, const int quality) const noexcept -> result
   {
     assert(file);
     return IMG_SaveJPG(get(), file, quality) != -1;

@@ -114,7 +114,7 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
-  basic_texture(const Renderer& renderer, const not_null<str> path)
+  basic_texture(const Renderer& renderer, const not_null<cstr> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
@@ -212,7 +212,7 @@ class basic_texture final
    */
   template <typename Renderer, typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      const not_null<str> path,
+                                      const not_null<cstr> path,
                                       const pixel_format format) -> basic_texture
   {
     assert(path);

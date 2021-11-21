@@ -105,7 +105,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  explicit key_code(const not_null<str> name) noexcept
+  explicit key_code(const not_null<cstr> name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
@@ -175,7 +175,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  auto operator=(const not_null<str> name) noexcept -> key_code&
+  auto operator=(const not_null<cstr> name) noexcept -> key_code&
   {
     assert(name);
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));

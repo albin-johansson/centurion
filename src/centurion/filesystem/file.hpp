@@ -123,11 +123,11 @@ class file final
    *
    * \since 5.3.0
    */
-  file(const not_null<str> path, const file_mode mode) noexcept
+  file(const not_null<cstr> path, const file_mode mode) noexcept
       : m_context{SDL_RWFromFile(path, to_string(mode))}
   {}
 
-  /// \copydoc file(not_null<str>, file_mode)
+  /// \copydoc file(not_null<cstr>, file_mode)
   file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
   {}
 
@@ -818,7 +818,7 @@ class file final
   };
   std::unique_ptr<SDL_RWops, deleter> m_context;
 
-  [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> str
+  [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> cstr
   {
     switch (mode) {
       default:

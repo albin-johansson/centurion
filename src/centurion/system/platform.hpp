@@ -113,7 +113,7 @@ inline auto operator<<(std::ostream& stream, const platform_id id) -> std::ostre
  */
 [[nodiscard]] inline auto current_platform() noexcept -> platform_id
 {
-  const str platform = SDL_GetPlatform();
+  const cstr platform = SDL_GetPlatform();
   if (detail::cmp(platform, "Windows")) {
     return platform_id::windows;
   }

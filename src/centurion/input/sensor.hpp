@@ -204,7 +204,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> str
+  [[nodiscard]] auto name() const noexcept -> cstr
   {
     return SDL_SensorGetName(m_sensor);
   }
@@ -304,7 +304,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto name(const int index) noexcept -> str
+  [[nodiscard]] static auto name(const int index) noexcept -> cstr
   {
     return SDL_SensorGetDeviceName(index);
   }

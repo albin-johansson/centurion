@@ -128,7 +128,7 @@ void test_hint(T&& callable)
 }
 
 template <typename Hint>
-void test_string_hint(cen::str str)
+void test_string_hint(cen::cstr str)
 {
   test_hint<Hint>([str] {
     ASSERT_TRUE(cen::set_hint<Hint>(str));
@@ -400,7 +400,7 @@ TEST_F(BasicHintTest, AddHintCallback)
   cen::set_hint<render_driver, cen::hint_priority::override>(render_driver::value::software);
 
   const auto callable =
-      [](void* data, const cen::str hint, const cen::str oldVal, const cen::str newVal) {
+      [](void* data, const cen::cstr hint, const cen::cstr oldVal, const cen::cstr newVal) {
         static bool first = true;
         if (first) {
           first = false;

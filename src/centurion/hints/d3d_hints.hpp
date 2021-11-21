@@ -13,7 +13,7 @@ namespace cen::hint::d3d {
 
 struct v11_debug final : detail::bool_hint<v11_debug>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> cstr
   {
     return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
   }
@@ -21,7 +21,7 @@ struct v11_debug final : detail::bool_hint<v11_debug>
 
 struct thread_safe final : detail::bool_hint<thread_safe>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> cstr
   {
     return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
   }

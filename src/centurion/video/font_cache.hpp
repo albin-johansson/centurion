@@ -114,7 +114,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_utf8(const id_type id, const not_null<str> string, Renderer& renderer)
+  void store_blended_utf8(const id_type id, const not_null<cstr> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_utf8(string, get_font()));
@@ -149,7 +149,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_wrapped_utf8(const id_type id,
-                                  const not_null<str> string,
+                                  const not_null<cstr> string,
                                   Renderer& renderer,
                                   const u32 wrap)
   {
@@ -189,7 +189,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_shaded_utf8(const id_type id,
-                         const not_null<str> string,
+                         const not_null<cstr> string,
                          Renderer& renderer,
                          const color& background)
   {
@@ -227,7 +227,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_utf8(const id_type id, const not_null<str> string, Renderer& renderer)
+  void store_solid_utf8(const id_type id, const not_null<cstr> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_solid_utf8(string, get_font()));
@@ -260,7 +260,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
+  void store_blended_latin1(const id_type id, const not_null<cstr> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_blended_latin1(string, get_font()));
@@ -295,7 +295,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_wrapped_latin1(const id_type id,
-                                    const not_null<str> string,
+                                    const not_null<cstr> string,
                                     Renderer& renderer,
                                     const u32 wrap)
   {
@@ -335,7 +335,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_shaded_latin1(const id_type id,
-                           const not_null<str> string,
+                           const not_null<cstr> string,
                            Renderer& renderer,
                            const color& background)
   {
@@ -373,7 +373,7 @@ class font_cache final
    * \since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_latin1(const id_type id, const not_null<str> string, Renderer& renderer)
+  void store_solid_latin1(const id_type id, const not_null<cstr> string, Renderer& renderer)
   {
     assert(string);
     store(id, renderer.render_solid_latin1(string, get_font()));

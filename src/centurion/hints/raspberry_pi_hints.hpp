@@ -13,7 +13,7 @@ namespace cen::hint::raspberrypi {
 
 struct video_layer final : detail::int_hint<video_layer>
 {
-  [[nodiscard]] constexpr static auto name() noexcept -> str
+  [[nodiscard]] constexpr static auto name() noexcept -> cstr
   {
     return SDL_HINT_RPI_VIDEO_LAYER;
   }

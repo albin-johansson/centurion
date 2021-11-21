@@ -725,7 +725,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> str
+  [[nodiscard]] auto name() const noexcept -> cstr
   {
     if (const auto i = index()) {
       return SDL_HapticName(*i);

@@ -128,7 +128,7 @@ class basic_sound_effect final
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_sound_effect(const not_null<str> file) : m_chunk{Mix_LoadWAV(file)}
+  explicit basic_sound_effect(const not_null<cstr> file) : m_chunk{Mix_LoadWAV(file)}
   {
     if (!m_chunk) {
       throw mix_error{};
@@ -374,7 +374,7 @@ class basic_sound_effect final
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto get_decoder(const int index) noexcept -> str
+  [[nodiscard]] static auto get_decoder(const int index) noexcept -> cstr
   {
     return Mix_GetChunkDecoder(index);
   }
@@ -391,7 +391,7 @@ class basic_sound_effect final
    * \since 6.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto has_decoder(const str name) noexcept -> bool
+  [[nodiscard]] static auto has_decoder(const cstr name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }

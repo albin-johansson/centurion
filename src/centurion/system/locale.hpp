@@ -53,8 +53,8 @@ class locale final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto has_language(const not_null<str> language,
-                                  const str country = nullptr) const noexcept -> bool
+  [[nodiscard]] auto has_language(const not_null<cstr> language,
+                                  const cstr country = nullptr) const noexcept -> bool
   {
     assert(language);
 

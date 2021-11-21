@@ -41,16 +41,16 @@ class cen_error : public std::exception
    *
    * \since 3.0.0
    */
-  explicit cen_error(const str what) noexcept : m_what{what ? what : m_what}
+  explicit cen_error(const cstr what) noexcept : m_what{what ? what : m_what}
   {}
 
-  [[nodiscard]] auto what() const noexcept -> str override
+  [[nodiscard]] auto what() const noexcept -> cstr override
   {
     return m_what;
   }
 
  private:
-  str m_what{"n/a"};
+  cstr m_what{"n/a"};
 };
 
 /**
@@ -78,7 +78,7 @@ class sdl_error final : public cen_error
    *
    * \since 5.0.0
    */
-  explicit sdl_error(const str what) noexcept : cen_error{what}
+  explicit sdl_error(const cstr what) noexcept : cen_error{what}
   {}
 };
 
@@ -109,7 +109,7 @@ class img_error final : public cen_error
    *
    * \since 5.0.0
    */
-  explicit img_error(const str what) noexcept : cen_error{what}
+  explicit img_error(const cstr what) noexcept : cen_error{what}
   {}
 };
 
@@ -142,7 +142,7 @@ class ttf_error final : public cen_error
    *
    * \since 5.0.0
    */
-  explicit ttf_error(const str what) noexcept : cen_error{what}
+  explicit ttf_error(const cstr what) noexcept : cen_error{what}
   {}
 };
 
@@ -175,7 +175,7 @@ class mix_error final : public cen_error
    *
    * \since 5.0.0
    */
-  explicit mix_error(const str what) noexcept : cen_error{what}
+  explicit mix_error(const cstr what) noexcept : cen_error{what}
   {}
 };
 

@@ -55,7 +55,7 @@ TEST_F(MixerTest, EachSoundFont)
   std::array values{0, 1};
   SET_RETURN_SEQ(Mix_EachSoundFont, values.data(), cen::isize(values));
 
-  const auto callable = [](cen::str /*font*/, void* /*data*/) noexcept { return 0; };
+  const auto callable = [](cen::cstr /*font*/, void* /*data*/) noexcept { return 0; };
 
   ASSERT_EQ(cen::failure, cen::each_sound_font(callable));
   ASSERT_EQ(cen::success, cen::each_sound_font(callable));

@@ -48,7 +48,7 @@ class sdl_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> str
+  [[nodiscard]] auto get() const noexcept -> cstr
   {
     return m_str.get();
   }

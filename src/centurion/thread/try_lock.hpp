@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 
+#include "../core/common.hpp"
 #include "../core/features.hpp"
 #include "lock_status.hpp"
 #include "mutex.hpp"
@@ -23,6 +24,8 @@ namespace cen {
 class try_lock final
 {
  public:
+  CENTURION_DISABLE_COPY(try_lock)
+
   /**
    * \brief Attempts to lock the supplied mutex.
    *
@@ -34,10 +37,6 @@ class try_lock final
       : m_mutex{&mutex}
       , m_status{mutex.try_lock()}
   {}
-
-  try_lock(const try_lock&) = delete;
-
-  auto operator=(const try_lock&) -> try_lock& = delete;
 
   /**
    * \brief Unlocks the associated mutex if it was successfully locked.

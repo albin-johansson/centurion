@@ -81,6 +81,9 @@ enum class gl_swap_interval
 class gl_library final
 {
  public:
+  CENTURION_DISABLE_COPY(gl_library)
+  CENTURION_DISABLE_MOVE(gl_library)
+
   /**
    * \brief Loads an OpenGL library.
    *
@@ -97,12 +100,6 @@ class gl_library final
       throw sdl_error{};
     }
   }
-
-  gl_library(const gl_library&) = delete;
-  gl_library(gl_library&&) = delete;
-
-  auto operator=(const gl_library&) -> gl_library& = delete;
-  auto operator=(gl_library&&) -> gl_library& = delete;
 
   ~gl_library() noexcept
   {

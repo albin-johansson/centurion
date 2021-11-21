@@ -9,14 +9,10 @@
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
 
 #define CENTURION_DISABLE_COPY(Class) \
-                                      \
- public:                              \
   Class(const Class&) = delete;       \
   Class& operator=(const Class&) = delete;
 
 #define CENTURION_DISABLE_MOVE(Class) \
-                                      \
- public:                              \
   Class(Class&&) = delete;            \
   Class& operator=(Class&&) = delete;
 

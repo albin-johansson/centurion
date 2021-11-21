@@ -167,6 +167,9 @@ struct config final
 class library final
 {
  public:
+  CENTURION_DISABLE_COPY(library)
+  CENTURION_DISABLE_MOVE(library)
+
   /**
    * \brief Initializes the library.
    *
@@ -208,14 +211,6 @@ class library final
   {
     init();
   }
-
-  library(const library&) = delete;
-
-  library(library&&) = delete;
-
-  auto operator=(const library&) -> library& = delete;
-
-  auto operator=(library&&) -> library& = delete;
 
  private:
   struct sdl final

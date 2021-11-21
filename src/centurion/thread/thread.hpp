@@ -66,6 +66,8 @@ class thread final
   /// \name Construction/Destruction
   /// \{
 
+  CENTURION_DISABLE_COPY(thread)
+
   /**
    * \brief Creates a thread and starts executing it.
    *
@@ -87,10 +89,6 @@ class thread final
       throw sdl_error{};
     }
   }
-
-  thread(const thread&) = delete;
-
-  auto operator=(const thread&) -> thread& = delete;
 
   /**
    * \brief If the thread is joinable, then the thread is joined.

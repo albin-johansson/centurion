@@ -3,8 +3,9 @@
 
 #include <SDL.h>
 
-#include "../core/features.hpp"
+#include "../core/common.hpp"
 #include "../core/exception.hpp"
+#include "../core/features.hpp"
 #include "mutex.hpp"
 
 namespace cen {
@@ -25,6 +26,8 @@ namespace cen {
 class scoped_lock final
 {
  public:
+  CENTURION_DISABLE_COPY(scoped_lock)
+
   /**
    * \brief Attempts to lock the supplied mutex.
    *
@@ -40,10 +43,6 @@ class scoped_lock final
       throw sdl_error{};
     }
   }
-
-  scoped_lock(const scoped_lock&) = delete;
-
-  auto operator=(const scoped_lock&) -> scoped_lock& = delete;
 
   /**
    * \brief Unlocks the associated mutex.

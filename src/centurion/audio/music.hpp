@@ -1,15 +1,16 @@
-#ifndef CENTURION_MUSIC_HEADER
-#define CENTURION_MUSIC_HEADER
+#ifndef CENTURION_AUDIO_MUSIC_HPP_
+#define CENTURION_AUDIO_MUSIC_HPP_
 
 #ifndef CENTURION_NO_SDL_MIXER
 
+#include <SDL.h>
 #include <SDL_mixer.h>
 
-#include <cassert>   // assert
-#include <memory>    // unique_ptr
-#include <optional>  // optional
-#include <ostream>   // ostream
-#include <string>    // string, to_string
+#include <cassert>      // assert
+#include <memory>       // unique_ptr
+#include <optional>     // optional
+#include <string>       // string, to_string
+#include <string_view>  // string_view
 
 #include "../core/features.hpp"
 
@@ -24,13 +25,47 @@
 #include "../core/time.hpp"
 #include "../detail/any_eq.hpp"
 #include "../detail/stdlib.hpp"
-#include "fade_status.hpp"
-#include "music_type.hpp"
 
 namespace cen {
 
 /// \addtogroup audio
 /// \{
+
+/**
+ * \brief Provides values that represent different supported music types.
+ *
+ * \see `Mix_MusicType`
+ * \see `music_type_count()`
+ *
+ * \since 3.0.0
+ */
+enum class music_type
+{
+  unknown = MUS_NONE,
+  mp3 = MUS_MP3,
+  wav = MUS_WAV,
+  ogg = MUS_OGG,
+  mod = MUS_MOD,
+  midi = MUS_MID,
+  cmd = MUS_CMD,
+  flac = MUS_FLAC,
+  opus = MUS_OPUS
+};
+
+/**
+ * \brief Provides values that represent different fade playback states.
+ *
+ * \see `Mix_Fading`
+ * \see `fade_status_count()`
+ *
+ * \since 3.0.0
+ */
+enum class fade_status
+{
+  none = MIX_NO_FADING,  ///< No currently fading music.
+  in = MIX_FADING_IN,    ///< Currently fading in music.
+  out = MIX_FADING_OUT   ///< Currently fading out music.
+};
 
 /**
  * \class music
@@ -525,10 +560,35 @@ class music final
   std::unique_ptr<Mix_Music, deleter> m_music;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
+
  public:
   music() = default;
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
+
+/**
+ * \brief Returns the number of enumerators for the `music_type` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto music_type_count() noexcept -> int
+{
+  return 9;
+}
+
+/**
+ * \brief Returns the number of enumerators for the `fade_status` enum.
+ *
+ * \return the number of enumerators.
+ *
+ * \since 6.3.0
+ */
+[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
+{
+  return 3;
+}
 
 /// \name Callbacks
 /// \{
@@ -555,6 +615,86 @@ inline void on_music_finished(music_finished_callback callback) noexcept
 
 /// \name String conversions
 /// \{
+
+/**
+ * \brief Returns a textual version of the supplied music type.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(music_type::mp3) == "mp3"`.
+ *
+ * \param type the music type that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
+{
+  switch (type) {
+    case music_type::unknown:
+      return "unknown";
+
+    case music_type::mp3:
+      return "mp3";
+
+    case music_type::wav:
+      return "wav";
+
+    case music_type::ogg:
+      return "ogg";
+
+    case music_type::mod:
+      return "mod";
+
+    case music_type::midi:
+      return "midi";
+
+    case music_type::cmd:
+      return "cmd";
+
+    case music_type::flac:
+      return "flac";
+
+    case music_type::opus:
+      return "opus";
+
+    default:
+      throw cen_error{"Did not recognize music type!"};
+  }
+}
+
+/**
+ * \brief Returns a textual version of the supplied fade status.
+ *
+ * \details This function returns a string that mirrors the name of the enumerator, e.g.
+ * `to_string(fade_status::in) == "in"`.
+ *
+ * \param status the fade status that will be converted.
+ *
+ * \return a string that mirrors the name of the enumerator.
+ *
+ * \throws cen_error if the enumerator is not recognized.
+ *
+ * \since 6.2.0
+ */
+[[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
+{
+  switch (status) {
+    case fade_status::none:
+      return "none";
+
+    case fade_status::in:
+      return "in";
+
+    case fade_status::out:
+      return "out";
+
+    default:
+      throw cen_error{"Did not recognize fade status!"};
+  }
+}
 
 /**
  * \brief Returns a textual representation of a `music` instance.
@@ -597,6 +737,40 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
   return stream << to_string(music);
 }
 
+/**
+ * \brief Prints a textual representation of a music type enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param type the music type that will be printed.
+ *
+ * \see `to_string(music_type)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostream&
+{
+  return stream << to_string(type);
+}
+
+/**
+ * \brief Prints a textual representation of a fade status enumerator.
+ *
+ * \param stream the output stream that will be used.
+ * \param status the fade status that will be printed.
+ *
+ * \see `to_string(fade_status)`
+ *
+ * \return the used stream.
+ *
+ * \since 6.2.0
+ */
+inline auto operator<<(std::ostream& stream, const fade_status status) -> std::ostream&
+{
+  return stream << to_string(status);
+}
+
 /// \} End of streaming
 
 /// \} End of group audio
@@ -604,4 +778,4 @@ inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream
 }  // namespace cen
 
 #endif  // CENTURION_NO_SDL_MIXER
-#endif  // CENTURION_MUSIC_HEADER
+#endif  // CENTURION_AUDIO_MUSIC_HPP_

@@ -1,35 +1,23 @@
-#include "audio/music_type.hpp"
-
 #include <gtest/gtest.h>
 
 #include <iostream>  // clog
+
+#include "audio/music.hpp"
+#include "core/common.hpp"
 
 TEST(MusicType, Values)
 {
   ASSERT_EQ(9, cen::music_type_count());
 
-  ASSERT_EQ(cen::music_type::unknown, MUS_NONE);
-  ASSERT_EQ(cen::music_type::mp3, MUS_MP3);
-  ASSERT_EQ(cen::music_type::wav, MUS_WAV);
-  ASSERT_EQ(cen::music_type::cmd, MUS_CMD);
-  ASSERT_EQ(cen::music_type::mod, MUS_MOD);
-  ASSERT_EQ(cen::music_type::ogg, MUS_OGG);
-  ASSERT_EQ(cen::music_type::flac, MUS_FLAC);
-  ASSERT_EQ(cen::music_type::midi, MUS_MID);
-  ASSERT_EQ(cen::music_type::opus, MUS_OPUS);
-
-  ASSERT_EQ(MUS_NONE, cen::music_type::unknown);
-  ASSERT_EQ(MUS_MP3, cen::music_type::mp3);
-  ASSERT_EQ(MUS_WAV, cen::music_type::wav);
-  ASSERT_EQ(MUS_CMD, cen::music_type::cmd);
-  ASSERT_EQ(MUS_MOD, cen::music_type::mod);
-  ASSERT_EQ(MUS_OGG, cen::music_type::ogg);
-  ASSERT_EQ(MUS_FLAC, cen::music_type::flac);
-  ASSERT_EQ(MUS_MID, cen::music_type::midi);
-  ASSERT_EQ(MUS_OPUS, cen::music_type::opus);
-
-  ASSERT_NE(cen::music_type::cmd, MUS_MP3);
-  ASSERT_NE(MUS_FLAC, cen::music_type::mod);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::unknown), MUS_NONE);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::mp3), MUS_MP3);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::wav), MUS_WAV);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::cmd), MUS_CMD);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::mod), MUS_MOD);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::ogg), MUS_OGG);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::flac), MUS_FLAC);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::midi), MUS_MID);
+  ASSERT_EQ(cen::to_underlying(cen::music_type::opus), MUS_OPUS);
 }
 
 TEST(MusicType, ToString)

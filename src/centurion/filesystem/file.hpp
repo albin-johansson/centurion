@@ -8,729 +8,315 @@
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>      // assert
-#include <cstddef>      // size_t
-#include <memory>       // unique_ptr
 #include <optional>     // optional
-#include <ostream>      // ostream
 #include <string>       // string
 #include <string_view>  // string_view
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
+#include "../core/memory.hpp"
 
 namespace cen {
 
 /// \addtogroup filesystem
 /// \{
 
-/**
- * \brief Provides values that represent different file types.
- *
- * \since 5.3.0
- */
-enum class file_type : uint
+enum class FileType : unsigned
 {
-  unknown = SDL_RWOPS_UNKNOWN,     ///< An unknown file type.
-  win32 = SDL_RWOPS_WINFILE,       ///< A Win32 file.
-  stdio = SDL_RWOPS_STDFILE,       ///< A STDIO file.
-  jni = SDL_RWOPS_JNIFILE,         ///< An Android asset file.
-  memory = SDL_RWOPS_MEMORY,       ///< A memory stream file.
-  memory_ro = SDL_RWOPS_MEMORY_RO  ///< A read-only memory stream file.
+  Unknown = SDL_RWOPS_UNKNOWN,
+  Win = SDL_RWOPS_WINFILE,
+  Std = SDL_RWOPS_STDFILE,
+  Jni = SDL_RWOPS_JNIFILE,
+  Memory = SDL_RWOPS_MEMORY,
+  MemoryReadOnly = SDL_RWOPS_MEMORY_RO
 };
 
-/**
- * \brief Provides values that represent different file modes.
- *
- * \details This enum provides values that directly correspond to each of the possible SDL
- * file mode strings, such as "r" or "rb".
- *
- * \since 5.3.0
- */
-enum class file_mode
+enum class FileMode
 {
-  read_existing,         ///< "r"
-  read_existing_binary,  ///< "rb"
-
-  write,         ///< "w"
-  write_binary,  ///< "wb"
-
-  append_or_create,         ///< "a"
-  append_or_create_binary,  ///< "ab"
-
-  read_write_existing,         ///< "r+"
-  read_write_existing_binary,  ///< "rb+"
-
-  read_write_replace,         ///< "w+"
-  read_write_replace_binary,  ///< "wb+"
-
-  read_append,        ///< "a+"
-  read_append_binary  ///< "ab+"
+  ReadExisting,             // "r"
+  ReadExistingBinary,       // "rb"
+  Write,                    // "w"
+  WriteBinary,              // "wb"
+  AppendOrCreate,           // "a"
+  AppendOrCreateBinary,     // "ab"
+  ReadWriteExisting,        // "r+"
+  ReadWriteExistingBinary,  // "rb+"
+  ReadWriteReplace,         // "w+"
+  ReadWriteReplaceBinary,   // "wb+"
+  ReadAppend,               // "a+"
+  ReadAppendBinary          // "ab+"
 };
 
-/**
- * \brief Provides values that represent various file seek modes.
- *
- * \since 5.3.0
- */
-enum class seek_mode
+enum class SeekMode
 {
-  from_beginning = RW_SEEK_SET,       ///< From the beginning.
-  relative_to_current = RW_SEEK_CUR,  ///< Relative to the current read point.
-  relative_to_end = RW_SEEK_END       ///< Relative to the end.
+  FromBeginning = RW_SEEK_SET,      ///< From the beginning.
+  RelativeToCurrent = RW_SEEK_CUR,  ///< Relative to the current read point.
+  RelativeToEnd = RW_SEEK_END       ///< Relative to the end.
 };
 
-/**
- * \brief Represents a file "context" or handle.
- *
- * \note This class differs slightly from other library classes in that it is owning, but
- * it does *not* throw if the internal pointer can't be created, etc. This is because file
- * operations are error-prone, so we want to avoid throwing a bunch of exceptions, for
- * performance reasons.
- *
- * \since 5.3.0
- */
-class file final
+class File final
 {
  public:
-  using size_type = std::size_t;
-
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a file handle based on an existing context.
-   *
-   * \param context the context that will be used.
-   *
-   * \since 5.3.0
-   */
-  explicit file(SDL_RWops* context) noexcept : m_context{context}
+  explicit File(SDL_RWops* context) noexcept : mContext{context}
   {}
 
-  /**
-   * \brief Opens the file at the specified file path.
-   *
-   * \details Be sure to check the validity of the file, after construction.
-   * \code{cpp}
-   *   cen::file file{"foo", cen::file_mode::read_existing_binary};
-   *   if (file) {
-   *     // File was opened successfully!
-   *   }
-   * \endcode
-   *
-   * \param path the path of the file.
-   * \param mode the mode that will be used to open the file.
-   *
-   * \since 5.3.0
-   */
-  file(const not_null<cstr> path, const file_mode mode) noexcept
-      : m_context{SDL_RWFromFile(path, to_string(mode))}
+  File(const char* path, const FileMode mode) noexcept
+      : mContext{SDL_RWFromFile(path, Stringify(mode))}
   {}
 
-  /// \copydoc file(not_null<cstr>, file_mode)
-  file(const std::string& path, const file_mode mode) noexcept : file{path.c_str(), mode}
+  File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode}
   {}
 
-  /// \} End of construction
-
-  /// \name Write API
-  /// \{
-
-  /**
-   * \brief Writes the supplied data to the file.
-   *
-   * \tparam T the type of the data.
-   *
-   * \param data a pointer to the data that will be written to the file.
-   * \param count the number of objects that will be written.
-   *
-   * \return the number of objects that were written to the file.
-   *
-   * \since 5.3.0
-   */
   template <typename T>
-  auto write(not_null<const T*> data, const size_type count) noexcept -> size_type
+  auto Write(not_null<const T*> data, const usize count) noexcept -> usize
   {
-    assert(m_context);
+    assert(mContext);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
-  /**
-   * \brief Writes the contents of an array to the file, whose size is known at
-   * compile-time.
-   *
-   * \tparam T the type of the array elements.
-   * \tparam size the size of the array.
-   *
-   * \param data the data that will be written.
-   *
-   * \return the number of objects that were written.
-   *
-   * \since 5.3.0
-   */
-  template <typename T, size_type size>
-  auto write(const T (&data)[size]) noexcept -> size_type
+  template <typename T, usize size>
+  auto Write(const T (&data)[size]) noexcept -> usize
   {
-    return write(data, size);
+    return Write(data, size);
   }
 
   // clang-format off
 
-  /**
-   * \brief Writes the contents of a container to the file.
-   *
-   * \pre `Container` *must* be a collection that stores its data contiguously! The
-   * behaviour of this function is undefined otherwise.
-   *
-   * \tparam Container a contiguous container, e.g. `std::vector` or `std::array`.
-   *
-   * \param container the container that will be written to the file.
-   *
-   * \return the number of objects that were written.
-   *
-   * \since 5.3.0
-   */
   template <typename Container>
-  auto write(const Container& container) noexcept(noexcept(container.data()) &&
+  auto Write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
-      -> size_type
+      -> usize
   {
-    return write(container.data(), container.size());
+    return Write(container.data(), container.size());
   }
 
   // clang-format on
 
-  /**
-   * \brief Writes an unsigned 8-bit integer to the file.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_byte(const u8 value) noexcept -> result
+  auto WriteByte(const Uint8 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteU8(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteU8(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_little_endian(const u16 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint16 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteLE16(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteLE16(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_little_endian(const u32 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint32 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteLE32(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteLE32(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_little_endian(const u64 value) noexcept -> result
+  auto WriteNativeAsLittleEndian(const Uint64 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteLE64(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteLE64(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 16-bit integer to the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_big_endian(const u16 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint16 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteBE16(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteBE16(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 32-bit integer to the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_big_endian(const u32 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint32 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteBE32(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteBE32(mContext.get(), value) == 1;
   }
 
-  /**
-   * \brief Writes an unsigned 64-bit integer to the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \param value the value that will be written, in the native endianness.
-   *
-   * \return `success` if the value was written to the file; `failure` otherwise.
-   *
-   * \since 5.3.0
-   */
-  auto write_as_big_endian(const u64 value) noexcept -> result
+  auto WriteNativeAsBigEndian(const Uint64 value) noexcept -> result
   {
-    assert(m_context);
-    return SDL_WriteBE64(m_context.get(), value) == 1;
+    assert(mContext);
+    return SDL_WriteBE64(mContext.get(), value) == 1;
   }
 
-  /// \} End of write API
+  [[nodiscard]] auto Seek(const Sint64 offset, const SeekMode mode) noexcept
+      -> std::optional<Sint64>
+  {
+    assert(mContext);
+    const auto result = SDL_RWseek(mContext.get(), offset, to_underlying(mode));
+    if (result != -1) {
+      return result;
+    }
+    else {
+      return std::nullopt;
+    }
+  }
 
-  /// \name Read API
-  /// \{
-
-  /**
-   * \brief Reads data from the file.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \tparam T the type of the data that will be read.
-   *
-   * \param[out] data the pointer to which the read data will be written to.
-   * \param maxCount the maximum number of objects that will be read.
-   *
-   * \return the number of objects that were read.
-   *
-   * \since 5.3.0
-   */
   template <typename T>
-  auto read_to(T* data, const size_type maxCount) noexcept -> size_type
+  auto ReadTo(T* data, const usize maxCount) noexcept -> usize
   {
-    assert(m_context);
-    return SDL_RWread(m_context.get(), data, sizeof(T), maxCount);
+    assert(mContext);
+    return SDL_RWread(mContext.get(), data, sizeof(T), maxCount);
   }
 
-  /**
-   * \brief Reads data from the file to an array whose size is known at compile-time. This
-   * function uses the size of the supplied array to determine the amount of elements to
-   * read.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \tparam T the type of the data that will be read.
-   * \tparam size the size of the array.
-   *
-   * \param[out] data the pointer to which the read data will be written to.
-   *
-   * \return the number of objects that were read.
-   *
-   * \since 5.3.0
-   */
-  template <typename T, size_type size>
-  auto read_to(T (&data)[size]) noexcept -> size_type
+  template <typename T, usize size>
+  auto ReadTo(T (&data)[size]) noexcept -> usize
   {
-    return read_to(data, size);
+    return ReadTo(data, size);
   }
 
   // clang-format off
 
-  /**
-   * \brief Reads data from the file to a container. This function uses the size of the
-   * supplied container to determine the amount of elements to read.
-   *
-   * \pre the internal file context must not be null.
-   * \pre `Container` *must* be a collection that stores its data contiguously! The
-   * behaviour of this function is undefined otherwise.
-   *
-   * \tparam Container the type of the data that will be read, e.g. `std::vector` or
-   * `std::array`.
-   *
-   * \param[out] container the container to which the read data will be written to.
-   *
-   * \return the number of objects that were read.
-   *
-   * \since 5.3.0
-   */
   template <typename Container>
-  auto read_to(Container& container) noexcept(noexcept(container.data()) &&
-                                              noexcept(container.size()))
-      -> size_type
+  auto ReadTo(Container& container) noexcept(noexcept(container.data()) &&
+                                             noexcept(container.size()))
+      -> usize
   {
-    return read_to(container.data(), container.size());
+    return ReadTo(container.data(), container.size());
   }
 
   // clang-format on
 
-  // Reads a value of type T, where T must be default-constructible
-
-  /**
-   * \brief Reads a single value from the file.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \note `T` must be default-constructible in order to use this function.
-   *
-   * \tparam T the type of the value, which must be default-constructible.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
   template <typename T>
-  auto read() noexcept(noexcept(T{})) -> T
+  auto Read() noexcept(noexcept(T{})) -> T
   {
     T value{};
-    read_to(&value, 1);
+    ReadTo(&value, 1);
     return value;
   }
 
-  /**
-   * \brief Reads an unsigned 8-bit integer from the file.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_byte() noexcept -> u8
+  auto ReadByte() noexcept -> Uint8
   {
-    assert(m_context);
-    return SDL_ReadU8(m_context.get());
+    assert(mContext);
+    return SDL_ReadU8(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_little_endian_u16() noexcept -> u16
+  auto ReadLittleEndianU16() noexcept -> Uint16
   {
-    assert(m_context);
-    return SDL_ReadLE16(m_context.get());
+    assert(mContext);
+    return SDL_ReadLE16(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_little_endian_u32() noexcept -> u32
+  auto ReadLittleEndianU32() noexcept -> Uint32
   {
-    assert(m_context);
-    return SDL_ReadLE32(m_context.get());
+    assert(mContext);
+    return SDL_ReadLE32(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a little endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_little_endian_u64() noexcept -> u64
+  auto ReadLittleEndianU64() noexcept -> Uint64
   {
-    assert(m_context);
-    return SDL_ReadLE64(m_context.get());
+    assert(mContext);
+    return SDL_ReadLE64(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 16-bit integer from the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_big_endian_u16() noexcept -> u16
+  auto ReadBigEndianU16() noexcept -> Uint16
   {
-    assert(m_context);
-    return SDL_ReadBE16(m_context.get());
+    assert(mContext);
+    return SDL_ReadBE16(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 32-bit integer from the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_big_endian_u32() noexcept -> u32
+  auto ReadBigEndianU32() noexcept -> Uint32
   {
-    assert(m_context);
-    return SDL_ReadBE32(m_context.get());
+    assert(mContext);
+    return SDL_ReadBE32(mContext.get());
   }
 
-  /**
-   * \brief Reads an unsigned 64-bit integer from the file, as a big endian value.
-   *
-   * \pre the internal file context must not be null.
-   *
-   * \return the read value.
-   *
-   * \since 5.3.0
-   */
-  auto read_big_endian_u64() noexcept -> u64
+  auto ReadBigEndianU64() noexcept -> Uint64
   {
-    assert(m_context);
-    return SDL_ReadBE64(m_context.get());
+    assert(mContext);
+    return SDL_ReadBE64(mContext.get());
   }
-
-  /// \} End of read API
-
-  /// \name File type queries
-  /// \{
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  /**
-   * \brief Indicates whether or not the file represents a PNG image.
-   *
-   * \return `true` if the file is a PNG image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_png() const noexcept -> bool
+  [[nodiscard]] auto IsPNG() const noexcept -> bool
   {
-    return IMG_isPNG(m_context.get()) == 1;
+    return IMG_isPNG(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an ICO image.
-   *
-   * \return `true` if the file is an ICO image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_ico() const noexcept -> bool
+  [[nodiscard]] auto IsICO() const noexcept -> bool
   {
-    return IMG_isICO(m_context.get()) == 1;
+    return IMG_isICO(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a JPG image.
-   *
-   * \return `true` if the file is a JPG image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_jpg() const noexcept -> bool
+  [[nodiscard]] auto IsJPG() const noexcept -> bool
   {
-    return IMG_isJPG(m_context.get()) == 1;
+    return IMG_isJPG(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a BMP image.
-   *
-   * \return `true` if the file is a BMP image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_bmp() const noexcept -> bool
+  [[nodiscard]] auto IsBMP() const noexcept -> bool
   {
-    return IMG_isBMP(m_context.get()) == 1;
+    return IMG_isBMP(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a GIF.
-   *
-   * \return `true` if the file is a GIF; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_gif() const noexcept -> bool
+  [[nodiscard]] auto IsGIF() const noexcept -> bool
   {
-    return IMG_isGIF(m_context.get()) == 1;
+    return IMG_isGIF(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an SVG image.
-   *
-   * \return `true` if the file is an SVG image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_svg() const noexcept -> bool
+  [[nodiscard]] auto IsSVG() const noexcept -> bool
   {
-    return IMG_isSVG(m_context.get()) == 1;
+    return IMG_isSVG(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a WEBP image.
-   *
-   * \return `true` if the file is a WEBP image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_webp() const noexcept -> bool
+  [[nodiscard]] auto IsWEBP() const noexcept -> bool
   {
-    return IMG_isWEBP(m_context.get()) == 1;
+    return IMG_isWEBP(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a TIF image.
-   *
-   * \return `true` if the file is a TIF image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_tif() const noexcept -> bool
+  [[nodiscard]] auto IsTIF() const noexcept -> bool
   {
-    return IMG_isTIF(m_context.get()) == 1;
+    return IMG_isTIF(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a PNM image.
-   *
-   * \return `true` if the file is a PNM image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_pnm() const noexcept -> bool
+  [[nodiscard]] auto IsPNM() const noexcept -> bool
   {
-    return IMG_isPNM(m_context.get()) == 1;
+    return IMG_isPNM(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a PCX image.
-   *
-   * \return `true` if the file is a PCX image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_pcx() const noexcept -> bool
+  [[nodiscard]] auto IsPCX() const noexcept -> bool
   {
-    return IMG_isPCX(m_context.get()) == 1;
+    return IMG_isPCX(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an LBM image.
-   *
-   * \return `true` if the file is an LBM image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_lbm() const noexcept -> bool
+  [[nodiscard]] auto IsLBM() const noexcept -> bool
   {
-    return IMG_isLBM(m_context.get()) == 1;
+    return IMG_isLBM(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents a CUR image.
-   *
-   * \return `true` if the file is a CUR image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_cur() const noexcept -> bool
+  [[nodiscard]] auto IsCUR() const noexcept -> bool
   {
-    return IMG_isCUR(m_context.get()) == 1;
+    return IMG_isCUR(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an XCF image.
-   *
-   * \return `true` if the file is an XCF image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_xcf() const noexcept -> bool
+  [[nodiscard]] auto IsXCF() const noexcept -> bool
   {
-    return IMG_isXCF(m_context.get()) == 1;
+    return IMG_isXCF(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an XPM image.
-   *
-   * \return `true` if the file is an XPM image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_xpm() const noexcept -> bool
+  [[nodiscard]] auto IsXPM() const noexcept -> bool
   {
-    return IMG_isXPM(m_context.get()) == 1;
+    return IMG_isXPM(mContext.get()) == 1;
   }
 
-  /**
-   * \brief Indicates whether or not the file represents an XV image.
-   *
-   * \return `true` if the file is an XV image; `false` otherwise.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] auto is_xv() const noexcept -> bool
+  [[nodiscard]] auto IsXV() const noexcept -> bool
   {
-    return IMG_isXV(m_context.get()) == 1;
+    return IMG_isXV(mContext.get()) == 1;
   }
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
-  /// \} End of file type queries
-
-  /**
-   * \brief Seeks to the specified offset, using the specified seek mode.
-   *
-   * \param offset the offset to seek to.
-   * \param mode the seek mode that will be used.
-   *
-   * \return the resulting offset in the data stream; `std::nullopt` if something went
-   * wrong.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto seek(const i64 offset, const seek_mode mode) noexcept
-      -> std::optional<i64>
+  [[nodiscard]] auto GetOffset() const noexcept -> Sint64
   {
-    assert(m_context);
-    const auto result = SDL_RWseek(m_context.get(), offset, to_underlying(mode));
+    assert(mContext);
+    return SDL_RWtell(mContext.get());
+  }
+
+  [[nodiscard]] auto GetType() const noexcept -> FileType
+  {
+    assert(mContext);
+    return static_cast<FileType>(mContext->type);
+  }
+
+  [[nodiscard]] auto GetSize() const noexcept -> std::optional<usize>
+  {
+    assert(mContext);
+    const auto result = SDL_RWsize(mContext.get());
     if (result != -1) {
       return result;
     }
@@ -739,319 +325,63 @@ class file final
     }
   }
 
-  /**
-   * \brief Returns the current offset in the data stream.
-   *
-   * \return the current offset in the data stream.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto offset() const noexcept -> i64
-  {
-    assert(m_context);
-    return SDL_RWtell(m_context.get());
-  }
-
-  /**
-   * \brief Returns the file type associated with the instance.
-   *
-   * \return the associated file type.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto type() const noexcept -> file_type
-  {
-    assert(m_context);
-    return static_cast<file_type>(m_context->type);
-  }
-
-  /**
-   * \brief Returns the size of the file.
-   *
-   * \return the size of the file; `std::nullopt` if unknown.
-   *
-   * \since 5.3.0
-   */
-  [[nodiscard]] auto size() const noexcept -> std::optional<size_type>
-  {
-    assert(m_context);
-    const auto result = SDL_RWsize(m_context.get());
-    if (result != -1) {
-      return result;
-    }
-    else {
-      return std::nullopt;
-    }
-  }
-
-  /**
-   * \brief Returns a pointer to the internal file context.
-   *
-   * \return a pointer to the internal file context, can be null.
-   *
-   * \since 5.3.0
-   */
   [[nodiscard]] auto get() const noexcept -> SDL_RWops*
   {
-    return m_context.get();
+    return mContext.get();
   }
 
-  /**
-   * \brief Indicates whether or not the file holds a non-null pointer.
-   *
-   * \return `true` if the file holds a non-null pointer; `false` otherwise.
-   *
-   * \since 5.3.0
-   */
   explicit operator bool() const noexcept
   {
-    return m_context != nullptr;
+    return mContext != nullptr;
   }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_RWops* context) noexcept
-    {
-      SDL_RWclose(context);
-    }
-  };
-  std::unique_ptr<SDL_RWops, deleter> m_context;
+  Managed<SDL_RWops> mContext;
 
-  [[nodiscard]] static auto to_string(const file_mode mode) noexcept -> cstr
+  [[nodiscard]] static auto Stringify(const FileMode mode) noexcept -> cstr
   {
     switch (mode) {
       default:
         assert(false);
 
-      case file_mode::read_existing:
+      case FileMode::ReadExisting:
         return "r";
 
-      case file_mode::read_existing_binary:
+      case FileMode::ReadExistingBinary:
         return "rb";
 
-      case file_mode::write:
+      case FileMode::Write:
         return "w";
 
-      case file_mode::write_binary:
+      case FileMode::WriteBinary:
         return "wb";
 
-      case file_mode::append_or_create:
+      case FileMode::AppendOrCreate:
         return "a";
 
-      case file_mode::append_or_create_binary:
+      case FileMode::AppendOrCreateBinary:
         return "ab";
 
-      case file_mode::read_write_existing:
+      case FileMode::ReadWriteExisting:
         return "r+";
 
-      case file_mode::read_write_existing_binary:
+      case FileMode::ReadWriteExistingBinary:
         return "rb+";
 
-      case file_mode::read_write_replace:
+      case FileMode::ReadWriteReplace:
         return "w+";
 
-      case file_mode::read_write_replace_binary:
+      case FileMode::ReadWriteReplaceBinary:
         return "wb+";
 
-      case file_mode::read_append:
+      case FileMode::ReadAppend:
         return "a+";
 
-      case file_mode::read_append_binary:
+      case FileMode::ReadAppendBinary:
         return "ab+";
     }
   }
 };
-
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a textual version of the supplied file type.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(file_type::stdio) == "stdio"`.
- *
- * \param type the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const file_type type) -> std::string_view
-{
-  switch (type) {
-    case file_type::unknown:
-      return "unknown";
-
-    case file_type::win32:
-      return "win32";
-
-    case file_type::stdio:
-      return "stdio";
-
-    case file_type::jni:
-      return "jni";
-
-    case file_type::memory:
-      return "memory";
-
-    case file_type::memory_ro:
-      return "memory_ro";
-
-    default:
-      throw cen_error{"Did not recognize file type!"};
-  }
-}
-
-/**
- * \brief Returns a textual version of the supplied file mode.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(file_mode::read_append) == "read_append"`.
- *
- * \param mode the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const file_mode mode) -> std::string_view
-{
-  switch (mode) {
-    case file_mode::read_existing:
-      return "read_existing";
-
-    case file_mode::read_existing_binary:
-      return "read_existing_binary";
-
-    case file_mode::write:
-      return "write";
-
-    case file_mode::write_binary:
-      return "write_binary";
-
-    case file_mode::append_or_create:
-      return "append_or_create";
-
-    case file_mode::append_or_create_binary:
-      return "append_or_create_binary";
-
-    case file_mode::read_write_existing:
-      return "read_write_existing";
-
-    case file_mode::read_write_existing_binary:
-      return "read_write_existing_binary";
-
-    case file_mode::read_write_replace:
-      return "read_write_replace";
-
-    case file_mode::read_write_replace_binary:
-      return "read_write_replace_binary";
-
-    case file_mode::read_append:
-      return "read_append";
-
-    case file_mode::read_append_binary:
-      return "read_append_binary";
-
-    default:
-      throw cen_error{"Did not recognize file mode!"};
-  }
-}
-
-/**
- * \brief Returns a textual version of the supplied seek mode.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(seek_mode::from_beginning) == "from_beginning"`.
- *
- * \param mode the enumerator that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const seek_mode mode) -> std::string_view
-{
-  switch (mode) {
-    case seek_mode::from_beginning:
-      return "from_beginning";
-
-    case seek_mode::relative_to_current:
-      return "relative_to_current";
-
-    case seek_mode::relative_to_end:
-      return "relative_to_end";
-
-    default:
-      throw cen_error{"Did not recognize seek mode!"};
-  }
-}
-
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a file type enumerator.
- *
- * \param stream the output stream that will be used.
- * \param type the enumerator that will be printed.
- *
- * \see `to_string(file_type)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const file_type type) -> std::ostream&
-{
-  return stream << to_string(type);
-}
-
-/**
- * \brief Prints a textual representation of a file mode enumerator.
- *
- * \param stream the output stream that will be used.
- * \param mode the enumerator that will be printed.
- *
- * \see `to_string(file_mode)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const file_mode mode) -> std::ostream&
-{
-  return stream << to_string(mode);
-}
-
-/**
- * \brief Prints a textual representation of a seek mode enumerator.
- *
- * \param stream the output stream that will be used.
- * \param mode the enumerator that will be printed.
- *
- * \see `to_string(seek_mode)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const seek_mode mode) -> std::ostream&
-{
-  return stream << to_string(mode);
-}
-
-/// \} End of streaming
 
 /// \} End of group filesystem
 

@@ -66,7 +66,6 @@ set(SOURCE_FILES
     event/window_event_id_test.cpp
 
     filesystem/base_path_test.cpp
-    filesystem/file_mode_test.cpp
     filesystem/file_test.cpp
     filesystem/file_type_test.cpp
     filesystem/preferred_path_test.cpp

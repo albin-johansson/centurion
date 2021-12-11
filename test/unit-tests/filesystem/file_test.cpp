@@ -18,56 +18,56 @@ class FileTest : public testing::Test
 
 TEST_F(FileTest, PointerConstructor)
 {
-  ASSERT_NO_THROW(cen::file{nullptr});
+  ASSERT_NO_THROW(cen::File{nullptr});
 }
 
 TEST_F(FileTest, WriteAndRead)
 {
   {
     // Create a file which we will write some data to
-    cen::file file{path, cen::file_mode::read_write_replace_binary};
+    cen::File file{path, cen::FileMode::ReadWriteReplaceBinary};
     ASSERT_TRUE(file);
 
-    ASSERT_EQ(4, file.write("abc"));
+    ASSERT_EQ(4, file.Write("abc"));
 
     int buffer[] = {1, 2, 3};
-    ASSERT_EQ(3, file.write(buffer));  // Implicit capture of buffer size
-    ASSERT_EQ(1, file.write(buffer, 1));
+    ASSERT_EQ(3, file.Write(buffer));  // Implicit capture of buffer size
+    ASSERT_EQ(1, file.Write(buffer, 1));
 
     std::array array{4, 5, 6};
-    ASSERT_EQ(3, file.write(array));
+    ASSERT_EQ(3, file.Write(array));
 
     std::vector vector{7, 8, 9};
-    ASSERT_EQ(3, file.write(vector));
+    ASSERT_EQ(3, file.Write(vector));
 
-    ASSERT_TRUE(file.write_byte(42u));
+    ASSERT_TRUE(file.WriteByte(42u));
 
-    ASSERT_TRUE(file.write_as_big_endian(12_u16));
-    ASSERT_TRUE(file.write_as_big_endian(34_u32));
-    ASSERT_TRUE(file.write_as_big_endian(56_u64));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(12_u16));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(34_u32));
+    ASSERT_TRUE(file.WriteNativeAsBigEndian(56_u64));
 
-    ASSERT_TRUE(file.write_as_little_endian(78_u16));
-    ASSERT_TRUE(file.write_as_little_endian(90_u32));
-    ASSERT_TRUE(file.write_as_little_endian(27_u64));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(78_u16));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(90_u32));
+    ASSERT_TRUE(file.WriteNativeAsLittleEndian(27_u64));
   }
 
   {
-    cen::file file{path, cen::file_mode::read_existing_binary};
+    cen::File file{path, cen::FileMode::ReadExistingBinary};
     ASSERT_TRUE(file);
 
     char str[] = "___";
-    ASSERT_EQ(4, file.read_to(str));
+    ASSERT_EQ(4, file.ReadTo(str));
 
     int buffer[] = {0, 0, 0};
-    ASSERT_EQ(3, file.read_to(buffer));
+    ASSERT_EQ(3, file.ReadTo(buffer));
 
-    const auto i = file.read<int>();
+    const auto i = file.Read<int>();
 
     std::array array{0, 0, 0};
-    ASSERT_EQ(3, file.read_to(array));
+    ASSERT_EQ(3, file.ReadTo(array));
 
     std::vector vector{0, 0, 0};
-    ASSERT_EQ(3, file.read_to(vector));
+    ASSERT_EQ(3, file.ReadTo(vector));
 
     ASSERT_STREQ("abc", str);
 
@@ -85,30 +85,30 @@ TEST_F(FileTest, WriteAndRead)
     ASSERT_EQ(8, vector.at(1));
     ASSERT_EQ(9, vector.at(2));
 
-    ASSERT_EQ(42u, file.read_byte());
+    ASSERT_EQ(42u, file.ReadByte());
 
-    ASSERT_EQ(12u, file.read_big_endian_u16());
-    ASSERT_EQ(34u, file.read_big_endian_u32());
-    ASSERT_EQ(56u, file.read_big_endian_u64());
+    ASSERT_EQ(12u, file.ReadBigEndianU16());
+    ASSERT_EQ(34u, file.ReadBigEndianU32());
+    ASSERT_EQ(56u, file.ReadBigEndianU64());
 
-    ASSERT_EQ(78u, file.read_little_endian_u16());
-    ASSERT_EQ(90u, file.read_little_endian_u32());
-    ASSERT_EQ(27u, file.read_little_endian_u64());
+    ASSERT_EQ(78u, file.ReadLittleEndianU16());
+    ASSERT_EQ(90u, file.ReadLittleEndianU32());
+    ASSERT_EQ(27u, file.ReadLittleEndianU64());
   }
 }
 
 TEST_F(FileTest, Queries)
 {
-  const cen::file file{path, cen::file_mode::read_existing_binary};
-  ASSERT_EQ(SDL_RWtell(file.get()), file.offset());
-  ASSERT_EQ(static_cast<cen::file::size_type>(SDL_RWsize(file.get())), file.size());
-  ASSERT_EQ(file.get()->type, cen::to_underlying(file.type()));
+  const cen::File file{path, cen::FileMode::ReadExistingBinary};
+  ASSERT_EQ(SDL_RWtell(file.get()), file.GetOffset());
+  ASSERT_EQ(static_cast<cen::File::size_type>(SDL_RWsize(file.get())), file.GetSize());
+  ASSERT_EQ(file.get()->type, cen::to_underlying(file.GetType()));
 }
 
 TEST_F(FileTest, IsPNG)
 {
-  cen::file file{"resources/panda.png", cen::file_mode::read_existing};
+  cen::File file{"resources/panda.png", cen::FileMode::ReadExisting};
   ASSERT_TRUE(file);
 
-  ASSERT_TRUE(file.is_png());
+  ASSERT_TRUE(file.IsPNG());
 }

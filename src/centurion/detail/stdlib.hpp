@@ -13,7 +13,6 @@
 #include <type_traits>   // is_integral_v
 
 #include "../core/common.hpp"
-#include "../core/compiler.hpp"
 #include "../core/features.hpp"
 
 /// \cond FALSE

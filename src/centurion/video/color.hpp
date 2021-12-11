@@ -22,7 +22,6 @@
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
 #include "../core/common.hpp"
-#include "../core/compiler.hpp"
 #include "../core/exception.hpp"
 #include "../detail/stdlib.hpp"
 
@@ -853,7 +852,8 @@ inline auto operator<<(std::ostream& stream, const color& color) -> std::ostream
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias = 0.5f) -> color
+[[nodiscard]] inline auto blend(const color& a, const color& b, const float bias = 0.5f)
+    -> color
 {
   assert(bias >= 0);
   assert(bias <= 1.0f);

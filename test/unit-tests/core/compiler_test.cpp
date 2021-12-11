@@ -1,6 +1,6 @@
-#include "core/compiler.hpp"
-
 #include <gtest/gtest.h>
+
+#include "core/common.hpp"
 
 TEST(Compiler, IsDebugBuild)
 {

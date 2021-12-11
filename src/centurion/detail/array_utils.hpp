@@ -3,8 +3,8 @@
 
 #include <array>  // array, to_array
 
-#include "../core/features.hpp"
 #include "../core/common.hpp"
+#include "../core/features.hpp"
 
 /// \cond FALSE
 namespace cen::detail {

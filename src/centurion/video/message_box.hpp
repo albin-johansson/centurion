@@ -12,9 +12,9 @@
 #include <utility>      // move
 #include <vector>       // vector
 
-#include "../core/features.hpp"
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
+#include "../core/features.hpp"
 #include "../detail/stack_resource.hpp"
 #include "button_order.hpp"
 #include "color.hpp"

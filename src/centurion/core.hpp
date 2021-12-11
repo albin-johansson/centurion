@@ -2,7 +2,6 @@
 #define CENTURION_CORE_HPP_
 
 #include "core/common.hpp"
-#include "core/compiler.hpp"
 #include "core/exception.hpp"
 #include "core/features.hpp"
 #include "core/is_stateless_callable.hpp"

@@ -5,6 +5,7 @@
 #include "stdlib.hpp"
 
 /// \cond FALSE
+
 namespace cen::detail {
 
 struct czstring_compare final
@@ -16,6 +17,7 @@ struct czstring_compare final
 };
 
 }  // namespace cen::detail
+
 /// \endcond
 
 #endif  // CENTURION_DETAIL_CZSTRING_COMPARE_HEADER

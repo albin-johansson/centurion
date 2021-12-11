@@ -126,25 +126,6 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/filesystem/file.hpp
                src/centurion/filesystem/paths.hpp
 
-               src/centurion/hints/android_hints.hpp
-               src/centurion/hints/apple_tv_hints.hpp
-               src/centurion/hints/common_hints.hpp
-               src/centurion/hints/controller_hints.hpp
-               src/centurion/hints/d3d_hints.hpp
-               src/centurion/hints/emscripten_hints.hpp
-               src/centurion/hints/enum_hint.hpp
-               src/centurion/hints/hint_priority.hpp
-               src/centurion/hints/hints.hpp
-               src/centurion/hints/joystick_hints.hpp
-               src/centurion/hints/mac_hints.hpp
-               src/centurion/hints/mouse_hints.hpp
-               src/centurion/hints/qtwayland_hints.hpp
-               src/centurion/hints/raspberry_pi_hints.hpp
-               src/centurion/hints/windows_hints.hpp
-               src/centurion/hints/winrt_hints.hpp
-               src/centurion/hints/x11_hints.hpp
-               src/centurion/hints/xinput_hints.hpp
-
                src/centurion/input/button_state.hpp
                src/centurion/input/controller.hpp
                src/centurion/input/haptic.hpp

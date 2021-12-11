@@ -33,7 +33,6 @@
 #include "centurion/core.hpp"
 #include "centurion/events.hpp"
 #include "centurion/filesystem.hpp"
-#include "centurion/hint.hpp"
 #include "centurion/input.hpp"
 #include "centurion/math.hpp"
 #include "centurion/system.hpp"

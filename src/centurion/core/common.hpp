@@ -8,6 +8,14 @@
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
 
+#include "features.hpp"
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+#include <concepts>  // default_initializable, invocable
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
+
 #define CENTURION_DISABLE_COPY(Class) \
   Class(const Class&) = delete;       \
   Class& operator=(const Class&) = delete;
@@ -372,6 +380,13 @@ inline constexpr result success{true};
 /// Represents a failure of some kind.
 /// \since 6.0.0
 inline constexpr result failure{false};
+
+#if CENTURION_HAS_FEATURE_CONCEPTS
+
+template <typename T, typename... Args>
+concept is_stateless_callable = std::default_initializable<T> && std::invocable<T, Args...>;
+
+#endif  // CENTURION_HAS_FEATURE_CONCEPTS
 
 /// \name String conversions
 /// \{

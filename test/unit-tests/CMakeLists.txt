@@ -8,7 +8,6 @@ set(SOURCE_FILES
     typed_test_macros.hpp
     test_main.cpp
 
-    core/compiler_test.cpp
     core/exception_test.cpp
     core/features_test.cpp
     core/log_category_test.cpp

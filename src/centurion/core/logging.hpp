@@ -22,7 +22,6 @@
 
 #include "common.hpp"
 #include "exception.hpp"
-#include "is_stateless_callable.hpp"
 #include "version.hpp"
 
 #if CENTURION_SDL_VERSION_IS(2, 0, 10)

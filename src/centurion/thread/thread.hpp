@@ -24,7 +24,6 @@
 
 #include "../core/common.hpp"
 #include "../core/exception.hpp"
-#include "../core/is_stateless_callable.hpp"
 #include "../core/time.hpp"
 #include "../detail/stdlib.hpp"
 #include "thread_priority.hpp"

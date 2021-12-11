@@ -101,7 +101,7 @@ TEST_F(FileTest, Queries)
 {
   const cen::File file{path, cen::FileMode::ReadExistingBinary};
   ASSERT_EQ(SDL_RWtell(file.get()), file.GetOffset());
-  ASSERT_EQ(static_cast<cen::File::size_type>(SDL_RWsize(file.get())), file.GetSize());
+  ASSERT_EQ(static_cast<cen::usize>(SDL_RWsize(file.get())), file.GetSize());
   ASSERT_EQ(file.get()->type, cen::to_underlying(file.GetType()));
 }
 

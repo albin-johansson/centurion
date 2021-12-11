@@ -29,7 +29,9 @@
 #pragma once
 #endif  // CENTURION_NO_PRAGMA_ONCE
 
-#include "centurion/audio.hpp"
+#include "centurion/audio/music.hpp"
+#include "centurion/audio/sound_effect.hpp"
+#include "centurion/audio/sound_fonts.hpp"
 #include "centurion/core.hpp"
 #include "centurion/events.hpp"
 #include "centurion/filesystem.hpp"

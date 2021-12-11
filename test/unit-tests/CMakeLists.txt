@@ -165,11 +165,13 @@ set(SOURCE_FILES
     )
 
 if (CEN_AUDIO)
-  list(APPEND SOURCE_FILES
+  list(APPEND
+       SOURCE_FILES
        audio/fade_status_test.cpp
        audio/music_test.cpp
        audio/music_type_test.cpp
-       audio/sound_effect_test.cpp)
+       audio/sound_effect_test.cpp
+       )
 endif ()
 
 add_executable(${CENTURION_TEST_TARGET} ${SOURCE_FILES})

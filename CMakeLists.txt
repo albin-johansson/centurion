@@ -60,7 +60,6 @@ endif ()
 add_library(${CENTURION_LIB_TARGET} INTERFACE)
 
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
-               src/centurion/audio/channels.hpp
                src/centurion/audio/music.hpp
                src/centurion/audio/sound_effect.hpp
                src/centurion/audio/sound_fonts.hpp

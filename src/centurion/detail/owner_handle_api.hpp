@@ -6,6 +6,7 @@
 #include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
 #include "../core/exception.hpp"
+#include "../core/memory.hpp"
 
 /// \cond FALSE
 namespace cen::detail {
@@ -94,6 +95,77 @@ class pointer_manager final
 
  private:
   pointer_type m_ptr{};
+};
+
+template <typename B, typename Type>
+class Pointer final
+{
+  using ManagedPtr = Managed<Type>;
+  using RawPtr = Type*;
+  using PointerType = std::conditional_t<B::value, ManagedPtr, RawPtr>;
+
+ public:
+  Pointer() noexcept = default;
+
+  explicit Pointer(Type* ptr) noexcept : mPtr{ptr}
+  {}
+
+  template <typename BB = B, is_owner<BB> = 0>
+  void reset(Type* ptr) noexcept
+  {
+    mPtr.reset(ptr);
+  }
+
+  auto operator->() noexcept -> Type*
+  {
+    return get();
+  }
+
+  auto operator->() const noexcept -> const Type*
+  {
+    return get();
+  }
+
+  auto operator*() noexcept -> Type&
+  {
+    assert(mPtr);
+    return *mPtr;
+  }
+
+  auto operator*() const noexcept -> const Type&
+  {
+    assert(mPtr);
+    return *mPtr;
+  }
+
+  explicit operator bool() const noexcept
+  {
+    return mPtr != nullptr;
+  }
+
+  /*implicit*/ operator Type*() const noexcept
+  {
+    return get();
+  }
+
+  template <typename BB = B, is_owner<BB> = 0>
+  [[nodiscard]] auto release() noexcept -> Type*
+  {
+    return mPtr.release();
+  }
+
+  [[nodiscard]] auto get() const noexcept -> Type*
+  {
+    if constexpr (B::value) {
+      return mPtr.get();
+    }
+    else {
+      return mPtr;
+    }
+  }
+
+ private:
+  PointerType mPtr{};
 };
 
 }  // namespace cen::detail

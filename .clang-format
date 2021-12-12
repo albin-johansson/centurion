@@ -1,49 +1,54 @@
----
 BasedOnStyle: Google
-IndentWidth: 2
----
+
 Language: Cpp
 Standard: c++20
 
 ColumnLimit: 95
+IndentWidth: 2
 
 DerivePointerAlignment: false
 PointerAlignment: Left
 
-AllowAllParametersOfDeclarationOnNextLine: false
-AllowAllArgumentsOnNextLine: false
-AllowShortLambdasOnASingleLine: All
-AllowShortFunctionsOnASingleLine: None
-AllowShortBlocksOnASingleLine: Never
-AllowShortEnumsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
-
-BinPackParameters: false
-BinPackArguments: false
-
-BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterClass: true
-  AfterStruct: true
-  AfterUnion: true
-  AfterEnum: true
-  AfterFunction: true
-  AfterExternBlock: true
-  AfterControlStatement: MultiLine
-  AfterCaseLabel: false
-  BeforeElse: true
-  BeforeCatch: true
-  SplitEmptyNamespace: false
-  SplitEmptyRecord: false
-  SplitEmptyFunction: false
-
-EmptyLineBeforeAccessModifier: Always
+IndentRequires: true
 
 NamespaceIndentation: None
 FixNamespaceComments: true
 
-BreakInheritanceList: BeforeColon
-BreakConstructorInitializers: BeforeComma
+EmptyLineBeforeAccessModifier: Always
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: false
 
-IndentRequires: true
+BinPackParameters: false
+BinPackArguments: false
+
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortBlocksOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: All
+AllowShortEnumsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakBeforeConceptDeclarations: true
+
+BreakBeforeBraces: Stroustrup
+#BraceWrapping:
+#  AfterClass: true
+#  AfterStruct: true
+#  AfterUnion: true
+#  AfterEnum: true
+#  AfterFunction: true
+#  AfterExternBlock: true
+#  AfterControlStatement: MultiLine
+#  AfterCaseLabel: false
+#  BeforeElse: true
+#  BeforeCatch: true
+#  SplitEmptyNamespace: false
+#  SplitEmptyRecord: false
+#  SplitEmptyFunction: false
+
+BreakInheritanceList: BeforeComma
+BreakConstructorInitializers: BeforeComma

@@ -8,6 +8,7 @@
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>      // assert
+#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <string>       // string
 #include <string_view>  // string_view
@@ -62,14 +63,14 @@ class File final {
   File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode} {}
 
   template <typename T>
-  auto Write(not_null<const T*> data, const usize count) noexcept -> usize
+  auto Write(not_null<const T*> data, const std::size_t count) noexcept -> std::size_t
   {
     assert(mContext);
     return SDL_RWwrite(get(), data, sizeof(T), count);
   }
 
-  template <typename T, usize size>
-  auto Write(const T (&data)[size]) noexcept -> usize
+  template <typename T, std::size_t size>
+  auto Write(const T (&data)[size]) noexcept -> std::size_t
   {
     return Write(data, size);
   }
@@ -79,7 +80,7 @@ class File final {
   template <typename Container>
   auto Write(const Container& container) noexcept(noexcept(container.data()) &&
                                                   noexcept(container.size()))
-      -> usize
+      -> std::size_t
   {
     return Write(container.data(), container.size());
   }
@@ -142,14 +143,14 @@ class File final {
   }
 
   template <typename T>
-  auto ReadTo(T* data, const usize maxCount) noexcept -> usize
+  auto ReadTo(T* data, const std::size_t maxCount) noexcept -> std::size_t
   {
     assert(mContext);
     return SDL_RWread(mContext.get(), data, sizeof(T), maxCount);
   }
 
-  template <typename T, usize size>
-  auto ReadTo(T (&data)[size]) noexcept -> usize
+  template <typename T, std::size_t size>
+  auto ReadTo(T (&data)[size]) noexcept -> std::size_t
   {
     return ReadTo(data, size);
   }
@@ -159,7 +160,7 @@ class File final {
   template <typename Container>
   auto ReadTo(Container& container) noexcept(noexcept(container.data()) &&
                                              noexcept(container.size()))
-      -> usize
+      -> std::size_t
   {
     return ReadTo(container.data(), container.size());
   }
@@ -265,7 +266,7 @@ class File final {
     return static_cast<FileType>(mContext->type);
   }
 
-  [[nodiscard]] auto GetSize() const noexcept -> std::optional<usize>
+  [[nodiscard]] auto GetSize() const noexcept -> std::optional<std::size_t>
   {
     assert(mContext);
     const auto result = SDL_RWsize(mContext.get());

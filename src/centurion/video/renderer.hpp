@@ -5,6 +5,7 @@
 
 #include <cassert>        // assert
 #include <cmath>          // floor, sqrt
+#include <cstddef>        // size_t
 #include <memory>         // unique_ptr
 #include <optional>       // optional
 #include <ostream>        // ostream
@@ -1547,7 +1548,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void add_font(const usize id, font&& font)
+  void add_font(const std::size_t id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end()) {
@@ -1570,7 +1571,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename... Args, typename TT = T, detail::is_owner<TT> = 0>
-  void emplace_font(const usize id, Args&&... args)
+  void emplace_font(const std::size_t id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (const auto it = fonts.find(id); it != fonts.end()) {
@@ -1590,7 +1591,7 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  void remove_font(const usize id)
+  void remove_font(const std::size_t id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -1607,14 +1608,14 @@ class basic_renderer final {
    * \since 5.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const usize id) -> font&
+  [[nodiscard]] auto get_font(const std::size_t id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
 
   /// \copydoc get_font
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto get_font(const usize id) const -> const font&
+  [[nodiscard]] auto get_font(const std::size_t id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1630,7 +1631,7 @@ class basic_renderer final {
    * \since 4.1.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] auto has_font(const usize id) const -> bool
+  [[nodiscard]] auto has_font(const std::size_t id) const -> bool
   {
     return m_renderer.fonts.find(id) != m_renderer.fonts.end();
   }
@@ -2113,7 +2114,7 @@ class basic_renderer final {
     frect translation{};
 
 #ifndef CENTURION_NO_SDL_TTF
-    std::unordered_map<usize, font> fonts{};
+    std::unordered_map<std::size_t, font> fonts{};
 #endif  // CENTURION_NO_SDL_TTF
   };
 

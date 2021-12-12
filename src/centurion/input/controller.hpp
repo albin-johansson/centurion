@@ -5,6 +5,7 @@
 
 #include <array>        // array
 #include <cassert>      // assert
+#include <cstddef>      // size_t
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
@@ -1066,7 +1067,7 @@ class basic_controller final {
    *
    * \since 5.2.0
    */
-  template <usize Size>
+  template <std::size_t Size>
   [[nodiscard]] auto get_sensor_data(const sensor_type type) const noexcept
       -> std::optional<std::array<float, Size>>
   {

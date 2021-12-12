@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <cassert>   // assert
+#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, string_literals
@@ -133,7 +134,7 @@ class renderer_info final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto format(const usize index) const noexcept -> pixel_format
+  [[nodiscard]] auto format(const std::size_t index) const noexcept -> pixel_format
   {
     assert(index < format_count());
     return static_cast<pixel_format>(m_info.texture_formats[index]);

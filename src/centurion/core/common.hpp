@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 
-#include <cstddef>      // size_t
 #include <ostream>      // ostream
 #include <string>       // string
 #include <type_traits>  // underlying_type_t, enable_if_t, is_same_v, is_integral_v, ...
@@ -115,8 +114,6 @@ namespace cen {
 
 /// \name Integer aliases
 /// \{
-
-using usize = std::size_t;
 
 /// Alias for an unsigned integer.
 using uint = unsigned int;

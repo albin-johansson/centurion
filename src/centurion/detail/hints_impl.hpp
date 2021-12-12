@@ -1,6 +1,7 @@
 #ifndef CENTURION_DETAIL_HINTS_IMPL_HEADER
 #define CENTURION_DETAIL_HINTS_IMPL_HEADER
 
+#include <cstddef>      // size_t
 #include <cstdlib>      // atof
 #include <optional>     // optional
 #include <string>       // string, stoi, stoul, stof
@@ -18,7 +19,7 @@ namespace cen::detail {
 template <typename Hint, typename T>
 using enable_if_hint_arg_t = std::enable_if_t<Hint::template valid_arg<T>(), int>;
 
-template <typename Key, usize Size>
+template <typename Key, std::size_t Size>
 using string_map = static_bimap<Key, const char*, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>

@@ -10,6 +10,7 @@
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #include <cassert>  // assert
+#include <cstddef>  // size_t
 #include <ostream>  // ostream
 #include <string>   // string, to_string
 
@@ -228,7 +229,7 @@ class basic_texture final {
     }
 
     const auto maxCount =
-        static_cast<usize>(surface.pitch()) * static_cast<usize>(surface.height());
+        static_cast<std::size_t>(surface.pitch()) * static_cast<std::size_t>(surface.height());
     SDL_memcpy(pixels, surface.pixels(), maxCount);
 
     texture.unlock();

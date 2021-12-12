@@ -2,6 +2,7 @@
 #define CENTURION_EVENTS_EVENT_DISPATCHER_HPP_
 
 #include <array>        // array
+#include <cstddef>      // size_t
 #include <functional>   // function, bind
 #include <ostream>      // ostream
 #include <string>       // string, to_string
@@ -224,7 +225,7 @@ class event_dispatcher final {
   }
 
  public:
-  using size_type = usize;
+  using size_type = std::size_t;
 
   /**
    * \brief Polls all events, checking for subscribed events.

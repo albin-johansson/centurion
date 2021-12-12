@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <cassert>  // assert
+#include <cstddef>  // size_t
 #include <memory>   // unique_ptr
 
 #include "../core/common.hpp"
@@ -84,9 +85,9 @@ class locale final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto count() const noexcept -> usize
+  [[nodiscard]] auto count() const noexcept -> std::size_t
   {
-    usize result{0};
+    std::size_t result{0};
 
     if (const auto* array = m_locales.get()) {
       for (auto index = 0u; array[index].language; ++index) {

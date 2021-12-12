@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 #include <array>     // array
+#include <cstddef>   // size_t
 #include <optional>  // optional
 #include <ostream>   // ostream
 #include <string>    // string, to_string
@@ -228,7 +229,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  template <usize Size>
+  template <std::size_t Size>
   [[nodiscard]] auto data() const noexcept -> std::optional<std::array<float, Size>>
   {
     std::array<float, Size> array{};

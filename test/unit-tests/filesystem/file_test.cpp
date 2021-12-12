@@ -2,8 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include <array>   // array
-#include <vector>  // vector
+#include <array>    // array
+#include <cstddef>  // size_t
+#include <vector>   // vector
 
 #include "filesystem/paths.hpp"
 
@@ -100,7 +101,7 @@ TEST_F(FileTest, Queries)
 {
   const cen::File file{path, cen::FileMode::ReadExistingBinary};
   ASSERT_EQ(SDL_RWtell(file.get()), file.GetOffset());
-  ASSERT_EQ(static_cast<cen::usize>(SDL_RWsize(file.get())), file.GetSize());
+  ASSERT_EQ(static_cast<std::size_t>(SDL_RWsize(file.get())), file.GetSize());
   ASSERT_EQ(file.get()->type, cen::to_underlying(file.GetType()));
 }
 

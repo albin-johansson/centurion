@@ -1,6 +1,7 @@
 #ifndef CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 #define CENTURION_DETAIL_TUPLE_TYPE_INDEX_HEADER
 
+#include <cstddef>      // size_t
 #include <tuple>        // tuple
 #include <type_traits>  // is_same_v
 #include <utility>      // index_sequence, index_sequence_for
@@ -15,7 +16,7 @@ class tuple_type_index;
 
 template <typename Target, typename... T>
 class tuple_type_index<Target, std::tuple<T...>> {
-  template <usize... Index>
+  template <std::size_t... Index>
   constexpr static auto find(std::index_sequence<Index...>) -> int
   {
     return -1 + ((std::is_same_v<Target, T> ? Index + 1 : 0) + ...);

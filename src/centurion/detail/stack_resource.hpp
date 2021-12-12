@@ -7,13 +7,14 @@
 #if CENTURION_HAS_FEATURE_MEMORY_RESOURCE
 
 #include <array>            // array
+#include <cstddef>          // size_t
 #include <cstddef>          // byte
 #include <memory_resource>  // memory_resource, monotonic_buffer_resource
 
 /// \cond FALSE
 namespace cen::detail {
 
-template <usize BufferSize>
+template <std::size_t BufferSize>
 class stack_resource final {
  public:
   [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource* { return &m_pool; }

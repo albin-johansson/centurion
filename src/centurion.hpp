@@ -104,7 +104,12 @@
 #include "centurion/math/point.hpp"
 #include "centurion/math/rect.hpp"
 #include "centurion/math/vector3.hpp"
-#include "centurion/system.hpp"
+#include "centurion/system/byte_order.hpp"
+#include "centurion/system/cpu.hpp"
+#include "centurion/system/locale.hpp"
+#include "centurion/system/platform.hpp"
+#include "centurion/system/shared_object.hpp"
+#include "centurion/system/system.hpp"
 #include "centurion/thread.hpp"
 #include "centurion/video.hpp"
 

@@ -14,13 +14,9 @@
 namespace cen::detail {
 
 template <usize BufferSize>
-class stack_resource final
-{
+class stack_resource final {
  public:
-  [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource*
-  {
-    return &m_pool;
-  }
+  [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource* { return &m_pool; }
 
  private:
   std::array<std::byte, BufferSize> m_buffer{};

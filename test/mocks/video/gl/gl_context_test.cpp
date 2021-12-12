@@ -11,8 +11,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_GL_MakeCurrent, SDL_Window*, SDL_GLContext)
 }
 
-class OpenGLContextTest : public testing::Test
-{
+class OpenGLContextTest : public testing::Test {
  protected:
   void SetUp() override
   {

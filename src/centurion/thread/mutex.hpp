@@ -27,8 +27,7 @@ namespace cen {
  * \see `scoped_lock`
  * \see `try_lock`
  */
-class mutex final
-{
+class mutex final {
  public:
   /**
    * \brief Creates an unlocked mutex.
@@ -51,10 +50,7 @@ class mutex final
    *
    * \since 5.0.0
    */
-  auto lock() noexcept -> result
-  {
-    return SDL_LockMutex(get()) == 0;
-  }
+  auto lock() noexcept -> result { return SDL_LockMutex(get()) == 0; }
 
   /**
    * \brief Attempts to lock the mutex, returns if the mutex isn't available.
@@ -75,10 +71,7 @@ class mutex final
    *
    * \since 5.0.0
    */
-  auto unlock() noexcept -> result
-  {
-    return SDL_UnlockMutex(get()) == 0;
-  }
+  auto unlock() noexcept -> result { return SDL_UnlockMutex(get()) == 0; }
 
   /**
    * \brief Returns a pointer to the associated SDL mutex.
@@ -87,18 +80,11 @@ class mutex final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() noexcept -> SDL_mutex*
-  {
-    return m_mutex.get();
-  }
+  [[nodiscard]] auto get() noexcept -> SDL_mutex* { return m_mutex.get(); }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_mutex* mutex) noexcept
-    {
-      SDL_DestroyMutex(mutex);
-    }
+  struct deleter final {
+    void operator()(SDL_mutex* mutex) noexcept { SDL_DestroyMutex(mutex); }
   };
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
 

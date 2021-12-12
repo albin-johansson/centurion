@@ -32,8 +32,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class key_modifier : Uint16
-{
+enum class key_modifier : Uint16 {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
   right_shift = KMOD_RSHIFT,

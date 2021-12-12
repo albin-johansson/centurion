@@ -14,8 +14,7 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_Renderer*, SDL_GetRenderer, SDL_Window*)
 }
 
-class WindowUtilsTest : public testing::Test
-{
+class WindowUtilsTest : public testing::Test {
  protected:
   void SetUp() override
   {

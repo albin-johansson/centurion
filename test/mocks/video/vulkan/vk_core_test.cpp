@@ -18,8 +18,7 @@ extern "C"
                   const char**)
 }
 
-class VulkanCoreTest : public testing::Test
-{
+class VulkanCoreTest : public testing::Test {
  protected:
   void SetUp() override
   {

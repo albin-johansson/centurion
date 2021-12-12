@@ -16,18 +16,14 @@ static_assert(!std::is_nothrow_copy_assignable_v<cen::Music>);
 static_assert(std::is_nothrow_move_constructible_v<cen::Music>);
 static_assert(std::is_nothrow_move_assignable_v<cen::Music>);
 
-class MusicTest : public testing::Test
-{
+class MusicTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
     music = std::make_unique<cen::Music>("resources/hiddenPond.mp3");
   }
 
-  static void TearDownTestSuite()
-  {
-    music.reset();
-  }
+  static void TearDownTestSuite() { music.reset(); }
 
   inline static std::unique_ptr<cen::Music> music;
 };

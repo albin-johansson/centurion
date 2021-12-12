@@ -14,8 +14,7 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_IsTablet)
 }
 
-class PlatformTest : public testing::Test
-{
+class PlatformTest : public testing::Test {
  public:
 
  protected:

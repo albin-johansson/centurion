@@ -50,8 +50,7 @@ using thread_id = SDL_threadID;
  *
  * \since 5.0.0
  */
-class thread final
-{
+class thread final {
  public:
   /**
    * \typedef task_type
@@ -286,10 +285,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto joinable() const noexcept -> bool
-  {
-    return !m_joined && !m_detached;
-  }
+  [[nodiscard]] auto joinable() const noexcept -> bool { return !m_joined && !m_detached; }
 
   /**
    * \brief Indicates whether or not the thread was joined.
@@ -298,10 +294,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto was_joined() const noexcept -> bool
-  {
-    return m_joined;
-  }
+  [[nodiscard]] auto was_joined() const noexcept -> bool { return m_joined; }
 
   /**
    * \brief Indicates whether or not the thread was detached.
@@ -310,10 +303,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto was_detached() const noexcept -> bool
-  {
-    return m_detached;
-  }
+  [[nodiscard]] auto was_detached() const noexcept -> bool { return m_detached; }
 
   /**
    * \brief Returns the identifier associated with the thread.
@@ -322,10 +312,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> thread_id
-  {
-    return SDL_GetThreadID(m_thread);
-  }
+  [[nodiscard]] auto get_id() const noexcept -> thread_id { return SDL_GetThreadID(m_thread); }
 
   /**
    * \brief Returns the identifier associated with the current thread.
@@ -334,10 +321,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> thread_id
-  {
-    return SDL_ThreadID();
-  }
+  [[nodiscard]] static auto current_id() noexcept -> thread_id { return SDL_ThreadID(); }
 
   /**
    * \brief Returns the name of the thread.
@@ -348,10 +332,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto name() const -> std::string
-  {
-    return SDL_GetThreadName(m_thread);
-  }
+  [[nodiscard]] auto name() const -> std::string { return SDL_GetThreadName(m_thread); }
 
   /**
    * \brief Returns a pointer to the associated SDL thread.
@@ -360,16 +341,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() noexcept -> SDL_Thread*
-  {
-    return m_thread;
-  }
+  [[nodiscard]] auto get() noexcept -> SDL_Thread* { return m_thread; }
 
   /// \copydoc get
-  [[nodiscard]] auto get() const noexcept -> const SDL_Thread*
-  {
-    return m_thread;
-  }
+  [[nodiscard]] auto get() const noexcept -> const SDL_Thread* { return m_thread; }
 
   /// \} End of queries
 

@@ -19,16 +19,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
-{
+class controller_axis_event final : public common_event<SDL_ControllerAxisEvent> {
  public:
   /**
    * \brief Creates a controller axis event of type `controller_axis_motion`.
    *
    * \since 4.0.0
    */
-  controller_axis_event() noexcept : common_event{cen::event_type::controller_axis_motion}
-  {}
+  controller_axis_event() noexcept : common_event{cen::event_type::controller_axis_motion} {}
 
   /**
    * \brief Creates a controller axis event that is based on the supplied SDL
@@ -50,10 +48,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the game controller axis value associated with the event.
@@ -74,10 +69,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_value(const Sint16 value) noexcept
-  {
-    m_event.value = value;
-  }
+  void set_value(const Sint16 value) noexcept { m_event.value = value; }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -86,10 +78,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 
   /**
    * \brief Returns the game controller axis value associated with the event.
@@ -112,10 +101,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto value() const noexcept -> Sint16
-  {
-    return m_event.value;
-  }
+  [[nodiscard]] auto value() const noexcept -> Sint16 { return m_event.value; }
 };
 
 /// \name SDL event conversions

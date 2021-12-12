@@ -25,8 +25,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-enum class display_event_id
-{
+enum class display_event_id {
   none = SDL_DISPLAYEVENT_NONE,                  ///< Unused.
   orientation = SDL_DISPLAYEVENT_ORIENTATION,    ///< Display orientation changed.
   connected = SDL_DISPLAYEVENT_CONNECTED,        ///< A display was added.

@@ -36,8 +36,7 @@ namespace cen {
  *
  * \since 4.2.0
  */
-enum class joystick_type
-{
+enum class joystick_type {
   unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
   game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
   wheel = SDL_JOYSTICK_TYPE_WHEEL,
@@ -55,8 +54,7 @@ enum class joystick_type
  *
  * \since 4.2.0
  */
-enum class joystick_power
-{
+enum class joystick_power {
   unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
   empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
   low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -71,8 +69,7 @@ enum class joystick_power
  *
  * \since 4.2.0
  */
-enum class hat_state : Uint8
-{
+enum class hat_state : Uint8 {
   centered = SDL_HAT_CENTERED,     ///< The hat is centered.
   up = SDL_HAT_UP,                 ///< The hat is directed "north".
   right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
@@ -91,8 +88,7 @@ enum class hat_state : Uint8
  *
  * \since 4.2.0
  */
-struct ball_axis_change final
-{
+struct ball_axis_change final {
   int dx;  ///< Difference in x-axis position since last poll.
   int dy;  ///< Difference in y-axis position since last poll.
 };
@@ -134,8 +130,7 @@ using joystick_handle = basic_joystick<detail::handle_type>;
  * \see joystick_handle
  */
 template <typename T>
-class basic_joystick final
-{
+class basic_joystick final {
  public:
   /// \name Construction
   /// \{
@@ -559,10 +554,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> cstr
-  {
-    return SDL_JoystickName(m_joystick);
-  }
+  [[nodiscard]] auto name() const noexcept -> cstr { return SDL_JoystickName(m_joystick); }
 
   /**
    * \brief Returns the instance ID associated with the joystick.
@@ -946,10 +938,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  static void update() noexcept
-  {
-    SDL_JoystickUpdate();
-  }
+  static void update() noexcept { SDL_JoystickUpdate(); }
 
   /**
    * \brief Locks the access to all joysticks.
@@ -959,20 +948,14 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  static void lock() noexcept
-  {
-    SDL_LockJoysticks();
-  }
+  static void lock() noexcept { SDL_LockJoysticks(); }
 
   /**
    * \brief Unlocks the access to all joysticks.
    *
    * \since 4.2.0
    */
-  static void unlock() noexcept
-  {
-    SDL_UnlockJoysticks();
-  }
+  static void unlock() noexcept { SDL_UnlockJoysticks(); }
 
   /**
    * \brief Specifies whether or not joystick event polling is enabled.
@@ -1102,14 +1085,10 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Joystick*
-  {
-    return m_joystick.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Joystick* { return m_joystick.get(); }
 
  private:
-  struct deleter final
-  {
+  struct deleter final {
     void operator()(SDL_Joystick* joystick) noexcept
     {
       if (SDL_JoystickGetAttached(joystick)) {

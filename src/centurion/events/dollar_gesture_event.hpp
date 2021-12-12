@@ -20,8 +20,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
-{
+class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
  public:
   /**
    * \brief Creates a dollar gesture event of type `dollar_gesture`.
@@ -52,10 +51,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_touch_id(const SDL_TouchID id) noexcept
-  {
-    m_event.touchId = id;
-  }
+  void set_touch_id(const SDL_TouchID id) noexcept { m_event.touchId = id; }
 
   /**
    * \brief Sets the gesture ID associated with the event.
@@ -64,10 +60,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_gesture_id(const SDL_GestureID id) noexcept
-  {
-    m_event.gestureId = id;
-  }
+  void set_gesture_id(const SDL_GestureID id) noexcept { m_event.gestureId = id; }
 
   /**
    * \brief Sets the amount of fingers used to draw the stroke.
@@ -78,10 +71,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_fingers(const Uint32 fingers) noexcept
-  {
-    m_event.numFingers = fingers;
-  }
+  void set_fingers(const Uint32 fingers) noexcept { m_event.numFingers = fingers; }
 
   /**
    * \brief Sets the error value for the performed stroke compared with the
@@ -89,10 +79,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_error(const float error) noexcept
-  {
-    m_event.error = error;
-  }
+  void set_error(const float error) noexcept { m_event.error = error; }
 
   /**
    * \brief Sets the normalized x-coordinate of the center of the gesture.
@@ -101,10 +88,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_x(const float x) noexcept
-  {
-    m_event.x = x;
-  }
+  void set_x(const float x) noexcept { m_event.x = x; }
 
   /**
    * \brief Sets the normalized y-coordinate of the center of the gesture.
@@ -113,10 +97,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_y(const float y) noexcept
-  {
-    m_event.y = y;
-  }
+  void set_y(const float y) noexcept { m_event.y = y; }
 
   /**
    * \brief Returns the touch device ID associated with the event.
@@ -125,10 +106,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
-  {
-    return m_event.touchId;
-  }
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID { return m_event.touchId; }
 
   /**
    * \brief Returns the unique ID of the closest gesture to the performed
@@ -138,10 +116,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto gesture_id() const noexcept -> SDL_GestureID
-  {
-    return m_event.gestureId;
-  }
+  [[nodiscard]] auto gesture_id() const noexcept -> SDL_GestureID { return m_event.gestureId; }
 
   /**
    * \brief Returns the amount of fingers used to draw the stroke.
@@ -150,10 +125,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto finger_count() const noexcept -> Uint32
-  {
-    return m_event.numFingers;
-  }
+  [[nodiscard]] auto finger_count() const noexcept -> Uint32 { return m_event.numFingers; }
 
   /**
    * \brief Returns the difference between the gesture template and the
@@ -166,10 +138,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto error() const noexcept -> float
-  {
-    return m_event.error;
-  }
+  [[nodiscard]] auto error() const noexcept -> float { return m_event.error; }
 
   /**
    * \brief Returns the x-coordinate of the normalized center of the gesture.
@@ -178,10 +147,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> float
-  {
-    return m_event.x;
-  }
+  [[nodiscard]] auto x() const noexcept -> float { return m_event.x; }
 
   /**
    * \brief Returns the y-coordinate of the normalized center of the gesture.
@@ -190,10 +156,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> float
-  {
-    return m_event.y;
-  }
+  [[nodiscard]] auto y() const noexcept -> float { return m_event.y; }
 };
 
 /// \name SDL event conversions

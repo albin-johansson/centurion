@@ -32,8 +32,7 @@ using unicode = Uint16;
  * \details This class is a wrapper around a `std::vector<unicode>`, that provides a
  * similar interface to that of `std::string`.
  */
-class unicode_string final
-{
+class unicode_string final {
  public:
   using value_type = std::vector<unicode>::value_type;
 
@@ -60,10 +59,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  unicode_string()
-  {
-    m_data.push_back(0);
-  }
+  unicode_string() { m_data.push_back(0); }
 
   /**
    * \brief Creates a Unicode string based on the supplied values.
@@ -92,10 +88,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void reserve(const size_type n)
-  {
-    m_data.reserve(n);
-  }
+  void reserve(const size_type n) { m_data.reserve(n); }
 
   /**
    * \brief Appends a Unicode glyph to the end of the string.
@@ -104,10 +97,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  void append(const unicode ch)
-  {
-    m_data.insert(m_data.end() - 1, ch);
-  }
+  void append(const unicode ch) { m_data.insert(m_data.end() - 1, ch); }
 
   /**
    * \brief Appends a series of glyphs to the string.
@@ -129,10 +119,7 @@ class unicode_string final
   }
 
   /// \copydoc append(unicode)
-  void operator+=(const unicode ch)
-  {
-    append(ch);
-  }
+  void operator+=(const unicode ch) { append(ch); }
 
   /**
    * \brief Removes the last element from the string.
@@ -157,10 +144,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> size_type
-  {
-    return m_data.size() - 1;
-  }
+  [[nodiscard]] auto size() const noexcept -> size_type { return m_data.size() - 1; }
 
   /**
    * \brief Returns the capacity of the string.
@@ -170,10 +154,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto capacity() const noexcept -> size_type
-  {
-    return m_data.capacity();
-  }
+  [[nodiscard]] auto capacity() const noexcept -> size_type { return m_data.capacity(); }
 
   /**
    * \brief Indicates whether or not the string is empty.
@@ -184,10 +165,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto empty() const noexcept -> bool
-  {
-    return m_data.size() == 1;
-  }
+  [[nodiscard]] auto empty() const noexcept -> bool { return m_data.size() == 1; }
 
   /**
    * \brief Returns a pointer to the first glyph.
@@ -196,16 +174,10 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto data() noexcept -> pointer
-  {
-    return m_data.data();
-  }
+  [[nodiscard]] auto data() noexcept -> pointer { return m_data.data(); }
 
   /// \copydoc data
-  [[nodiscard]] auto data() const noexcept -> const_pointer
-  {
-    return m_data.data();
-  }
+  [[nodiscard]] auto data() const noexcept -> const_pointer { return m_data.data(); }
 
   /**
    * \brief Returns an iterator that points to the first element in the string.
@@ -216,16 +188,10 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto begin() noexcept -> iterator
-  {
-    return m_data.begin();
-  }
+  [[nodiscard]] auto begin() noexcept -> iterator { return m_data.begin(); }
 
   /// \copydoc begin
-  [[nodiscard]] auto begin() const noexcept -> const_iterator
-  {
-    return m_data.begin();
-  }
+  [[nodiscard]] auto begin() const noexcept -> const_iterator { return m_data.begin(); }
 
   /**
    * \brief Returns an iterator that points one-past the last element in the string.
@@ -236,16 +202,10 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto end() noexcept -> iterator
-  {
-    return m_data.end() - 1;
-  }
+  [[nodiscard]] auto end() noexcept -> iterator { return m_data.end() - 1; }
 
   /// \copydoc end
-  [[nodiscard]] auto end() const noexcept -> const_iterator
-  {
-    return m_data.end() - 1;
-  }
+  [[nodiscard]] auto end() const noexcept -> const_iterator { return m_data.end() - 1; }
 
   /**
    * \brief Returns the element at the specified index.
@@ -259,10 +219,7 @@ class unicode_string final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto at(const size_type index) -> reference
-  {
-    return m_data.at(index);
-  }
+  [[nodiscard]] auto at(const size_type index) -> reference { return m_data.at(index); }
 
   /// \copydoc at
   [[nodiscard]] auto at(const size_type index) const -> const_reference

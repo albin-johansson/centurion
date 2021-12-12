@@ -22,16 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_button_event final : public common_event<SDL_ControllerButtonEvent>
-{
+class controller_button_event final : public common_event<SDL_ControllerButtonEvent> {
  public:
   /**
    * \brief Creates a controller button event of type `controller_button_down`.
    *
    * \since 4.0.0
    */
-  controller_button_event() noexcept : common_event{event_type::controller_button_down}
-  {}
+  controller_button_event() noexcept : common_event{event_type::controller_button_down} {}
 
   /**
    * \brief Creates a controller button event that is based on the supplied SDL
@@ -64,10 +62,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept
-  {
-    m_event.state = to_underlying(state);
-  }
+  void set_state(const button_state state) noexcept { m_event.state = to_underlying(state); }
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -77,10 +72,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID id) noexcept
-  {
-    m_event.which = id;
-  }
+  void set_which(const SDL_JoystickID id) noexcept { m_event.which = id; }
 
   /**
    * \brief Returns the game controller button associated with the event.
@@ -137,10 +129,7 @@ class controller_button_event final : public common_event<SDL_ControllerButtonEv
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 };
 
 /// \name SDL event conversions

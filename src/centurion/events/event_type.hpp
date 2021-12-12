@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 3.1.0
  */
-enum class event_type : Uint32
-{
+enum class event_type : Uint32 {
   quit = SDL_QUIT,
 
   app_terminating = SDL_APP_TERMINATING,

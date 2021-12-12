@@ -9,8 +9,7 @@ extern "C"
   FAKE_VALUE_FUNC(char*, SDL_GetBasePath)
 }
 
-class BasePathTest : public testing::Test
-{
+class BasePathTest : public testing::Test {
  protected:
   void SetUp() override
   {

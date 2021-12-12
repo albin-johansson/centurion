@@ -295,8 +295,7 @@ template <typename T>
  *
  * \since 6.0.0
  */
-class result final
-{
+class result final {
  public:
   /**
    * \brief Creates a result.
@@ -352,10 +351,7 @@ class result final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] constexpr explicit operator bool() const noexcept
-  {
-    return m_success;
-  }
+  [[nodiscard]] constexpr explicit operator bool() const noexcept { return m_success; }
 
   /// \} End of conversions
 

@@ -34,21 +34,20 @@ BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
 BreakBeforeConceptDeclarations: true
 
-BreakBeforeBraces: Stroustrup
-#BraceWrapping:
-#  AfterClass: true
-#  AfterStruct: true
-#  AfterUnion: true
-#  AfterEnum: true
-#  AfterFunction: true
-#  AfterExternBlock: true
-#  AfterControlStatement: MultiLine
-#  AfterCaseLabel: false
-#  BeforeElse: true
-#  BeforeCatch: true
-#  SplitEmptyNamespace: false
-#  SplitEmptyRecord: false
-#  SplitEmptyFunction: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterExternBlock: true
+  AfterCaseLabel: false
+  BeforeElse: true
+  BeforeCatch: true
+  SplitEmptyNamespace: false
+  SplitEmptyRecord: false
+  SplitEmptyFunction: false
 
 BreakInheritanceList: BeforeComma
 BreakConstructorInitializers: BeforeComma

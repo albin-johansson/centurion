@@ -14,8 +14,7 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_Finger*, SDL_GetTouchFinger, SDL_TouchID, int)
 }
 
-class TouchTest : public testing::Test
-{
+class TouchTest : public testing::Test {
  protected:
   void SetUp() override
   {

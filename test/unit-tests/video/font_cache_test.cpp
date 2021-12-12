@@ -29,8 +29,7 @@ TEST(FontCache, InPlaceConstructor)
   ASSERT_THROW(cen::font_cache(fontPath, 0), cen::Error);
 }
 
-class FontCacheTest : public testing::Test
-{
+class FontCacheTest : public testing::Test {
  protected:
   using id_type = cen::font_cache::id_type;
 
@@ -40,8 +39,7 @@ class FontCacheTest : public testing::Test
   using normal_signature = void(id_type, cen::cstr);
   using normal_store_fn = std::function<normal_signature>;
 
-  FontCacheTest() : testing::Test{}, m_cache{fontPath, 12}
-  {}
+  FontCacheTest() : testing::Test{}, m_cache{fontPath, 12} {}
 
   static void SetUpTestSuite()
   {
@@ -55,10 +53,7 @@ class FontCacheTest : public testing::Test
     m_window.reset();
   }
 
-  void test_store_utf_8(const normal_store_fn& store)
-  {
-    test_store(store, 54, "UTF-8_<!?+=");
-  }
+  void test_store_utf_8(const normal_store_fn& store) { test_store(store, 54, "UTF-8_<!?+="); }
 
   void test_store_latin_1(const normal_store_fn& store)
   {

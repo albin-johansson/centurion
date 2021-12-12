@@ -25,8 +25,7 @@ namespace cen {
  *
  * \since 6.2.0
  */
-enum class flash_op
-{
+enum class flash_op {
   cancel = SDL_FLASH_CANCEL,               ///< Cancel any current flashing.
   briefly = SDL_FLASH_BRIEFLY,             ///< Briefly flash the window.
   until_focused = SDL_FLASH_UNTIL_FOCUSED  ///< Flash the window until it's focused.

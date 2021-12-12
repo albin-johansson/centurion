@@ -4,8 +4,7 @@
 
 #include "core_mocks.hpp"
 
-class InitializationTest : public testing::Test
-{
+class InitializationTest : public testing::Test {
  protected:
   void SetUp() override
   {

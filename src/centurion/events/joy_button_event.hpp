@@ -22,16 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_button_event final : public common_event<SDL_JoyButtonEvent>
-{
+class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
  public:
   /**
    * \brief Creates a joystick button event of type `joystick_button_down`.
    *
    * \since 4.0.0
    */
-  joy_button_event() noexcept : common_event{event_type::joystick_button_down}
-  {}
+  joy_button_event() noexcept : common_event{event_type::joystick_button_down} {}
 
   /**
    * \brief Creates a joy_button_event based on the supplied event.
@@ -40,8 +38,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event}
-  {}
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -50,10 +47,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the button index associated with the event.
@@ -62,10 +56,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_button(const Uint8 button) noexcept
-  {
-    m_event.button = button;
-  }
+  void set_button(const Uint8 button) noexcept { m_event.button = button; }
 
   /**
    * \brief Sets the button state that is associated with the button that
@@ -76,10 +67,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept
-  {
-    m_event.state = to_underlying(state);
-  }
+  void set_state(const button_state state) noexcept { m_event.state = to_underlying(state); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -88,10 +76,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 
   /**
    * \brief Returns the index of the button that changed.
@@ -100,10 +85,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto button() const noexcept -> Uint8
-  {
-    return m_event.button;
-  }
+  [[nodiscard]] auto button() const noexcept -> Uint8 { return m_event.button; }
 
   /**
    * \brief Returns the state of the button associated with the event.

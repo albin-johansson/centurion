@@ -14,8 +14,7 @@ extern "C"
   FAKE_VOID_FUNC(SDL_GL_UnloadLibrary)
 }
 
-class OpenGLLibraryTest : public testing::Test
-{
+class OpenGLLibraryTest : public testing::Test {
  protected:
   void SetUp() override
   {

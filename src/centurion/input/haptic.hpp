@@ -65,8 +65,7 @@ using haptic_handle = basic_haptic<detail::handle_type>;
  * \since 5.2.0
  */
 template <typename T>
-class basic_haptic final
-{
+class basic_haptic final {
  public:
   using effect_id = int;
 
@@ -184,10 +183,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto init_rumble() noexcept -> result
-  {
-    return SDL_HapticRumbleInit(m_haptic) == 0;
-  }
+  auto init_rumble() noexcept -> result { return SDL_HapticRumbleInit(m_haptic) == 0; }
 
   /**
    * \brief Plays a rumble effect.
@@ -217,10 +213,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto stop_rumble() noexcept -> result
-  {
-    return SDL_HapticRumbleStop(m_haptic) == 0;
-  }
+  auto stop_rumble() noexcept -> result { return SDL_HapticRumbleStop(m_haptic) == 0; }
 
   /**
    * \brief Indicates whether or not rumble playback is supported.
@@ -264,10 +257,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto unpause() noexcept -> result
-  {
-    return SDL_HapticUnpause(m_haptic) == 0;
-  }
+  auto unpause() noexcept -> result { return SDL_HapticUnpause(m_haptic) == 0; }
 
   /**
    * \brief Uploads an effect to the device.
@@ -354,10 +344,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  auto stop_all() noexcept -> result
-  {
-    return SDL_HapticStopAll(m_haptic) == 0;
-  }
+  auto stop_all() noexcept -> result { return SDL_HapticStopAll(m_haptic) == 0; }
 
   /**
    * \brief Destroys the effect associated with the specified ID.
@@ -371,10 +358,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  void destroy(const effect_id id) noexcept
-  {
-    SDL_HapticDestroyEffect(m_haptic, id);
-  }
+  void destroy(const effect_id id) noexcept { SDL_HapticDestroyEffect(m_haptic, id); }
 
   /**
    * \brief Sets the gain the is used.
@@ -785,10 +769,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto axis_count() const noexcept -> int
-  {
-    return SDL_HapticNumAxes(m_haptic);
-  }
+  [[nodiscard]] auto axis_count() const noexcept -> int { return SDL_HapticNumAxes(m_haptic); }
 
   /// \} End of device information
 
@@ -799,10 +780,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto count() noexcept -> int
-  {
-    return SDL_NumHaptics();
-  }
+  [[nodiscard]] static auto count() noexcept -> int { return SDL_NumHaptics(); }
 
   /**
    * \brief Indicates whether or not a joystick has haptic capabilities.
@@ -827,10 +805,7 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto is_mouse_haptic() noexcept -> bool
-  {
-    return SDL_MouseIsHaptic();
-  }
+  [[nodiscard]] static auto is_mouse_haptic() noexcept -> bool { return SDL_MouseIsHaptic(); }
 
   /**
    * \brief Indicates whether or not a haptic device at a specified index has
@@ -869,18 +844,11 @@ class basic_haptic final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Haptic*
-  {
-    return m_haptic.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Haptic* { return m_haptic.get(); }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Haptic* haptic) noexcept
-    {
-      SDL_HapticClose(haptic);
-    }
+  struct deleter final {
+    void operator()(SDL_Haptic* haptic) noexcept { SDL_HapticClose(haptic); }
   };
   detail::pointer_manager<T, SDL_Haptic, deleter> m_haptic;
 

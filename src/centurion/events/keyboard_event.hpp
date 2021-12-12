@@ -25,16 +25,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class keyboard_event final : public common_event<SDL_KeyboardEvent>
-{
+class keyboard_event final : public common_event<SDL_KeyboardEvent> {
  public:
   /**
    * \brief Creates a keyboard event of type `key_down`.
    *
    * \since 4.0.0
    */
-  keyboard_event() noexcept : common_event{event_type::key_down}
-  {}
+  keyboard_event() noexcept : common_event{event_type::key_down} {}
 
   /**
    * \brief Creates a keyboard event based on the supplied SDL event.
@@ -43,8 +41,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : common_event{event}
-  {}
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the scan code that is associated with the event.
@@ -53,10 +50,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  void set_scan_code(const scan_code& code) noexcept
-  {
-    m_event.keysym.scancode = code.get();
-  }
+  void set_scan_code(const scan_code& code) noexcept { m_event.keysym.scancode = code.get(); }
 
   /**
    * \brief Sets the key code that is associated with the event.
@@ -65,10 +59,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  void set_key_code(const key_code& code) noexcept
-  {
-    m_event.keysym.sym = code.get();
-  }
+  void set_key_code(const key_code& code) noexcept { m_event.keysym.sym = code.get(); }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -109,10 +100,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  void set_repeated(const bool repeated) noexcept
-  {
-    m_event.repeat = repeated;
-  }
+  void set_repeated(const bool repeated) noexcept { m_event.repeat = repeated; }
 
   /**
    * \brief Sets the window ID that is associated with this key event.
@@ -121,10 +109,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Indicates whether or not the event is associated with the
@@ -231,10 +216,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto repeated() const noexcept -> bool
-  {
-    return m_event.repeat;
-  }
+  [[nodiscard]] auto repeated() const noexcept -> bool { return m_event.repeat; }
 
   /**
    * \brief Returns the button state of the key associated with the event.
@@ -285,19 +267,13 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto scan() const noexcept -> scan_code
-  {
-    return m_event.keysym.scancode;
-  }
+  [[nodiscard]] auto scan() const noexcept -> scan_code { return m_event.keysym.scancode; }
 
   /**
    * \brief Equivalent to `scan()`.
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
-  {
-    return scan();
-  }
+  [[nodiscard]] auto get_scan_code() const noexcept -> scan_code { return scan(); }
 
   /**
    * \brief Returns the key code that is associated with the event.
@@ -315,10 +291,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    * \brief Equivalent to `key()`.
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_key_code() const noexcept -> key_code
-  {
-    return key();
-  }
+  [[nodiscard]] auto get_key_code() const noexcept -> key_code { return key(); }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -327,10 +300,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 };
 
 /// \name SDL event conversions

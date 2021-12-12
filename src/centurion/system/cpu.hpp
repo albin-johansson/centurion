@@ -19,8 +19,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class simd_block final
-{
+class simd_block final {
  public:
   /**
    * \brief Allocates a block of SIMD-friendly memory.
@@ -31,8 +30,7 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit simd_block(const usize size) noexcept : m_data{SDL_SIMDAlloc(size)}
-  {}
+  explicit simd_block(const usize size) noexcept : m_data{SDL_SIMDAlloc(size)} {}
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -60,16 +58,10 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto data() noexcept -> void*
-  {
-    return m_data.get();
-  }
+  [[nodiscard]] auto data() noexcept -> void* { return m_data.get(); }
 
   /// \copydoc data()
-  [[nodiscard]] auto data() const noexcept -> const void*
-  {
-    return m_data.get();
-  }
+  [[nodiscard]] auto data() const noexcept -> const void* { return m_data.get(); }
 
   /**
    * \brief Returns a reinterpreted pointer to the associated memory block.
@@ -103,18 +95,11 @@ class simd_block final
    *
    * \since 5.2.0
    */
-  explicit operator bool() const noexcept
-  {
-    return m_data.operator bool();
-  }
+  explicit operator bool() const noexcept { return m_data.operator bool(); }
 
  private:
-  struct deleter final
-  {
-    void operator()(void* ptr) noexcept
-    {
-      SDL_SIMDFree(ptr);
-    }
+  struct deleter final {
+    void operator()(void* ptr) noexcept { SDL_SIMDFree(ptr); }
   };
   std::unique_ptr<void, deleter> m_data;
 };

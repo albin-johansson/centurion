@@ -57,8 +57,7 @@ using texture_handle = basic_texture<detail::handle_type>;
  * \see `texture_handle`
  */
 template <typename T>
-class basic_texture final
-{
+class basic_texture final {
  public:
   /// \name Construction
   /// \{
@@ -268,8 +267,7 @@ class basic_texture final
   void set_pixel(const ipoint pixel, const color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
-        (pixel.x() >= width()) || (pixel.y() >= height()))
-    {
+        (pixel.x() >= width()) || (pixel.y() >= height())) {
       return;
     }
 
@@ -297,10 +295,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  void set_alpha(const Uint8 alpha) noexcept
-  {
-    SDL_SetTextureAlphaMod(m_texture, alpha);
-  }
+  void set_alpha(const Uint8 alpha) noexcept { SDL_SetTextureAlphaMod(m_texture, alpha); }
 
   /**
    * \brief Sets the blend mode that will be used by the texture.
@@ -540,10 +535,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Texture*
-  {
-    return m_texture.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return m_texture.get(); }
 
   /// \} End of getters
 
@@ -570,10 +562,7 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] explicit operator SDL_Texture*() noexcept
-  {
-    return m_texture;
-  }
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept { return m_texture; }
 
   /**
    * \brief Converts to `const SDL_Texture*`.
@@ -582,20 +571,13 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
-  {
-    return m_texture;
-  }
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept { return m_texture; }
 
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Texture* texture) noexcept
-    {
-      SDL_DestroyTexture(texture);
-    }
+  struct deleter final {
+    void operator()(SDL_Texture* texture) noexcept { SDL_DestroyTexture(texture); }
   };
   detail::pointer_manager<T, SDL_Texture, deleter> m_texture;
 
@@ -632,10 +614,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  void unlock() noexcept
-  {
-    SDL_UnlockTexture(m_texture);
-  }
+  void unlock() noexcept { SDL_UnlockTexture(m_texture); }
 };
 
 /// \name String conversions

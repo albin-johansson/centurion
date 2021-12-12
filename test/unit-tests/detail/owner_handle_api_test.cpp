@@ -6,8 +6,7 @@ namespace {
 
 inline int deleteCount = 0;
 
-struct int_deleter final
-{
+struct int_deleter final {
   void operator()(const int* ptr) noexcept
   {
     ++deleteCount;

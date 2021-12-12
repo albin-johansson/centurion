@@ -26,8 +26,7 @@
 
 namespace cen {
 
-enum class MusicType
-{
+enum class MusicType {
   None = MUS_NONE,
   MP3 = MUS_MP3,
   WAV = MUS_WAV,
@@ -39,15 +38,13 @@ enum class MusicType
   OPUS = MUS_OPUS
 };
 
-enum class FadeStatus
-{
+enum class FadeStatus {
   None = MIX_NO_FADING,
   In = MIX_FADING_IN,
   Out = MIX_FADING_OUT
 };
 
-class Music final
-{
+class Music final {
  public:
   using Ms = milliseconds<int>;
   using MusicHookCallback = void (*)(void*, Uint8*, int);
@@ -61,8 +58,7 @@ class Music final
     }
   }
 
-  explicit Music(const std::string& file) : Music{file.c_str()}
-  {}
+  explicit Music(const std::string& file) : Music{file.c_str()} {}
 
   auto Play(const int iterations = 0) noexcept -> std::optional<int>
   {
@@ -75,25 +71,16 @@ class Music final
     }
   }
 
-  static void Resume() noexcept
-  {
-    Mix_ResumeMusic();
-  }
+  static void Resume() noexcept { Mix_ResumeMusic(); }
 
-  static void Pause() noexcept
-  {
-    Mix_PauseMusic();
-  }
+  static void Pause() noexcept { Mix_PauseMusic(); }
 
   static void Halt() noexcept
   {
     Mix_HaltMusic(); /* This appears to always return 0, so we ignore it */
   }
 
-  static void Rewind() noexcept
-  {
-    Mix_RewindMusic();
-  }
+  static void Rewind() noexcept { Mix_RewindMusic(); }
 
   auto FadeIn(const Ms ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
   {
@@ -117,15 +104,9 @@ class Music final
     return static_cast<FadeStatus>(Mix_FadingMusic());
   }
 
-  [[nodiscard]] static auto IsPlaying() noexcept -> bool
-  {
-    return Mix_PlayingMusic();
-  }
+  [[nodiscard]] static auto IsPlaying() noexcept -> bool { return Mix_PlayingMusic(); }
 
-  [[nodiscard]] static auto IsPaused() noexcept -> bool
-  {
-    return Mix_PausedMusic();
-  }
+  [[nodiscard]] static auto IsPaused() noexcept -> bool { return Mix_PausedMusic(); }
 
   [[nodiscard]] static auto IsFading() noexcept -> bool
   {
@@ -149,30 +130,18 @@ class Music final
     Mix_HookMusic(callback, data);
   }
 
-  static void ResetHook() noexcept
-  {
-    SetHook(nullptr);
-  }
+  static void ResetHook() noexcept { SetHook(nullptr); }
 
   [[nodiscard]] auto GetType() const noexcept -> MusicType
   {
     return static_cast<MusicType>(Mix_GetMusicType(mMusic.get()));
   }
 
-  [[nodiscard]] static auto GetVolume() noexcept -> int
-  {
-    return Mix_VolumeMusic(-1);
-  }
+  [[nodiscard]] static auto GetVolume() noexcept -> int { return Mix_VolumeMusic(-1); }
 
-  [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int
-  {
-    return MIX_MAX_VOLUME;
-  }
+  [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int { return MIX_MAX_VOLUME; }
 
-  [[nodiscard]] static auto GetHookData() noexcept -> void*
-  {
-    return Mix_GetMusicHookData();
-  }
+  [[nodiscard]] static auto GetHookData() noexcept -> void* { return Mix_GetMusicHookData(); }
 
   [[nodiscard]] static auto GetDecoder(const int index) noexcept -> const char*
   {
@@ -189,10 +158,7 @@ class Music final
     return Mix_GetNumMusicDecoders();
   }
 
-  [[nodiscard]] auto get() const noexcept -> Mix_Music*
-  {
-    return mMusic.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> Mix_Music* { return mMusic.get(); }
 
  private:
   Managed<Mix_Music> mMusic;

@@ -35,8 +35,7 @@ namespace cen {
  * \see `fpoint`
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
-class point_traits final
-{
+class point_traits final {
  public:
   /// \brief Indicates whether or not the point has integral components.
   /// \deprecated Since 6.4.0, use `integral` instead.
@@ -113,8 +112,7 @@ using fpoint = basic_point<float>;
  * \see `distance()`
  */
 template <typename T>
-class basic_point final
-{
+class basic_point final {
  public:
   /// \copydoc point_traits::isIntegral
   inline constexpr static bool isIntegral [[deprecated]] = point_traits<T>::isIntegral;
@@ -170,10 +168,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_x(const value_type x) noexcept
-  {
-    m_point.x = x;
-  }
+  constexpr void set_x(const value_type x) noexcept { m_point.x = x; }
 
   /**
    * \brief Sets the y-coordinate of the point.
@@ -182,10 +177,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  constexpr void set_y(const value_type y) noexcept
-  {
-    m_point.y = y;
-  }
+  constexpr void set_y(const value_type y) noexcept { m_point.y = y; }
 
   /// \} End of setters
 
@@ -199,10 +191,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto x() const noexcept -> value_type
-  {
-    return m_point.x;
-  }
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type { return m_point.x; }
 
   /**
    * \brief Returns the y-coordinate of the point.
@@ -211,10 +200,7 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto y() const noexcept -> value_type
-  {
-    return m_point.y;
-  }
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type { return m_point.y; }
 
   /**
    * \brief Returns the internal point representation.
@@ -223,16 +209,10 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() noexcept -> point_type&
-  {
-    return m_point;
-  }
+  [[nodiscard]] constexpr auto get() noexcept -> point_type& { return m_point; }
 
   /// \copydoc get
-  [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
-  {
-    return m_point;
-  }
+  [[nodiscard]] constexpr auto get() const noexcept -> const point_type& { return m_point; }
 
   /**
    * \brief Returns a pointer to the internal point representation.
@@ -243,16 +223,10 @@ class basic_point final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto data() noexcept -> point_type*
-  {
-    return &m_point;
-  }
+  [[nodiscard]] auto data() noexcept -> point_type* { return &m_point; }
 
   /// \copydoc data
-  [[nodiscard]] auto data() const noexcept -> const point_type*
-  {
-    return &m_point;
-  }
+  [[nodiscard]] auto data() const noexcept -> const point_type* { return &m_point; }
 
   /// \} End of getters
 
@@ -268,22 +242,13 @@ class basic_point final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr explicit operator point_type() const noexcept
-  {
-    return m_point;
-  }
+  [[nodiscard]] constexpr explicit operator point_type() const noexcept { return m_point; }
 
   /// \copydoc data()
-  [[nodiscard]] explicit operator point_type*() noexcept
-  {
-    return data();
-  }
+  [[nodiscard]] explicit operator point_type*() noexcept { return data(); }
 
   /// \copydoc data()
-  [[nodiscard]] explicit operator const point_type*() const noexcept
-  {
-    return data();
-  }
+  [[nodiscard]] explicit operator const point_type*() const noexcept { return data(); }
 
   /// \} End of conversions
 

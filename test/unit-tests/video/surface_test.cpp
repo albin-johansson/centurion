@@ -27,18 +27,11 @@ static_assert(std::is_nothrow_move_assignable_v<cen::surface_handle>);
 
 using namespace std::string_literals;
 
-class SurfaceTest : public testing::Test
-{
+class SurfaceTest : public testing::Test {
  protected:
-  static void SetUpTestSuite()
-  {
-    m_surface = std::make_unique<cen::surface>(m_path);
-  }
+  static void SetUpTestSuite() { m_surface = std::make_unique<cen::surface>(m_path); }
 
-  static void TearDownTestSuite()
-  {
-    m_surface.reset();
-  }
+  static void TearDownTestSuite() { m_surface.reset(); }
 
   inline constexpr static auto m_path = "resources/panda.png";
   inline static std::unique_ptr<cen::surface> m_surface;

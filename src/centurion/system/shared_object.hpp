@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 5.3.0
  */
-class shared_object final
-{
+class shared_object final {
  public:
   /**
    * \brief Loads a shared object.
@@ -51,8 +50,7 @@ class shared_object final
    *
    * \since 5.3.0
    */
-  explicit shared_object(const std::string& object) : shared_object{object.c_str()}
-  {}
+  explicit shared_object(const std::string& object) : shared_object{object.c_str()} {}
 
   /**
    * \brief Attempts to load a function from the shared object.
@@ -94,12 +92,8 @@ class shared_object final
   }
 
  private:
-  struct deleter final
-  {
-    void operator()(void* object) noexcept
-    {
-      SDL_UnloadObject(object);
-    }
+  struct deleter final {
+    void operator()(void* object) noexcept { SDL_UnloadObject(object); }
   };
   std::unique_ptr<void, deleter> m_object;
 

@@ -8,8 +8,7 @@
 #include "system/cpu.hpp"
 #include "video/colors.hpp"
 
-class PixelFormatInfoTest : public testing::Test
-{
+class PixelFormatInfoTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {
@@ -17,10 +16,7 @@ class PixelFormatInfoTest : public testing::Test
     m_info = std::make_unique<cen::pixel_format_info>(format);
   }
 
-  static void TearDownTestSuite()
-  {
-    m_info.reset();
-  }
+  static void TearDownTestSuite() { m_info.reset(); }
 
   inline static std::unique_ptr<cen::pixel_format_info> m_info;
 };
@@ -74,16 +70,15 @@ TEST_F(PixelFormatInfoTest, RGBAToPixel)
 TEST_F(PixelFormatInfoTest, PixelToRGB)
 {
   constexpr auto color = cen::colors::hot_pink;
-  const Uint32 pixel =
-      (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
+  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u);
   ASSERT_EQ(color, m_info->pixel_to_rgb(pixel));
 }
 
 TEST_F(PixelFormatInfoTest, PixelToRGBA)
 {
   constexpr auto color = cen::colors::aquamarine;
-  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) |
-                            (color.blue() << 8u) | (color.alpha() << 0u);
+  const Uint32 pixel = (color.red() << 24u) | (color.green() << 16u) | (color.blue() << 8u) |
+                       (color.alpha() << 0u);
   ASSERT_EQ(color, m_info->pixel_to_rgba(pixel));
 }
 

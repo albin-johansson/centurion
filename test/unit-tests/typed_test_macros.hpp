@@ -7,8 +7,7 @@
 // Defines a typed test with its own class with the specified name
 #define CENTURION_DEFINE_TYPED_TEST(Name, Types) \
   template <typename T>                          \
-  class Name : public testing::Test              \
-  {};                                            \
+  class Name : public testing::Test {};          \
                                                  \
   template <typename T>                          \
   using Name##Suite = Name<T>;                   \

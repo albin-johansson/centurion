@@ -18,12 +18,8 @@ void on_quit(const cen::quit_event&)
   visitedFreeFunction = true;
 }
 
-struct button_handler final
-{
-  void on_event(const cen::controller_button_event&)
-  {
-    visited = true;
-  }
+struct button_handler final {
+  void on_event(const cen::controller_button_event&) { visited = true; }
 
   bool visited{};
 };

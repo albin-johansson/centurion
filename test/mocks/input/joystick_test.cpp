@@ -71,8 +71,7 @@ extern "C"
 
 using namespace cen::literals;
 
-class JoystickTest : public testing::Test
-{
+class JoystickTest : public testing::Test {
  protected:
   void SetUp() override
   {

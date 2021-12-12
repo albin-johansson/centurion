@@ -22,8 +22,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_ramp final : public haptic_effect<haptic_ramp>
-{
+class haptic_ramp final : public haptic_effect<haptic_ramp> {
  public:
   inline constexpr static bool hasDirection = true;
   inline constexpr static bool hasEnvelope = true;
@@ -48,10 +47,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
    *
    * \since 5.2.0
    */
-  void set_start_strength(const Sint16 start) noexcept
-  {
-    representation().start = start;
-  }
+  void set_start_strength(const Sint16 start) noexcept { representation().start = start; }
 
   /**
    * \brief Sets the strength level at the end of the effect.
@@ -60,10 +56,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
    *
    * \since 5.2.0
    */
-  void set_end_strength(const Sint16 end) noexcept
-  {
-    representation().end = end;
-  }
+  void set_end_strength(const Sint16 end) noexcept { representation().end = end; }
 
   /**
    * \brief Returns the initial strength level.
@@ -84,10 +77,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto end_strength() const noexcept -> Sint16
-  {
-    return representation().end;
-  }
+  [[nodiscard]] auto end_strength() const noexcept -> Sint16 { return representation().end; }
 
   /**
    * \brief Returns the internal representation.
@@ -96,10 +86,7 @@ class haptic_ramp final : public haptic_effect<haptic_ramp>
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto representation() noexcept -> SDL_HapticRamp&
-  {
-    return m_effect.ramp;
-  }
+  [[nodiscard]] auto representation() noexcept -> SDL_HapticRamp& { return m_effect.ramp; }
 
   /// \copydoc representation();
   [[nodiscard]] auto representation() const noexcept -> const SDL_HapticRamp&

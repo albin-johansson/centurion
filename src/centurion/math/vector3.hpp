@@ -29,8 +29,7 @@ namespace cen {
  * \since 5.2.0
  */
 template <typename T>
-struct vector3 final
-{
+struct vector3 final {
   using value_type = T;  ///< The type of the vector components.
 
   value_type x{};  ///< The x-coordinate of the vector.

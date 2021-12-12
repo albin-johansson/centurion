@@ -5,8 +5,7 @@
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 
-class MutexTest : public testing::Test
-{
+class MutexTest : public testing::Test {
  public:
   void SetUp() override
   {

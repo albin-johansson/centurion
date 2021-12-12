@@ -14,8 +14,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_OpenURL, const char*)
 }
 
-class OpenURLTest : public testing::Test
-{
+class OpenURLTest : public testing::Test {
  protected:
   void SetUp() override
   {

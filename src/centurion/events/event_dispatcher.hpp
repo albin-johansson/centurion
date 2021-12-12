@@ -30,8 +30,7 @@ namespace cen {
  * \since 5.1.0
  */
 template <typename E>
-class event_sink final
-{
+class event_sink final {
  public:
   using event_type = std::decay_t<E>;              ///< Associated event type.
   using signature_type = void(const event_type&);  ///< Signature of handler.
@@ -42,10 +41,7 @@ class event_sink final
    *
    * \since 5.1.0
    */
-  void reset() noexcept
-  {
-    m_function = nullptr;
-  }
+  void reset() noexcept { m_function = nullptr; }
 
   /**
    * \brief Connects to a function object.
@@ -115,15 +111,9 @@ class event_sink final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto function() -> function_type&
-  {
-    return m_function;
-  }
+  [[nodiscard]] auto function() -> function_type& { return m_function; }
 
-  [[nodiscard]] auto function() const -> const function_type&
-  {
-    return m_function;
-  }
+  [[nodiscard]] auto function() const -> const function_type& { return m_function; }
 
  private:
   function_type m_function;
@@ -163,8 +153,7 @@ class event_sink final
  * \see `cen::event`
  */
 template <typename... E>
-class event_dispatcher final
-{
+class event_dispatcher final {
   static_assert((!std::is_const_v<E> && ...), "Can't use \"const\" on template parameter!");
 
   static_assert((!std::is_volatile_v<E> && ...),
@@ -278,10 +267,7 @@ class event_dispatcher final
    *
    * \since 5.1.0
    */
-  void reset() noexcept
-  {
-    (bind<E>().reset(), ...);
-  }
+  void reset() noexcept { (bind<E>().reset(), ...); }
 
   /**
    * \brief Returns the amount of set event handlers.
@@ -305,10 +291,7 @@ class event_dispatcher final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] constexpr static auto size() noexcept -> size_type
-  {
-    return sizeof...(E);
-  }
+  [[nodiscard]] constexpr static auto size() noexcept -> size_type { return sizeof...(E); }
 
  private:
   using sink_tuple = std::tuple<event_sink<E>...>;

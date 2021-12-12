@@ -43,8 +43,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_HapticUpdateEffect, SDL_Haptic*, int, SDL_HapticEffect*)
 }
 
-class HapticTest : public testing::Test
-{
+class HapticTest : public testing::Test {
  protected:
   void SetUp() override
   {

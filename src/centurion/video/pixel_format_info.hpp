@@ -63,8 +63,7 @@ using pixel_format_info_handle = basic_pixel_format_info<detail::handle_type>;
  * \since 5.2.0
  */
 template <typename B>
-class basic_pixel_format_info final
-{
+class basic_pixel_format_info final {
  public:
   /// \name Construction
   /// \{
@@ -242,10 +241,7 @@ class basic_pixel_format_info final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat*
-  {
-    return m_format.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_PixelFormat* { return m_format.get(); }
 
   /// \} End of queries
 
@@ -268,12 +264,8 @@ class basic_pixel_format_info final
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_PixelFormat* format) noexcept
-    {
-      SDL_FreeFormat(format);
-    }
+  struct deleter final {
+    void operator()(SDL_PixelFormat* format) noexcept { SDL_FreeFormat(format); }
   };
   detail::pointer_manager<B, SDL_PixelFormat, deleter> m_format;
 };

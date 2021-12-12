@@ -19,8 +19,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_direction final
-{
+class haptic_direction final {
  public:
   using direction_type = vector3<Sint32>;
 
@@ -31,10 +30,7 @@ class haptic_direction final
    *
    * \since 5.2.0
    */
-  explicit haptic_direction(const haptic_direction_type type) noexcept
-  {
-    set_type(type);
-  }
+  explicit haptic_direction(const haptic_direction_type type) noexcept { set_type(type); }
 
   /**
    * \brief Creates a haptic direction based on an `SDL_HapticDirection` instance.
@@ -104,10 +100,7 @@ class haptic_direction final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> const SDL_HapticDirection&
-  {
-    return m_direction;
-  }
+  [[nodiscard]] auto get() const noexcept -> const SDL_HapticDirection& { return m_direction; }
 
  private:
   SDL_HapticDirection m_direction{};

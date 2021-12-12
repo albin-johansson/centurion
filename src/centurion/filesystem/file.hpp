@@ -21,8 +21,7 @@ namespace cen {
 /// \addtogroup filesystem
 /// \{
 
-enum class FileType : unsigned
-{
+enum class FileType : unsigned {
   Unknown = SDL_RWOPS_UNKNOWN,
   Win = SDL_RWOPS_WINFILE,
   Std = SDL_RWOPS_STDFILE,
@@ -31,8 +30,7 @@ enum class FileType : unsigned
   MemoryReadOnly = SDL_RWOPS_MEMORY_RO
 };
 
-enum class FileMode
-{
+enum class FileMode {
   ReadExisting,             // "r"
   ReadExistingBinary,       // "rb"
   Write,                    // "w"
@@ -47,25 +45,21 @@ enum class FileMode
   ReadAppendBinary          // "ab+"
 };
 
-enum class SeekMode
-{
+enum class SeekMode {
   FromBeginning = RW_SEEK_SET,      ///< From the beginning.
   RelativeToCurrent = RW_SEEK_CUR,  ///< Relative to the current read point.
   RelativeToEnd = RW_SEEK_END       ///< Relative to the end.
 };
 
-class File final
-{
+class File final {
  public:
-  explicit File(SDL_RWops* context) noexcept : mContext{context}
-  {}
+  explicit File(SDL_RWops* context) noexcept : mContext{context} {}
 
   File(const char* path, const FileMode mode) noexcept
       : mContext{SDL_RWFromFile(path, Stringify(mode))}
   {}
 
-  File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode}
-  {}
+  File(const std::string& path, const FileMode mode) noexcept : File{path.c_str(), mode} {}
 
   template <typename T>
   auto Write(not_null<const T*> data, const usize count) noexcept -> usize
@@ -224,80 +218,38 @@ class File final
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-  [[nodiscard]] auto IsPNG() const noexcept -> bool
-  {
-    return IMG_isPNG(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsPNG() const noexcept -> bool { return IMG_isPNG(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsICO() const noexcept -> bool
-  {
-    return IMG_isICO(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsICO() const noexcept -> bool { return IMG_isICO(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsJPG() const noexcept -> bool
-  {
-    return IMG_isJPG(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsJPG() const noexcept -> bool { return IMG_isJPG(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsBMP() const noexcept -> bool
-  {
-    return IMG_isBMP(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsBMP() const noexcept -> bool { return IMG_isBMP(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsGIF() const noexcept -> bool
-  {
-    return IMG_isGIF(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsGIF() const noexcept -> bool { return IMG_isGIF(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsSVG() const noexcept -> bool
-  {
-    return IMG_isSVG(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsSVG() const noexcept -> bool { return IMG_isSVG(mContext.get()) == 1; }
 
   [[nodiscard]] auto IsWEBP() const noexcept -> bool
   {
     return IMG_isWEBP(mContext.get()) == 1;
   }
 
-  [[nodiscard]] auto IsTIF() const noexcept -> bool
-  {
-    return IMG_isTIF(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsTIF() const noexcept -> bool { return IMG_isTIF(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsPNM() const noexcept -> bool
-  {
-    return IMG_isPNM(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsPNM() const noexcept -> bool { return IMG_isPNM(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsPCX() const noexcept -> bool
-  {
-    return IMG_isPCX(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsPCX() const noexcept -> bool { return IMG_isPCX(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsLBM() const noexcept -> bool
-  {
-    return IMG_isLBM(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsLBM() const noexcept -> bool { return IMG_isLBM(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsCUR() const noexcept -> bool
-  {
-    return IMG_isCUR(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsCUR() const noexcept -> bool { return IMG_isCUR(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsXCF() const noexcept -> bool
-  {
-    return IMG_isXCF(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsXCF() const noexcept -> bool { return IMG_isXCF(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsXPM() const noexcept -> bool
-  {
-    return IMG_isXPM(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsXPM() const noexcept -> bool { return IMG_isXPM(mContext.get()) == 1; }
 
-  [[nodiscard]] auto IsXV() const noexcept -> bool
-  {
-    return IMG_isXV(mContext.get()) == 1;
-  }
+  [[nodiscard]] auto IsXV() const noexcept -> bool { return IMG_isXV(mContext.get()) == 1; }
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
@@ -325,15 +277,9 @@ class File final
     }
   }
 
-  [[nodiscard]] auto get() const noexcept -> SDL_RWops*
-  {
-    return mContext.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_RWops* { return mContext.get(); }
 
-  explicit operator bool() const noexcept
-  {
-    return mContext != nullptr;
-  }
+  explicit operator bool() const noexcept { return mContext != nullptr; }
 
  private:
   Managed<SDL_RWops> mContext;

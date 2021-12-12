@@ -6,8 +6,7 @@
 #include "video/texture.hpp"
 #include "video/window.hpp"
 
-class TextureHandleTest : public testing::Test
-{
+class TextureHandleTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {

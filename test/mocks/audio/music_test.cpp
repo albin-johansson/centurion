@@ -36,8 +36,7 @@ extern "C"
   FAKE_VALUE_FUNC(Mix_MusicType, Mix_GetMusicType, const Mix_Music*)
 }
 
-class MusicTest : public testing::Test
-{
+class MusicTest : public testing::Test {
  protected:
   void SetUp() override
   {

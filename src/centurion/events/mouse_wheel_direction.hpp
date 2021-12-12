@@ -24,8 +24,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class mouse_wheel_direction : Uint32
-{
+enum class mouse_wheel_direction : Uint32 {
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };

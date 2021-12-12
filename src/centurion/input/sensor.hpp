@@ -33,8 +33,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-enum class sensor_type
-{
+enum class sensor_type {
   invalid = SDL_SENSOR_INVALID,      ///< Invalid sensor
   unknown = SDL_SENSOR_UNKNOWN,      ///< Unknown sensor
   accelerometer = SDL_SENSOR_ACCEL,  ///< Accelerometer
@@ -67,8 +66,7 @@ using sensor_handle = basic_sensor<detail::handle_type>;
  * \since 5.2.0
  */
 template <typename T>
-class basic_sensor final
-{
+class basic_sensor final {
  public:
   /// \name Construction
   /// \{
@@ -132,10 +130,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  static void update() noexcept
-  {
-    SDL_SensorUpdate();
-  }
+  static void update() noexcept { SDL_SensorUpdate(); }
 
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -148,10 +143,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  static void lock() noexcept
-  {
-    SDL_LockSensors();
-  }
+  static void lock() noexcept { SDL_LockSensors(); }
 
   /**
    * \brief Unlocks access to the sensors.
@@ -162,10 +154,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  static void unlock() noexcept
-  {
-    SDL_UnlockSensors();
-  }
+  static void unlock() noexcept { SDL_UnlockSensors(); }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)
 
@@ -176,10 +165,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto count() noexcept -> int
-  {
-    return SDL_NumSensors();
-  }
+  [[nodiscard]] static auto count() noexcept -> int { return SDL_NumSensors(); }
 
   /// \name Instance-based queries
   /// \{
@@ -204,10 +190,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> cstr
-  {
-    return SDL_SensorGetName(m_sensor);
-  }
+  [[nodiscard]] auto name() const noexcept -> cstr { return SDL_SensorGetName(m_sensor); }
 
   /**
    * \brief Returns the type associated with the sensor device.
@@ -263,10 +246,7 @@ class basic_sensor final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Sensor*
-  {
-    return m_sensor.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Sensor* { return m_sensor.get(); }
 
   /// \} End of instance-based queries
 
@@ -364,12 +344,8 @@ class basic_sensor final
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Sensor* sensor) noexcept
-    {
-      SDL_SensorClose(sensor);
-    }
+  struct deleter final {
+    void operator()(SDL_Sensor* sensor) noexcept { SDL_SensorClose(sensor); }
   };
   detail::pointer_manager<T, SDL_Sensor, deleter> m_sensor;
 };

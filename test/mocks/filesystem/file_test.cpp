@@ -27,8 +27,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, IMG_isXV, SDL_RWops*)
 }
 
-class FileTest : public testing::Test
-{
+class FileTest : public testing::Test {
  protected:
   void SetUp() override
   {

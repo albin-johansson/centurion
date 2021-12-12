@@ -22,8 +22,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-class semaphore final
-{
+class semaphore final {
  public:
   /**
    * \brief Creates a semaphore with the specified amount of tokens.
@@ -50,10 +49,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  auto acquire() noexcept -> result
-  {
-    return SDL_SemWait(m_semaphore.get()) == 0;
-  }
+  auto acquire() noexcept -> result { return SDL_SemWait(m_semaphore.get()) == 0; }
 
   /**
    * \brief Attempts to acquire a token from the semaphore.
@@ -90,10 +86,7 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  auto release() noexcept -> result
-  {
-    return SDL_SemPost(m_semaphore.get()) == 0;
-  }
+  auto release() noexcept -> result { return SDL_SemPost(m_semaphore.get()) == 0; }
 
   /**
    * \brief Returns the amount of available tokens.
@@ -108,12 +101,8 @@ class semaphore final
   }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_sem* semaphore) noexcept
-    {
-      SDL_DestroySemaphore(semaphore);
-    }
+  struct deleter final {
+    void operator()(SDL_sem* semaphore) noexcept { SDL_DestroySemaphore(semaphore); }
   };
   std::unique_ptr<SDL_sem, deleter> m_semaphore;
 };

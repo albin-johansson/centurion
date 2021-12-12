@@ -14,8 +14,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_PeepEvents, SDL_Event*, int, SDL_eventaction, Uint32, Uint32)
 }
 
-class EventTest : public testing::Test
-{
+class EventTest : public testing::Test {
  protected:
   void SetUp() override
   {

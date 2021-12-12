@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-enum class blend_op
-{
+enum class blend_op {
   add = SDL_BLENDOPERATION_ADD,
   sub = SDL_BLENDOPERATION_SUBTRACT,
   reverse_sub = SDL_BLENDOPERATION_REV_SUBTRACT,

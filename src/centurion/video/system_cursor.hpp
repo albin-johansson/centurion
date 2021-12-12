@@ -23,8 +23,7 @@ namespace cen {
  * \see `SDL_SystemCursor`
  * \see `system_cursor_count()`
  */
-enum class system_cursor
-{
+enum class system_cursor {
   arrow = SDL_SYSTEM_CURSOR_ARROW,
   ibeam = SDL_SYSTEM_CURSOR_IBEAM,
   wait = SDL_SYSTEM_CURSOR_WAIT,

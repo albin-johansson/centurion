@@ -38,8 +38,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-class palette final
-{
+class palette final {
  public:
   using iterator = SDL_Color*;
   using const_iterator = const SDL_Color*;
@@ -137,10 +136,7 @@ class palette final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> int
-  {
-    return m_palette->ncolors;
-  }
+  [[nodiscard]] auto size() const noexcept -> int { return m_palette->ncolors; }
 
   /**
    * \brief Returns the version of the palette.
@@ -151,10 +147,7 @@ class palette final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto version() const noexcept -> Uint32
-  {
-    return m_palette->version;
-  }
+  [[nodiscard]] auto version() const noexcept -> Uint32 { return m_palette->version; }
 
   /**
    * \brief Returns a pointer to the associated SDL palette.
@@ -165,28 +158,16 @@ class palette final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Palette*
-  {
-    return m_palette.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Palette* { return m_palette.get(); }
 
   /// \name Iteration
   /// \{
 
-  [[nodiscard]] auto begin() noexcept -> iterator
-  {
-    return m_palette->colors;
-  }
+  [[nodiscard]] auto begin() noexcept -> iterator { return m_palette->colors; }
 
-  [[nodiscard]] auto begin() const noexcept -> const_iterator
-  {
-    return m_palette->colors;
-  }
+  [[nodiscard]] auto begin() const noexcept -> const_iterator { return m_palette->colors; }
 
-  [[nodiscard]] auto end() noexcept -> iterator
-  {
-    return m_palette->colors + size();
-  }
+  [[nodiscard]] auto end() noexcept -> iterator { return m_palette->colors + size(); }
 
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
@@ -196,12 +177,8 @@ class palette final
   /// \} End of iteration
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Palette* palette) noexcept
-    {
-      SDL_FreePalette(palette);
-    }
+  struct deleter final {
+    void operator()(SDL_Palette* palette) noexcept { SDL_FreePalette(palette); }
   };
 
   std::unique_ptr<SDL_Palette, deleter> m_palette;

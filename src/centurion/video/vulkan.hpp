@@ -28,8 +28,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-class vk_library final
-{
+class vk_library final {
  public:
   /**
    * \brief Loads a Vulkan library.
@@ -44,10 +43,7 @@ class vk_library final
     }
   }
 
-  ~vk_library() noexcept
-  {
-    SDL_Vulkan_UnloadLibrary();
-  }
+  ~vk_library() noexcept { SDL_Vulkan_UnloadLibrary(); }
 
   CENTURION_DISABLE_COPY(vk_library)
   CENTURION_DISABLE_MOVE(vk_library)

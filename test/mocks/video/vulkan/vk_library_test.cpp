@@ -13,8 +13,7 @@ extern "C"
   FAKE_VOID_FUNC(SDL_Vulkan_UnloadLibrary)
 }
 
-class VulkanLibraryTest : public testing::Test
-{
+class VulkanLibraryTest : public testing::Test {
  protected:
   void SetUp() override
   {

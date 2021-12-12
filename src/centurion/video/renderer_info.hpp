@@ -36,8 +36,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-class renderer_info final
-{
+class renderer_info final {
   template <typename T>
   friend auto get_info(const basic_renderer<T>& renderer) noexcept
       -> std::optional<renderer_info>;
@@ -52,10 +51,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto supported_flags() const noexcept -> Uint32
-  {
-    return m_info.flags;
-  }
+  [[nodiscard]] auto supported_flags() const noexcept -> Uint32 { return m_info.flags; }
 
   /**
    * \brief Indicates whether or not the renderer supports VSync.
@@ -112,10 +108,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> cstr
-  {
-    return m_info.name;
-  }
+  [[nodiscard]] auto name() const noexcept -> cstr { return m_info.name; }
 
   /**
    * \brief Returns the number of supported pixel formats.
@@ -192,8 +185,7 @@ class renderer_info final
    *
    * \since 6.0.0
    */
-  explicit renderer_info(const SDL_RendererInfo info) noexcept : m_info{info}
-  {}
+  explicit renderer_info(const SDL_RendererInfo info) noexcept : m_info{info} {}
 };
 
 /// \name String conversions

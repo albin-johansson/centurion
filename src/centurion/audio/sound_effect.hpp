@@ -34,8 +34,7 @@ using SoundEffect = BasicSoundEffect<detail::owning_type>;
 using SoundEffectHandle = BasicSoundEffect<detail::handle_type>;
 
 template <typename T>
-class BasicSoundEffect final
-{
+class BasicSoundEffect final {
  public:
   using Ms = milliseconds<int>;
 
@@ -118,15 +117,9 @@ class BasicSoundEffect final
     return IsPlaying() && Mix_FadingChannel(mChannel);
   }
 
-  [[nodiscard]] auto GetVolume() const noexcept -> int
-  {
-    return mChunk->volume;
-  }
+  [[nodiscard]] auto GetVolume() const noexcept -> int { return mChunk->volume; }
 
-  [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int
-  {
-    return MIX_MAX_VOLUME;
-  }
+  [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int { return MIX_MAX_VOLUME; }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
   [[nodiscard]] static auto GetDecoder(const int index) noexcept -> const char*
@@ -156,27 +149,18 @@ class BasicSoundEffect final
     }
   }
 
-  [[nodiscard]] auto get() const noexcept -> Mix_Chunk*
-  {
-    return mChunk.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> Mix_Chunk* { return mChunk.get(); }
 
  private:
   detail::Pointer<T, Mix_Chunk> mChunk;
   int mChannel{GetUndefinedChannel()};
 
-  [[nodiscard]] constexpr static auto GetUndefinedChannel() noexcept -> int
-  {
-    return -1;
-  }
+  [[nodiscard]] constexpr static auto GetUndefinedChannel() noexcept -> int { return -1; }
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  void set_channel(const int channel) noexcept
-  {
-    mChannel = channel;
-  }
+  void set_channel(const int channel) noexcept { mChannel = channel; }
 
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };

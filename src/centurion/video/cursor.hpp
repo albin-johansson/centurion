@@ -47,8 +47,7 @@ using cursor_handle = basic_cursor<detail::handle_type>;
  * \see `cursor_handle`
  */
 template <typename T>
-class basic_cursor final
-{
+class basic_cursor final {
  public:
   /// \name Construction
   /// \{
@@ -127,20 +126,14 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  static void reset() noexcept
-  {
-    SDL_SetCursor(SDL_GetDefaultCursor());
-  }
+  static void reset() noexcept { SDL_SetCursor(SDL_GetDefaultCursor()); }
 
   /**
    * \brief Forces a cursor redraw.
    *
    * \since 4.0.0
    */
-  static void force_redraw() noexcept
-  {
-    SDL_SetCursor(nullptr);
-  }
+  static void force_redraw() noexcept { SDL_SetCursor(nullptr); }
 
   /**
    * \brief Sets whether or not any mouse cursor is visible.
@@ -212,10 +205,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  void enable() noexcept
-  {
-    SDL_SetCursor(m_cursor);
-  }
+  void enable() noexcept { SDL_SetCursor(m_cursor); }
 
   /**
    * \brief Indicates whether or not this cursor is currently active.
@@ -227,10 +217,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto is_enabled() const noexcept -> bool
-  {
-    return SDL_GetCursor() == get();
-  }
+  [[nodiscard]] auto is_enabled() const noexcept -> bool { return SDL_GetCursor() == get(); }
 
   /**
    * \brief Returns a pointer to the associated cursor.
@@ -241,10 +228,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
-  {
-    return m_cursor.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return m_cursor.get(); }
 
   /// \} End of instance members
 
@@ -267,12 +251,8 @@ class basic_cursor final
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Cursor* cursor) noexcept
-    {
-      SDL_FreeCursor(cursor);
-    }
+  struct deleter final {
+    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
   };
   detail::pointer_manager<T, SDL_Cursor, deleter> m_cursor;
 };

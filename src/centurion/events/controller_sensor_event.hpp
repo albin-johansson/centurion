@@ -24,8 +24,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class controller_sensor_event final : public common_event<SDL_ControllerSensorEvent>
-{
+class controller_sensor_event final : public common_event<SDL_ControllerSensorEvent> {
  public:
   using data_type = std::array<float, 3>;
 
@@ -34,8 +33,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  controller_sensor_event() noexcept : common_event{event_type::controller_sensor_update}
-  {}
+  controller_sensor_event() noexcept : common_event{event_type::controller_sensor_update} {}
 
   /**
    * \brief Creates a controller sensor event based on an SDL event.
@@ -55,10 +53,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  void set_which(const SDL_JoystickID id) noexcept
-  {
-    m_event.which = id;
-  }
+  void set_which(const SDL_JoystickID id) noexcept { m_event.which = id; }
 
   /**
    * \brief Sets the associated sensor type.
@@ -79,10 +74,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  void set_data(const data_type& values)
-  {
-    detail::assign(values, m_event.data);
-  }
+  void set_data(const data_type& values) { detail::assign(values, m_event.data); }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -91,10 +83,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 
   /**
    * \brief Returns the type of the associated sensor.
@@ -115,10 +104,7 @@ class controller_sensor_event final : public common_event<SDL_ControllerSensorEv
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data() const -> data_type
-  {
-    return detail::to_array(m_event.data);
-  }
+  [[nodiscard]] auto data() const -> data_type { return detail::to_array(m_event.data); }
 };
 
 template <>

@@ -39,18 +39,14 @@ namespace cen {
  *
  * \since 3.0.0
  */
-class keyboard final
-{
+class keyboard final {
  public:
   /**
    * \brief Creates a `keyboard` instance.
    *
    * \since 3.0.0
    */
-  keyboard() noexcept
-  {
-    m_states = SDL_GetKeyboardState(&m_nKeys);
-  }
+  keyboard() noexcept { m_states = SDL_GetKeyboardState(&m_nKeys); }
 
   /**
    * \brief Updates the state of the key state object.
@@ -59,10 +55,7 @@ class keyboard final
    *
    * \since 3.0.0
    */
-  void update()
-  {
-    std::copy(m_states, m_states + m_nKeys, m_previous.begin());
-  }
+  void update() { std::copy(m_states, m_states + m_nKeys, m_previous.begin()); }
 
   /**
    * \brief Indicates whether or not the specified key is being pressed.
@@ -285,10 +278,7 @@ class keyboard final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto key_count() const noexcept -> int
-  {
-    return m_nKeys;
-  }
+  [[nodiscard]] auto key_count() const noexcept -> int { return m_nKeys; }
 
  private:
   const Uint8* m_states{};

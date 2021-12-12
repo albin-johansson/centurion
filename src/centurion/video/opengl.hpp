@@ -27,8 +27,7 @@ namespace cen {
 
 /// \brief Represents different OpenGL attributes.
 /// \since 6.0.0
-enum class gl_attribute
-{
+enum class gl_attribute {
   red_size = SDL_GL_RED_SIZE,
   green_size = SDL_GL_GREEN_SIZE,
   blue_size = SDL_GL_BLUE_SIZE,
@@ -64,8 +63,7 @@ enum class gl_attribute
 
 /// \brief Represents different swap interval modes.
 /// \since 6.0.0
-enum class gl_swap_interval
-{
+enum class gl_swap_interval {
   immediate = 0,       ///< Immediate updates.
   synchronized = 1,    ///< Updates synchronized with vertical retrace (VSync).
   late_immediate = -1  ///< Allow immediate late swaps, instead of waiting for retrace.
@@ -78,8 +76,7 @@ enum class gl_swap_interval
  *
  * \since 6.0.0
  */
-class gl_library final
-{
+class gl_library final {
  public:
   CENTURION_DISABLE_COPY(gl_library)
   CENTURION_DISABLE_MOVE(gl_library)
@@ -101,10 +98,7 @@ class gl_library final
     }
   }
 
-  ~gl_library() noexcept
-  {
-    SDL_GL_UnloadLibrary();
-  }
+  ~gl_library() noexcept { SDL_GL_UnloadLibrary(); }
 
   /**
    * \brief Returns the address of an OpenGL function.
@@ -150,8 +144,7 @@ using gl_context_handle = basic_gl_context<detail::handle_type>;
  * \since 6.0.0
  */
 template <typename T>
-class basic_gl_context final
-{
+class basic_gl_context final {
  public:
   /// \name Construction
   /// \{
@@ -231,18 +224,11 @@ class basic_gl_context final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_GLContext
-  {
-    return m_context.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_GLContext { return m_context.get(); }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_GLContext context) noexcept
-    {
-      SDL_GL_DeleteContext(context);
-    }
+  struct deleter final {
+    void operator()(SDL_GLContext context) noexcept { SDL_GL_DeleteContext(context); }
   };
 
   std::unique_ptr<void, deleter> m_context;

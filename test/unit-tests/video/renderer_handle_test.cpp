@@ -7,8 +7,7 @@
 #include "video/renderer.hpp"
 #include "video/window.hpp"
 
-class RendererHandleTest : public testing::Test
-{
+class RendererHandleTest : public testing::Test {
  protected:
   [[maybe_unused]] static void SetUpTestSuite()
   {

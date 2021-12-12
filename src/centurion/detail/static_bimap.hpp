@@ -28,8 +28,7 @@ namespace cen::detail {
  * \since 5.0.0
  */
 template <typename Key, typename Value, typename ValueCmp, std::size_t Size>
-class static_bimap final
-{
+class static_bimap final {
   using pair_type = std::pair<Key, Value>;
   using storage_type = std::array<pair_type, Size>;
 

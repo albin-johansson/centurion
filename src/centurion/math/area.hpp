@@ -67,8 +67,7 @@ using darea = basic_area<double>;
  * \see `darea`
  */
 template <typename T>
-struct basic_area final
-{
+struct basic_area final {
   static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
   static_assert(!std::is_same_v<T, bool>);
 

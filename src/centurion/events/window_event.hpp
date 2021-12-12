@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class window_event final : public common_event<SDL_WindowEvent>
-{
+class window_event final : public common_event<SDL_WindowEvent> {
  public:
   /**
    * \brief Creates a window event.
    *
    * \since 4.0.0
    */
-  window_event() noexcept : common_event{event_type::window}
-  {}
+  window_event() noexcept : common_event{event_type::window} {}
 
   /**
    * \brief Creates a window event based on the supplied SDL window event.
@@ -39,8 +37,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  explicit window_event(const SDL_WindowEvent& event) noexcept : common_event{event}
-  {}
+  explicit window_event(const SDL_WindowEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Returns the event ID of this window event.
@@ -72,10 +69,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32
-  {
-    return m_event.data1;
-  }
+  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return m_event.data1; }
 
   /**
    * \brief Returns the value of the second data value.
@@ -92,10 +86,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto data_2() const noexcept -> Sint32
-  {
-    return m_event.data2;
-  }
+  [[nodiscard]] auto data_2() const noexcept -> Sint32 { return m_event.data2; }
 };
 
 /// \name SDL event conversions

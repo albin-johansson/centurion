@@ -65,8 +65,7 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_bool, SDL_RenderIsClipEnabled, SDL_Renderer*)
 }
 
-class RendererTest : public testing::Test
-{
+class RendererTest : public testing::Test {
  protected:
   void SetUp() override
   {

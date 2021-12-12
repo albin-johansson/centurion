@@ -32,8 +32,7 @@ namespace cen {
  *
  * \see `keyboard`
  */
-class mouse final
-{
+class mouse final {
  public:
   /**
    * \brief Creates a `mouse` instance.
@@ -85,10 +84,7 @@ class mouse final
    *
    * \since 5.3.0
    */
-  void update(const iarea size) noexcept
-  {
-    update(size.width, size.height);
-  }
+  void update(const iarea size) noexcept { update(size.width, size.height); }
 
   /**
    * \brief Resets the screen and logical dimensions of the mouse state instance.
@@ -187,10 +183,7 @@ class mouse final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> int
-  {
-    return m_mouseX;
-  }
+  [[nodiscard]] auto x() const noexcept -> int { return m_mouseX; }
 
   /**
    * \brief Returns the y-coordinate of the mouse.
@@ -199,10 +192,7 @@ class mouse final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> int
-  {
-    return m_mouseY;
-  }
+  [[nodiscard]] auto y() const noexcept -> int { return m_mouseY; }
 
   /**
    * \brief Returns the position of the mouse.
@@ -211,10 +201,7 @@ class mouse final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> ipoint
-  {
-    return {m_mouseX, m_mouseY};
-  }
+  [[nodiscard]] auto position() const noexcept -> ipoint { return {m_mouseX, m_mouseY}; }
 
   /**
    * \brief Returns the logical width used by the mouse state instance.
@@ -223,10 +210,7 @@ class mouse final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto logical_width() const noexcept -> int
-  {
-    return m_logicalWidth;
-  }
+  [[nodiscard]] auto logical_width() const noexcept -> int { return m_logicalWidth; }
 
   /**
    * \brief Returns the logical height used by the mouse state instance.
@@ -235,10 +219,7 @@ class mouse final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto logical_height() const noexcept -> int
-  {
-    return m_logicalHeight;
-  }
+  [[nodiscard]] auto logical_height() const noexcept -> int { return m_logicalHeight; }
 
   /**
    * \brief Returns the logical size used by the mouse state instance.
@@ -259,10 +240,7 @@ class mouse final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_left_button_pressed() const noexcept -> bool
-  {
-    return m_leftPressed;
-  }
+  [[nodiscard]] auto is_left_button_pressed() const noexcept -> bool { return m_leftPressed; }
 
   /**
    * \brief Indicates whether or not the right mouse button is currently pressed.

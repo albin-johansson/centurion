@@ -11,8 +11,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_ShowMessageBox, const SDL_MessageBoxData*, int*)
 }
 
-class MessageBoxTest : public testing::Test
-{
+class MessageBoxTest : public testing::Test {
  protected:
   void SetUp() override
   {

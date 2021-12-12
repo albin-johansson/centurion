@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_ball_event final : public common_event<SDL_JoyBallEvent>
-{
+class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
  public:
   /**
    * \brief Creates a joy ball event.
    *
    * \since 4.0.0
    */
-  joy_ball_event() noexcept : common_event{event_type::joystick_ball_motion}
-  {}
+  joy_ball_event() noexcept : common_event{event_type::joystick_ball_motion} {}
 
   /**
    * \brief Creates a joy ball event based on the supplied SDL joy ball event.
@@ -39,8 +37,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : common_event{event}
-  {}
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -49,10 +46,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the joystick trackball index associated with the event.
@@ -61,10 +55,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_ball(const Uint8 ball) noexcept
-  {
-    m_event.ball = ball;
-  }
+  void set_ball(const Uint8 ball) noexcept { m_event.ball = ball; }
 
   /**
    * \brief Sets the relative motion along the x-axis associated with the event.
@@ -73,10 +64,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_dx(const Sint16 dx) noexcept
-  {
-    m_event.xrel = dx;
-  }
+  void set_dx(const Sint16 dx) noexcept { m_event.xrel = dx; }
 
   /**
    * \brief Sets the relative motion along the y-axis associated with the event.
@@ -85,10 +73,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  void set_dy(const Sint16 dy) noexcept
-  {
-    m_event.yrel = dy;
-  }
+  void set_dy(const Sint16 dy) noexcept { m_event.yrel = dy; }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -97,10 +82,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 
   /**
    * \brief Returns the joystick trackball index associated with the event.
@@ -109,10 +91,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto ball() const noexcept -> Uint8
-  {
-    return m_event.ball;
-  }
+  [[nodiscard]] auto ball() const noexcept -> Uint8 { return m_event.ball; }
 
   /**
    * \brief Returns the relative motion along the x-axis.
@@ -124,10 +103,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dx() const noexcept -> Sint16
-  {
-    return m_event.xrel;
-  }
+  [[nodiscard]] auto dx() const noexcept -> Sint16 { return m_event.xrel; }
 
   /**
    * \brief Returns the relative motion along the y-axis.
@@ -139,10 +115,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dy() const noexcept -> Sint16
-  {
-    return m_event.yrel;
-  }
+  [[nodiscard]] auto dy() const noexcept -> Sint16 { return m_event.yrel; }
 };
 
 /// \name SDL event conversions

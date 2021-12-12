@@ -25,8 +25,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-struct dpi_info final
-{
+struct dpi_info final {
   float diagonal{};    ///< The diagonal DPI value.
   float horizontal{};  ///< The horizontal DPI value.
   float vertical{};    ///< The vertical DPI value.
@@ -41,8 +40,7 @@ struct dpi_info final
  *
  * \see SDL_DisplayOrientation
  */
-enum class screen_orientation : int
-{
+enum class screen_orientation : int {
   unknown = SDL_ORIENTATION_UNKNOWN,
   landscape = SDL_ORIENTATION_LANDSCAPE,
   landscape_flipped = SDL_ORIENTATION_LANDSCAPE_FLIPPED,

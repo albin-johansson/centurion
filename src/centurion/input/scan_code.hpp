@@ -44,8 +44,7 @@ namespace cen {
  * \see `key_code`
  * \see `cen::scancodes`
  */
-class scan_code final
-{
+class scan_code final {
  public:
   /// \name Construction
   /// \{
@@ -69,8 +68,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode}
-  {}
+  constexpr /*implicit*/ scan_code(const SDL_Scancode scancode) noexcept : m_code{scancode} {}
 
   /**
    * \brief Creates a `scan_code` instance based on a key code.
@@ -82,8 +80,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(const SDL_Keycode key) noexcept : m_code{SDL_GetScancodeFromKey(key)}
-  {}
+  explicit scan_code(const SDL_Keycode key) noexcept : m_code{SDL_GetScancodeFromKey(key)} {}
 
   /**
    * \brief Creates a `scan_code` instance based on the specified name.
@@ -111,8 +108,7 @@ class scan_code final
    *
    * \since 5.3.0
    */
-  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()}
-  {}
+  explicit scan_code(const std::string& name) noexcept : scan_code{name.c_str()} {}
 
   /// \} End of construction
 
@@ -204,10 +200,7 @@ class scan_code final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] constexpr static auto count() noexcept -> int
-  {
-    return SDL_NUM_SCANCODES;
-  }
+  [[nodiscard]] constexpr static auto count() noexcept -> int { return SDL_NUM_SCANCODES; }
 
   /**
    * \brief Indicates whether or not the stored scan code is
@@ -230,10 +223,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto name() const -> std::string
-  {
-    return SDL_GetScancodeName(m_code);
-  }
+  [[nodiscard]] auto name() const -> std::string { return SDL_GetScancodeName(m_code); }
 
   /**
    * \brief Returns the corresponding `SDL_KeyCode`.
@@ -256,10 +246,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() const noexcept -> SDL_Scancode
-  {
-    return m_code;
-  }
+  [[nodiscard]] constexpr auto get() const noexcept -> SDL_Scancode { return m_code; }
 
   /// \} End of queries
 
@@ -273,10 +260,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr explicit operator SDL_Scancode() const noexcept
-  {
-    return m_code;
-  }
+  constexpr explicit operator SDL_Scancode() const noexcept { return m_code; }
 
   /**
    * \brief Converts to `SDL_KeyCode`.
@@ -287,10 +271,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit operator SDL_KeyCode() const noexcept
-  {
-    return to_key_code();
-  }
+  explicit operator SDL_KeyCode() const noexcept { return to_key_code(); }
 
   /// \} End of conversions
 

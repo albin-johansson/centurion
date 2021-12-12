@@ -15,8 +15,7 @@
 
 using namespace std::string_literals;
 
-class RendererTest : public testing::Test
-{
+class RendererTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {

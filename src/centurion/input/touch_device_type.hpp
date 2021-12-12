@@ -26,8 +26,7 @@ namespace touch {
  *
  * \since 4.3.0
  */
-enum class device_type
-{
+enum class device_type {
   // clang-format off
   invalid = SDL_TOUCH_DEVICE_INVALID,                      ///< Invalid touch device.
   direct = SDL_TOUCH_DEVICE_DIRECT,                        ///< Touch screen with window-relative coordinates.

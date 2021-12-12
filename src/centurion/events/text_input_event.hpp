@@ -22,16 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class text_input_event final : public common_event<SDL_TextInputEvent>
-{
+class text_input_event final : public common_event<SDL_TextInputEvent> {
  public:
   /**
    * \brief Creates a text input event.
    *
    * \since 4.0.0
    */
-  text_input_event() noexcept : common_event{event_type::text_input}
-  {}
+  text_input_event() noexcept : common_event{event_type::text_input} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -40,8 +38,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event}
-  {}
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -50,10 +47,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Returns the window ID associated with the event.
@@ -62,10 +56,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8

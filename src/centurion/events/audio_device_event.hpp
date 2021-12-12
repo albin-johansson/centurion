@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
-{
+class audio_device_event final : public common_event<SDL_AudioDeviceEvent> {
  public:
   /**
    * \brief Creates an audio device event of type `audio_device_added`.
    *
    * \since 4.0.0
    */
-  audio_device_event() noexcept : common_event{event_type::audio_device_added}
-  {}
+  audio_device_event() noexcept : common_event{event_type::audio_device_added} {}
 
   /**
    * \brief Creates a audio device event based on the supplied SDL event.
@@ -49,10 +47,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const Uint32 which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const Uint32 which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets whether or not the audio device event is associated with a
@@ -63,10 +58,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  void set_capture(const bool capture) noexcept
-  {
-    m_event.iscapture = capture;
-  }
+  void set_capture(const bool capture) noexcept { m_event.iscapture = capture; }
 
   /**
    * \brief Returns the audio device ID associated with the event.
@@ -75,10 +67,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Uint32
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
 
   /**
    * \brief Indicates whether or not the audio device event is associated with
@@ -89,10 +78,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto output() const noexcept -> bool
-  {
-    return !capture();
-  }
+  [[nodiscard]] auto output() const noexcept -> bool { return !capture(); }
 
   /**
    * \brief Indicates whether or not the audio device event is associated with
@@ -103,10 +89,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto capture() const noexcept -> bool
-  {
-    return m_event.iscapture;
-  }
+  [[nodiscard]] auto capture() const noexcept -> bool { return m_event.iscapture; }
 };
 
 /// \name SDL event conversions

@@ -30,8 +30,7 @@ extern "C"
   FAKE_VALUE_FUNC(const char*, SDL_SensorGetDeviceName, int)
 }
 
-class SensorTest : public testing::Test
-{
+class SensorTest : public testing::Test {
  public:
   void SetUp() override
   {

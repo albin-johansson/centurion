@@ -24,8 +24,7 @@ namespace cen {
  *
  * \since 3.0.0
  */
-enum class platform_id
-{
+enum class platform_id {
   unknown,   ///< Indicates that the platform is unknown.
   windows,   ///< Represents the Windows platform.
   mac_osx,   ///< Represents the Apple OSX platform.

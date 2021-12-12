@@ -24,13 +24,11 @@
 
 namespace cen {
 
-struct SDLConfig final
-{
+struct SDLConfig final {
   Uint32 flags{SDL_INIT_EVERYTHING};
 };
 
-class SDLLibrary final
-{
+class SDLLibrary final {
  public:
   explicit SDLLibrary(const SDLConfig& cfg = {})
   {
@@ -39,21 +37,16 @@ class SDLLibrary final
     }
   }
 
-  ~SDLLibrary() noexcept
-  {
-    SDL_Quit();
-  }
+  ~SDLLibrary() noexcept { SDL_Quit(); }
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-struct IMGConfig final
-{
+struct IMGConfig final {
   int flags{IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP};
 };
 
-class IMGLibrary final
-{
+class IMGLibrary final {
  public:
   explicit IMGLibrary(const IMGConfig& cfg = {})
   {
@@ -62,18 +55,14 @@ class IMGLibrary final
     }
   }
 
-  ~IMGLibrary() noexcept
-  {
-    IMG_Quit();
-  }
+  ~IMGLibrary() noexcept { IMG_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-struct MixConfig final
-{
+struct MixConfig final {
   int flags{MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD |
             MIX_INIT_OPUS};
   int frequency{MIX_DEFAULT_FREQUENCY};
@@ -82,8 +71,7 @@ struct MixConfig final
   int chunk_size{4096};
 };
 
-class MixLibrary final
-{
+class MixLibrary final {
  public:
   explicit MixLibrary(const MixConfig& cfg = {})
   {
@@ -107,8 +95,7 @@ class MixLibrary final
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class TTFLibrary final
-{
+class TTFLibrary final {
  public:
   TTFLibrary()
   {
@@ -117,10 +104,7 @@ class TTFLibrary final
     }
   }
 
-  ~TTFLibrary() noexcept
-  {
-    TTF_Quit();
-  }
+  ~TTFLibrary() noexcept { TTF_Quit(); }
 };
 
 #endif  // CENTURION_NO_SDL_TTF

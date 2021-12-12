@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 6.3.0
  */
-enum class blend_factor
-{
+enum class blend_factor {
   zero = SDL_BLENDFACTOR_ZERO,
   one = SDL_BLENDFACTOR_ONE,
 

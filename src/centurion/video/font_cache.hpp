@@ -43,8 +43,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-class font_cache final
-{
+class font_cache final {
  public:
   using id_type = std::size_t;
 
@@ -55,8 +54,7 @@ class font_cache final
    *
    * \since 5.0.0
    */
-  struct glyph_data final
-  {
+  struct glyph_data final {
     texture cached;         ///< The cached texture.
     glyph_metrics metrics;  ///< The metrics of the glyph.
   };
@@ -73,8 +71,7 @@ class font_cache final
    *
    * \since 5.0.0
    */
-  explicit font_cache(font&& font) noexcept : m_font{std::move(font)}
-  {}
+  explicit font_cache(font&& font) noexcept : m_font{std::move(font)} {}
 
   /**
    * \brief Creates an empty font cache, and creates the associated font in-place.
@@ -695,10 +692,7 @@ class font_cache final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto operator[](unicode glyph) const -> const glyph_data&
-  {
-    return at(glyph);
-  }
+  [[nodiscard]] auto operator[](unicode glyph) const -> const glyph_data& { return at(glyph); }
 
   /**
    * \brief Returns the data associated with the specified glyph, if it exists.
@@ -735,18 +729,12 @@ class font_cache final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_font() noexcept -> font&
-  {
-    return m_font;
-  }
+  [[nodiscard]] auto get_font() noexcept -> font& { return m_font; }
 
   /**
    * \copydoc get_font
    */
-  [[nodiscard]] auto get_font() const noexcept -> const font&
-  {
-    return m_font;
-  }
+  [[nodiscard]] auto get_font() const noexcept -> const font& { return m_font; }
 
  private:
   font m_font;

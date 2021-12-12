@@ -23,16 +23,14 @@ namespace cen {
  *
  * \since 6.3.0
  */
-class display_event final : public common_event<SDL_DisplayEvent>
-{
+class display_event final : public common_event<SDL_DisplayEvent> {
  public:
   /**
    * \brief Creates a display event.
    *
    * \since 6.3.0
    */
-  display_event() noexcept : common_event{event_type::display}
-  {}
+  display_event() noexcept : common_event{event_type::display} {}
 
   /**
    * \brief Creates a display event based an SDL event.
@@ -41,8 +39,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  explicit display_event(const SDL_DisplayEvent& event) noexcept : common_event{event}
-  {}
+  explicit display_event(const SDL_DisplayEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the associated display event ID.
@@ -63,10 +60,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  void set_index(const Uint32 index) noexcept
-  {
-    m_event.display = index;
-  }
+  void set_index(const Uint32 index) noexcept { m_event.display = index; }
 
   /**
    * \brief Sets event type specific data.
@@ -77,10 +71,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  void set_data_1(const Sint32 data) noexcept
-  {
-    m_event.data1 = data;
-  }
+  void set_data_1(const Sint32 data) noexcept { m_event.data1 = data; }
 
   /**
    * \brief Returns the associated display event ID.
@@ -101,10 +92,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto index() const noexcept -> Uint32
-  {
-    return m_event.display;
-  }
+  [[nodiscard]] auto index() const noexcept -> Uint32 { return m_event.display; }
 
   /**
    * \brief Returns subtype specific data.
@@ -118,10 +106,7 @@ class display_event final : public common_event<SDL_DisplayEvent>
    *
    * \since 6.3.0
    */
-  [[nodiscard]] auto data_1() const noexcept -> Sint32
-  {
-    return m_event.data1;
-  }
+  [[nodiscard]] auto data_1() const noexcept -> Sint32 { return m_event.data1; }
 };
 
 template <>

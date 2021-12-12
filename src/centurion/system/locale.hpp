@@ -24,8 +24,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class locale final
-{
+class locale final {
  public:
   /**
    * \brief Returns the current preferred locales on the system.
@@ -109,16 +108,12 @@ class locale final
    *
    * \since 5.2.0
    */
-  explicit operator bool() const noexcept
-  {
-    return m_locales.operator bool();
-  }
+  explicit operator bool() const noexcept { return m_locales.operator bool(); }
 
  private:
   std::unique_ptr<SDL_Locale, detail::sdl_deleter<SDL_Locale>> m_locales;
 
-  explicit locale(SDL_Locale* locales) noexcept : m_locales{locales}
-  {}
+  explicit locale(SDL_Locale* locales) noexcept : m_locales{locales} {}
 };
 
 /// \} End of group system

@@ -22,16 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_hat_event final : public common_event<SDL_JoyHatEvent>
-{
+class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
  public:
   /**
    * \brief Creates a joy hat event.
    *
    * \since 4.0.0
    */
-  joy_hat_event() noexcept : common_event{event_type::joystick_hat_motion}
-  {}
+  joy_hat_event() noexcept : common_event{event_type::joystick_hat_motion} {}
 
   /**
    * \brief Creates a joy hat event based on the supplied SDL event.
@@ -40,8 +38,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : common_event{event}
-  {}
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the hat index associated with the event.
@@ -50,10 +47,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  void set_hat(const Uint8 hat) noexcept
-  {
-    m_event.hat = hat;
-  }
+  void set_hat(const Uint8 hat) noexcept { m_event.hat = hat; }
 
   /**
    * \brief Sets the joystick hat position associated with the event.
@@ -74,10 +68,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto hat() const noexcept -> Uint8
-  {
-    return m_event.hat;
-  }
+  [[nodiscard]] auto hat() const noexcept -> Uint8 { return m_event.hat; }
 
   /**
    * \brief Returns the position of the associated joystick hat.

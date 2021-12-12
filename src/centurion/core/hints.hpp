@@ -12,8 +12,7 @@ namespace cen {
 /// \addtogroup core
 /// \{
 
-enum class hint_priority
-{
+enum class hint_priority {
   low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
   normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
   override = SDL_HINT_OVERRIDE  ///< The highest priority.

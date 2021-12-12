@@ -24,8 +24,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-class condition final
-{
+class condition final {
  public:
   condition() : m_cond{SDL_CreateCond()}
   {
@@ -41,10 +40,7 @@ class condition final
    *
    * \since 5.0.0
    */
-  auto signal() noexcept -> result
-  {
-    return SDL_CondSignal(m_cond.get()) == 0;
-  }
+  auto signal() noexcept -> result { return SDL_CondSignal(m_cond.get()) == 0; }
 
   /**
    * \brief Wakes up all threads that are waiting on the condition variable.
@@ -53,10 +49,7 @@ class condition final
    *
    * \since 5.0.0
    */
-  auto broadcast() noexcept -> result
-  {
-    return SDL_CondBroadcast(m_cond.get()) == 0;
-  }
+  auto broadcast() noexcept -> result { return SDL_CondBroadcast(m_cond.get()) == 0; }
 
   /**
    * \brief Waits until the condition variable is signaled.
@@ -98,12 +91,8 @@ class condition final
   }
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_cond* cond) noexcept
-    {
-      SDL_DestroyCond(cond);
-    };
+  struct deleter final {
+    void operator()(SDL_cond* cond) noexcept { SDL_DestroyCond(cond); };
   };
 
   std::unique_ptr<SDL_cond, deleter> m_cond;

@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
-{
+class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
  public:
   /**
    * \brief Creates a touch finger event of type `touch_down`.
    *
    * \since 4.0.0
    */
-  touch_finger_event() noexcept : common_event{event_type::touch_down}
-  {}
+  touch_finger_event() noexcept : common_event{event_type::touch_down} {}
 
   /**
    * \brief Creates a touch finger event that is based on the supplied SDL
@@ -50,10 +48,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_touch_id(const SDL_TouchID id) noexcept
-  {
-    m_event.touchId = id;
-  }
+  void set_touch_id(const SDL_TouchID id) noexcept { m_event.touchId = id; }
 
   /**
    * \brief Sets the finger ID associated with the event.
@@ -62,10 +57,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_finger_id(const SDL_FingerID id) noexcept
-  {
-    m_event.fingerId = id;
-  }
+  void set_finger_id(const SDL_FingerID id) noexcept { m_event.fingerId = id; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -76,10 +68,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -93,10 +82,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_x(const float x) noexcept
-  {
-    m_event.x = detail::clamp(x, 0.0f, 1.0f);
-  }
+  void set_x(const float x) noexcept { m_event.x = detail::clamp(x, 0.0f, 1.0f); }
 
   /**
    * \brief Sets the normalized y-coordinate of the location of the event.
@@ -108,10 +94,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_y(const float y) noexcept
-  {
-    m_event.y = detail::clamp(y, 0.0f, 1.0f);
-  }
+  void set_y(const float y) noexcept { m_event.y = detail::clamp(y, 0.0f, 1.0f); }
 
   /**
    * \brief Sets the normalized distance moved along the x-axis.
@@ -123,10 +106,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_dx(const float dx) noexcept
-  {
-    m_event.dx = detail::clamp(dx, -1.0f, 1.0f);
-  }
+  void set_dx(const float dx) noexcept { m_event.dx = detail::clamp(dx, -1.0f, 1.0f); }
 
   /**
    * \brief Sets the normalized distance moved along the y-axis.
@@ -138,10 +118,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  void set_dy(const float dy) noexcept
-  {
-    m_event.dy = detail::clamp(dy, -1.0f, 1.0f);
-  }
+  void set_dy(const float dy) noexcept { m_event.dy = detail::clamp(dy, -1.0f, 1.0f); }
 
   /**
    * \brief Sets the normalized pressure associated with the event.
@@ -165,10 +142,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
-  {
-    return m_event.touchId;
-  }
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID { return m_event.touchId; }
 
   /**
    * \brief Returns the finger ID associated with the event.
@@ -177,10 +151,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto finger_id() const noexcept -> SDL_FingerID
-  {
-    return m_event.fingerId;
-  }
+  [[nodiscard]] auto finger_id() const noexcept -> SDL_FingerID { return m_event.fingerId; }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -191,10 +162,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
@@ -208,10 +176,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> float
-  {
-    return m_event.x;
-  }
+  [[nodiscard]] auto x() const noexcept -> float { return m_event.x; }
 
   /**
    * \brief Returns the normalized y-coordinate of the location of the event.
@@ -223,10 +188,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> float
-  {
-    return m_event.y;
-  }
+  [[nodiscard]] auto y() const noexcept -> float { return m_event.y; }
 
   /**
    * \brief Returns the normalized distance moved along the x-axis.
@@ -238,10 +200,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dx() const noexcept -> float
-  {
-    return m_event.dx;
-  }
+  [[nodiscard]] auto dx() const noexcept -> float { return m_event.dx; }
 
   /**
    * \brief Returns the normalized distance moved along the y-axis.
@@ -253,10 +212,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto dy() const noexcept -> float
-  {
-    return m_event.dy;
-  }
+  [[nodiscard]] auto dy() const noexcept -> float { return m_event.dy; }
 
   /**
    * \brief Returns the normalized pressure associated with the event.
@@ -268,10 +224,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto pressure() const noexcept -> float
-  {
-    return m_event.pressure;
-  }
+  [[nodiscard]] auto pressure() const noexcept -> float { return m_event.pressure; }
 };
 
 /// \name SDL event conversions

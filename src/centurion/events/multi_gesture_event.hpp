@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
-{
+class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
  public:
   /**
    * \brief Creates a multi-gesture event.
    *
    * \since 4.0.0
    */
-  multi_gesture_event() noexcept : common_event{event_type::multi_gesture}
-  {}
+  multi_gesture_event() noexcept : common_event{event_type::multi_gesture} {}
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -50,10 +48,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_touch_id(const SDL_TouchID id) noexcept
-  {
-    m_event.touchId = id;
-  }
+  void set_touch_id(const SDL_TouchID id) noexcept { m_event.touchId = id; }
 
   /**
    * \brief Sets the amount that the fingers rotated during the gesture
@@ -63,10 +58,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_delta_theta(const float dTheta) noexcept
-  {
-    m_event.dTheta = dTheta;
-  }
+  void set_delta_theta(const float dTheta) noexcept { m_event.dTheta = dTheta; }
 
   /**
    * \brief Sets the amount that the fingers pinched during the gesture
@@ -76,10 +68,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_delta_distance(const float dDistance) noexcept
-  {
-    m_event.dDist = dDistance;
-  }
+  void set_delta_distance(const float dDistance) noexcept { m_event.dDist = dDistance; }
 
   /**
    * \brief Sets the x-coordinate of the normalized center of the gesture
@@ -90,10 +79,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_center_x(const float centerX) noexcept
-  {
-    m_event.x = centerX;
-  }
+  void set_center_x(const float centerX) noexcept { m_event.x = centerX; }
 
   /**
    * \brief Sets the y-coordinate of the normalized center of the gesture
@@ -104,10 +90,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  void set_center_y(const float centerY) noexcept
-  {
-    m_event.y = centerY;
-  }
+  void set_center_y(const float centerY) noexcept { m_event.y = centerY; }
 
   /**
    * \brief Sets the number of fingers that was used in the gesture associated
@@ -117,10 +100,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 6.1.0
    */
-  void set_finger_count(const Uint16 count) noexcept
-  {
-    m_event.numFingers = count;
-  }
+  void set_finger_count(const Uint16 count) noexcept { m_event.numFingers = count; }
 
   /**
    * \brief Returns the touch device ID associated with the event.
@@ -129,10 +109,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
-  {
-    return m_event.touchId;
-  }
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID { return m_event.touchId; }
 
   /**
    * \brief Returns the amount that the fingers rotated during the gesture
@@ -142,10 +119,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto delta_theta() const noexcept -> float
-  {
-    return m_event.dTheta;
-  }
+  [[nodiscard]] auto delta_theta() const noexcept -> float { return m_event.dTheta; }
 
   /**
    * \brief Returns the amount that the fingers pinched during the gesture
@@ -155,10 +129,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto delta_distance() const noexcept -> float
-  {
-    return m_event.dDist;
-  }
+  [[nodiscard]] auto delta_distance() const noexcept -> float { return m_event.dDist; }
 
   /**
    * \brief Returns the x-coordinate of the normalized center of gesture
@@ -169,10 +140,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto center_x() const noexcept -> float
-  {
-    return m_event.x;
-  }
+  [[nodiscard]] auto center_x() const noexcept -> float { return m_event.x; }
 
   /**
    * \brief Returns the y-coordinate of the normalized center of gesture
@@ -183,10 +151,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto center_y() const noexcept -> float
-  {
-    return m_event.y;
-  }
+  [[nodiscard]] auto center_y() const noexcept -> float { return m_event.y; }
 
   /**
    * \brief Returns the amount of fingers used in the gesture associated with the event.
@@ -195,10 +160,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto finger_count() const noexcept -> Uint16
-  {
-    return m_event.numFingers;
-  }
+  [[nodiscard]] auto finger_count() const noexcept -> Uint16 { return m_event.numFingers; }
 };
 
 /// \name SDL event conversions

@@ -24,8 +24,7 @@ namespace cen {
  *
  * \see `SDL_BlendMode`
  */
-enum class blend_mode
-{
+enum class blend_mode {
   none = SDL_BLENDMODE_NONE,    ///< Represents no blending.
   blend = SDL_BLENDMODE_BLEND,  ///< Represents alpha blending.
   add = SDL_BLENDMODE_ADD,      ///< Represents additive blending.
@@ -49,8 +48,7 @@ enum class blend_mode
  *
  * \since 6.3.0
  */
-struct blend_task final
-{
+struct blend_task final {
   blend_factor src;  ///< The blend factor applied to the source pixels.
   blend_factor dst;  ///< The blend factor applied to the destination pixels.
   blend_op op;       ///< The operation used to combine the source and destination pixels.

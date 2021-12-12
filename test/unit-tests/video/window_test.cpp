@@ -9,18 +9,11 @@
 #include "video/screen.hpp"
 #include "video/window_utils.hpp"
 
-class WindowTest : public testing::Test
-{
+class WindowTest : public testing::Test {
  protected:
-  [[maybe_unused]] static void SetUpTestSuite()
-  {
-    m_window = std::make_unique<cen::window>();
-  }
+  [[maybe_unused]] static void SetUpTestSuite() { m_window = std::make_unique<cen::window>(); }
 
-  [[maybe_unused]] static void TearDownTestSuite()
-  {
-    m_window.reset();
-  }
+  [[maybe_unused]] static void TearDownTestSuite() { m_window.reset(); }
 
   inline static std::unique_ptr<cen::window> m_window;
 };

@@ -7,12 +7,8 @@
 namespace cen::detail {
 
 template <typename T>
-struct sdl_deleter final
-{
-  void operator()(T* ptr) noexcept
-  {
-    SDL_free(ptr);
-  }
+struct sdl_deleter final {
+  void operator()(T* ptr) noexcept { SDL_free(ptr); }
 };
 
 }  // namespace cen::detail

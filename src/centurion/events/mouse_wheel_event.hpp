@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
-{
+class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
  public:
   /**
    * \brief Creates a mouse wheel event.
    *
    * \since 4.0.0
    */
-  mouse_wheel_event() noexcept : common_event{event_type::mouse_wheel}
-  {}
+  mouse_wheel_event() noexcept : common_event{event_type::mouse_wheel} {}
 
   /**
    * \brief Creates an event based on the supplied SDL event.
@@ -49,10 +47,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -61,10 +56,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const Uint32 which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const Uint32 which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the horizontally scrolled distance.
@@ -76,10 +68,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_x_scroll(const Sint32 xScroll) noexcept
-  {
-    m_event.x = xScroll;
-  }
+  void set_x_scroll(const Sint32 xScroll) noexcept { m_event.x = xScroll; }
 
   /**
    * \brief Sets the vertically scrolled distance.
@@ -91,10 +80,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  void set_y_scroll(const Sint32 yScroll) noexcept
-  {
-    m_event.y = yScroll;
-  }
+  void set_y_scroll(const Sint32 yScroll) noexcept { m_event.y = yScroll; }
 
   /**
    * \brief Sets the mouse wheel direction mode associated with the event.
@@ -115,10 +101,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
   /**
    * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID` if the event
@@ -128,10 +111,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Uint32
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
 
   /**
    * \brief Returns the horizontally scrolled distance
@@ -143,10 +123,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x_scroll() const noexcept -> Sint32
-  {
-    return m_event.x;
-  }
+  [[nodiscard]] auto x_scroll() const noexcept -> Sint32 { return m_event.x; }
 
   /**
    * \brief Returns the vertically scrolled distance.
@@ -158,10 +135,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y_scroll() const noexcept -> Sint32
-  {
-    return m_event.y;
-  }
+  [[nodiscard]] auto y_scroll() const noexcept -> Sint32 { return m_event.y; }
 
   /**
    * \brief Returns the mouse wheel direction mode associated with the event.

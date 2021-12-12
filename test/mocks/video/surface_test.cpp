@@ -17,8 +17,7 @@ extern "C"
   FAKE_VALUE_FUNC(SDL_Surface*, SDL_DuplicateSurface, SDL_Surface*)
 }
 
-class SurfaceTest : public testing::Test
-{
+class SurfaceTest : public testing::Test {
  protected:
   void SetUp() override
   {

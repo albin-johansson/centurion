@@ -44,8 +44,7 @@ inline auto get_renderer_info(SDL_Renderer*, SDL_RendererInfo* info) -> int
 
 }  // namespace
 
-class RendererInfoTest : public testing::Test
-{
+class RendererInfoTest : public testing::Test {
  protected:
   void SetUp() override
   {

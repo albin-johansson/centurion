@@ -120,8 +120,7 @@ namespace cen {
  *
  * \since 6.0.0
  */
-struct version final
-{
+struct version final {
   int major{CENTURION_VERSION_MAJOR};
   int minor{CENTURION_VERSION_MINOR};
   int patch{CENTURION_VERSION_PATCH};

@@ -9,8 +9,7 @@ extern "C"
   FAKE_VALUE_FUNC(char*, SDL_GetPrefPath, const char*, const char*)
 }
 
-class PreferredPathTest : public testing::Test
-{
+class PreferredPathTest : public testing::Test {
  protected:
   void SetUp() override
   {

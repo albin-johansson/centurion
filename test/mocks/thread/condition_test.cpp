@@ -5,8 +5,7 @@
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 
-class ConditionTest : public testing::Test
-{
+class ConditionTest : public testing::Test {
  protected:
   void SetUp() override
   {

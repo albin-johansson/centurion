@@ -9,8 +9,7 @@
 
 using namespace cen::literals;
 
-class FileTest : public testing::Test
-{
+class FileTest : public testing::Test {
  public:
   inline static const auto prefs = cen::preferred_path("centurion", "tests").copy();
   inline static const auto path = prefs + "file";

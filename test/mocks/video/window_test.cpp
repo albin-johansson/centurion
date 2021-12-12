@@ -52,8 +52,7 @@ extern "C"
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 }
 
-class WindowTest : public testing::Test
-{
+class WindowTest : public testing::Test {
  protected:
   void SetUp() override
   {
@@ -521,8 +520,7 @@ TEST_F(WindowTest, IsMaximized)
 
 TEST_F(WindowTest, IsAlwaysOnTop)
 {
-  std::array values{Uint32{cen::window::fullscreen},
-                    Uint32{cen::window::always_on_top}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::always_on_top}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.is_always_on_top());
@@ -532,8 +530,7 @@ TEST_F(WindowTest, IsAlwaysOnTop)
 
 TEST_F(WindowTest, HasGrabbedInput)
 {
-  std::array values{Uint32{cen::window::fullscreen},
-                    Uint32{cen::window::input_grabbed}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::input_grabbed}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.has_grabbed_input());
@@ -583,8 +580,7 @@ TEST_F(WindowTest, IsTooltip)
 
 TEST_F(WindowTest, IsPopupMenu)
 {
-  std::array values{Uint32{cen::window::fullscreen},
-                    Uint32{cen::window::popup_menu}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::popup_menu}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.is_popup_menu());
@@ -594,8 +590,7 @@ TEST_F(WindowTest, IsPopupMenu)
 
 TEST_F(WindowTest, IsExcludedFromTaskbar)
 {
-  std::array values{Uint32{cen::window::fullscreen},
-                    Uint32{cen::window::skip_taskbar}};
+  std::array values{Uint32{cen::window::fullscreen}, Uint32{cen::window::skip_taskbar}};
   SET_RETURN_SEQ(SDL_GetWindowFlags, values.data(), cen::isize(values));
 
   ASSERT_FALSE(m_window.is_excluded_from_taskbar());

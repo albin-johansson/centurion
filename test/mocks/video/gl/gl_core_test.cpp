@@ -26,8 +26,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, SDL_GL_UnbindTexture, SDL_Texture*)
 }
 
-class OpenGLTest : public testing::Test
-{
+class OpenGLTest : public testing::Test {
  protected:
   void SetUp() override
   {

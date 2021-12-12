@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-class scoped_lock final
-{
+class scoped_lock final {
  public:
   CENTURION_DISABLE_COPY(scoped_lock)
 
@@ -49,10 +48,7 @@ class scoped_lock final
    *
    * \since 5.0.0
    */
-  ~scoped_lock() noexcept
-  {
-    m_mutex->unlock();
-  }
+  ~scoped_lock() noexcept { m_mutex->unlock(); }
 
  private:
   mutex* m_mutex{};

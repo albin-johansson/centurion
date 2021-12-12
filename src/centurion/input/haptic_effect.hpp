@@ -53,8 +53,7 @@ inline constexpr Uint32 haptic_infinity = SDL_HAPTIC_INFINITY;
  * \since 5.2.0
  */
 template <typename Derived>
-class haptic_effect
-{
+class haptic_effect {
   template <typename T>
   using has_direction = std::enable_if_t<T::hasDirection, int>;
 
@@ -112,10 +111,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  void set_repeat_forever() noexcept
-  {
-    rep().length = haptic_infinity;
-  }
+  void set_repeat_forever() noexcept { rep().length = haptic_infinity; }
 
   /**
    * \brief Sets the duration of the effect.
@@ -374,10 +370,7 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto type() const noexcept -> Uint16
-  {
-    return rep().type;
-  }
+  [[nodiscard]] auto type() const noexcept -> Uint16 { return rep().type; }
 
   /**
    * \brief Returns the internal effect representation.
@@ -386,37 +379,25 @@ class haptic_effect
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto get() noexcept -> SDL_HapticEffect&
-  {
-    return m_effect;
-  }
+  [[nodiscard]] auto get() noexcept -> SDL_HapticEffect& { return m_effect; }
 
   /**
    * \copydoc get()
    */
-  [[nodiscard]] auto get() const noexcept -> const SDL_HapticEffect&
-  {
-    return m_effect;
-  }
+  [[nodiscard]] auto get() const noexcept -> const SDL_HapticEffect& { return m_effect; }
 
  protected:
   SDL_HapticEffect m_effect{};
 
  private:
-  [[nodiscard]] auto derived() noexcept -> Derived*
-  {
-    return static_cast<Derived*>(this);
-  }
+  [[nodiscard]] auto derived() noexcept -> Derived* { return static_cast<Derived*>(this); }
 
   [[nodiscard]] auto derived() const noexcept -> const Derived*
   {
     return static_cast<const Derived*>(this);
   }
 
-  [[nodiscard]] auto rep() noexcept -> auto&
-  {
-    return derived()->representation();
-  }
+  [[nodiscard]] auto rep() noexcept -> auto& { return derived()->representation(); }
 
   [[nodiscard]] auto rep() const noexcept -> const auto&
   {

@@ -22,8 +22,7 @@ template <typename Key, usize Size>
 using string_map = static_bimap<Key, cstr, czstring_compare, Size>;
 
 template <typename Derived, typename Arg>
-struct crtp_hint
-{
+struct crtp_hint {
   using value_type = Arg;
 
   template <typename T>
@@ -35,8 +34,7 @@ struct crtp_hint
 
 // A hint class that only accepts booleans
 template <typename Hint>
-struct bool_hint : crtp_hint<bool_hint<Hint>, bool>
-{
+struct bool_hint : crtp_hint<bool_hint<Hint>, bool> {
   [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
   {
     return SDL_GetHintBoolean(Hint::name(), SDL_FALSE) == SDL_TRUE;
@@ -55,8 +53,7 @@ struct bool_hint : crtp_hint<bool_hint<Hint>, bool>
 
 // A hint class that only accepts strings
 template <typename Hint>
-struct string_hint : crtp_hint<string_hint<Hint>, cstr>
-{
+struct string_hint : crtp_hint<string_hint<Hint>, cstr> {
   [[nodiscard]] static auto current_value() noexcept -> std::optional<cstr>
   {
     if (const cstr value = SDL_GetHint(Hint::name())) {
@@ -67,21 +64,14 @@ struct string_hint : crtp_hint<string_hint<Hint>, cstr>
     }
   }
 
-  [[nodiscard]] static auto from_string(const cstr value) noexcept -> cstr
-  {
-    return value;
-  }
+  [[nodiscard]] static auto from_string(const cstr value) noexcept -> cstr { return value; }
 
-  [[nodiscard]] static auto to_string(const cstr value) -> std::string
-  {
-    return value;
-  }
+  [[nodiscard]] static auto to_string(const cstr value) -> std::string { return value; }
 };
 
 // A hint class that only accepts integers
 template <typename Hint>
-struct int_hint : crtp_hint<int_hint<Hint>, int>
-{
+struct int_hint : crtp_hint<int_hint<Hint>, int> {
   [[nodiscard]] static auto current_value() -> std::optional<int>
   {
     if (const cstr value = SDL_GetHint(Hint::name())) {
@@ -105,8 +95,7 @@ struct int_hint : crtp_hint<int_hint<Hint>, int>
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
-{
+struct uint_hint : crtp_hint<uint_hint<Hint>, uint> {
   [[nodiscard]] static auto current_value() -> std::optional<uint>
   {
     if (const cstr value = SDL_GetHint(Hint::name())) {
@@ -130,8 +119,7 @@ struct uint_hint : crtp_hint<uint_hint<Hint>, uint>
 
 // A hint class that only accepts floats
 template <typename Hint>
-struct float_hint : crtp_hint<float_hint<Hint>, float>
-{
+struct float_hint : crtp_hint<float_hint<Hint>, float> {
   [[nodiscard]] static auto current_value() -> std::optional<float>
   {
     if (const cstr value = SDL_GetHint(Hint::name())) {
@@ -142,10 +130,7 @@ struct float_hint : crtp_hint<float_hint<Hint>, float>
     }
   }
 
-  [[nodiscard]] static auto from_string(const cstr value) -> float
-  {
-    return std::atof(value);
-  }
+  [[nodiscard]] static auto from_string(const cstr value) -> float { return std::atof(value); }
 
   [[nodiscard]] static auto to_string(const float value) -> std::string
   {

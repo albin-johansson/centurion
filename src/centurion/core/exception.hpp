@@ -21,71 +21,54 @@
 
 namespace cen {
 
-class Error : public std::exception
-{
+class Error : public std::exception {
  public:
   Error() noexcept = default;
 
-  explicit Error(const char* what) noexcept : mWhat{what ? what : "?"}
-  {}
+  explicit Error(const char* what) noexcept : mWhat{what ? what : "?"} {}
 
-  [[nodiscard]] auto what() const noexcept -> const char* override
-  {
-    return mWhat;
-  }
+  [[nodiscard]] auto what() const noexcept -> const char* override { return mWhat; }
 
  private:
   const char* mWhat{"?"};
 };
 
-class SDLError final : public Error
-{
+class SDLError final : public Error {
  public:
-  SDLError() noexcept : Error{SDL_GetError()}
-  {}
+  SDLError() noexcept : Error{SDL_GetError()} {}
 
-  explicit SDLError(const char* what) noexcept : Error{what}
-  {}
+  explicit SDLError(const char* what) noexcept : Error{what} {}
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-class IMGError final : public Error
-{
+class IMGError final : public Error {
  public:
-  IMGError() noexcept : Error{IMG_GetError()}
-  {}
+  IMGError() noexcept : Error{IMG_GetError()} {}
 
-  explicit IMGError(const char* what) noexcept : Error{what}
-  {}
+  explicit IMGError(const char* what) noexcept : Error{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_IMAGE
 
 #ifndef CENTURION_NO_SDL_TTF
 
-class TTFError final : public Error
-{
+class TTFError final : public Error {
  public:
-  TTFError() noexcept : Error{TTF_GetError()}
-  {}
+  TTFError() noexcept : Error{TTF_GetError()} {}
 
-  explicit TTFError(const char* what) noexcept : Error{what}
-  {}
+  explicit TTFError(const char* what) noexcept : Error{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_TTF
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-class MixError final : public Error
-{
+class MixError final : public Error {
  public:
-  MixError() noexcept : Error{Mix_GetError()}
-  {}
+  MixError() noexcept : Error{Mix_GetError()} {}
 
-  explicit MixError(const char* what) noexcept : Error{what}
-  {}
+  explicit MixError(const char* what) noexcept : Error{what} {}
 };
 
 #endif  // CENTURION_NO_SDL_MIXER

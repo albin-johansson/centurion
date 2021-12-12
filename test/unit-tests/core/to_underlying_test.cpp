@@ -5,15 +5,13 @@
 using foo_type = cen::ulonglong;
 using bar_type = char;
 
-enum class foo : foo_type
-{
+enum class foo : foo_type {
   a = 27,
   b = 42,
   c = 123
 };
 
-enum class bar : bar_type
-{
+enum class bar : bar_type {
   a = 'a',
   b = '1',
   c = 'x'

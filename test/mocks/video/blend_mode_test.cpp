@@ -17,8 +17,7 @@ extern "C"
                   SDL_BlendOperation);
 }
 
-class BlendModeTest : public testing::Test
-{
+class BlendModeTest : public testing::Test {
  protected:
   void SetUp() override
   {

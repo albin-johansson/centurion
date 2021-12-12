@@ -22,16 +22,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
-{
+class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
  public:
   /**
    * \brief Creates a mouse button event of type `mouse_button_down`.
    *
    * \since 4.0.0
    */
-  mouse_button_event() noexcept : common_event{event_type::mouse_button_down}
-  {}
+  mouse_button_event() noexcept : common_event{event_type::mouse_button_down} {}
 
   /**
    * \brief Creates a mouse_button_event that is based on the supplied SDL
@@ -51,10 +49,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -63,10 +58,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const Uint32 which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const Uint32 which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the mouse button associated with the event.
@@ -87,10 +79,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_state(const button_state state) noexcept
-  {
-    m_event.state = to_underlying(state);
-  }
+  void set_state(const button_state state) noexcept { m_event.state = to_underlying(state); }
 
   /**
    * \brief Sets the amount of clicks associated with the event.
@@ -99,10 +88,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_clicks(const Uint8 clicks) noexcept
-  {
-    m_event.clicks = clicks;
-  }
+  void set_clicks(const Uint8 clicks) noexcept { m_event.clicks = clicks; }
 
   /**
    * \brief Sets the x-coordinate of the mouse relative to the window.
@@ -111,10 +97,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_x(const Sint32 x) noexcept
-  {
-    m_event.x = x;
-  }
+  void set_x(const Sint32 x) noexcept { m_event.x = x; }
 
   /**
    * \brief Sets the y-coordinate of the mouse relative to the window.
@@ -123,10 +106,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  void set_y(const Sint32 y) noexcept
-  {
-    m_event.y = y;
-  }
+  void set_y(const Sint32 y) noexcept { m_event.y = y; }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -135,10 +115,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
   /**
    * \brief Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
@@ -148,10 +125,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Uint32
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> Uint32 { return m_event.which; }
 
   /**
    * \brief Returns the mouse button associated with the event.
@@ -208,10 +182,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto clicks() const noexcept -> Uint8
-  {
-    return m_event.clicks;
-  }
+  [[nodiscard]] auto clicks() const noexcept -> Uint8 { return m_event.clicks; }
 
   /**
    * \brief Returns the x-coordinate of the mouse relative to the window.
@@ -220,10 +191,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> Sint32
-  {
-    return m_event.x;
-  }
+  [[nodiscard]] auto x() const noexcept -> Sint32 { return m_event.x; }
 
   /**
    * \brief Returns the y-coordinate of the mouse relative to the window.
@@ -232,10 +200,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> Sint32
-  {
-    return m_event.y;
-  }
+  [[nodiscard]] auto y() const noexcept -> Sint32 { return m_event.y; }
 };
 
 /// \name SDL event conversions

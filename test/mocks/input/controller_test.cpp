@@ -123,8 +123,7 @@ extern "C"
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 }
 
-class ControllerTest : public testing::Test
-{
+class ControllerTest : public testing::Test {
  protected:
   void SetUp() override
   {

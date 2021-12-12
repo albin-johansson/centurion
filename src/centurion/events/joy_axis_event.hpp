@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
-{
+class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
  public:
   /**
    * \brief Creates a joy axis event.
    *
    * \since 4.0.0
    */
-  joy_axis_event() noexcept : common_event{event_type::joystick_axis_motion}
-  {}
+  joy_axis_event() noexcept : common_event{event_type::joystick_axis_motion} {}
 
   /**
    * \brief Creates a joy axis event based on the supplied SDL joy axis event.
@@ -39,8 +37,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : common_event{event}
-  {}
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -49,10 +46,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const SDL_JoystickID which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const SDL_JoystickID which) noexcept { m_event.which = which; }
 
   /**
    * \brief Sets the joystick axis index associated with the event.
@@ -61,10 +55,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_axis(const Uint8 axis) noexcept
-  {
-    m_event.axis = axis;
-  }
+  void set_axis(const Uint8 axis) noexcept { m_event.axis = axis; }
 
   /**
    * \brief Sets the joystick axis value associated with the event.
@@ -73,10 +64,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  void set_value(const Sint16 value) noexcept
-  {
-    m_event.value = value;
-  }
+  void set_value(const Sint16 value) noexcept { m_event.value = value; }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -85,10 +73,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID { return m_event.which; }
 
   /**
    * \brief Returns the joystick axis index associated with the event.
@@ -97,10 +82,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto axis() const noexcept -> Uint8
-  {
-    return m_event.axis;
-  }
+  [[nodiscard]] auto axis() const noexcept -> Uint8 { return m_event.axis; }
 
   /**
    * \brief Returns the joystick axis value associated with the event.
@@ -109,10 +91,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto value() const noexcept -> Sint16
-  {
-    return m_event.value;
-  }
+  [[nodiscard]] auto value() const noexcept -> Sint16 { return m_event.value; }
 };
 
 /// \name SDL event conversions

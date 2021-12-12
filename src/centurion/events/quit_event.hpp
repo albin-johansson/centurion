@@ -20,16 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class quit_event final : public common_event<SDL_QuitEvent>
-{
+class quit_event final : public common_event<SDL_QuitEvent> {
  public:
   /**
    * \brief Creates a quit event.
    *
    * \since 4.0.0
    */
-  quit_event() noexcept : common_event{event_type::quit}
-  {}
+  quit_event() noexcept : common_event{event_type::quit} {}
 
   /**
    * \brief Creates a quit event based on the supplied SDL event.
@@ -38,8 +36,7 @@ class quit_event final : public common_event<SDL_QuitEvent>
    *
    * \since 4.0.0
    */
-  explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event}
-  {}
+  explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event} {}
 };
 
 /// \name SDL event conversions

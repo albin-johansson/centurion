@@ -21,16 +21,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class controller_device_event final : public common_event<SDL_ControllerDeviceEvent>
-{
+class controller_device_event final : public common_event<SDL_ControllerDeviceEvent> {
  public:
   /**
    * \brief Creates a controller device event of type `controller_device_added`.
    *
    * \since 4.0.0
    */
-  controller_device_event() noexcept : common_event{event_type::controller_device_added}
-  {}
+  controller_device_event() noexcept : common_event{event_type::controller_device_added} {}
 
   /**
    * \brief Creates a controller device event that is based on the supplied SDL
@@ -55,10 +53,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
    *
    * \since 4.0.0
    */
-  void set_which(const Sint32 which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const Sint32 which) noexcept { m_event.which = which; }
 
   /**
    * \brief Returns the joystick device index or instance ID.
@@ -71,10 +66,7 @@ class controller_device_event final : public common_event<SDL_ControllerDeviceEv
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Sint32
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> Sint32 { return m_event.which; }
 };
 
 /// \name SDL event conversions

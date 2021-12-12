@@ -24,8 +24,7 @@ namespace cen {
  *
  * \see `SDL_TextureAccess`
  */
-enum class texture_access : int
-{
+enum class texture_access : int {
   // clang-format off
   no_lock = SDL_TEXTUREACCESS_STATIC,       ///< Texture changes rarely and isn't lockable.
   streaming = SDL_TEXTUREACCESS_STREAMING,  ///< Texture changes frequently and is lockable.

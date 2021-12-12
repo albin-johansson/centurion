@@ -43,8 +43,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class window_event_id
-{
+enum class window_event_id {
   none = SDL_WINDOWEVENT_NONE,
   shown = SDL_WINDOWEVENT_SHOWN,
   hidden = SDL_WINDOWEVENT_HIDDEN,

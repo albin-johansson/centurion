@@ -20,16 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
-{
+class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
  public:
   /**
    * \brief Creates a joystick device event of type `joystick_device_added`.
    *
    * \since 4.0.0
    */
-  joy_device_event() noexcept : common_event{event_type::joystick_device_added}
-  {}
+  joy_device_event() noexcept : common_event{event_type::joystick_device_added} {}
 
   /**
    * \brief Creates a joy_device_event that is based on the supplied SDL event.
@@ -38,8 +36,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event}
-  {}
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Sets the joystick device index or instance ID, depending on the type
@@ -49,10 +46,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  void set_which(const Sint32 which) noexcept
-  {
-    m_event.which = which;
-  }
+  void set_which(const Sint32 which) noexcept { m_event.which = which; }
 
   /**
    * \brief Returns the joystick device index or instance ID.
@@ -65,10 +59,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto which() const noexcept -> Sint32
-  {
-    return m_event.which;
-  }
+  [[nodiscard]] auto which() const noexcept -> Sint32 { return m_event.which; }
 };
 
 /// \name SDL event conversions

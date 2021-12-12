@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class joy_hat_position : Uint8
-{
+enum class joy_hat_position : Uint8 {
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
   left_down = SDL_HAT_LEFTDOWN,

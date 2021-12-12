@@ -21,8 +21,7 @@ extern "C"
   FAKE_VALUE_FUNC(int, Mix_VolumeChunk, Mix_Chunk*, int)
 }
 
-class SoundEffectTest : public testing::Test
-{
+class SoundEffectTest : public testing::Test {
  protected:
   void SetUp() override
   {

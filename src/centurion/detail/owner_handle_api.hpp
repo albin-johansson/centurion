@@ -27,8 +27,7 @@ template <typename T>
 }
 
 template <typename B, typename Type, typename Deleter>
-class pointer_manager final
-{
+class pointer_manager final {
   using managed_ptr = std::unique_ptr<Type, Deleter>;
   using raw_ptr = Type*;
   using pointer_type = std::conditional_t<B::value, managed_ptr, raw_ptr>;
@@ -36,8 +35,7 @@ class pointer_manager final
  public:
   pointer_manager() noexcept = default;
 
-  explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr}
-  {}
+  explicit pointer_manager(Type* ptr) noexcept : m_ptr{ptr} {}
 
   template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
@@ -45,15 +43,9 @@ class pointer_manager final
     m_ptr.reset(ptr);
   }
 
-  auto operator->() noexcept -> Type*
-  {
-    return get();
-  }
+  auto operator->() noexcept -> Type* { return get(); }
 
-  auto operator->() const noexcept -> const Type*
-  {
-    return get();
-  }
+  auto operator->() const noexcept -> const Type* { return get(); }
 
   auto operator*() noexcept -> Type&
   {
@@ -67,15 +59,9 @@ class pointer_manager final
     return *m_ptr;
   }
 
-  explicit operator bool() const noexcept
-  {
-    return m_ptr != nullptr;
-  }
+  explicit operator bool() const noexcept { return m_ptr != nullptr; }
 
-  /*implicit*/ operator Type*() const noexcept
-  {
-    return get();
-  }
+  /*implicit*/ operator Type*() const noexcept { return get(); }
 
   template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*
@@ -98,8 +84,7 @@ class pointer_manager final
 };
 
 template <typename B, typename Type>
-class Pointer final
-{
+class Pointer final {
   using ManagedPtr = Managed<Type>;
   using RawPtr = Type*;
   using PointerType = std::conditional_t<B::value, ManagedPtr, RawPtr>;
@@ -107,8 +92,7 @@ class Pointer final
  public:
   Pointer() noexcept = default;
 
-  explicit Pointer(Type* ptr) noexcept : mPtr{ptr}
-  {}
+  explicit Pointer(Type* ptr) noexcept : mPtr{ptr} {}
 
   template <typename BB = B, is_owner<BB> = 0>
   void reset(Type* ptr) noexcept
@@ -116,15 +100,9 @@ class Pointer final
     mPtr.reset(ptr);
   }
 
-  auto operator->() noexcept -> Type*
-  {
-    return get();
-  }
+  auto operator->() noexcept -> Type* { return get(); }
 
-  auto operator->() const noexcept -> const Type*
-  {
-    return get();
-  }
+  auto operator->() const noexcept -> const Type* { return get(); }
 
   auto operator*() noexcept -> Type&
   {
@@ -138,15 +116,9 @@ class Pointer final
     return *mPtr;
   }
 
-  explicit operator bool() const noexcept
-  {
-    return mPtr != nullptr;
-  }
+  explicit operator bool() const noexcept { return mPtr != nullptr; }
 
-  /*implicit*/ operator Type*() const noexcept
-  {
-    return get();
-  }
+  /*implicit*/ operator Type*() const noexcept { return get(); }
 
   template <typename BB = B, is_owner<BB> = 0>
   [[nodiscard]] auto release() noexcept -> Type*

@@ -21,8 +21,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-class try_lock final
-{
+class try_lock final {
  public:
   CENTURION_DISABLE_COPY(try_lock)
 
@@ -57,10 +56,7 @@ class try_lock final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_status() const noexcept -> lock_status
-  {
-    return m_status;
-  }
+  [[nodiscard]] auto get_status() const noexcept -> lock_status { return m_status; }
 
   /**
    * \brief Indicates whether or not the mutex was successfully locked.
@@ -99,10 +95,7 @@ class try_lock final
   }
 
   /// \copydoc success()
-  [[nodiscard]] explicit operator bool() const noexcept
-  {
-    return success();
-  }
+  [[nodiscard]] explicit operator bool() const noexcept { return success(); }
 
  private:
   mutex* m_mutex{};

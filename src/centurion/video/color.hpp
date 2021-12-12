@@ -43,8 +43,7 @@ namespace cen {
  *
  * \since 3.0.0
  */
-class color final
-{
+class color final {
  public:
   /// \name Construction
   /// \{
@@ -80,8 +79,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color}
-  {}
+  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color} {}
 
   /**
    * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
@@ -402,10 +400,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_red(const Uint8 red) noexcept
-  {
-    m_color.r = red;
-  }
+  constexpr void set_red(const Uint8 red) noexcept { m_color.r = red; }
 
   /**
    * \brief Sets the value of the green component.
@@ -414,10 +409,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_green(const Uint8 green) noexcept
-  {
-    m_color.g = green;
-  }
+  constexpr void set_green(const Uint8 green) noexcept { m_color.g = green; }
 
   /**
    * \brief Sets the value of the blue component.
@@ -426,10 +418,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_blue(const Uint8 blue) noexcept
-  {
-    m_color.b = blue;
-  }
+  constexpr void set_blue(const Uint8 blue) noexcept { m_color.b = blue; }
 
   /**
    * \brief Sets the value of the alpha component.
@@ -438,10 +427,7 @@ class color final
    *
    * \since 3.0.0
    */
-  constexpr void set_alpha(const Uint8 alpha) noexcept
-  {
-    m_color.a = alpha;
-  }
+  constexpr void set_alpha(const Uint8 alpha) noexcept { m_color.a = alpha; }
 
   /// \} End of setters
 
@@ -455,10 +441,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto red() const noexcept -> Uint8
-  {
-    return m_color.r;
-  }
+  [[nodiscard]] constexpr auto red() const noexcept -> Uint8 { return m_color.r; }
 
   /**
    * \brief Returns the value of the green component.
@@ -467,10 +450,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto green() const noexcept -> Uint8
-  {
-    return m_color.g;
-  }
+  [[nodiscard]] constexpr auto green() const noexcept -> Uint8 { return m_color.g; }
 
   /**
    * \brief Returns the value of the blue component.
@@ -479,10 +459,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto blue() const noexcept -> Uint8
-  {
-    return m_color.b;
-  }
+  [[nodiscard]] constexpr auto blue() const noexcept -> Uint8 { return m_color.b; }
 
   /**
    * \brief Returns the value of the alpha component.
@@ -491,10 +468,7 @@ class color final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] constexpr auto alpha() const noexcept -> Uint8
-  {
-    return m_color.a;
-  }
+  [[nodiscard]] constexpr auto alpha() const noexcept -> Uint8 { return m_color.a; }
 
   /**
    * \brief Returns the normalized red component of the color.
@@ -553,16 +527,10 @@ class color final
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto data() noexcept -> SDL_Color*
-  {
-    return &m_color;
-  }
+  [[nodiscard]] auto data() noexcept -> SDL_Color* { return &m_color; }
 
   /// \copydoc data()
-  [[nodiscard]] auto data() const noexcept -> const SDL_Color*
-  {
-    return &m_color;
-  }
+  [[nodiscard]] auto data() const noexcept -> const SDL_Color* { return &m_color; }
 
   /**
    * \brief Returns the internal color instance.
@@ -571,10 +539,7 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> const SDL_Color&
-  {
-    return m_color;
-  }
+  [[nodiscard]] auto get() const noexcept -> const SDL_Color& { return m_color; }
 
   /// \} End of getters
 
@@ -718,10 +683,7 @@ class color final
    *
    * \since 4.0,0
    */
-  [[nodiscard]] explicit operator SDL_Color*() noexcept
-  {
-    return &m_color;
-  }
+  [[nodiscard]] explicit operator SDL_Color*() noexcept { return &m_color; }
 
   /**
    * \brief Converts the color to `const SDL_Color*`.
@@ -732,10 +694,7 @@ class color final
    *
    * \since 4.0,0
    */
-  [[nodiscard]] explicit operator const SDL_Color*() const noexcept
-  {
-    return &m_color;
-  }
+  [[nodiscard]] explicit operator const SDL_Color*() const noexcept { return &m_color; }
 
   /// \} End of conversions
 
@@ -778,10 +737,7 @@ class color final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr static auto max() noexcept -> Uint8
-  {
-    return 0xFF;
-  }
+  [[nodiscard]] constexpr static auto max() noexcept -> Uint8 { return 0xFF; }
 
  private:
   SDL_Color m_color{0, 0, 0, max()};

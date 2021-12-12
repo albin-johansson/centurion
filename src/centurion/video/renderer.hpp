@@ -94,8 +94,7 @@ using renderer_handle = basic_renderer<detail::handle_type>;
  * \see `make_window_and_renderer()`
  */
 template <typename T>
-class basic_renderer final
-{
+class basic_renderer final {
  public:
   /**
    * \enum renderer_flags
@@ -109,8 +108,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  enum renderer_flags : Uint32
-  {
+  enum renderer_flags : Uint32 {
     software = SDL_RENDERER_SOFTWARE,              ///< Software renderer
     accelerated = SDL_RENDERER_ACCELERATED,        ///< Hardware-accelerated
     target_textures = SDL_RENDERER_TARGETTEXTURE,  ///< Supports target textures
@@ -178,10 +176,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  auto clear() noexcept -> result
-  {
-    return SDL_RenderClear(get()) == 0;
-  }
+  auto clear() noexcept -> result { return SDL_RenderClear(get()) == 0; }
 
   /**
    * \brief Clears the rendering target with the specified color.
@@ -206,10 +201,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void present() noexcept
-  {
-    SDL_RenderPresent(get());
-  }
+  void present() noexcept { SDL_RenderPresent(get()); }
 
   /**
    * \brief Captures a snapshot of the current rendering target as a surface.
@@ -254,10 +246,7 @@ class basic_renderer final
    *
    * \since 5.1.0
    */
-  void fill() noexcept
-  {
-    fill_rect<int>({{}, output_size()});
-  }
+  void fill() noexcept { fill_rect<int>({{}, output_size()}); }
 
   /**
    * \brief Fills the entire rendering target with the specified color.
@@ -1742,10 +1731,7 @@ class basic_renderer final
    *
    * \since 6.0.0
    */
-  auto reset_target() noexcept -> result
-  {
-    return SDL_SetRenderTarget(get(), nullptr) == 0;
-  }
+  auto reset_target() noexcept -> result { return SDL_SetRenderTarget(get(), nullptr) == 0; }
 
   /**
    * \brief Sets the rendering scale.
@@ -2116,16 +2102,11 @@ class basic_renderer final
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Renderer* renderer) noexcept
-    {
-      SDL_DestroyRenderer(renderer);
-    }
+  struct deleter final {
+    void operator()(SDL_Renderer* renderer) noexcept { SDL_DestroyRenderer(renderer); }
   };
 
-  struct owning_data final
-  {
+  struct owning_data final {
     /*implicit*/ owning_data(SDL_Renderer* ptr) : ptr{ptr}  // NOLINT
     {}
 

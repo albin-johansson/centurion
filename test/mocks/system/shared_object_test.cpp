@@ -11,8 +11,7 @@ extern "C"
   FAKE_VALUE_FUNC(void*, SDL_LoadFunction, void*, const char*)
 }
 
-class SharedObjectTest : public testing::Test
-{
+class SharedObjectTest : public testing::Test {
  public:
   void SetUp() override
   {

@@ -43,8 +43,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-enum class controller_button
-{
+enum class controller_button {
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
   a = SDL_CONTROLLER_BUTTON_A,
   b = SDL_CONTROLLER_BUTTON_B,
@@ -86,8 +85,7 @@ enum class controller_button
  *
  * \since 4.0.0
  */
-enum class controller_axis
-{
+enum class controller_axis {
   invalid = SDL_CONTROLLER_AXIS_INVALID,
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
   left_y = SDL_CONTROLLER_AXIS_LEFTY,
@@ -105,8 +103,7 @@ enum class controller_axis
  *
  * \since 5.0.0
  */
-enum class controller_bind_type
-{
+enum class controller_bind_type {
   none = SDL_CONTROLLER_BINDTYPE_NONE,
   button = SDL_CONTROLLER_BINDTYPE_BUTTON,
   axis = SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -122,8 +119,7 @@ enum class controller_bind_type
  *
  * \since 5.0.0
  */
-enum class controller_type
-{
+enum class controller_type {
   // clang-format off
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
@@ -196,8 +192,7 @@ using controller_handle = basic_controller<detail::handle_type>;
  * \see `controller_handle`
  */
 template <typename T>
-class basic_controller final
-{
+class basic_controller final {
  public:
   using mapping_index = int;
   using joystick_index = int;
@@ -208,8 +203,7 @@ class basic_controller final
    *
    * \since 5.1.0
    */
-  enum class mapping_result
-  {
+  enum class mapping_result {
     error,    ///< Something went wrong.
     updated,  ///< Updated a previous mapping.
     added     ///< Successfully added a new mapping.
@@ -343,10 +337,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static void update()
-  {
-    SDL_GameControllerUpdate();
-  }
+  static void update() { SDL_GameControllerUpdate(); }
 
   /**
    * \brief Indicates whether or not the specified value is usable as a
@@ -731,10 +722,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  void stop_rumble() noexcept
-  {
-    rumble(0, 0, milliseconds<Uint32>::zero());
-  }
+  void stop_rumble() noexcept { rumble(0, 0, milliseconds<Uint32>::zero()); }
 
   /// \} End of rumble functions
 
@@ -936,10 +924,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_GameController*
-  {
-    return m_controller.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_GameController* { return m_controller.get(); }
 
   /// \} End of queries
 
@@ -1089,8 +1074,7 @@ class basic_controller final
     if (SDL_GameControllerGetSensorData(m_controller,
                                         static_cast<SDL_SensorType>(type),
                                         array.data(),
-                                        isize(array)) != -1)
-    {
+                                        isize(array)) != -1) {
       return array;
     }
     else {
@@ -1345,8 +1329,7 @@ class basic_controller final
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
+  struct deleter final {
     void operator()(SDL_GameController* controller) noexcept
     {
       SDL_GameControllerClose(controller);

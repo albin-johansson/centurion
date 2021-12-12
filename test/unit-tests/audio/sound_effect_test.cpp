@@ -21,18 +21,11 @@ using ms = cen::milliseconds<int>;
 
 inline constexpr auto path = "resources/click.wav";
 
-class SoundEffect : public testing::Test
-{
+class SoundEffect : public testing::Test {
  protected:
-  static void SetUpTestSuite()
-  {
-    sound = std::make_unique<cen::SoundEffect>(path);
-  }
+  static void SetUpTestSuite() { sound = std::make_unique<cen::SoundEffect>(path); }
 
-  static void TearDownTestSuite()
-  {
-    sound.reset();
-  }
+  static void TearDownTestSuite() { sound.reset(); }
 
   inline static std::unique_ptr<cen::SoundEffect> sound;
 };

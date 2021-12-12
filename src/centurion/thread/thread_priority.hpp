@@ -22,8 +22,7 @@ namespace cen {
  *
  * \since 5.0.0
  */
-enum class thread_priority
-{
+enum class thread_priority {
   // clang-format off
   low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
   normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is the default.

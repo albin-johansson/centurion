@@ -26,18 +26,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class text_editing_event final : public common_event<SDL_TextEditingEvent>
-{
+class text_editing_event final : public common_event<SDL_TextEditingEvent> {
  public:
   /**
    * \brief Creates a text editing event.
    *
    * \since 4.0.0
    */
-  text_editing_event() noexcept : common_event{event_type::text_editing}
-  {
-    check_length();
-  }
+  text_editing_event() noexcept : common_event{event_type::text_editing} { check_length(); }
 
   /**
    * \brief Creates an event that is based on the supplied SDL event.
@@ -58,10 +54,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Sets the location to begin editing from.
@@ -70,10 +63,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  void set_start(const Sint32 start) noexcept
-  {
-    m_event.start = start;
-  }
+  void set_start(const Sint32 start) noexcept { m_event.start = start; }
 
   /**
    * \brief Sets the number of characters to edit from the start point.
@@ -96,10 +86,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
   /**
    * \brief Returns the text that will be used, as a null-terminated string in
@@ -121,10 +108,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto start() const noexcept -> Sint32
-  {
-    return m_event.start;
-  }
+  [[nodiscard]] auto start() const noexcept -> Sint32 { return m_event.start; }
 
   /**
    * \brief Returns the number of characters to edit from the start point.
@@ -135,16 +119,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto length() const noexcept -> Sint32
-  {
-    return m_event.length;
-  }
+  [[nodiscard]] auto length() const noexcept -> Sint32 { return m_event.length; }
 
  private:
-  void check_length() noexcept
-  {
-    m_event.length = detail::clamp(m_event.length, 0, 32);
-  }
+  void check_length() noexcept { m_event.length = detail::clamp(m_event.length, 0, 32); }
 };
 
 /// \name SDL event conversions

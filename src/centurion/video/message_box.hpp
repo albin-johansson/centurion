@@ -38,8 +38,7 @@ namespace cen {
  *
  * \since 3.0.0
  */
-class message_box final
-{
+class message_box final {
  public:
   /**
    * \typedef button_id
@@ -59,8 +58,7 @@ class message_box final
    *
    * \since 3.0.0
    */
-  enum class default_button : Uint32
-  {
+  enum class default_button : Uint32 {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
@@ -74,8 +72,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  enum class color_id : int
-  {
+  enum class color_id : int {
     background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
     text = SDL_MESSAGEBOX_COLOR_TEXT,
     button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
@@ -90,8 +87,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  class color_scheme final
-  {
+  class color_scheme final {
    public:
     /**
      * \brief Creates a color scheme that uses `white` for all colors.
@@ -127,10 +123,7 @@ class message_box final
      *
      * \since 5.0.0
      */
-    [[nodiscard]] auto get() noexcept -> SDL_MessageBoxColorScheme*
-    {
-      return &m_scheme;
-    }
+    [[nodiscard]] auto get() noexcept -> SDL_MessageBoxColorScheme* { return &m_scheme; }
 
    private:
     SDL_MessageBoxColorScheme m_scheme{};
@@ -228,10 +221,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  auto show() -> std::optional<button_id>
-  {
-    return show(nullptr);
-  }
+  auto show() -> std::optional<button_id> { return show(nullptr); }
 
   /**
    * \brief Adds a button to the message box.
@@ -260,10 +250,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_title(std::string title)
-  {
-    m_title = std::move(title);
-  }
+  void set_title(std::string title) { m_title = std::move(title); }
 
   /**
    * \brief Sets the message of the message box.
@@ -272,10 +259,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_message(std::string message)
-  {
-    m_message = std::move(message);
-  }
+  void set_message(std::string message) { m_message = std::move(message); }
 
   [[maybe_unused]] void set_message(std::nullptr_t) = delete;
 
@@ -289,10 +273,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_color_scheme(const color_scheme& scheme) noexcept
-  {
-    m_colorScheme = scheme;
-  }
+  void set_color_scheme(const color_scheme& scheme) noexcept { m_colorScheme = scheme; }
 
   /**
    * \brief Sets the type of the message box.
@@ -301,10 +282,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_type(const message_box_type type) noexcept
-  {
-    m_type = type;
-  }
+  void set_type(const message_box_type type) noexcept { m_type = type; }
 
   /**
    * \brief Sets the button order of the message box.
@@ -313,10 +291,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  void set_button_order(const button_order order) noexcept
-  {
-    m_buttonOrder = order;
-  }
+  void set_button_order(const button_order order) noexcept { m_buttonOrder = order; }
 
   /**
    * \brief Indicates whether or not the message box has a button associated with the
@@ -345,10 +320,7 @@ class message_box final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto title() const -> std::string_view
-  {
-    return m_title;
-  }
+  [[nodiscard]] auto title() const -> std::string_view { return m_title; }
 
   /**
    * \brief Returns the message of the message box.
@@ -359,10 +331,7 @@ class message_box final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto message() const -> std::string_view
-  {
-    return m_message;
-  }
+  [[nodiscard]] auto message() const -> std::string_view { return m_message; }
 
   /**
    * \brief Returns the type of the message box.
@@ -373,10 +342,7 @@ class message_box final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto type() const noexcept -> message_box_type
-  {
-    return m_type;
-  }
+  [[nodiscard]] auto type() const noexcept -> message_box_type { return m_type; }
 
   /**
    * \brief Returns the button order of the message box.
@@ -393,8 +359,7 @@ class message_box final
   }
 
  private:
-  class button final
-  {
+  class button final {
    public:
     button(const button_id id, std::string text, const default_button defaultButton)
         : m_id{id}
@@ -409,10 +374,7 @@ class message_box final
      *
      * \since 5.0.0
      */
-    [[nodiscard]] auto id() const noexcept -> button_id
-    {
-      return m_id;
-    }
+    [[nodiscard]] auto id() const noexcept -> button_id { return m_id; }
 
     /**
      * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds to the
@@ -475,8 +437,7 @@ class message_box final
     if (-1 == SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
                                        title.c_str(),
                                        message.c_str(),
-                                       parent))
-    {
+                                       parent)) {
       throw SDLError{};
     }
   }

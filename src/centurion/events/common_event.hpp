@@ -26,8 +26,7 @@ namespace cen {
  * \since 4.0.0
  */
 template <typename T>
-class common_event
-{
+class common_event {
  public:
   /**
    * \brief Creates a `common_event` and zero-initializes the internal event
@@ -50,8 +49,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  explicit common_event(const T& event) : m_event{event}
-  {}
+  explicit common_event(const T& event) : m_event{event} {}
 
   /**
    * \brief Creates a common_event and moves the contents of the supplied event.
@@ -60,8 +58,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  explicit common_event(T&& event) : m_event{std::move(event)}
-  {}
+  explicit common_event(T&& event) : m_event{std::move(event)} {}
 
   /**
    * \brief Sets the timestamp that is associated with the creation of the
@@ -72,10 +69,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  void set_time(const Uint32 timestamp) noexcept
-  {
-    m_event.timestamp = timestamp;
-  }
+  void set_time(const Uint32 timestamp) noexcept { m_event.timestamp = timestamp; }
 
   /**
    * \brief Sets the event type value associated with the event.
@@ -84,10 +78,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  void set_type(const event_type type) noexcept
-  {
-    m_event.type = to_underlying(type);
-  }
+  void set_type(const event_type type) noexcept { m_event.type = to_underlying(type); }
 
   /**
    * \brief Returns the timestamp associated with the creation of the event.
@@ -96,10 +87,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto time() const noexcept -> Uint32
-  {
-    return m_event.timestamp;
-  }
+  [[nodiscard]] auto time() const noexcept -> Uint32 { return m_event.timestamp; }
 
   /**
    * \brief Returns the event type value associated with the event.
@@ -120,10 +108,7 @@ class common_event
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> const T&
-  {
-    return m_event;
-  }
+  [[nodiscard]] auto get() const noexcept -> const T& { return m_event; }
 
  protected:
   T m_event{};

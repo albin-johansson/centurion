@@ -13,8 +13,7 @@ namespace cen {
 /// \addtogroup thread
 /// \{
 
-enum class lock_status
-{
+enum class lock_status {
   success = 0,
   timed_out = SDL_MUTEX_TIMEDOUT,
   error = -1

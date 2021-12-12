@@ -38,8 +38,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-struct glyph_metrics final
-{
+struct glyph_metrics final {
   int minX;     ///< The minimum X-offset.
   int minY;     ///< The minimum Y-offset.
   int maxX;     ///< The maximum X-offset.
@@ -54,8 +53,7 @@ struct glyph_metrics final
  *
  * \since 3.1.0
  */
-enum class font_hint : int
-{
+enum class font_hint : int {
   normal = TTF_HINTING_NORMAL,
   light = TTF_HINTING_LIGHT,
   mono = TTF_HINTING_MONO,
@@ -135,8 +133,7 @@ inline auto operator<<(std::ostream& stream, const font_hint hint) -> std::ostre
  *
  * \since 3.0.0
  */
-class font final
-{
+class font final {
  public:
   /// \name Construction
   /// \{
@@ -177,8 +174,7 @@ class font final
    *
    * \since 5.3.0
    */
-  font(const std::string& file, const int size) : font{file.c_str(), size}
-  {}
+  font(const std::string& file, const int size) : font{file.c_str(), size} {}
 
   /// \} End of construction
 
@@ -190,10 +186,7 @@ class font final
    *
    * \since 3.0.0
    */
-  void reset() noexcept
-  {
-    TTF_SetFontStyle(m_font.get(), TTF_STYLE_NORMAL);
-  }
+  void reset() noexcept { TTF_SetFontStyle(m_font.get(), TTF_STYLE_NORMAL); }
 
   /**
    * \brief Sets whether the font is bold.
@@ -270,10 +263,7 @@ class font final
    *
    * \since 5.0.0
    */
-  void set_outline(const int outline) noexcept
-  {
-    TTF_SetFontOutline(m_font.get(), outline);
-  }
+  void set_outline(const int outline) noexcept { TTF_SetFontOutline(m_font.get(), outline); }
 
   /**
    * \brief Sets the TrueType font hint of the font.
@@ -402,10 +392,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto height() const noexcept -> int
-  {
-    return TTF_FontHeight(m_font.get());
-  }
+  [[nodiscard]] auto height() const noexcept -> int { return TTF_FontHeight(m_font.get()); }
 
   /**
    * \brief Returns the offset from the baseline to the bottom of the font characters.
@@ -416,10 +403,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto descent() const noexcept -> int
-  {
-    return TTF_FontDescent(m_font.get());
-  }
+  [[nodiscard]] auto descent() const noexcept -> int { return TTF_FontDescent(m_font.get()); }
 
   /**
    * \brief Returns the offset from the baseline to the top of the font characters.
@@ -430,10 +414,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto ascent() const noexcept -> int
-  {
-    return TTF_FontAscent(m_font.get());
-  }
+  [[nodiscard]] auto ascent() const noexcept -> int { return TTF_FontAscent(m_font.get()); }
 
   /**
    * \brief Returns the recommended pixel height of rendered text in the font.
@@ -518,10 +499,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> int
-  {
-    return m_size;
-  }
+  [[nodiscard]] auto size() const noexcept -> int { return m_size; }
 
   /// \} End of queries
 
@@ -583,8 +561,7 @@ class font final
                          &metrics.maxX,
                          &metrics.minY,
                          &metrics.maxY,
-                         &metrics.advance) != -1)
-    {
+                         &metrics.advance) != -1) {
       return metrics;
     }
     else {
@@ -720,10 +697,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] explicit operator TTF_Font*() noexcept
-  {
-    return m_font.get();
-  }
+  [[nodiscard]] explicit operator TTF_Font*() noexcept { return m_font.get(); }
 
   /**
    * \brief Converts to `const TTF_Font*`.
@@ -732,10 +706,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] explicit operator const TTF_Font*() const noexcept
-  {
-    return m_font.get();
-  }
+  [[nodiscard]] explicit operator const TTF_Font*() const noexcept { return m_font.get(); }
 
   /// \} End of conversions
 
@@ -751,18 +722,11 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> TTF_Font*
-  {
-    return m_font.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> TTF_Font* { return m_font.get(); }
 
  private:
-  struct deleter final
-  {
-    void operator()(TTF_Font* font) noexcept
-    {
-      TTF_CloseFont(font);
-    }
+  struct deleter final {
+    void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
   };
 
   std::unique_ptr<TTF_Font, deleter> m_font;

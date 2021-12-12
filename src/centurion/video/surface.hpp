@@ -75,8 +75,7 @@ using surface_handle = basic_surface<detail::handle_type>;
  * \see `surface_handle`
  */
 template <typename T>
-class basic_surface final
-{
+class basic_surface final {
  public:
   /// \name Construction
   /// \{
@@ -433,10 +432,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto must_lock() const noexcept -> bool
-  {
-    return SDL_MUSTLOCK(m_surface);
-  }
+  [[nodiscard]] auto must_lock() const noexcept -> bool { return SDL_MUSTLOCK(m_surface); }
 
   /// \} End of locking
 
@@ -479,10 +475,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void set_alpha(const Uint8 alpha) noexcept
-  {
-    SDL_SetSurfaceAlphaMod(m_surface, alpha);
-  }
+  void set_alpha(const Uint8 alpha) noexcept { SDL_SetSurfaceAlphaMod(m_surface, alpha); }
 
   /**
    * \brief Sets the color modulation that will be used by the surface.
@@ -607,10 +600,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto width() const noexcept -> int
-  {
-    return m_surface->w;
-  }
+  [[nodiscard]] auto width() const noexcept -> int { return m_surface->w; }
 
   /**
    * \brief Returns the height of the surface.
@@ -619,10 +609,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto height() const noexcept -> int
-  {
-    return m_surface->h;
-  }
+  [[nodiscard]] auto height() const noexcept -> int { return m_surface->h; }
 
   /**
    * \brief Returns the size of the surface.
@@ -631,10 +618,7 @@ class basic_surface final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto size() const noexcept -> iarea
-  {
-    return iarea{width(), height()};
-  }
+  [[nodiscard]] auto size() const noexcept -> iarea { return iarea{width(), height()}; }
 
   /**
    * \brief Returns the pitch (the length of a row of pixels in bytes) of the
@@ -644,10 +628,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto pitch() const noexcept -> int
-  {
-    return m_surface->pitch;
-  }
+  [[nodiscard]] auto pitch() const noexcept -> int { return m_surface->pitch; }
 
   /**
    * \brief Returns a pointer to the pixel data of the surface.
@@ -658,10 +639,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto pixels() noexcept -> void*
-  {
-    return m_surface->pixels;
-  }
+  [[nodiscard]] auto pixels() noexcept -> void* { return m_surface->pixels; }
 
   /**
    * \brief Returns a pointer to the pixel data of the surface.
@@ -670,10 +648,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto pixels() const noexcept -> const void*
-  {
-    return m_surface->pixels;
-  }
+  [[nodiscard]] auto pixels() const noexcept -> const void* { return m_surface->pixels; }
 
   /**
    * \brief Returns a pointer to the pixel data of the surface.
@@ -682,18 +657,12 @@ class basic_surface final
    *
    * \since 5.3.0
    */
-  [[nodiscard]] auto data() noexcept -> void*
-  {
-    return pixels();
-  }
+  [[nodiscard]] auto data() noexcept -> void* { return pixels(); }
 
   /**
    * \copydoc data()
    */
-  [[nodiscard]] auto data() const noexcept -> const void*
-  {
-    return pixels();
-  }
+  [[nodiscard]] auto data() const noexcept -> const void* { return pixels(); }
 
   /**
    * \brief Returns the pixel format info associated with the surface.
@@ -745,10 +714,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Surface*
-  {
-    return m_surface.get();
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return m_surface.get(); }
 
   /// \} End of getters
 
@@ -778,10 +744,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] explicit operator SDL_Surface*() noexcept
-  {
-    return get();
-  }
+  [[nodiscard]] explicit operator SDL_Surface*() noexcept { return get(); }
 
   /**
    * \brief Converts to `const SDL_Surface*`.
@@ -790,20 +753,13 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] explicit operator const SDL_Surface*() const noexcept
-  {
-    return get();
-  }
+  [[nodiscard]] explicit operator const SDL_Surface*() const noexcept { return get(); }
 
   /// \} End of conversions
 
  private:
-  struct deleter final
-  {
-    void operator()(SDL_Surface* surface) noexcept
-    {
-      SDL_FreeSurface(surface);
-    }
+  struct deleter final {
+    void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
   };
   detail::pointer_manager<T, SDL_Surface, deleter> m_surface;
 
@@ -817,10 +773,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  void copy(const basic_surface& other)
-  {
-    m_surface.reset(other.copy_surface());
-  }
+  void copy(const basic_surface& other) { m_surface.reset(other.copy_surface()); }
 
   /**
    * \brief Indicates whether or not the supplied point is within the bounds of

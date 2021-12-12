@@ -21,8 +21,7 @@ static_assert(std::is_nothrow_move_assignable_v<cen::texture>);
 static_assert(!std::is_copy_constructible_v<cen::texture>);
 static_assert(!std::is_copy_assignable_v<cen::texture>);
 
-class TextureTest : public testing::Test
-{
+class TextureTest : public testing::Test {
  protected:
   static void SetUpTestSuite()
   {

@@ -5,8 +5,7 @@
 #include "core_mocks.hpp"
 #include "thread_mocks.hpp"
 
-class ScopedLockTest : public testing::Test
-{
+class ScopedLockTest : public testing::Test {
  public:
   void SetUp() override
   {

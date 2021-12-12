@@ -51,8 +51,7 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class event final
-{
+class event final {
  public:
   /**
    * \brief Creates an empty event.
@@ -88,10 +87,7 @@ class event final
    *
    * \since 3.1.0
    */
-  static void update() noexcept
-  {
-    SDL_PumpEvents();
-  }
+  static void update() noexcept { SDL_PumpEvents(); }
 
   /**
    * \brief Pushes an event onto the event queue.
@@ -131,10 +127,7 @@ class event final
    *
    * \since 3.1.0
    */
-  static void flush() noexcept
-  {
-    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
-  }
+  static void flush() noexcept { SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT); }
 
   /**
    * Flushes all of the current events from the event queue, including pending
@@ -353,10 +346,7 @@ class event final
    *
    * \since 6.1.0
    */
-  [[nodiscard]] auto data() const noexcept -> const SDL_Event*
-  {
-    return &m_event;
-  }
+  [[nodiscard]] auto data() const noexcept -> const SDL_Event* { return &m_event; }
 
   /**
    * \brief Indicates whether or not there is an internal event stored in the
@@ -366,10 +356,7 @@ class event final
    *
    * \since 5.1.0
    */
-  [[nodiscard]] auto is_empty() const noexcept -> bool
-  {
-    return is<std::monostate>();
-  }
+  [[nodiscard]] auto is_empty() const noexcept -> bool { return is<std::monostate>(); }
 
  private:
   /* Behold, the beast! */

@@ -20,16 +20,14 @@ namespace cen {
  *
  * \since 4.0.0
  */
-class drop_event final : public common_event<SDL_DropEvent>
-{
+class drop_event final : public common_event<SDL_DropEvent> {
  public:
   /**
    * \brief Creates a drop event of type `drop_file`.
    *
    * \since 4.0.0
    */
-  drop_event() noexcept : common_event{event_type::drop_file}
-  {}
+  drop_event() noexcept : common_event{event_type::drop_file} {}
 
   /**
    * \brief Creates a drop event based on the supplied event.
@@ -38,8 +36,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  explicit drop_event(const SDL_DropEvent& event) noexcept : common_event{event}
-  {}
+  explicit drop_event(const SDL_DropEvent& event) noexcept : common_event{event} {}
 
   /**
    * \brief Destroys the drop event.
@@ -68,10 +65,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  void set_will_free_file(const bool freeFile) noexcept
-  {
-    m_willFreeFile = freeFile;
-  }
+  void set_will_free_file(const bool freeFile) noexcept { m_willFreeFile = freeFile; }
 
   /**
    * \brief Sets the file associated with the drop event.
@@ -110,10 +104,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  void set_window_id(const Uint32 id) noexcept
-  {
-    m_event.windowID = id;
-  }
+  void set_window_id(const Uint32 id) noexcept { m_event.windowID = id; }
 
   /**
    * \brief Indicates whether or not the associated file will be freed by
@@ -126,10 +117,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto will_free_file() const noexcept -> bool
-  {
-    return m_willFreeFile;
-  }
+  [[nodiscard]] auto will_free_file() const noexcept -> bool { return m_willFreeFile; }
 
   /**
    * \brief Returns a pointer to the associated file.
@@ -144,10 +132,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto file() const noexcept -> char*
-  {
-    return m_event.file;
-  }
+  [[nodiscard]] auto file() const noexcept -> char* { return m_event.file; }
 
   /**
    * \brief Returns the ID of the window that is the target of the drop
@@ -157,10 +142,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto window_id() const noexcept -> Uint32
-  {
-    return m_event.windowID;
-  }
+  [[nodiscard]] auto window_id() const noexcept -> Uint32 { return m_event.windowID; }
 
  private:
   bool m_willFreeFile{false};

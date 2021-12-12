@@ -42,8 +42,7 @@ namespace cen {
  * \since 5.0.0
  */
 template <typename T, enable_if_convertible_t<T, int, float> = 0>
-class rect_traits final
-{
+class rect_traits final {
  public:
   inline constexpr static bool integral = std::is_integral_v<T>;
   inline constexpr static bool floating = std::is_floating_point_v<T>;
@@ -96,8 +95,7 @@ using frect = basic_rect<float>;
  * \since 4.0.0
  */
 template <typename T>
-class basic_rect final
-{
+class basic_rect final {
  public:
   /// \brief Indicates whether or not the rectangle is based on an integral type.
   /// \deprecated Since 6.4.0, use `integral` instead.
@@ -151,8 +149,7 @@ class basic_rect final
    *
    * \since 5.3.0
    */
-  constexpr explicit basic_rect(const rect_type& rect) noexcept : m_rect{rect}
-  {}
+  constexpr explicit basic_rect(const rect_type& rect) noexcept : m_rect{rect} {}
 
   /**
    * \brief Creates a rectangle with the supplied position and size.
@@ -195,10 +192,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_x(const value_type x) noexcept
-  {
-    m_rect.x = x;
-  }
+  constexpr void set_x(const value_type x) noexcept { m_rect.x = x; }
 
   /**
    * \brief Sets the y-coordinate of the rectangle.
@@ -207,10 +201,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_y(const value_type y) noexcept
-  {
-    m_rect.y = y;
-  }
+  constexpr void set_y(const value_type y) noexcept { m_rect.y = y; }
 
   /**
    * \brief Sets the maximum x-coordinate of the rectangle.
@@ -221,10 +212,7 @@ class basic_rect final
    *
    * \since 5.1.0
    */
-  constexpr void set_max_x(const value_type maxX) noexcept
-  {
-    m_rect.x = maxX - m_rect.w;
-  }
+  constexpr void set_max_x(const value_type maxX) noexcept { m_rect.x = maxX - m_rect.w; }
 
   /**
    * \brief Sets the maximum y-coordinate of the rectangle.
@@ -235,10 +223,7 @@ class basic_rect final
    *
    * \since 5.1.0
    */
-  constexpr void set_max_y(const value_type maxY) noexcept
-  {
-    m_rect.y = maxY - m_rect.h;
-  }
+  constexpr void set_max_y(const value_type maxY) noexcept { m_rect.y = maxY - m_rect.h; }
 
   /**
    * \brief Offsets the x-coordinate of the rectangle by the specified amount.
@@ -250,10 +235,7 @@ class basic_rect final
    *
    * \since 6.0.0
    */
-  constexpr void offset_x(const value_type offset) noexcept
-  {
-    m_rect.x += offset;
-  }
+  constexpr void offset_x(const value_type offset) noexcept { m_rect.x += offset; }
 
   /**
    * \brief Offsets the y-coordinate of the rectangle by the specified amount.
@@ -265,10 +247,7 @@ class basic_rect final
    *
    * \since 6.0.0
    */
-  constexpr void offset_y(const value_type offset) noexcept
-  {
-    m_rect.y += offset;
-  }
+  constexpr void offset_y(const value_type offset) noexcept { m_rect.y += offset; }
 
   /**
    * \brief Tweaks the width of the rectangle by the specified amount.
@@ -280,10 +259,7 @@ class basic_rect final
    *
    * \since 6.0.0
    */
-  constexpr void offset_width(const value_type offset) noexcept
-  {
-    m_rect.w += offset;
-  }
+  constexpr void offset_width(const value_type offset) noexcept { m_rect.w += offset; }
 
   /**
    * \brief Tweaks the height of the rectangle by the specified amount.
@@ -295,10 +271,7 @@ class basic_rect final
    *
    * \since 6.0.0
    */
-  constexpr void offset_height(const value_type offset) noexcept
-  {
-    m_rect.h += offset;
-  }
+  constexpr void offset_height(const value_type offset) noexcept { m_rect.h += offset; }
 
   /**
    * \brief Sets the position of the rectangle.
@@ -323,10 +296,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_width(const value_type width) noexcept
-  {
-    m_rect.w = width;
-  }
+  constexpr void set_width(const value_type width) noexcept { m_rect.w = width; }
 
   /**
    * \brief Sets the height of the rectangle.
@@ -335,10 +305,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_height(const value_type height) noexcept
-  {
-    m_rect.h = height;
-  }
+  constexpr void set_height(const value_type height) noexcept { m_rect.h = height; }
 
   /**
    * \brief Sets the size of the rectangle.
@@ -365,10 +332,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto x() const noexcept -> value_type
-  {
-    return m_rect.x;
-  }
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type { return m_rect.x; }
 
   /**
    * \brief Returns the y-coordinate of the rectangle.
@@ -377,10 +341,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto y() const noexcept -> value_type
-  {
-    return m_rect.y;
-  }
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type { return m_rect.y; }
 
   /**
    * \brief Returns the position of the rectangle.
@@ -401,10 +362,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto width() const noexcept -> value_type
-  {
-    return m_rect.w;
-  }
+  [[nodiscard]] constexpr auto width() const noexcept -> value_type { return m_rect.w; }
 
   /**
    * \brief Returns the height of the rectangle.
@@ -413,10 +371,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto height() const noexcept -> value_type
-  {
-    return m_rect.h;
-  }
+  [[nodiscard]] constexpr auto height() const noexcept -> value_type { return m_rect.h; }
 
   /**
    * \brief Returns the size of the rectangle.
@@ -437,10 +392,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto max_x() const noexcept -> value_type
-  {
-    return x() + width();
-  }
+  [[nodiscard]] constexpr auto max_x() const noexcept -> value_type { return x() + width(); }
 
   /**
    * \brief Returns the maximum y-coordinate of the rectangle.
@@ -449,10 +401,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] constexpr auto max_y() const noexcept -> value_type
-  {
-    return y() + height();
-  }
+  [[nodiscard]] constexpr auto max_y() const noexcept -> value_type { return y() + height(); }
 
   /**
    * \brief Returns the x-coordinate of the center point of the rectangle.
@@ -542,18 +491,12 @@ class basic_rect final
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto data() noexcept -> rect_type*
-  {
-    return &m_rect;
-  }
+  [[nodiscard]] auto data() noexcept -> rect_type* { return &m_rect; }
 
   /**
    * \copydoc data()
    */
-  [[nodiscard]] auto data() const noexcept -> const rect_type*
-  {
-    return &m_rect;
-  }
+  [[nodiscard]] auto data() const noexcept -> const rect_type* { return &m_rect; }
 
   /**
    * \brief Returns the internal rectangle.
@@ -562,10 +505,7 @@ class basic_rect final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() noexcept -> rect_type&
-  {
-    return m_rect;
-  }
+  [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return m_rect; }
 
   /**
    * \brief Returns the internal rectangle.
@@ -574,10 +514,7 @@ class basic_rect final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() const noexcept -> const rect_type&
-  {
-    return m_rect;
-  }
+  [[nodiscard]] constexpr auto get() const noexcept -> const rect_type& { return m_rect; }
 
   /// \} End of queries
 
@@ -591,10 +528,7 @@ class basic_rect final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] explicit operator rect_type*() noexcept
-  {
-    return &m_rect;
-  }
+  [[nodiscard]] explicit operator rect_type*() noexcept { return &m_rect; }
 
   /**
    * \brief Returns a pointer to the internal rectangle.
@@ -603,10 +537,7 @@ class basic_rect final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] explicit operator const rect_type*() const noexcept
-  {
-    return &m_rect;
-  }
+  [[nodiscard]] explicit operator const rect_type*() const noexcept { return &m_rect; }
 
   /// \} End of conversions
 

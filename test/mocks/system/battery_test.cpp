@@ -33,8 +33,7 @@ auto power_delegate(int* outSeconds, int* outPercentage) -> SDL_PowerState
 
 }  // namespace
 
-class BatteryTest : public testing::Test
-{
+class BatteryTest : public testing::Test {
  protected:
   void SetUp() override
   {

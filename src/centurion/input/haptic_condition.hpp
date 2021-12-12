@@ -23,8 +23,7 @@ namespace cen {
  *
  * \since 5.2.0
  */
-class haptic_condition final : public haptic_effect<haptic_condition>
-{
+class haptic_condition final : public haptic_effect<haptic_condition> {
  public:
   inline constexpr static bool hasDirection = false;
   inline constexpr static bool hasEnvelope = false;
@@ -39,8 +38,7 @@ class haptic_condition final : public haptic_effect<haptic_condition>
    *
    * \since 5.2.0
    */
-  enum condition_type : Uint32
-  {
+  enum condition_type : Uint32 {
     spring = SDL_HAPTIC_SPRING,     ///< Based on axes position.
     damper = SDL_HAPTIC_DAMPER,     ///< Based on axes velocity.
     inertia = SDL_HAPTIC_INERTIA,   ///< Based on axes acceleration.

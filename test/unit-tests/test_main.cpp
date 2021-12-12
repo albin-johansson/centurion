@@ -5,18 +5,17 @@
 
 int main(int argc, char* argv[])
 {
+#ifdef CEN_AUDIO
   const cen::SDLLibrary sdl;
+  const cen::MixLibrary mix;
+#else
+  cen::SDLConfig cfg;
+  cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
+  const cen::SDLLibrary sdl{cfg};
+#endif
+
   const cen::IMGLibrary img;
   const cen::TTFLibrary ttf;
-
-#ifndef CEN_AUDIO
-  cen::MixConfig cfg;
-  cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-
-  const cen::MixLibrary mix{cfg};
-#else
-  const cen::MixLibrary mix;
-#endif
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 #if CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES

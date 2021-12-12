@@ -2,262 +2,243 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>  // clog
-#include <memory>    // unique_ptr
-#include <type_traits>
+#include <iostream>     // clog
+#include <memory>       // unique_ptr
+#include <type_traits>  // ...
 
 #include "core/logging.hpp"
 
-static_assert(std::is_final_v<cen::music>);
+static_assert(std::is_final_v<cen::Music>);
 
-static_assert(!std::is_nothrow_copy_constructible_v<cen::music>);
-static_assert(!std::is_nothrow_copy_assignable_v<cen::music>);
+static_assert(!std::is_nothrow_copy_constructible_v<cen::Music>);
+static_assert(!std::is_nothrow_copy_assignable_v<cen::Music>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::music>);
-static_assert(std::is_nothrow_move_assignable_v<cen::music>);
+static_assert(std::is_nothrow_move_constructible_v<cen::Music>);
+static_assert(std::is_nothrow_move_assignable_v<cen::Music>);
 
 class MusicTest : public testing::Test
 {
  protected:
   static void SetUpTestSuite()
   {
-    using namespace std::string_literals;
-    m_music = std::make_unique<cen::music>("resources/hiddenPond.mp3"s);
+    music = std::make_unique<cen::Music>("resources/hiddenPond.mp3");
   }
 
   static void TearDownTestSuite()
   {
-    m_music.reset();
+    music.reset();
   }
 
-  inline static std::unique_ptr<cen::music> m_music;
+  inline static std::unique_ptr<cen::Music> music;
 };
 
 TEST_F(MusicTest, Forever)
 {
-  ASSERT_EQ(-1, cen::music::forever);
+  ASSERT_EQ(-1, cen::Music::forever);
 }
 
 TEST_F(MusicTest, Constructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::music{"foobar"s}, cen::mix_error);
+  ASSERT_THROW(cen::Music{"foobar"s}, cen::mix_error);
 }
 
 TEST_F(MusicTest, Play)
 {
-  m_music->play();
-  ASSERT_TRUE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_fading());
-  ASSERT_FALSE(cen::music::is_paused());
-  ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
+  music->Play();
+  ASSERT_TRUE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsFading());
+  ASSERT_FALSE(cen::Music::IsPaused());
+  ASSERT_EQ(cen::FadeStatus::None, cen::Music::GetFadeStatus());
 
-  cen::music::halt();
+  cen::Music::Halt();
 
-  m_music->play(cen::music::forever);
-  ASSERT_TRUE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_fading());
-  ASSERT_FALSE(cen::music::is_paused());
-  ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
+  music->Play(cen::Music::forever);
+  ASSERT_TRUE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsFading());
+  ASSERT_FALSE(cen::Music::IsPaused());
+  ASSERT_EQ(cen::FadeStatus::None, cen::Music::GetFadeStatus());
 
-  m_music->pause();
-  cen::music::halt();
+  music->Pause();
+  cen::Music::Halt();
 }
 
 TEST_F(MusicTest, Resume)
 {
-  ASSERT_NO_THROW(cen::music::resume());
+  ASSERT_NO_THROW(cen::Music::Resume());
 
-  m_music->play();
-  ASSERT_NO_THROW(cen::music::resume());
+  music->Play();
+  ASSERT_NO_THROW(cen::Music::Resume());
 
-  cen::music::pause();
-  ASSERT_TRUE(cen::music::is_paused());
+  cen::Music::Pause();
+  ASSERT_TRUE(cen::Music::IsPaused());
 
-  cen::music::resume();
-  ASSERT_TRUE(cen::music::is_playing());
+  cen::Music::Resume();
+  ASSERT_TRUE(cen::Music::IsPlaying());
 
-  cen::music::halt();
-  ASSERT_NO_THROW(cen::music::resume());
+  cen::Music::Halt();
+  ASSERT_NO_THROW(cen::Music::Resume());
 }
 
 TEST_F(MusicTest, Pause)
 {
-  ASSERT_NO_THROW(cen::music::pause());
+  ASSERT_NO_THROW(cen::Music::Pause());
 
-  m_music->play();
+  music->Play();
 
-  cen::music::pause();
-  ASSERT_TRUE(cen::music::is_paused());
+  cen::Music::Pause();
+  ASSERT_TRUE(cen::Music::IsPaused());
 
-  m_music->fade_in(cen::milliseconds<int>{100});
+  music->FadeIn(cen::milliseconds<int>{100});
 
-  cen::music::pause();
-  ASSERT_TRUE(cen::music::is_paused());
+  cen::Music::Pause();
+  ASSERT_TRUE(cen::Music::IsPaused());
 }
 
 TEST_F(MusicTest, Halt)
 {
-  ASSERT_NO_THROW(cen::music::halt());
+  ASSERT_NO_THROW(cen::Music::Halt());
 
-  m_music->play();
-  cen::music::halt();
+  music->Play();
+  cen::Music::Halt();
 
-  ASSERT_FALSE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  m_music->fade_in(cen::milliseconds<int>{100});
-  cen::music::halt();
+  music->FadeIn(cen::milliseconds<int>{100});
+  cen::Music::Halt();
 
-  ASSERT_FALSE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsFading());
 }
 
 TEST_F(MusicTest, FadeIn)
 {
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  cen::music::halt();
+  cen::Music::Halt();
 
-  m_music->fade_in(cen::milliseconds<int>{100});
-  ASSERT_TRUE(cen::music::is_fading());
+  music->FadeIn(cen::milliseconds<int>{100});
+  ASSERT_TRUE(cen::Music::IsFading());
 
-  cen::music::halt();
+  cen::Music::Halt();
 }
 
 TEST_F(MusicTest, FadeOut)
 {
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  ASSERT_NO_THROW(cen::music::fade_out(cen::milliseconds<int>{100}));
+  ASSERT_NO_THROW(cen::Music::FadeOut(cen::milliseconds<int>{100}));
 
-  m_music->fade_in(cen::milliseconds<int>{100});
-  ASSERT_TRUE(cen::music::is_fading());
+  music->FadeIn(cen::milliseconds<int>{100});
+  ASSERT_TRUE(cen::Music::IsFading());
 
-  cen::music::halt();
+  cen::Music::Halt();
 }
 
 TEST_F(MusicTest, SetVolume)
 {
-  const auto oldVolume = cen::music::volume();
+  const auto oldVolume = cen::Music::GetVolume();
 
-  {  // Valid volume
+  {  // Valid GetVolume
     const auto volume = 102;
-    cen::music::set_volume(volume);
-    ASSERT_EQ(volume, cen::music::volume());
+    cen::Music::SetVolume(volume);
+    ASSERT_EQ(volume, cen::Music::GetVolume());
   }
 
   {  // Volume underflow
     const auto volume = -1;
-    cen::music::set_volume(volume);
-    ASSERT_EQ(0, cen::music::volume());
+    cen::Music::SetVolume(volume);
+    ASSERT_EQ(0, cen::Music::GetVolume());
   }
 
   {  // Volume overflow
-    const auto volume = cen::music::max_volume() + 1;
-    cen::music::set_volume(volume);
-    ASSERT_EQ(cen::music::max_volume(), cen::music::volume());
+    const auto volume = cen::Music::GetMaxVolume() + 1;
+    cen::Music::SetVolume(volume);
+    ASSERT_EQ(cen::Music::GetMaxVolume(), cen::Music::GetVolume());
   }
 
-  cen::music::set_volume(oldVolume);
+  cen::Music::SetVolume(oldVolume);
 }
 
 TEST_F(MusicTest, IsPlaying)
 {
-  ASSERT_FALSE(cen::music::is_playing());
+  ASSERT_FALSE(cen::Music::IsPlaying());
 
-  m_music->play();
-  ASSERT_TRUE(cen::music::is_playing());
+  music->Play();
+  ASSERT_TRUE(cen::Music::IsPlaying());
 
-  cen::music::halt();
+  cen::Music::Halt();
 
-  m_music->fade_in(cen::milliseconds<int>{100});
-  ASSERT_TRUE(cen::music::is_playing());
+  music->FadeIn(cen::milliseconds<int>{100});
+  ASSERT_TRUE(cen::Music::IsPlaying());
 
-  cen::music::halt();
+  cen::Music::Halt();
 }
 
 TEST_F(MusicTest, IsPaused)
 {
-  m_music->play();
-  ASSERT_FALSE(cen::music::is_paused());
+  music->Play();
+  ASSERT_FALSE(cen::Music::IsPaused());
 
-  cen::music::pause();
-  ASSERT_TRUE(cen::music::is_paused());
+  cen::Music::Pause();
+  ASSERT_TRUE(cen::Music::IsPaused());
 }
 
 TEST_F(MusicTest, IsFading)
 {
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  m_music->play();
-  ASSERT_FALSE(cen::music::is_fading());
+  music->Play();
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  cen::music::halt();
+  cen::Music::Halt();
 
-  m_music->fade_in(cen::milliseconds<int>{200});
-  ASSERT_TRUE(cen::music::is_fading());
+  music->FadeIn(cen::milliseconds<int>{200});
+  ASSERT_TRUE(cen::Music::IsFading());
 
-  // This should have no effect, since the music is fading in
-  cen::music::fade_out(cen::milliseconds<int>{50});
-  ASSERT_EQ(cen::fade_status::in, cen::music::get_fade_status());
+  // This should have no effect, since the Music is fading in
+  cen::Music::FadeOut(cen::milliseconds<int>{50});
+  ASSERT_EQ(cen::FadeStatus::In, cen::Music::GetFadeStatus());
 
-  cen::music::halt();
+  cen::Music::Halt();
 }
 
 TEST_F(MusicTest, Volume)
 {
-  ASSERT_EQ(cen::music::max_volume(), cen::music::volume());
+  ASSERT_EQ(cen::Music::GetMaxVolume(), cen::Music::GetVolume());
 
-  const auto volume = 47;
-  cen::music::set_volume(volume);
+  const auto GetVolume = 47;
+  cen::Music::SetVolume(GetVolume);
 
-  ASSERT_EQ(volume, cen::music::volume());
+  ASSERT_EQ(GetVolume, cen::Music::GetVolume());
 }
 
 TEST_F(MusicTest, FadeStatus)
 {
-  ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
-  ASSERT_FALSE(cen::music::is_fading());
+  ASSERT_EQ(cen::FadeStatus::None, cen::Music::GetFadeStatus());
+  ASSERT_FALSE(cen::Music::IsFading());
 
-  m_music->fade_in(cen::milliseconds<int>{100});
-  ASSERT_EQ(cen::fade_status::in, cen::music::get_fade_status());
-  ASSERT_TRUE(cen::music::is_fading());
-  ASSERT_TRUE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_paused());
+  music->FadeIn(cen::milliseconds<int>{100});
+  ASSERT_EQ(cen::FadeStatus::In, cen::Music::GetFadeStatus());
+  ASSERT_TRUE(cen::Music::IsFading());
+  ASSERT_TRUE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsPaused());
 
-  cen::music::halt();
+  cen::Music::Halt();
 
-  m_music->play();
-  cen::music::fade_out(cen::milliseconds<int>{100});
-  ASSERT_EQ(cen::fade_status::out, cen::music::get_fade_status());
-  ASSERT_TRUE(cen::music::is_fading());
-  ASSERT_TRUE(cen::music::is_playing());
-  ASSERT_FALSE(cen::music::is_paused());
+  music->Play();
+  cen::Music::FadeOut(cen::milliseconds<int>{100});
+  ASSERT_EQ(cen::FadeStatus::Out, cen::Music::GetFadeStatus());
+  ASSERT_TRUE(cen::Music::IsFading());
+  ASSERT_TRUE(cen::Music::IsPlaying());
+  ASSERT_FALSE(cen::Music::IsPaused());
 
-  cen::music::halt();
-  ASSERT_EQ(cen::fade_status::none, cen::music::get_fade_status());
+  cen::Music::Halt();
+  ASSERT_EQ(cen::FadeStatus::None, cen::Music::GetFadeStatus());
 }
 
 TEST_F(MusicTest, Type)
 {
-  ASSERT_EQ(cen::music_type::mp3, m_music->type());
-}
-
-TEST_F(MusicTest, ToString)
-{
-  cen::log_info_raw(cen::to_string(*m_music));
-}
-
-TEST_F(MusicTest, StreamOperator)
-{
-  std::clog << *m_music << '\n';
-}
-
-TEST_F(MusicTest, SDLPointerConversion)
-{
-  ASSERT_TRUE(static_cast<Mix_Music*>(*m_music));
-
-  const auto& cMusic = *m_music;
-  ASSERT_TRUE(static_cast<const Mix_Music*>(cMusic));
+  ASSERT_EQ(cen::MusicType::MP3, music->GetType());
 }

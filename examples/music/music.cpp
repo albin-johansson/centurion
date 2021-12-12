@@ -55,8 +55,8 @@ class music_example final
   cen::window m_window;
   cen::renderer m_renderer;
   event_dispatcher m_dispatcher;
-  cen::music m_song;
-  cen::music m_click;
+  cen::Music m_song;
+  cen::Music m_click;
   bool m_running{true};
 
   std::vector<cen::texture> m_instructions;
@@ -95,22 +95,22 @@ class music_example final
   {
     if (event.released()) {
       if (event.is_active(cen::scancodes::zero)) {
-        m_click.play(0);
+        m_click.Play(0);
       }
       else if (event.is_active(cen::scancodes::one)) {
-        m_click.play(1);
+        m_click.Play(1);
       }
       else if (event.is_active(cen::scancodes::two)) {
-        m_click.play(2);
+        m_click.Play(2);
       }
       else if (event.is_active(cen::scancodes::nine)) {
-        m_click.play(cen::music::forever);
+        m_click.Play(cen::Music::forever);
       }
       else if (event.is_active(cen::scancodes::f)) {
-        m_song.fade_in(cen::seconds<int>{5});
+        m_song.FadeIn(cen::seconds<int>{5});
       }
       else if (event.is_active(cen::scancodes::escape)) {
-        cen::music::halt();
+        cen::Music::Halt();
       }
     }
   }
@@ -132,10 +132,10 @@ class music_example final
     }
 
     constexpr cen::ipoint offset{0, 25};
-    if (cen::music::is_playing() && !cen::music::is_fading()) {
+    if (cen::Music::IsPlaying() && !cen::Music::IsFading()) {
       m_renderer.render(*m_tex_playing_music, position_of(*m_tex_playing_music) + offset);
     }
-    else if (cen::music::is_fading()) {
+    else if (cen::Music::IsFading()) {
       m_renderer.render(*m_tex_fading_music, position_of(*m_tex_fading_music) + offset);
     }
     else {

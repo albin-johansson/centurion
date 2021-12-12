@@ -6,13 +6,17 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include <cassert>      // assert
-#include <memory>       // unique_ptr
-#include <optional>     // optional
-#include <string>       // string, to_string
-#include <string_view>  // string_view
+#include <cassert>   // assert
+#include <optional>  // optional
+#include <string>    // string
 
+#include "../core/common.hpp"
+#include "../core/exception.hpp"
 #include "../core/features.hpp"
+#include "../core/memory.hpp"
+#include "../core/time.hpp"
+#include "../detail/any_eq.hpp"
+#include "../detail/stdlib.hpp"
 
 #if CENTURION_HAS_FEATURE_FORMAT
 
@@ -20,148 +24,49 @@
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT
 
-#include "../core/common.hpp"
-#include "../core/exception.hpp"
-#include "../core/time.hpp"
-#include "../detail/any_eq.hpp"
-#include "../detail/stdlib.hpp"
-
 namespace cen {
 
-/// \addtogroup audio
-/// \{
-
-/**
- * \brief Provides values that represent different supported music types.
- *
- * \see `Mix_MusicType`
- * \see `music_type_count()`
- *
- * \since 3.0.0
- */
-enum class music_type
+enum class MusicType
 {
-  unknown = MUS_NONE,
-  mp3 = MUS_MP3,
-  wav = MUS_WAV,
-  ogg = MUS_OGG,
-  mod = MUS_MOD,
-  midi = MUS_MID,
-  cmd = MUS_CMD,
-  flac = MUS_FLAC,
-  opus = MUS_OPUS
+  None = MUS_NONE,
+  MP3 = MUS_MP3,
+  WAV = MUS_WAV,
+  OGG = MUS_OGG,
+  MOD = MUS_MOD,
+  MIDI = MUS_MID,
+  CMD = MUS_CMD,
+  FLAC = MUS_FLAC,
+  OPUS = MUS_OPUS
 };
 
-/**
- * \brief Provides values that represent different fade playback states.
- *
- * \see `Mix_Fading`
- * \see `fade_status_count()`
- *
- * \since 3.0.0
- */
-enum class fade_status
+enum class FadeStatus
 {
-  none = MIX_NO_FADING,  ///< No currently fading music.
-  in = MIX_FADING_IN,    ///< Currently fading in music.
-  out = MIX_FADING_OUT   ///< Currently fading out music.
+  None = MIX_NO_FADING,
+  In = MIX_FADING_IN,
+  Out = MIX_FADING_OUT
 };
 
-/**
- * \class music
- *
- * \brief Represents a music file.
- *
- * \details The supported audio formats are the following:
- *   - WAVE/RIFF (.wav)
- *   - AIFF (.aiff)
- *   - VOC (.voc)
- *   - MOD (.mod .xm .s3m .669 .it .med and more)
- *   - MIDI (.mid)
- *   - OggVorbis (.ogg)
- *   - MP3 (.mp3)
- *   - FLAC (.flac)
- *
- * \note Only one music instance can ever be playing at any time, which means that many of
- * the functions in this class are static.
- *
- * \todo Look into special effects API (also applies for sound effects).
- *
- * \see `Mix_Music`
- * \see `sound_effect`
- *
- * \since 3.0.0
- */
-class music final
+class Music final
 {
  public:
-  /// \brief The milliseconds type used in the music API.
-  /// \since 6.4.0
-  using ms_type = milliseconds<int>;
+  using Ms = milliseconds<int>;
+  using MusicHookCallback = void (*)(void*, Uint8*, int);
 
-  /// \brief A constant that indicates that the music should be looped indefinitely.
-  /// \since 5.1.0
   inline constexpr static int forever = -1;
 
-  /// \name Construction
-  /// \{
-
-  /**
-   * \brief Creates a `music` instance based on the file at the specified path.
-   *
-   * \param file the file path of the music file that will be loaded, cannot be null.
-   *
-   * \throws mix_error if the music file cannot be loaded.
-   *
-   * \since 3.0.0
-   */
-  explicit music(const not_null<cstr> file) : m_music{Mix_LoadMUS(file)}
+  explicit Music(const char* file) : mMusic{Mix_LoadMUS(file)}
   {
-    if (!m_music) {
+    if (!mMusic) {
       throw mix_error{};
     }
   }
 
-  /**
-   * \brief Creates a `music` instance based on the file at the specified path.
-   *
-   * \param file the file path of the music file that will be loaded.
-   *
-   * \throws mix_error if the music file cannot be loaded.
-   *
-   * \since 5.3.0
-   */
-  explicit music(const std::string& file) : music{file.c_str()}
+  explicit Music(const std::string& file) : Music{file.c_str()}
   {}
 
-  /// \} End of construction
-
-  /// \name Playback functions
-  /// \{
-
-  /**
-   * \brief Plays the music associated with this instance.
-   *
-   * \details Any previously playing music will be halted. However, this function will
-   * wait for music that was fading out to complete.
-   *
-   * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played forever.
-   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
-   * Except for these "special" values, the function behaves as expected.
-   *
-   * \param nLoops the number of times to loop the music, `music::forever` can
-   * be supplied to loop the music indefinitely.
-   *
-   * \return the channel used to play the music; `std::nullopt` on failure.
-   *
-   * \see `music::forever`
-   *
-   * \since 3.0.0
-   */
-  auto play(const int nLoops = 0) noexcept -> std::optional<int>
+  auto Play(const int iterations = 0) noexcept -> std::optional<int>
   {
-    const auto channel = Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
+    const auto channel = Mix_PlayMusic(mMusic.get(), detail::max(iterations, forever));
     if (channel != -1) {
       return channel;
     }
@@ -170,123 +75,36 @@ class music final
     }
   }
 
-  /**
-   * \brief Resumes playing the music.
-   *
-   * \details This function can safely be invoked with halted, paused and even currently
-   * playing music.
-   *
-   * \since 3.0.0
-   */
-  static void resume() noexcept
+  static void Resume() noexcept
   {
     Mix_ResumeMusic();
   }
 
-  /**
-   * \brief Pauses any currently playing music.
-   *
-   * \note This function only affects music that is currently playing, which doesn't
-   * include music that is being faded in/out.
-   *
-   * \since 3.0.0
-   */
-  static void pause() noexcept
+  static void Pause() noexcept
   {
     Mix_PauseMusic();
   }
 
-  /**
-   * \brief Stops ALL currently playing and fading music.
-   *
-   * \details Unlike `pause()`, this function affects all kinds of music.
-   *
-   * \since 3.0.0
-   */
-  static void halt() noexcept
+  static void Halt() noexcept
   {
-    Mix_HaltMusic();  // This appears to always return 0
+    Mix_HaltMusic(); /* This appears to always return 0, so we ignore it */
   }
 
-  /**
-   * \brief Indicates whether or not any music is currently playing.
-   *
-   * \return `true` if music is currently being played; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto is_playing() noexcept -> bool
+  static void Rewind() noexcept
   {
-    return Mix_PlayingMusic();
+    Mix_RewindMusic();
   }
 
-  /**
-   * \brief Indicates whether or not any music is paused.
-   *
-   * \return `true` if the music is paused; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto is_paused() noexcept -> bool
-  {
-    return Mix_PausedMusic();
-  }
-
-  /// \} Playback functions
-
-  /// \name Fade functions
-  /// \{
-
-  /**
-   * \brief Plays the music by fading it in by the specified amount of time.
-   *
-   * \pre `ms` must be greater than zero.
-   *
-   * \details The fade effect is only applied to the first iteration of the playback of
-   * the music. Any previously playing music will be halted. However, if other music is
-   * currently being faded out, this music will wait for that to complete.
-   *
-   * \note The term loops is a little bit confusing here, even in the SDL_mixer
-   * documentation. A negative value indicates that the music should be played forever.
-   * Furthermore, the values 0 and 1 both results in the music being played *one time*.
-   * Except for these "special" values, the function behaves as expected.
-   *
-   * \param ms the amount of time it takes for the fade to complete.
-   *
-   * \param nLoops the number of iterations to play the music, `music::forever` can be
-   * supplied to loop the music indefinitely.
-   *
-   * \return `success` if the fade is successful; `failure` otherwise.
-   *
-   * \see `music::forever`
-   *
-   * \since 3.0.0
-   */
-  auto fade_in(const ms_type ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
+  auto FadeIn(const Ms ms, const int nLoops = 0) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
-    return Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count()) == 0;
+    return Mix_FadeInMusic(mMusic.get(), detail::max(nLoops, forever), ms.count()) == 0;
   }
 
-  /**
-   * \brief Fades out any currently playing music over the specified amount of time.
-   *
-   * \pre `ms` must be greater than zero.
-   *
-   * \details This function only affects music that is currently playing and not currently
-   * fading out. In other words, this function has no effect if music is currently being
-   * faded by the time the function is invoked.
-   *
-   * \param ms the amount of time for the fade to complete, in milliseconds.
-   *
-   * \return `success` if the fade is successful; `failure` on failure.
-   *
-   * \since 3.0.0
-   */
-  static auto fade_out(const ms_type ms) noexcept(noexcept(ms.count())) -> result
+  static auto FadeOut(const Ms ms) noexcept(noexcept(ms.count())) -> result
   {
     assert(ms.count() > 0);
-    if (!is_fading()) {
+    if (!IsFading()) {
       return Mix_FadeOutMusic(ms.count()) != 0;
     }
     else {
@@ -294,486 +112,98 @@ class music final
     }
   }
 
-  /**
-   * \brief Indicates whether or not any music is currently being faded in or out.
-   *
-   * \return `true` if music is currently being faded in or out; `false` otherwise.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto is_fading() noexcept -> bool
+  [[nodiscard]] static auto GetFadeStatus() noexcept -> FadeStatus
   {
-    return detail::any_eq(get_fade_status(), fade_status::in, fade_status::out);
+    return static_cast<FadeStatus>(Mix_FadingMusic());
   }
 
-  /**
-   * \brief Returns the current fade status of the music playback.
-   *
-   * \return the current fade status.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto get_fade_status() noexcept -> fade_status
+  [[nodiscard]] static auto IsPlaying() noexcept -> bool
   {
-    return static_cast<fade_status>(Mix_FadingMusic());
+    return Mix_PlayingMusic();
   }
 
-  /// \} End of fade functions
-
-  /// \name Playback position functions
-  /// \{
-
-  /**
-   * \brief Rewinds the music stream to the initial position.
-   *
-   * \see `Mix_RewindMusic`
-   *
-   * \since 6.0.0
-   */
-  static void rewind() noexcept
+  [[nodiscard]] static auto IsPaused() noexcept -> bool
   {
-    Mix_RewindMusic();
+    return Mix_PausedMusic();
   }
 
-  /**
-   * \brief Sets the position in the music stream.
-   *
-   * \param position the new music stream position.
-   *
-   * \return `success` if the music position was successfully changed; `failure`
-   * otherwise.
-   *
-   * \see `Mix_SetMusicPosition`
-   *
-   * \since 6.0.0
-   */
-  static auto set_position(const double position) noexcept -> result
+  [[nodiscard]] static auto IsFading() noexcept -> bool
+  {
+    const auto status = GetFadeStatus();
+    return status == FadeStatus::In || status == FadeStatus::Out;
+  }
+
+  static auto SetPosition(const double position) noexcept -> result
   {
     return Mix_SetMusicPosition(position) == 0;
   }
 
-  /// \} End of playback position functions
-
-  /// \name Volume functions
-  /// \{
-
-  /**
-   * \brief Sets the volume of all music.
-   *
-   * \param volume the volume that will be used, in the range [0, `music::max_volume()`].
-   * An out-of-bounds value will be clamped to the closest valid value.
-   *
-   * \since 3.0.0
-   */
-  static void set_volume(const int volume) noexcept
+  static void SetVolume(const int volume) noexcept
   {
     Mix_VolumeMusic(detail::clamp(volume, 0, MIX_MAX_VOLUME));
   }
 
-  /**
-   * \brief Returns the volume of the music.
-   *
-   * \details The default value is set to `music::max_volume()`.
-   *
-   * \return the volume of the music, in the range [0, `music::max_volume()`].
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] static auto volume() noexcept -> int
-  {
-    return Mix_VolumeMusic(-1);
-  }
-
-  /**
-   * \brief Returns the maximum possible volume.
-   *
-   * \return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
-   *
-   * \since 5.0.0
-   */
-  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
-  {
-    return MIX_MAX_VOLUME;
-  }
-
-  /// \} End of volume functions
-
-  /// \name Conversions
-  /// \{
-
-  /**
-   * \brief Converts to `Mix_Music*`.
-   *
-   * \return a pointer to the associated `Mix_Music` instance.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] explicit operator Mix_Music*() noexcept
-  {
-    return m_music.get();
-  }
-
-  /**
-   * \brief Converts to `const Mix_Music*`.
-   *
-   * \return a pointer to the associated `Mix_Music` instance.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] explicit operator const Mix_Music*() const noexcept
-  {
-    return m_music.get();
-  }
-
-  /// \} End of conversions
-
-  /**
-   * \brief Returns the type of the music.
-   *
-   * \return the type of the music.
-   *
-   * \since 3.0.0
-   */
-  [[nodiscard]] auto type() const noexcept -> music_type
-  {
-    return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
-  }
-
-  /**
-   * \brief Returns a pointer to the associated `Mix_Music` instance.
-   *
-   * \warning Don't take ownership of the returned pointer!
-   *
-   * \return a pointer to the associated `Mix_Music`.
-   *
-   * \since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> Mix_Music*
-  {
-    return m_music.get();
-  }
-
-  /// \name Hook functions
-  /// \{
-
-  using music_hook_callback = void(SDLCALL*)(void*, u8*, int) noexcept;
-
-  /**
-   * \brief Registers a custom music player or mixer function.
-   *
-   * \param callback the custom callback, can be null to use the default music player.
-   * \param data optional data that will be supplied to the callback.
-   *
-   * \since 6.0.0
-   */
   template <typename T = void>
-  static void set_hook(music_hook_callback callback, T* data = nullptr) noexcept
+  static void SetHook(MusicHookCallback callback, T* data = nullptr) noexcept
   {
     Mix_HookMusic(callback, data);
   }
 
-  /**
-   * \brief Resets the music player to the default one.
-   *
-   * \since 6.0.0
-   */
-  static void reset_hook() noexcept
+  static void ResetHook() noexcept
   {
-    set_hook(nullptr);
+    SetHook(nullptr);
   }
 
-  /**
-   * \brief Returns a pointer to the user data associated with the music player.
-   *
-   * \return a pointer to the music player data, might be null.
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] static auto get_hook_data() noexcept -> void*
+  [[nodiscard]] auto GetType() const noexcept -> MusicType
+  {
+    return static_cast<MusicType>(Mix_GetMusicType(mMusic.get()));
+  }
+
+  [[nodiscard]] static auto GetVolume() noexcept -> int
+  {
+    return Mix_VolumeMusic(-1);
+  }
+
+  [[nodiscard]] constexpr static auto GetMaxVolume() noexcept -> int
+  {
+    return MIX_MAX_VOLUME;
+  }
+
+  [[nodiscard]] auto get() const noexcept -> Mix_Music*
+  {
+    return mMusic.get();
+  }
+
+  [[nodiscard]] static auto GetHookData() noexcept -> void*
   {
     return Mix_GetMusicHookData();
   }
 
-  /// \} End of hook functions
-
-  /// \name Decoder functions
-  /// \{
-
-  /**
-   * \brief Returns the name of the decoder associated with the specified index.
-   *
-   * \param index the index of the desired decoder.
-   *
-   * \return the name of the decoder associated with the specified index; a null string is
-   * returned if the index is invalid.
-   *
-   * \see `Mix_GetMusicDecoder`
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] static auto get_decoder(const int index) noexcept -> cstr
+  [[nodiscard]] static auto GetDecoder(const int index) noexcept -> const char*
   {
     return Mix_GetMusicDecoder(index);
   }
 
-  /**
-   * \brief Indicates whether or not the system has the specified music decoder.
-   *
-   * \param name the name of the decoder to check.
-   *
-   * \return `true` if the system has the specified decoder; `false` otherwise.
-   *
-   * \see `Mix_HasMusicDecoder`
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] static auto has_decoder(const cstr name) noexcept -> bool
+  [[nodiscard]] static auto HasDecoder(const char* name) noexcept -> bool
   {
     return Mix_HasMusicDecoder(name) == SDL_TRUE;
   }
 
-  /**
-   * \brief Returns the number of available music decoders.
-   *
-   * \return the number of available music decoders.
-   *
-   * \see `Mix_GetNumMusicDecoders`
-   *
-   * \since 6.0.0
-   */
-  [[nodiscard]] static auto decoder_count() noexcept -> int
+  [[nodiscard]] static auto GetDecoderCount() noexcept -> int
   {
     return Mix_GetNumMusicDecoders();
   }
 
-  /// \} End of decoder functions
-
  private:
-  struct deleter final
-  {
-    void operator()(Mix_Music* music) noexcept
-    {
-      Mix_FreeMusic(music);
-    }
-  };
-
-  std::unique_ptr<Mix_Music, deleter> m_music;
+  Managed<Mix_Music> mMusic;
 
 #ifdef CENTURION_MOCK_FRIENDLY_MODE
 
  public:
-  music() = default;
+  Music() = default;
+
 #endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
-
-/**
- * \brief Returns the number of enumerators for the `music_type` enum.
- *
- * \return the number of enumerators.
- *
- * \since 6.3.0
- */
-[[nodiscard]] constexpr auto music_type_count() noexcept -> int
-{
-  return 9;
-}
-
-/**
- * \brief Returns the number of enumerators for the `fade_status` enum.
- *
- * \return the number of enumerators.
- *
- * \since 6.3.0
- */
-[[nodiscard]] constexpr auto fade_status_count() noexcept -> int
-{
-  return 3;
-}
-
-/// \name Callbacks
-/// \{
-
-using music_finished_callback = void(SDLCALL*)() noexcept;
-
-/**
- * \brief Sets the callback that is invoked each time the music finishes playing or is
- * stopped as a result of `cen::music::halt()`.
- *
- * \warning Make sure that your callback doesn't throw (or at least doesn't leak) any
- * exceptions.
- *
- * \param callback the callback.
- *
- * \since 6.0.0
- */
-inline void on_music_finished(music_finished_callback callback) noexcept
-{
-  Mix_HookMusicFinished(callback);
-}
-
-/// \} End of callbacks
-
-/// \name String conversions
-/// \{
-
-/**
- * \brief Returns a textual version of the supplied music type.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(music_type::mp3) == "mp3"`.
- *
- * \param type the music type that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const music_type type) -> std::string_view
-{
-  switch (type) {
-    case music_type::unknown:
-      return "unknown";
-
-    case music_type::mp3:
-      return "mp3";
-
-    case music_type::wav:
-      return "wav";
-
-    case music_type::ogg:
-      return "ogg";
-
-    case music_type::mod:
-      return "mod";
-
-    case music_type::midi:
-      return "midi";
-
-    case music_type::cmd:
-      return "cmd";
-
-    case music_type::flac:
-      return "flac";
-
-    case music_type::opus:
-      return "opus";
-
-    default:
-      throw cen_error{"Did not recognize music type!"};
-  }
-}
-
-/**
- * \brief Returns a textual version of the supplied fade status.
- *
- * \details This function returns a string that mirrors the name of the enumerator, e.g.
- * `to_string(fade_status::in) == "in"`.
- *
- * \param status the fade status that will be converted.
- *
- * \return a string that mirrors the name of the enumerator.
- *
- * \throws cen_error if the enumerator is not recognized.
- *
- * \since 6.2.0
- */
-[[nodiscard]] constexpr auto to_string(const fade_status status) -> std::string_view
-{
-  switch (status) {
-    case fade_status::none:
-      return "none";
-
-    case fade_status::in:
-      return "in";
-
-    case fade_status::out:
-      return "out";
-
-    default:
-      throw cen_error{"Did not recognize fade status!"};
-  }
-}
-
-/**
- * \brief Returns a textual representation of a `music` instance.
- *
- * \param music the instance that will be converted.
- *
- * \return a string that represents the `music` instance.
- *
- * \since 5.0.0
- */
-[[nodiscard]] inline auto to_string(const music& music) -> std::string
-{
-#if CENTURION_HAS_FEATURE_FORMAT
-  return std::format("music{{data: {}, volume: {}}}",
-                     detail::address_of(music.get()),
-                     music::volume());
-#else
-  return "music{data: " + detail::address_of(music.get()) +
-         ", volume: " + std::to_string(music::volume()) + "}";
-#endif  // CENTURION_HAS_FEATURE_FORMAT
-}
-
-/// \} End of string conversions
-
-/// \name Streaming
-/// \{
-
-/**
- * \brief Prints a textual representation of a `music` instance.
- *
- * \param stream the stream that will be used.
- * \param music the `music` instance that will be printed.
- *
- * \return the used stream.
- *
- * \since 5.0.0
- */
-inline auto operator<<(std::ostream& stream, const music& music) -> std::ostream&
-{
-  return stream << to_string(music);
-}
-
-/**
- * \brief Prints a textual representation of a music type enumerator.
- *
- * \param stream the output stream that will be used.
- * \param type the music type that will be printed.
- *
- * \see `to_string(music_type)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const music_type type) -> std::ostream&
-{
-  return stream << to_string(type);
-}
-
-/**
- * \brief Prints a textual representation of a fade status enumerator.
- *
- * \param stream the output stream that will be used.
- * \param status the fade status that will be printed.
- *
- * \see `to_string(fade_status)`
- *
- * \return the used stream.
- *
- * \since 6.2.0
- */
-inline auto operator<<(std::ostream& stream, const fade_status status) -> std::ostream&
-{
-  return stream << to_string(status);
-}
-
-/// \} End of streaming
-
-/// \} End of group audio
 
 }  // namespace cen
 

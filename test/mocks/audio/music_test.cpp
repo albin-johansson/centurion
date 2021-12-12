@@ -72,30 +72,30 @@ TEST_F(MusicTest, Play)
   std::array values{-1, 42};
   SET_RETURN_SEQ(Mix_PlayMusic, values.data(), cen::isize(values));
 
-  cen::music music;
+  cen::Music music;
 
-  ASSERT_FALSE(music.play());
+  ASSERT_FALSE(music.Play());
   ASSERT_EQ(1u, Mix_PlayMusic_fake.call_count);
   ASSERT_EQ(0, Mix_PlayMusic_fake.arg1_val);
 
-  ASSERT_EQ(42, music.play(7));
+  ASSERT_EQ(42, music.Play(7));
   ASSERT_EQ(2u, Mix_PlayMusic_fake.call_count);
   ASSERT_EQ(7, Mix_PlayMusic_fake.arg1_val);
 
-  ASSERT_EQ(42, music.play(cen::music::forever - 1));
+  ASSERT_EQ(42, music.Play(cen::Music::forever - 1));
   ASSERT_EQ(3u, Mix_PlayMusic_fake.call_count);
-  ASSERT_EQ(cen::music::forever, Mix_PlayMusic_fake.arg1_val);
+  ASSERT_EQ(cen::Music::forever, Mix_PlayMusic_fake.arg1_val);
 }
 
 TEST_F(MusicTest, Resume)
 {
-  cen::music::resume();
+  cen::Music::Resume();
   ASSERT_EQ(1u, Mix_ResumeMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, Halt)
 {
-  cen::music::halt();
+  cen::Music::Halt();
   ASSERT_EQ(1u, Mix_HaltMusic_fake.call_count);
 }
 
@@ -104,13 +104,13 @@ TEST_F(MusicTest, FadeIn)
   std::array values{-1, 0};
   SET_RETURN_SEQ(Mix_FadeInMusic, values.data(), cen::isize(values));
 
-  cen::music music;
+  cen::Music music;
 
-  ASSERT_FALSE(music.fade_in(ms{5}));
+  ASSERT_FALSE(music.FadeIn(ms{5}));
   ASSERT_EQ(1u, Mix_FadeInMusic_fake.call_count);
   ASSERT_EQ(0, Mix_FadeInMusic_fake.arg1_val);
 
-  ASSERT_TRUE(music.fade_in(ms{5}, 4));
+  ASSERT_TRUE(music.FadeIn(ms{5}, 4));
   ASSERT_EQ(2u, Mix_FadeInMusic_fake.call_count);
   ASSERT_EQ(4, Mix_FadeInMusic_fake.arg1_val);
 }
@@ -120,57 +120,57 @@ TEST_F(MusicTest, FadeOut)
   std::array values{0, 1};  // Yes, this function has weird error codes
   SET_RETURN_SEQ(Mix_FadeOutMusic, values.data(), cen::isize(values));
 
-  ASSERT_FALSE(cen::music::fade_out(ms{5}));
+  ASSERT_FALSE(cen::Music::FadeOut(ms{5}));
   ASSERT_EQ(1u, Mix_FadeOutMusic_fake.call_count);
 
-  ASSERT_TRUE(cen::music::fade_out(ms{3}));
+  ASSERT_TRUE(cen::Music::FadeOut(ms{3}));
   ASSERT_EQ(2u, Mix_FadeOutMusic_fake.call_count);
 
   // Should have no effect if already fading music
   Mix_FadingMusic_fake.return_val = MIX_FADING_IN;
-  ASSERT_FALSE(cen::music::fade_out(ms{3}));
+  ASSERT_FALSE(cen::Music::FadeOut(ms{3}));
   ASSERT_EQ(2u, Mix_FadeOutMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, SetVolume)
 {
-  cen::music::set_volume(-1);
+  cen::Music::SetVolume(-1);
   ASSERT_EQ(0, Mix_VolumeMusic_fake.arg0_val);
 
-  cen::music::set_volume(cen::music::max_volume() + 1);
-  ASSERT_EQ(cen::music::max_volume(), Mix_VolumeMusic_fake.arg0_val);
+  cen::Music::SetVolume(cen::Music::GetMaxVolume() + 1);
+  ASSERT_EQ(cen::Music::GetMaxVolume(), Mix_VolumeMusic_fake.arg0_val);
 
-  cen::music::set_volume(75);
+  cen::Music::SetVolume(75);
   ASSERT_EQ(75, Mix_VolumeMusic_fake.arg0_val);
 }
 
 TEST_F(MusicTest, IsPlaying)
 {
-  const auto playing [[maybe_unused]] = cen::music::is_playing();
+  const auto playing [[maybe_unused]] = cen::Music::IsPlaying();
   ASSERT_EQ(1u, Mix_PlayingMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, IsPaused)
 {
-  const auto paused [[maybe_unused]] = cen::music::is_paused();
+  const auto paused [[maybe_unused]] = cen::Music::IsPaused();
   ASSERT_EQ(1u, Mix_PausedMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, IsFading)
 {
-  const auto fading [[maybe_unused]] = cen::music::is_fading();
+  const auto fading [[maybe_unused]] = cen::Music::IsFading();
   ASSERT_EQ(1u, Mix_FadingMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, GetFadeStatus)
 {
-  const auto status [[maybe_unused]] = cen::music::get_fade_status();
+  const auto status [[maybe_unused]] = cen::Music::GetFadeStatus();
   ASSERT_EQ(1u, Mix_FadingMusic_fake.call_count);
 }
 
 TEST_F(MusicTest, Rewind)
 {
-  cen::music::rewind();
+  cen::Music::Rewind();
   ASSERT_EQ(1u, Mix_RewindMusic_fake.call_count);
 }
 
@@ -179,21 +179,21 @@ TEST_F(MusicTest, SetPosition)
   std::array values{-1, 0};
   SET_RETURN_SEQ(Mix_SetMusicPosition, values.data(), cen::isize(values));
 
-  ASSERT_EQ(cen::failure, cen::music::set_position(1));
-  ASSERT_EQ(cen::success, cen::music::set_position(1));
+  ASSERT_EQ(cen::failure, cen::Music::SetPosition(1));
+  ASSERT_EQ(cen::success, cen::Music::SetPosition(1));
   ASSERT_EQ(2u, Mix_SetMusicPosition_fake.call_count);
 }
 
-TEST_F(MusicTest, Type)
+TEST_F(MusicTest, GetType)
 {
-  cen::music music;
-  const auto type [[maybe_unused]] = music.type();
+  cen::Music music;
+  const auto type [[maybe_unused]] = music.GetType();
   ASSERT_EQ(1u, Mix_GetMusicType_fake.call_count);
 }
 
 TEST_F(MusicTest, SetHook)
 {
-  cen::music::set_hook([](void*, cen::u8*, int) noexcept {});
+  cen::Music::SetHook([](void*, Uint8*, int) {});
 
   ASSERT_EQ(1u, Mix_HookMusic_fake.call_count);
   ASSERT_NE(nullptr, Mix_HookMusic_fake.arg0_val);
@@ -201,51 +201,31 @@ TEST_F(MusicTest, SetHook)
 
 TEST_F(MusicTest, ResetHook)
 {
-  cen::music::reset_hook();
+  cen::Music::ResetHook();
   ASSERT_EQ(1u, Mix_HookMusic_fake.call_count);
   ASSERT_EQ(nullptr, Mix_HookMusic_fake.arg0_val);
 }
 
 TEST_F(MusicTest, GetHookData)
 {
-  auto* data [[maybe_unused]] = cen::music::get_hook_data();
+  auto* data [[maybe_unused]] = cen::Music::GetHookData();
   ASSERT_EQ(1u, Mix_GetMusicHookData_fake.call_count);
 }
 
 TEST_F(MusicTest, GetDecoder)
 {
-  const auto name [[maybe_unused]] = cen::music::get_decoder(0);
+  const auto name [[maybe_unused]] = cen::Music::GetDecoder(0);
   ASSERT_EQ(1u, Mix_GetMusicDecoder_fake.call_count);
 }
 
 TEST_F(MusicTest, HasDecoder)
 {
-  const auto has [[maybe_unused]] = cen::music::has_decoder("foo");
+  const auto has [[maybe_unused]] = cen::Music::HasDecoder("foo");
   ASSERT_EQ(1u, Mix_HasMusicDecoder_fake.call_count);
 }
 
-TEST_F(MusicTest, DecoderCount)
+TEST_F(MusicTest, GetDecoderCount)
 {
-  const auto count [[maybe_unused]] = cen::music::decoder_count();
+  const auto count [[maybe_unused]] = cen::Music::GetDecoderCount();
   ASSERT_EQ(1u, Mix_GetNumMusicDecoders_fake.call_count);
-}
-
-TEST_F(MusicTest, OnMusicFinished)
-{
-  cen::on_music_finished([]() noexcept {});
-  ASSERT_EQ(1u, Mix_HookMusicFinished_fake.call_count);
-}
-
-using MusicDeathTest = MusicTest;
-
-TEST_F(MusicDeathTest, FadeIn)
-{
-  cen::music music;
-  ASSERT_DEBUG_DEATH(music.fade_in(ms::zero()), "");
-}
-
-TEST_F(MusicDeathTest, FadeOut)
-{
-  cen::music music;
-  ASSERT_DEBUG_DEATH(music.fade_out(ms::zero()), "");
 }

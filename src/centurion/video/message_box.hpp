@@ -111,9 +111,9 @@ class message_box final {
      *
      * \since 5.0.0
      */
-    void set_color(const color_id id, const color& color) noexcept
+    void set_color(const color_id id, const Color& color) noexcept
     {
-      m_scheme.colors[to_underlying(id)] = static_cast<SDL_MessageBoxColor>(color);
+      m_scheme.colors[to_underlying(id)] = color.AsMessageBoxColor();
     }
 
     /**

@@ -142,13 +142,13 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto pixel_to_rgb(const Uint32 pixel) const noexcept -> color
+  [[nodiscard]] auto pixel_to_rgb(const Uint32 pixel) const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     SDL_GetRGB(pixel, m_format, &red, &green, &blue);
-    return color{red, green, blue};
+    return Color{red, green, blue};
   }
 
   /**
@@ -160,14 +160,14 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto pixel_to_rgba(const Uint32 pixel) const noexcept -> color
+  [[nodiscard]] auto pixel_to_rgba(const Uint32 pixel) const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     Uint8 alpha{};
     SDL_GetRGBA(pixel, m_format, &red, &green, &blue, &alpha);
-    return color{red, green, blue, alpha};
+    return Color{red, green, blue, alpha};
   }
 
   /**
@@ -181,9 +181,9 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto rgb_to_pixel(const color& color) const noexcept -> Uint32
+  [[nodiscard]] auto rgb_to_pixel(const Color& color) const noexcept -> Uint32
   {
-    return SDL_MapRGB(m_format, color.red(), color.green(), color.blue());
+    return SDL_MapRGB(m_format, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
   /**
@@ -195,9 +195,13 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto rgba_to_pixel(const color& color) const noexcept -> Uint32
+  [[nodiscard]] auto rgba_to_pixel(const Color& color) const noexcept -> Uint32
   {
-    return SDL_MapRGBA(m_format, color.red(), color.green(), color.blue(), color.alpha());
+    return SDL_MapRGBA(m_format,
+                       color.GetRed(),
+                       color.GetGreen(),
+                       color.GetBlue(),
+                       color.GetAlpha());
   }
 
   /// \} End of pixel/RGB/RGBA conversions

@@ -265,7 +265,7 @@ class basic_texture final {
    *
    * \since 4.0.0
    */
-  void set_pixel(const ipoint pixel, const color& color)
+  void set_pixel(const ipoint pixel, const Color& color)
   {
     if (access() != texture_access::streaming || (pixel.x() < 0) || (pixel.y() < 0) ||
         (pixel.x() >= width()) || (pixel.y() >= height())) {
@@ -319,9 +319,9 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  void set_color_mod(const color& color) noexcept
+  void set_color_mod(const Color& color) noexcept
   {
-    SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
+    SDL_SetTextureColorMod(m_texture, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)
@@ -485,13 +485,13 @@ class basic_texture final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto color_mod() const noexcept -> color
+  [[nodiscard]] auto color_mod() const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     SDL_GetTextureColorMod(m_texture, &red, &green, &blue);
-    return {red, green, blue, 0xFF};
+    return Color{red, green, blue};
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 12)

@@ -235,10 +235,10 @@ TEST_F(RendererTest, SetColor)
   constexpr auto color = cen::colors::magenta;
   m_renderer->set_color(color);
 
-  ASSERT_EQ(color.red(), m_renderer->get_color().red());
-  ASSERT_EQ(color.green(), m_renderer->get_color().green());
-  ASSERT_EQ(color.blue(), m_renderer->get_color().blue());
-  ASSERT_EQ(color.alpha(), m_renderer->get_color().alpha());
+  ASSERT_EQ(color.GetRed(), m_renderer->get_color().GetRed());
+  ASSERT_EQ(color.GetGreen(), m_renderer->get_color().GetGreen());
+  ASSERT_EQ(color.GetBlue(), m_renderer->get_color().GetBlue());
+  ASSERT_EQ(color.GetAlpha(), m_renderer->get_color().GetAlpha());
 }
 
 TEST_F(RendererTest, SetClip)

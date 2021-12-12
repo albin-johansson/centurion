@@ -188,7 +188,7 @@ class font_cache final {
   void store_shaded_utf8(const id_type id,
                          const char* string,
                          Renderer& renderer,
-                         const color& background)
+                         const Color& background)
   {
     assert(string);
     store(id, renderer.render_shaded_utf8(string, get_font(), background));
@@ -202,7 +202,7 @@ class font_cache final {
   void store_shaded_utf8(const id_type id,
                          const std::string& string,
                          Renderer& renderer,
-                         const color& background)
+                         const Color& background)
   {
     store_shaded_utf8(id, string.c_str(), renderer, background);
   }
@@ -334,7 +334,7 @@ class font_cache final {
   void store_shaded_latin1(const id_type id,
                            const char* string,
                            Renderer& renderer,
-                           const color& background)
+                           const Color& background)
   {
     assert(string);
     store(id, renderer.render_shaded_latin1(string, get_font(), background));
@@ -348,7 +348,7 @@ class font_cache final {
   void store_shaded_latin1(const id_type id,
                            const std::string& string,
                            Renderer& renderer,
-                           const color& background)
+                           const Color& background)
   {
     store_shaded_latin1(id, string.c_str(), renderer, background);
   }
@@ -457,7 +457,7 @@ class font_cache final {
   void store_shaded_unicode(const id_type id,
                             const unicode_string& string,
                             Renderer& renderer,
-                            const color& background)
+                            const Color& background)
   {
     store(id, renderer.render_shaded_unicode(string, get_font(), background));
   }

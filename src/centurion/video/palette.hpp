@@ -75,7 +75,7 @@ class palette final {
    *
    * \since 6.0.0
    */
-  auto set_color(const int index, const cen::color& color) noexcept -> result
+  auto set_color(const int index, const Color& color) noexcept -> result
   {
     assert(index >= 0);
     assert(index < size());
@@ -95,10 +95,10 @@ class palette final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto at(const int index) const -> cen::color
+  [[nodiscard]] auto at(const int index) const -> Color
   {
     if (index >= 0 && index < size()) {
-      return cen::color{m_palette->colors[index]};
+      return Color{m_palette->colors[index]};
     }
     else {
       throw Error{"Palette index out of bounds!"};
@@ -122,11 +122,11 @@ class palette final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto operator[](const int index) const noexcept -> cen::color
+  [[nodiscard]] auto operator[](const int index) const noexcept -> Color
   {
     assert(index >= 0);
     assert(index < size());
-    return cen::color{m_palette->colors[index]};
+    return Color{m_palette->colors[index]};
   }
 
   /**

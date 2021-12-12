@@ -1121,10 +1121,12 @@ class basic_controller final {
    *
    * \since 5.2.0
    */
-  auto set_led(const color& color) noexcept -> result
+  auto set_led(const Color& color) noexcept -> result
   {
-    return SDL_GameControllerSetLED(m_controller, color.red(), color.green(), color.blue()) ==
-           0;
+    return SDL_GameControllerSetLED(m_controller,
+                                    color.GetRed(),
+                                    color.GetGreen(),
+                                    color.GetBlue()) == 0;
   }
 
   /**

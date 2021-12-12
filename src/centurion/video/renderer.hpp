@@ -188,7 +188,7 @@ class basic_renderer final {
    *
    * \since 5.0.0
    */
-  void clear_with(const color& color) noexcept
+  void clear_with(const Color& color) noexcept
   {
     const auto oldColor = get_color();
     set_color(color);
@@ -256,7 +256,7 @@ class basic_renderer final {
    *
    * \copydetails fill()
    */
-  void fill_with(const color& color) noexcept
+  void fill_with(const Color& color) noexcept
   {
     const auto oldColor = get_color();
 
@@ -688,7 +688,7 @@ class basic_renderer final {
    */
   [[nodiscard]] auto render_shaded_utf8(const char* str,
                                         const font& font,
-                                        const color& background) -> texture
+                                        const Color& background) -> texture
   {
     assert(str);
     return render_text(
@@ -701,7 +701,7 @@ class basic_renderer final {
    */
   [[nodiscard]] auto render_shaded_utf8(const std::string& str,
                                         const font& font,
-                                        const color& background) -> texture
+                                        const Color& background) -> texture
   {
     return render_shaded_utf8(str.c_str(), font, background);
   }
@@ -852,7 +852,7 @@ class basic_renderer final {
    */
   [[nodiscard]] auto render_shaded_latin1(const char* str,
                                           const font& font,
-                                          const color& background) -> texture
+                                          const Color& background) -> texture
   {
     assert(str);
     return render_text(
@@ -865,7 +865,7 @@ class basic_renderer final {
    */
   [[nodiscard]] auto render_shaded_latin1(const std::string& str,
                                           const font& font,
-                                          const color& background) -> texture
+                                          const Color& background) -> texture
   {
     return render_shaded_latin1(str.c_str(), font, background);
   }
@@ -989,7 +989,7 @@ class basic_renderer final {
    */
   [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
                                            const font& font,
-                                           const color& background) -> texture
+                                           const Color& background) -> texture
   {
     return render_text(
         TTF_RenderUNICODE_Shaded(font.get(), str.data(), get_color().get(), background.get()));
@@ -1652,13 +1652,13 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  auto set_color(const color& color) noexcept -> result
+  auto set_color(const Color& color) noexcept -> result
   {
     return SDL_SetRenderDrawColor(get(),
-                                  color.red(),
-                                  color.green(),
-                                  color.blue(),
-                                  color.alpha()) == 0;
+                                  color.GetRed(),
+                                  color.GetGreen(),
+                                  color.GetBlue(),
+                                  color.GetAlpha()) == 0;
   }
 
   /**
@@ -2023,7 +2023,7 @@ class basic_renderer final {
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto get_color() const noexcept -> color
+  [[nodiscard]] auto get_color() const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};

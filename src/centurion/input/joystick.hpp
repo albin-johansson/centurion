@@ -286,9 +286,10 @@ class basic_joystick final {
    *
    * \since 5.2.0
    */
-  auto set_led(const color& color) noexcept -> result
+  auto set_led(const Color& color) noexcept -> result
   {
-    return SDL_JoystickSetLED(m_joystick, color.red(), color.green(), color.blue()) == 0;
+    return SDL_JoystickSetLED(m_joystick, color.GetRed(), color.GetGreen(), color.GetBlue()) ==
+           0;
   }
 
 #endif  // SDL_VERSION_ATLEAST(2, 0, 14)

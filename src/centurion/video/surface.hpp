@@ -450,7 +450,7 @@ class basic_surface final {
    *
    * \since 4.0.0
    */
-  void set_pixel(const ipoint pixel, const color& color) noexcept
+  void set_pixel(const ipoint pixel, const Color& color) noexcept
   {
     if (!in_bounds(pixel) || !lock()) {
       return;
@@ -485,9 +485,9 @@ class basic_surface final {
    *
    * \since 4.0.0
    */
-  void set_color_mod(const color& color) noexcept
+  void set_color_mod(const Color& color) noexcept
   {
-    SDL_SetSurfaceColorMod(m_surface, color.red(), color.green(), color.blue());
+    SDL_SetSurfaceColorMod(m_surface, color.GetRed(), color.GetGreen(), color.GetBlue());
   }
 
   /**
@@ -545,13 +545,13 @@ class basic_surface final {
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto color_mod() const noexcept -> color
+  [[nodiscard]] auto color_mod() const noexcept -> Color
   {
     Uint8 red{};
     Uint8 green{};
     Uint8 blue{};
     SDL_GetSurfaceColorMod(m_surface, &red, &green, &blue);
-    return color{red, green, blue};
+    return Color{red, green, blue};
   }
 
   /**

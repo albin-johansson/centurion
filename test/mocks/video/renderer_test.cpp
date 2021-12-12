@@ -160,7 +160,7 @@ TEST_F(RendererTest, Clear)
 
 TEST_F(RendererTest, ClearWith)
 {
-  m_renderer.clear_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
+  m_renderer.clear_with(cen::Color{0xAA, 0xBB, 0xCC, 0xDD});
 
   ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
   ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
@@ -232,7 +232,7 @@ TEST_F(RendererTest, Fill)
 
 TEST_F(RendererTest, FillWith)
 {
-  m_renderer.fill_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
+  m_renderer.fill_with(cen::Color{0xAA, 0xBB, 0xCC, 0xDD});
   ASSERT_EQ(1u, SDL_GetRenderDrawColor_fake.call_count);
   ASSERT_EQ(2u, SDL_SetRenderDrawColor_fake.call_count);
   ASSERT_EQ(1u, SDL_GetRendererOutputSize_fake.call_count);

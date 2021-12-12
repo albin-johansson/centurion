@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_CENTURION_HEADER
-#define CENTURION_CENTURION_HEADER
+#ifndef CENTURION_HPP_
+#define CENTURION_HPP_
 
 #ifndef CENTURION_NO_PRAGMA_ONCE
 #pragma once
@@ -148,4 +148,4 @@
 #include "centurion/video/window.hpp"
 #include "centurion/video/window_utils.hpp"
 
-#endif  // CENTURION_CENTURION_HEADER
+#endif  // CENTURION_HPP_

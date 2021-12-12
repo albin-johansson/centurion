@@ -11,7 +11,7 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
-    core/library_test.cpp
+    core/initialization_test.cpp
 
     event/event_test.cpp
 

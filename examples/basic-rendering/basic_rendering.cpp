@@ -2,7 +2,9 @@
 
 int main(int, char**)
 {
-  cen::library centurion;
+  const cen::SDLLibrary sdl;
+  const cen::IMGLibrary img;
+  const cen::TTFLibrary ttf;
 
   // Create our window and renderer
   auto [window, renderer] = cen::make_window_and_renderer();

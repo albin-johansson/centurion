@@ -2,14 +2,15 @@
 
 int main(int, char**)
 {
-  cen::config cfg;  // Assumes the standard configuration values by default
+  cen::SDLConfig cfg; /* Assumes the standard configuration values by default */
+  cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO; /* No core audio support */
 
-  cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;  // No core audio support
-  cfg.initMixer = false;                                  // Don't initialize SDL_mixer
+  const cen::SDLLibrary sdl{cfg};
+  const cen::IMGLibrary img;
+  const cen::TTFLibrary ttf;
+  // const cen::MixLibrary mix;
 
-  cen::library centurion{cfg};
-
-  // Initialized SDL with no audio support along with no SDL_image nor SDL_ttf
+  /* Initialized SDL with no audio support, and all extension libraries except SDL_mixer */
 
   return 0;
 }

@@ -68,7 +68,10 @@ class Game final
 
 int main(int, char**)
 {
-  cen::library centurion;
+  const cen::SDLLibrary sdl;
+  const cen::IMGLibrary img;
+  const cen::MixLibrary mix;
+  const cen::TTFLibrary ttf;
   Game game;
   return game.run();
 }

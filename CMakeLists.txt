@@ -66,7 +66,7 @@ target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/core/common.hpp
                src/centurion/core/exception.hpp
                src/centurion/core/features.hpp
-               src/centurion/core/library.hpp
+               src/centurion/core/initialization.hpp
                src/centurion/core/logging.hpp
                src/centurion/core/sdl_string.hpp
                src/centurion/core/time.hpp

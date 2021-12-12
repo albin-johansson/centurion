@@ -34,7 +34,7 @@
 #include "centurion/core/common.hpp"
 #include "centurion/core/exception.hpp"
 #include "centurion/core/features.hpp"
-#include "centurion/core/library.hpp"
+#include "centurion/core/initialization.hpp"
 #include "centurion/core/logging.hpp"
 #include "centurion/core/memory.hpp"
 #include "centurion/core/sdl_string.hpp"

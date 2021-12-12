@@ -150,7 +150,11 @@ class music_example final
 
 auto main(int, char**) -> int
 {
-  cen::library centurion;
+  const cen::SDLLibrary sdl;
+  const cen::IMGLibrary img;
+  const cen::MixLibrary mix;
+  const cen::TTFLibrary ttf;
+
   music_example example;
   return example.run();
 }

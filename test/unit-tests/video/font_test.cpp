@@ -5,7 +5,6 @@
 #include <iostream>  // clog
 #include <type_traits>
 
-#include "core/library.hpp"
 #include "core/logging.hpp"
 
 using namespace std::string_literals;

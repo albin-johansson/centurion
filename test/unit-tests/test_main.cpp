@@ -1,19 +1,21 @@
 #include <gtest/gtest.h>
 
-#include "core/library.hpp"
+#include "core/initialization.hpp"
 #include "core/logging.hpp"
 
 int main(int argc, char* argv[])
 {
+  const cen::SDLLibrary sdl;
+  const cen::IMGLibrary img;
+  const cen::TTFLibrary ttf;
+
 #ifndef CEN_AUDIO
-  cen::config cfg;
+  cen::MixConfig cfg;
+  cfg.flags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
 
-  cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
-  cfg.initMixer = false;
-
-  const cen::library lib{cfg};
+  const cen::MixLibrary mix{cfg};
 #else
-  const cen::library lib;
+  const cen::MixLibrary mix;
 #endif
 
 #if CENTURION_HAS_FEATURE_CONCEPTS

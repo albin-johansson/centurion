@@ -7,16 +7,15 @@
 #include <type_traits>
 
 #include "core/exception.hpp"
-#include "core/logging.hpp"
 
-static_assert(std::is_final_v<cen::sound_effect>);
-static_assert(!std::is_default_constructible_v<cen::sound_effect>);
+static_assert(std::is_final_v<cen::SoundEffect>);
+static_assert(!std::is_default_constructible_v<cen::SoundEffect>);
 
-static_assert(std::is_nothrow_move_constructible_v<cen::sound_effect>);
-static_assert(std::is_nothrow_move_assignable_v<cen::sound_effect>);
+static_assert(std::is_nothrow_move_constructible_v<cen::SoundEffect>);
+static_assert(std::is_nothrow_move_assignable_v<cen::SoundEffect>);
 
-static_assert(!std::is_copy_constructible_v<cen::sound_effect>);
-static_assert(!std::is_copy_assignable_v<cen::sound_effect>);
+static_assert(!std::is_copy_constructible_v<cen::SoundEffect>);
+static_assert(!std::is_copy_assignable_v<cen::SoundEffect>);
 
 using ms = cen::milliseconds<int>;
 
@@ -27,139 +26,129 @@ class SoundEffect : public testing::Test
  protected:
   static void SetUpTestSuite()
   {
-    m_sound = std::make_unique<cen::sound_effect>(path);
+    sound = std::make_unique<cen::SoundEffect>(path);
   }
 
   static void TearDownTestSuite()
   {
-    m_sound.reset();
+    sound.reset();
   }
 
-  inline static std::unique_ptr<cen::sound_effect> m_sound;
+  inline static std::unique_ptr<cen::SoundEffect> sound;
 };
 
 TEST_F(SoundEffect, Constructor)
 {
-  ASSERT_THROW(cen::sound_effect("foobar"), cen::mix_error);
+  ASSERT_THROW(cen::SoundEffect("foobar"), cen::mix_error);
 
   using namespace std::string_literals;
-  ASSERT_THROW(cen::sound_effect("foobar"s), cen::mix_error);
+  ASSERT_THROW(cen::SoundEffect("foobar"s), cen::mix_error);
 }
 
 TEST_F(SoundEffect, PlayAndStop)
 {
-  ASSERT_FALSE(m_sound->is_playing());
+  ASSERT_FALSE(sound->IsPlaying());
 
-  m_sound->play();
-  ASSERT_TRUE(m_sound->is_playing());
+  sound->Play();
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
-  ASSERT_FALSE(m_sound->is_playing());
+  sound->Stop();
+  ASSERT_FALSE(sound->IsPlaying());
 
-  m_sound->play(5);
-  ASSERT_TRUE(m_sound->is_playing());
+  sound->Play(5);
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
+  sound->Stop();
 }
 
 TEST_F(SoundEffect, Looping)
 {
-  const auto oldVolume = m_sound->volume();
+  const auto oldVolume = sound->GetVolume();
 
-  m_sound->set_volume(1);
+  sound->SetVolume(1);
 
-  m_sound->play(10);
-  ASSERT_TRUE(m_sound->is_playing());
+  sound->Play(10);
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
+  sound->Stop();
 
-  ASSERT_LT(cen::sound_effect::forever, 0);
-  ASSERT_NO_THROW(m_sound->play(cen::sound_effect::forever));
+  ASSERT_LT(cen::SoundEffect::forever, 0);
+  ASSERT_NO_THROW(sound->Play(cen::SoundEffect::forever));
 
-  ASSERT_TRUE(m_sound->is_playing());
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
-  ASSERT_FALSE(m_sound->is_playing());
+  sound->Stop();
+  ASSERT_FALSE(sound->IsPlaying());
 
-  m_sound->set_volume(oldVolume);
+  sound->SetVolume(oldVolume);
 }
 
 TEST_F(SoundEffect, FadeIn)
 {
-  m_sound->stop();
+  sound->Stop();
 
-  ASSERT_FALSE(m_sound->is_fading());
-  ASSERT_FALSE(m_sound->is_playing());
+  ASSERT_FALSE(sound->IsFading());
+  ASSERT_FALSE(sound->IsPlaying());
 
-  m_sound->fade_in(ms{100});
-  ASSERT_TRUE(m_sound->is_fading());
-  ASSERT_TRUE(m_sound->is_playing());
+  sound->FadeIn(ms{100});
+  ASSERT_TRUE(sound->IsFading());
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
+  sound->Stop();
 }
 
 TEST_F(SoundEffect, FadeOut)
 {
-  ASSERT_FALSE(m_sound->is_playing());
+  ASSERT_FALSE(sound->IsPlaying());
 
-  m_sound->play();
-  m_sound->fade_out(ms{5});
-  ASSERT_TRUE(m_sound->is_fading());
-  ASSERT_TRUE(m_sound->is_playing());
+  sound->Play();
+  sound->FadeOut(ms{5});
+  ASSERT_TRUE(sound->IsFading());
+  ASSERT_TRUE(sound->IsPlaying());
 
-  m_sound->stop();
-  ASSERT_FALSE(m_sound->is_fading());
-  ASSERT_FALSE(m_sound->is_playing());
+  sound->Stop();
+  ASSERT_FALSE(sound->IsFading());
+  ASSERT_FALSE(sound->IsPlaying());
 }
 
 TEST_F(SoundEffect, SetVolume)
 {
-  const auto oldVolume = m_sound->volume();
+  const auto oldVolume = sound->GetVolume();
 
   {  // Valid volume
     const auto volume = 27;
-    m_sound->set_volume(volume);
-    ASSERT_EQ(volume, m_sound->volume());
+    sound->SetVolume(volume);
+    ASSERT_EQ(volume, sound->GetVolume());
   }
 
   {  // Volume underflow
     const auto volume = -1;
-    m_sound->set_volume(volume);
-    ASSERT_EQ(0, m_sound->volume());
+    sound->SetVolume(volume);
+    ASSERT_EQ(0, sound->GetVolume());
   }
 
   {  // Volume overflow
-    const auto volume = cen::sound_effect::max_volume() + 1;
-    m_sound->set_volume(volume);
-    ASSERT_EQ(cen::sound_effect::max_volume(), m_sound->volume());
+    const auto volume = cen::SoundEffect::GetMaxVolume() + 1;
+    sound->SetVolume(volume);
+    ASSERT_EQ(cen::SoundEffect::GetMaxVolume(), sound->GetVolume());
   }
 
-  m_sound->set_volume(oldVolume);
+  sound->SetVolume(oldVolume);
 }
 
-TEST_F(SoundEffect, Volume)
+TEST_F(SoundEffect, GetVolume)
 {
-  ASSERT_EQ(cen::sound_effect::max_volume(), m_sound->volume());
-  ASSERT_EQ(128, m_sound->volume());  // because of the documentation guarantee
-  ASSERT_EQ(MIX_MAX_VOLUME, cen::sound_effect::max_volume());
-}
-
-TEST_F(SoundEffect, ToString)
-{
-  cen::log_info_raw(cen::to_string(*m_sound));
-}
-
-TEST_F(SoundEffect, StreamOperator)
-{
-  std::clog << *m_sound << '\n';
+  ASSERT_EQ(cen::SoundEffect::GetMaxVolume(), sound->GetVolume());
+  ASSERT_EQ(128, sound->GetVolume());  // because of the documentation guarantee
+  ASSERT_EQ(MIX_MAX_VOLUME, cen::SoundEffect::GetMaxVolume());
 }
 
 TEST_F(SoundEffect, Forever)
 {
-  ASSERT_EQ(-1, cen::sound_effect::forever);
+  ASSERT_EQ(-1, cen::SoundEffect::forever);
 }
 
-TEST_F(SoundEffect, MaxVolume)
+TEST_F(SoundEffect, GetMaxVolume)
 {
-  ASSERT_EQ(MIX_MAX_VOLUME, cen::sound_effect::max_volume());
+  ASSERT_EQ(MIX_MAX_VOLUME, cen::SoundEffect::GetMaxVolume());
 }

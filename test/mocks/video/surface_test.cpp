@@ -37,14 +37,14 @@ class SurfaceTest : public testing::Test
 
 TEST_F(SurfaceTest, Convert)
 {
-  ASSERT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::sdl_error);
+  ASSERT_THROW(m_surface.convert(cen::pixel_format::rgba8888), cen::SDLError);
   ASSERT_EQ(1u, SDL_ConvertSurfaceFormat_fake.call_count);
 }
 
 TEST_F(SurfaceTest, Copy)
 {
   cen::surface dst;
-  ASSERT_THROW(dst = m_surface, cen::sdl_error);
+  ASSERT_THROW(dst = m_surface, cen::SDLError);
   ASSERT_EQ(1u, SDL_DuplicateSurface_fake.call_count);
 }
 

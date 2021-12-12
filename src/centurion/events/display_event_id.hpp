@@ -78,7 +78,7 @@ enum class display_event_id
       return "disconnected";
 
     default:
-      throw cen_error{"Did not recognize display event ID!"};
+      throw Error{"Did not recognize display event ID!"};
   }
 }
 

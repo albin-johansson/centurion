@@ -73,7 +73,7 @@ enum class platform_id
       return "android";
 
     default:
-      throw cen_error{"Did not recognize platform ID!"};
+      throw Error{"Did not recognize platform ID!"};
   }
 }
 

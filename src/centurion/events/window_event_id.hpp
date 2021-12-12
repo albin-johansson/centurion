@@ -136,7 +136,7 @@ enum class window_event_id
       return "hit_test";
 
     default:
-      throw cen_error{"Did not recognize window event ID!"};
+      throw Error{"Did not recognize window event ID!"};
   }
 }
 

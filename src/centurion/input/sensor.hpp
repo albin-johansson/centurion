@@ -90,7 +90,7 @@ class basic_sensor final
   {
     if constexpr (detail::is_owning<T>()) {
       if (!m_sensor) {
-        throw cen_error{"Null sensor pointer!"};
+        throw Error{"Null sensor pointer!"};
       }
     }
   }
@@ -108,7 +108,7 @@ class basic_sensor final
   explicit basic_sensor(const int index = 0) : m_sensor{SDL_SensorOpen(index)}
   {
     if (!m_sensor) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -407,7 +407,7 @@ class basic_sensor final
       return "gyroscope";
 
     default:
-      throw cen_error{"Did not recognize sensor type!"};
+      throw Error{"Did not recognize sensor type!"};
   }
 }
 

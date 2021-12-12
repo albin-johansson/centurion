@@ -90,7 +90,7 @@ class basic_pixel_format_info final
     {
       if (!m_format)
       {
-        throw cen_error{"Null pixel format!"};
+        throw Error{"Null pixel format!"};
       }
     }
   }
@@ -113,7 +113,7 @@ class basic_pixel_format_info final
       : m_format{SDL_AllocFormat(to_underlying(format))}
   {
     if (!m_format) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

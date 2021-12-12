@@ -65,7 +65,7 @@ enum class thread_priority
       return "critical";
 
     default:
-      throw cen_error{"Did not recognize thread priority!"};
+      throw Error{"Did not recognize thread priority!"};
   }
 }
 

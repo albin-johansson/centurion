@@ -20,7 +20,7 @@ TEST(TextureAccess, Values)
 
 TEST(TextureAccess, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::texture_access>(4)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::texture_access>(4)), cen::Error);
 
   ASSERT_EQ("no_lock", cen::to_string(cen::texture_access::no_lock));
   ASSERT_EQ("streaming", cen::to_string(cen::texture_access::streaming));

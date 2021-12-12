@@ -44,7 +44,7 @@ TEST(SystemCursor, SystemCursorCount)
 TEST(SystemCursor, ToString)
 {
   ASSERT_THROW(cen::to_string(static_cast<cen::system_cursor>(SDL_NUM_SYSTEM_CURSORS)),
-               cen::cen_error);
+               cen::Error);
 
   ASSERT_EQ("arrow", cen::to_string(cen::system_cursor::arrow));
   ASSERT_EQ("ibeam", cen::to_string(cen::system_cursor::ibeam));

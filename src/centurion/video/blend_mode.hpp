@@ -129,7 +129,7 @@ struct blend_task final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw cen_error{"Did not recognize blend mode!"};
+      throw Error{"Did not recognize blend mode!"};
   }
 }
 

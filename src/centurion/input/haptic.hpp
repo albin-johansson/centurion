@@ -90,7 +90,7 @@ class basic_haptic final
   {
     if constexpr (detail::is_owning<T>()) {
       if (!m_haptic) {
-        throw cen_error{"Null haptic pointer!"};
+        throw Error{"Null haptic pointer!"};
       }
     }
   }
@@ -110,7 +110,7 @@ class basic_haptic final
   explicit basic_haptic(const int index = 0) : m_haptic{SDL_HapticOpen(index)}
   {
     if (!m_haptic) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -145,7 +145,7 @@ class basic_haptic final
       return basic_haptic{ptr};
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -167,7 +167,7 @@ class basic_haptic final
       return basic_haptic{ptr};
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

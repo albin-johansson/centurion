@@ -110,7 +110,7 @@ enum class haptic_feature : uint
       return "pause";
 
     default:
-      throw cen_error{"Did not recognize haptic feature!"};
+      throw Error{"Did not recognize haptic feature!"};
   }
 }
 

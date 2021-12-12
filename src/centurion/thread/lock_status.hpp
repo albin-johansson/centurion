@@ -50,7 +50,7 @@ enum class lock_status
       return "error";
 
     default:
-      throw cen_error{"Did not recognize lock status!"};
+      throw Error{"Did not recognize lock status!"};
   }
 }
 

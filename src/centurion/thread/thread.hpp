@@ -85,7 +85,7 @@ class thread final
       : m_thread{SDL_CreateThread(task, name, data)}
   {
     if (!m_thread) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

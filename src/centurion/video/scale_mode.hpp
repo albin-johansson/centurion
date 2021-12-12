@@ -61,7 +61,7 @@ enum class scale_mode
       return "best";
 
     default:
-      throw cen_error{"Did not recognize scale mode!"};
+      throw Error{"Did not recognize scale mode!"};
   }
 }
 

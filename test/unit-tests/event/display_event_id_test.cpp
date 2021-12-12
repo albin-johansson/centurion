@@ -23,7 +23,7 @@ TEST(DisplayEventId, Values)
 TEST(DisplayEventId, ToString)
 {
   const auto invalid = static_cast<cen::display_event_id>(cen::display_event_id_count());
-  ASSERT_THROW(cen::to_string(invalid), cen::cen_error);
+  ASSERT_THROW(cen::to_string(invalid), cen::Error);
 
   ASSERT_EQ("none", cen::to_string(cen::display_event_id::none));
   ASSERT_EQ("orientation", cen::to_string(cen::display_event_id::orientation));

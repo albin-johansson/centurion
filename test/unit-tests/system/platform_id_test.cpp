@@ -6,7 +6,7 @@
 
 TEST(PlatformID, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::platform_id>(7)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::platform_id>(7)), cen::Error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::platform_id::unknown));
   ASSERT_EQ("windows", cen::to_string(cen::platform_id::windows));

@@ -289,7 +289,7 @@ enum class event_type : u32
       return "user";
 
     default:
-      throw cen_error{"Did not recognize event type!"};
+      throw Error{"Did not recognize event type!"};
   }
 }
 

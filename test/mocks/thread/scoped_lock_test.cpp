@@ -20,5 +20,5 @@ TEST_F(ScopedLockTest, ConstructorFailsToLockMutex)
   cen::mutex mutex{0};  // Dummy parameter for mock-friendly constructor
 
   SDL_LockMutex_fake.return_val = -1;
-  ASSERT_THROW(cen::scoped_lock{mutex}, cen::sdl_error);
+  ASSERT_THROW(cen::scoped_lock{mutex}, cen::SDLError);
 }

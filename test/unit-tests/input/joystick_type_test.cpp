@@ -24,7 +24,7 @@ TEST(JoystickType, Values)
 
 TEST(JoystickType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::joystick_type>(11)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::joystick_type>(11)), cen::Error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::joystick_type::unknown));
   ASSERT_EQ("game_controller", cen::to_string(cen::joystick_type::game_controller));

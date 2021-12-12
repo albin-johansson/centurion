@@ -108,7 +108,7 @@ enum class system_cursor
       return "hand";
 
     default:
-      throw cen_error{"Did not recognize system cursor!"};
+      throw Error{"Did not recognize system cursor!"};
   }
 }
 

@@ -96,7 +96,7 @@ enum class joy_hat_position : u8
       return "right_down";
 
     default:
-      throw cen_error{"Did not recognize joystick hat position!"};
+      throw Error{"Did not recognize joystick hat position!"};
   }
 }
 

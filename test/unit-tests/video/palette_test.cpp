@@ -9,8 +9,8 @@
 
 TEST(Palette, Constructor)
 {
-  ASSERT_THROW(cen::palette{0}, cen::cen_error);
-  ASSERT_THROW(cen::palette{-1}, cen::cen_error);
+  ASSERT_THROW(cen::palette{0}, cen::Error);
+  ASSERT_THROW(cen::palette{-1}, cen::Error);
   ASSERT_NO_THROW(cen::palette{1});
 }
 
@@ -57,8 +57,8 @@ TEST(Palette, At)
   cen::palette palette{4};
   ASSERT_NO_THROW(palette.at(0));
   ASSERT_NO_THROW(palette.at(3));
-  ASSERT_THROW(palette.at(-1), cen::cen_error);
-  ASSERT_THROW(palette.at(4), cen::cen_error);
+  ASSERT_THROW(palette.at(-1), cen::Error);
+  ASSERT_THROW(palette.at(4), cen::Error);
 }
 
 TEST(Palette, Size)

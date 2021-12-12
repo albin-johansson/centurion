@@ -100,7 +100,7 @@ class basic_surface final
     {
       if (!m_surface)
       {
-        throw cen_error{"Cannot create surface from null pointer!"};
+        throw Error{"Cannot create surface from null pointer!"};
       }
     }
   }
@@ -125,7 +125,7 @@ class basic_surface final
   explicit basic_surface(const not_null<cstr> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
-      throw img_error{};
+      throw IMGError{};
     }
   }
 
@@ -167,7 +167,7 @@ class basic_surface final
                                                  to_underlying(pixelFormat))}
   {
     if (!m_surface) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -596,7 +596,7 @@ class basic_surface final
       return result;
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -854,7 +854,7 @@ class basic_surface final
       return copy;
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

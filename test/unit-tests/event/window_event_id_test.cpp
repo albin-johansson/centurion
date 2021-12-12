@@ -56,7 +56,7 @@ TEST(WindowEventID, InequalityOperator)
 
 TEST(WindowEventID, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::window_event_id>(18)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::window_event_id>(18)), cen::Error);
 
   ASSERT_EQ("none", cen::to_string(id::none));
   ASSERT_EQ("shown", cen::to_string(id::shown));

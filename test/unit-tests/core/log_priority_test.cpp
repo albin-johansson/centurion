@@ -18,7 +18,7 @@ TEST(LogPriority, Values)
 TEST(LogPriority, ToString)
 {
   ASSERT_THROW(cen::to_string(static_cast<cen::log_priority>(SDL_NUM_LOG_PRIORITIES)),
-               cen::cen_error);
+               cen::Error);
 
   ASSERT_EQ("verbose", cen::to_string(cen::log_priority::verbose));
   ASSERT_EQ("debug", cen::to_string(cen::log_priority::debug));

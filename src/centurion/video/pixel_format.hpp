@@ -254,7 +254,7 @@ enum class pixel_format : u32
 #endif  // SDL_VERSION_ATLEAST(2, 0, 12)
 
     default:
-      throw cen_error{"Did not recognize pixel format mode!"};
+      throw Error{"Did not recognize pixel format mode!"};
   }
 }
 

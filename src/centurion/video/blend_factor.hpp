@@ -92,7 +92,7 @@ enum class blend_factor
       return "one_minus_dst_alpha";
 
     default:
-      throw cen_error{"Did not recognize blend factor!"};
+      throw Error{"Did not recognize blend factor!"};
   }
 }
 

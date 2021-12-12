@@ -59,7 +59,7 @@ class palette final
   explicit palette(const int nColors) : m_palette{SDL_AllocPalette(nColors)}
   {
     if (!m_palette) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -102,7 +102,7 @@ class palette final
       return cen::color{m_palette->colors[index]};
     }
     else {
-      throw cen_error{"Palette index out of bounds!"};
+      throw Error{"Palette index out of bounds!"};
     }
   }
 

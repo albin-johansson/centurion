@@ -81,7 +81,7 @@ class basic_texture final
     {
       if (!m_texture)
       {
-        throw cen_error{"Cannot create texture from null pointer!"};
+        throw Error{"Cannot create texture from null pointer!"};
       }
     }
   }
@@ -118,7 +118,7 @@ class basic_texture final
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
-      throw img_error{};
+      throw IMGError{};
     }
   }
 
@@ -158,7 +158,7 @@ class basic_texture final
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
     if (!m_texture) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -188,7 +188,7 @@ class basic_texture final
                                     size.height)}
   {
     if (!m_texture) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -225,7 +225,7 @@ class basic_texture final
 
     u32* pixels{};
     if (!texture.lock(&pixels)) {
-      throw sdl_error{};
+      throw SDLError{};
     }
 
     const auto maxCount =

@@ -69,7 +69,7 @@ enum class mouse_wheel_direction : u32
       return "flipped";
 
     default:
-      throw cen_error{"Did not recognize mouse wheel direction!"};
+      throw Error{"Did not recognize mouse wheel direction!"};
   }
 }
 

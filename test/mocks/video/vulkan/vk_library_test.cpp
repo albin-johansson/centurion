@@ -30,7 +30,7 @@ TEST_F(VulkanLibraryTest, Initialization)
   std::array values{-1, 0};
   SET_RETURN_SEQ(SDL_Vulkan_LoadLibrary, values.data(), cen::isize(values));
 
-  ASSERT_THROW(cen::vk_library{}, cen::sdl_error);
+  ASSERT_THROW(cen::vk_library{}, cen::SDLError);
   ASSERT_NO_THROW(cen::vk_library{});
   ASSERT_EQ(2u, SDL_Vulkan_LoadLibrary_fake.call_count);
 }

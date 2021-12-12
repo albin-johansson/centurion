@@ -18,7 +18,7 @@ TEST(ButtonOrder, Values)
 
 TEST(ButtonOrder, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::button_order>(0x101)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::button_order>(0x101)), cen::Error);
 
   ASSERT_EQ("left_to_right", cen::to_string(cen::button_order::left_to_right));
   ASSERT_EQ("right_to_left", cen::to_string(cen::button_order::right_to_left));

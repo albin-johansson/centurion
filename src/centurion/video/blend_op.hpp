@@ -68,7 +68,7 @@ enum class blend_op
       return "max";
 
     default:
-      throw cen_error{"Did not recognize blend operation!"};
+      throw Error{"Did not recognize blend operation!"};
   }
 }
 

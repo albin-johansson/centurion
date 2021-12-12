@@ -63,7 +63,7 @@ enum class texture_access : int
       return "target";
 
     default:
-      throw cen_error{"Did not recognize texture access!"};
+      throw Error{"Did not recognize texture access!"};
   }
 }
 

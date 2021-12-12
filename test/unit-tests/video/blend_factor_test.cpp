@@ -26,7 +26,7 @@ TEST(BlendFactor, Values)
 
 TEST(BlendFactor, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::blend_factor>(100)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::blend_factor>(100)), cen::Error);
 
   ASSERT_EQ("zero", cen::to_string(cen::blend_factor::zero));
   ASSERT_EQ("one", cen::to_string(cen::blend_factor::one));

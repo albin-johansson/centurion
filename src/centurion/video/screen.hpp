@@ -87,7 +87,7 @@ enum class screen_orientation : int
       return "portrait_flipped";
 
     default:
-      throw cen_error{"Did not recognize screen orientation!"};
+      throw Error{"Did not recognize screen orientation!"};
   }
 }
 

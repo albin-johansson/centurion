@@ -40,7 +40,7 @@ class scoped_lock final
   CENTURION_NODISCARD_CTOR explicit scoped_lock(mutex& mutex) : m_mutex{&mutex}
   {
     if (!mutex.lock()) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

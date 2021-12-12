@@ -22,7 +22,7 @@ TEST(ThreadPriority, Values)
 
 TEST(ThreadPriority, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::thread_priority>(5)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::thread_priority>(5)), cen::Error);
 
   ASSERT_EQ("low", cen::to_string(cen::thread_priority::low));
   ASSERT_EQ("normal", cen::to_string(cen::thread_priority::normal));

@@ -95,7 +95,7 @@ enum class font_hint : int
       return "none";
 
     default:
-      throw cen_error{"Did not recognize font hint!"};
+      throw Error{"Did not recognize font hint!"};
   }
 }
 
@@ -157,12 +157,12 @@ class font final
     assert(file);
 
     if (size <= 0) {
-      throw cen_error{"Bad font size!"};
+      throw Error{"Bad font size!"};
     }
 
     m_font.reset(TTF_OpenFont(file, size));
     if (!m_font) {
-      throw ttf_error{};
+      throw TTFError{};
     }
   }
 

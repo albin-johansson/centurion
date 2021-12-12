@@ -66,7 +66,7 @@ enum class mouse_button : u8
       return "x2";
 
     default:
-      throw cen_error{"Did not recognize mouse button!"};
+      throw Error{"Did not recognize mouse button!"};
   }
 }
 

@@ -32,7 +32,7 @@ TEST(ControllerType, Values)
 
 TEST(ControllerType, ToString)
 {
-  ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(10)), cen::cen_error);
+  ASSERT_THROW(cen::to_string(static_cast<cen::controller_type>(10)), cen::Error);
 
   ASSERT_EQ("unknown", cen::to_string(cen::controller_type::unknown));
   ASSERT_EQ("nintendo_switch_pro", cen::to_string(cen::controller_type::nintendo_switch_pro));

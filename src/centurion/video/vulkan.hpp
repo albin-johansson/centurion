@@ -40,7 +40,7 @@ class vk_library final
   CENTURION_NODISCARD_CTOR explicit vk_library(const cstr path = nullptr)
   {
     if (SDL_Vulkan_LoadLibrary(path) == -1) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

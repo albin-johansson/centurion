@@ -49,7 +49,7 @@ class TextureTest : public testing::Test
 
 TEST_F(TextureTest, PointerConstructor)
 {
-  ASSERT_THROW(cen::texture{nullptr}, cen::cen_error);
+  ASSERT_THROW(cen::texture{nullptr}, cen::Error);
 
   cen::texture texture{IMG_LoadTexture(m_renderer->get(), m_path)};
   ASSERT_TRUE(texture.get());
@@ -58,8 +58,8 @@ TEST_F(TextureTest, PointerConstructor)
 TEST_F(TextureTest, PathConstructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::texture(*m_renderer, "badpath"), cen::img_error);
-  ASSERT_THROW(cen::texture(*m_renderer, "badpath"s), cen::img_error);
+  ASSERT_THROW(cen::texture(*m_renderer, "badpath"), cen::IMGError);
+  ASSERT_THROW(cen::texture(*m_renderer, "badpath"s), cen::IMGError);
 
   ASSERT_EQ(m_imgWidth, m_texture->width());
   ASSERT_EQ(m_imgHeight, m_texture->height());
@@ -93,7 +93,7 @@ TEST_F(TextureTest, Streaming)
   using namespace std::string_literals;
   const auto format = m_window->get_pixel_format();
 
-  ASSERT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format), cen::cen_error);
+  ASSERT_THROW(cen::texture::streaming(*m_renderer, "abc"s, format), cen::Error);
 
   auto texture = cen::texture::streaming(*m_renderer, m_path, format);
   ASSERT_EQ(format, texture.format());

@@ -218,7 +218,7 @@ class library final
     explicit sdl(const u32 flags)
     {
       if (SDL_Init(flags) < 0) {
-        throw sdl_error{};
+        throw SDLError{};
       }
     }
 
@@ -235,7 +235,7 @@ class library final
     explicit sdl_ttf()
     {
       if (TTF_Init() == -1) {
-        throw ttf_error{};
+        throw TTFError{};
       }
     }
 
@@ -258,11 +258,11 @@ class library final
               const int chunkSize)
     {
       if (!Mix_Init(flags)) {
-        throw mix_error{};
+        throw MixError{};
       }
 
       if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
-        throw mix_error{};
+        throw MixError{};
       }
     }
 
@@ -282,7 +282,7 @@ class library final
     explicit sdl_image(const int flags)
     {
       if (!IMG_Init(flags)) {
-        throw img_error{};
+        throw IMGError{};
       }
     }
 

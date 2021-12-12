@@ -46,7 +46,7 @@ class static_bimap final
       return it->second;
     }
     else {
-      throw cen_error{"Failed to find element in static map!"};
+      throw Error{"Failed to find element in static map!"};
     }
   }
 
@@ -61,7 +61,7 @@ class static_bimap final
       return it->first;
     }
     else {
-      throw cen_error{"Failed to find key in static map!"};
+      throw Error{"Failed to find key in static map!"};
     }
   }
 };

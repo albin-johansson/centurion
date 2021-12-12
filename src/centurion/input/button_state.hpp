@@ -58,7 +58,7 @@ enum class button_state : u8
       return "pressed";
 
     default:
-      throw cen_error{"Did not recognize button state!"};
+      throw Error{"Did not recognize button state!"};
   }
 }
 

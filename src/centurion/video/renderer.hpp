@@ -138,7 +138,7 @@ class basic_renderer final
     {
       if (!get())
       {
-        throw cen_error{"Cannot create renderer from null pointer!"};
+        throw Error{"Cannot create renderer from null pointer!"};
       }
     }
   }
@@ -160,7 +160,7 @@ class basic_renderer final
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -230,11 +230,11 @@ class basic_renderer final
     surface image{output_size(), format};
 
     if (!image.lock()) {
-      throw sdl_error{};
+      throw SDLError{};
     }
 
     if (SDL_RenderReadPixels(get(), nullptr, 0, image.pixels(), image.pitch()) == -1) {
-      throw sdl_error{};
+      throw SDLError{};
     }
 
     image.unlock();

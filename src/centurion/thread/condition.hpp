@@ -30,7 +30,7 @@ class condition final
   condition() : m_cond{SDL_CreateCond()}
   {
     if (!m_cond) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

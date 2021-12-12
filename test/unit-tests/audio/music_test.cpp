@@ -40,7 +40,7 @@ TEST_F(MusicTest, Forever)
 TEST_F(MusicTest, Constructor)
 {
   using namespace std::string_literals;
-  ASSERT_THROW(cen::Music{"foobar"s}, cen::mix_error);
+  ASSERT_THROW(cen::Music{"foobar"s}, cen::MixError);
 }
 
 TEST_F(MusicTest, Play)

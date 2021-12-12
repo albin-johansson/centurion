@@ -44,13 +44,13 @@ class RendererTest : public testing::Test
 TEST_F(RendererTest, PointerConstructor)
 {
   SDL_Renderer* renderer{};
-  ASSERT_THROW(cen::renderer{renderer}, cen::cen_error);
+  ASSERT_THROW(cen::renderer{renderer}, cen::Error);
 }
 
 TEST_F(RendererTest, FlagsConstructor)
 {
   // This throws because there is already a renderer associated with the window
-  ASSERT_THROW(cen::renderer{*m_window}, cen::sdl_error);
+  ASSERT_THROW(cen::renderer{*m_window}, cen::SDLError);
 }
 
 TEST_F(RendererTest, SetTranslationViewport)

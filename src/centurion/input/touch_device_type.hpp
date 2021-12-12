@@ -158,7 +158,7 @@ inline auto operator<<(std::ostream& stream, const touch_device_type type) -> st
       return "indirect_relative";
 
     default:
-      throw cen_error{"Did not recognize touch device type!"};
+      throw Error{"Did not recognize touch device type!"};
   }
 }
 

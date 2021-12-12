@@ -408,7 +408,7 @@ inline auto open_url(const std::string& url) noexcept -> result
       return "charged";
 
     default:
-      throw cen_error{"Did not recognize power state!"};
+      throw Error{"Did not recognize power state!"};
   }
 }
 

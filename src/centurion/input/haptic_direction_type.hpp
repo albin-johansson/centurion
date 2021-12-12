@@ -58,7 +58,7 @@ enum class haptic_direction_type : u8
       return "spherical";
 
     default:
-      throw cen_error{"Did not recognize haptic direction type!"};
+      throw Error{"Did not recognize haptic direction type!"};
   }
 }
 

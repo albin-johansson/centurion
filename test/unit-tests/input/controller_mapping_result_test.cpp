@@ -7,9 +7,9 @@
 TEST(ControllerMappingResult, ToString)
 {
   ASSERT_THROW(cen::to_string(static_cast<cen::controller::mapping_result>(4)),
-               cen::cen_error);
+               cen::Error);
   ASSERT_THROW(cen::to_string(static_cast<cen::controller_handle::mapping_result>(4)),
-               cen::cen_error);
+               cen::Error);
 
   ASSERT_EQ("error", cen::to_string(cen::controller::mapping_result::error));
   ASSERT_EQ("error", cen::to_string(cen::controller_handle::mapping_result::error));

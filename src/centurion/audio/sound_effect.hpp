@@ -46,7 +46,7 @@ class BasicSoundEffect final
   {
     if constexpr (detail::is_owning<T>()) {
       if (!mChunk) {
-        throw mix_error{};
+        throw MixError{};
       }
     }
   }
@@ -55,7 +55,7 @@ class BasicSoundEffect final
   explicit BasicSoundEffect(const char* file) : mChunk{Mix_LoadWAV(file)}
   {
     if (!mChunk) {
-      throw mix_error{};
+      throw MixError{};
     }
   }
 

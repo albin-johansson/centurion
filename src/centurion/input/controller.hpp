@@ -237,7 +237,7 @@ class basic_controller final
     {
       if (!m_controller) 
       {
-        throw cen_error{"Cannot create controller from null pointer!"};
+        throw Error{"Cannot create controller from null pointer!"};
       }
     }
   }
@@ -279,7 +279,7 @@ class basic_controller final
   explicit basic_controller(const int index = 0) : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -304,7 +304,7 @@ class basic_controller final
       return basic_controller{ptr};
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -328,7 +328,7 @@ class basic_controller final
       return basic_controller{ptr};
     }
     else {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -1448,7 +1448,7 @@ class basic_controller final
       return "max";
 
     default:
-      throw cen_error{"Did not recognize controller button!"};
+      throw Error{"Did not recognize controller button!"};
   }
 }
 
@@ -1494,7 +1494,7 @@ class basic_controller final
       return "max";
 
     default:
-      throw cen_error{"Did not recognize controller axis!"};
+      throw Error{"Did not recognize controller axis!"};
   }
 }
 
@@ -1528,7 +1528,7 @@ class basic_controller final
       return "hat";
 
     default:
-      throw cen_error{"Did not recognzie controller bind type!"};
+      throw Error{"Did not recognzie controller bind type!"};
   }
 }
 
@@ -1590,7 +1590,7 @@ class basic_controller final
 #endif  // SDL_VERSION_ATLEAST(2, 0, 16)
 
     default:
-      throw cen_error{"Did not recognize controller type!"};
+      throw Error{"Did not recognize controller type!"};
   }
 }
 
@@ -1624,7 +1624,7 @@ class basic_controller final
       return "added";
 
     default:
-      throw cen_error{"Did not recognize controller mapping result!"};
+      throw Error{"Did not recognize controller mapping result!"};
   }
 }
 
@@ -1643,7 +1643,7 @@ class basic_controller final
       return "added";
 
     default:
-      throw cen_error{"Did not recognize controller mapping result!"};
+      throw Error{"Did not recognize controller mapping result!"};
   }
 }
 

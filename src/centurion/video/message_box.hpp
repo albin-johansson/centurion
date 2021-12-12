@@ -476,7 +476,7 @@ class message_box final
                                        message.c_str(),
                                        parent))
     {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -512,7 +512,7 @@ class message_box final
 
     button_id button{-1};
     if (SDL_ShowMessageBox(&data, &button) == -1) {
-      throw sdl_error{};
+      throw SDLError{};
     }
 
     if (button != -1) {
@@ -552,7 +552,7 @@ class message_box final
       return "escape_key";
 
     default:
-      throw cen_error{"Did not recognize message box default button!"};
+      throw Error{"Did not recognize message box default button!"};
   }
 }
 
@@ -589,7 +589,7 @@ class message_box final
       return "button_selected";
 
     default:
-      throw cen_error{"Did not recognize message box color ID!"};
+      throw Error{"Did not recognize message box color ID!"};
   }
 }
 

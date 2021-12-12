@@ -57,7 +57,7 @@ class Music final
   explicit Music(const char* file) : mMusic{Mix_LoadMUS(file)}
   {
     if (!mMusic) {
-      throw mix_error{};
+      throw MixError{};
     }
   }
 

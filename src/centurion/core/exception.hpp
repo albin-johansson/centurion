@@ -21,95 +21,42 @@
 
 namespace cen {
 
-/// \addtogroup core
-/// \{
-
-/**
- * \class cen_error
- *
- * \brief The base of all exceptions explicitly thrown by the library.
- *
- * \since 3.0.0
- */
-class cen_error : public std::exception
+class Error : public std::exception
 {
  public:
-  cen_error() noexcept = default;
+  Error() noexcept = default;
 
-  /**
-   * \param what the message of the exception, can safely be null.
-   *
-   * \since 3.0.0
-   */
-  explicit cen_error(const cstr what) noexcept : m_what{what ? what : m_what}
+  explicit Error(const char* what) noexcept : mWhat{what ? what : "?"}
   {}
 
-  [[nodiscard]] auto what() const noexcept -> cstr override
+  [[nodiscard]] auto what() const noexcept -> const char* override
   {
-    return m_what;
+    return mWhat;
   }
 
  private:
-  cstr m_what{"n/a"};
+  const char* mWhat{"?"};
 };
 
-/**
- * \class sdl_error
- *
- * \brief Represents an error related to the core SDL2 library.
- *
- * \since 5.0.0
- */
-class sdl_error final : public cen_error
+class SDLError final : public Error
 {
  public:
-  /**
-   * \brief Creates an `sdl_error` with the error message obtained from `SDL_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  sdl_error() noexcept : cen_error{SDL_GetError()}
+  SDLError() noexcept : Error{SDL_GetError()}
   {}
 
-  /**
-   * \brief Creates an `sdl_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit sdl_error(const cstr what) noexcept : cen_error{what}
+  explicit SDLError(const char* what) noexcept : Error{what}
   {}
 };
 
 #ifndef CENTURION_NO_SDL_IMAGE
 
-/**
- * \class img_error
- *
- * \brief Represents an error related to the SDL2_image library.
- *
- * \since 5.0.0
- */
-class img_error final : public cen_error
+class IMGError final : public Error
 {
  public:
-  /**
-   * \brief Creates an `img_error` with the error message obtained from `IMG_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  img_error() noexcept : cen_error{IMG_GetError()}
+  IMGError() noexcept : Error{IMG_GetError()}
   {}
 
-  /**
-   * \brief Creates an `img_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit img_error(const cstr what) noexcept : cen_error{what}
+  explicit IMGError(const char* what) noexcept : Error{what}
   {}
 };
 
@@ -117,32 +64,13 @@ class img_error final : public cen_error
 
 #ifndef CENTURION_NO_SDL_TTF
 
-/**
- * \class ttf_error
- *
- * \brief Represents an error related to the SDL2_ttf library.
- *
- * \since 5.0.0
- */
-class ttf_error final : public cen_error
+class TTFError final : public Error
 {
  public:
-  /**
-   * \brief Creates a `ttf_error` with the error message obtained from `TTF_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  ttf_error() noexcept : cen_error{TTF_GetError()}
+  TTFError() noexcept : Error{TTF_GetError()}
   {}
 
-  /**
-   * \brief Creates a `ttf_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit ttf_error(const cstr what) noexcept : cen_error{what}
+  explicit TTFError(const char* what) noexcept : Error{what}
   {}
 };
 
@@ -150,38 +78,17 @@ class ttf_error final : public cen_error
 
 #ifndef CENTURION_NO_SDL_MIXER
 
-/**
- * \class mix_error
- *
- * \brief Represents an error related to the SDL2_mixer library.
- *
- * \since 5.0.0
- */
-class mix_error final : public cen_error
+class MixError final : public Error
 {
  public:
-  /**
-   * \brief Creates a `mix_error` with the error message obtained from `Mix_GetError()`.
-   *
-   * \since 5.0.0
-   */
-  mix_error() noexcept : cen_error{Mix_GetError()}
+  MixError() noexcept : Error{Mix_GetError()}
   {}
 
-  /**
-   * \brief Creates a `mix_error` with the specified error message.
-   *
-   * \param what the error message that will be used.
-   *
-   * \since 5.0.0
-   */
-  explicit mix_error(const cstr what) noexcept : cen_error{what}
+  explicit MixError(const char* what) noexcept : Error{what}
   {}
 };
 
 #endif  // CENTURION_NO_SDL_MIXER
-
-/// \} End of group core
 
 }  // namespace cen
 

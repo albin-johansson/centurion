@@ -61,7 +61,7 @@ enum class button_order : u32
       return "right_to_left";
 
     default:
-      throw cen_error{"Did not recognize button order!"};
+      throw Error{"Did not recognize button order!"};
   }
 }
 

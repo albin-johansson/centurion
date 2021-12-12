@@ -139,7 +139,7 @@ enum class log_category
       return "custom";
 
     default:
-      throw cen_error{"Did not recognize log category!"};
+      throw Error{"Did not recognize log category!"};
   }
 }
 
@@ -179,7 +179,7 @@ enum class log_category
       return "critical";
 
     default:
-      throw cen_error{"Did not recognize log priority!"};
+      throw Error{"Did not recognize log priority!"};
   }
 }
 

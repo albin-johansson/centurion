@@ -49,29 +49,29 @@ TEST_F(LibraryTest, NoFailureDefaultConfiguration)
 TEST_F(LibraryTest, SDLCoreInitFailure)
 {
   SDL_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::library{}, cen::sdl_error);
+  ASSERT_THROW(cen::library{}, cen::SDLError);
 }
 
 TEST_F(LibraryTest, SDLTTFInitFailure)
 {
   TTF_Init_fake.return_val = -1;
-  ASSERT_THROW(cen::library{}, cen::ttf_error);
+  ASSERT_THROW(cen::library{}, cen::TTFError);
 }
 
 TEST_F(LibraryTest, SDLImageInitFailure)
 {
   IMG_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::library{}, cen::img_error);
+  ASSERT_THROW(cen::library{}, cen::IMGError);
 }
 
 TEST_F(LibraryTest, SDLMixInitFailure)
 {
   Mix_Init_fake.return_val = 0;
-  ASSERT_THROW(cen::library{}, cen::mix_error);
+  ASSERT_THROW(cen::library{}, cen::MixError);
 }
 
 TEST_F(LibraryTest, SDLMixOpenFailure)
 {
   Mix_OpenAudio_fake.return_val = -1;
-  ASSERT_THROW(cen::library{}, cen::mix_error);
+  ASSERT_THROW(cen::library{}, cen::MixError);
 }

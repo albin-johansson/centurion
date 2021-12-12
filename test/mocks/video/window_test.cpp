@@ -109,7 +109,7 @@ class WindowTest : public testing::Test
 
 TEST_F(WindowTest, Constructor)
 {
-  ASSERT_THROW(cen::window{"foo"}, cen::sdl_error);
+  ASSERT_THROW(cen::window{"foo"}, cen::SDLError);
   ASSERT_EQ(1u, SDL_CreateWindow_fake.call_count);
 }
 

@@ -60,7 +60,7 @@ enum class message_box_type : u32
       return "information";
 
     default:
-      throw cen_error{"Did not recognize message box type!"};
+      throw Error{"Did not recognize message box type!"};
   }
 }
 

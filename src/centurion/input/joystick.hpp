@@ -159,7 +159,7 @@ class basic_joystick final
     {
       if (!m_joystick)
       {
-        throw cen_error{"Cannot create joystick from null pointer!"};
+        throw Error{"Cannot create joystick from null pointer!"};
       }
     }
   }
@@ -177,7 +177,7 @@ class basic_joystick final
   explicit basic_joystick(const int index = 0) : m_joystick{SDL_JoystickOpen(index)}
   {
     if (!m_joystick) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 
@@ -1170,7 +1170,7 @@ class basic_joystick final
       return "throttle";
 
     default:
-      throw cen_error{"Did not recognize joystick type!"};
+      throw Error{"Did not recognize joystick type!"};
   }
 }
 
@@ -1213,7 +1213,7 @@ class basic_joystick final
       return "max";
 
     default:
-      throw cen_error{"Did not recognize joystick power!"};
+      throw Error{"Did not recognize joystick power!"};
   }
 }
 
@@ -1262,7 +1262,7 @@ class basic_joystick final
       return "left_down";
 
     default:
-      throw cen_error{"Did not recognize hat state!"};
+      throw Error{"Did not recognize hat state!"};
   }
 }
 

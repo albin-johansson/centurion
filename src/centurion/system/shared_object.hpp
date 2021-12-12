@@ -38,7 +38,7 @@ class shared_object final
   explicit shared_object(const not_null<cstr> object) : m_object{SDL_LoadObject(object)}
   {
     if (!m_object) {
-      throw sdl_error{};
+      throw SDLError{};
     }
   }
 

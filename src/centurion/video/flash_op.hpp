@@ -62,7 +62,7 @@ enum class flash_op
       return "until_focused";
 
     default:
-      throw cen_error{"Did not recognize window flash operation!"};
+      throw Error{"Did not recognize window flash operation!"};
   }
 }
 

@@ -98,7 +98,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent> {
    */
   [[nodiscard]] auto text() const noexcept -> std::string_view
   {
-    return std::string_view{static_cast<cstr>(m_event.text)};
+    return std::string_view{static_cast<const char*>(m_event.text)};
   }
 
   /**

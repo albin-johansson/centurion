@@ -9,7 +9,7 @@
 namespace cen::detail {
 
 struct czstring_compare final {
-  auto operator()(const cstr lhs, const cstr rhs) const noexcept -> bool
+  auto operator()(const char* lhs, const char* rhs) const noexcept -> bool
   {
     return cmp(lhs, rhs);
   }

@@ -185,7 +185,7 @@ namespace cen::screen {
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline auto name(const int index = 0) noexcept -> cstr
+[[nodiscard]] inline auto name(const int index = 0) noexcept -> const char*
 {
   return SDL_GetDisplayName(index);
 }

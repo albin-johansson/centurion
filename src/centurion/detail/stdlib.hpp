@@ -82,7 +82,7 @@ template <typename T = int>
   }
 }
 
-[[nodiscard]] inline auto cmp(const cstr a, const cstr b) noexcept -> bool
+[[nodiscard]] inline auto cmp(const char* a, const char* b) noexcept -> bool
 {
   if (a && b) {
     return std::strcmp(a, b) == 0;

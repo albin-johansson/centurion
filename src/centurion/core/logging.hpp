@@ -289,7 +289,7 @@ inline void set_priority(const log_category category, const log_priority priorit
 template <typename... Args>
 void log(const log_priority priority,
          const log_category category,
-         const not_null<cstr> fmt,
+         const char* fmt,
          Args&&... args) noexcept
 {
   assert(fmt);
@@ -300,82 +300,78 @@ void log(const log_priority priority,
 }
 
 template <typename... Args>
-void log_verbose(const log_category category,
-                 const not_null<cstr> fmt,
-                 Args&&... args) noexcept
+void log_verbose(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_verbose(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_verbose(const char* fmt, Args&&... args) noexcept
 {
   log_verbose(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_debug(const log_category category, const not_null<cstr> fmt, Args&&... args) noexcept
+void log_debug(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::debug, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_debug(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_debug(const char* fmt, Args&&... args) noexcept
 {
   log_debug(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_info(const log_category category, const not_null<cstr> fmt, Args&&... args) noexcept
+void log_info(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::info, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_info(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_info(const char* fmt, Args&&... args) noexcept
 {
   log_info(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_warn(const log_category category, const not_null<cstr> fmt, Args&&... args) noexcept
+void log_warn(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::warn, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_warn(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_warn(const char* fmt, Args&&... args) noexcept
 {
   log_warn(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_error(const log_category category, const not_null<cstr> fmt, Args&&... args) noexcept
+void log_error(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::error, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_error(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_error(const char* fmt, Args&&... args) noexcept
 {
   log_error(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_critical(const log_category category,
-                  const not_null<cstr> fmt,
-                  Args&&... args) noexcept
+void log_critical(const log_category category, const char* fmt, Args&&... args) noexcept
 {
   log(log_priority::critical, category, fmt, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-void log_critical(const not_null<cstr> fmt, Args&&... args) noexcept
+void log_critical(const char* fmt, Args&&... args) noexcept
 {
   log_critical(log_category::app, fmt, std::forward<Args>(args)...);
 }
 
-inline void log_info_raw(const not_null<cstr> str) noexcept
+inline void log_info_raw(const char* str) noexcept
 {
   log_info("%s", str);
 }
@@ -387,13 +383,13 @@ inline void log_info_raw(const std::string& str) noexcept
 
 #if CENTURION_HAS_FEATURE_CONCEPTS
 
-template <is_stateless_callable<log_category, log_priority, cstr> Callable>
+template <is_stateless_callable<log_category, log_priority, const char*> Callable>
 inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 {
   const auto wrapper = [](void* /*erased*/,
                           const int category,
                           const SDL_LogPriority priority,
-                          const cstr message) {
+                          const char* message) {
     Callable call;
     call(static_cast<log_category>(category), static_cast<log_priority>(priority), message);
   };
@@ -402,13 +398,13 @@ inline void set_output_function([[maybe_unused]] Callable callable) noexcept
 }
 
 template <typename UserData,
-          is_stateless_callable<UserData*, log_category, log_priority, cstr> Callable>
+          is_stateless_callable<UserData*, log_category, log_priority, const char*> Callable>
 inline void set_output_function([[maybe_unused]] Callable callable, UserData* data) noexcept
 {
   const auto wrapper = [](void* erased,
                           const int category,
                           const SDL_LogPriority priority,
-                          const cstr message) {
+                          const char* message) {
     Callable tmp;
     tmp(static_cast<UserData*>(erased),
         static_cast<log_category>(category),
@@ -427,20 +423,21 @@ inline void use_preset_output_function() noexcept
   using std::chrono::system_clock;
   using std::chrono::zoned_time;
 
-  set_output_function([](const log_category, const log_priority priority, const cstr message) {
-    const zoned_time time{current_zone(), system_clock::now()};
+  set_output_function(
+      [](const log_category, const log_priority priority, const char* message) {
+        const zoned_time time{current_zone(), system_clock::now()};
 
-    std::array<char, 512> buffer;  // NOLINT
-    const auto result = std::format_to_n(buffer.data(),
-                                         buffer.size() - 1,
-                                         "LOG {:%T} [{}] > {}\n",
-                                         time,
-                                         to_string(priority),
-                                         message);
-    *result.out = '\0';
+        std::array<char, 512> buffer;  // NOLINT
+        const auto result = std::format_to_n(buffer.data(),
+                                             buffer.size() - 1,
+                                             "LOG {:%T} [{}] > {}\n",
+                                             time,
+                                             to_string(priority),
+                                             message);
+        *result.out = '\0';
 
-    std::clog << std::string_view{buffer.data(), result.out};
-  });
+        std::clog << std::string_view{buffer.data(), result.out};
+      });
 }
 
 #endif  // CENTURION_HAS_FEATURE_FORMAT && CENTURION_HAS_FEATURE_CHRONO_TIME_ZONES

@@ -79,7 +79,7 @@ class thread final {
    * \since 5.0.0
    */
   CENTURION_NODISCARD_CTOR explicit thread(task_type task,
-                                           const not_null<cstr> name = "thread",
+                                           const char* name = "thread",
                                            void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {
@@ -121,8 +121,8 @@ class thread final {
    * \since 6.2.0
    */
   template <is_stateless_callable Callable>
-  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
-                                 const not_null<cstr> name = "thread") -> thread
+  [[nodiscard]] static auto init([[maybe_unused]] Callable&& task, const char* name = "thread")
+      -> thread
   {
     assert(name);
 
@@ -164,7 +164,7 @@ class thread final {
   template <typename T = void, is_stateless_callable<T*> Callable>
   [[nodiscard]] static auto init([[maybe_unused]] Callable&& task,
                                  T* userData = nullptr,
-                                 const not_null<cstr> name = "thread") -> thread
+                                 const char* name = "thread") -> thread
   {
     assert(name);
 

@@ -46,7 +46,7 @@ class sdl_string final {
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> cstr { return m_str.get(); }
+  [[nodiscard]] auto get() const noexcept -> const char* { return m_str.get(); }
 
   /**
    * \brief Returns a copy of the internal string.

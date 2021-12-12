@@ -36,7 +36,7 @@ class vk_library final {
    * \param path optional file path to a Vulkan library; a null path indicates that the
    * default library will be used.
    */
-  CENTURION_NODISCARD_CTOR explicit vk_library(const cstr path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit vk_library(const char* path = nullptr)
   {
     if (SDL_Vulkan_LoadLibrary(path) == -1) {
       throw SDLError{};
@@ -99,14 +99,14 @@ auto create_surface(basic_window<T>& window,
  *
  * \since 6.0.0
  */
-inline auto required_extensions() -> std::optional<std::vector<cstr>>
+inline auto required_extensions() -> std::optional<std::vector<const char*>>
 {
   uint count{};
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, nullptr)) {
     return std::nullopt;
   }
 
-  std::vector<cstr> names(count);
+  std::vector<const char*> names(count);
   if (!SDL_Vulkan_GetInstanceExtensions(nullptr, &count, names.data())) {
     return std::nullopt;
   }

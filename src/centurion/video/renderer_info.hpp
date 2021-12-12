@@ -108,7 +108,7 @@ class renderer_info final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto name() const noexcept -> cstr { return m_info.name; }
+  [[nodiscard]] auto name() const noexcept -> const char* { return m_info.name; }
 
   /**
    * \brief Returns the number of supported pixel formats.

@@ -128,7 +128,7 @@ class BasicSoundEffect final {
   }
 
   template <typename TT = T, detail::is_owner<TT> = 0>
-  [[nodiscard]] static auto HasDecoder(const cstr name) noexcept -> bool
+  [[nodiscard]] static auto HasDecoder(const char* name) noexcept -> bool
   {
     return Mix_HasChunkDecoder(name) == SDL_TRUE;
   }

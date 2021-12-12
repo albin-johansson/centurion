@@ -113,10 +113,6 @@ namespace cen {
 #endif  // __clang__
 }
 
-/// \brief Alias for a C-style string.
-/// \since 6.2.0
-using cstr = const char*;
-
 /// \name Integer aliases
 /// \{
 
@@ -253,7 +249,7 @@ template <typename T>
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto str_or_na(const cstr string) noexcept -> not_null<cstr>
+[[nodiscard]] inline auto str_or_na(const char* string) noexcept -> const char*
 {
   return string ? string : "n/a";
 }

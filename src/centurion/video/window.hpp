@@ -157,7 +157,7 @@ class basic_window final {
    * \since 3.0.0
    */
   template <typename TT = T, detail::is_owner<TT> = 0>
-  explicit basic_window(const not_null<cstr> title,
+  explicit basic_window(const char* title,
                         const iarea size = default_size(),
                         const Uint32 flags = default_flags())
   {
@@ -382,7 +382,7 @@ class basic_window final {
    *
    * \since 3.0.0
    */
-  void set_title(const not_null<cstr> title) noexcept
+  void set_title(const char* title) noexcept
   {
     assert(title);
     SDL_SetWindowTitle(m_window, title);

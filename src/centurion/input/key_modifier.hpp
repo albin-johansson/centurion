@@ -176,7 +176,7 @@ inline void set_modifiers(const key_mod mods) noexcept
   const auto mask = to_underlying(mods);
   std::stringstream stream;
 
-  auto check = [&stream, mask, count = 0](const key_mod mod, const cstr name) mutable {
+  auto check = [&stream, mask, count = 0](const key_mod mod, const char* name) mutable {
     if (mask & to_underlying(mod)) {
       if (count != 0) {
         stream << ',';

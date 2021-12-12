@@ -91,7 +91,7 @@ class gl_library final {
    *
    * \since 6.0.0
    */
-  CENTURION_NODISCARD_CTOR explicit gl_library(const cstr path = nullptr)
+  CENTURION_NODISCARD_CTOR explicit gl_library(const char* path = nullptr)
   {
     if (SDL_GL_LoadLibrary(path) == -1) {
       throw SDLError{};
@@ -117,7 +117,7 @@ class gl_library final {
    *
    * \since 6.0.0
    */
-  [[nodiscard]] auto address_of(const not_null<cstr> function) const noexcept  // NOLINT
+  [[nodiscard]] auto address_of(const char* function) const noexcept  // NOLINT
       -> void*
   {
     assert(function);
@@ -574,8 +574,7 @@ inline auto set_swap_interval(const gl_swap_interval interval) noexcept -> resul
  *
  * \since 6.0.0
  */
-[[nodiscard]] inline auto is_extension_supported(const not_null<cstr> extension) noexcept
-    -> bool
+[[nodiscard]] inline auto is_extension_supported(const char* extension) noexcept -> bool
 {
   assert(extension);
   return SDL_GL_ExtensionSupported(extension) == SDL_TRUE;

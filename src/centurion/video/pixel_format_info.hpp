@@ -227,7 +227,7 @@ class basic_pixel_format_info final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> not_null<cstr>
+  [[nodiscard]] auto name() const noexcept -> const char*
   {
     return SDL_GetPixelFormatName(m_format->format);
   }

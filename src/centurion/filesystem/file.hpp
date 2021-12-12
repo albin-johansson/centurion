@@ -284,7 +284,7 @@ class File final {
  private:
   Managed<SDL_RWops> mContext;
 
-  [[nodiscard]] static auto Stringify(const FileMode mode) noexcept -> cstr
+  [[nodiscard]] static auto Stringify(const FileMode mode) noexcept -> const char*
   {
     switch (mode) {
       default:

@@ -190,7 +190,10 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> cstr { return SDL_SensorGetName(m_sensor); }
+  [[nodiscard]] auto name() const noexcept -> const char*
+  {
+    return SDL_SensorGetName(m_sensor);
+  }
 
   /**
    * \brief Returns the type associated with the sensor device.
@@ -284,7 +287,7 @@ class basic_sensor final {
    *
    * \since 5.2.0
    */
-  [[nodiscard]] static auto name(const int index) noexcept -> cstr
+  [[nodiscard]] static auto name(const int index) noexcept -> const char*
   {
     return SDL_SensorGetDeviceName(index);
   }

@@ -169,11 +169,6 @@ class Music final
     return MIX_MAX_VOLUME;
   }
 
-  [[nodiscard]] auto get() const noexcept -> Mix_Music*
-  {
-    return mMusic.get();
-  }
-
   [[nodiscard]] static auto GetHookData() noexcept -> void*
   {
     return Mix_GetMusicHookData();
@@ -192,6 +187,11 @@ class Music final
   [[nodiscard]] static auto GetDecoderCount() noexcept -> int
   {
     return Mix_GetNumMusicDecoders();
+  }
+
+  [[nodiscard]] auto get() const noexcept -> Mix_Music*
+  {
+    return mMusic.get();
   }
 
  private:

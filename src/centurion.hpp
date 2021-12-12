@@ -31,7 +31,6 @@
 
 #include "centurion/audio/music.hpp"
 #include "centurion/audio/sound_effect.hpp"
-#include "centurion/audio/sound_fonts.hpp"
 #include "centurion/core/common.hpp"
 #include "centurion/core/exception.hpp"
 #include "centurion/core/features.hpp"

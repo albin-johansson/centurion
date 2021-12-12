@@ -11,8 +11,6 @@ set(SOURCE_FILES
     thread_mocks.hpp
     thread_mocks.cpp
 
-    audio/sound_fonts_test.cpp
-
     core/library_test.cpp
 
     event/event_test.cpp

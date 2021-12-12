@@ -62,7 +62,6 @@ add_library(${CENTURION_LIB_TARGET} INTERFACE)
 target_sources(${CENTURION_LIB_TARGET} PUBLIC INTERFACE
                src/centurion/audio/music.hpp
                src/centurion/audio/sound_effect.hpp
-               src/centurion/audio/sound_fonts.hpp
 
                src/centurion/core/common.hpp
                src/centurion/core/exception.hpp
